@@ -1,0 +1,130 @@
+# HKJC Horse Racing Project Rules
+
+## Project Context
+This project is a TypeScript-based AI-assisted horse racing analysis system for Hong Kong Jockey Club (HKJC) races.
+
+## Code Style
+
+### TypeScript
+- Use strict TypeScript with all strict flags enabled
+- Prefer `readonly` for immutable properties
+- Use explicit return types for all public functions
+- Avoid `any` - use proper types or `unknown` when needed
+- Use template literal types for string unions where applicable
+
+### Naming Conventions
+- Files: camelCase (e.g., `raceCard.ts`, `speedRating.ts`)
+- Interfaces/Types: PascalCase (e.g., `Horse`, `RaceEntry`)
+- Functions: camelCase (e.g., `calculateSpeedRating`)
+- Constants: SCREAMING_SNAKE_CASE (e.g., `DEFAULT_BETTING_CONFIG`)
+
+### Module Organization
+```
+src/
+├── scrapers/    # Data fetching from HKJC
+├── analysis/    # Statistical analysis modules
+├── simulation/  # Monte Carlo and probability
+├── betting/     # Value calculation and recommendations
+├── types/       # TypeScript interfaces
+└── utils/       # Helper functions
+```
+
+## Domain Knowledge
+
+### HKJC Specifics
+- Two venues: Sha Tin (ST) and Happy Valley (HV)
+- Surfaces: Turf and All Weather Track (AWT)
+- Classes: Class 1-5, Griffin, Group 1-3
+- Standard distances: 1000m, 1200m, 1400m, 1600m, 1800m, 2000m, 2400m
+- Typical field size: 12-14 horses
+
+### Key Data Points
+- Horse code (e.g., "K422")
+- Jockey code (e.g., "ZPF" for Zac Purton)
+- Trainer code (e.g., "SJJ" for John Size)
+- Rating: 0-120 scale
+- Form string: positions separated by dashes (e.g., "1-2-4-3-1-2")
+
+### Betting Types
+- Win, Place (top 3)
+- Quinella (top 2, any order)
+- Quinella Place (any 2 of top 3)
+- Forecast (top 2, exact order)
+- Tierce (top 3, exact order)
+- Trio (top 3, any order)
+- First 4, Quartet
+
+## Betting Strategy Rules
+
+### Value Threshold
+- Minimum edge: 15% before recommending a bet
+- Win market is efficient - prefer exotic bets
+- Quinella Place and Place pools have more inefficiency
+
+### Stake Sizing
+- Use Kelly Criterion with fractional Kelly (25-50%)
+- Maximum 5% bankroll per single bet
+- Maximum 10% bankroll per race
+
+### Risk Management
+- Track all bets and results
+- Regular model calibration via Brier Score
+- Pass on races with no value identified
+
+## Scraping Guidelines
+
+### Rate Limiting
+- Maximum 20 requests per minute to HKJC
+- Use delays between requests
+- Cache data when possible
+
+### Error Handling
+- Handle network failures gracefully
+- Provide fallback/demo data when scraping fails
+- Log all scraping errors
+
+### Data Validation
+- Validate all scraped data with Zod schemas
+- Handle missing/malformed data gracefully
+- Never trust scraped numbers without validation
+
+## Analysis Best Practices
+
+### Speed Ratings
+- Adjust for class, going, weight
+- Use par times for each track/distance combination
+- Weight recent performances higher
+
+### Form Analysis
+- Recent form weighted more heavily (exponential decay)
+- Consider quality of opposition
+- Account for class changes
+
+### Simulation
+- Minimum 10,000 Monte Carlo iterations
+- Include performance variance
+- Track confidence intervals
+
+## Testing Guidelines
+
+### Unit Tests
+- Test all calculation functions
+- Mock scraped data for deterministic tests
+- Test edge cases (empty arrays, zero values)
+
+### Integration Tests
+- Test full analysis pipeline with sample data
+- Verify recommendation output format
+- Test error handling scenarios
+
+## Git Commit Messages
+
+Use conventional commits:
+- `feat:` New feature
+- `fix:` Bug fix
+- `refactor:` Code refactoring
+- `docs:` Documentation
+- `test:` Tests
+- `chore:` Maintenance
+
+Example: `feat: add draw bias calculation for Happy Valley`
