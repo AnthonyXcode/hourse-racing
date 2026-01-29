@@ -99,6 +99,75 @@ npm install
 npx playwright install chromium
 ```
 
+## HKJC Data Sources
+
+The system fetches data from the Hong Kong Jockey Club website using the following URLs:
+
+### Horse Profile
+```
+https://racing.hkjc.com/en-us/local/information/horse?HorseId={horseCode}
+```
+- **Parameter**: `HorseId` - Full horse code (e.g., `HK_2024_K129`)
+- **Returns**: Horse details, rating, sire/dam, career stats, past performances
+- **Example**: [WINNING WING](https://racing.hkjc.com/en-us/local/information/horse?HorseId=HK_2024_K129)
+
+### Jockey Statistics
+```
+https://racing.hkjc.com/en-us/local/information/jockeywinstat?JockeyId={jockeyCode}
+```
+- **Parameter**: `JockeyId` - Jockey code (e.g., `PZ` for Z Purton)
+- **Returns**: Season stats (wins, rides, win rate), performance by venue/distance
+- **Example**: [Z Purton Stats](https://racing.hkjc.com/en-us/local/information/jockeywinstat?JockeyId=PZ)
+
+### Race Results
+```
+https://racing.hkjc.com/en-us/local/information/localresults?RaceDate={date}
+```
+- **Parameter**: `RaceDate` - Date in `YYYY/MM/DD` format
+- **Returns**: All race results for that meeting, dividends, finish order
+- **Example**: [19 Jan 2025 Results](https://racing.hkjc.com/en-us/local/information/localresults?RaceDate=2025/01/19)
+
+### Race Card
+```
+https://racing.hkjc.com/en-us/local/information/racecard?RaceDate={date}&Racecourse={venue}&RaceNo={race}
+```
+- **Parameters**: 
+  - `RaceDate` - Date in `YYYY/MM/DD` format **(must be a future/upcoming race date)**
+  - `Racecourse` - Venue code (`ST` = Sha Tin, `HV` = Happy Valley)
+  - `RaceNo` - Race number (1-11)
+- **Returns**: Entries, draws, weights, jockeys, trainers
+- **Note**: Race cards are only available for upcoming races. For past races, use Race Results instead.
+- **Example**: Check [HKJC Fixtures](https://racing.hkjc.com/en-us/local/information/fixture) for upcoming race dates
+
+### Current Odds
+```
+https://racing.hkjc.com/en-us/local/information/winodd?RaceDate={date}&Racecourse={venue}&RaceNo={race}
+```
+- **Returns**: Live win/place odds for all runners
+- **Example**: [ST Race 1 Odds](https://racing.hkjc.com/en-us/local/information/winodd?RaceDate=2025/01/19&Racecourse=ST&RaceNo=1)
+
+### Jockey Codes Reference
+
+| Jockey | Code | Example URL |
+|--------|------|-------------|
+| Z Purton | `PZ` | [Stats](https://racing.hkjc.com/en-us/local/information/jockeywinstat?JockeyId=PZ) |
+| J Moreira | `MOJ` | [Stats](https://racing.hkjc.com/en-us/local/information/jockeywinstat?JockeyId=MOJ) |
+| J McDonald | `MCJ` | [Stats](https://racing.hkjc.com/en-us/local/information/jockeywinstat?JockeyId=MCJ) |
+| H Bowman | `BH` | [Stats](https://racing.hkjc.com/en-us/local/information/jockeywinstat?JockeyId=BH) |
+| M Guyon | `GM` | [Stats](https://racing.hkjc.com/en-us/local/information/jockeywinstat?JockeyId=GM) |
+| K Teetan | `TEK` | [Stats](https://racing.hkjc.com/en-us/local/information/jockeywinstat?JockeyId=TEK) |
+| A Badel | `BA` | [Stats](https://racing.hkjc.com/en-us/local/information/jockeywinstat?JockeyId=BA) |
+
+### Horse Code Format
+
+Horse codes follow the pattern: `HK_{year}_{brandCode}`
+
+| Example Code | Description | Link |
+|--------------|-------------|------|
+| `HK_2024_K129` | Horse imported in 2024, brand K129 | [WINNING WING](https://racing.hkjc.com/en-us/local/information/horse?HorseId=HK_2024_K129) |
+| `HK_2023_J169` | Horse imported in 2023, brand J169 | [APOLAR FIGHTER](https://racing.hkjc.com/en-us/local/information/horse?HorseId=HK_2023_J169) |
+| `HK_2022_H447` | Horse imported in 2022, brand H447 | [FAMILY FORTUNE](https://racing.hkjc.com/en-us/local/information/horse?HorseId=HK_2022_H447) |
+
 ## Usage
 
 ### Scrape Today's Race Card

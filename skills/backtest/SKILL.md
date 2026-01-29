@@ -25,6 +25,36 @@ Before running a backtest:
 2. Define the betting strategy clearly
 3. Set the evaluation period (dates/meetings)
 
+## Data Levels
+
+Backtests can use different levels of data enrichment:
+
+| Level | Data Used | Accuracy | Setup Required |
+|-------|-----------|----------|----------------|
+| **Basic** | Results only (jockey names, odds) | Low | None |
+| **Standard** | + Jockey season stats | Medium | Scrape jockey profiles |
+| **Full** | + Horse form, ratings, past performances | High | Scrape horse profiles |
+
+### Basic Backtest (Quick)
+Uses only data available in results files:
+- Jockey name matching (elite vs non-elite)
+- Starting price odds
+- Finish position and dividends
+
+### Standard Backtest (Recommended)
+Adds jockey statistics:
+- Season win rate and strike rate
+- Venue-specific performance
+- Trainer combination history
+
+### Full Backtest (Most Accurate)
+Adds horse form analysis:
+- Past performance form figures
+- Class indicators (rising/dropping)
+- Distance suitability
+- Going record
+- Days since last run
+
 ## Workflow Steps
 
 ### Step 1: Define Backtest Parameters
@@ -50,29 +80,119 @@ Typical meetings per month:
 - ~8-10 meetings (mix of ST and HV)
 - ~80-100 races total
 
+### Step 2b: Enrich Data (Optional but Recommended)
+
+For more accurate backtests, collect jockey and horse profiles:
+
+```bash
+# Scrape elite jockey stats
+npx tsx tools/scrape-profiles.ts --type jockeys
+# Saved to: data/jockeys/jockeys_elite_YYYYMMDD.json
+
+# Scrape horse profiles from results file
+npx tsx tools/scrape-profiles.ts --type horses --from-results results_20251001_ST.json
+# Saved to: data/horses/horses_YYYYMMDD.json
+```
+
+#### What the enriched data provides:
+
+**Jockey Profiles:**
+| Field | Example | Use |
+|-------|---------|-----|
+| `seasonStats.winRate` | 0.22 | Compare to average (0.08) |
+| `venueStats.winRate` | 0.25 (ST) | Venue-specific form |
+| `recentForm` | Last 20 rides | Current momentum |
+| `trainerCombinations` | Size/Purton: 35% | Stable relationships |
+
+**Horse Profiles:**
+| Field | Example | Use |
+|-------|---------|-----|
+| `formFigures` | "1-2-3-4-1" | Recent placings |
+| `pastPerformances` | Full history | Distance/going suitability |
+| `currentRating` | 75 | Class assessment |
+| `classHistory` | C4 → C3 | Rising/dropping class |
+| `distanceWins` | 1200m: 3 wins | Distance proven |
+| `goingRecord` | Good: 4-2-1 | Going preference |
+
 ### Step 3: Apply Betting Strategy
 
 For each race, apply these rules consistently:
 
-#### WIN Bets ($6-8 per race)
+#### Basic Strategy (Results-Only Data)
+
+##### WIN Bets ($6-8 per race)
 ```
 IF horse.odds >= 2.0 AND horse.odds <= 7.0
 AND horse.jockey IN ['Z Purton', 'J McDonald', 'H Bowman', 'M Guyon', 'J Moreira']
 THEN bet WIN
 ```
 
-#### PLACE Bets ($5 per race)
+##### PLACE Bets ($5 per race)
 ```
 IF horse.odds >= 5.0 AND horse.odds <= 15.0
-AND horse has consistent form
+AND horse.jockey has >10% win rate (estimated)
 THEN bet PLACE
 ```
 
-#### QUINELLA Bets ($5 per selected race)
+##### QUINELLA Bets ($5 per selected race)
 ```
 SELECT top 2 horses by odds
 BET quinella on pair
 ```
+
+#### Enhanced Strategy (With Enriched Data)
+
+##### WIN Bets - Improved Selection
+```typescript
+// From src/analysis/dataEnrichment.ts
+const criteria = {
+  requireEliteJockey: true,
+  minJockeyWinRate: 0.15,      // 15%+ season win rate
+  oddsRange: { min: 2.0, max: 7.0 },
+  minFormScore: 0.35,          // Decent recent form
+  minDistanceSuitability: 0.4,  // Proven at distance
+  maxDaysSinceRun: 45,         // Fresh enough
+};
+
+IF jockey.seasonStats.winRate >= 0.15
+AND jockey.isElite
+AND horse.formScore >= 0.35
+AND horse.distanceSuitability >= 0.4
+AND horse.daysSinceLastRun <= 45
+AND odds >= 2.0 AND odds <= 7.0
+THEN bet WIN with confidence
+```
+
+##### PLACE Bets - Form-Based
+```
+IF horse.formFigures contains "1" or "2" or "3" in last 3 runs
+AND horse.classIndicator >= 0 (dropping or same class)
+AND jockey.seasonPlaceRate >= 0.30
+AND odds >= 5.0 AND odds <= 15.0
+THEN bet PLACE
+```
+
+##### QUINELLA - Contender Analysis
+```
+1. Calculate combinedScore for each entry (0-100)
+2. Select horses with combinedScore >= 70
+3. If 2+ horses qualify:
+   - Box the top 2-3 contenders
+   - Weight by market confidence
+```
+
+#### Scoring Breakdown (combinedScore)
+| Factor | Weight | Description |
+|--------|--------|-------------|
+| Jockey Win Rate | 15 | Season performance |
+| Elite Jockey | 10 | Bonus for top riders |
+| Jockey Form | 10 | Last 10 rides |
+| Horse Form | 20 | Recent finishes |
+| Class Indicator | 10 | Dropping = good |
+| Distance Suit | 10 | Proven at distance |
+| Draw Advantage | 5 | Track bias |
+| Fitness | 10 | Days since last run |
+| Improving | 10 | Trend upward |
 
 ### Step 4: Calculate Results
 

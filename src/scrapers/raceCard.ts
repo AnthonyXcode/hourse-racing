@@ -99,7 +99,7 @@ export class RaceCardScraper {
     }[]
   > {
     const dateStr = format(date, "yyyy/MM/dd");
-    const url = `${this.config.baseUrl}/racing/information/English/racing/LocalResults.aspx?RaceDate=${dateStr}`;
+    const url = `${this.config.baseUrl}/en-us/local/information/localresults?RaceDate=${dateStr}`;
 
     await this.navigateTo(url);
     if (!this.page) throw new Error("Browser not initialized");
@@ -580,7 +580,7 @@ export class RaceCardScraper {
   ): Promise<Map<number, number>> {
     const dateStr = format(date, "yyyy/MM/dd");
     const venueCode = venue === "Sha Tin" ? "ST" : "HV";
-    const url = `${this.config.baseUrl}/racing/information/English/racing/WinOdds.aspx?RaceDate=${dateStr}&Racecourse=${venueCode}&RaceNo=${raceNumber}`;
+    const url = `${this.config.baseUrl}/en-us/local/information/winodd?RaceDate=${dateStr}&Racecourse=${venueCode}&RaceNo=${raceNumber}`;
 
     await this.navigateTo(url);
     if (!this.page) throw new Error("Browser not initialized");
