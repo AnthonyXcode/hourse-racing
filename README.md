@@ -108,7 +108,10 @@ The system fetches data from the Hong Kong Jockey Club website using the followi
 https://racing.hkjc.com/en-us/local/information/horse?HorseId={horseCode}
 ```
 - **Parameter**: `HorseId` - Full horse code (e.g., `HK_2024_K129`)
-- **Returns**: Horse details, rating, sire/dam, career stats, past performances
+- **Returns**: 
+  - Basic info: Name, age, sex, color, origin, sire/dam
+  - Current rating, season/career stats, prize money
+  - **Past performances (Recent 3 seasons)**: Date, venue, distance, going, class, draw, jockey, trainer, odds, running position, finish time, weight, gear
 - **Example**: [WINNING WING](https://racing.hkjc.com/en-us/local/information/horse?HorseId=HK_2024_K129)
 
 ### Jockey Statistics
@@ -116,8 +119,11 @@ https://racing.hkjc.com/en-us/local/information/horse?HorseId={horseCode}
 https://racing.hkjc.com/en-us/local/information/jockeywinstat?JockeyId={jockeyCode}
 ```
 - **Parameter**: `JockeyId` - Jockey code (e.g., `PZ` for Z Purton)
-- **Returns**: Season stats (wins, rides, win rate), performance by venue/distance
-- **Example**: [Z Purton Stats](https://racing.hkjc.com/en-us/local/information/jockeywinstat?JockeyId=PZ)
+- **Returns**: 
+  - Season stats: Wins, 2nds, 3rds, 4ths, Total Rides, **Win %**, Stakes won
+  - Wins in past 10 race days
+  - **Performance by venue/distance**: Wins, places, rides at each venue (ST/HV) and distance (1000m-2400m)
+- **Example**: [Z Purton Stats](https://racing.hkjc.com/en-us/local/information/jockeywinstat?JockeyId=PZ) - shows 22.19% win rate, 71 wins from 320 rides
 
 ### Race Results
 ```
@@ -136,6 +142,9 @@ https://racing.hkjc.com/en-us/local/information/racecard?RaceDate={date}&Racecou
   - `Racecourse` - Venue code (`ST` = Sha Tin, `HV` = Happy Valley)
   - `RaceNo` - Race number (1-11)
 - **Returns**: Entries, draws, weights, jockeys, trainers
+- **Horse/Jockey IDs**: Extracted from HTML links in the page:
+  - Horse link: `horse?HorseId=HK_2024_K129` → extracts `HK_2024_K129`
+  - Jockey link: `jockeyprofile?jockeyid=PZ` → extracts `PZ`
 - **Note**: Race cards are only available for upcoming races. For past races, use Race Results instead.
 - **Example**: Check [HKJC Fixtures](https://racing.hkjc.com/en-us/local/information/fixture) for upcoming race dates
 
