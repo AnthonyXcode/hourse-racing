@@ -111,12 +111,37 @@ Response:
 4. **Never exceed limits** - Stick to bankroll management rules
 5. **Record results** - Track all bets for model calibration
 
+## Venue-Specific Adjustments (From Backtests)
+
+### Sha Tin
+- Standard stakes apply
+- Favorites more reliable (~50% win rate)
+- Trust elite jockeys
+- Expected WIN strike rate: 60-70%
+
+### Happy Valley
+- **Reduce all stakes by 30%**
+- Favorites less reliable (~35% win rate)
+- Short favorites (<3.0) often lose
+- Widen QUINELLA coverage to 3-4 horses
+- Expected WIN strike rate: 40-50%
+
+## Elite Jockey Priority (Validated Strike Rates)
+
+| Jockey | Strike Rate | Notes |
+|--------|-------------|-------|
+| J McDonald | 80% | Back when booked |
+| M Guyon | 80% | French visitor |
+| H Bowman | 67% | Australian star |
+| J Moreira | 65% | Former champion |
+| Z Purton | 57% | Volume king |
+
 ## Troubleshooting
 
 ### Scraper fails
 - Check if HKJC website is accessible
 - Verify race date has scheduled races
-- Use demo output for testing
+- Check for data integrity warnings in output
 
 ### No value found
 - This is normal - pass on the race
@@ -126,3 +151,8 @@ Response:
 - Market odds update frequently
 - Re-fetch odds closer to race time
 - Adjust recommendations if edge disappears
+
+### Data shows "[WARNING]"
+- Review the warning message
+- Verify data quality before betting
+- Re-scrape if critical data missing

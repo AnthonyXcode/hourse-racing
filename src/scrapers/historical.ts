@@ -292,13 +292,19 @@ export class HistoricalScraper {
     }
 
     // Parse surface - look for "TURF" or "AWT" or "All Weather"
-    let surface: TrackSurface = "Turf";
+    let surface: TrackSurface | null = null;
     if (/AWT|All Weather/i.test(allText)) {
       surface = "AWT";
+    } else if (/TURF|Turf/i.test(allText)) {
+      surface = "Turf";
+    }
+    if (!surface) {
+      console.warn(`[WARNING] Could not parse surface from race info, defaulting to Turf`);
+      surface = "Turf"; // Turf is more common, but we log the warning
     }
 
     // Parse going - look for "Going : GOOD" pattern
-    let going: Going = "Good";
+    let going: Going | null = null;
     const goingMatch = allText.match(/Going\s*:\s*(\w+(?:\s+to\s+\w+)?)/i);
     if (goingMatch) {
       going = this.normalizeGoing(goingMatch[1]!);
@@ -321,6 +327,9 @@ export class HistoricalScraper {
           break;
         }
       }
+    }
+    if (!going) {
+      throw new Error(`Failed to parse going condition from race info. Raw text snippet: "${allText.substring(0, 200)}..."`);
     }
 
     // Parse prize money - look for "HK$ X,XXX,XXX" pattern
@@ -700,8 +709,9 @@ export class HistoricalScraper {
     if (normalized.includes("firm")) return "Firm";
     if (normalized.includes("wet fast")) return "Wet Fast";
     if (normalized.includes("wet slow")) return "Wet Slow";
+    if (normalized === "good" || normalized.includes("good")) return "Good";
 
-    return "Good";
+    throw new Error(`Failed to normalize going condition: "${goingText}"`);
   }
 
   /**
@@ -723,7 +733,7 @@ export class HistoricalScraper {
       if (pattern.test(raceInfo)) return value;
     }
 
-    return "Good";
+    throw new Error(`Failed to extract going from race info: "${raceInfo.substring(0, 100)}..."`);
   }
 
   /**
@@ -739,7 +749,7 @@ export class HistoricalScraper {
     if (/group\s*3/i.test(classText)) return "Group 3";
     if (/griffin/i.test(classText)) return "Griffin";
 
-    return "Class 4";
+    throw new Error(`Failed to normalize race class: "${classText}"`);
   }
 
   /**

@@ -29,6 +29,25 @@ src/
 └── utils/       # Helper functions
 ```
 
+## Data Integrity Rules (CRITICAL)
+
+### No Silent Fallbacks
+- **NEVER** use default values when parsing fails without logging a warning
+- **THROW ERRORS** for critical fields that cannot be parsed:
+  - Going condition (affects horse performance significantly)
+  - Race class (affects value calculations)
+  - Finish positions and times
+- **WARN AND LOG** for non-critical fields:
+  - Surface (default to Turf with warning)
+  - Prize money (can be 0)
+  - Race name (optional)
+
+### Data Validation Requirements
+- All historical data must have valid going condition
+- All race results must have finish order with odds
+- Exclude races with missing critical data from analysis
+- Log all data quality issues for review
+
 ## Domain Knowledge
 
 ### HKJC Specifics
@@ -38,6 +57,32 @@ src/
 - Standard distances: 1000m, 1200m, 1400m, 1600m, 1800m, 2000m, 2400m
 - Typical field size: 12-14 horses
 
+### Venue Characteristics (From Backtest Data)
+
+#### Sha Tin
+- **More predictable** - favorites win ~50% of races
+- **Better for systematic betting** - higher strike rates
+- **Recommended**: Standard stakes, trust favorites
+- **WIN strike rate**: ~60-70% when backing elite jockeys
+
+#### Happy Valley
+- **More upset-prone** - favorites win only ~35-40% of races
+- **Tighter track** - draw bias more significant
+- **Short-priced favorites (<3.0) often lose**
+- **Recommended**: Reduce stakes, widen exotic coverage
+
+### Season Patterns
+
+#### Early Season (Sep-Oct)
+- More upsets as horses find form
+- Field quality less established
+- **Recommended**: Reduce WIN stakes, increase QNL coverage
+
+#### Mid Season (Nov-Dec)
+- More predictable outcomes
+- Form lines more reliable
+- HKIR period (Dec) - Group 1 races highly predictable
+
 ### Key Data Points
 - Horse code (e.g., "K422")
 - Jockey code (e.g., "ZPF" for Zac Purton)
@@ -45,31 +90,64 @@ src/
 - Rating: 0-120 scale
 - Form string: positions separated by dashes (e.g., "1-2-4-3-1-2")
 
+### Elite Jockeys (Priority for WIN bets)
+| Jockey | Code | Backtest Strike Rate | Notes |
+|--------|------|---------------------|-------|
+| Z Purton | PZ | ~57% | Champion jockey |
+| J McDonald | MJ | ~80% | Exceptional when booked |
+| J Moreira | MJ | ~65% | Former champion |
+| H Bowman | BH | ~67% | Australian star |
+| M Guyon | GM | ~80% | French visitor |
+| R Moore | MR | ~70% | When visiting |
+
 ### Betting Types
 - Win, Place (top 3)
-- Quinella (top 2, any order)
+- Quinella (top 2, any order) - **Highest ROI in backtests**
 - Quinella Place (any 2 of top 3)
 - Forecast (top 2, exact order)
 - Tierce (top 3, exact order)
 - Trio (top 3, any order)
 - First 4, Quartet
 
-## Betting Strategy Rules
+## Betting Strategy Rules (Refined from Backtests)
 
-### Value Threshold
-- Minimum edge: 15% before recommending a bet
-- Win market is efficient - prefer exotic bets
-- Quinella Place and Place pools have more inefficiency
+### Recommended Bankroll Allocation
+| Bet Type | Allocation | Reasoning |
+|----------|------------|-----------|
+| WIN (favorites) | 45% | High strike rate with elite jockeys |
+| PLACE (value) | 25% | Consistent returns, 70%+ hit rate |
+| QUINELLA | 20% | Outsized returns when hit |
+| RESERVE | 10% | For Group 1 / feature races |
+
+### WIN Bet Rules
+- Back horses in odds range **2.0-7.0** with elite jockeys
+- Heavier stake on short favorites (<3.0) at **Sha Tin only**
+- **Avoid** short favorites at Happy Valley
+- Skip races with no clear form standout
+
+### PLACE Bet Rules
+- Target value picks in **5.0-15.0** odds range
+- Focus on consistent jockeys with high place %
+- Expected hit rate: **70%+**
+- Steady profit driver
+
+### QUINELLA Bet Rules
+- Back top 2 in market as default
+- At Happy Valley: **Box 3-4 horses** (more upsets)
+- Key profit driver - **700%+ ROI** in backtests
+- Accept lower hit rate (~40%) for larger payouts
 
 ### Stake Sizing
 - Use Kelly Criterion with fractional Kelly (25-50%)
 - Maximum 5% bankroll per single bet
 - Maximum 10% bankroll per race
+- **Reduce all stakes by 30% at Happy Valley**
 
 ### Risk Management
 - Track all bets and results
 - Regular model calibration via Brier Score
 - Pass on races with no value identified
+- **Never chase losses** - stick to system
 
 ## Scraping Guidelines
 
@@ -79,14 +157,35 @@ src/
 - Cache data when possible
 
 ### Error Handling
-- Handle network failures gracefully
-- Provide fallback/demo data when scraping fails
-- Log all scraping errors
+- **THROW ERRORS** for critical parsing failures (going, class, odds)
+- **LOG WARNINGS** for non-critical fallbacks (surface, prize money)
+- Never silently use default values for analytical data
+- All errors must be visible in output
 
 ### Data Validation
 - Validate all scraped data with Zod schemas
-- Handle missing/malformed data gracefully
-- Never trust scraped numbers without validation
+- Reject races with missing going/class/finish data
+- Log all validation failures for review
+
+## Backtest Guidelines
+
+### Minimum Requirements
+- At least **5 meetings** for meaningful analysis
+- Mix of Sha Tin and Happy Valley
+- Include different day types (weekend vs mid-week)
+
+### Metrics to Track
+| Metric | Target | Concern Level |
+|--------|--------|---------------|
+| WIN Strike Rate | >50% | <40% review strategy |
+| PLACE Strike Rate | >70% | <60% review selections |
+| Overall ROI | >100% | <50% pause betting |
+| QNL Hit Rate | >35% | <25% widen coverage |
+
+### Variance Expectations
+- Single meeting: **-50% to +500%** swing normal
+- 5 meetings: **+100% to +300%** expected range
+- Best day may be **10x** worst day
 
 ## Analysis Best Practices
 
@@ -99,6 +198,7 @@ src/
 - Recent form weighted more heavily (exponential decay)
 - Consider quality of opposition
 - Account for class changes
+- **Days since last race**: Optimal 14-35 days
 
 ### Simulation
 - Minimum 10,000 Monte Carlo iterations
@@ -116,6 +216,11 @@ src/
 - Test full analysis pipeline with sample data
 - Verify recommendation output format
 - Test error handling scenarios
+
+### Backtest Validation
+- Run against known historical data
+- Compare predictions vs actual results
+- Calculate Brier Score for probability accuracy
 
 ## Git Commit Messages
 

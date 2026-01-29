@@ -130,15 +130,36 @@ For each active horse:
 - Scraper automatically delays between requests
 - Don't run multiple scrapers simultaneously
 
-### Error Handling
+### Error Handling (CRITICAL)
+- **THROW ERRORS** for critical parsing failures:
+  - Going condition (required for analysis)
+  - Race class (required for value calculation)
+  - Finish positions and odds
+- **LOG WARNINGS** for non-critical fallbacks:
+  - Surface (defaults to Turf with warning)
+  - Prize money (can be 0)
+  - Race name (optional)
 - Network errors: Retry up to 3 times
-- Missing data: Log and continue
-- Malformed pages: Skip and report
 
 ### Data Validation
 - All scraped data is validated
-- Invalid entries are logged but not stored
-- Verify field sizes match expected ranges
+- **Reject races with missing going/class/finish data**
+- Log all validation failures for review
+- **Never use silent fallback values**
+
+### Data Integrity Rules
+```
+CRITICAL FIELDS (must throw error if missing):
+- going: Affects horse performance analysis
+- class: Affects value calculations  
+- finishOrder: Required for results
+- winOdds: Required for P&L calculation
+
+WARNING FIELDS (log warning, use fallback):
+- surface: Default "Turf" with warning
+- prizeMoney: Default 0 with warning
+- name: Optional, can be undefined
+```
 
 ## Troubleshooting
 
@@ -156,3 +177,22 @@ For each active horse:
 - HKJC may have changed page structure
 - Update CSS selectors in scraper
 - Report issue for maintenance
+
+### "[WARNING] Could not parse..."
+- Review the specific warning
+- Verify data quality before using
+- Consider re-scraping if critical
+
+### "Failed to parse going condition"
+- Expected error if race data incomplete
+- Race will be excluded from analysis
+- Check HKJC page structure
+
+## Quality Checklist
+
+Before using scraped data for analysis:
+- [ ] No error messages in output
+- [ ] All races have going condition
+- [ ] All races have finish order
+- [ ] Odds are populated for finishers
+- [ ] Dividends are captured

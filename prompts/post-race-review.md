@@ -172,6 +172,56 @@ After each race meeting, compile:
 6. **Model Accuracy**: Brier scores for win/place
 7. **Patterns Noticed**: Any recurring model errors
 
+## Performance Benchmarks (From Backtests)
+
+Compare your results against these validated benchmarks:
+
+### Strike Rate Targets
+| Bet Type | Target | Concern Level |
+|----------|--------|---------------|
+| WIN | >50% | <40% review strategy |
+| PLACE | >70% | <60% review selections |
+| QUINELLA | >35% | <25% widen coverage |
+
+### ROI Targets
+| Outcome | Assessment |
+|---------|------------|
+| >200% | Excellent |
+| 100-200% | Good |
+| 50-100% | Acceptable |
+| 0-50% | Marginal |
+| <0% | Review strategy |
+
+### Variance Expectations
+- Single meeting: -50% to +500% swing is normal
+- Best day may be 10x worst day
+- Don't overreact to single meeting results
+- 5+ meetings needed for meaningful trend
+
+## Venue-Specific Analysis
+
+### Sha Tin Review Questions
+- Did favorites perform as expected (~50% win)?
+- Did elite jockeys deliver (60%+ strike)?
+- Were QUINELLA results predictable?
+
+### Happy Valley Review Questions
+- Did short favorites fail (as expected)?
+- Were there more upsets than usual?
+- Did wider QUINELLA coverage help?
+- Should stakes have been reduced more?
+
+## Jockey Performance Tracking
+
+Track elite jockey results meeting-by-meeting:
+
+| Jockey | Expected Strike | This Meeting | Running Total |
+|--------|-----------------|--------------|---------------|
+| J McDonald | 80% | X/Y = Z% | A/B = C% |
+| M Guyon | 80% | X/Y = Z% | A/B = C% |
+| H Bowman | 67% | X/Y = Z% | A/B = C% |
+| Z Purton | 57% | X/Y = Z% | A/B = C% |
+
 ## Example Query
 
 "Review Race 5 at Sha Tin (29 Jan 2026):

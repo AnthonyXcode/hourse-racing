@@ -282,13 +282,19 @@ export class RaceCardScraper {
     }
 
     // Parse surface
-    let surface: TrackSurface = "Turf";
+    let surface: TrackSurface | null = null;
     if (/AWT|All Weather/i.test(allText)) {
       surface = "AWT";
+    } else if (/TURF|Turf/i.test(allText)) {
+      surface = "Turf";
+    }
+    if (!surface) {
+      console.warn(`[WARNING] Could not parse surface from race info, defaulting to Turf`);
+      surface = "Turf"; // Turf is more common, but we log the warning
     }
 
     // Parse going - look for "Going : GOOD" pattern
-    let going: Going = "Good";
+    let going: Going | null = null;
     const goingMatch = allText.match(/Going\s*:\s*(\w+(?:\s+to\s+\w+)?)/i);
     if (goingMatch) {
       const goingText = goingMatch[1]!.toLowerCase();
@@ -298,9 +304,12 @@ export class RaceCardScraper {
       else if (goingText.includes("heavy")) going = "Heavy";
       else if (goingText.includes("soft")) going = "Soft";
       else if (goingText.includes("firm")) going = "Firm";
+      else if (goingText.includes("good")) going = "Good";
       else if (goingText.includes("wet fast")) going = "Wet Fast";
       else if (goingText.includes("wet slow")) going = "Wet Slow";
-      else going = "Good";
+    }
+    if (!going) {
+      throw new Error(`Failed to parse going condition from race card. Raw text snippet: "${allText.substring(0, 200)}..."`);
     }
 
     // Parse prize money - look for "HK$ X,XXX,XXX" pattern
