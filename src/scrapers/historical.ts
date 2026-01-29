@@ -64,10 +64,14 @@ export class HistoricalScraper {
 
     if (!this.page) throw new Error("Browser not initialized");
 
+    // Use domcontentloaded - faster than networkidle, HKJC pages have lots of async content
     await this.page.goto(url, {
-      waitUntil: "networkidle",
-      timeout: this.config.timeout,
+      waitUntil: "domcontentloaded",
+      timeout: 60000, // 60 seconds timeout
     });
+
+    // Wait a bit for dynamic content to load
+    await sleep(2000);
 
     this.lastRequestTime = Date.now();
   }
@@ -82,8 +86,8 @@ export class HistoricalScraper {
   ): Promise<RaceResult> {
     const dateStr = format(date, "yyyy/MM/dd");
     const venueCode = venue === "Sha Tin" ? "ST" : "HV";
-    const url = `${this.config.baseUrl}/racing/information/English/racing/LocalResults.aspx?RaceDate=${dateStr}&Racecourse=${venueCode}&RaceNo=${raceNumber}`;
-    console.log("url:", url);
+    // Use the correct HKJC URL format (en-us path)
+    const url = `${this.config.baseUrl}/en-us/local/information/localresults?RaceDate=${dateStr}&Racecourse=${venueCode}&RaceNo=${raceNumber}`;
 
     await this.navigateTo(url);
     if (!this.page) throw new Error("Browser not initialized");
@@ -97,15 +101,37 @@ export class HistoricalScraper {
    */
   async scrapeFullMeetingResults(date: Date, venue: Venue): Promise<RaceResult[]> {
     const results: RaceResult[] = [];
+    let consecutiveFailures = 0;
 
     for (let raceNum = 1; raceNum <= 11; raceNum++) {
       try {
         const result = await this.scrapeRaceResult(date, venue, raceNum);
+        
+        // Validate result has actual data
+        if (result.finishOrder.length === 0) {
+          consecutiveFailures++;
+          if (consecutiveFailures >= 2 && raceNum > 1) {
+            // Likely no more races on this day
+            break;
+          }
+          continue;
+        }
+        
+        consecutiveFailures = 0;
         results.push(result);
       } catch (error) {
-        if (raceNum > 8) break;
-        console.warn(`Failed to scrape race ${raceNum} results:`, error);
+        consecutiveFailures++;
+        if (consecutiveFailures >= 2 && raceNum > 1) {
+          // Likely no more races on this day
+          break;
+        }
+        // Log but continue - some races may be unavailable
+        console.warn(`Race ${raceNum} unavailable: ${error instanceof Error ? error.message : "Unknown error"}`);
       }
+    }
+
+    if (results.length === 0) {
+      throw new Error(`No race results found for ${venue} on ${format(date, "yyyy-MM-dd")}. Verify this is a racing day.`);
     }
 
     return results;
@@ -121,8 +147,11 @@ export class HistoricalScraper {
   ): Promise<RaceResult[]> {
     const results: RaceResult[] = [];
     let currentDate = startDate;
+    let daysWithNoRaces = 0;
 
     while (currentDate <= endDate) {
+      let foundRacesForDay = false;
+      
       for (const venue of venues) {
         try {
           const meetingResults = await this.scrapeFullMeetingResults(
@@ -130,14 +159,39 @@ export class HistoricalScraper {
             venue
           );
           results.push(...meetingResults);
+          foundRacesForDay = true;
           console.log(
             `Scraped ${meetingResults.length} races from ${venue} on ${format(currentDate, "yyyy-MM-dd")}`
           );
         } catch (error) {
-          // No meeting on this day at this venue
+          // Expected - not every venue has races every day
+          // Only log if it's an unexpected error
+          if (error instanceof Error && !error.message.includes("No race results found")) {
+            console.warn(`${venue} on ${format(currentDate, "yyyy-MM-dd")}: ${error.message}`);
+          }
         }
       }
+      
+      if (!foundRacesForDay) {
+        daysWithNoRaces++;
+        if (daysWithNoRaces > 7) {
+          throw new Error(
+            `No races found for ${daysWithNoRaces} consecutive days. ` +
+            `Verify date range and HKJC website accessibility.`
+          );
+        }
+      } else {
+        daysWithNoRaces = 0;
+      }
+      
       currentDate = new Date(currentDate.getTime() + 24 * 60 * 60 * 1000);
+    }
+
+    if (results.length === 0) {
+      throw new Error(
+        `No race results found between ${format(startDate, "yyyy-MM-dd")} and ${format(endDate, "yyyy-MM-dd")}. ` +
+        `Verify the date range includes racing days.`
+      );
     }
 
     return results;
@@ -198,6 +252,7 @@ export class HistoricalScraper {
 
   /**
    * Parse race info from results page
+   * HKJC format: "Class 4 - 1200M - (60-40)", "Going : GOOD", "Course : TURF"
    */
   private parseResultRaceInfo($: cheerio.CheerioAPI): {
     name?: string;
@@ -207,57 +262,79 @@ export class HistoricalScraper {
     going: Going;
     prizeMoney: number;
   } {
-    const headerText = $(".race_result_head, .result-header").text();
-    const detailsText = $(".race_info, .race-details").text();
+    // Get all text from the page for parsing
+    const pageText = $("body").text();
+    
+    // Also try specific table cells that contain race info
+    const raceInfoCells = $("table td").map((_, el) => $(el).text()).get().join(" ");
+    const allText = pageText + " " + raceInfoCells;
 
-    // Parse class
+    // Parse class - look for "Class X" pattern
     let raceClass: RaceClass = "Class 4";
-    const classMatch = headerText.match(/Class\s*(\d)/i);
+    const classMatch = allText.match(/Class\s*(\d)/i);
     if (classMatch) {
       raceClass = `Class ${classMatch[1]}` as RaceClass;
-    } else if (/Group\s*1/i.test(headerText)) {
+    } else if (/Group\s*1/i.test(allText)) {
       raceClass = "Group 1";
-    } else if (/Group\s*2/i.test(headerText)) {
+    } else if (/Group\s*2/i.test(allText)) {
       raceClass = "Group 2";
-    } else if (/Group\s*3/i.test(headerText)) {
+    } else if (/Group\s*3/i.test(allText)) {
       raceClass = "Group 3";
+    } else if (/Griffin/i.test(allText)) {
+      raceClass = "Griffin";
     }
 
-    // Parse distance
+    // Parse distance - look for "1200M" or "1200 M" pattern
     let distance = 1200;
-    const distanceMatch = headerText.match(/(\d{3,4})\s*M/i);
+    const distanceMatch = allText.match(/(\d{3,4})\s*M(?:\s|$|-)/i);
     if (distanceMatch) {
       distance = parseInt(distanceMatch[1]!, 10);
     }
 
-    // Parse surface
+    // Parse surface - look for "TURF" or "AWT" or "All Weather"
     let surface: TrackSurface = "Turf";
-    if (/AWT|All Weather/i.test(headerText)) {
+    if (/AWT|All Weather/i.test(allText)) {
       surface = "AWT";
     }
 
-    // Parse going
+    // Parse going - look for "Going : GOOD" pattern
     let going: Going = "Good";
-    const goingMatch = detailsText.match(
-      /Going:\s*([^,\n]+)|Track:\s*[^,]*\s+([^,\n]+)/i
-    );
+    const goingMatch = allText.match(/Going\s*:\s*(\w+(?:\s+to\s+\w+)?)/i);
     if (goingMatch) {
-      const goingText = (goingMatch[1] || goingMatch[2] || "").trim();
-      going = this.normalizeGoing(goingText);
+      going = this.normalizeGoing(goingMatch[1]!);
+    } else {
+      // Try alternate patterns
+      const goingPatterns: { pattern: RegExp; value: Going }[] = [
+        { pattern: /GOOD TO FIRM/i, value: "Good to Firm" },
+        { pattern: /GOOD TO YIELDING/i, value: "Good to Yielding" },
+        { pattern: /YIELDING/i, value: "Yielding" },
+        { pattern: /HEAVY/i, value: "Heavy" },
+        { pattern: /SOFT/i, value: "Soft" },
+        { pattern: /\bFIRM\b/i, value: "Firm" },
+        { pattern: /\bGOOD\b/i, value: "Good" },
+        { pattern: /WET FAST/i, value: "Wet Fast" },
+        { pattern: /WET SLOW/i, value: "Wet Slow" },
+      ];
+      for (const { pattern, value } of goingPatterns) {
+        if (pattern.test(allText)) {
+          going = value;
+          break;
+        }
+      }
     }
 
-    // Parse prize money
+    // Parse prize money - look for "HK$ X,XXX,XXX" pattern
     let prizeMoney = 0;
-    const prizeMatch = detailsText.match(/Prize[:\s]*\$?([\d,]+)/i);
+    const prizeMatch = allText.match(/HK\$\s*([\d,]+)/i);
     if (prizeMatch) {
       prizeMoney = parseInt(prizeMatch[1]!.replace(/,/g, ""), 10);
     }
 
-    // Parse race name
+    // Parse race name - usually in uppercase after "RACE X"
     let name: string | undefined;
-    const nameMatch = headerText.match(/[""]([^""]+)[""]/);
+    const nameMatch = allText.match(/(?:RACE\s*\d+[^\n]*\n)?\s*([A-Z][A-Z\s]+HANDICAP|[A-Z][A-Z\s]+CUP|[A-Z][A-Z\s]+TROPHY)/i);
     if (nameMatch) {
-      name = nameMatch[1];
+      name = nameMatch[1]?.trim();
     }
 
     return {
@@ -272,54 +349,132 @@ export class HistoricalScraper {
 
   /**
    * Parse finish order from results table
+   * HKJC table columns: Pla., Horse No., Horse, Jockey, Trainer, Act. Wt., 
+   * Declar. Horse Wt., Dr., LBW, RunningPosition, Finish Time, Win Odds
    */
   private parseFinishOrder($: cheerio.CheerioAPI): RaceResult["finishOrder"] {
     const finishOrder: RaceResult["finishOrder"] = [];
 
-    $(".result_table tbody tr, .race-result-table tr").each((_, row) => {
+    // Find the main results table - look for table with horse data
+    $("table tr").each((_, row) => {
       const $row = $(row);
+      
+      // Skip header rows
       if ($row.find("th").length > 0) return;
-
+      
       const cells = $row.find("td");
-      if (cells.length < 2) return;
+      if (cells.length < 8) return;
 
-      const posText = $(cells[0]).text().trim();
+      // Get all cell text
+      const cellTexts = cells.map((_, cell) => $(cell).text().trim()).get();
+      
+      // First column should be position (1, 2, 3... or might have finish photo link)
+      const posText = cellTexts[0]?.replace(/[^\d]/g, "") || "";
       const position = parseInt(posText, 10);
-      if (isNaN(position)) return;
+      if (isNaN(position) || position < 1 || position > 20) return;
 
-      const horseNum = parseInt($(cells[1]).text().trim(), 10);
-      if (isNaN(horseNum)) return;
+      // Second column is horse number
+      const horseNumText = cellTexts[1]?.replace(/[^\d]/g, "") || "";
+      const horseNum = parseInt(horseNumText, 10);
+      if (isNaN(horseNum) || horseNum < 1 || horseNum > 20) return;
 
-      // Parse finish time (usually in format M:SS.ss)
+      // Find finish time - look for pattern like "1:09.16"
       let finishTime: number | undefined;
-      const timeText = $row.find(".time, .finish-time").text().trim();
-      const timeMatch = timeText.match(/(\d+):(\d+\.?\d*)/);
-      if (timeMatch) {
-        finishTime =
-          parseInt(timeMatch[1]!, 10) * 60 + parseFloat(timeMatch[2]!);
+      for (const text of cellTexts) {
+        const timeMatch = text.match(/(\d+):(\d+\.\d+)/);
+        if (timeMatch) {
+          finishTime = parseInt(timeMatch[1]!, 10) * 60 + parseFloat(timeMatch[2]!);
+          break;
+        }
       }
 
-      // Parse margin
+      // Find LBW (lengths behind winner) - look for margin patterns
       let margin: number | undefined;
-      const marginText = $row.find(".margin, .lengths").text().trim();
-      const marginMatch = marginText.match(/([\d.]+)/);
-      if (marginMatch) {
-        margin = parseFloat(marginMatch[1]!);
+      for (const text of cellTexts) {
+        // Match patterns like "SH", "1/2", "2-1/4", "3", "10-1/2"
+        if (text === "-" || text === "") {
+          margin = 0; // Winner
+        } else if (text === "SH" || text === "SHD") {
+          margin = 0.1; // Short head
+        } else if (text === "HD" || text === "N") {
+          margin = 0.2; // Head or Nose
+        } else if (text === "NK") {
+          margin = 0.3; // Neck
+        } else {
+          // Parse fractional margins like "2-1/4" or "1/2"
+          const marginMatch = text.match(/^(\d+)?-?(\d+)\/(\d+)$/);
+          if (marginMatch) {
+            const whole = marginMatch[1] ? parseInt(marginMatch[1], 10) : 0;
+            const num = parseInt(marginMatch[2]!, 10);
+            const denom = parseInt(marginMatch[3]!, 10);
+            margin = whole + num / denom;
+          } else {
+            // Simple number
+            const simpleMargin = parseFloat(text);
+            if (!isNaN(simpleMargin) && simpleMargin > 0 && simpleMargin < 50) {
+              margin = simpleMargin;
+            }
+          }
+        }
+        if (margin !== undefined) break;
       }
+
+      // Find win odds - usually last column, a number like "3.7" or "20"
+      let odds: number | undefined;
+      for (let i = cellTexts.length - 1; i >= 0; i--) {
+        const oddsMatch = cellTexts[i]?.match(/^(\d+\.?\d*)$/);
+        if (oddsMatch) {
+          const parsed = parseFloat(oddsMatch[1]!);
+          if (parsed >= 1 && parsed <= 999) {
+            odds = parsed;
+            break;
+          }
+        }
+      }
+
+      // Find horse name from links in the row
+      let horseName: string | undefined;
+      let horseCode: string | undefined;
+      let jockeyName: string | undefined;
+      let trainerName: string | undefined;
+      
+      $row.find("a").each((_, link) => {
+        const href = $(link).attr("href") || "";
+        const text = $(link).text().trim();
+        
+        if (href.includes("horse") || href.includes("Horse")) {
+          horseName = text;
+          const codeMatch = href.match(/horseid[=\/]([^&\/]+)/i);
+          if (codeMatch) horseCode = codeMatch[1];
+        } else if (href.includes("jockey") || href.includes("Jockey")) {
+          jockeyName = text;
+        } else if (href.includes("trainer") || href.includes("Trainer")) {
+          trainerName = text;
+        }
+      });
 
       finishOrder.push({
         horseNumber: horseNum,
         finishPosition: position,
         finishTime,
         margin,
+        horseName,
+        horseCode,
+        jockeyName,
+        trainerName,
+        winOdds: odds,
       });
     });
+
+    // Sort by position just to be safe
+    finishOrder.sort((a, b) => a.finishPosition - b.finishPosition);
 
     return finishOrder;
   }
 
   /**
    * Parse dividends from results page
+   * HKJC dividend table format: Pool | Winning Combination | Dividend (HK$)
    */
   private parseDividends($: cheerio.CheerioAPI): {
     winDividend?: number;
@@ -338,48 +493,64 @@ export class HistoricalScraper {
       trioDividend?: number;
     } = {};
 
-    const dividendText = $(".dividend, .payout, .dividend-table").text();
+    // Get all text from the page
+    const pageText = $("body").text();
 
-    // Win dividend
-    const winMatch = dividendText.match(/WIN[:\s]*\$?([\d.]+)/i);
+    // Parse dividends using patterns
+    // WIN dividend - look for "WIN" followed by number and dividend
+    const winMatch = pageText.match(/WIN\s+\d+\s+([\d.]+)/i);
     if (winMatch) {
       dividends.winDividend = parseFloat(winMatch[1]!);
     }
 
-    // Place dividends
-    const placeMatches = dividendText.matchAll(/PLACE[:\s]*#?\d+[:\s]*\$?([\d.]+)/gi);
+    // PLACE dividends - can have multiple
     const placeDivs: number[] = [];
-    for (const match of placeMatches) {
-      placeDivs.push(parseFloat(match[1]!));
+    // Pattern: PLACE followed by horse number and dividend, or just dividend after PLACE line
+    const placeSection = pageText.match(/PLACE\s+([\s\S]*?)(?=QUINELLA|FORECAST|$)/i);
+    if (placeSection) {
+      // Find all dividend amounts in the place section
+      const dividendMatches = placeSection[1]!.matchAll(/(\d+)\s+([\d.]+)/g);
+      for (const match of dividendMatches) {
+        const dividend = parseFloat(match[2]!);
+        if (dividend > 0 && dividend < 1000) {
+          placeDivs.push(dividend);
+        }
+      }
     }
     if (placeDivs.length > 0) {
       dividends.placeDividends = placeDivs;
     }
 
-    // Quinella
-    const quinellaMatch = dividendText.match(/QUINELLA[:\s]*\$?([\d.]+)/i);
+    // QUINELLA dividend (not QUINELLA PLACE)
+    const quinellaMatch = pageText.match(/QUINELLA\s+[\d,]+\s+([\d.]+)/i);
     if (quinellaMatch) {
       dividends.quinellaDividend = parseFloat(quinellaMatch[1]!);
     }
 
-    // Quinella Place
-    const qpMatches = dividendText.matchAll(/Q\.?\s*PLACE[:\s]*\$?([\d.]+)/gi);
+    // QUINELLA PLACE dividends - can have multiple
     const qpDivs: number[] = [];
-    for (const match of qpMatches) {
-      qpDivs.push(parseFloat(match[1]!));
+    const qpSection = pageText.match(/QUINELLA PLACE\s+([\s\S]*?)(?=FORECAST|TIERCE|$)/i);
+    if (qpSection) {
+      const qpMatches = qpSection[1]!.matchAll(/[\d,]+\s+([\d.]+)/g);
+      for (const match of qpMatches) {
+        const dividend = parseFloat(match[1]!);
+        if (dividend > 0 && dividend < 1000) {
+          qpDivs.push(dividend);
+        }
+      }
     }
     if (qpDivs.length > 0) {
       dividends.quinellaPlaceDividends = qpDivs;
     }
 
-    // Tierce
-    const tierceMatch = dividendText.match(/TIERCE[:\s]*\$?([\d,]+)/i);
+    // TIERCE dividend
+    const tierceMatch = pageText.match(/TIERCE\s+[\d,]+\s+([\d,]+)/i);
     if (tierceMatch) {
       dividends.tierceDividend = parseFloat(tierceMatch[1]!.replace(/,/g, ""));
     }
 
-    // Trio
-    const trioMatch = dividendText.match(/TRIO[:\s]*\$?([\d.]+)/i);
+    // TRIO dividend
+    const trioMatch = pageText.match(/TRIO\s+[\d,]+\s+([\d.]+)/i);
     if (trioMatch) {
       dividends.trioDividend = parseFloat(trioMatch[1]!);
     }
@@ -405,32 +576,38 @@ export class HistoricalScraper {
       try {
         const dateText = $(cells[0]).text().trim();
         const date = this.parseHKJCDate(dateText);
-        if (!date) return;
+        if (!date) return; // Skip row - invalid date
 
         const venueText = $(cells[1]).text().trim();
         const venue: Venue = venueText.includes("HV") ? "Happy Valley" : "Sha Tin";
 
-        const raceNum = parseInt($(cells[2]).text().trim(), 10) || 1;
+        const raceNum = parseInt($(cells[2]).text().trim(), 10);
+        if (isNaN(raceNum) || raceNum < 1) return; // Skip row - invalid race number
 
         const distanceText = $(cells[3]).text().trim();
-        const distance = parseInt(distanceText.replace(/\D/g, ""), 10) || 1200;
+        const distance = parseInt(distanceText.replace(/\D/g, ""), 10);
+        if (isNaN(distance) || distance < 800 || distance > 2500) return; // Skip row - invalid distance
 
         const classText = $(cells[4]).text().trim();
         const raceClass = this.normalizeClass(classText);
 
         const drawText = $(cells[5]).text().trim();
-        const draw = parseInt(drawText, 10) || 1;
+        const draw = parseInt(drawText, 10);
+        if (isNaN(draw) || draw < 1 || draw > 14) return; // Skip row - invalid draw
 
         const weightText = $(cells[6]).text().trim();
-        const weight = parseInt(weightText, 10) || 126;
+        const weight = parseInt(weightText, 10);
+        if (isNaN(weight) || weight < 100 || weight > 140) return; // Skip row - invalid weight
 
         const jockeyCode = $(cells[7]).text().trim().substring(0, 3);
 
         const posText = $(cells[8]).text().trim();
-        const finishPosition = parseInt(posText, 10) || 14;
+        const finishPosition = parseInt(posText, 10);
+        if (isNaN(finishPosition) || finishPosition < 1 || finishPosition > 20) return; // Skip row - invalid position
 
         const fieldText = $(cells[9]).text().trim();
-        const fieldSize = parseInt(fieldText, 10) || 14;
+        const fieldSize = parseInt(fieldText, 10);
+        if (isNaN(fieldSize) || fieldSize < 2 || fieldSize > 20) return; // Skip row - invalid field size
 
         const marginText = $(cells[10])?.text().trim() || "0";
         const winningMargin = parseFloat(marginText) || 0;

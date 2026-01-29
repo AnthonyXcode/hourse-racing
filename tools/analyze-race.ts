@@ -12,8 +12,8 @@ import type {
   Race,
   Venue,
   BettingConfig,
-  DEFAULT_BETTING_CONFIG,
 } from "../src/types/index.js";
+import { DEFAULT_BETTING_CONFIG } from "../src/types/index.js";
 import { RaceCardScraper } from "../src/scrapers/raceCard.js";
 import { FormAnalyzer } from "../src/analysis/formAnalysis.js";
 import { MonteCarloSimulator } from "../src/simulation/monteCarlo.js";
@@ -22,6 +22,7 @@ import {
   formatRaceReport,
 } from "../src/betting/recommendations.js";
 import { ValueCalculator, MarketOdds } from "../src/betting/valueCalculator.js";
+import { HorseDataEnricher } from "../src/data/horseEnricher.js";
 
 // ============================================================================
 // CLI ARGUMENT PARSING
@@ -161,17 +162,44 @@ async function analyzeRace(args: CliArgs): Promise<void> {
   const recommendationEngine = new RecommendationEngine(config);
 
   try {
+    // Load historical data for enrichment
+    console.log("Loading historical data...");
+    const enricher = new HorseDataEnricher();
+    await enricher.loadHistoricalData();
+    const dataSummary = enricher.getDataSummary();
+    if (dataSummary.totalRaces > 0) {
+      console.log(`  Found ${dataSummary.totalRaces} historical races`);
+      console.log(`  Indexed ${dataSummary.totalHorses} horse performances`);
+    }
+
     console.log("Initializing scraper...");
     await scraper.init();
 
     console.log("Fetching race card...");
-    const race = await scraper.scrapeRaceCard(
+    let race = await scraper.scrapeRaceCard(
       args.date,
       args.venue,
       args.raceNumber
     );
 
-    console.log(`Found ${race.entries.length} entries\n`);
+    // Validate race has entries
+    if (race.entries.length === 0) {
+      throw new Error(
+        `No entries found for Race ${args.raceNumber} at ${args.venue} on ${format(args.date, "yyyy-MM-dd")}. ` +
+        `This could mean: (1) No racing on this date, (2) Race card not yet published, or (3) Invalid race number.`
+      );
+    }
+
+    console.log(`Found ${race.entries.length} entries`);
+
+    // Enrich horses with historical data
+    console.log("Enriching horses with past performances...");
+    race = enricher.enrichRace(race);
+    
+    const horsesWithHistory = race.entries.filter(
+      e => e.horse.pastPerformances.length > 0
+    ).length;
+    console.log(`  ${horsesWithHistory}/${race.entries.length} horses enriched with form data\n`);
 
     // Analyze horses
     console.log("Analyzing form factors...");
@@ -237,6 +265,25 @@ async function analyzeRace(args: CliArgs): Promise<void> {
       );
     }
 
+    // Show jockey/trainer analysis
+    console.log("\nJockey/Trainer Form (from historical data):");
+    const topEntries = race.entries
+      .filter(e => e.jockey.seasonStats.rides > 0 || e.trainer.seasonStats.rides > 0)
+      .sort((a, b) => b.jockey.seasonStats.winRate - a.jockey.seasonStats.winRate)
+      .slice(0, 5);
+    
+    for (const entry of topEntries) {
+      const jWR = (entry.jockey.seasonStats.winRate * 100).toFixed(0);
+      const jRides = entry.jockey.seasonStats.rides;
+      const tWR = (entry.trainer.seasonStats.winRate * 100).toFixed(0);
+      const tRides = entry.trainer.seasonStats.rides;
+      console.log(
+        `  #${entry.horseNumber.toString().padStart(2)} ${entry.horse.name.substring(0, 15).padEnd(15)} - ` +
+        `J: ${entry.jockey.name.substring(0, 12).padEnd(12)} (${jWR}% from ${jRides} rides) | ` +
+        `T: ${entry.trainer.name.substring(0, 12).padEnd(12)} (${tWR}% from ${tRides})`
+      );
+    }
+
     console.log("\nMarket Efficiency:");
     const efficiency = valueCalc.analyzeMarketEfficiency(simResults, winOddsMap);
     console.log(`  Overround: ${efficiency.overround.toFixed(1)}%`);
@@ -254,64 +301,25 @@ async function analyzeRace(args: CliArgs): Promise<void> {
     }
 
   } catch (error) {
-    console.error("\nError during analysis:", error);
-
-    // Provide fallback with mock data for demonstration
-    console.log("\n⚠ Live data unavailable. Showing demonstration output...\n");
-    showDemoOutput(args, config);
-
+    console.error("\n" + "═".repeat(60));
+    console.error("ANALYSIS FAILED");
+    console.error("═".repeat(60));
+    console.error("\nError:", error instanceof Error ? error.message : error);
+    console.error("\nPossible causes:");
+    console.error("  - No racing on the specified date");
+    console.error("  - HKJC website unavailable or structure changed");
+    console.error("  - Network connectivity issues");
+    console.error("  - Invalid race number for this meeting");
+    console.error("\nTry:");
+    console.error("  - Check HKJC website for race schedule");
+    console.error("  - Verify the date and race number");
+    console.error("  - Run 'npm run scrape:racecard' to see available races");
+    console.error("═".repeat(60) + "\n");
+    
+    process.exit(1);
   } finally {
     await scraper.close();
   }
-}
-
-// ============================================================================
-// DEMO OUTPUT (when scraping fails)
-// ============================================================================
-
-function showDemoOutput(
-  args: CliArgs,
-  config: Partial<BettingConfig>
-): void {
-  console.log("═".repeat(60));
-  console.log(
-    `RACE ${args.raceNumber} - ${args.venue} | Class 3 | 1400m Turf | Good to Firm`
-  );
-  console.log("═".repeat(60));
-  console.log("");
-
-  console.log("TOP CONTENDERS:");
-  console.log("#  Horse           Win%   Place%  Value  Rating");
-  console.log("─".repeat(50));
-  console.log(" 3  Golden Sixty    28.4%  67.2%   1.12   ★★★★★");
-  console.log(" 7  California S.   22.1%  58.9%   1.34   ★★★★☆");
-  console.log(" 1  Romantic Warr.  18.7%  51.4%   0.89   ★★★☆☆");
-  console.log(" 5  Lucky Express   12.3%  42.1%   1.15   ★★★☆☆");
-  console.log("12  Dark Runner      8.9%  35.6%   1.42   ★★☆☆☆");
-  console.log("");
-
-  console.log("RECOMMENDED BETS:");
-  console.log("┌" + "─".repeat(52) + "┐");
-  console.log("│ BET TYPE      │ SELECTION    │ ODDS  │ STAKE  │");
-  console.log("├" + "─".repeat(52) + "┤");
-  console.log("│ Place         │ #7           │  1.80 │   $200 │");
-  console.log("│ Quinella      │ 3-7          │ 12.50 │    $50 │");
-  console.log("│ Q Place       │ 3-7          │  3.40 │   $100 │");
-  console.log("└" + "─".repeat(52) + "┘");
-  console.log("");
-
-  console.log("Edge Analysis: #7 California Spangle shows 34% edge vs market.");
-  console.log("Confidence: HIGH (strong speed figures, favorable draw)");
-  console.log("");
-
-  console.log(`Bankroll: $${config.bankroll ?? 10000}`);
-  console.log("Total Stake: $350 (3.5% of bankroll)");
-  console.log("");
-
-  console.log("─".repeat(60));
-  console.log("NOTE: This is demonstration output. For live analysis,");
-  console.log("ensure HKJC website is accessible and race data is available.");
-  console.log("─".repeat(60));
 }
 
 // ============================================================================

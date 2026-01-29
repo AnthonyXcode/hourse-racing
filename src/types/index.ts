@@ -161,6 +161,11 @@ export interface RaceResult extends Race {
     readonly finishPosition: number;
     readonly finishTime?: number;
     readonly margin?: number; // Lengths behind previous horse
+    readonly horseName?: string;
+    readonly horseCode?: string;
+    readonly jockeyName?: string;
+    readonly trainerName?: string;
+    readonly winOdds?: number;
   }[];
   readonly winDividend?: number;
   readonly placeDividends?: readonly number[];

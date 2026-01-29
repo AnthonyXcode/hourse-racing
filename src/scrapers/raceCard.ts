@@ -76,10 +76,14 @@ export class RaceCardScraper {
 
     if (!this.page) throw new Error("Browser not initialized");
 
+    // Use domcontentloaded - faster than networkidle, HKJC pages have lots of async content
     await this.page.goto(url, {
-      waitUntil: "networkidle",
-      timeout: this.config.timeout,
+      waitUntil: "domcontentloaded",
+      timeout: 60000,
     });
+
+    // Wait for dynamic content to load
+    await sleep(2000);
 
     this.lastRequestTime = Date.now();
   }
@@ -141,7 +145,8 @@ export class RaceCardScraper {
   ): Promise<Race> {
     const dateStr = format(date, "yyyy/MM/dd");
     const venueCode = venue === "Sha Tin" ? "ST" : "HV";
-    const url = `${this.config.baseUrl}/racing/information/English/racing/RaceCard.aspx?RaceDate=${dateStr}&Racecourse=${venueCode}&RaceNo=${raceNumber}`;
+    // Use the correct HKJC URL format (en-us path)
+    const url = `${this.config.baseUrl}/en-us/local/information/racecard?RaceDate=${dateStr}&Racecourse=${venueCode}&RaceNo=${raceNumber}`;
 
     await this.navigateTo(url);
     if (!this.page) throw new Error("Browser not initialized");
@@ -155,17 +160,40 @@ export class RaceCardScraper {
    */
   async scrapeFullMeeting(date: Date, venue: Venue): Promise<Race[]> {
     const races: Race[] = [];
+    let consecutiveFailures = 0;
 
     // Most meetings have 8-11 races
     for (let raceNum = 1; raceNum <= 11; raceNum++) {
       try {
         const race = await this.scrapeRaceCard(date, venue, raceNum);
+        
+        // Validate race has entries
+        if (race.entries.length === 0) {
+          consecutiveFailures++;
+          if (consecutiveFailures >= 2 && raceNum > 1) {
+            // Likely no more races
+            break;
+          }
+          continue;
+        }
+        
+        consecutiveFailures = 0;
         races.push(race);
       } catch (error) {
-        // Likely no more races
-        if (raceNum > 8) break;
-        console.warn(`Failed to scrape race ${raceNum}:`, error);
+        consecutiveFailures++;
+        if (consecutiveFailures >= 2 && raceNum > 1) {
+          // Likely no more races
+          break;
+        }
+        console.warn(`Race ${raceNum} unavailable: ${error instanceof Error ? error.message : "Unknown error"}`);
       }
+    }
+
+    if (races.length === 0) {
+      throw new Error(
+        `No race cards found for ${venue} on ${format(date, "yyyy-MM-dd")}. ` +
+        `Verify this is an upcoming racing day with published entries.`
+      );
     }
 
     return races;
@@ -209,6 +237,7 @@ export class RaceCardScraper {
 
   /**
    * Parse race info from header section
+   * HKJC format: "Class 4 - 1200M - (60-40)", "Going : GOOD", "Course : TURF"
    */
   private parseRaceInfo($: cheerio.CheerioAPI): {
     name?: string;
@@ -219,70 +248,73 @@ export class RaceCardScraper {
     prizeMoney: number;
     raceType?: string;
   } {
-    // These selectors will need adjustment based on actual HKJC HTML
-    const raceHeader = $(".race_head, .racecard-header").text();
-    const raceDetails = $(".race_detail, .race-info").text();
+    // Get all text from the page for parsing
+    const pageText = $("body").text();
+    const raceInfoCells = $("table td").map((_, el) => $(el).text()).get().join(" ");
+    const allText = pageText + " " + raceInfoCells;
 
-    // Parse class
-    let raceClass: RaceClass = "Class 4"; // Default
-    const classMatch = raceHeader.match(/Class\s*(\d)/i);
+    // Parse class - look for "Class X" pattern
+    let raceClass: RaceClass = "Class 4";
+    const classMatch = allText.match(/Class\s*(\d)/i);
     if (classMatch) {
       raceClass = `Class ${classMatch[1]}` as RaceClass;
-    } else if (/Group\s*1/i.test(raceHeader)) {
+    } else if (/Group\s*1/i.test(allText)) {
       raceClass = "Group 1";
-    } else if (/Group\s*2/i.test(raceHeader)) {
+    } else if (/Group\s*2/i.test(allText)) {
       raceClass = "Group 2";
-    } else if (/Group\s*3/i.test(raceHeader)) {
+    } else if (/Group\s*3/i.test(allText)) {
       raceClass = "Group 3";
-    } else if (/Griffin/i.test(raceHeader)) {
+    } else if (/Griffin/i.test(allText)) {
       raceClass = "Griffin";
     }
 
-    // Parse distance (in meters)
-    let distance = 1200; // Default
-    const distanceMatch = raceHeader.match(/(\d{3,4})\s*M/i);
+    // Parse distance - look for "1200M" pattern (common HK distances: 1000, 1200, 1400, 1600, 1650, 1800, 2000, 2200, 2400)
+    let distance = 1200;
+    // More specific pattern: distance followed by M and surrounded by non-digit chars
+    const distanceMatch = allText.match(/(?:^|[^\d])(\d{4})\s*M(?:\s|$|-)/i) || 
+                          allText.match(/(\d{4})\s*M[^0-9]/i);
     if (distanceMatch) {
-      distance = parseInt(distanceMatch[1]!, 10);
+      const d = parseInt(distanceMatch[1]!, 10);
+      // Validate it's a reasonable race distance (1000-2400m)
+      if (d >= 1000 && d <= 2400) {
+        distance = d;
+      }
     }
 
     // Parse surface
     let surface: TrackSurface = "Turf";
-    if (/AWT|All Weather/i.test(raceHeader)) {
+    if (/AWT|All Weather/i.test(allText)) {
       surface = "AWT";
     }
 
-    // Parse going
+    // Parse going - look for "Going : GOOD" pattern
     let going: Going = "Good";
-    const goingPatterns: { pattern: RegExp; value: Going }[] = [
-      { pattern: /Good to Firm/i, value: "Good to Firm" },
-      { pattern: /Good to Yielding/i, value: "Good to Yielding" },
-      { pattern: /Yielding/i, value: "Yielding" },
-      { pattern: /Heavy/i, value: "Heavy" },
-      { pattern: /Soft/i, value: "Soft" },
-      { pattern: /Firm/i, value: "Firm" },
-      { pattern: /Wet Fast/i, value: "Wet Fast" },
-      { pattern: /Wet Slow/i, value: "Wet Slow" },
-    ];
-
-    for (const { pattern, value } of goingPatterns) {
-      if (pattern.test(raceDetails) || pattern.test(raceHeader)) {
-        going = value;
-        break;
-      }
+    const goingMatch = allText.match(/Going\s*:\s*(\w+(?:\s+to\s+\w+)?)/i);
+    if (goingMatch) {
+      const goingText = goingMatch[1]!.toLowerCase();
+      if (goingText.includes("firm") && goingText.includes("good")) going = "Good to Firm";
+      else if (goingText.includes("yielding") && goingText.includes("good")) going = "Good to Yielding";
+      else if (goingText.includes("yielding")) going = "Yielding";
+      else if (goingText.includes("heavy")) going = "Heavy";
+      else if (goingText.includes("soft")) going = "Soft";
+      else if (goingText.includes("firm")) going = "Firm";
+      else if (goingText.includes("wet fast")) going = "Wet Fast";
+      else if (goingText.includes("wet slow")) going = "Wet Slow";
+      else going = "Good";
     }
 
-    // Parse prize money
+    // Parse prize money - look for "HK$ X,XXX,XXX" pattern
     let prizeMoney = 0;
-    const prizeMatch = raceDetails.match(/\$?([\d,]+)/);
+    const prizeMatch = allText.match(/HK\$\s*([\d,]+)/i);
     if (prizeMatch) {
       prizeMoney = parseInt(prizeMatch[1]!.replace(/,/g, ""), 10);
     }
 
     // Parse race name
     let name: string | undefined;
-    const nameMatch = raceHeader.match(/"([^"]+)"/);
+    const nameMatch = allText.match(/(?:RACE\s*\d+[^\n]*\n)?\s*([A-Z][A-Z\s]+HANDICAP|[A-Z][A-Z\s]+CUP|[A-Z][A-Z\s]+TROPHY)/i);
     if (nameMatch) {
-      name = nameMatch[1];
+      name = nameMatch[1]?.trim();
     }
 
     return {
@@ -297,16 +329,20 @@ export class RaceCardScraper {
 
   /**
    * Parse entries table
+   * HKJC table columns: Horse No., Horse, Jockey, Trainer, Wt., Draw, etc.
    */
   private parseEntries($: cheerio.CheerioAPI): RaceEntry[] {
     const entries: RaceEntry[] = [];
 
-    // HKJC uses tables for race cards - selector may need adjustment
-    $(".runnerList tr, .race_table tbody tr").each((_, row) => {
+    // Find all table rows and parse each one
+    $("table tr").each((_, row) => {
       const $row = $(row);
 
       // Skip header rows
       if ($row.find("th").length > 0) return;
+
+      const cells = $row.find("td");
+      if (cells.length < 5) return;
 
       const entry = this.parseEntryRow($, $row);
       if (entry) {
@@ -319,6 +355,7 @@ export class RaceCardScraper {
 
   /**
    * Parse a single entry row
+   * HKJC table typically has: Horse No., Horse Name (with link), Jockey, Trainer, Wt., Draw, etc.
    */
   private parseEntryRow(
     $: cheerio.CheerioAPI,
@@ -327,53 +364,105 @@ export class RaceCardScraper {
     const cells = $row.find("td");
     if (cells.length < 5) return null;
 
-    // These column indices will need adjustment based on actual HKJC table structure
-    const horseNumber = parseInt($(cells[0]).text().trim(), 10);
-    if (isNaN(horseNumber)) return null;
+    // Get all cell texts for analysis
+    const cellTexts = cells.map((_, cell) => $(cell).text().trim()).get();
 
-    const draw = parseInt($(cells[1]).text().trim(), 10) || horseNumber;
+    // First column should be horse number
+    const horseNumText = cellTexts[0]?.replace(/[^\d]/g, "") || "";
+    const horseNumber = parseInt(horseNumText, 10);
+    if (isNaN(horseNumber) || horseNumber < 1 || horseNumber > 20) return null;
 
-    // Horse info
-    const horseCell = $(cells[2]);
-    const horseName = horseCell.find("a").first().text().trim() || horseCell.text().trim();
-    const horseCode =
-      horseCell.find("a").attr("href")?.match(/HorseId=(\w+)/)?.[1] || `H${horseNumber}`;
+    // Find horse name - usually in a link with horse ID
+    let horseName = "";
+    let horseCode = `H${horseNumber}`;
+    let draw = horseNumber;
+    let weight = 126;
+    let jockeyName = "";
+    let jockeyCode = "UNK";
+    let trainerName = "";
+    let trainerCode = "UNK";
 
-    // Jockey info
-    const jockeyCell = $(cells[3]);
-    const jockeyName = jockeyCell.find("a").first().text().trim() || jockeyCell.text().trim();
-    const jockeyCode =
-      jockeyCell.find("a").attr("href")?.match(/JockeyId=(\w+)/)?.[1] || "UNK";
+    // Parse links in the row for horse/jockey/trainer info
+    $row.find("a").each((_, link) => {
+      const href = $(link).attr("href") || "";
+      const text = $(link).text().trim();
 
-    // Trainer info
-    const trainerCell = $(cells[4]);
-    const trainerName = trainerCell.find("a").first().text().trim() || trainerCell.text().trim();
-    const trainerCode =
-      trainerCell.find("a").attr("href")?.match(/TrainerId=(\w+)/)?.[1] || "UNK";
+      if (href.includes("horse") || href.includes("Horse")) {
+        horseName = text;
+        const codeMatch = href.match(/horseid[=\/]([^&\/]+)/i);
+        if (codeMatch) horseCode = codeMatch[1]!;
+      } else if (href.includes("jockey") || href.includes("Jockey")) {
+        jockeyName = text;
+        const codeMatch = href.match(/jockeyid[=\/]([^&\/]+)/i);
+        if (codeMatch) jockeyCode = codeMatch[1]!;
+      } else if (href.includes("trainer") || href.includes("Trainer")) {
+        trainerName = text;
+        const codeMatch = href.match(/trainerid[=\/]([^&\/]+)/i);
+        if (codeMatch) trainerCode = codeMatch[1]!;
+      }
+    });
 
-    // Weight
-    const weight = parseInt($(cells[5])?.text().trim(), 10) || 126;
+    // Parse numeric values from cells
+    // Try to find weight and draw by position - HKJC table usually has specific columns
+    for (let i = 0; i < cellTexts.length; i++) {
+      const text = cellTexts[i]!;
+      
+      // Look for weight (usually 100-140 range, 3 digits)
+      const weightMatch = text.match(/^(\d{3})$/);
+      if (weightMatch) {
+        const w = parseInt(weightMatch[1]!, 10);
+        if (w >= 100 && w <= 140) weight = w;
+      }
+    }
 
-    // Odds (if available)
-    const oddsText = $(cells[cells.length - 1]).text().trim();
-    const currentOdds = parseFloat(oddsText) || undefined;
+    // Draw is typically a specific column - try to find it by looking at cell with just a small number
+    // after horse number column, not weight column
+    let drawFound = false;
+    for (let i = 1; i < Math.min(cellTexts.length, 8); i++) {
+      const text = cellTexts[i]!.trim();
+      // Draw is 1-14, single or double digit
+      if (/^\d{1,2}$/.test(text) && !drawFound) {
+        const d = parseInt(text, 10);
+        // Draw should be between 1-14 and not same as horse number
+        if (d >= 1 && d <= 14 && d !== horseNumber) {
+          // Skip if this looks like a weight (3 digits) - but we only matched 1-2 digits
+          draw = d;
+          drawFound = true;
+          break; // Take first valid draw found
+        }
+      }
+    }
+
+    // If no horse name found, try to get from cell text
+    if (!horseName) {
+      for (const text of cellTexts) {
+        // Horse names typically have uppercase letters and are longer
+        if (text.length > 3 && /^[A-Z][A-Z\s']+$/i.test(text)) {
+          horseName = text;
+          break;
+        }
+      }
+    }
+
+    // Skip if essential data is missing
+    if (!horseName || horseName.length < 2) return null;
 
     // Gear changes
-    const gearText = $row.find(".gear, .equipment").text();
+    const gearText = $row.text();
     const gear = this.parseGear(gearText);
 
     // Check if scratched
+    const rowText = $row.text().toLowerCase();
     const isScratched =
       $row.hasClass("scratched") ||
-      $row.text().toLowerCase().includes("scratched") ||
-      $row.find(".scratched").length > 0;
+      rowText.includes("scratched") ||
+      rowText.includes("withdrawn");
 
-    // Create minimal horse, jockey, trainer objects
-    // Full details would be fetched separately
+    // Create horse object
     const horse: Horse = {
       code: horseCode,
       name: horseName,
-      age: 4, // Default, needs to be fetched
+      age: 4,
       sex: "G",
       color: "Bay",
       origin: "AUS",
@@ -390,6 +479,16 @@ export class RaceCardScraper {
       gear,
       pastPerformances: [],
     };
+
+    // Validate essential data - skip entry if missing critical info
+    if (!jockeyName || jockeyName.length < 2) {
+      console.warn(`Entry #${horseNumber} ${horseName}: Missing jockey name, skipping`);
+      return null;
+    }
+    if (!trainerName || trainerName.length < 2) {
+      console.warn(`Entry #${horseNumber} ${horseName}: Missing trainer name, skipping`);
+      return null;
+    }
 
     const jockey: Jockey = {
       code: jockeyCode,
@@ -430,7 +529,7 @@ export class RaceCardScraper {
       draw,
       weight,
       gearChanges: gear.length > 0 ? gear : undefined,
-      currentOdds,
+      currentOdds: undefined,
       isScratched,
     };
   }
@@ -509,26 +608,61 @@ async function main() {
     console.log("Initializing scraper...");
     await scraper.init();
 
+    // Try today and next few days to find a racing day
     const today = new Date();
-    console.log(`\nScraping race card for ${format(today, "yyyy-MM-dd")}...`);
+    const venues: ("Sha Tin" | "Happy Valley")[] = ["Sha Tin", "Happy Valley"];
+    
+    let foundRacing = false;
 
-    // Try to scrape Sha Tin Race 1 as an example
-    const race = await scraper.scrapeRaceCard(today, "Sha Tin", 1);
-
-    console.log("\nRace Details:");
-    console.log(`  ID: ${race.id}`);
-    console.log(`  Class: ${race.class}`);
-    console.log(`  Distance: ${race.distance}m`);
-    console.log(`  Surface: ${race.surface}`);
-    console.log(`  Going: ${race.going}`);
-    console.log(`  Entries: ${race.entries.length}`);
-
-    console.log("\nEntries:");
-    for (const entry of race.entries) {
-      console.log(
-        `  #${entry.horseNumber} ${entry.horse.name} (Draw: ${entry.draw}) - ${entry.jockey.name}`
-      );
+    for (let dayOffset = 0; dayOffset <= 7 && !foundRacing; dayOffset++) {
+      const testDate = new Date(today.getTime() + dayOffset * 24 * 60 * 60 * 1000);
+      
+      for (const venue of venues) {
+        console.log(`\nChecking ${venue} on ${format(testDate, "yyyy-MM-dd")}...`);
+        
+        try {
+          const race = await scraper.scrapeRaceCard(testDate, venue, 1);
+          
+          if (race.entries.length > 0) {
+            foundRacing = true;
+            console.log("\n" + "=".repeat(60));
+            console.log(`RACE CARD: ${venue} - ${format(testDate, "yyyy-MM-dd")}`);
+            console.log("=".repeat(60));
+            
+            // Scrape all races for this meeting
+            const races = await scraper.scrapeFullMeeting(testDate, venue);
+            
+            for (const r of races) {
+              if (r.entries.length === 0) continue;
+              
+              console.log(`\nRace ${r.raceNumber}: ${r.class} ${r.distance}m ${r.surface}`);
+              console.log(`  Going: ${r.going}`);
+              console.log(`  Entries: ${r.entries.length}`);
+              console.log("  " + "-".repeat(40));
+              
+              for (const entry of r.entries) {
+                const status = entry.isScratched ? " [SCRATCHED]" : "";
+                console.log(
+                  `    #${entry.horseNumber.toString().padStart(2)} ${entry.horse.name.padEnd(20)} ` +
+                  `Draw: ${entry.draw.toString().padStart(2)} Wt: ${entry.weight}${status}`
+                );
+              }
+            }
+            
+            console.log("\n" + "=".repeat(60));
+            console.log(`Total: ${races.length} races, ${races.reduce((s, r) => s + r.entries.length, 0)} entries`);
+            break;
+          }
+        } catch (err) {
+          // No racing on this day/venue
+        }
+      }
     }
+
+    if (!foundRacing) {
+      console.log("\nNo upcoming races found in the next 7 days.");
+    }
+
   } catch (error) {
     console.error("Scraping failed:", error);
   } finally {
