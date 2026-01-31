@@ -6,6 +6,7 @@ AI-assisted Hong Kong horse racing analysis and betting recommendation system.
 
 This project provides tools to:
 - **Scrape** race data from HKJC (Hong Kong Jockey Club)
+- **Fetch live odds** for upcoming races
 - **Analyze** horse performance using speed ratings, form analysis, and jockey/trainer statistics
 - **Simulate** race outcomes using Monte Carlo methods
 - **Recommend** value bets with Kelly Criterion staking
@@ -17,6 +18,7 @@ flowchart TB
     subgraph data [Data Collection]
         Scraper[HKJC Scraper]
         RaceCard[Race Card Parser]
+        OddsFetcher[Live Odds Fetcher]
         Historical[Historical Results]
     end
     
@@ -27,6 +29,7 @@ flowchart TB
     end
     
     subgraph prediction [Prediction Layer]
+        OddsFilter[Odds Range Filter]
         Simulation[Monte Carlo Simulator]
         Probability[Win/Place Probabilities]
     end
@@ -42,36 +45,79 @@ flowchart TB
     prediction --> betting
 ```
 
-## Data Flow
+## Quick Start
 
-```mermaid
-flowchart LR
-    subgraph input [Input]
-        HKJC[HKJC Website]
-        User[User Config]
-    end
-    
-    subgraph process [Processing]
-        Scrape[Scrape Data]
-        Analyze[Analyze Form]
-        Simulate[Run 10K Simulations]
-        Compare[Compare vs Market]
-    end
-    
-    subgraph output [Output]
-        Report[Race Report]
-        Bets[Bet Recommendations]
-        Stakes[Stake Amounts]
-    end
-    
-    HKJC --> Scrape
-    User --> Scrape
-    Scrape --> Analyze
-    Analyze --> Simulate
-    Simulate --> Compare
-    Compare --> Report
-    Compare --> Bets
-    Compare --> Stakes
+```bash
+# Install dependencies
+npm install
+
+# Install Playwright browser
+npx playwright install chromium
+
+# Fetch current odds for a race meeting
+npx tsx tools/fetch-odds.ts --date=2026-02-01 --venue=ST
+
+# Analyze a specific race
+npx tsx tools/analyze-race.ts --date=2026-02-01 --venue=ST --race=8
+```
+
+## CLI Tools
+
+### Fetch Current Odds
+
+Fetch live win/place odds from HKJC betting site.
+
+```bash
+# Fetch all races for a meeting
+npx tsx tools/fetch-odds.ts --date=2026-02-01 --venue=ST
+
+# Fetch specific race only
+npx tsx tools/fetch-odds.ts --date=2026-02-01 --venue=ST --race=8
+
+# Output as JSON
+npx tsx tools/fetch-odds.ts --date=2026-02-01 --venue=ST --json
+
+# Save to file
+npx tsx tools/fetch-odds.ts --date=2026-02-01 --venue=ST --save
+```
+
+**Output:**
+```
+RACE 8
+────────────────────────────────────────────────────────────────────
+ # | Horse                    | Jockey          | WIN   | PLACE | Status
+────────────────────────────────────────────────────────────────────
+ 1 | SAGACIOUS LIFE           | Z Purton        |   3.6 |   2.3 | ✓ WIN
+ 3 | INVINCIBLE IBIS          | H Bowman        |   2.9 |   1.5 | ✓ WIN
+ 4 | BEAUTY BOLT              | J McDonald      |   8.3 |   2.3 | -
+
+SELECTIONS IN WIN RANGE (2.0-7.0):
+  R8 #1 SAGACIOUS LIFE @ 3.6
+  R8 #3 INVINCIBLE IBIS @ 2.9
+```
+
+### Analyze Race
+
+Run full analysis with Monte Carlo simulation.
+
+```bash
+npx tsx tools/analyze-race.ts --date=2026-02-01 --venue=ST --race=8
+```
+
+### Scrape Single Race Result
+
+Scrape historical race results.
+
+```bash
+npx tsx tools/scrape-single-race.ts --date=2026-01-19 --venue=ST --race=1
+```
+
+### Scrape Full Meeting
+
+Scrape all races from a meeting.
+
+```bash
+npx tsx tools/scrape-meeting.ts --date=2026-01-19 --venue=ST
 ```
 
 ## Project Structure
@@ -85,109 +131,137 @@ hourse-racing/
 │   ├── betting/            # Bet recommendation logic
 │   ├── types/              # TypeScript interfaces
 │   └── utils/              # Helper functions
-├── data/                   # Cached race data (gitignored)
+├── tools/
+│   ├── fetch-odds.ts       # Live odds fetcher
+│   ├── analyze-race.ts     # Race analysis CLI
+│   ├── scrape-single-race.ts
+│   └── scrape-meeting.ts
+├── data/
+│   ├── historical/         # Past race results
+│   └── odds/               # Saved odds snapshots
 ├── prompts/                # AI prompts for analysis
-├── tools/                  # CLI tools
 ├── rules/                  # Cursor rules
 └── skills/                 # Cursor skills
-```
-
-## Installation
-
-```bash
-npm install
-npx playwright install chromium
+    ├── bet-recommendation/ # Betting workflow
+    └── analyze-race/       # Analysis workflow
 ```
 
 ## HKJC Data Sources
-
-The system fetches data from the Hong Kong Jockey Club website using the following URLs:
-
-### Horse Profile
-```
-https://racing.hkjc.com/en-us/local/information/horse?HorseId={horseCode}
-```
-- **Parameter**: `HorseId` - Full horse code (e.g., `HK_2024_K129`)
-- **Returns**: 
-  - Basic info: Name, age, sex, color, origin, sire/dam
-  - Current rating, season/career stats, prize money
-  - **Past performances (Recent 3 seasons)**: Date, venue, distance, going, class, draw, jockey, trainer, odds, running position, finish time, weight, gear
-- **Example**: [WINNING WING](https://racing.hkjc.com/en-us/local/information/horse?HorseId=HK_2024_K129)
-
-### Jockey Statistics
-```
-https://racing.hkjc.com/en-us/local/information/jockeywinstat?JockeyId={jockeyCode}
-```
-- **Parameter**: `JockeyId` - Jockey code (e.g., `PZ` for Z Purton)
-- **Returns**: 
-  - Season stats: Wins, 2nds, 3rds, 4ths, Total Rides, **Win %**, Stakes won
-  - Wins in past 10 race days
-  - **Performance by venue/distance**: Wins, places, rides at each venue (ST/HV) and distance (1000m-2400m)
-- **Example**: [Z Purton Stats](https://racing.hkjc.com/en-us/local/information/jockeywinstat?JockeyId=PZ) - shows 22.19% win rate, 71 wins from 320 rides
-
-### Race Results
-```
-https://racing.hkjc.com/en-us/local/information/localresults?RaceDate={date}
-```
-- **Parameter**: `RaceDate` - Date in `YYYY/MM/DD` format
-- **Returns**: All race results for that meeting, dividends, finish order
-- **Example**: [19 Jan 2025 Results](https://racing.hkjc.com/en-us/local/information/localresults?RaceDate=2025/01/19)
 
 ### Race Card
 ```
 https://racing.hkjc.com/en-us/local/information/racecard?RaceDate={date}&Racecourse={venue}&RaceNo={race}
 ```
-- **Parameters**: 
-  - `RaceDate` - Date in `YYYY/MM/DD` format **(must be a future/upcoming race date)**
-  - `Racecourse` - Venue code (`ST` = Sha Tin, `HV` = Happy Valley)
-  - `RaceNo` - Race number (1-11)
-- **Returns**: Entries, draws, weights, jockeys, trainers
-- **Horse/Jockey IDs**: Extracted from HTML links in the page:
-  - Horse link: `horse?HorseId=HK_2024_K129` → extracts `HK_2024_K129`
-  - Jockey link: `jockeyprofile?jockeyid=PZ` → extracts `PZ`
-- **Note**: Race cards are only available for upcoming races. For past races, use Race Results instead.
-- **Example**: Check [HKJC Fixtures](https://racing.hkjc.com/en-us/local/information/fixture) for upcoming race dates
+- **Date format**: `YYYY/MM/DD`
+- **Venue**: `ST` (Sha Tin) or `HV` (Happy Valley)
+- **Returns**: Entries, draws, weights, jockeys, trainers, last 6 runs
 
-### Current Odds
+### Current Odds (Live)
 ```
-https://racing.hkjc.com/en-us/local/information/winodd?RaceDate={date}&Racecourse={venue}&RaceNo={race}
+https://bet.hkjc.com/en/racing/wp/{date}/{venue}/{race}
 ```
-- **Returns**: Live win/place odds for all runners
-- **Example**: [ST Race 1 Odds](https://racing.hkjc.com/en-us/local/information/winodd?RaceDate=2025/01/19&Racecourse=ST&RaceNo=1)
+- **Date format**: `YYYY-MM-DD`
+- **Returns**: Live win/place odds
+- **Note**: Requires JavaScript rendering (use `fetch-odds.ts` tool)
 
-### Jockey Codes Reference
+### Horse Profile
+```
+https://racing.hkjc.com/en-us/local/information/horse?HorseId={horseCode}
+```
+- **Parameter**: Full horse code (e.g., `HK_2024_K129`)
+- **Returns**: Stats, past performances, going record, distance wins
 
-| Jockey | Code | Example URL |
+### Jockey Statistics
+```
+https://racing.hkjc.com/en-us/local/information/jockeywinstat?JockeyId={jockeyCode}
+```
+- **Parameter**: Jockey code (e.g., `PZ` for Z Purton)
+- **Returns**: Season stats, win %, venue/distance breakdown
+
+### Race Results (Historical)
+```
+https://racing.hkjc.com/en-us/local/information/localresults?RaceDate={date}
+```
+- **Returns**: Finish order, dividends, times
+
+## Betting Strategy
+
+Based on backtesting (13 meetings, 125 races, **+338% ROI**):
+
+### Odds Range Filter
+| Bet Type | Odds Range | Strike Rate | ROI |
+|----------|------------|-------------|-----|
+| WIN | 2.0 - 7.0 | 56% | +202% |
+| PLACE | 5.0 - 15.0 | 73% | +146% |
+| QUINELLA | Top 2 in range | 47% | +1,424% |
+
+### Edge Detection
+```
+Edge = Model Probability - Market Probability
+
+Required: Edge > 15% to place bet
+```
+
+### Kelly Staking Constraints
+```
+Max per bet: 5% of bankroll
+Max per race: 10% of bankroll
+Max per meeting: 40% of bankroll
+```
+
+### Elite Jockey Priority (Validated Strike Rates)
+| Jockey | Code | Strike Rate | Action |
+|--------|------|-------------|--------|
+| J McDonald | MCJ | **80%** | BACK when in WIN range |
+| M Guyon | GM | **80%** | BACK when in WIN range |
+| H Bowman | BH | **67%** | Strong support |
+| J Moreira | MOJ | **65%** | Strong support |
+| Z Purton | PZ | **57%** | Good support |
+
+## Jockey Codes Reference
+
+| Jockey | Code | Win % Range |
 |--------|------|-------------|
-| Z Purton | `PZ` | [Stats](https://racing.hkjc.com/en-us/local/information/jockeywinstat?JockeyId=PZ) |
-| J Moreira | `MOJ` | [Stats](https://racing.hkjc.com/en-us/local/information/jockeywinstat?JockeyId=MOJ) |
-| J McDonald | `MCJ` | [Stats](https://racing.hkjc.com/en-us/local/information/jockeywinstat?JockeyId=MCJ) |
-| H Bowman | `BH` | [Stats](https://racing.hkjc.com/en-us/local/information/jockeywinstat?JockeyId=BH) |
-| M Guyon | `GM` | [Stats](https://racing.hkjc.com/en-us/local/information/jockeywinstat?JockeyId=GM) |
-| K Teetan | `TEK` | [Stats](https://racing.hkjc.com/en-us/local/information/jockeywinstat?JockeyId=TEK) |
-| A Badel | `BA` | [Stats](https://racing.hkjc.com/en-us/local/information/jockeywinstat?JockeyId=BA) |
+| Z Purton | `PZ` | 20-25% |
+| J Moreira | `MOJ` | 18-22% |
+| J McDonald | `MCJ` | 15-18% |
+| H Bowman | `BH` | 15-18% |
+| M Guyon | `GM` | 12-15% |
+| K Teetan | `TEK` | 10-14% |
+| A Badel | `BA` | 10-14% |
 
-### Horse Code Format
+## Horse Code Format
 
-Horse codes follow the pattern: `HK_{year}_{brandCode}`
+Pattern: `HK_{year}_{brandCode}`
 
-| Example Code | Description | Link |
-|--------------|-------------|------|
-| `HK_2024_K129` | Horse imported in 2024, brand K129 | [WINNING WING](https://racing.hkjc.com/en-us/local/information/horse?HorseId=HK_2024_K129) |
-| `HK_2023_J169` | Horse imported in 2023, brand J169 | [APOLAR FIGHTER](https://racing.hkjc.com/en-us/local/information/horse?HorseId=HK_2023_J169) |
-| `HK_2022_H447` | Horse imported in 2022, brand H447 | [FAMILY FORTUNE](https://racing.hkjc.com/en-us/local/information/horse?HorseId=HK_2022_H447) |
+| Example | Description |
+|---------|-------------|
+| `HK_2024_K129` | Imported 2024, brand K129 |
+| `HK_2023_J157` | Imported 2023, brand J157 |
 
-## Usage
+## Betting Workflow
 
-### Scrape Today's Race Card
-```bash
-npm run scrape:racecard
+```mermaid
+flowchart LR
+    A[1. Fetch Odds] --> B[2. Filter by Range]
+    B --> C[3. Analyze Form]
+    C --> D[4. Monte Carlo Sim]
+    D --> E[5. Calculate Edge]
+    E --> F[6. Kelly Stakes]
+    F --> G[7. Generate Bets]
 ```
 
-### Analyze a Race
-```bash
-npm run analyze -- --race 5 --date 2026-01-29
-```
+### Complete 7-Step Process
+
+1. **Fetch current odds** using `fetch-odds.ts`
+2. **Filter horses** by odds range (WIN: 2.0-7.0, PLACE: 5.0-15.0)
+3. **Analyze form** - speed ratings, recent form, class trajectory
+4. **Run Monte Carlo simulation** - 10,000 iterations for win/place probabilities
+5. **Calculate edge** - Model probability vs market odds (require >15%)
+6. **Apply Kelly staking** - Optimal bet sizing with bankroll constraints
+7. **Generate betting slip** with stakes and reasoning
+
+See `skills/bet-recommendation/SKILL.md` for detailed workflow.
 
 ## Simulation Process
 
@@ -199,9 +273,6 @@ flowchart LR
     Record --> Check{10,000 runs?}
     Check -->|No| Variance
     Check -->|Yes| Output[Calculate Probabilities]
-    Output --> Win[Win %]
-    Output --> Place[Place %]
-    Output --> Exotic[Quinella Matrix]
 ```
 
 ## Value Detection
@@ -212,24 +283,30 @@ flowchart TB
     Market[Market Odds] --> Compare
     Compare -->|Yes| Kelly[Calculate Kelly Stake]
     Compare -->|No| Pass[No Bet]
-    Kelly --> Constraints[Apply Constraints]
-    Constraints --> Recommend[Recommend Bet]
 ```
 
-## Betting Strategy
+## Environment Variables
 
-Based on research, this system focuses on:
-- **Exotic bets** (Quinella, Place, Quinella Place) - pools are less efficient
-- **Value threshold**: Only bet when model edge > 15%
-- **Kelly staking**: 25-50% fractional Kelly for bankroll management
+```bash
+# Set Playwright browser path if needed
+export PLAYWRIGHT_BROWSERS_PATH=/Users/you/Library/Caches/ms-playwright
+```
 
-## Key Prediction Factors
+## Troubleshooting
 
-1. Speed ratings (adjusted for class/going)
-2. Class trajectory (horses dropping in class)
-3. Jockey/Trainer win rates
-4. Draw bias (track/distance specific)
-5. Recent form and fitness
+### Playwright Browser Not Found
+```bash
+npx playwright install chromium
+```
+
+### Odds Fetch Timeout
+- Check internet connection
+- Verify date is a race day
+- Try again (HKJC servers can be slow)
+
+### No Races Found
+- Check [HKJC Fixtures](https://racing.hkjc.com/en-us/local/information/fixture) for upcoming dates
+- Race cards only available for future races
 
 ## Disclaimer
 
