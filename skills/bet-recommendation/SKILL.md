@@ -226,22 +226,36 @@ win_probability[horse] = wins / 10,000
 place_probability[horse] = places / 10,000
 ```
 
-### 5.3 Elite Jockey Adjustment (VALIDATED)
+### 5.3 Elite Jockey Adjustment
 
-Apply these adjustments to base rating:
+**IMPORTANT**: Always fetch current jockey stats before analysis:
 
-| Jockey | Code | Strike Rate | Rating Boost | Priority |
-|--------|------|-------------|--------------|----------|
-| J McDonald | MCJ | **80%** | +15 | ⭐⭐⭐ |
-| M Guyon | GM | **80%** | +15 | ⭐⭐⭐ |
-| H Bowman | BH | **67%** | +12 | ⭐⭐⭐ |
-| J Moreira | MOJ | **65%** | +11 | ⭐⭐ |
-| Z Purton | PZ | **57%** | +10 | ⭐⭐ |
-| K Teetan | TEK | 35% | +5 | ⭐ |
-| A Badel | BA | 33% | +4 | ⭐ |
-| Others | - | <30% | 0 | - |
+```bash
+npx tsx tools/fetch-jockey-stats.ts
+```
 
-**RULE**: When an elite jockey (⭐⭐⭐) rides a horse in WIN odds range, **strongly favor** that selection.
+This creates:
+- `data/jockeys/JOCKEY_STATS.md` - Markdown table with current win rates
+- `data/jockeys/jockey_stats_YYYYMMDD.json` - Raw JSON data
+
+#### Rating Boost Formula (based on current season win %)
+
+| Win % Range | Rating Boost | Priority |
+|-------------|--------------|----------|
+| > 20% | +10 | ⭐⭐⭐ Elite |
+| 15-20% | +7 | ⭐⭐ Strong |
+| 10-15% | +4 | ⭐ Good |
+| < 10% | 0 | - |
+
+#### Adding New Jockeys
+
+To add new jockey codes, update `KNOWN_JOCKEY_CODES` in `tools/fetch-jockey-stats.ts`:
+
+```typescript
+{ code: "ABC", name: "A B Jockey" },
+```
+
+**RULE**: When an elite jockey (Win% > 15%) rides a horse in WIN odds range, **strongly favor** that selection.
 
 ---
 
@@ -435,15 +449,28 @@ Horse with elite jockey boost:
 
 ## Quick Reference: Elite Jockeys
 
-| Jockey | Code | Strike Rate | Action |
-|--------|------|-------------|--------|
-| J McDonald | MCJ | **80%** | BACK when in WIN range |
-| M Guyon | GM | **80%** | BACK when in WIN range |
-| H Bowman | BH | **67%** | BACK when in WIN range |
-| J Moreira | MOJ | **65%** | Strong support |
-| Z Purton | PZ | **57%** | Volume king, good support |
+**Always fetch current stats before betting:**
 
-Fetch live stats: `https://racing.hkjc.com/en-us/local/information/jockeywinstat?JockeyId={code}`
+```bash
+npx tsx tools/fetch-jockey-stats.ts
+```
+
+#### Jockey Tier Action Guide
+
+| Tier | Win % | Action |
+|------|-------|--------|
+| ⭐⭐⭐ Elite | > 20% | BACK when in WIN range |
+| ⭐⭐ Strong | 15-20% | BACK when in WIN range |
+| ⭐ Good | 10-15% | Support if form is good |
+| - | < 10% | No jockey boost |
+
+#### Live Stats URL
+
+```
+https://racing.hkjc.com/en-us/local/information/jockeywinstat?JockeyId={code}
+```
+
+Common codes: PZ, MOJ, MCJ, BH, GM, TEK, BA, HEL, FEL, CML
 
 ---
 
@@ -465,9 +492,9 @@ Fetch live stats: `https://racing.hkjc.com/en-us/local/information/jockeywinstat
 | File | Purpose |
 |------|---------|
 | `tools/fetch-odds.ts` | Live odds fetcher |
+| `tools/fetch-jockey-stats.ts` | Live jockey stats fetcher |
 | `tools/analyze-race.ts` | Full analysis CLI |
-| `src/simulation/monteCarlo.ts` | Simulation engine |
-| `src/betting/recommendations.ts` | Recommendation logic |
+| `data/jockeys/JOCKEY_STATS.md` | Current jockey rankings |
 | `data/odds/` | Saved odds data |
 
 ---

@@ -96,6 +96,31 @@ SELECTIONS IN WIN RANGE (2.0-7.0):
   R8 #3 INVINCIBLE IBIS @ 2.9
 ```
 
+### Fetch Jockey Stats
+
+Fetch current season jockey statistics from HKJC.
+
+```bash
+# Fetch all tracked jockeys
+npx tsx tools/fetch-jockey-stats.ts
+
+# Top 10 only
+npx tsx tools/fetch-jockey-stats.ts --top=10
+
+# JSON output
+npx tsx tools/fetch-jockey-stats.ts --json
+```
+
+**Output:**
+```
+ELITE TIER (Win % > 15%):
+  ⭐ PZ Z Purton - 22.19%
+  ⭐ MCJ J McDonald - 16.67%
+
+STRONG TIER (Win % 10-15%):
+  ✓ BH H Bowman - 12.11%
+```
+
 ### Analyze Race
 
 Run full analysis with Monte Carlo simulation.
@@ -133,11 +158,13 @@ hourse-racing/
 │   └── utils/              # Helper functions
 ├── tools/
 │   ├── fetch-odds.ts       # Live odds fetcher
+│   ├── fetch-jockey-stats.ts # Live jockey stats fetcher
 │   ├── analyze-race.ts     # Race analysis CLI
 │   ├── scrape-single-race.ts
 │   └── scrape-meeting.ts
 ├── data/
 │   ├── historical/         # Past race results
+│   ├── jockeys/            # Jockey stats (JOCKEY_STATS.md)
 │   └── odds/               # Saved odds snapshots
 ├── prompts/                # AI prompts for analysis
 ├── rules/                  # Cursor rules
@@ -209,26 +236,34 @@ Max per race: 10% of bankroll
 Max per meeting: 40% of bankroll
 ```
 
-### Elite Jockey Priority (Validated Strike Rates)
-| Jockey | Code | Strike Rate | Action |
-|--------|------|-------------|--------|
-| J McDonald | MCJ | **80%** | BACK when in WIN range |
-| M Guyon | GM | **80%** | BACK when in WIN range |
-| H Bowman | BH | **67%** | Strong support |
-| J Moreira | MOJ | **65%** | Strong support |
-| Z Purton | PZ | **57%** | Good support |
+### Elite Jockey Priority
+
+**Always fetch current stats before betting:**
+
+```bash
+npx tsx tools/fetch-jockey-stats.ts
+```
+
+| Win % Range | Rating Boost | Action |
+|-------------|--------------|--------|
+| > 20% | +10 | ⭐⭐⭐ BACK when in WIN range |
+| 15-20% | +7 | ⭐⭐ BACK when in WIN range |
+| 10-15% | +4 | ⭐ Support if form good |
+| < 10% | 0 | No jockey boost |
 
 ## Jockey Codes Reference
 
-| Jockey | Code | Win % Range |
-|--------|------|-------------|
-| Z Purton | `PZ` | 20-25% |
-| J Moreira | `MOJ` | 18-22% |
-| J McDonald | `MCJ` | 15-18% |
-| H Bowman | `BH` | 15-18% |
-| M Guyon | `GM` | 12-15% |
-| K Teetan | `TEK` | 10-14% |
-| A Badel | `BA` | 10-14% |
+Fetch current stats: `npx tsx tools/fetch-jockey-stats.ts`
+
+| Jockey | Code | Stats URL |
+|--------|------|-----------|
+| Z Purton | `PZ` | [Link](https://racing.hkjc.com/en-us/local/information/jockeywinstat?JockeyId=PZ) |
+| J Moreira | `MOJ` | [Link](https://racing.hkjc.com/en-us/local/information/jockeywinstat?JockeyId=MOJ) |
+| J McDonald | `MCJ` | [Link](https://racing.hkjc.com/en-us/local/information/jockeywinstat?JockeyId=MCJ) |
+| H Bowman | `BH` | [Link](https://racing.hkjc.com/en-us/local/information/jockeywinstat?JockeyId=BH) |
+| M Guyon | `GM` | [Link](https://racing.hkjc.com/en-us/local/information/jockeywinstat?JockeyId=GM) |
+| K Teetan | `TEK` | [Link](https://racing.hkjc.com/en-us/local/information/jockeywinstat?JockeyId=TEK) |
+| A Badel | `BA` | [Link](https://racing.hkjc.com/en-us/local/information/jockeywinstat?JockeyId=BA) |
 
 ## Horse Code Format
 

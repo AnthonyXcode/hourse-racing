@@ -86,19 +86,36 @@ Apply betting rules from `bet-recommendation` skill:
 - [ ] Apply bankroll constraints (max 5% per bet, 10% per race)
 - [ ] Prioritize exotic bets over win bets
 
-## Elite Jockey Strike Rates (VALIDATED)
+## Elite Jockey Stats
 
-| Jockey | Code | Strike Rate | Rating Boost |
-|--------|------|-------------|--------------|
-| J McDonald | MCJ | **80%** | +15 |
-| M Guyon | GM | **80%** | +15 |
-| H Bowman | BH | **67%** | +12 |
-| J Moreira | MOJ | **65%** | +11 |
-| Z Purton | PZ | **57%** | +10 |
-| K Teetan | TEK | 35% | +5 |
-| A Badel | BA | 33% | +4 |
+**IMPORTANT**: Always fetch current jockey stats before analysis:
 
-**RULE**: When elite jockey (80%+) rides horse in WIN range (2.0-7.0), apply full rating boost.
+```bash
+npx tsx tools/fetch-jockey-stats.ts
+```
+
+This creates:
+- `data/jockeys/JOCKEY_STATS.md` - Current win rates
+- `data/jockeys/jockey_stats_YYYYMMDD.json` - Raw JSON
+
+### Rating Boost Formula
+
+| Win % Range | Rating Boost | Priority |
+|-------------|--------------|----------|
+| > 20% | +10 | ⭐⭐⭐ Elite |
+| 15-20% | +7 | ⭐⭐ Strong |
+| 10-15% | +4 | ⭐ Good |
+| < 10% | 0 | - |
+
+### Adding New Jockeys
+
+Update `KNOWN_JOCKEY_CODES` in `tools/fetch-jockey-stats.ts`:
+
+```typescript
+{ code: "ABC", name: "A B Jockey" },
+```
+
+**RULE**: When elite jockey (Win% > 15%) rides horse in WIN range (2.0-7.0), apply rating boost.
 
 ## Venue-Specific Adjustments
 
@@ -174,11 +191,11 @@ Apply betting rules from `bet-recommendation` skill:
 | File | Purpose |
 |------|---------|
 | `tools/fetch-odds.ts` | Live odds fetcher |
+| `tools/fetch-jockey-stats.ts` | Live jockey stats fetcher |
 | `tools/analyze-race.ts` | Full analysis CLI |
+| `data/jockeys/JOCKEY_STATS.md` | Current jockey rankings |
 | `src/scrapers/raceCard.ts` | Fetch race data |
-| `src/analysis/formAnalysis.ts` | Form analysis |
 | `src/simulation/monteCarlo.ts` | Run simulations |
-| `src/betting/recommendations.ts` | Generate bets |
 
 ## Troubleshooting
 
