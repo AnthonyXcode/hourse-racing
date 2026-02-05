@@ -284,12 +284,14 @@ Example:
 
 ### 6.3 Value Threshold
 
-```
-REQUIRED: Edge > 15% to bet
+The minimum edge is **configurable** (default **5%** in code). To use a stricter threshold, run with `--min-edge 15` (or another %).
 
-- Edge < 10%: ❌ PASS (no value)
-- Edge 10-15%: ⚠️ MARGINAL (bet small or pass)
-- Edge > 15%: ✅ VALUE BET (proceed to Kelly)
+```
+Default: Edge > 5% to recommend (minEdgeThreshold in BettingConfig)
+
+- Edge < 5%: ❌ PASS (no value)
+- Edge 5-10%: ⚠️ MARGINAL (bet small; engine may recommend)
+- Edge > 10%: ✅ VALUE BET (proceed to Kelly)
 - Edge > 25%: ✅✅ STRONG VALUE (increase stake)
 ```
 

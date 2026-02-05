@@ -298,7 +298,7 @@ export const DEFAULT_BETTING_CONFIG: BettingConfig = {
   bankroll: 10000,
   maxBetPercent: 5,
   maxRacePercent: 10,
-  minEdgeThreshold: 15,
+  minEdgeThreshold: 5,
   kellyFraction: 0.25,
   preferredBetTypes: ["Place", "Quinella", "Quinella Place"],
 };

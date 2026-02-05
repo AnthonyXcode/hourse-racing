@@ -309,7 +309,8 @@ export class RaceCardScraper {
       else if (goingText.includes("wet slow")) going = "Wet Slow";
     }
     if (!going) {
-      throw new Error(`Failed to parse going condition from race card. Raw text snippet: "${allText.substring(0, 200)}..."`);
+      console.warn("[WARNING] Could not parse going from race card, defaulting to Good");
+      going = "Good";
     }
 
     // Parse prize money - look for "HK$ X,XXX,XXX" pattern
@@ -571,33 +572,39 @@ export class RaceCardScraper {
   }
 
   /**
-   * Fetch current odds for a race
+   * Fetch current win odds for a race from the betting site (bet.hkjc.com).
+   * The racing.hkjc.com "winodd" page often has no odds or different HTML, so we use
+   * the same source as the fetch-odds tool.
    */
   async fetchCurrentOdds(
     date: Date,
     venue: Venue,
     raceNumber: number
   ): Promise<Map<number, number>> {
-    const dateStr = format(date, "yyyy/MM/dd");
+    const dateStr = format(date, "yyyy-MM-dd");
     const venueCode = venue === "Sha Tin" ? "ST" : "HV";
-    const url = `${this.config.baseUrl}/en-us/local/information/winodd?RaceDate=${dateStr}&Racecourse=${venueCode}&RaceNo=${raceNumber}`;
+    const url = `https://bet.hkjc.com/en/racing/wp/${dateStr}/${venueCode}/${raceNumber}`;
+
+    if (!this.page) throw new Error("Browser not initialized");
 
     await this.navigateTo(url);
-    if (!this.page) throw new Error("Browser not initialized");
+    await sleep(3000); // Allow odds to load
 
     const content = await this.page.content();
     const $ = cheerio.load(content);
-
     const odds = new Map<number, number>();
+    const seen = new Set<number>();
 
-    $(".odds_table tr, .win-odds-table tr").each((_, row) => {
-      const cells = $(row).find("td");
-      if (cells.length >= 2) {
-        const horseNum = parseInt($(cells[0]).text().trim(), 10);
-        const oddsValue = parseFloat($(cells[1]).text().trim());
-
-        if (!isNaN(horseNum) && !isNaN(oddsValue)) {
-          odds.set(horseNum, oddsValue);
+    // bet.hkjc.com: runner rows contain horse number and win/place decimals (e.g. "1 ... 3.6 2.3")
+    $("tr, [class*='runner'], [class*='horse'], [class*='row']").each((_, row) => {
+      const text = $(row).text().trim().replace(/\s+/g, " ");
+      const numMatch = text.match(/^(\d+)/);
+      const oddsMatch = text.match(/(\d+\.\d+)\s*(\d+\.\d+)\s*$/);
+      if (numMatch && oddsMatch) {
+        const horseNumber = parseInt(numMatch[1]!, 10);
+        if (horseNumber >= 1 && horseNumber <= 14 && !seen.has(horseNumber)) {
+          seen.add(horseNumber);
+          odds.set(horseNumber, parseFloat(oddsMatch[1]!));
         }
       }
     });
