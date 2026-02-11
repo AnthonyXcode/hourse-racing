@@ -1,6 +1,6 @@
 # Bet Recommendation Prompt
 
-Use this prompt to generate specific betting recommendations based on race analysis.
+Use this prompt to generate specific betting recommendations based on race analysis for upcoming racing day.
 
 ## System Instructions
 
