@@ -16,10 +16,10 @@ You are an experienced HKJC bettor focused on 3T and Six Up pools. You MUST foll
 ## Pipeline Overview
 
 ```
-STEP 1: QUERY DATA       → Fetch race cards, odds, jockey stats
-STEP 2: VALIDATE DATA    → Check fields, going, scratchings, 3T/Six Up legs
-STEP 3: RUN SIMULATION   → Monte Carlo 10,000 iterations per leg race
-STEP 4: COMPILE RESULTS  → Rank horses, classify legs, calculate combinations
+STEP 1: QUERY DATA       → Fetch race cards, odds, jockey stats, SCMP race card
+STEP 2: VALIDATE DATA    → Check fields, going, scratchings, 3T/Six Up legs, SCMP coverage
+STEP 3: RUN SIMULATION   → Monte Carlo 10,000 iterations per leg race + SCMP form adjustments
+STEP 4: COMPILE RESULTS  → Rank horses, classify legs, incorporate SCMP insights, calculate combinations
 STEP 5: GENERATE ADVICE  → Selections, tickets, stakes, pass conditions
 ```
 
@@ -55,7 +55,74 @@ For each race in the meeting, fetch the HKJC race card to extract:
 https://racing.hkjc.com/racing/information/English/Racing/RaceCard.aspx?RaceDate=YYYY/MM/DD&Racecourse=HV&RaceNo=N
 ```
 
-### 1e. Confirm 3T and Six Up legs
+### 1e. Fetch SCMP Race Card Data
+
+Fetch the South China Morning Post race card page for supplementary data:
+
+**URL**: `https://www.scmp.com/sport/racing/racecard` (default loads current meeting day)
+**Per-race URL**: `https://www.scmp.com/sport/racing/racecard/N` (for race N)
+
+Use `WebFetch` to retrieve each leg race page. Extract the following data — **do NOT use tipster picks**:
+
+#### 1e-i. Win/Place Odds
+
+The SCMP race card table includes **Win** and **Place** odds columns for every horse. These are the actual HKJC pool odds and are often more complete than what the `fetch-odds.ts` scraper captures.
+
+**How to use:**
+- Use as primary odds source when `fetch-odds.ts` returns partial data
+- Record all horses' Win and Place odds for leg races
+- Identify market favourites and longshots for edge calculations
+
+#### 1e-ii. Star Form Comments
+
+Each horse has a **Star Form** comment written by SCMP analysts. Extract key signals:
+- **Positive signals**: "winner", "made all", "rallied", "improved", "sharp", "does draw well"
+- **Negative signals**: "disappointed", "failed", "did not run out the distance", "wide trip", "no excuse"
+- **Fitness flags**: "resumed", "first-timer", "off 126 days", "returns from injury"
+- **Draw comments**: "gate's a hurdle", "gate should help", "drawn to get his chance"
+
+#### 1e-iii. Trouble in Running (TIR)
+
+Extract recent **stewards' reports** for each horse. Key flags:
+- **Recurring issues**: "bumped on jumping" (repeated = barrier problem)
+- **Not ridden out**: Indicates jockey concern about soundness
+- **Unacceptable performance**: Horse under stewards' watch
+- **Crowded / steadied**: Bad luck last run = potential improver
+
+#### 1e-iv. Vet's Report
+
+Check for **health flags**:
+- Recent injury / lameness → **reduce confidence** even if passed vet exam
+- "Passed on [date]" after injury → check how recent; if <30 days, flag as risk
+- "Eight years of age or above" → reduced reliability for form reversal
+
+#### 1e-v. Trackwork Highlights
+
+Extract notable trial / gallop mentions:
+- "Travelled well for second in his latest trial" = **positive trial form**
+- "Looks ready to strike" = trainer confidence
+- Use to **break ties** between similarly ranked MC horses
+
+#### 1e-vi. Quinella Place & Quinella Odds Matrix
+
+The SCMP publishes full **QP and Q odds matrices** for each race. These are the actual HKJC pool odds.
+
+**How to use:**
+- Cross-reference MC top quinella combinations with actual QP/Q pool odds
+- Identify **value quinellas**: MC probability high but QP/Q odds also high → mispriced
+- For 3T legs: use QP matrix to confirm which trifecta combinations the market undervalues
+- Save the QP/Q odds for horses in your 3T selections for the report
+
+#### 1e-vii. Philip Woo's Formline
+
+A detailed **race-by-race narrative** from SCMP's senior form analyst. Extract:
+- Which horses he highlights as main chances
+- Draw analysis and pace scenario
+- Specific horse-by-horse notes that may not appear in Star Form
+
+---
+
+### 1f. Confirm 3T and Six Up legs
 Check the HKJC race card or betting page to identify:
 - **3T legs**: Usually R4, R5, R6 (can vary — look for "Triple Trio" label)
 - **Six Up legs**: Usually R4–R9 (look for "Six Up" or "Six Win" label)
@@ -79,6 +146,7 @@ Before proceeding, verify ALL of the following. **Stop and report if any critica
 - [ ] Surface parsed (default "Turf" if missing)
 - [ ] Scratchings: list any late withdrawals; update field sizes
 - [ ] Any horse with missing form data (first-timer, long layoff >90 days)
+- [ ] SCMP race card data retrieved (if fetch fails, proceed without — note as caveat)
 
 ### Data summary
 After validation, output a brief summary:
@@ -89,6 +157,7 @@ Field sizes: R[X]=N, R[Y]=N, R[Z]=N, ...
 Scratchings: [list or "none"]
 Jockey stats: [N] jockeys loaded, [N] elite tier
 Odds coverage: [N] races with odds, avg [N] horses per race
+SCMP data: [✅ loaded / ⚠️ partial / ❌ unavailable] | [N] races with form/odds
 ```
 
 ---
@@ -126,37 +195,75 @@ For horses ridden by elite jockeys (season win% > 15%), add probability boost:
 | 15-20% | +4% to MC win prob | HV: cap at +3% |
 | 10-15% | +2% to MC win prob | HV: cap at +2% |
 
+### 3d. Apply SCMP form adjustments
+
+After MC simulation and jockey boosts, apply the following adjustments sourced from SCMP data.
+**Skip this step if SCMP data was unavailable (note as caveat in report).**
+
+#### Negative Form Flags (from Star Form, TIR, Vet Report)
+
+| Flag | Condition | Adjustment |
+|------|-----------|------------|
+| **Recent injury** | Vet report shows injury passed <30 days ago | -3% to MC Win%, -4% to MC Place% |
+| **Unacceptable performance** | Stewards flagged unacceptable last run | -2% to MC Win% |
+| **Repeated barrier issues** | TIR shows "bumped on jumping" in ≥2 recent runs | -1% to MC Win% |
+| **Age concern** | Vet notes "8 years of age or above" | -2% to MC Win% in C3+ races |
+| **Not ridden out** | TIR notes jockey didn't ride out | -2% to MC Win% |
+
+#### Positive Form Flags (from Star Form, Trackwork, Formline)
+
+| Flag | Condition | Adjustment |
+|------|-----------|------------|
+| **Strong trial** | Trackwork highlight: "travelled well", "looks ready" | +2% to MC Win% |
+| **Draw advantage** | Star Form / Formline: "drawn to get his chance", "gate should help" | +1% to MC Win% |
+| **Improving form** | Star Form: "improved", "rallied", "made all" in recent run | +1% to MC Win% |
+| **Excuses last run** | TIR: "crowded", "steadied", "wide trip" = bad luck | +2% to MC Win% (bounce candidate) |
+
+#### Cap rule
+- Total SCMP form adjustment per horse: **max ±8%** to MC Win%, **max ±10%** to MC Place%
+- If adjustments push any horse's probability above 50% Win or 85% Place, cap at those values
+- Always show **raw MC%** and **adjusted%** (after all boosts) in the report
+
 ---
 
 ## Step 4: Compile Results
 
 ### 4a. Build per-leg ranking table
 
-For each 3T leg, rank all horses by **MC Place%** (since 3T needs top 3 in any order):
+For each 3T leg, rank all horses by **Adjusted Place%** (since 3T needs top 3 in any order):
 
 ```
 LEG [N] (R[X]) — [Class] | [Distance] | [Going]
-| Rank | # | Horse | MC Win% | MC Place% | Odds | Jockey | Jockey Tier |
-|------|---|-------|---------|-----------|------|--------|-------------|
-| 1 | X | NAME | XX.X% | XX.X% | X.X | Name | ⭐/✓/— |
+| Rank | # | Horse | MC Win% | MC Place% | Adj Place% | Odds | Jockey | SCMP Flags |
+|------|---|-------|---------|-----------|------------|------|--------|------------|
+| 1 | X | NAME | XX.X% | XX.X% | XX.X% | X.X | Name | +trial, +draw |
 ```
 
-For each Six Up leg, rank by **MC Win%** (since Six Up needs the winner):
+- **SCMP Flags**: Short codes for adjustments applied (e.g., +trial, +draw, -injury, -TIR)
+
+For each Six Up leg, rank by **Adjusted Win%** (since Six Up needs the winner):
 
 ```
 LEG [N] (R[X]) — [Class] | [Distance]
-| Rank | # | Horse | MC Win% | Adjusted% | Odds | Jockey |
-|------|---|-------|---------|-----------|------|--------|
-| 1 | X | NAME | XX.X% | XX.X% | X.X | Name |
+| Rank | # | Horse | MC Win% | Adj Win% | Odds | Jockey | SCMP Flags |
+|------|---|-------|---------|----------|------|--------|------------|
+| 1 | X | NAME | XX.X% | XX.X% | X.X | Name | +trial |
 ```
 
 ### 4b. Classify each leg
 
+Use **adjusted** probabilities (after jockey + SCMP form boosts) for classification:
+
 | Classification | Criteria | 3T Picks | Six Up Picks |
 |----------------|----------|----------|--------------|
-| **Banker** | Top horse MC Place% ≥ 60% (3T) or MC Win% ≥ 35% (Six Up) | 3 horses | 1 horse |
-| **Lean** | Top horse MC Place% 45-60% (3T) or MC Win% 25-35% (Six Up) | 4 horses | 1-2 horses |
-| **Open** | No horse MC Place% ≥ 45% (3T) or MC Win% ≥ 25% (Six Up) | 4-5 horses | 2-3 horses |
+| **Banker** | Top horse Adj Place% ≥ 60% (3T) or Adj Win% ≥ 35% (Six Up) | 3 horses | 1 horse |
+| **Lean** | Top horse Adj Place% 45-60% (3T) or Adj Win% 25-35% (Six Up) | 4 horses | 1-2 horses |
+| **Open** | No horse Adj Place% ≥ 45% (3T) or Adj Win% ≥ 25% (Six Up) | 4-5 horses | 2-3 horses |
+
+**Tie-breaking rules** (when two horses have similar adjusted probabilities within 2%):
+1. Prefer the horse with positive SCMP flags (+trial, +draw) over neutral
+2. Prefer the horse without negative SCMP flags (-injury, -TIR)
+3. Refer to Philip Woo's Formline narrative for final tiebreak
 
 ### 4c. Calculate combinations and cost
 
@@ -221,6 +328,7 @@ Save to: `data/reports/3t_sixup_strategy_YYYYMMDD_VENUE_AI-model.md`
 
 DATA VALIDATION: ✅ All checks passed | Going: [X] | [N] scratchings
 MC SIMULATION: 10,000 iterations per leg | Jockey boost applied
+SCMP DATA: ✅ Loaded | Form/TIR/Vet/Odds parsed
 
 3T LEGS: Race [X] (Leg 1), Race [Y] (Leg 2), Race [Z] (Leg 3)
 BANKROLL ALLOCATION: $[X] ([X]% of meeting bankroll)
@@ -228,15 +336,16 @@ BANKROLL ALLOCATION: $[X] ([X]% of meeting bankroll)
 ───────────────────────────────────────────────────────────
 LEG 1 (R[X]) — [Class] | [Distance] | [Type: Banker/Lean/Open]
 ───────────────────────────────────────────────────────────
-| # | Horse | MC Place% | Adjusted% | Odds | Jockey | Selected |
-|---|-------|-----------|-----------|------|--------|----------|
-| X | NAME | XX.X% | XX.X% | X.X | Name | ✓ |
-| X | NAME | XX.X% | XX.X% | X.X | Name | ✓ |
-| X | NAME | XX.X% | XX.X% | X.X | Name | ✓ |
-| X | NAME | XX.X% | XX.X% | X.X | Name | (reserve) |
+| # | Horse | MC Place% | Adj Place% | Odds | Jockey | SCMP Flags | Selected |
+|---|-------|-----------|------------|------|--------|------------|----------|
+| X | NAME | XX.X% | XX.X% | X.X | Name | +trial | ✓ |
+| X | NAME | XX.X% | XX.X% | X.X | Name | +draw | ✓ |
+| X | NAME | XX.X% | XX.X% | X.X | Name | — | ✓ |
+| X | NAME | XX.X% | XX.X% | X.X | Name | — | (reserve) |
 
-Reasoning: [Why these horses; MC evidence; jockey factor]
-Top quinella combos: [from MC output]
+Reasoning: [Why these horses; MC evidence; jockey factor; SCMP form insights]
+SCMP highlights: [Key Star Form / Formline / Trackwork notes for selected horses]
+Top quinella combos: [from MC output + SCMP Q/QP matrix cross-reference]
 
 [Repeat for Leg 2, Leg 3]
 
@@ -265,6 +374,7 @@ SIX UP STRATEGY - [Venue] | [Date] | Races [X–Y]
 
 DATA VALIDATION: ✅ All checks passed
 MC SIMULATION: 10,000 iterations per leg | Jockey boost applied
+SCMP DATA: ✅ Loaded | Form/TIR/Vet/Odds parsed
 
 SIX UP RACES: Race [A], [B], [C], [D], [E], [F]
 BANKROLL ALLOCATION: $[X] ([X]% of meeting bankroll)
@@ -272,10 +382,10 @@ BANKROLL ALLOCATION: $[X] ([X]% of meeting bankroll)
 ───────────────────────────────────────────────────────────
 LEG SUMMARY
 ───────────────────────────────────────────────────────────
-| Leg | Race | Type | Selections | MC Win% (top) | Reasoning |
-|-----|------|------|------------|---------------|-----------|
-| 1 | R[X] | Banker | #X | XX.X% | [brief] |
-| 2 | R[X] | Spread | #X, #X | XX.X%, XX.X% | [brief] |
+| Leg | Race | Type | Selections | Adj Win% (top) | Reasoning |
+|-----|------|------|------------|----------------|-----------|
+| 1 | R[X] | Banker | #X | XX.X% | [brief + SCMP form note] |
+| 2 | R[X] | Spread | #X, #X | XX.X%, XX.X% | [brief + SCMP form note] |
 | ... | ... | ... | ... | ... | ... |
 
 TOTAL LINES: [N1] × [N2] × ... × [N6] = [N]
@@ -315,7 +425,7 @@ CONFIDENCE:
 - Six Up: [HIGH/MEDIUM/LOW] — [N] bankers, [N] spreads
 
 CAVEATS:
-- [List any data gaps, missing odds, going uncertainty, etc.]
+- [List any data gaps, missing odds, going uncertainty, SCMP data issues, etc.]
 ═══════════════════════════════════════════════════════════
 ```
 
@@ -345,18 +455,49 @@ CAVEATS:
 5. **Record results** — Track hit rate and payout vs stake for strategy calibration.
 6. **Rollover (Six Up)** — Larger pool = consider one extra line.
 7. **Always validate** — If data quality is poor (missing odds, empty jockey stats), note caveats prominently.
+8. **SCMP is supplementary** — MC simulation is the primary model. SCMP data adjusts and informs but does not override MC probabilities. If SCMP data is unavailable, proceed without it and note as a caveat.
+9. **Do NOT use tipster picks** — Ignore all tipster selections from SCMP or any other source. Rely only on MC simulation, SCMP odds/form/TIR/vet data, elite jockey stats, and market odds for decisions.
 
 ---
 
 ## Key Tools
 
-| Tool | Command | Purpose |
-|------|---------|---------|
+| Tool | Command / URL | Purpose |
+|------|--------------|---------|
 | Jockey Stats | `PLAYWRIGHT_BROWSERS_PATH=0 npx tsx tools/fetch-jockey-stats.ts` | Season win rates |
 | Live Odds | `PLAYWRIGHT_BROWSERS_PATH=0 npx tsx tools/fetch-odds.ts --date=YYYY-MM-DD --venue=HV --json --save` | Current odds |
 | Race Analysis | `PLAYWRIGHT_BROWSERS_PATH=0 npx tsx tools/analyze-race.ts --date YYYY-MM-DD --venue "Happy Valley" --race N --bankroll BANKROLL --kelly 0.35 --min-edge 5` | MC simulation |
 | Race Card | `https://racing.hkjc.com/racing/information/English/Racing/RaceCard.aspx?RaceDate=YYYY/MM/DD&Racecourse=HV&RaceNo=N` | Entries, jockeys |
 | T-T Auto Pick | `https://racing.hkjc.com/en-us/local/information/ttautopick?racedate=YYYY/MM/DD` | Confirm 3T legs |
+| **SCMP Race Card** | `https://www.scmp.com/sport/racing/racecard/N` | **Odds, Star Form, TIR, Vet Report, Trackwork, QP/Q odds, Formline** |
+
+---
+
+## SCMP Data Quick Reference
+
+### What to extract per race (for 3T/Six Up legs)
+
+```
+For each leg race, build this SCMP data table:
+
+RACE [N] SCMP DATA
+| # | Horse | Win Odds | Place Odds | Star Form Signal | TIR Flag | Vet Flag | Trackwork | Woo Mention |
+|---|-------|----------|------------|------------------|----------|----------|-----------|-------------|
+| X | NAME | X.X | X.X | +draw, +form | clear | clear | +trial | ✓ main chance |
+| X | NAME | X.X | X.X | -disappointed | -barrier | -injury30d | — | not mentioned |
+```
+
+### Shorthand flag codes
+- `+trial` = positive trackwork/trial
+- `+draw` = favourable draw (Star Form / Woo)
+- `+form` = improving recent form
+- `+excuses` = bad luck last run (TIR bounce)
+- `-injury` = recent injury flag (Vet)
+- `-injury30d` = injury passed <30 days ago
+- `-barrier` = repeated barrier issues (TIR)
+- `-perf` = unacceptable performance (TIR)
+- `-age` = 8+ years old (Vet)
+- `-notRO` = not ridden out (TIR)
 
 ---
 
@@ -367,9 +508,11 @@ CAVEATS:
 Expected agent behaviour:
 1. Fetch jockey stats → check elite tier
 2. Fetch odds for HV 2026-02-11 → save
-3. Confirm 3T legs (R4, R5, R6) and Six Up legs (R4–R9) from HKJC
-4. Run `analyze-race.ts` for R4, R5, R6, R7, R8, R9 (6 races)
-5. Validate: all legs ≥ 4 starters, odds populated, no critical scratchings
-6. Compile MC results, classify legs, calculate combinations
-7. Output 3T ticket + Six Up ticket + combined summary
-8. Save to `data/reports/3t_sixup_strategy_20260211_HV_Opus-4.6.md`
+3. **Fetch SCMP race card** → extract odds, Star Form, TIR, Vet, Trackwork, QP/Q odds, Formline for leg races (ignore tipster picks)
+4. Confirm 3T legs (R4, R5, R6) and Six Up legs (R4–R9) from HKJC
+5. Run `analyze-race.ts` for R4, R5, R6, R7, R8, R9 (6 races)
+6. Validate: all legs ≥ 4 starters, odds populated, no critical scratchings, SCMP data loaded
+7. Apply jockey boosts + SCMP form adjustments (Star Form, TIR, Vet, Trackwork flags)
+8. Compile MC results, classify legs (using adjusted probabilities), calculate combinations
+9. Output 3T ticket + Six Up ticket + combined summary
+10. Save to `data/reports/3t_sixup_strategy_20260211_HV_Opus-4.6.md`
