@@ -141,16 +141,6 @@ RECOMMENDATION: Pass on this race. Save bankroll for better opportunities.
 - WIN strike rate: ~40-50% with elite jockeys
 - **Widen QUINELLA to box 3-4 horses**
 
-## Elite Jockey Priority (Validated from 13-Meeting Backtest)
-
-| Jockey | Strike Rate | Recommendation |
-|--------|-------------|----------------|
-| J McDonald | 80% | Back strongly when booked |
-| M Guyon | 80% | Back strongly |
-| H Bowman | 67% | Back with confidence |
-| J Moreira | 65% | Back with confidence |
-| Z Purton | 57% | Back but expect variance |
-
 ## Validated ROI Benchmarks (From Backtests)
 
 | Bet Type | Expected Strike | Expected ROI |
