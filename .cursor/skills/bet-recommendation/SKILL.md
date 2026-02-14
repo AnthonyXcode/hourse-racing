@@ -81,7 +81,7 @@ Standard stakes, trust short favourites (2.0-3.5), quinella top 2
 
 ## Output Format
 
-Save to `data/reports/bet_recommendation_YYYYMMDD_VENUE.md`. See `prompts/bet-recommendation.md` for full template.
+Save to `data/reports/bet_recommendation_YYYYMMDD_VENUEAI-MODEL.md`. See `prompts/bet-recommendation.md` for full template.
 
 ## Validated Performance (13 Meetings)
 

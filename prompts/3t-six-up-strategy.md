@@ -174,7 +174,7 @@ Six Up: [N1] × [N2] × ... × [N6] = [total] lines
 
 ### Output the full report
 
-Save to: `data/reports/3t_sixup_strategy_YYYYMMDD_VENUE.md`
+Save to: `data/reports/3t_sixup_strategy_YYYYMMDD_VENUE_AI-MODEL.md`
 
 ---
 
