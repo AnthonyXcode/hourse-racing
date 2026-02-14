@@ -48,7 +48,7 @@ async function main() {
           break; // Found a working date
         }
       } catch (err) {
-        console.log(`  No race card available for this date`);
+        console.log(`  No race card available for this date: ${err instanceof Error ? err.message : err}`);
       }
     }
 

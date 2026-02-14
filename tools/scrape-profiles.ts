@@ -182,7 +182,7 @@ async function scrapeHorses(
         console.log(`✓ ${profile.name} (Form: ${profile.formFigures})`);
       } catch (error) {
         failed++;
-        console.log(`✗ Failed`);
+        console.log(`✗ Failed — ${error instanceof Error ? error.message : error}`);
       }
     }
 
@@ -191,8 +191,13 @@ async function scrapeHorses(
       await scraper.saveProfiles(profiles, filename);
       
       console.log(`\n✓ Saved ${profiles.length} horse profiles to data/horses/${filename}`);
+    } else {
+      console.log(`\n[WARNING] No horse profiles scraped successfully — nothing saved`);
     }
 
+    if (failed > 0) {
+      console.log(`[WARNING] ${failed}/${horseCodes.length} horse profiles failed to scrape — output is partial`);
+    }
     console.log(`\nSummary: ${success} success, ${failed} failed`);
 
   } finally {

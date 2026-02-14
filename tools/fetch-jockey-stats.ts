@@ -121,8 +121,8 @@ async function fetchJockeyList(page: Page): Promise<JockeyBasic[]> {
         });
         
         if (foundJockeys.size >= 10) break;
-      } catch {
-        // Continue to next date/venue
+      } catch (error) {
+        console.log(`  [WARNING] Failed to fetch race card for ${dateStr} ${venue}: ${error instanceof Error ? error.message : error}`);
       }
     }
   }
@@ -194,6 +194,16 @@ async function fetchJockeyStats(
         return null;
       }
 
+      const warnings: string[] = [];
+      if (!nameMatch) warnings.push("name");
+      if (!nationalityMatch) warnings.push("nationality");
+      if (!secondsMatch) warnings.push("seconds");
+      if (!thirdsMatch) warnings.push("thirds");
+      if (!fourthsMatch) warnings.push("fourths");
+      if (!winPercentMatch) warnings.push("winPercent");
+      if (!stakesMatch) warnings.push("stakesWon");
+      if (!last10Match) warnings.push("winsLast10Days");
+
       return {
         name: nameMatch ? nameMatch[1].trim() : "Unknown",
         nationality: nationalityMatch ? nationalityMatch[1] : "Unknown",
@@ -205,6 +215,7 @@ async function fetchJockeyStats(
         winPercent: winPercentMatch ? parseFloat(winPercentMatch[1]) : 0,
         stakesWon: stakesMatch ? parseInt(stakesMatch[1].replace(/,/g, ""), 10) : 0,
         winsLast10Days: last10Match ? parseInt(last10Match[1], 10) : 0,
+        _warnings: warnings.length > 0 ? warnings : undefined,
       };
     });
 
@@ -231,7 +242,8 @@ async function fetchAllJockeyStats(): Promise<JockeyRanking> {
     const jockeyList = await fetchJockeyList(page);
     
     if (jockeyList.length === 0) {
-      console.log("Using known jockey list as fallback.");
+      console.log("[WARNING] Could not scrape any jockeys from recent race cards. Using known jockey list as fallback.");
+      console.log("[WARNING] This means stats may include inactive jockeys. Verify results against HKJC ranking page.");
       jockeyList.push(...KNOWN_JOCKEY_CODES);
     }
     
@@ -244,7 +256,15 @@ async function fetchAllJockeyStats(): Promise<JockeyRanking> {
         if (stats.name === "Unknown" && jockey.name) {
           stats.name = jockey.name;
         }
+        // Log warnings for fields that fell back to defaults
+        const w = (stats as any)._warnings as string[] | undefined;
+        if (w && w.length > 0) {
+          console.log(`  [WARNING] ${jockey.code}: defaulted fields: ${w.join(", ")}`);
+        }
+        delete (stats as any)._warnings;
         jockeys.push(stats);
+      } else if (stats === null) {
+        console.log(`  [WARNING] ${jockey.code}: Failed to parse stats page — skipping`);
       }
     }
   } finally {

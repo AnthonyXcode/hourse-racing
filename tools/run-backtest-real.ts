@@ -59,6 +59,12 @@ async function main() {
   const validRaces = races.filter(r => r.finishOrder.length > 0 && r.winDividend);
 
   console.log(`\nLoaded ${races.length} races, ${validRaces.length} with valid results`);
+
+  if (validRaces.length === 0) {
+    console.log("\n[ERROR] No valid races found in data file. Cannot run backtest.");
+    console.log("  Check that the data file contains races with finishOrder and winDividend.");
+    process.exit(1);
+  }
   console.log("─".repeat(60));
 
   // Configuration

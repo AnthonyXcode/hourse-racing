@@ -56,6 +56,7 @@ async function main() {
 
   } catch (error) {
     console.error("\nScraping failed:", error);
+    process.exitCode = 1;
   } finally {
     await scraper.close();
   }

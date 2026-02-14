@@ -218,8 +218,13 @@ async function analyzeRace(args: CliArgs): Promise<void> {
       args.raceNumber
     );
 
-    // Estimate place odds if not available
+    // Estimate place odds (live place odds not fetched by this scraper)
     const valueCalc = new ValueCalculator();
+    if (winOddsMap.size === 0) {
+      console.log("[WARNING] No win odds fetched — value calculations will be unreliable");
+    } else {
+      console.log(`[INFO] Win odds fetched for ${winOddsMap.size} horses (place odds estimated from win odds)`);
+    }
     const placeOddsMap = valueCalc.estimatePlaceOdds(winOddsMap);
 
     const marketOdds: MarketOdds = {

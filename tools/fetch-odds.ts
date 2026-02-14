@@ -136,13 +136,28 @@ async function fetchMeetingOdds(
         const raceOdds = await fetchRaceOdds(page, date, venue, raceNo);
         if (raceOdds.horses.length > 0) {
           races.push(raceOdds);
+        } else {
+          console.log(`  [WARNING] Race ${raceNo}: Odds page returned 0 horses — race may not exist or page structure changed`);
         }
       } catch (error) {
-        console.log(`  Race ${raceNo}: No data or error`);
+        console.log(`  [WARNING] Race ${raceNo}: Fetch failed — ${error instanceof Error ? error.message : error}`);
       }
     }
   } finally {
     await browser.close();
+  }
+
+  if (races.length === 0) {
+    console.log(`\n[ERROR] No races with odds data found for ${venue} on ${date}. Possible causes:`);
+    console.log(`  - No racing scheduled on this date`);
+    console.log(`  - HKJC website structure changed`);
+    console.log(`  - Network/timeout issues`);
+  } else {
+    const totalHorses = races.reduce((sum, r) => sum + r.horses.length, 0);
+    console.log(`\n[INFO] Fetched odds for ${races.length} races (${totalHorses} horses total, avg ${(totalHorses / races.length).toFixed(1)} per race)`);
+    if (totalHorses / races.length < 5) {
+      console.log(`[WARNING] Low horse count per race — scraper may be capturing partial fields only`);
+    }
   }
 
   return {
