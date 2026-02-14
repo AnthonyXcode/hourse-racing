@@ -256,9 +256,19 @@ Use **adjusted** probabilities (after jockey + SCMP form boosts) for classificat
 
 | Classification | Criteria | 3T Picks | Six Up Picks |
 |----------------|----------|----------|--------------|
-| **Banker** | Top horse Adj Place% ≥ 60% (3T) or Adj Win% ≥ 35% (Six Up) | 3 horses | 1 horse |
-| **Lean** | Top horse Adj Place% 45-60% (3T) or Adj Win% 25-35% (Six Up) | 4 horses | 1-2 horses |
-| **Open** | No horse Adj Place% ≥ 45% (3T) or Adj Win% ≥ 25% (Six Up) | 4-5 horses | 2-3 horses |
+| **Banker** | Top horse Adj Place% ≥ 55% (3T) or Adj Win% ≥ 35% (Six Up) | **4 horses** | 1 horse |
+| **Lean** | Top horse Adj Place% 40-55% (3T) or Adj Win% 25-35% (Six Up) | **5 horses** | 1-2 horses |
+| **Open** | No horse Adj Place% ≥ 40% (3T) or Adj Win% ≥ 25% (Six Up) | **5-6 horses** | 2-3 horses |
+
+> **Why wider selections?** Backtest over 3 months (25 meetings, 75 legs) showed that narrower picks
+> (3 for Banker, 4 for Lean) only achieved an 18.7% per-leg hit rate. Banker legs with 3 picks hit
+> just 13.6% — worse than Open legs with 4+ picks (33.3%). Covering the actual top 3 in a 12-14
+> horse field requires at least 4-5 picks per leg. Wider selections increase combinations (and lower
+> flexi payout per unit) but dramatically improve hit probability, which is the binding constraint.
+
+**Minimum selection rule**: Always select **at least 4 horses** per 3T leg, even if the leg classifies as Banker.
+
+**Longshot insurance rule**: After selecting top-N horses by Adj Place%, check if **all** selected horses have odds < 8.0. If so, add the highest-ranked horse with odds between 8.0 and 20.0 as an extra pick. This guards against mid-range longshot spoilers, which accounted for ~74% of missed legs in backtesting.
 
 **Tie-breaking rules** (when two horses have similar adjusted probabilities within 2%):
 1. Prefer the horse with positive SCMP flags (+trial, +draw) over neutral
@@ -278,9 +288,11 @@ Six Up: [N1] × [N2] × ... × [N6] = [total] lines
 ```
 
 ### 4d. Budget check
-- 3T stake must be ≤ 5% of meeting bankroll
+- 3T stake is a **fixed flexi bet** (e.g. $50 per ticket regardless of combination count)
+- 3T flexi allocation must be ≤ 5% of meeting bankroll
 - Six Up stake must be ≤ 8% of meeting bankroll
 - If over budget: reduce picks in the most **open** leg first (drop lowest-ranked horse)
+- **Note**: With wider selections (4-5-5 = 100 combos, 5-5-5 = 125 combos), the flexi percentage is lower per unit, but the priority is achieving a hit. A lower-flexi winning ticket far outweighs a missed narrow ticket.
 
 ---
 
@@ -457,6 +469,9 @@ CAVEATS:
 7. **Always validate** — If data quality is poor (missing odds, empty jockey stats), note caveats prominently.
 8. **SCMP is supplementary** — MC simulation is the primary model. SCMP data adjusts and informs but does not override MC probabilities. If SCMP data is unavailable, proceed without it and note as a caveat.
 9. **Do NOT use tipster picks** — Ignore all tipster selections from SCMP or any other source. Rely only on MC simulation, SCMP odds/form/TIR/vet data, elite jockey stats, and market odds for decisions.
+10. **Prioritise hit rate over flexi percentage** — Backtesting showed that narrow selections (3 picks/leg) have very low hit rates (~14%). Wider selections (4-5 picks) roughly double or triple the per-leg hit rate. Use flexi betting to keep total stake fixed at $50 per ticket; accept the lower per-unit payout in exchange for a realistic chance of hitting.
+11. **Watch for longshot spoilers** — In HK racing, ~69% of leg misses involve a horse at odds ≥ 15.0 finishing in the top 3. The longshot insurance rule (add a mid-range horse if all picks are short-priced) mitigates this.
+12. **Minimum 4 picks per 3T leg** — Never go below 4 selections, even for Banker legs. Backtest Banker legs with 3 picks hit only 13.6% vs 24%+ with 4-5 picks.
 
 ---
 
