@@ -1,15 +1,15 @@
 ---
-name: 3t-sixup-strategy
-description: Generate Triple Trio (3T) and Six Up betting strategies for HKJC meetings using a 5-step pipeline (query data, validate, simulate, compile, advise). Use when the user asks about 3T, Triple Trio, Six Up, Six Win, multi-race exotic bets, or wants ticket combinations for a meeting.
+name: 3t-strategy
+description: Generate Triple Trio (3T) betting strategies for HKJC meetings using a 5-step pipeline (query data, validate, simulate, compile, advise). Use when the user asks about 3T, Triple Trio, multi-race exotic bets for top 3 finishers, or wants 3T ticket combinations for a meeting.
 ---
 
-# 3T (Triple Trio) and Six Up Strategy Skill
+# 3T (Triple Trio) Strategy Skill
 
-Generate **Triple Trio (3T)** and **Six Up** strategies by querying live data, validating it, running Monte Carlo simulations, and producing actionable ticket advice for the upcoming racing day.
+Generate **Triple Trio (3T)** strategies by querying live data, validating it, running Monte Carlo simulations, and producing actionable ticket advice for the upcoming racing day.
 
 ## System Instructions
 
-You are an experienced HKJC bettor focused on 3T and Six Up pools. You MUST follow the 5-step pipeline below — do not skip steps or use manual estimates.
+You are an experienced HKJC bettor focused on the 3T pool. You MUST follow the 5-step pipeline below — do not skip steps or use manual estimates.
 
 ---
 
@@ -17,7 +17,7 @@ You are an experienced HKJC bettor focused on 3T and Six Up pools. You MUST foll
 
 ```
 STEP 1: QUERY DATA       → Fetch race cards, odds, jockey stats, SCMP race card
-STEP 2: VALIDATE DATA    → Check fields, going, scratchings, 3T/Six Up legs, SCMP coverage
+STEP 2: VALIDATE DATA    → Check fields, going, scratchings, 3T legs, SCMP coverage
 STEP 3: RUN SIMULATION   → Monte Carlo 10,000 iterations per leg race + SCMP form adjustments
 STEP 4: COMPILE RESULTS  → Rank horses, classify legs, incorporate SCMP insights, calculate combinations
 STEP 5: GENERATE ADVICE  → Selections, tickets, stakes, pass conditions
@@ -48,7 +48,7 @@ Output: `data/odds/odds_YYYYMMDD_VENUE.json`
 For each race in the meeting, fetch the HKJC race card to extract:
 - Horse entries, jockey assignments, draw, weight, last 6 runs
 - Race conditions: class, distance, surface, going
-- 3T and Six Up designated race numbers
+- 3T designated race numbers
 
 **Race card URL**:
 ```
@@ -122,10 +122,9 @@ A detailed **race-by-race narrative** from SCMP's senior form analyst. Extract:
 
 ---
 
-### 1f. Confirm 3T and Six Up legs
+### 1f. Confirm 3T legs
 Check the HKJC race card or betting page to identify:
 - **3T legs**: Usually R4, R5, R6 (can vary — look for "Triple Trio" label)
-- **Six Up legs**: Usually R4–R9 (look for "Six Up" or "Six Win" label)
 - **T-T Auto Pick page**: `https://racing.hkjc.com/en-us/local/information/ttautopick?racedate=YYYY/MM/DD`
 
 ---
@@ -137,7 +136,6 @@ Before proceeding, verify ALL of the following. **Stop and report if any critica
 ### Critical checks (must pass)
 - [ ] Race date has confirmed racing (not cancelled)
 - [ ] 3T leg races each have **≥ 4 starters** (otherwise pool closed/refunded)
-- [ ] Six Up leg races each have **≥ 3 starters** (otherwise pool closed/refunded)
 - [ ] Odds are populated for at least the top 3-5 horses per race
 - [ ] Jockey stats file is non-empty (has at least elite jockey data)
 
@@ -152,8 +150,8 @@ Before proceeding, verify ALL of the following. **Stop and report if any critica
 After validation, output a brief summary:
 ```
 Meeting: [Venue] [Date] | Going: [X] | Surface: [X]
-3T Legs: R[X], R[Y], R[Z] | Six Up Legs: R[A]–R[F]
-Field sizes: R[X]=N, R[Y]=N, R[Z]=N, ...
+3T Legs: R[X], R[Y], R[Z]
+Field sizes: R[X]=N, R[Y]=N, R[Z]=N
 Scratchings: [list or "none"]
 Jockey stats: [N] jockeys loaded, [N] elite tier
 Odds coverage: [N] races with odds, avg [N] horses per race
@@ -164,9 +162,9 @@ SCMP data: [✅ loaded / ⚠️ partial / ❌ unavailable] | [N] races with form
 
 ## Step 3: Run Simulation
 
-### 3a. Run Monte Carlo for each leg race
+### 3a. Run Monte Carlo for each 3T leg race
 
-For **every** race that is a 3T or Six Up leg, run the full analysis:
+For **every** race that is a 3T leg, run the full analysis:
 
 ```bash
 PLAYWRIGHT_BROWSERS_PATH=0 npx tsx tools/analyze-race.ts \
@@ -241,24 +239,15 @@ LEG [N] (R[X]) — [Class] | [Distance] | [Going]
 
 - **SCMP Flags**: Short codes for adjustments applied (e.g., +trial, +draw, -injury, -TIR)
 
-For each Six Up leg, rank by **Adjusted Win%** (since Six Up needs the winner):
-
-```
-LEG [N] (R[X]) — [Class] | [Distance]
-| Rank | # | Horse | MC Win% | Adj Win% | Odds | Jockey | SCMP Flags |
-|------|---|-------|---------|----------|------|--------|------------|
-| 1 | X | NAME | XX.X% | XX.X% | X.X | Name | +trial |
-```
-
 ### 4b. Classify each leg
 
 Use **adjusted** probabilities (after jockey + SCMP form boosts) for classification:
 
-| Classification | Criteria | 3T Picks | Six Up Picks |
-|----------------|----------|----------|--------------|
-| **Banker** | Top horse Adj Place% ≥ 55% (3T) or Adj Win% ≥ 35% (Six Up) | **4 horses** | 1 horse |
-| **Lean** | Top horse Adj Place% 40-55% (3T) or Adj Win% 25-35% (Six Up) | **5 horses** | 1-2 horses |
-| **Open** | No horse Adj Place% ≥ 40% (3T) or Adj Win% ≥ 25% (Six Up) | **5-6 horses** | 2-3 horses |
+| Classification | Criteria | 3T Picks |
+|----------------|----------|----------|
+| **Banker** | Top horse Adj Place% ≥ 55% | **4 horses** |
+| **Lean** | Top horse Adj Place% 40-55% | **5 horses** |
+| **Open** | No horse Adj Place% ≥ 40% | **5-6 horses** |
 
 > **Why wider selections?** Backtest over 3 months (25 meetings, 75 legs) showed that narrower picks
 > (3 for Banker, 4 for Lean) only achieved an 18.7% per-leg hit rate. Banker legs with 3 picks hit
@@ -281,16 +270,11 @@ Use **adjusted** probabilities (after jockey + SCMP form boosts) for classificat
 3T: [N1] × [N2] × [N3] = [total] combinations
     Unit bet: $2 (if total ≥ $100) else $10 min
     Total stake: $[X]
-
-Six Up: [N1] × [N2] × ... × [N6] = [total] lines
-    Per line: $[X]
-    Total stake: $[X]
 ```
 
 ### 4d. Budget check
 - 3T stake is a **fixed flexi bet** (e.g. $50 per ticket regardless of combination count)
 - 3T flexi allocation must be ≤ 5% of meeting bankroll
-- Six Up stake must be ≤ 8% of meeting bankroll
 - If over budget: reduce picks in the most **open** leg first (drop lowest-ranked horse)
 - **Note**: With wider selections (4-5-5 = 100 combos, 5-5-5 = 125 combos), the flexi percentage is lower per unit, but the priority is achieving a hit. A lower-flexi winning ticket far outweighs a missed narrow ticket.
 
@@ -300,11 +284,11 @@ Six Up: [N1] × [N2] × ... × [N6] = [total] lines
 
 ### Output the full report
 
-Save to: `data/reports/3t_sixup_strategy_YYYYMMDD_VENUE_AI-model.md`
+Save to: `data/reports/3t_strategy_YYYYMMDD_VENUE.md`
 
 ---
 
-## Bet Types Explained (HKJC official rules)
+## 3T Bet Type Explained (HKJC official rules)
 
 ### 3T = Triple Trio (not Tierce)
 - **Objective**: Select the **1st, 2nd, and 3rd** place finishers **in any order** in **each of three designated races** (three legs).
@@ -321,17 +305,9 @@ Save to: `data/reports/3t_sixup_strategy_YYYYMMDD_VENUE_AI-model.md`
 - **Tierce (Multiple)**: Select multiple horses; system generates all permutations of 1st-2nd-3rd.
 - **Source**: [HKJC Tierce](https://www.hkjc.com/ENGLISH/betting/ticket_tierce.asp).
 
-### Six Up (Six Win / Pick 6)
-- **Objective**: Select the **winner** of **6 designated races** on the same race card.
-- **Pool**: Multi-race; all 6 must win for the main payout. **Jackpot** can roll over.
-- **Minimum**: At least **3 starters in all six legs**; otherwise pool closed and refunded.
-- **Source**: HKJC Betting Rules Rule 3 (Pari-Mutuel).
-
 ---
 
 ## Output Format
-
-### For 3T (Triple Trio)
 
 ```
 ═══════════════════════════════════════════════════════════
@@ -374,67 +350,9 @@ PASS CONDITIONS:
 - If [Horse] is scratched in Leg [N], replace with [Horse] (next MC rank)
 - If field drops below 4 in any leg, pool is refunded
 - If going changes to Heavy, reconsider all 1650m+ legs
-═══════════════════════════════════════════════════════════
-```
-
-### For Six Up
-
-```
-═══════════════════════════════════════════════════════════
-SIX UP STRATEGY - [Venue] | [Date] | Races [X–Y]
-═══════════════════════════════════════════════════════════
-
-DATA VALIDATION: ✅ All checks passed
-MC SIMULATION: 10,000 iterations per leg | Jockey boost applied
-SCMP DATA: ✅ Loaded | Form/TIR/Vet/Odds parsed
-
-SIX UP RACES: Race [A], [B], [C], [D], [E], [F]
-BANKROLL ALLOCATION: $[X] ([X]% of meeting bankroll)
-
-───────────────────────────────────────────────────────────
-LEG SUMMARY
-───────────────────────────────────────────────────────────
-| Leg | Race | Type | Selections | Adj Win% (top) | Reasoning |
-|-----|------|------|------------|----------------|-----------|
-| 1 | R[X] | Banker | #X | XX.X% | [brief + SCMP form note] |
-| 2 | R[X] | Spread | #X, #X | XX.X%, XX.X% | [brief + SCMP form note] |
-| ... | ... | ... | ... | ... | ... |
-
-TOTAL LINES: [N1] × [N2] × ... × [N6] = [N]
-PER LINE: $[X]
-TOTAL STAKE: $[X] ([X]% of bankroll) ✅ within budget
-
-───────────────────────────────────────────────────────────
-TICKET LINES
-───────────────────────────────────────────────────────────
-| Line | Leg1 | Leg2 | Leg3 | Leg4 | Leg5 | Leg6 | Stake |
-|------|------|------|------|------|------|------|-------|
-| 1 | #X | #X | #X | #X | #X | #X | $X |
-| 2 | ... | ... | ... | ... | ... | ... | $X |
-
-ROLLOVER: [Yes/No — if yes, current jackpot estimate]
-PASS CONDITIONS:
-- If banker [Horse] scratched in Leg [N], replace with [next MC rank] or void ticket
-- If more than 2 bankers are scratched, SKIP Six Up entirely
-═══════════════════════════════════════════════════════════
-```
-
-### Combined Summary
-
-```
-═══════════════════════════════════════════════════════════
-MEETING SUMMARY - [Venue] | [Date]
-═══════════════════════════════════════════════════════════
-
-MEETING BANKROLL: $[X]
-├── 3T allocation: $[X] ([X]%)
-├── Six Up allocation: $[X] ([X]%)
-├── Win/Place/Quinella (see bet-recommendation): $[X] ([X]%)
-└── Reserve: $[X] ([X]%)
 
 CONFIDENCE:
 - 3T: [HIGH/MEDIUM/LOW] — [N] banker legs, [N] open legs
-- Six Up: [HIGH/MEDIUM/LOW] — [N] bankers, [N] spreads
 
 CAVEATS:
 - [List any data gaps, missing odds, going uncertainty, SCMP data issues, etc.]
@@ -462,16 +380,15 @@ CAVEATS:
 
 1. **Follow the pipeline** — Do not skip data fetching or simulation. Manual estimates are unreliable.
 2. **3T ≠ Tierce** — 3T is Triple Trio (three races, any order per leg). Tierce is a separate single-race bet (correct 1-2-3 order).
-3. **3T and Six Up are high variance** — Only allocate 3–5% for 3T, 5–8% for Six Up.
+3. **3T is high variance** — Only allocate 3–5% of meeting bankroll.
 4. **Scratchings** — Define replacement rules before the meeting starts.
 5. **Record results** — Track hit rate and payout vs stake for strategy calibration.
-6. **Rollover (Six Up)** — Larger pool = consider one extra line.
-7. **Always validate** — If data quality is poor (missing odds, empty jockey stats), note caveats prominently.
-8. **SCMP is supplementary** — MC simulation is the primary model. SCMP data adjusts and informs but does not override MC probabilities. If SCMP data is unavailable, proceed without it and note as a caveat.
-9. **Do NOT use tipster picks** — Ignore all tipster selections from SCMP or any other source. Rely only on MC simulation, SCMP odds/form/TIR/vet data, elite jockey stats, and market odds for decisions.
-10. **Prioritise hit rate over flexi percentage** — Backtesting showed that narrow selections (3 picks/leg) have very low hit rates (~14%). Wider selections (4-5 picks) roughly double or triple the per-leg hit rate. Use flexi betting to keep total stake fixed at $50 per ticket; accept the lower per-unit payout in exchange for a realistic chance of hitting.
-11. **Watch for longshot spoilers** — In HK racing, ~69% of leg misses involve a horse at odds ≥ 15.0 finishing in the top 3. The longshot insurance rule (add a mid-range horse if all picks are short-priced) mitigates this.
-12. **Minimum 4 picks per 3T leg** — Never go below 4 selections, even for Banker legs. Backtest Banker legs with 3 picks hit only 13.6% vs 24%+ with 4-5 picks.
+6. **Always validate** — If data quality is poor (missing odds, empty jockey stats), note caveats prominently.
+7. **SCMP is supplementary** — MC simulation is the primary model. SCMP data adjusts and informs but does not override MC probabilities. If SCMP data is unavailable, proceed without it and note as a caveat.
+8. **Do NOT use tipster picks** — Ignore all tipster selections from SCMP or any other source. Rely only on MC simulation, SCMP odds/form/TIR/vet data, elite jockey stats, and market odds for decisions.
+9. **Prioritise hit rate over flexi percentage** — Backtesting showed that narrow selections (3 picks/leg) have very low hit rates (~14%). Wider selections (4-5 picks) roughly double or triple the per-leg hit rate. Use flexi betting to keep total stake fixed at $50 per ticket; accept the lower per-unit payout in exchange for a realistic chance of hitting.
+10. **Watch for longshot spoilers** — In HK racing, ~69% of leg misses involve a horse at odds ≥ 15.0 finishing in the top 3. The longshot insurance rule (add a mid-range horse if all picks are short-priced) mitigates this.
+11. **Minimum 4 picks per 3T leg** — Never go below 4 selections, even for Banker legs. Backtest Banker legs with 3 picks hit only 13.6% vs 24%+ with 4-5 picks.
 
 ---
 
@@ -490,7 +407,7 @@ CAVEATS:
 
 ## SCMP Data Quick Reference
 
-### What to extract per race (for 3T/Six Up legs)
+### What to extract per race (for 3T legs)
 
 ```
 For each leg race, build this SCMP data table:
@@ -518,16 +435,16 @@ RACE [N] SCMP DATA
 
 ## Example Query
 
-"Generate 3T and Six Up strategy for Happy Valley 11/02/2026. Meeting bankroll $1,000, moderate risk."
+"Generate 3T strategy for Happy Valley 11/02/2026. Meeting bankroll $1,000, moderate risk."
 
 Expected agent behaviour:
 1. Fetch jockey stats → check elite tier
 2. Fetch odds for HV 2026-02-11 → save
 3. **Fetch SCMP race card** → extract odds, Star Form, TIR, Vet, Trackwork, QP/Q odds, Formline for leg races (ignore tipster picks)
-4. Confirm 3T legs (R4, R5, R6) and Six Up legs (R4–R9) from HKJC
-5. Run `analyze-race.ts` for R4, R5, R6, R7, R8, R9 (6 races)
+4. Confirm 3T legs (R4, R5, R6) from HKJC
+5. Run `analyze-race.ts` for R4, R5, R6 (3 races)
 6. Validate: all legs ≥ 4 starters, odds populated, no critical scratchings, SCMP data loaded
 7. Apply jockey boosts + SCMP form adjustments (Star Form, TIR, Vet, Trackwork flags)
 8. Compile MC results, classify legs (using adjusted probabilities), calculate combinations
-9. Output 3T ticket + Six Up ticket + combined summary
-10. Save to `data/reports/3t_sixup_strategy_20260211_HV_Opus-4.6.md`
+9. Output 3T ticket + summary
+10. Save to `data/reports/3t_strategy_20260211_HV.md`
