@@ -123,9 +123,19 @@ A detailed **race-by-race narrative** from SCMP's senior form analyst. Extract:
 ---
 
 ### 1f. Confirm 3T legs
-Check the HKJC race card or betting page to identify:
-- **3T legs**: Usually R4, R5, R6 (can vary — look for "Triple Trio" label)
-- **T-T Auto Pick page**: `https://racing.hkjc.com/en-us/local/information/ttautopick?racedate=YYYY/MM/DD`
+
+**Primary source** — HKJC General Information page (lists all pool types and their designated races):
+```
+https://racing.hkjc.com/en-us/local/info/summary
+```
+Use `WebFetch` to retrieve this page on race day. Look for the **Triple Trio** row which specifies the exact leg races (e.g. "Triple Trio: Races 5, 6 & 7"). The default is R4, R5, R6 but this **varies** — always verify.
+
+**Fallback source** — T-T Auto Pick page (if General Information is unavailable or unclear):
+```
+https://racing.hkjc.com/en-us/local/information/ttautopick?racedate=YYYY/MM/DD
+```
+
+**Do NOT assume R4-R5-R6.** The legs can shift to R5-R6-R7 or other combinations depending on the meeting schedule.
 
 ---
 
@@ -292,7 +302,7 @@ Save to: `data/reports/3t_strategy_YYYYMMDD_VENUE.md`
 
 ### 3T = Triple Trio (not Tierce)
 - **Objective**: Select the **1st, 2nd, and 3rd** place finishers **in any order** in **each of three designated races** (three legs).
-- **Pool**: Multi-race pool. Typically **Race 4, Race 5, Race 6** (or Races 3, 4, 6 – confirm on HKJC for the meeting).
+- **Pool**: Multi-race pool. Usually R4-R5-R6 but **varies by meeting** (e.g. R5-R6-R7). Always confirm via the [General Information page](https://racing.hkjc.com/en-us/local/info/summary).
 - **Winning**: Your ticket wins if you have selected the actual 1st, 2nd, and 3rd (in **any order**) in **Leg 1** AND in **Leg 2** AND in **Leg 3**.
 - **Consolation**: If no one wins the main pool, a **consolation dividend** is paid to tickets that have the 1st, 2nd, and 3rd (in any order) in **the first two legs only** (85% of Net Pool to main; 15% to consolation; see HKJC Rule 3.6).
 - **Ticket**: You choose a set of horses for **each leg**. The system generates combinations. Example: 4 horses in Leg 1, 4 in Leg 2, 4 in Leg 3 → 4×4×4 = **64 combinations** (unit bet × 64 = total stake).
@@ -400,7 +410,8 @@ CAVEATS:
 | Live Odds | `PLAYWRIGHT_BROWSERS_PATH=0 npx tsx tools/fetch-odds.ts --date=YYYY-MM-DD --venue=HV --json --save` | Current odds |
 | Race Analysis | `PLAYWRIGHT_BROWSERS_PATH=0 npx tsx tools/analyze-race.ts --date YYYY-MM-DD --venue "Happy Valley" --race N --bankroll BANKROLL --kelly 0.35 --min-edge 5` | MC simulation |
 | Race Card | `https://racing.hkjc.com/racing/information/English/Racing/RaceCard.aspx?RaceDate=YYYY/MM/DD&Racecourse=HV&RaceNo=N` | Entries, jockeys |
-| T-T Auto Pick | `https://racing.hkjc.com/en-us/local/information/ttautopick?racedate=YYYY/MM/DD` | Confirm 3T legs |
+| **General Info** | `https://racing.hkjc.com/en-us/local/info/summary` | **Confirm 3T legs (primary)** |
+| T-T Auto Pick | `https://racing.hkjc.com/en-us/local/information/ttautopick?racedate=YYYY/MM/DD` | Confirm 3T legs (fallback) |
 | **SCMP Race Card** | `https://www.scmp.com/sport/racing/racecard/N` | **Odds, Star Form, TIR, Vet Report, Trackwork, QP/Q odds, Formline** |
 
 ---
@@ -439,10 +450,10 @@ RACE [N] SCMP DATA
 
 Expected agent behaviour:
 1. Fetch jockey stats → check elite tier
-2. Fetch odds for HV 2026-02-11 → save
-3. **Fetch SCMP race card** → extract odds, Star Form, TIR, Vet, Trackwork, QP/Q odds, Formline for leg races (ignore tipster picks)
-4. Confirm 3T legs (R4, R5, R6) from HKJC
-5. Run `analyze-race.ts` for R4, R5, R6 (3 races)
+2. **Confirm 3T legs** → fetch `https://racing.hkjc.com/en-us/local/info/summary` to find the exact Triple Trio leg races (do NOT assume R4-R5-R6; legs vary by meeting)
+3. Fetch odds for HV 2026-02-11 → save
+4. **Fetch SCMP race card** → extract odds, Star Form, TIR, Vet, Trackwork, QP/Q odds, Formline for leg races (ignore tipster picks)
+5. Run `analyze-race.ts` for each confirmed leg race (3 races)
 6. Validate: all legs ≥ 4 starters, odds populated, no critical scratchings, SCMP data loaded
 7. Apply jockey boosts + SCMP form adjustments (Star Form, TIR, Vet, Trackwork flags)
 8. Compile MC results, classify legs (using adjusted probabilities), calculate combinations

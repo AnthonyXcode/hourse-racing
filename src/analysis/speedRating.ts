@@ -263,6 +263,7 @@ export class SpeedRatingCalculator {
 
     // Find closest distance
     const distances = Object.keys(surfacePars).map(Number);
+    if (distances.length === 0) return null;
     const closestDistance = distances.reduce((prev, curr) =>
       Math.abs(curr - distance) < Math.abs(prev - distance) ? curr : prev
     );
