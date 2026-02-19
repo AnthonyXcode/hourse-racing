@@ -1,15 +1,15 @@
 ---
 name: trio-strategy
-description: Generate Trio (Tierce) betting strategies for individual HKJC races using a 5-step pipeline (query data, validate, simulate, compile, advise). Use when the user asks about Trio, Tierce, Trifecta, correct-order top-3 bets, or wants Trio ticket recommendations for specific races.
+description: Generate Trio (單T) betting strategies for individual HKJC races using a 5-step pipeline (query data, validate, simulate, compile, advise). Trio = pick the 1st, 2nd, and 3rd finishers in ANY ORDER. Use when the user asks about Trio, 單T, top-3 bets, or wants Trio ticket recommendations for specific races.
 ---
 
-# Trio (Tierce) Strategy Skill
+# Trio (Any Order) Strategy Skill
 
-Generate **Trio (Tierce)** strategies by querying live data, validating it, running Monte Carlo simulations, and producing actionable ticket advice for individual races.
+Generate **Trio (單T)** strategies by querying live data, validating it, running Monte Carlo simulations, and producing actionable ticket advice for individual races. Trio = pick the **1st, 2nd, and 3rd finishers in ANY ORDER** in a single race.
 
 ## System Instructions
 
-You are an experienced HKJC bettor focused on the Trio (Tierce) pool. You MUST follow the 5-step pipeline below — do not skip steps or use manual estimates.
+You are an experienced HKJC bettor focused on the Trio (單T) pool. You MUST follow the 5-step pipeline below — do not skip steps or use manual estimates.
 
 ---
 
@@ -29,14 +29,13 @@ STEP 5: GENERATE ADVICE  → Selections, tickets, stakes, pass conditions
 
 ## Trio vs 3T — Key Difference
 
-| | Trio (Tierce) | 3T (Triple Trio) |
+| | Trio (單T) | 3T (Triple Trio) |
 |---|---------------|-----------------|
 | **Scope** | **Single race** | 3 designated races |
-| **Objective** | Pick 1st, 2nd, 3rd in **correct order** | Pick top 3 in **any order** per leg |
+| **Objective** | Pick 1st, 2nd, 3rd in **ANY ORDER** | Pick top 3 in **any order** per leg |
 | **Bet type** | Single-race exotic | Multi-race pool |
-| **Ranking metric** | Adj Win% (positional) | Adj Place% |
-| **Permutations** | Order matters: N×(N-1)×(N-2) | Order doesn't matter: combinations |
-| **Pool** | Per-race pool | Multi-race pool with consolation |
+| **Ranking metric** | Adj Place% (who finishes top 3) | Adj Place% |
+| **Permutations** | Order does NOT matter: C(P,3) combos | Order doesn't matter: combinations |
 
 ---
 
@@ -124,7 +123,7 @@ The SCMP publishes full **QP and Q odds matrices** for each race. These are the 
 
 **How to use for Trio:**
 - Cross-reference MC top quinella combinations with actual QP/Q pool odds
-- Trio is essentially a quinella with ordered positions — QP/Q matrices help confirm which pairings the market undervalues
+- Trio is like an extended quinella (top 3 instead of top 2) — QP/Q matrices help confirm which horses the market expects to fill the frame
 - If the top-2 MC quinella is also a high-paying QP combination, that's a strong Trio value signal
 
 #### 1e-vii. Philip Woo's Formline
@@ -232,7 +231,7 @@ After MC simulation and jockey boosts, apply the following adjustments sourced f
 
 ### 4a. Build ranking table
 
-Rank all horses twice — by **Adjusted Win%** (for 1st position) and by **Adjusted Place%** (for 2nd/3rd positions):
+Rank all horses by **Adjusted Win%** and **Adjusted Place%** to determine pool inclusion:
 
 ```
 RACE [N] — [Class] | [Distance] | [Going] | [Field size]
@@ -247,78 +246,110 @@ Use **adjusted** probabilities for classification:
 
 | Classification | Criteria | Approach |
 |----------------|----------|----------|
-| **Dominant** | Top horse Adj Win% ≥ 35% | **Banker on top**; use as fixed 1st. Focus budget on 2nd/3rd permutations. |
-| **Competitive** | Top horse Adj Win% 20-35% | **Structured multiple**; select 3-4 horses for all positions, key on top 2 for 1st. |
-| **Wide open** | No horse Adj Win% ≥ 20% | **Broad multiple or PASS**; if played, select 4-5 horses and accept high permutation count. Consider skipping if no clear edge. |
+| **Dominant** | Top horse Adj Win% >= 35% | **Tight Pool** (Mode A); 5-horse pool centred on the dominant horse. |
+| **Competitive** | Top horse Adj Win% 20-35% | **Standard Pool** (Mode B); 6-horse pool with top 3 by Adj Win% + 3 by Adj Place%. |
+| **Wide open** | No horse Adj Win% >= 20% | **Wide Pool or PASS** (Mode C/D); 7-horse pool if structural edge exists. Default to PASS. |
 
-### 4c. Select horses and build Trio matrix
+### 4c. Select horses and build Trio pool
 
-Trio requires picking **which horse finishes 1st, 2nd, and 3rd in exact order**. This means positional analysis:
+Trio (單T) requires picking the **1st, 2nd, and 3rd finishers in ANY ORDER**. No positional analysis is needed — just select the right horses to fill the top 3.
 
-#### Position analysis
+#### Pool selection
 
-| Position | Key metric | What to look for |
-|----------|-----------|-----------------|
-| **1st** | Adj Win% | Highest win probability; front-runners and on-pace types in small fields; closers in large fields with pace on |
-| **2nd** | Adj Place% minus Adj Win% | Horses likely to place but less likely to win — the classic "each-way" types, consistent place-getters |
-| **3rd** | Adj Place% at wider odds | Horses that can sneak into top 3; strong closers, improving types, horses with excuses last run |
+Select a **single pool** of P horses. The system generates all C(P,3) combinations automatically. Your only job is to pick WHICH horses will finish in the top 3, not their order.
 
-#### Selection modes
+| Key metric | What to look for |
+|-----------|-----------------|
+| **Adj Win%** | Horses most likely to win — also most likely to place top 3 |
+| **Adj Place%** | Horses likely to place in top 3 even if they don't win — consistent place-getters, each-way types |
+| **Adj Place% >= 20%** | Any horse with >= 20% Adj Place% MUST be included in the pool (learned from 19-Feb review: #12 HE WAS ME had 24.5% Adj Place%, was excluded, and came 3rd in R1) |
 
-**Mode A: Banker 1st (Dominant race)**
-- Fix 1 horse in 1st position
-- Select 3-4 horses for 2nd position
-- Select 4-5 horses for 3rd position (include all 2nd-position picks + 1-2 extras)
-- Permutations: 1 × 3 × 4 = 12 or 1 × 4 × 5 = 20
+#### Selection modes (pool size by race classification)
 
-**Mode B: Structured Multiple (Competitive race)**
-- Select 2-3 horses for 1st position
-- Select 3-4 horses for 2nd position
-- Select 3-4 horses for 3rd position
-- Permutations: 2 × 3 × 4 = 24 or 3 × 4 × 4 = 48
+Since Trio is ANY ORDER, there is no 1st/2nd/3rd positional structure. Just select a **pool of P horses** and bet all C(P,3) combinations.
 
-**Mode C: Broad Multiple (Wide open race)**
-- Select 3-4 horses for 1st position
-- Select 4-5 horses for 2nd/3rd positions
-- Permutations: 3 × 4 × 5 = 60 or 4 × 5 × 5 = 100
-- **Warning**: High permutation count = high cost. Consider using flexi or reducing scope.
+**Mode A: Tight Pool (Dominant race, top horse Adj Win% >= 35%)**
+- Pool of **5 horses**: banker + 4 contenders ranked by Adj Place%
+- Combinations: C(5,3) = **10**
+- Cheap, focused ticket. High hit rate when banker is in the top 3.
+
+**Mode B: Standard Pool (Competitive race, top horse Adj Win% 20-35%)**
+- Pool of **6 horses**: top 3 by Adj Win% + 3 others by Adj Place%
+- Combinations: C(6,3) = **20**
+- Good balance of coverage and cost. The workhorse mode.
+
+**Mode C: Wide Pool (Wide open race, no horse >= 20%)**
+- Pool of **7 horses**: top 4 by Adj Win% + 3 others by Adj Place%
+- Combinations: C(7,3) = **35**
+- Wider coverage for uncertain races. Only play if structural read exists.
+- Consider PASS if no clear edge — wide-open races are inherently low hit rate.
 
 **Mode D: PASS**
-- If no clear positional edge and field is truly open, **skip this race** for Trio
+- If no clear edge and the field is truly open, **skip this race** for Trio
 - Better to deploy bankroll on races with clearer structure
+- Default to PASS for wide-open races unless strong pace/form conviction
+
+#### Exclusion and demotion rules (CRITICAL — learned from 19-Feb-2026 review)
+
+**Rule 1: No narrative-based exclusion.**
+Do NOT use Woo's subjective labels (e.g., "not genuine", "minor claims") to exclude horses from the pool. Pool inclusion must be based ONLY on Adj Win% and Adj Place%.
+- If Adj Place% >= 20%, the horse MUST be in the pool.
+- If Adj Win% >= 10%, the horse should be strongly considered for the pool.
+- Woo's narrative is for context and running-style assessment only — never for pool exclusion.
+- **Evidence**: R6 19-Feb — #10 Stunning Peach (17.3% Adj Win%) was demoted from 1st because Woo said "not genuine." She won at $59.
+
+**Rule 2: No hard exclusion if market odds <= 15.**
+Never completely exclude a horse from the pool if their SCMP Win odds are 15 or shorter (implied probability > 6.7%). The market incorporates vet reports, injury flags, and fitness concerns. If the collective market still rates a horse as a serious contender despite negative flags, respect it.
+- Instead of excluding, include in the pool.
+- Only fully exclude horses with SCMP Win odds > 30 AND zero positive SCMP flags.
+- **Evidence**: R7 19-Feb — #11 Just Follow Me (9.2 odds, 5.9% Adj Win%) was excluded for "-injury 16d." He came 2nd at $23.50 place. The $2,030 Trio dividend was missed.
+
+**Rule 3: Gate penalties are probability reducers, not exclusions.**
+Wide gates (10+) should reduce Adj Win% by 1-3% depending on field size and distance, but NEVER trigger hard exclusion. Gate 13 horses have won in HK racing.
+- **Evidence**: R11 19-Feb — #6 Riding Together won from gate 13 at $350.
 
 #### Running style integration
 
-For positional accuracy, consider each horse's likely running position:
+Running style is useful for assessing which horses are likely to finish in the top 3:
 
-| Running Style | 1st Position Suitability | 2nd/3rd Suitability |
-|---------------|------------------------|---------------------|
-| **Front-runner / On-pace** | Strong in small fields (≤10), weak tempo races | Less likely to drop to 2nd/3rd if beaten |
-| **Stalker / Midfield** | Consistent; good in all conditions | Very strong — often fills places |
-| **Closer / Back marker** | Strong in large fields (≥12) with pace on | Can fill 3rd if the run doesn't quite come off |
+| Running Style | Top-3 Suitability |
+|---------------|------------------|
+| **Front-runner / On-pace** | Strong in small fields, weak tempo races. Can hold on for top 3 but vulnerable if pace is hot. |
+| **Stalker / Midfield** | Very consistent top-3 type. Reliable in all conditions. Prioritise for pool inclusion. |
+| **Closer / Back marker** | Strong in large fields with pace on. Include if pace scenario is favourable. |
 
 Use SCMP Star Form and Philip Woo's Formline to assess running styles:
 - "Made all", "led", "set the pace" → front-runner
 - "Stalked the leader", "box seat", "handy position" → stalker
 - "Came from the rear", "closed well", "finished strongly" → closer
 
-### 4d. Calculate permutations and cost
+### 4d. Calculate combinations and cost
+
+Since Trio is ANY ORDER, use the **combinations** formula C(P,3):
 
 ```
-Trio Multiple:
-  1st: [N1] horses × 2nd: [N2] horses × 3rd: [N3] horses
-  Permutations: N1 × N2 × N3 = [total] (minus overlaps where same horse appears in multiple positions)
-  Note: HKJC auto-excludes permutations where the same horse fills two positions
+Trio (Any Order) Combinations:
+  Pool size: P horses
+  Combinations: C(P,3) = P! / (3! x (P-3)!)
 
-  Actual permutations (after dedup):
-  If selecting from a pool of P horses across positions:
-    P × (P-1) × (P-2) = permutations (all-in-one pool)
-  Or with fixed positions:
-    Σ (1st choices) × (remaining 2nd choices) × (remaining 3rd choices)
+  P=5: C(5,3) = 10 combinations
+  P=6: C(6,3) = 20 combinations
+  P=7: C(7,3) = 35 combinations
+  P=8: C(8,3) = 56 combinations
 
-  Unit bet: $10 min (or $2 if total ≥ $100)
-  Total stake: permutations × unit bet
+  Unit bet: $10 min (or $2 if total >= $100)
+  Total stake: combinations x unit bet
+  Flexi: fixed total stake / (combinations x unit bet)
 ```
+
+**Combination and cost table:**
+| Mode | Pool | Combos | Full Cost | Flexi at $30 |
+|------|------|--------|-----------|-------------|
+| A    | 5    | 10     | $100      | 30.0%       |
+| B    | 6    | 20     | $200      | 15.0%       |
+| C    | 7    | 35     | $350      | 8.6%        |
+
+**Key advantage over Tierce (exact order)**: Same pool of 6 horses = 20 Trio combos vs 120 Tierce permutations. 6x cheaper for the same horse selection, meaning higher flexi % and better returns on hits.
 
 ### 4e. Budget check
 - Trio stake should be ≤ **3% of meeting bankroll** per race
@@ -331,7 +362,7 @@ Trio Multiple:
 Before finalising, cross-reference with the **Trio pool estimate**:
 - Check HKJC Tierce dividends from recent similar races as a benchmark
 - If the top MC Trio combination (e.g. 1-5-3) has a very short market favourite for 1st, the Trio dividend is likely low
-- **Value Trio bets** occur when: (a) a non-favourite can win, creating large dividends, or (b) the 2nd/3rd positions are hard to predict, inflating the pool
+- **Value Trio bets** occur when: (a) a non-favourite can win, creating large dividends, or (b) the 2nd and 3rd place finishers are hard to predict, inflating the pool
 
 ---
 
@@ -345,20 +376,21 @@ Save to: `data/reports/trio_strategy_YYYYMMDD_VENUE_RN.md`
 
 ## Trio Bet Type Explained (HKJC official rules)
 
-### Trio = Tierce
-- **Objective**: Select the **1st, 2nd, and 3rd** finishers in **correct order** in **one** designated race.
-- **Tierce (Single)**: One exact order only (e.g. 2-7-9 meaning #2 wins, #7 second, #9 third). One permutation.
-- **Tierce (Multiple)**: Select multiple horses; system generates **all permutations** of 1st-2nd-3rd from your selections.
+### Trio = Any Order (HKJC 單T)
+- **Objective**: Select the **1st, 2nd, and 3rd** finishers in **ANY ORDER** in **one** designated race.
+- **Trio (Single)**: Pick exactly 3 horses (e.g. 2, 7, 9). If these 3 fill the top 3 in any order, you win. One combination.
+- **Trio (Multiple/Banker)**: Select a pool of horses; system generates **all C(P,3) combinations** of 3 from your selections.
 - **Minimum**: At least **3 starters**; otherwise pool is closed and refunded.
-- **Unit bet**: $10 minimum (or $2 if total ticket value ≥ $100).
-- **Flexi**: Available — set a fixed total stake and the system distributes across permutations.
-- **Source**: [HKJC Tierce](https://www.hkjc.com/ENGLISH/betting/ticket_tierce.asp), [HKJC Betting Rules](https://www.hkjc.com/english/betting/betting_rule.aspx).
+- **Unit bet**: $10 minimum (or $2 if total ticket value >= $100).
+- **Flexi**: Available — set a fixed total stake and the system distributes across combinations.
+- **Dividend**: The 單T dividend shown on HKJC results pages. Lower than Tierce (三重彩) because order doesn't matter.
+- **Source**: [HKJC Betting Rules](https://www.hkjc.com/english/betting/betting_rule.aspx).
 
-### Trio vs Trio Place (Tierce vs Trio)
-Note: HKJC also offers **Trio Place** (sometimes called "Trio") where order does **not** matter — just pick 1st, 2nd, 3rd in any order. This skill is for **Tierce** (correct order). If the user asks for "any order" top-3 single-race bets, clarify:
-- **Correct order** → this skill (Trio / Tierce)
-- **Any order, single race** → Trio Place bet (simpler, lower dividend)
-- **Any order, 3 races** → 3T skill (see `3t-strategy`)
+### Trio vs Tierce
+HKJC offers two top-3 single-race bets:
+- **Trio (單T)** = ANY ORDER → **this skill**. Pick 3 horses that fill the top 3 in any order. Lower dividend, higher hit rate.
+- **Tierce (三重彩)** = EXACT ORDER → Pick 1st, 2nd, 3rd in correct sequence. Higher dividend, much harder to hit.
+- **3T (Triple Trio)** = ANY ORDER across 3 races → see `3t-strategy` skill.
 
 ---
 
@@ -366,7 +398,7 @@ Note: HKJC also offers **Trio Place** (sometimes called "Trio") where order does
 
 ```
 ═══════════════════════════════════════════════════════════
-TRIO (TIERCE) STRATEGY - [Venue] | [Date] | Race [N]
+TRIO (ANY ORDER) STRATEGY - [Venue] | [Date] | Race [N]
 ═══════════════════════════════════════════════════════════
 
 DATA VALIDATION: ✅ All checks passed | Going: [X] | [N] scratchings
@@ -374,54 +406,52 @@ MC SIMULATION: 10,000 iterations | Jockey boost applied
 SCMP DATA: ✅ Loaded | Form/TIR/Vet/Odds parsed
 
 RACE: R[N] — [Class] | [Distance] | [Surface] | [Going] | [Field size] runners
-CLASSIFICATION: [Dominant / Competitive / Wide open]
-MODE: [A: Banker 1st / B: Structured Multiple / C: Broad Multiple / D: PASS]
+CLASSIFICATION: [Dominant / Competitive / Wide open] | POOL SIZE: [P]
+MODE: [A: Tight Pool (5) / B: Standard Pool (6) / C: Wide Pool (7) / D: PASS]
 BANKROLL ALLOCATION: $[X] ([X]% of meeting bankroll)
 
 ───────────────────────────────────────────────────────────
 HORSE RANKINGS
 ───────────────────────────────────────────────────────────
-| # | Horse | Adj Win% | Adj Place% | Odds | Jockey | Style | SCMP Flags | Position |
+| # | Horse | Adj Win% | Adj Place% | Odds | Jockey | Style | SCMP Flags | In Pool |
 |---|-------|----------|------------|------|--------|-------|------------|----------|
-| X | NAME | XX.X% | XX.X% | X.X | Name | Front | +trial | 1st ✓ |
-| X | NAME | XX.X% | XX.X% | X.X | Name | Stalk | +draw | 1st/2nd ✓ |
-| X | NAME | XX.X% | XX.X% | X.X | Name | Close | +excuses | 2nd/3rd ✓ |
-| X | NAME | XX.X% | XX.X% | X.X | Name | Stalk | — | 3rd ✓ |
+| X | NAME | XX.X% | XX.X% | X.X | Name | Front | +trial | ✓ Pool |
+| X | NAME | XX.X% | XX.X% | X.X | Name | Stalk | +draw | ✓ Pool |
+| X | NAME | XX.X% | XX.X% | X.X | Name | Close | +excuses | ✓ Pool |
+| X | NAME | XX.X% | XX.X% | X.X | Name | Stalk | — | ✓ Pool |
+| X | NAME | XX.X% | XX.X% | X.X | Name | Close | — | ✓ Pool |
 | X | NAME | XX.X% | XX.X% | X.X | Name | Close | — | (reserve) |
 
-Reasoning: [Why these horses in these positions; MC evidence; pace scenario; SCMP insights]
+Reasoning: [Why these horses are in the pool; MC evidence; pace scenario; SCMP insights]
 
 ───────────────────────────────────────────────────────────
-TRIO MATRIX
+TRIO POOL (any order)
 ───────────────────────────────────────────────────────────
-| Position | Selections |
-|----------|------------|
-| 1st | #X, #X [, #X] |
-| 2nd | #X, #X, #X [, #X] |
-| 3rd | #X, #X, #X, #X [, #X] |
+POOL: #X, #X, #X, #X, #X [, #X, #X]
+MODE: [A/B/C] | POOL SIZE: [P] | COMBINATIONS: C([P],3) = [N]
 
-TOP TRIO COMBINATIONS (by MC probability):
-| Rank | 1st | 2nd | 3rd | MC Prob | Est. Fair Odds |
-|------|-----|-----|-----|---------|----------------|
-| 1 | #X | #X | #X | X.X% | $XX |
-| 2 | #X | #X | #X | X.X% | $XX |
-| 3 | #X | #X | #X | X.X% | $XX |
-| 4 | #X | #X | #X | X.X% | $XX |
-| 5 | #X | #X | #X | X.X% | $XX |
+TOP TRIO COMBINATIONS (by combined Adj Place%):
+| Rank | Horses (any order) | Combined Place% | Est. Fair Odds |
+|------|-------------------|----------------|----------------|
+| 1 | #X, #X, #X | X.X% | $XX |
+| 2 | #X, #X, #X | X.X% | $XX |
+| 3 | #X, #X, #X | X.X% | $XX |
+| 4 | #X, #X, #X | X.X% | $XX |
+| 5 | #X, #X, #X | X.X% | $XX |
 
 ───────────────────────────────────────────────────────────
 TICKET SUMMARY
 ───────────────────────────────────────────────────────────
-PERMUTATIONS: [N]
+COMBINATIONS: [N] (C(P,3) where P = pool size)
 UNIT BET: $[X]
 TOTAL STAKE: $[X] ([X]% of bankroll) ✅ within budget
 or FLEXI: $[X] total → [X]% flexi
 
-KEY PERMUTATIONS (highest value):
-  [List top 5-10 specific 1st-2nd-3rd combos with MC probability]
+TOP COMBINATIONS (highest value):
+  [List top 5-10 horse groups of 3, with combined probability]
 
 PASS CONDITIONS:
-- If [Horse] (banker 1st) is scratched → VOID ticket or restructure
+- If [Horse] (pool anchor) is scratched → VOID ticket or restructure
 - If field drops below 3 → pool refunded
 - If going changes to Heavy → reconsider front-runner bias
 
@@ -457,15 +487,15 @@ TOTAL TRIO STAKE: $[X] ([X]% of $[bankroll] bankroll)
 
 ### Sha Tin
 - Standard selections; trust MC top picks
-- Favourites more reliable (~50% win rate) → Banker 1st mode more viable
+- Favourites more reliable (~50% win rate) → Mode A (tight pool) more viable
 - Front-runners hold up well on standard track settings
 - Jockey boosts at full value
 
 ### Happy Valley
-- **More upsets** — avoid over-relying on single banker for 1st position
+- **More upsets** — use wider pools (Mode B/C)
 - Tight track favours on-pace horses; closers need clear running
 - Reduce jockey boost caps (see Step 3c)
-- Consider wider pool for 2nd/3rd positions (more unpredictable)
+- Consider wider pool (7 horses for Mode C) due to unpredictability
 - Front-runner bias in HV 1,200m races; stalker bias in 1,650m+
 
 ---
@@ -473,17 +503,20 @@ TOTAL TRIO STAKE: $[X] ([X]% of $[bankroll] bankroll)
 ## Important Reminders
 
 1. **Follow the pipeline** — Do not skip data fetching or simulation. Manual estimates are unreliable.
-2. **Trio ≠ 3T** — Trio is Tierce (single race, correct order). 3T is Triple Trio (three races, any order per leg). Never confuse the two.
-3. **Order matters** — Unlike 3T where any order counts, Trio requires you to correctly predict 1st, 2nd, AND 3rd in sequence. This makes it significantly harder but pays larger dividends.
+2. **Trio ≠ 3T** — Trio (單T) is a single-race bet (pick top 3 in any order). 3T is Triple Trio (three races). Never confuse the two.
+3. **Order does NOT matter** — Trio (單T) is ANY ORDER. Just pick the 3 horses that finish in the top 3. This is simpler than Tierce and has a higher hit rate.
 4. **Trio is high variance** — Only allocate ≤3% of meeting bankroll per race, ≤8% total across all Trio bets.
-5. **Banker 1st is the most efficient structure** — When there's a clear race favourite (Adj Win% ≥ 35%), fixing that horse in 1st position and spreading 2nd/3rd dramatically reduces permutations and cost.
-6. **PASS when appropriate** — Wide open races with no positional edge should be skipped. Not every race is a Trio race. Typical meeting: play Trio on 2-3 races maximum.
-7. **Running style matters for positions** — Front-runners are better 1st picks; closers are better 3rd picks. Use SCMP Star Form and TIR to assess each horse's likely running position.
-8. **Scratchings** — Define replacement rules before the race. If the banker is scratched, void the ticket rather than restructuring.
-9. **Record results** — Track hit rate and payout vs stake for strategy calibration.
-10. **SCMP is supplementary** — MC simulation is the primary model. SCMP data adjusts and informs but does not override MC probabilities.
-11. **Do NOT use tipster picks** — Ignore all tipster selections from SCMP or any other source.
-12. **Cross-reference with Quinella odds** — If the top MC quinella pair also shows high SCMP Q/QP odds, the Trio involving those horses likely offers outsized value.
+5. **Tight pool for dominant races** — Use Mode A (5-horse pool) when Adj Win% >= 35%. The dominant horse is the anchor; include 4 contenders by Adj Place%.
+6. **PASS when appropriate** — Wide open races with no clear edge should be skipped. Not every race is a Trio race. Typical meeting: play Trio on 2-3 races maximum. Default to PASS for Mode C unless strong form/pace conviction.
+7. **Single pool — no positional structure** — Since Trio is any order, there is no 1st/2nd/3rd structure. Just select one pool of P horses and bet all C(P,3) combinations.
+8. **No narrative-based exclusion** — Never use Woo's labels ("not genuine", etc.) to exclude horses from the pool. Use Adj Place% thresholds only: >= 20% Adj Place% must be in the pool.
+9. **No hard exclusion if market odds <= 15** — The market knows about injuries, vet flags, and fitness. If a horse is still 15 odds or shorter despite negative flags, include in the pool. Only exclude at >30 odds with zero positive flags.
+10. **Scratchings** — Define replacement rules before the race. If the banker is scratched, void the ticket rather than restructuring.
+11. **Post-race review is mandatory** — After every meeting, fetch results and cross-reference tickets. Classify misses. Track cumulative P&L. This is how the strategy improves over time.
+12. **SCMP is supplementary** — MC simulation is the primary model. SCMP data adjusts and informs but does not override MC probabilities.
+13. **Do NOT use tipster picks** — Ignore all tipster selections from SCMP or any other source.
+14. **Cross-reference with Quinella odds** — If the top MC quinella pair also shows high SCMP Q/QP odds, the Trio involving those horses likely offers outsized value.
+15. **Gate penalties are reducers, not exclusions** — Wide gates (10+) reduce probability by 1-3% but never fully exclude. Gate 13 winners exist (R11 19-Feb, $350).
 
 ---
 
@@ -527,6 +560,51 @@ RACE [N] SCMP DATA
 
 ---
 
+## Step 6: Post-Race Review (NEW — added from 19-Feb-2026 analysis)
+
+After each meeting, compare predictions to actual results. This is critical for model calibration.
+
+### 6a. Fetch results
+
+Use the HKJC results page to get actual finishing order:
+```
+https://racing.hkjc.com/zh-hk/local/information/resultsall
+```
+(Chinese version shows all races with dividends on one page)
+
+Or per-race English results:
+```
+https://racing.hkjc.com/en-us/local/information/localresults?racedate=YYYY/MM/DD&Racecourse=ST&RaceNo=N
+```
+
+### 6b. Cross-reference each ticket
+
+For each race where a Trio ticket was placed, record:
+
+```
+| Race | Mode | Pool | Result (top 3) | Hit? | Why Missed | Trio Dividend |
+```
+
+### 6c. Classify misses
+
+Categorize each miss into one of these root causes:
+- **Pool miss**: One or more of the top-3 finishers was not in the pool (→ review pool selection criteria)
+- **Narrative demotion**: Horse demoted from 1st by subjective label despite strong Adj Win% (→ violated Rule 1)
+- **Hard exclusion**: Excluded horse placed (→ violated Rule 2 on market odds threshold)
+- **Genuine upset**: Winner was >30 odds and not in any reasonable selection (→ accept variance)
+- **Model error**: MC/blend significantly mispriced a horse (→ review blend weights)
+
+### 6d. Calculate impact
+
+For each miss, estimate: "Would the proposed fix have caught this result?"
+Track cumulative P&L across meetings to validate whether rule changes improve ROI.
+
+### 6e. Save review
+
+Save to: `data/reports/trio_review_YYYYMMDD_VENUE.md`
+
+---
+
 ## Example Query
 
 "Generate Trio strategy for Sha Tin Race 7, 14/02/2026. Meeting bankroll $1,000."
@@ -538,8 +616,10 @@ Expected agent behaviour:
 4. Run `analyze-race.ts` for R7
 5. Validate: ≥3 starters, odds populated, no critical scratchings, SCMP data loaded
 6. Apply jockey boosts + SCMP form adjustments
-7. Classify race (Dominant / Competitive / Wide open)
-8. Build Trio matrix with positional analysis (1st / 2nd / 3rd)
-9. Calculate permutations, check budget
-10. Output Trio ticket + summary
-11. Save to `data/reports/trio_strategy_20260214_ST_R7.md`
+7. Classify race (Dominant / Semi-Dominant / Competitive / Wide open)
+8. Build Trio pool (select P horses ranked by Adj Win% and Adj Place%)
+9. Apply exclusion rules (Rules 1-3) — no narrative demotion, no hard exclusion if odds <= 15
+10. Calculate permutations, check budget
+11. Output Trio ticket + summary
+12. Save to `data/reports/trio_strategy_20260214_ST_R7.md`
+13. **After the meeting**: Fetch results, cross-reference, save review
