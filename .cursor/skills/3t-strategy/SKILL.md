@@ -1,6 +1,6 @@
 ---
 name: 3t-strategy
-description: Generate Triple Trio (3T) betting strategies for HKJC meetings using a 5-step pipeline (query data, validate, simulate, compile, advise). Use when the user asks about 3T, Triple Trio, multi-race exotic bets for top 3 finishers, or wants 3T ticket combinations for a meeting.
+description: Generate Triple Trio (3T) betting strategies for HKJC meetings using a 6-step pipeline (query data, validate, simulate, compile, advise, review). Use when the user asks about 3T, Triple Trio, multi-race exotic bets for top 3 finishers, or wants 3T ticket combinations for a meeting.
 ---
 
 # 3T (Triple Trio) Strategy Skill
@@ -9,7 +9,7 @@ Generate **Triple Trio (3T)** strategies by querying live data, validating it, r
 
 ## System Instructions
 
-You are an experienced HKJC bettor focused on the 3T pool. You MUST follow the 5-step pipeline below — do not skip steps or use manual estimates.
+You are an experienced HKJC bettor focused on the 3T pool. You MUST follow the 6-step pipeline below — do not skip steps or use manual estimates.
 
 ---
 
@@ -21,6 +21,7 @@ STEP 2: VALIDATE DATA    → Check fields, going, scratchings, 3T legs, SCMP cov
 STEP 3: RUN SIMULATION   → Monte Carlo 10,000 iterations per leg race + SCMP form adjustments
 STEP 4: COMPILE RESULTS  → Rank horses, classify legs, incorporate SCMP insights, calculate combinations
 STEP 5: GENERATE ADVICE  → Selections, tickets, stakes, pass conditions
+STEP 6: POST-RACE REVIEW → Fetch results, cross-reference, classify misses, save review
 ```
 
 **IMPORTANT**: Do NOT skip steps. Do NOT use manual probability estimates. Always run the tools.
@@ -110,7 +111,7 @@ The SCMP publishes full **QP and Q odds matrices** for each race. These are the 
 **How to use:**
 - Cross-reference MC top quinella combinations with actual QP/Q pool odds
 - Identify **value quinellas**: MC probability high but QP/Q odds also high → mispriced
-- For 3T legs: use QP matrix to confirm which trifecta combinations the market undervalues
+- For 3T legs: use QP matrix to confirm which top-3 combinations the market undervalues
 - Save the QP/Q odds for horses in your 3T selections for the report
 
 #### 1e-vii. Philip Woo's Formline
@@ -255,9 +256,9 @@ Use **adjusted** probabilities (after jockey + SCMP form boosts) for classificat
 
 | Classification | Criteria | 3T Picks |
 |----------------|----------|----------|
-| **Banker** | Top horse Adj Place% ≥ 55% | **4 horses** |
-| **Lean** | Top horse Adj Place% 40-55% | **5 horses** |
-| **Open** | No horse Adj Place% ≥ 40% | **5-6 horses** |
+| **Banker** | Top horse Adj Place% ≥ 55% | **5 horses** |
+| **Lean** | Top horse Adj Place% 40-55% | **5-6 horses** |
+| **Open** | No horse Adj Place% ≥ 40% | **6-7 horses** |
 
 > **Why wider selections?** Backtest over 3 months (25 meetings, 75 legs) showed that narrower picks
 > (3 for Banker, 4 for Lean) only achieved an 18.7% per-leg hit rate. Banker legs with 3 picks hit
@@ -265,7 +266,7 @@ Use **adjusted** probabilities (after jockey + SCMP form boosts) for classificat
 > horse field requires at least 4-5 picks per leg. Wider selections increase combinations (and lower
 > flexi payout per unit) but dramatically improve hit probability, which is the binding constraint.
 
-**Minimum selection rule**: Always select **at least 4 horses** per 3T leg, even if the leg classifies as Banker.
+**Minimum selection rule**: Always select **at least 5 horses** per 3T leg, even if the leg classifies as Banker.
 
 **Longshot insurance rule**: After selecting top-N horses by Adj Place%, check if **all** selected horses have odds < 8.0. If so, add the highest-ranked horse with odds between 8.0 and 20.0 as an extra pick. This guards against mid-range longshot spoilers, which accounted for ~74% of missed legs in backtesting.
 
@@ -273,6 +274,13 @@ Use **adjusted** probabilities (after jockey + SCMP form boosts) for classificat
 1. Prefer the horse with positive SCMP flags (+trial, +draw) over neutral
 2. Prefer the horse without negative SCMP flags (-injury, -TIR)
 3. Refer to Philip Woo's Formline narrative for final tiebreak
+
+#### Exclusion rules (aligned with Trio skill)
+
+**Rule 1: No hard exclusion if market odds ≤ 15.** Include in the leg pool instead. The market incorporates vet reports, injury flags, and fitness concerns. If the collective market still rates a horse as a serious contender (odds 15 or shorter) despite negative flags, respect it. Only fully exclude horses with SCMP Win odds > 30 AND zero positive SCMP flags.
+- **Evidence**: R7 19-Feb — #11 JUST FOLLOW ME (9.2 odds) excluded for "lame LH passed 16d ago" injury flag, came 2nd. $180,691 3T dividend missed.
+
+**Rule 2: Gate penalties are probability reducers (1–3%), not exclusions.** Wide gates (10+) should reduce Adj Place% by 1–3% depending on field size and distance, but NEVER trigger hard exclusion.
 
 ### 4c. Calculate combinations and cost
 
@@ -286,7 +294,7 @@ Use **adjusted** probabilities (after jockey + SCMP form boosts) for classificat
 - 3T stake is a **fixed flexi bet** (e.g. $50 per ticket regardless of combination count)
 - 3T flexi allocation must be ≤ 5% of meeting bankroll
 - If over budget: reduce picks in the most **open** leg first (drop lowest-ranked horse)
-- **Note**: With wider selections (4-5-5 = 100 combos, 5-5-5 = 125 combos), the flexi percentage is lower per unit, but the priority is achieving a hit. A lower-flexi winning ticket far outweighs a missed narrow ticket.
+- **Note**: With wider selections (5-5-5 = 125 combos baseline, 6-6-7 = 252 combos max), the flexi percentage is lower per unit, but the priority is achieving a hit. At $50 flexi, 125 combos = 20% flexi; 252 combos ≈ 10% flexi. A lower-flexi winning ticket far outweighs a missed narrow ticket.
 
 ---
 
@@ -298,21 +306,72 @@ Save to: `data/reports/3t_strategy_YYYYMMDD_VENUE.md`
 
 ---
 
+## Step 6: Post-Race Review (aligned with Trio skill)
+
+After each meeting, compare predictions to actual results. This is critical for model calibration.
+
+### 6a. Fetch results
+
+Use the HKJC results page to get actual finishing order:
+```
+https://racing.hkjc.com/zh-hk/local/information/resultsall
+```
+(Chinese version shows all races with dividends on one page)
+
+Or per-race English results:
+```
+https://racing.hkjc.com/en-us/local/information/localresults?racedate=YYYY/MM/DD&Racecourse=ST&RaceNo=N
+```
+
+### 6b. Cross-reference each leg
+
+For each 3T leg, record:
+
+```
+| Leg | Race | Type | Picks | Result (top 3) | Hit? | Why Missed | 3T Dividend |
+```
+
+### 6c. Classify misses
+
+Categorise each miss into one of these root causes:
+- **Pool miss**: One or more of the top-3 finishers was not in the leg pool (→ review pick count; consider minimum 5 picks)
+- **Hard exclusion**: Excluded horse placed (→ violated Rule 1 on market odds ≤ 15 threshold)
+- **Too few picks**: 4th-ranked MC horse placed but was dropped (→ increase minimum to 5 picks)
+- **Genuine upset**: Winner was >30 odds and not in any reasonable selection (→ accept variance)
+- **Model error**: MC/blend significantly mispriced a horse (→ review blend weights)
+
+### 6d. Calculate impact
+
+For each miss, estimate: "Would the proposed fix have caught this result?"
+Track cumulative P&L across meetings to validate whether rule changes improve ROI.
+
+### 6e. Save review
+
+Save to: `data/reports/3t_review_YYYYMMDD_VENUE.md`
+
+---
+
 ## 3T Bet Type Explained (HKJC official rules)
 
-### 3T = Triple Trio (not Tierce)
+### 3T = Triple Trio (not Trio/單T)
 - **Objective**: Select the **1st, 2nd, and 3rd** place finishers **in any order** in **each of three designated races** (three legs).
 - **Pool**: Multi-race pool. Usually R4-R5-R6 but **varies by meeting** (e.g. R5-R6-R7). Always confirm via the [General Information page](https://racing.hkjc.com/en-us/local/info/summary).
 - **Winning**: Your ticket wins if you have selected the actual 1st, 2nd, and 3rd (in **any order**) in **Leg 1** AND in **Leg 2** AND in **Leg 3**.
 - **Consolation**: If no one wins the main pool, a **consolation dividend** is paid to tickets that have the 1st, 2nd, and 3rd (in any order) in **the first two legs only** (85% of Net Pool to main; 15% to consolation; see HKJC Rule 3.6).
-- **Ticket**: You choose a set of horses for **each leg**. The system generates combinations. Example: 4 horses in Leg 1, 4 in Leg 2, 4 in Leg 3 → 4×4×4 = **64 combinations** (unit bet × 64 = total stake).
+- **Ticket**: You choose a set of horses for **each leg**. The system generates combinations. Example: 5 horses in Leg 1, 5 in Leg 2, 5 in Leg 3 → 5×5×5 = **125 combinations** (unit bet × 125 = total stake).
 - **Minimum**: At least **4 starters in all three legs**; otherwise pool is closed and refunded. Unit bet $2 (if total ticket ≥ $100) or minimum $10 otherwise.
 - **Source**: [HKJC Triple Trio](https://www.hkjc.com/english/betting/ticket_3t.asp), [HKJC Betting Rules Rule 3](https://www.hkjc.com/english/betting/betting_rule.aspx).
 
-### Tierce (different from 3T – single race, correct order)
+### Trio / 單T (different from 3T – single race, any order)
+- **Objective**: Select the **1st, 2nd, and 3rd** finishers in **ANY ORDER** in **one** designated race.
+- **Trio (Single)**: Pick exactly 3 horses. If they fill the top 3 in any order, you win. One combination.
+- **Trio (Multiple/Banker)**: Select a pool of horses; system generates all C(P,3) combinations of 3.
+- **Key difference from 3T**: Trio covers only 1 race; 3T covers 3 races. Both are any-order.
+- **See**: `trio-strategy` skill for single-race Trio (單T) betting.
+
+### Tierce / 三重彩 (exact order – separate bet type)
 - **Objective**: Select the **1st, 2nd, and 3rd** finishers in **correct order** in **one** designated race.
-- **Tierce (Single)**: One exact order only (e.g. 2-7-9). One combination.
-- **Tierce (Multiple)**: Select multiple horses; system generates all permutations of 1st-2nd-3rd.
+- **Much harder** than Trio (單T) but pays higher dividends.
 - **Source**: [HKJC Tierce](https://www.hkjc.com/ENGLISH/betting/ticket_tierce.asp).
 
 ---
@@ -338,6 +397,7 @@ LEG 1 (R[X]) — [Class] | [Distance] | [Type: Banker/Lean/Open]
 |---|-------|-----------|------------|------|--------|------------|----------|
 | X | NAME | XX.X% | XX.X% | X.X | Name | +trial | ✓ |
 | X | NAME | XX.X% | XX.X% | X.X | Name | +draw | ✓ |
+| X | NAME | XX.X% | XX.X% | X.X | Name | — | ✓ |
 | X | NAME | XX.X% | XX.X% | X.X | Name | — | ✓ |
 | X | NAME | XX.X% | XX.X% | X.X | Name | — | (reserve) |
 
@@ -369,6 +429,20 @@ CAVEATS:
 ═══════════════════════════════════════════════════════════
 ```
 
+### 3T Portfolio summary (when comparing multiple ticket options)
+
+```
+| Leg | Race | Type | Picks | Combinations | Stake | Confidence |
+|-----|------|------|-------|---------------|-------|------------|
+| 1 | R[X] | Banker | 5 | 5 | $50 | HIGH |
+| 2 | R[Y] | Lean | 5 | 25 | $50 | MEDIUM |
+| 3 | R[Z] | Open | 6 | 150 | $50 | LOW |
+
+COMBINATIONS: 5 × 5 × 6 = 150 | $50 flexi = 16.7%
+```
+
+Example baseline: 5 × 5 × 5 = 125 combos, $50 flexi = 20%. Maximum: 6 × 6 × 7 = 252 combos, $50 flexi ≈ 10%.
+
 ---
 
 ## Venue-Specific Adjustments
@@ -389,16 +463,18 @@ CAVEATS:
 ## Important Reminders
 
 1. **Follow the pipeline** — Do not skip data fetching or simulation. Manual estimates are unreliable.
-2. **3T ≠ Tierce** — 3T is Triple Trio (three races, any order per leg). Tierce is a separate single-race bet (correct 1-2-3 order).
+2. **3T ≠ Trio (單T)** — 3T is Triple Trio (three races, any order per leg). Trio (單T) is a separate single-race bet (top 3 in any order, but just 1 race). Both are any-order; 3T spans 3 races.
 3. **3T is high variance** — Only allocate 3–5% of meeting bankroll.
 4. **Scratchings** — Define replacement rules before the meeting starts.
 5. **Record results** — Track hit rate and payout vs stake for strategy calibration.
 6. **Always validate** — If data quality is poor (missing odds, empty jockey stats), note caveats prominently.
 7. **SCMP is supplementary** — MC simulation is the primary model. SCMP data adjusts and informs but does not override MC probabilities. If SCMP data is unavailable, proceed without it and note as a caveat.
 8. **Do NOT use tipster picks** — Ignore all tipster selections from SCMP or any other source. Rely only on MC simulation, SCMP odds/form/TIR/vet data, elite jockey stats, and market odds for decisions.
-9. **Prioritise hit rate over flexi percentage** — Backtesting showed that narrow selections (3 picks/leg) have very low hit rates (~14%). Wider selections (4-5 picks) roughly double or triple the per-leg hit rate. Use flexi betting to keep total stake fixed at $50 per ticket; accept the lower per-unit payout in exchange for a realistic chance of hitting.
-10. **Watch for longshot spoilers** — In HK racing, ~69% of leg misses involve a horse at odds ≥ 15.0 finishing in the top 3. The longshot insurance rule (add a mid-range horse if all picks are short-priced) mitigates this.
-11. **Minimum 4 picks per 3T leg** — Never go below 4 selections, even for Banker legs. Backtest Banker legs with 3 picks hit only 13.6% vs 24%+ with 4-5 picks.
+9. **Prioritise hit rate over flexi percentage** — Backtesting showed that narrow selections (3 picks/leg) have very low hit rates (~14%). Wider selections (5-6 picks) roughly double or triple the per-leg hit rate. Use flexi betting to keep total stake fixed at $50 per ticket; accept the lower per-unit payout in exchange for a realistic chance of hitting.
+10. **Watch for longshot spoilers** — In HK racing, ~69% of leg misses involve a horse at odds ≥ 15.0 finishing in the top 3. The longshot insurance rule (add a mid-range horse if all picks are short-priced) mitigates this. Evidence: R6 19-Feb — #9 REGAL GEM (odds 16, MC Place% 46.4%, 4th highest) was the spoiler; only 4 picks were made for this leg.
+11. **Minimum 5 picks per 3T leg** — Never go below 5 selections, even for Banker legs. Backtest Banker legs with 3 picks hit only 13.6% vs 24%+ with 4-5 picks. Evidence: R6 19-Feb — 4 picks missed the 4th-ranked MC horse (#9) in a 10-runner field.
+12. **No hard exclusion if market odds ≤ 15** — Aligned with Trio skill Rule 2. Evidence: R7 19-Feb — #11 JUST FOLLOW ME (9.2 odds) excluded for injury flag, came 2nd. $180,691 3T dividend missed.
+13. **Post-race review is mandatory** — After every meeting, fetch results and cross-reference tickets. Classify misses (pool miss, hard exclusion, too few picks, genuine upset). Track cumulative P&L. Save to `data/reports/3t_review_YYYYMMDD_VENUE.md`. This is how the strategy improves over time.
 
 ---
 
@@ -459,3 +535,4 @@ Expected agent behaviour:
 8. Compile MC results, classify legs (using adjusted probabilities), calculate combinations
 9. Output 3T ticket + summary
 10. Save to `data/reports/3t_strategy_20260211_HV.md`
+11. **After the meeting**: Fetch results, cross-reference legs, classify misses, save to `data/reports/3t_review_20260211_HV.md`
