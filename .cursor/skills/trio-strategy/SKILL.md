@@ -289,6 +289,56 @@ Since Trio is ANY ORDER, there is no 1st/2nd/3rd positional structure. Just sele
 - Better to deploy bankroll on races with clearer structure
 - Default to PASS for wide-open races unless strong pace/form conviction
 
+#### 膽拖 (Banker-Leg) structure — cost optimisation
+
+After selecting the pool, check if any horse qualifies as a **膽 (Banker)**:
+
+| Condition | Structure | Formula |
+|-----------|-----------|---------|
+| **1 horse Adj Place% >= 70%** | **膽拖** (1 Banker + N Legs) | C(N, 2) = N × (N-1) / 2 |
+| **2 horses Adj Place% >= 70%** | **雙膽拖** (2 Bankers + N Legs) | N combos |
+| **No horse >= 70%** | **Full pool** (standard) | C(P, 3) as before |
+
+**How it works:**
+- **膽 (Banker)**: locked into EVERY combination — must finish top 3 for ANY ticket to win.
+- **腳 (Legs)**: the remaining pool horses. System picks 2 from legs (1-banker) or 1 from legs (2-banker) to complete each combination.
+- The bet slip on HKJC supports 膽拖 directly — select "膽" for banker horse(s) and "腳" for leg horses.
+
+**1 Banker (膽拖) combinations:**
+
+| Legs (腳) | Combos C(N,2) | vs Full Pool | Savings |
+|-----------|---------------|-------------|---------|
+| 4 腳 | 6 | C(5,3) = 10 | **40%** |
+| 5 腳 | 10 | C(6,3) = 20 | **50%** |
+| 6 腳 | 15 | C(7,3) = 35 | **57%** |
+| 7 腳 | 21 | C(8,3) = 56 | **63%** |
+
+**2 Bankers (雙膽拖) combinations:**
+
+| Legs (腳) | Combos = N | vs Full Pool | Savings |
+|-----------|------------|-------------|---------|
+| 3 腳 | 3 | C(5,3) = 10 | **70%** |
+| 4 腳 | 4 | C(6,3) = 20 | **80%** |
+| 5 腳 | 5 | C(7,3) = 35 | **86%** |
+
+**When to use 膽拖:**
+1. **Adj Place% >= 70%** is the threshold. This means ~70% probability of finishing top 3 — strong enough to anchor a banker.
+2. Apply AFTER the pool is selected using Modes A-D. The banker check is a **bet structure optimisation**, not a horse selection change.
+3. The same pool of horses is used; only the bet slip structure changes to reduce combinations and cost.
+4. If the banker fails to place top 3, ALL tickets lose — this is the trade-off for cheaper tickets.
+5. **Never force a banker** if no horse meets the 70% threshold. Use full pool instead.
+6. For 2-banker (雙膽拖), BOTH must have Adj Place% >= 70%. Combined hit probability ≈ B1 × B2 (e.g., 70% × 72% ≈ 50%). Only use when confident.
+
+**Decision flow:**
+```
+Pool selected (P horses)
+  │
+  ├─ Any horse Adj Place% >= 70%?
+  │   ├─ YES, 1 horse → 膽拖: 1 膽 + (P-1) 腳 → C(P-1, 2) combos
+  │   ├─ YES, 2 horses → 雙膽拖: 2 膽 + (P-2) 腳 → (P-2) combos
+  │   └─ NO → Full pool: C(P, 3) combos
+```
+
 #### Exclusion and demotion rules (CRITICAL — learned from 19-Feb-2026 review)
 
 **Rule 1: No narrative-based exclusion.**
@@ -342,19 +392,36 @@ Trio (Any Order) Combinations:
   Flexi: fixed total stake / (combinations x unit bet)
 ```
 
-**Combination and cost table:**
+**Combination and cost table (Full Pool — no banker):**
 | Mode | Pool | Combos | Full Cost | Flexi at $30 |
 |------|------|--------|-----------|-------------|
 | A    | 5    | 10     | $100      | 30.0%       |
 | B    | 6    | 20     | $200      | 15.0%       |
 | C    | 7    | 35     | $350      | 8.6%        |
 
+**Combination and cost table (膽拖 — 1 Banker):**
+| Pool | Structure | Combos | Full Cost | Flexi at $30 | vs Full Pool |
+|------|-----------|--------|-----------|-------------|-------------|
+| 5    | 1膽 + 4腳 | 6      | $60       | 50.0%       | 40% cheaper |
+| 6    | 1膽 + 5腳 | 10     | $100      | 30.0%       | 50% cheaper |
+| 7    | 1膽 + 6腳 | 15     | $150      | 20.0%       | 57% cheaper |
+| 8    | 1膽 + 7腳 | 21     | $210      | 14.3%       | 63% cheaper |
+
+**Combination and cost table (雙膽拖 — 2 Bankers):**
+| Pool | Structure | Combos | Full Cost | Flexi at $30 | vs Full Pool |
+|------|-----------|--------|-----------|-------------|-------------|
+| 5    | 2膽 + 3腳 | 3      | $30       | 100%        | 70% cheaper |
+| 6    | 2膽 + 4腳 | 4      | $40       | 75.0%       | 80% cheaper |
+| 7    | 2膽 + 5腳 | 5      | $50       | 60.0%       | 86% cheaper |
+
 **Key advantage over Tierce (exact order)**: Same pool of 6 horses = 20 Trio combos vs 120 Tierce permutations. 6x cheaper for the same horse selection, meaning higher flexi % and better returns on hits.
+
+**Key advantage of 膽拖**: Same horse selection but dramatically fewer combinations. A 6-horse pool with 1 banker = 10 combos (vs 20 full pool). Higher flexi %, bigger payout per dollar risked — IF the banker places top 3.
 
 ### 4e. Budget check
 - Trio stake should be ≤ **3% of meeting bankroll** per race
 - If playing multiple races, total Trio allocation ≤ **8% of meeting bankroll**
-- If over budget: switch to Mode A (fix banker 1st) or reduce pool size
+- If over budget: use 膽拖 structure (if Adj Place% >= 70% banker exists), switch to Mode A, or reduce pool size
 - Consider **flexi Trio**: fixed total stake (e.g. $30) across all permutations
 
 ### 4f. Value check — Trio pool odds
@@ -379,7 +446,11 @@ Save to: `data/reports/trio_strategy_YYYYMMDD_VENUE_RN.md`
 ### Trio = Any Order (HKJC 單T)
 - **Objective**: Select the **1st, 2nd, and 3rd** finishers in **ANY ORDER** in **one** designated race.
 - **Trio (Single)**: Pick exactly 3 horses (e.g. 2, 7, 9). If these 3 fill the top 3 in any order, you win. One combination.
-- **Trio (Multiple/Banker)**: Select a pool of horses; system generates **all C(P,3) combinations** of 3 from your selections.
+- **Trio (Multiple)**: Select a pool of horses; system generates **all C(P,3) combinations** of 3 from your selections.
+- **Trio (膽拖 / Banker-Leg)**: Designate 1-2 horses as **膽 (Banker)** and remaining as **腳 (Legs)**. Bankers appear in every combination. Reduces combos dramatically:
+  - 1 Banker + N Legs → C(N, 2) combinations (pick 2 from legs)
+  - 2 Bankers + N Legs → N combinations (pick 1 from legs)
+  - Use when a horse has **Adj Place% ≥ 70%** (strong top-3 probability).
 - **Minimum**: At least **3 starters**; otherwise pool is closed and refunded.
 - **Unit bet**: $10 minimum (or $2 if total ticket value >= $100).
 - **Flexi**: Available — set a fixed total stake and the system distributes across combinations.
@@ -408,19 +479,22 @@ SCMP DATA: ✅ Loaded | Form/TIR/Vet/Odds parsed
 RACE: R[N] — [Class] | [Distance] | [Surface] | [Going] | [Field size] runners
 CLASSIFICATION: [Dominant / Competitive / Wide open] | POOL SIZE: [P]
 MODE: [A: Tight Pool (5) / B: Standard Pool (6) / C: Wide Pool (7) / D: PASS]
+BET STRUCTURE: [Full Pool C(P,3) / 膽拖 1膽+(P-1)腳 C(P-1,2) / 雙膽拖 2膽+(P-2)腳 = P-2]
 BANKROLL ALLOCATION: $[X] ([X]% of meeting bankroll)
 
 ───────────────────────────────────────────────────────────
 HORSE RANKINGS
 ───────────────────────────────────────────────────────────
-| # | Horse | Adj Win% | Adj Place% | Odds | Jockey | Style | SCMP Flags | In Pool |
-|---|-------|----------|------------|------|--------|-------|------------|----------|
-| X | NAME | XX.X% | XX.X% | X.X | Name | Front | +trial | ✓ Pool |
-| X | NAME | XX.X% | XX.X% | X.X | Name | Stalk | +draw | ✓ Pool |
-| X | NAME | XX.X% | XX.X% | X.X | Name | Close | +excuses | ✓ Pool |
-| X | NAME | XX.X% | XX.X% | X.X | Name | Stalk | — | ✓ Pool |
-| X | NAME | XX.X% | XX.X% | X.X | Name | Close | — | ✓ Pool |
+| # | Horse | Adj Win% | Adj Place% | Odds | Jockey | Style | SCMP Flags | Role |
+|---|-------|----------|------------|------|--------|-------|------------|------|
+| X | NAME | XX.X% | XX.X% | X.X | Name | Front | +trial | ★ 膽 (Banker) |
+| X | NAME | XX.X% | XX.X% | X.X | Name | Stalk | +draw | 腳 (Leg) |
+| X | NAME | XX.X% | XX.X% | X.X | Name | Close | +excuses | 腳 (Leg) |
+| X | NAME | XX.X% | XX.X% | X.X | Name | Stalk | — | 腳 (Leg) |
+| X | NAME | XX.X% | XX.X% | X.X | Name | Close | — | 腳 (Leg) |
 | X | NAME | XX.X% | XX.X% | X.X | Name | Close | — | (reserve) |
+
+Note: ★ 膽 = Banker (Adj Place% >= 70%, locked in every combo). If no horse qualifies as 膽, all pool horses are 腳 and full C(P,3) is used.
 
 Reasoning: [Why these horses are in the pool; MC evidence; pace scenario; SCMP insights]
 
@@ -428,7 +502,15 @@ Reasoning: [Why these horses are in the pool; MC evidence; pace scenario; SCMP i
 TRIO POOL (any order)
 ───────────────────────────────────────────────────────────
 POOL: #X, #X, #X, #X, #X [, #X, #X]
-MODE: [A/B/C] | POOL SIZE: [P] | COMBINATIONS: C([P],3) = [N]
+MODE: [A/B/C] | POOL SIZE: [P]
+
+(If banker found — Adj Place% >= 70%):
+膽 (Banker): #X [NAME] (Adj Place% XX.X%) ← locked in every combo
+腳 (Legs):  #X, #X, #X, #X [, #X]
+BET STRUCTURE: 膽拖 | 1膽 + [N]腳 | COMBINATIONS: C([N],2) = [combos]
+
+(If no banker):
+BET STRUCTURE: Full Pool | COMBINATIONS: C([P],3) = [combos]
 
 TOP TRIO COMBINATIONS (by combined Adj Place%):
 | Rank | Horses (any order) | Combined Place% | Est. Fair Odds |
@@ -442,7 +524,7 @@ TOP TRIO COMBINATIONS (by combined Adj Place%):
 ───────────────────────────────────────────────────────────
 TICKET SUMMARY
 ───────────────────────────────────────────────────────────
-COMBINATIONS: [N] (C(P,3) where P = pool size)
+COMBINATIONS: [N] ([膽拖: C(N,2) where N = legs] or [Full Pool: C(P,3) where P = pool size])
 UNIT BET: $[X]
 TOTAL STAKE: $[X] ([X]% of bankroll) ✅ within budget
 or FLEXI: $[X] total → [X]% flexi
@@ -508,7 +590,7 @@ TOTAL TRIO STAKE: $[X] ([X]% of $[bankroll] bankroll)
 4. **Trio is high variance** — Only allocate ≤3% of meeting bankroll per race, ≤8% total across all Trio bets.
 5. **Tight pool for dominant races** — Use Mode A (5-horse pool) when Adj Win% >= 35%. The dominant horse is the anchor; include 4 contenders by Adj Place%.
 6. **PASS when appropriate** — Wide open races with no clear edge should be skipped. Not every race is a Trio race. Typical meeting: play Trio on 2-3 races maximum. Default to PASS for Mode C unless strong form/pace conviction.
-7. **Single pool — no positional structure** — Since Trio is any order, there is no 1st/2nd/3rd structure. Just select one pool of P horses and bet all C(P,3) combinations.
+7. **Single pool — no positional structure** — Since Trio is any order, there is no 1st/2nd/3rd structure. Select one pool of P horses, then check for 膽拖 eligibility (Adj Place% >= 70%). Bet 膽拖 if banker found, otherwise full C(P,3).
 8. **No narrative-based exclusion** — Never use Woo's labels ("not genuine", etc.) to exclude horses from the pool. Use Adj Place% thresholds only: >= 20% Adj Place% must be in the pool.
 9. **No hard exclusion if market odds <= 15** — The market knows about injuries, vet flags, and fitness. If a horse is still 15 odds or shorter despite negative flags, include in the pool. Only exclude at >30 odds with zero positive flags.
 10. **Scratchings** — Define replacement rules before the race. If the banker is scratched, void the ticket rather than restructuring.
@@ -517,6 +599,10 @@ TOTAL TRIO STAKE: $[X] ([X]% of $[bankroll] bankroll)
 13. **Do NOT use tipster picks** — Ignore all tipster selections from SCMP or any other source.
 14. **Cross-reference with Quinella odds** — If the top MC quinella pair also shows high SCMP Q/QP odds, the Trio involving those horses likely offers outsized value.
 15. **Gate penalties are reducers, not exclusions** — Wide gates (10+) reduce probability by 1-3% but never fully exclude. Gate 13 winners exist (R11 19-Feb, $350).
+16. **Use 膽拖 (Banker-Leg) when Adj Place% >= 70%** — If any horse in the pool has Adj Place% >= 70%, designate it as 膽 (Banker) and bet 膽拖 structure instead of full pool. This cuts combinations by 40-57% (1 banker) or 70-86% (2 bankers). Higher flexi %, same horse coverage.
+17. **Never force a banker** — If no horse meets the 70% Adj Place% threshold, use full pool C(P,3). Forcing a weak banker just to save on combinations increases the chance of total loss.
+18. **Banker failure = total loss** — If the 膽 fails to finish top 3, ALL tickets lose. This is the trade-off for cheaper tickets. Only use 膽拖 when the banker probability is genuinely strong (≥70%).
+19. **2-Banker (雙膽拖) is high-risk** — Both bankers must place top 3. Combined probability ≈ B1 × B2 (e.g., 70% × 72% ≈ 50%). Only use when both horses have Adj Place% >= 70% AND the race is strongly structured.
 
 ---
 
