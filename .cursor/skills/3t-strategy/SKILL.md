@@ -16,7 +16,7 @@ You are an experienced HKJC bettor focused on the 3T pool. You MUST follow the 6
 ## Pipeline Overview
 
 ```
-STEP 1: QUERY DATA       → Fetch race cards, odds, jockey stats, SCMP race card
+STEP 1: QUERY DATA       → Sync historical data, fetch race cards, odds, jockey stats, SCMP race card
 STEP 2: VALIDATE DATA    → Check fields, going, scratchings, 3T legs, SCMP coverage
 STEP 3: RUN SIMULATION   → Monte Carlo 10,000 iterations per leg race + SCMP form adjustments
 STEP 4: COMPILE RESULTS  → Rank horses, classify legs, incorporate SCMP insights, calculate combinations
@@ -33,19 +33,38 @@ STEP 6: POST-RACE REVIEW → Fetch results, cross-reference, classify misses, sa
 ### 1a. Identify the meeting
 Ask for or determine: **date** (YYYY-MM-DD) and **venue** (ST / HV).
 
-### 1b. Fetch jockey stats
+### 1b. Sync historical data
+
+Run the historical data sync tool to ensure all past meeting results are available for the MC simulation. The MC simulator uses `data/historical/` files to enrich horse form, speed ratings, and jockey/trainer stats — stale data degrades simulation accuracy.
+
+```bash
+PLAYWRIGHT_BROWSERS_PATH=0 npx tsx tools/sync-historical.ts
+```
+
+This will:
+- Compare the fixture list against existing `data/historical/results_*.json` files
+- Scrape any missing meetings (with automatic venue fallback)
+- Report sync status
+
+If the script reports "All historical data is up to date!" proceed immediately. If it scraped new meetings, the MC simulation will automatically pick up the fresh data.
+
+**To add future meeting dates** (e.g. new month's fixtures): edit `data/historical/fixtures.json` and add entries, then re-run.
+
+> **Critical**: Do NOT skip this step. Running MC simulation on stale historical data means horses' latest form, speed ratings, and jockey stats may be missing — especially for horses that ran in recent meetings not yet scraped.
+
+### 1c. Fetch jockey stats
 ```bash
 PLAYWRIGHT_BROWSERS_PATH=0 npx tsx tools/fetch-jockey-stats.ts
 ```
 Output: `data/jockeys/jockey_stats_YYYYMMDD.json` + `data/jockeys/JOCKEY_STATS.md`
 
-### 1c. Fetch live odds
+### 1d. Fetch live odds
 ```bash
 PLAYWRIGHT_BROWSERS_PATH=0 npx tsx tools/fetch-odds.ts --date=YYYY-MM-DD --venue=HV --json --save
 ```
 Output: `data/odds/odds_YYYYMMDD_VENUE.json`
 
-### 1d. Fetch race cards
+### 1e. Fetch race cards
 For each race in the meeting, fetch the HKJC race card to extract:
 - Horse entries, jockey assignments, draw, weight, last 6 runs
 - Race conditions: class, distance, surface, going
@@ -56,7 +75,7 @@ For each race in the meeting, fetch the HKJC race card to extract:
 https://racing.hkjc.com/racing/information/English/Racing/RaceCard.aspx?RaceDate=YYYY/MM/DD&Racecourse=HV&RaceNo=N
 ```
 
-### 1e. Fetch SCMP Race Card Data
+### 1f. Fetch SCMP Race Card Data
 
 Fetch the South China Morning Post race card page for supplementary data:
 
@@ -65,7 +84,7 @@ Fetch the South China Morning Post race card page for supplementary data:
 
 Use `WebFetch` to retrieve each leg race page. Extract the following data — **do NOT use tipster picks**:
 
-#### 1e-i. Win/Place Odds
+#### 1f-i. Win/Place Odds
 
 The SCMP race card table includes **Win** and **Place** odds columns for every horse. These are the actual HKJC pool odds and are often more complete than what the `fetch-odds.ts` scraper captures.
 
@@ -74,7 +93,7 @@ The SCMP race card table includes **Win** and **Place** odds columns for every h
 - Record all horses' Win and Place odds for leg races
 - Identify market favourites and longshots for edge calculations
 
-#### 1e-ii. Star Form Comments
+#### 1f-ii. Star Form Comments
 
 Each horse has a **Star Form** comment written by SCMP analysts. Extract key signals:
 - **Positive signals**: "winner", "made all", "rallied", "improved", "sharp", "does draw well"
@@ -82,7 +101,7 @@ Each horse has a **Star Form** comment written by SCMP analysts. Extract key sig
 - **Fitness flags**: "resumed", "first-timer", "off 126 days", "returns from injury"
 - **Draw comments**: "gate's a hurdle", "gate should help", "drawn to get his chance"
 
-#### 1e-iii. Trouble in Running (TIR)
+#### 1f-iii. Trouble in Running (TIR)
 
 Extract recent **stewards' reports** for each horse. Key flags:
 - **Recurring issues**: "bumped on jumping" (repeated = barrier problem)
@@ -90,21 +109,21 @@ Extract recent **stewards' reports** for each horse. Key flags:
 - **Unacceptable performance**: Horse under stewards' watch
 - **Crowded / steadied**: Bad luck last run = potential improver
 
-#### 1e-iv. Vet's Report
+#### 1f-iv. Vet's Report
 
 Check for **health flags**:
 - Recent injury / lameness → **reduce confidence** even if passed vet exam
 - "Passed on [date]" after injury → check how recent; if <30 days, flag as risk
 - "Eight years of age or above" → reduced reliability for form reversal
 
-#### 1e-v. Trackwork Highlights
+#### 1f-v. Trackwork Highlights
 
 Extract notable trial / gallop mentions:
 - "Travelled well for second in his latest trial" = **positive trial form**
 - "Looks ready to strike" = trainer confidence
 - Use to **break ties** between similarly ranked MC horses
 
-#### 1e-vi. Quinella Place & Quinella Odds Matrix
+#### 1f-vi. Quinella Place & Quinella Odds Matrix
 
 The SCMP publishes full **QP and Q odds matrices** for each race. These are the actual HKJC pool odds.
 
@@ -114,7 +133,7 @@ The SCMP publishes full **QP and Q odds matrices** for each race. These are the 
 - For 3T legs: use QP matrix to confirm which top-3 combinations the market undervalues
 - Save the QP/Q odds for horses in your 3T selections for the report
 
-#### 1e-vii. Philip Woo's Formline
+#### 1f-vii. Philip Woo's Formline
 
 A detailed **race-by-race narrative** from SCMP's senior form analyst. Extract:
 - Which horses he highlights as main chances
@@ -123,7 +142,7 @@ A detailed **race-by-race narrative** from SCMP's senior form analyst. Extract:
 
 ---
 
-### 1f. Confirm 3T legs
+### 1g. Confirm 3T legs
 
 **Primary source** — HKJC General Information page (lists all pool types and their designated races):
 ```
@@ -282,18 +301,100 @@ Use **adjusted** probabilities (after jockey + SCMP form boosts) for classificat
 
 **Rule 2: Gate penalties are probability reducers (1–3%), not exclusions.** Wide gates (10+) should reduce Adj Place% by 1–3% depending on field size and distance, but NEVER trigger hard exclusion.
 
+#### Per-leg 膽拖 (Banker-Leg) structure — cost optimisation
+
+After classifying each leg and selecting horses, check if any horse within a leg qualifies as a **膽 (Banker)**:
+
+| Condition | Structure | Per-leg combos |
+|-----------|-----------|----------------|
+| **1 horse Adj Place% >= 70%** | **膽拖** (1 Banker + N Legs) | C(N, 2) = N × (N-1) / 2 |
+| **2 horses Adj Place% >= 70%** | **雙膽拖** (2 Bankers + N Legs) | N combos |
+| **No horse >= 70%** | **Full pool** (standard) | C(P, 3) per leg |
+
+**How it works in 3T:**
+- **膽 (Banker)**: Locked into EVERY per-leg combination — must finish top 3 for ANY ticket covering that leg to win.
+- **腳 (Legs)**: The remaining horses in the leg. System picks 2 from legs (1-banker) or 1 from legs (2-banker) to complete each combination.
+- Each leg is evaluated independently — Leg 1 might have a banker while Leg 2 uses full pool.
+- Total 3T combos = Leg1_combos × Leg2_combos × Leg3_combos.
+
+**Per-leg combination table (1 Banker 膽拖):**
+
+| Leg picks | Structure | Per-leg combos | vs Full pool per-leg | Savings |
+|-----------|-----------|----------------|---------------------|---------|
+| 5 (1膽+4腳) | 膽拖 | C(4,2) = 6 | C(5,3) = 10 | **40%** |
+| 6 (1膽+5腳) | 膽拖 | C(5,2) = 10 | C(6,3) = 20 | **50%** |
+| 7 (1膽+6腳) | 膽拖 | C(6,2) = 15 | C(7,3) = 35 | **57%** |
+
+**Per-leg combination table (2 Bankers 雙膽拖):**
+
+| Leg picks | Structure | Per-leg combos | vs Full pool per-leg | Savings |
+|-----------|-----------|----------------|---------------------|---------|
+| 5 (2膽+3腳) | 雙膽拖 | 3 | C(5,3) = 10 | **70%** |
+| 6 (2膽+4腳) | 雙膽拖 | 4 | C(6,3) = 20 | **80%** |
+| 7 (2膽+5腳) | 雙膽拖 | 5 | C(7,3) = 35 | **86%** |
+
+**Total 3T combo examples (showing cost impact):**
+
+| Leg 1 | Leg 2 | Leg 3 | Total combos | $50 flexi | Notes |
+|-------|-------|-------|-------------|-----------|-------|
+| 10 (full 5) | 10 (full 5) | 10 (full 5) | 1,000 | 2.5% | All standard, minimum picks |
+| 6 (膽拖 5) | 10 (full 5) | 10 (full 5) | 600 | 4.2% | 1 banker leg saves 40% |
+| 6 (膽拖 5) | 6 (膽拖 5) | 10 (full 5) | 360 | 6.9% | 2 banker legs |
+| 6 (膽拖 5) | 6 (膽拖 5) | 6 (膽拖 5) | 216 | 11.6% | All banker legs (rare) |
+| 10 (膽拖 6) | 10 (膽拖 6) | 20 (full 6) | 2,000 | 1.25% | Mixed wider selections |
+| 6 (膽拖 5) | 10 (膽拖 6) | 15 (膽拖 7) | 900 | 2.8% | Mixed with banker savings |
+
+**When to use 膽拖 per leg:**
+1. **Adj Place% >= 70%** is the threshold. This means ~70% probability of finishing top 3 — strong enough to anchor a per-leg banker.
+2. Apply AFTER the leg pool is selected using Banker/Lean/Open classification. The banker check is a **bet structure optimisation**, not a horse selection change.
+3. The same pool of horses is used per leg; only the HKJC bet slip structure changes (select "膽" and "腳" per leg).
+4. If the per-leg banker fails to finish top 3, that entire leg is busted → the whole 3T ticket fails.
+5. **Never force a banker** if no horse meets the 70% threshold per leg. Use full pool per-leg instead.
+6. For 2-banker (雙膽拖) per leg, BOTH must have Adj Place% >= 70%. Only use when the leg is very strongly structured.
+
+**Decision flow per leg:**
+```
+Leg pool selected (P horses for this leg)
+  │
+  ├─ Any horse Adj Place% >= 70%?
+  │   ├─ YES, 1 horse → 膽拖: 1 膽 + (P-1) 腳 → C(P-1, 2) combos for this leg
+  │   ├─ YES, 2 horses → 雙膽拖: 2 膽 + (P-2) 腳 → (P-2) combos for this leg
+  │   └─ NO → Full pool: C(P, 3) combos for this leg
+  │
+  Total 3T combos = Leg1_combos × Leg2_combos × Leg3_combos
+```
+
 ### 4c. Calculate combinations and cost
 
 ```
-3T: [N1] × [N2] × [N3] = [total] combinations
-    Unit bet: $2 (if total ≥ $100) else $10 min
-    Total stake: $[X]
+3T combinations (per-leg, then multiply across legs):
+
+Per leg (no banker):    C(P, 3)  where P = total picks
+Per leg (1 膽拖):       C(N, 2)  where N = legs (P-1)
+Per leg (2 雙膽拖):     N        where N = legs (P-2)
+
+Total 3T combos = Leg1_combos × Leg2_combos × Leg3_combos
+Unit bet: $2 (if total ≥ $100) else $10 min
+Total stake: combos × unit bet (or flexi)
 ```
+
+**3T combination quick reference:**
+
+| Leg 1 | Leg 2 | Leg 3 | Total | $50 flexi | Scenario |
+|-------|-------|-------|-------|-----------|----------|
+| C(5,3)=10 | C(5,3)=10 | C(5,3)=10 | 1,000 | 2.5% | All full pool, 5 picks |
+| C(4,2)=6 | C(5,3)=10 | C(5,3)=10 | 600 | 4.2% | Leg 1 has 膽拖 (5 picks) |
+| C(4,2)=6 | C(4,2)=6 | C(5,3)=10 | 360 | 6.9% | Legs 1+2 have 膽拖 |
+| C(4,2)=6 | C(4,2)=6 | C(4,2)=6 | 216 | 11.6% | All 3 legs 膽拖 (rare) |
+| C(5,2)=10 | C(5,2)=10 | C(6,3)=20 | 2,000 | 1.3% | 膽拖 6 + full 6 |
+| C(5,3)=10 | C(6,3)=20 | C(6,3)=20 | 4,000 | 0.6% | Full 5 + full 6 + full 6 |
+
+**Key advantage of 膽拖 per leg**: Same horse coverage but dramatically fewer per-leg combinations. A 5-pick leg with 1 banker = 6 combos (vs 10 full pool). Across 3 legs, the savings compound multiplicatively. Higher flexi %, bigger payout per dollar risked — IF the bankers place top 3.
 
 ### 4d. Budget check
 - 3T stake is a **fixed flexi bet** (e.g. $50 per ticket regardless of combination count)
 - 3T flexi allocation must be ≤ 5% of meeting bankroll
-- If over budget: reduce picks in the most **open** leg first (drop lowest-ranked horse)
+- If over budget: use 膽拖 per leg (if Adj Place% >= 70% banker exists) to reduce combos, OR reduce picks in the most **open** leg first (drop lowest-ranked horse)
 - **Note**: With wider selections (5-5-5 = 125 combos baseline, 6-6-7 = 252 combos max), the flexi percentage is lower per unit, but the priority is achieving a hit. At $50 flexi, 125 combos = 20% flexi; 252 combos ≈ 10% flexi. A lower-flexi winning ticket far outweighs a missed narrow ticket.
 
 ---
@@ -358,7 +459,12 @@ Save to: `data/reports/3t_review_YYYYMMDD_VENUE.md`
 - **Pool**: Multi-race pool. Usually R4-R5-R6 but **varies by meeting** (e.g. R5-R6-R7). Always confirm via the [General Information page](https://racing.hkjc.com/en-us/local/info/summary).
 - **Winning**: Your ticket wins if you have selected the actual 1st, 2nd, and 3rd (in **any order**) in **Leg 1** AND in **Leg 2** AND in **Leg 3**.
 - **Consolation**: If no one wins the main pool, a **consolation dividend** is paid to tickets that have the 1st, 2nd, and 3rd (in any order) in **the first two legs only** (85% of Net Pool to main; 15% to consolation; see HKJC Rule 3.6).
-- **Ticket**: You choose a set of horses for **each leg**. The system generates combinations. Example: 5 horses in Leg 1, 5 in Leg 2, 5 in Leg 3 → 5×5×5 = **125 combinations** (unit bet × 125 = total stake).
+- **Ticket**: You choose a set of horses for **each leg**. The system generates combinations. Example: 5 horses in Leg 1, 5 in Leg 2, 5 in Leg 3 → C(5,3)×C(5,3)×C(5,3) = 10×10×10 = **1,000 combinations** (unit bet × 1000 = total stake).
+- **3T (膽拖 / Banker-Leg)**: Per leg, designate 1-2 horses as **膽 (Banker)** and remaining as **腳 (Legs)**. Bankers appear in every per-leg combination. Reduces per-leg combos dramatically:
+  - 1 Banker + N Legs per leg → C(N, 2) combos for that leg (pick 2 from legs)
+  - 2 Bankers + N Legs per leg → N combos for that leg (pick 1 from legs)
+  - Total 3T combos = Leg1_combos × Leg2_combos × Leg3_combos
+  - Use when a horse has **Adj Place% ≥ 70%** (strong top-3 probability) in a specific leg.
 - **Minimum**: At least **4 starters in all three legs**; otherwise pool is closed and refunded. Unit bet $2 (if total ticket ≥ $100) or minimum $10 otherwise.
 - **Source**: [HKJC Triple Trio](https://www.hkjc.com/english/betting/ticket_3t.asp), [HKJC Betting Rules Rule 3](https://www.hkjc.com/english/betting/betting_rule.aspx).
 
@@ -393,13 +499,15 @@ BANKROLL ALLOCATION: $[X] ([X]% of meeting bankroll)
 ───────────────────────────────────────────────────────────
 LEG 1 (R[X]) — [Class] | [Distance] | [Type: Banker/Lean/Open]
 ───────────────────────────────────────────────────────────
-| # | Horse | MC Place% | Adj Place% | Odds | Jockey | SCMP Flags | Selected |
+| # | Horse | MC Place% | Adj Place% | Odds | Jockey | SCMP Flags | Role |
 |---|-------|-----------|------------|------|--------|------------|----------|
-| X | NAME | XX.X% | XX.X% | X.X | Name | +trial | ✓ |
-| X | NAME | XX.X% | XX.X% | X.X | Name | +draw | ✓ |
-| X | NAME | XX.X% | XX.X% | X.X | Name | — | ✓ |
-| X | NAME | XX.X% | XX.X% | X.X | Name | — | ✓ |
+| X | NAME | XX.X% | XX.X% | X.X | Name | +trial | ★ 膽 (Banker) |
+| X | NAME | XX.X% | XX.X% | X.X | Name | +draw | 腳 (Leg) |
+| X | NAME | XX.X% | XX.X% | X.X | Name | — | 腳 (Leg) |
+| X | NAME | XX.X% | XX.X% | X.X | Name | — | 腳 (Leg) |
 | X | NAME | XX.X% | XX.X% | X.X | Name | — | (reserve) |
+
+Note: ★ 膽 = Banker (Adj Place% >= 70%, locked in every per-leg combo). If no horse qualifies as 膽, all pool horses are 腳 and full C(P,3) is used for that leg.
 
 Reasoning: [Why these horses; MC evidence; jockey factor; SCMP form insights]
 SCMP highlights: [Key Star Form / Formline / Trackwork notes for selected horses]
@@ -410,7 +518,11 @@ Top quinella combos: [from MC output + SCMP Q/QP matrix cross-reference]
 ───────────────────────────────────────────────────────────
 TICKET SUMMARY
 ───────────────────────────────────────────────────────────
-COMBINATIONS: [N1] × [N2] × [N3] = [N]
+BET STRUCTURE: [Full Pool / 膽拖 per leg] (see per-leg breakdown)
+COMBINATIONS: Leg1_combos × Leg2_combos × Leg3_combos = [N]
+  Leg 1: [C(P,3) / C(N,2) 膽拖 / N 雙膽拖] = [combos]
+  Leg 2: [C(P,3) / C(N,2) 膽拖 / N 雙膽拖] = [combos]
+  Leg 3: [C(P,3) / C(N,2) 膽拖 / N 雙膽拖] = [combos]
 UNIT BET: $[X]
 TOTAL STAKE: $[X] ([X]% of bankroll) ✅ within budget
 
@@ -432,13 +544,13 @@ CAVEATS:
 ### 3T Portfolio summary (when comparing multiple ticket options)
 
 ```
-| Leg | Race | Type | Picks | Combinations | Stake | Confidence |
+| Leg | Race | Type | Picks | Bet Structure | Per-leg Combos | Confidence |
 |-----|------|------|-------|---------------|-------|------------|
-| 1 | R[X] | Banker | 5 | 5 | $50 | HIGH |
-| 2 | R[Y] | Lean | 5 | 25 | $50 | MEDIUM |
-| 3 | R[Z] | Open | 6 | 150 | $50 | LOW |
+| 1 | R[X] | Banker | 5 | 膽拖 (1膽+4腳) | C(4,2)=6 | HIGH |
+| 2 | R[Y] | Lean | 5 | Full pool | C(5,3)=10 | MEDIUM |
+| 3 | R[Z] | Open | 6 | Full pool | C(6,3)=20 | LOW |
 
-COMBINATIONS: 5 × 5 × 6 = 150 | $50 flexi = 16.7%
+COMBINATIONS: 6 × 10 × 20 = 1,200 | $50 flexi = 2.1%
 ```
 
 Example baseline: 5 × 5 × 5 = 125 combos, $50 flexi = 20%. Maximum: 6 × 6 × 7 = 252 combos, $50 flexi ≈ 10%.
@@ -475,6 +587,10 @@ Example baseline: 5 × 5 × 5 = 125 combos, $50 flexi = 20%. Maximum: 6 × 6 × 
 11. **Minimum 5 picks per 3T leg** — Never go below 5 selections, even for Banker legs. Backtest Banker legs with 3 picks hit only 13.6% vs 24%+ with 4-5 picks. Evidence: R6 19-Feb — 4 picks missed the 4th-ranked MC horse (#9) in a 10-runner field.
 12. **No hard exclusion if market odds ≤ 15** — Aligned with Trio skill Rule 2. Evidence: R7 19-Feb — #11 JUST FOLLOW ME (9.2 odds) excluded for injury flag, came 2nd. $180,691 3T dividend missed.
 13. **Post-race review is mandatory** — After every meeting, fetch results and cross-reference tickets. Classify misses (pool miss, hard exclusion, too few picks, genuine upset). Track cumulative P&L. Save to `data/reports/3t_review_YYYYMMDD_VENUE.md`. This is how the strategy improves over time.
+14. **Use 膽拖 (Banker-Leg) per leg when Adj Place% >= 70%** — If any horse in a leg has Adj Place% >= 70%, designate it as 膽 (Banker) for that leg and bet 膽拖 structure instead of full pool. This cuts per-leg combinations by 40-57% (1 banker) or 70-86% (2 bankers). Savings compound across legs. Higher flexi %, same horse coverage.
+15. **Never force a per-leg banker** — If no horse meets the 70% Adj Place% threshold in a leg, use full pool C(P,3) for that leg. Forcing a weak banker just to save on combinations increases the chance of total loss for that leg.
+16. **Per-leg banker failure = entire 3T busted** — If a 膽 fails to finish top 3 in its leg, that leg misses and the whole 3T ticket fails. This is the trade-off for cheaper tickets. Only use 膽拖 when the per-leg banker probability is genuinely strong (>=70%).
+17. **2-Banker per leg (雙膽拖) is high-risk** — Both bankers must place top 3 in the same leg. Combined probability ≈ B1 × B2 (e.g., 70% × 72% ≈ 50%). Only use when both horses have Adj Place% >= 70% AND the leg is very strongly structured.
 
 ---
 

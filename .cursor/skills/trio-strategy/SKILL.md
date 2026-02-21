@@ -16,7 +16,7 @@ You are an experienced HKJC bettor focused on the Trio (單T) pool. You MUST fol
 ## Pipeline Overview
 
 ```
-STEP 1: QUERY DATA       → Fetch race card, odds, jockey stats, SCMP race card
+STEP 1: QUERY DATA       → Sync historical data, fetch race card, odds, jockey stats, SCMP race card
 STEP 2: VALIDATE DATA    → Check field size, going, scratchings, SCMP coverage
 STEP 3: RUN SIMULATION   → Monte Carlo 10,000 iterations + SCMP form adjustments
 STEP 4: COMPILE RESULTS  → Rank horses, build Trio matrix, calculate permutations
@@ -47,19 +47,38 @@ Ask for or determine:
 - **Venue** (ST / HV)
 - **Race number(s)** — Trio can be played on any race; user may specify one or several target races
 
-### 1b. Fetch jockey stats
+### 1b. Sync historical data
+
+Run the historical data sync tool to ensure all past meeting results are available for the MC simulation. The MC simulator uses `data/historical/` files to enrich horse form, speed ratings, and jockey/trainer stats — stale data degrades simulation accuracy.
+
+```bash
+PLAYWRIGHT_BROWSERS_PATH=0 npx tsx tools/sync-historical.ts
+```
+
+This will:
+- Compare the fixture list against existing `data/historical/results_*.json` files
+- Scrape any missing meetings (with automatic venue fallback)
+- Report sync status
+
+If the script reports "All historical data is up to date!" proceed immediately. If it scraped new meetings, the MC simulation will automatically pick up the fresh data.
+
+**To add future meeting dates** (e.g. new month’s fixtures): edit `data/historical/fixtures.json` and add entries, then re-run.
+
+> **Critical**: Do NOT skip this step. Running MC simulation on stale historical data means horses’ latest form, speed ratings, and jockey stats may be missing — especially for horses that ran in recent meetings not yet scraped.
+
+### 1c. Fetch jockey stats
 ```bash
 PLAYWRIGHT_BROWSERS_PATH=0 npx tsx tools/fetch-jockey-stats.ts
 ```
 Output: `data/jockeys/jockey_stats_YYYYMMDD.json` + `data/jockeys/JOCKEY_STATS.md`
 
-### 1c. Fetch live odds
+### 1d. Fetch live odds
 ```bash
 PLAYWRIGHT_BROWSERS_PATH=0 npx tsx tools/fetch-odds.ts --date=YYYY-MM-DD --venue=HV --json --save
 ```
 Output: `data/odds/odds_YYYYMMDD_VENUE.json`
 
-### 1d. Fetch race card
+### 1e. Fetch race card
 For each target race, fetch the HKJC race card to extract:
 - Horse entries, jockey assignments, draw, weight, last 6 runs
 - Race conditions: class, distance, surface, going
@@ -69,7 +88,7 @@ For each target race, fetch the HKJC race card to extract:
 https://racing.hkjc.com/racing/information/English/Racing/RaceCard.aspx?RaceDate=YYYY/MM/DD&Racecourse=HV&RaceNo=N
 ```
 
-### 1e. Fetch SCMP Race Card Data
+### 1f. Fetch SCMP Race Card Data
 
 Fetch the South China Morning Post race card page for supplementary data:
 
@@ -78,7 +97,7 @@ Fetch the South China Morning Post race card page for supplementary data:
 
 Use `WebFetch` to retrieve each target race page. Extract the following data — **do NOT use tipster picks**:
 
-#### 1e-i. Win/Place Odds
+#### 1f-i. Win/Place Odds
 
 The SCMP race card table includes **Win** and **Place** odds columns for every horse. These are the actual HKJC pool odds and are often more complete than what the `fetch-odds.ts` scraper captures.
 
@@ -87,7 +106,7 @@ The SCMP race card table includes **Win** and **Place** odds columns for every h
 - Record all horses' Win and Place odds
 - Identify market favourites and longshots for edge calculations
 
-#### 1e-ii. Star Form Comments
+#### 1f-ii. Star Form Comments
 
 Each horse has a **Star Form** comment written by SCMP analysts. Extract key signals:
 - **Positive signals**: "winner", "made all", "rallied", "improved", "sharp", "does draw well"
@@ -95,7 +114,7 @@ Each horse has a **Star Form** comment written by SCMP analysts. Extract key sig
 - **Fitness flags**: "resumed", "first-timer", "off 126 days", "returns from injury"
 - **Draw comments**: "gate's a hurdle", "gate should help", "drawn to get his chance"
 
-#### 1e-iii. Trouble in Running (TIR)
+#### 1f-iii. Trouble in Running (TIR)
 
 Extract recent **stewards' reports** for each horse. Key flags:
 - **Recurring issues**: "bumped on jumping" (repeated = barrier problem)
@@ -103,21 +122,21 @@ Extract recent **stewards' reports** for each horse. Key flags:
 - **Unacceptable performance**: Horse under stewards' watch
 - **Crowded / steadied**: Bad luck last run = potential improver
 
-#### 1e-iv. Vet's Report
+#### 1f-iv. Vet's Report
 
 Check for **health flags**:
 - Recent injury / lameness → **reduce confidence** even if passed vet exam
 - "Passed on [date]" after injury → check how recent; if <30 days, flag as risk
 - "Eight years of age or above" → reduced reliability for form reversal
 
-#### 1e-v. Trackwork Highlights
+#### 1f-v. Trackwork Highlights
 
 Extract notable trial / gallop mentions:
 - "Travelled well for second in his latest trial" = **positive trial form**
 - "Looks ready to strike" = trainer confidence
 - Use to **break ties** between similarly ranked MC horses
 
-#### 1e-vi. Quinella Place & Quinella Odds Matrix
+#### 1f-vi. Quinella Place & Quinella Odds Matrix
 
 The SCMP publishes full **QP and Q odds matrices** for each race. These are the actual HKJC pool odds.
 
@@ -126,7 +145,7 @@ The SCMP publishes full **QP and Q odds matrices** for each race. These are the 
 - Trio is like an extended quinella (top 3 instead of top 2) — QP/Q matrices help confirm which horses the market expects to fill the frame
 - If the top-2 MC quinella is also a high-paying QP combination, that's a strong Trio value signal
 
-#### 1e-vii. Philip Woo's Formline
+#### 1f-vii. Philip Woo's Formline
 
 A detailed **race-by-race narrative** from SCMP's senior form analyst. Extract:
 - Which horses he highlights as main chances
