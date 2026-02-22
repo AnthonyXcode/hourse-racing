@@ -282,8 +282,7 @@ Use **adjusted** probabilities (after jockey + SCMP form boosts) for classificat
 > **Why wider selections?** Backtest over 3 months (25 meetings, 75 legs) showed that narrower picks
 > (3 for Banker, 4 for Lean) only achieved an 18.7% per-leg hit rate. Banker legs with 3 picks hit
 > just 13.6% — worse than Open legs with 4+ picks (33.3%). Covering the actual top 3 in a 12-14
-> horse field requires at least 4-5 picks per leg. Wider selections increase combinations (and lower
-> flexi payout per unit) but dramatically improve hit probability, which is the binding constraint.
+> horse field requires at least 4-5 picks per leg. Wider selections increase combinations (and cost) but dramatically improve hit probability, which is the binding constraint.
 
 **Minimum selection rule**: Always select **at least 5 horses** per 3T leg, even if the leg classifies as Banker.
 
@@ -338,14 +337,14 @@ After classifying each leg and selecting horses, the **1st-ranked horse** (by Ad
 
 **Total 3T combo examples (showing cost impact):**
 
-| Leg 1 | Leg 2 | Leg 3 | Total combos | $50 flexi | Notes |
-|-------|-------|-------|-------------|-----------|-------|
-| 6 (膽拖 5) | 6 (膽拖 5) | 6 (膽拖 5) | 216 | 11.6% | All 5-pick legs (default) |
-| 6 (膽拖 5) | 10 (膽拖 6) | 10 (膽拖 6) | 600 | 4.2% | Mixed 5/6-pick legs |
-| 6 (膽拖 5) | 10 (膽拖 6) | 15 (膽拖 7) | 900 | 2.8% | Mixed with wider leg |
-| 10 (膽拖 6) | 10 (膽拖 6) | 10 (膽拖 6) | 1,000 | 2.5% | All 6-pick legs |
-| 10 (膽拖 6) | 10 (膽拖 6) | 15 (膽拖 7) | 1,500 | 1.7% | 6/6/7 mix |
-| 3 (雙膽 5) | 6 (膽拖 5) | 10 (膽拖 6) | 180 | 13.9% | 1 double-banker leg |
+| Leg 1 | Leg 2 | Leg 3 | Total combos | Cost ($10/combo) | Notes |
+|-------|-------|-------|-------------|-----------------|-------|
+| 6 (膽拖 5) | 6 (膽拖 5) | 6 (膽拖 5) | 216 | $2,160 | All 5-pick legs (default) |
+| 6 (膽拖 5) | 10 (膽拖 6) | 10 (膽拖 6) | 600 | $6,000 | Mixed 5/6-pick legs |
+| 6 (膽拖 5) | 10 (膽拖 6) | 15 (膽拖 7) | 900 | $9,000 | Mixed with wider leg |
+| 10 (膽拖 6) | 10 (膽拖 6) | 10 (膽拖 6) | 1,000 | $10,000 | All 6-pick legs |
+| 10 (膽拖 6) | 10 (膽拖 6) | 15 (膽拖 7) | 1,500 | $15,000 | 6/6/7 mix |
+| 3 (雙膽 5) | 6 (膽拖 5) | 10 (膽拖 6) | 180 | $1,800 | 1 double-banker leg |
 
 **When to use 膽拖 per leg:**
 1. **Always use 膽拖 with the 1st-ranked horse as banker per leg.** The model's #1 ranked horse has ~82% top-3 rate — strong enough to always anchor each leg.
@@ -376,28 +375,22 @@ Per leg (1 膽拖):       C(N, 2)  where N = legs (P-1)
 Per leg (2 雙膽拖):     N        where N = legs (P-2)
 
 Total 3T combos = Leg1_combos × Leg2_combos × Leg3_combos
-Unit bet: $2 (if total ≥ $100) else $10 min
-Total stake: combos × unit bet (or flexi)
+Unit bet: $10 (fixed)
+Total stake: combos × $10
 ```
 
 **3T combination quick reference:**
 
-| Leg 1 | Leg 2 | Leg 3 | Total | $50 flexi | Scenario |
-|-------|-------|-------|-------|-----------|----------|
-| C(5,3)=10 | C(5,3)=10 | C(5,3)=10 | 1,000 | 2.5% | All full pool, 5 picks |
-| C(4,2)=6 | C(5,3)=10 | C(5,3)=10 | 600 | 4.2% | Leg 1 has 膽拖 (5 picks) |
-| C(4,2)=6 | C(4,2)=6 | C(5,3)=10 | 360 | 6.9% | Legs 1+2 have 膽拖 |
-| C(4,2)=6 | C(4,2)=6 | C(4,2)=6 | 216 | 11.6% | All 3 legs 膽拖 (rare) |
-| C(5,2)=10 | C(5,2)=10 | C(6,3)=20 | 2,000 | 1.3% | 膽拖 6 + full 6 |
-| C(5,3)=10 | C(6,3)=20 | C(6,3)=20 | 4,000 | 0.6% | Full 5 + full 6 + full 6 |
+| Leg 1 | Leg 2 | Leg 3 | Total | Cost ($10/combo) | Scenario |
+|-------|-------|-------|-------|-----------------|----------|
+| C(5,3)=10 | C(5,3)=10 | C(5,3)=10 | 1,000 | $10,000 | All full pool, 5 picks |
+| C(4,2)=6 | C(5,3)=10 | C(5,3)=10 | 600 | $6,000 | Leg 1 has 膽拖 (5 picks) |
+| C(4,2)=6 | C(4,2)=6 | C(5,3)=10 | 360 | $3,600 | Legs 1+2 have 膽拖 |
+| C(4,2)=6 | C(4,2)=6 | C(4,2)=6 | 216 | $2,160 | All 3 legs 膽拖 (rare) |
+| C(5,2)=10 | C(5,2)=10 | C(6,3)=20 | 2,000 | $20,000 | 膽拖 6 + full 6 |
+| C(5,3)=10 | C(6,3)=20 | C(6,3)=20 | 4,000 | $40,000 | Full 5 + full 6 + full 6 |
 
-**Key advantage of 膽拖 per leg**: Same horse coverage but dramatically fewer per-leg combinations. A 5-pick leg with 1 banker = 6 combos (vs 10 full pool). Across 3 legs, the savings compound multiplicatively. Higher flexi %, bigger payout per dollar risked — IF the bankers place top 3.
-
-### 4d. Budget check
-- 3T stake is a **fixed flexi bet** (e.g. $50 per ticket regardless of combination count)
-- 3T flexi allocation must be ≤ 5% of meeting bankroll
-- If over budget: 膽拖 is already the default per leg (1st-ranked is always banker), so reduce picks in the most **open** leg first (drop lowest-ranked horse)
-- **Note**: With wider selections (5-5-5 = 125 combos baseline, 6-6-7 = 252 combos max), the flexi percentage is lower per unit, but the priority is achieving a hit. At $50 flexi, 125 combos = 20% flexi; 252 combos ≈ 10% flexi. A lower-flexi winning ticket far outweighs a missed narrow ticket.
+**Key advantage of 膽拖 per leg**: Same horse coverage but dramatically fewer per-leg combinations. A 5-pick leg with 1 banker = 6 combos (vs 10 full pool). Across 3 legs, the savings compound multiplicatively. Lower cost, same coverage — IF the bankers place top 3.
 
 ---
 
@@ -467,7 +460,7 @@ Save to: `data/reports/3t_review_YYYYMMDD_VENUE.md`
   - 2 Bankers + N Legs per leg → N combos for that leg (pick 1 from legs)
   - Total 3T combos = Leg1_combos × Leg2_combos × Leg3_combos
   - The 1st-ranked horse per leg is always the banker. For 雙膽拖, 2nd horse must also have Adj Place% >= 63%.
-- **Minimum**: At least **4 starters in all three legs**; otherwise pool is closed and refunded. Unit bet $2 (if total ticket ≥ $100) or minimum $10 otherwise.
+- **Minimum**: At least **4 starters in all three legs**; otherwise pool is closed and refunded. Unit bet: always $10 per combination (fixed).
 - **Source**: [HKJC Triple Trio](https://www.hkjc.com/english/betting/ticket_3t.asp), [HKJC Betting Rules Rule 3](https://www.hkjc.com/english/betting/betting_rule.aspx).
 
 ### Trio / 單T (different from 3T – single race, any order)
@@ -496,7 +489,7 @@ MC SIMULATION: 10,000 iterations per leg | Jockey boost applied
 SCMP DATA: ✅ Loaded | Form/TIR/Vet/Odds parsed
 
 3T LEGS: Race [X] (Leg 1), Race [Y] (Leg 2), Race [Z] (Leg 3)
-BANKROLL ALLOCATION: $[X] ([X]% of meeting bankroll)
+UNIT BET: $10 per combination (fixed)
 
 ───────────────────────────────────────────────────────────
 LEG 1 (R[X]) — [Class] | [Distance] | [Type: Banker/Lean/Open]
@@ -525,8 +518,8 @@ COMBINATIONS: Leg1_combos × Leg2_combos × Leg3_combos = [N]
   Leg 1: [C(P,3) / C(N,2) 膽拖 / N 雙膽拖] = [combos]
   Leg 2: [C(P,3) / C(N,2) 膽拖 / N 雙膽拖] = [combos]
   Leg 3: [C(P,3) / C(N,2) 膽拖 / N 雙膽拖] = [combos]
-UNIT BET: $[X]
-TOTAL STAKE: $[X] ([X]% of bankroll) ✅ within budget
+UNIT BET: $10 (fixed)
+TOTAL STAKE: $[total combos x 10]
 
 CONSOLATION NOTE: If Leg 1 + Leg 2 correct → consolation dividend (15% pool)
 
@@ -552,10 +545,10 @@ CAVEATS:
 | 2 | R[Y] | Lean | 5 | Full pool | C(5,3)=10 | MEDIUM |
 | 3 | R[Z] | Open | 6 | Full pool | C(6,3)=20 | LOW |
 
-COMBINATIONS: 6 × 10 × 20 = 1,200 | $50 flexi = 2.1%
+COMBINATIONS: 6 × 10 × 20 = 1,200 | Cost: $12,000
 ```
 
-Example baseline: 5 × 5 × 5 = 125 combos, $50 flexi = 20%. Maximum: 6 × 6 × 7 = 252 combos, $50 flexi ≈ 10%.
+Example baseline: 5 × 5 × 5 = 125 combos = $1,250. Maximum: 6 × 6 × 7 = 252 combos = $2,520.
 
 ---
 
@@ -578,13 +571,13 @@ Example baseline: 5 × 5 × 5 = 125 combos, $50 flexi = 20%. Maximum: 6 × 6 × 
 
 1. **Follow the pipeline** — Do not skip data fetching or simulation. Manual estimates are unreliable.
 2. **3T ≠ Trio (單T)** — 3T is Triple Trio (three races, any order per leg). Trio (單T) is a separate single-race bet (top 3 in any order, but just 1 race). Both are any-order; 3T spans 3 races.
-3. **3T is high variance** — Only allocate 3–5% of meeting bankroll.
+3. **3T is high variance** — Be aware of total exposure. Use $10 per combo (fixed), no flexi.
 4. **Scratchings** — Define replacement rules before the meeting starts.
 5. **Record results** — Track hit rate and payout vs stake for strategy calibration.
 6. **Always validate** — If data quality is poor (missing odds, empty jockey stats), note caveats prominently.
 7. **SCMP is supplementary** — MC simulation is the primary model. SCMP data adjusts and informs but does not override MC probabilities. If SCMP data is unavailable, proceed without it and note as a caveat.
 8. **Do NOT use tipster picks** — Ignore all tipster selections from SCMP or any other source. Rely only on MC simulation, SCMP odds/form/TIR/vet data, elite jockey stats, and market odds for decisions.
-9. **Prioritise hit rate over flexi percentage** — Backtesting showed that narrow selections (3 picks/leg) have very low hit rates (~14%). Wider selections (5-6 picks) roughly double or triple the per-leg hit rate. Use flexi betting to keep total stake fixed at $50 per ticket; accept the lower per-unit payout in exchange for a realistic chance of hitting.
+9. **Prioritise hit rate over cost savings** — Backtesting showed that narrow selections (3 picks/leg) have very low hit rates (~14%). Wider selections (5-6 picks) roughly double or triple the per-leg hit rate. Use $10 per combo; accept the higher total cost in exchange for a realistic chance of hitting.
 10. **Watch for longshot spoilers** — In HK racing, ~69% of leg misses involve a horse at odds ≥ 15.0 finishing in the top 3. The longshot insurance rule (add a mid-range horse if all picks are short-priced) mitigates this. Evidence: R6 19-Feb — #9 REGAL GEM (odds 16, MC Place% 46.4%, 4th highest) was the spoiler; only 4 picks were made for this leg.
 11. **Minimum 5 picks per 3T leg** — Never go below 5 selections, even for Banker legs. Backtest Banker legs with 3 picks hit only 13.6% vs 24%+ with 4-5 picks. Evidence: R6 19-Feb — 4 picks missed the 4th-ranked MC horse (#9) in a 10-runner field.
 12. **No hard exclusion if market odds ≤ 15** — Aligned with Trio skill Rule 2. Evidence: R7 19-Feb — #11 JUST FOLLOW ME (9.2 odds) excluded for injury flag, came 2nd. $180,691 3T dividend missed.
@@ -640,7 +633,7 @@ RACE [N] SCMP DATA
 
 ## Example Query
 
-"Generate 3T strategy for Happy Valley 11/02/2026. Meeting bankroll $1,000, moderate risk."
+"Generate 3T strategy for Happy Valley 11/02/2026."
 
 Expected agent behaviour:
 1. Fetch jockey stats → check elite tier

@@ -409,44 +409,37 @@ Trio (Any Order) Combinations:
   P=7: C(7,3) = 35 combinations
   P=8: C(8,3) = 56 combinations
 
-  Unit bet: $10 min (or $2 if total >= $100)
-  Total stake: combinations x unit bet
-  Flexi: fixed total stake / (combinations x unit bet)
+  Unit bet: $10 (fixed)
+  Total stake: combinations x $10
 ```
 
 **Combination and cost table (Full Pool — no banker):**
-| Mode | Pool | Combos | Full Cost | Flexi at $30 |
-|------|------|--------|-----------|-------------|
-| A    | 5    | 10     | $100      | 30.0%       |
-| B    | 6    | 20     | $200      | 15.0%       |
-| C    | 7    | 35     | $350      | 8.6%        |
+| Mode | Pool | Combos | Cost ($10/combo) |
+|------|------|--------|-----------------|
+| A    | 5    | 10     | $100            |
+| B    | 6    | 20     | $200            |
+| C    | 7    | 35     | $350            |
 
-**Combination and cost table (膽拖 — 1 Banker):**
-| Pool | Structure | Combos | Full Cost | Flexi at $30 | vs Full Pool |
-|------|-----------|--------|-----------|-------------|-------------|
-| 5    | 1膽 + 4腳 | 6      | $60       | 50.0%       | 40% cheaper |
-| 6    | 1膽 + 5腳 | 10     | $100      | 30.0%       | 50% cheaper |
-| 7    | 1膽 + 6腳 | 15     | $150      | 20.0%       | 57% cheaper |
-| 8    | 1膽 + 7腳 | 21     | $210      | 14.3%       | 63% cheaper |
+**Combination and cost table (膽拖 — 1 Banker, always used):**
+| Pool | Structure | Combos | Cost ($10/combo) | vs Full Pool |
+|------|-----------|--------|-----------------|-------------|
+| 5    | 1膽 + 4腳 | 6      | $60             | 40% cheaper |
+| 6    | 1膽 + 5腳 | 10     | $100            | 50% cheaper |
+| 7    | 1膽 + 6腳 | 15     | $150            | 57% cheaper |
+| 8    | 1膽 + 7腳 | 21     | $210            | 63% cheaper |
 
 **Combination and cost table (雙膽拖 — 2 Bankers):**
-| Pool | Structure | Combos | Full Cost | Flexi at $30 | vs Full Pool |
-|------|-----------|--------|-----------|-------------|-------------|
-| 5    | 2膽 + 3腳 | 3      | $30       | 100%        | 70% cheaper |
-| 6    | 2膽 + 4腳 | 4      | $40       | 75.0%       | 80% cheaper |
-| 7    | 2膽 + 5腳 | 5      | $50       | 60.0%       | 86% cheaper |
+| Pool | Structure | Combos | Cost ($10/combo) | vs Full Pool |
+|------|-----------|--------|-----------------|-------------|
+| 5    | 2膽 + 3腳 | 3      | $30             | 70% cheaper |
+| 6    | 2膽 + 4腳 | 4      | $40             | 80% cheaper |
+| 7    | 2膽 + 5腳 | 5      | $50             | 86% cheaper |
 
-**Key advantage over Tierce (exact order)**: Same pool of 6 horses = 20 Trio combos vs 120 Tierce permutations. 6x cheaper for the same horse selection, meaning higher flexi % and better returns on hits.
+**Key advantage over Tierce (exact order)**: Same pool of 6 horses = 20 Trio combos vs 120 Tierce permutations. 6x cheaper for the same horse selection.
 
-**Key advantage of 膽拖**: Same horse selection but dramatically fewer combinations. A 6-horse pool with 1 banker = 10 combos (vs 20 full pool). Higher flexi %, bigger payout per dollar risked — IF the banker places top 3.
+**Key advantage of 膽拖**: Same horse selection but dramatically fewer combinations. A 6-horse pool with 1 banker = 10 combos (vs 20 full pool). Lower cost, same coverage — IF the banker places top 3.
 
-### 4e. Budget check
-- Trio stake should be ≤ **3% of meeting bankroll** per race
-- If playing multiple races, total Trio allocation ≤ **8% of meeting bankroll**
-- If over budget: 膽拖 is already the default (1st-ranked is always banker), so switch to Mode A or reduce pool size
-- Consider **flexi Trio**: fixed total stake (e.g. $30) across all permutations
-
-### 4f. Value check — Trio pool odds
+### 4e. Value check — Trio pool odds
 
 Before finalising, cross-reference with the **Trio pool estimate**:
 - Check HKJC Tierce dividends from recent similar races as a benchmark
@@ -474,8 +467,7 @@ Save to: `data/reports/trio_strategy_YYYYMMDD_VENUE_RN.md`
   - 2 Bankers + N Legs → N combinations (pick 1 from legs)
   - The 1st-ranked horse (by Adj Win%) is always the banker. For 雙膽拖, 2nd horse must also have Adj Place% >= 63%.
 - **Minimum**: At least **3 starters**; otherwise pool is closed and refunded.
-- **Unit bet**: $10 minimum (or $2 if total ticket value >= $100).
-- **Flexi**: Available — set a fixed total stake and the system distributes across combinations.
+- **Unit bet**: Always $10 per combination (fixed).
 - **Dividend**: The 單T dividend shown on HKJC results pages. Lower than Tierce (三重彩) because order doesn't matter.
 - **Source**: [HKJC Betting Rules](https://www.hkjc.com/english/betting/betting_rule.aspx).
 
@@ -502,7 +494,7 @@ RACE: R[N] — [Class] | [Distance] | [Surface] | [Going] | [Field size] runners
 CLASSIFICATION: [Dominant / Competitive / Wide open] | POOL SIZE: [P]
 MODE: [A: Tight Pool (5) / B: Standard Pool (6) / C: Wide Pool (7) / D: PASS]
 BET STRUCTURE: [Full Pool C(P,3) / 膽拖 1膽+(P-1)腳 C(P-1,2) / 雙膽拖 2膽+(P-2)腳 = P-2]
-BANKROLL ALLOCATION: $[X] ([X]% of meeting bankroll)
+UNIT BET: $10 per combination (fixed)
 
 ───────────────────────────────────────────────────────────
 HORSE RANKINGS
@@ -547,9 +539,8 @@ TOP TRIO COMBINATIONS (by combined Adj Place%):
 TICKET SUMMARY
 ───────────────────────────────────────────────────────────
 COMBINATIONS: [N] ([膽拖: C(N,2) where N = legs] or [Full Pool: C(P,3) where P = pool size])
-UNIT BET: $[X]
-TOTAL STAKE: $[X] ([X]% of bankroll) ✅ within budget
-or FLEXI: $[X] total → [X]% flexi
+UNIT BET: $10 (fixed)
+TOTAL STAKE: $[combos x 10]
 
 TOP COMBINATIONS (highest value):
   [List top 5-10 horse groups of 3, with combined probability]
@@ -581,7 +572,7 @@ TRIO PORTFOLIO SUMMARY - [Venue] | [Date]
 | R[N] | C[X] | Competitive | B | 24 | $48 | MEDIUM |
 | R[N] | C[X] | Wide open | D | — | PASS | — |
 
-TOTAL TRIO STAKE: $[X] ([X]% of $[bankroll] bankroll)
+TOTAL TRIO STAKE: $[combos x 10]
 ═══════════════════════════════════════════════════════════
 ```
 
@@ -609,7 +600,7 @@ TOTAL TRIO STAKE: $[X] ([X]% of $[bankroll] bankroll)
 1. **Follow the pipeline** — Do not skip data fetching or simulation. Manual estimates are unreliable.
 2. **Trio ≠ 3T** — Trio (單T) is a single-race bet (pick top 3 in any order). 3T is Triple Trio (three races). Never confuse the two.
 3. **Order does NOT matter** — Trio (單T) is ANY ORDER. Just pick the 3 horses that finish in the top 3. This is simpler than Tierce and has a higher hit rate.
-4. **Trio is high variance** — Only allocate ≤3% of meeting bankroll per race, ≤8% total across all Trio bets.
+4. **Trio is high variance** — Be aware of total exposure across the meeting. Use $10 per combo (fixed), no flexi.
 5. **Tight pool for dominant races** — Use Mode A (5-horse pool) when Adj Win% >= 35%. The dominant horse is the anchor; include 4 contenders by Adj Place%.
 6. **PASS when appropriate** — Wide open races with no clear edge should be skipped. Not every race is a Trio race. Typical meeting: play Trio on 2-3 races maximum. Default to PASS for Mode C unless strong form/pace conviction.
 7. **1st-ranked horse is ALWAYS the banker (膽)** — The model's #1 ranked horse (by Adj Win%) has ~82% top-3 rate. Always designate it as 膽 and use 膽拖 structure. This reduces combos by 40-57% vs full pool while maintaining high hit probability.
@@ -715,7 +706,7 @@ Save to: `data/reports/trio_review_YYYYMMDD_VENUE.md`
 
 ## Example Query
 
-"Generate Trio strategy for Sha Tin Race 7, 14/02/2026. Meeting bankroll $1,000."
+"Generate Trio strategy for Sha Tin Race 7, 14/02/2026."
 
 Expected agent behaviour:
 1. Fetch jockey stats → check elite tier
@@ -727,7 +718,7 @@ Expected agent behaviour:
 7. Classify race (Dominant / Semi-Dominant / Competitive / Wide open)
 8. Build Trio pool (select P horses ranked by Adj Win% and Adj Place%)
 9. Apply exclusion rules (Rules 1-3) — no narrative demotion, no hard exclusion if odds <= 15
-10. Calculate permutations, check budget
+10. Calculate permutations and cost
 11. Output Trio ticket + summary
 12. Save to `data/reports/trio_strategy_20260214_ST_R7.md`
 13. **After the meeting**: Fetch results, cross-reference, save review
