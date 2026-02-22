@@ -47,14 +47,13 @@ async function fetchRaceOdds(
   const url = `https://bet.hkjc.com/en/racing/wp/${dateFormatted}/${venue}/${raceNumber}`;
 
   await page.goto(url, {
-    waitUntil: "networkidle",
+    waitUntil: "domcontentloaded",
     timeout: 30000,
   });
 
-  // Wait for odds to load
-  await page.waitForTimeout(3000);
+  // Wait for odds table to render (structured cells with class "rc-odds")
+  await page.waitForSelector("td.rc-odds", { timeout: 20000 }).catch(() => {});
 
-  // Extract odds data (runs in browser context)
   const horses = await page.evaluate(() => {
     const results: {
       horseNumber: number;
@@ -65,44 +64,26 @@ async function fetchRaceOdds(
       placeOdds: number;
     }[] = [];
 
-    // Find all runner rows - try multiple selectors
-    const rows = document.querySelectorAll(
-      '[class*="runner"], [class*="horse"], tr, [class*="row"]'
-    );
+    document.querySelectorAll("tr").forEach((row) => {
+      const noCell = row.querySelector("td.rc-no");
+      const nameCell = row.querySelector("td.horseName");
+      const jockeyCell = row.querySelector("td.jocky");
+      const trainerCell = row.querySelector("td.trainer");
+      const oddsCells = row.querySelectorAll("td.rc-odds");
 
-    rows.forEach((row: Element) => {
-      const text = row.textContent?.trim().replace(/\s+/g, " ");
-      if (!text || !text.match(/^\d+[A-Z]/) || !text.match(/\d\.\d/)) return;
+      if (!noCell || !nameCell || oddsCells.length < 2) return;
 
-      // Parse format: "1SAGACIOUS LIFE13126Z PurtonP C Ng3.62.3"
-      // Number + Name + Draw + Weight + Jockey + Trainer + WinOdds + PlaceOdds
-      // Use a more specific pattern that captures odds at the end (X.X format)
-      const numMatch = text.match(/^(\d+)/);
-      const nameMatch = text.match(/^(\d+)([A-Z][A-Z\s']+)/);
-      // Look for two decimal numbers at the end (win and place odds)
-      const oddsMatch = text.match(/(\d+\.\d)\s*(\d+\.\d)\s*$/);
+      const horseNumber = parseInt(noCell.textContent?.trim() || "0", 10);
+      const horseName = nameCell.textContent?.trim() || "";
+      const jockey = jockeyCell?.textContent?.trim() || "";
+      const trainer = trainerCell?.textContent?.trim() || "";
+      const winText = oddsCells[0].textContent?.trim() || "0";
+      const placeText = oddsCells[1].textContent?.trim() || "0";
+      const winOdds = parseFloat(winText);
+      const placeOdds = parseFloat(placeText);
 
-      if (numMatch && nameMatch && oddsMatch) {
-        const horseNumber = parseInt(numMatch[1], 10);
-        const horseName = nameMatch[2].trim();
-        const winOdds = parseFloat(oddsMatch[1]);
-        const placeOdds = parseFloat(oddsMatch[2]);
-
-        // Extract jockey name (between weight and odds, typically after 126 or 133 etc)
-        const jockeyMatch = text.match(/\d{3}([A-Z][a-z]+(?:\s[A-Z][a-z]*)*)/);
-        const jockey = jockeyMatch ? jockeyMatch[1].trim() : "";
-
-        // Only add if we haven't seen this horse number
-        if (!results.find((r) => r.horseNumber === horseNumber)) {
-          results.push({
-            horseNumber,
-            horseName,
-            jockey,
-            trainer: "",
-            winOdds,
-            placeOdds,
-          });
-        }
+      if (horseNumber > 0 && !isNaN(winOdds) && winOdds > 0) {
+        results.push({ horseNumber, horseName, jockey, trainer, winOdds, placeOdds });
       }
     });
 

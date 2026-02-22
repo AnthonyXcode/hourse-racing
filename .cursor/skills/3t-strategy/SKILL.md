@@ -307,9 +307,9 @@ After classifying each leg and selecting horses, check if any horse within a leg
 
 | Condition | Structure | Per-leg combos |
 |-----------|-----------|----------------|
-| **1 horse Adj Place% >= 70%** | **膽拖** (1 Banker + N Legs) | C(N, 2) = N × (N-1) / 2 |
-| **2 horses Adj Place% >= 70%** | **雙膽拖** (2 Bankers + N Legs) | N combos |
-| **No horse >= 70%** | **Full pool** (standard) | C(P, 3) per leg |
+| **1 horse Adj Place% >= 63%** | **膽拖** (1 Banker + N Legs) | C(N, 2) = N × (N-1) / 2 |
+| **2 horses Adj Place% >= 63%** | **雙膽拖** (2 Bankers + N Legs) | N combos |
+| **No horse >= 63%** | **Full pool** (standard) | C(P, 3) per leg |
 
 **How it works in 3T:**
 - **膽 (Banker)**: Locked into EVERY per-leg combination — must finish top 3 for ANY ticket covering that leg to win.
@@ -345,18 +345,18 @@ After classifying each leg and selecting horses, check if any horse within a leg
 | 6 (膽拖 5) | 10 (膽拖 6) | 15 (膽拖 7) | 900 | 2.8% | Mixed with banker savings |
 
 **When to use 膽拖 per leg:**
-1. **Adj Place% >= 70%** is the threshold. This means ~70% probability of finishing top 3 — strong enough to anchor a per-leg banker.
+1. **Adj Place% >= 63%** is the threshold. This means ~63% probability of finishing top 3 — strong enough to anchor a per-leg banker.
 2. Apply AFTER the leg pool is selected using Banker/Lean/Open classification. The banker check is a **bet structure optimisation**, not a horse selection change.
 3. The same pool of horses is used per leg; only the HKJC bet slip structure changes (select "膽" and "腳" per leg).
 4. If the per-leg banker fails to finish top 3, that entire leg is busted → the whole 3T ticket fails.
-5. **Never force a banker** if no horse meets the 70% threshold per leg. Use full pool per-leg instead.
-6. For 2-banker (雙膽拖) per leg, BOTH must have Adj Place% >= 70%. Only use when the leg is very strongly structured.
+5. **Never force a banker** if no horse meets the 63% threshold per leg. Use full pool per-leg instead.
+6. For 2-banker (雙膽拖) per leg, BOTH must have Adj Place% >= 63%. Only use when the leg is very strongly structured.
 
 **Decision flow per leg:**
 ```
 Leg pool selected (P horses for this leg)
   │
-  ├─ Any horse Adj Place% >= 70%?
+  ├─ Any horse Adj Place% >= 63%?
   │   ├─ YES, 1 horse → 膽拖: 1 膽 + (P-1) 腳 → C(P-1, 2) combos for this leg
   │   ├─ YES, 2 horses → 雙膽拖: 2 膽 + (P-2) 腳 → (P-2) combos for this leg
   │   └─ NO → Full pool: C(P, 3) combos for this leg
