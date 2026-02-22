@@ -3,7 +3,7 @@ name: 3t-strategy
 description: Generate Triple Trio (3T) betting strategies for HKJC meetings using a 6-step pipeline (query data, validate, simulate, compile, advise, review). Use when the user asks about 3T, Triple Trio, multi-race exotic bets for top 3 finishers, or wants 3T ticket combinations for a meeting.
 ---
 
-# 3T (Triple Trio) Strategy Skill
+# 3T (Triple Trio) Strategy Skill_test
 
 Generate **Triple Trio (3T)** strategies by querying live data, validating it, running Monte Carlo simulations, and producing actionable ticket advice for the upcoming racing day.
 
@@ -394,7 +394,7 @@ Total stake: combos × unit bet (or flexi)
 ### 4d. Budget check
 - 3T stake is a **fixed flexi bet** (e.g. $50 per ticket regardless of combination count)
 - 3T flexi allocation must be ≤ 5% of meeting bankroll
-- If over budget: use 膽拖 per leg (if Adj Place% >= 70% banker exists) to reduce combos, OR reduce picks in the most **open** leg first (drop lowest-ranked horse)
+- If over budget: USE 膽拖 per leg (if Adj Place% >= 63% banker exists) to reduce combos, OR reduce picks in the most **open** leg first (drop lowest-ranked horse)
 - **Note**: With wider selections (5-5-5 = 125 combos baseline, 6-6-7 = 252 combos max), the flexi percentage is lower per unit, but the priority is achieving a hit. At $50 flexi, 125 combos = 20% flexi; 252 combos ≈ 10% flexi. A lower-flexi winning ticket far outweighs a missed narrow ticket.
 
 ---
