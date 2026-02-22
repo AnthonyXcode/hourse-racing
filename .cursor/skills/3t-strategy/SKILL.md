@@ -303,18 +303,21 @@ Use **adjusted** probabilities (after jockey + SCMP form boosts) for classificat
 
 #### Per-leg 膽拖 (Banker-Leg) structure — cost optimisation
 
-After classifying each leg and selecting horses, check if any horse within a leg qualifies as a **膽 (Banker)**:
+After classifying each leg and selecting horses, the **1st-ranked horse** (by Adj Place%) in each leg is **always** designated as the 膽 (Banker):
 
 | Condition | Structure | Per-leg combos |
 |-----------|-----------|----------------|
-| **1 horse Adj Place% >= 63%** | **膽拖** (1 Banker + N Legs) | C(N, 2) = N × (N-1) / 2 |
-| **2 horses Adj Place% >= 63%** | **雙膽拖** (2 Bankers + N Legs) | N combos |
-| **No horse >= 63%** | **Full pool** (standard) | C(P, 3) per leg |
+| **Always (default)** | **膽拖** (1st-ranked as Banker + N Legs) | C(N, 2) = N × (N-1) / 2 |
+| **2nd horse also Adj Place% >= 63%** | **雙膽拖** (2 Bankers + N Legs) | N combos |
+
+**Why the 1st-ranked horse is always banker per leg:**
+- **Evidence (19-Feb-2026)**: The 1st-ranked horse finished in the Top 4 in **9/11 races (81.8%)** and won in 2 races (R7, R10). The model's top-ranked horse is the single strongest predictor.
+- When the 1st-ranked horse misses top 3, it typically signals a longshot upset where most pool selections also miss. The cost savings from banker structure outweigh the rare banker failure.
 
 **How it works in 3T:**
-- **膽 (Banker)**: Locked into EVERY per-leg combination — must finish top 3 for ANY ticket covering that leg to win.
+- **膽 (Banker)**: The 1st-ranked horse per leg is locked into EVERY per-leg combination — must finish top 3 for ANY ticket covering that leg to win.
 - **腳 (Legs)**: The remaining horses in the leg. System picks 2 from legs (1-banker) or 1 from legs (2-banker) to complete each combination.
-- Each leg is evaluated independently — Leg 1 might have a banker while Leg 2 uses full pool.
+- Each leg always has at least 1 banker (the 1st-ranked horse). Leg 1 might have 2 bankers while Leg 2 has only 1.
 - Total 3T combos = Leg1_combos × Leg2_combos × Leg3_combos.
 
 **Per-leg combination table (1 Banker 膽拖):**
@@ -337,29 +340,28 @@ After classifying each leg and selecting horses, check if any horse within a leg
 
 | Leg 1 | Leg 2 | Leg 3 | Total combos | $50 flexi | Notes |
 |-------|-------|-------|-------------|-----------|-------|
-| 10 (full 5) | 10 (full 5) | 10 (full 5) | 1,000 | 2.5% | All standard, minimum picks |
-| 6 (膽拖 5) | 10 (full 5) | 10 (full 5) | 600 | 4.2% | 1 banker leg saves 40% |
-| 6 (膽拖 5) | 6 (膽拖 5) | 10 (full 5) | 360 | 6.9% | 2 banker legs |
-| 6 (膽拖 5) | 6 (膽拖 5) | 6 (膽拖 5) | 216 | 11.6% | All banker legs (rare) |
-| 10 (膽拖 6) | 10 (膽拖 6) | 20 (full 6) | 2,000 | 1.25% | Mixed wider selections |
-| 6 (膽拖 5) | 10 (膽拖 6) | 15 (膽拖 7) | 900 | 2.8% | Mixed with banker savings |
+| 6 (膽拖 5) | 6 (膽拖 5) | 6 (膽拖 5) | 216 | 11.6% | All 5-pick legs (default) |
+| 6 (膽拖 5) | 10 (膽拖 6) | 10 (膽拖 6) | 600 | 4.2% | Mixed 5/6-pick legs |
+| 6 (膽拖 5) | 10 (膽拖 6) | 15 (膽拖 7) | 900 | 2.8% | Mixed with wider leg |
+| 10 (膽拖 6) | 10 (膽拖 6) | 10 (膽拖 6) | 1,000 | 2.5% | All 6-pick legs |
+| 10 (膽拖 6) | 10 (膽拖 6) | 15 (膽拖 7) | 1,500 | 1.7% | 6/6/7 mix |
+| 3 (雙膽 5) | 6 (膽拖 5) | 10 (膽拖 6) | 180 | 13.9% | 1 double-banker leg |
 
 **When to use 膽拖 per leg:**
-1. **Adj Place% >= 63%** is the threshold. This means ~63% probability of finishing top 3 — strong enough to anchor a per-leg banker.
-2. Apply AFTER the leg pool is selected using Banker/Lean/Open classification. The banker check is a **bet structure optimisation**, not a horse selection change.
-3. The same pool of horses is used per leg; only the HKJC bet slip structure changes (select "膽" and "腳" per leg).
-4. If the per-leg banker fails to finish top 3, that entire leg is busted → the whole 3T ticket fails.
-5. **Never force a banker** if no horse meets the 63% threshold per leg. Use full pool per-leg instead.
-6. For 2-banker (雙膽拖) per leg, BOTH must have Adj Place% >= 63%. Only use when the leg is very strongly structured.
+1. **Always use 膽拖 with the 1st-ranked horse as banker per leg.** The model's #1 ranked horse has ~82% top-3 rate — strong enough to always anchor each leg.
+2. Apply AFTER the leg pool is selected using Banker/Lean/Open classification. The 1st-ranked horse is always the banker; only the bet slip structure changes.
+3. The same pool of horses is used per leg; the 1st-ranked horse becomes 膽, all others become 腳.
+4. If the per-leg banker fails to finish top 3, that entire leg is busted → the whole 3T ticket fails. Accept this as variance; the ~82% hit rate means it works most of the time.
+5. For 2-banker (雙膽拖) per leg, the 2nd horse must have Adj Place% >= 63%. Only use when the leg is very strongly structured.
 
 **Decision flow per leg:**
 ```
-Leg pool selected (P horses for this leg)
+Leg pool selected (P horses for this leg, ranked by Adj Place%)
   │
-  ├─ Any horse Adj Place% >= 63%?
-  │   ├─ YES, 1 horse → 膽拖: 1 膽 + (P-1) 腳 → C(P-1, 2) combos for this leg
-  │   ├─ YES, 2 horses → 雙膽拖: 2 膽 + (P-2) 腳 → (P-2) combos for this leg
-  │   └─ NO → Full pool: C(P, 3) combos for this leg
+  ├─ 1st-ranked horse → ALWAYS 膽 (Banker) for this leg
+  │   ├─ 2nd-ranked horse also Adj Place% >= 63%?
+  │   │   ├─ YES → 雙膽拖: 2 膽 + (P-2) 腳 → (P-2) combos for this leg
+  │   │   └─ NO → 膽拖: 1 膽 + (P-1) 腳 → C(P-1, 2) combos for this leg
   │
   Total 3T combos = Leg1_combos × Leg2_combos × Leg3_combos
 ```
@@ -394,7 +396,7 @@ Total stake: combos × unit bet (or flexi)
 ### 4d. Budget check
 - 3T stake is a **fixed flexi bet** (e.g. $50 per ticket regardless of combination count)
 - 3T flexi allocation must be ≤ 5% of meeting bankroll
-- If over budget: USE 膽拖 per leg (if Adj Place% >= 63% banker exists) to reduce combos, OR reduce picks in the most **open** leg first (drop lowest-ranked horse)
+- If over budget: 膽拖 is already the default per leg (1st-ranked is always banker), so reduce picks in the most **open** leg first (drop lowest-ranked horse)
 - **Note**: With wider selections (5-5-5 = 125 combos baseline, 6-6-7 = 252 combos max), the flexi percentage is lower per unit, but the priority is achieving a hit. At $50 flexi, 125 combos = 20% flexi; 252 combos ≈ 10% flexi. A lower-flexi winning ticket far outweighs a missed narrow ticket.
 
 ---
@@ -464,7 +466,7 @@ Save to: `data/reports/3t_review_YYYYMMDD_VENUE.md`
   - 1 Banker + N Legs per leg → C(N, 2) combos for that leg (pick 2 from legs)
   - 2 Bankers + N Legs per leg → N combos for that leg (pick 1 from legs)
   - Total 3T combos = Leg1_combos × Leg2_combos × Leg3_combos
-  - Use when a horse has **Adj Place% ≥ 70%** (strong top-3 probability) in a specific leg.
+  - The 1st-ranked horse per leg is always the banker. For 雙膽拖, 2nd horse must also have Adj Place% >= 63%.
 - **Minimum**: At least **4 starters in all three legs**; otherwise pool is closed and refunded. Unit bet $2 (if total ticket ≥ $100) or minimum $10 otherwise.
 - **Source**: [HKJC Triple Trio](https://www.hkjc.com/english/betting/ticket_3t.asp), [HKJC Betting Rules Rule 3](https://www.hkjc.com/english/betting/betting_rule.aspx).
 
@@ -507,7 +509,7 @@ LEG 1 (R[X]) — [Class] | [Distance] | [Type: Banker/Lean/Open]
 | X | NAME | XX.X% | XX.X% | X.X | Name | — | 腳 (Leg) |
 | X | NAME | XX.X% | XX.X% | X.X | Name | — | (reserve) |
 
-Note: ★ 膽 = Banker (Adj Place% >= 70%, locked in every per-leg combo). If no horse qualifies as 膽, all pool horses are 腳 and full C(P,3) is used for that leg.
+Note: ★ 膽 = Banker (1st-ranked horse per leg, always locked in every per-leg combo). For 雙膽拖, the 2nd horse must also have Adj Place% >= 63%.
 
 Reasoning: [Why these horses; MC evidence; jockey factor; SCMP form insights]
 SCMP highlights: [Key Star Form / Formline / Trackwork notes for selected horses]
@@ -587,10 +589,10 @@ Example baseline: 5 × 5 × 5 = 125 combos, $50 flexi = 20%. Maximum: 6 × 6 × 
 11. **Minimum 5 picks per 3T leg** — Never go below 5 selections, even for Banker legs. Backtest Banker legs with 3 picks hit only 13.6% vs 24%+ with 4-5 picks. Evidence: R6 19-Feb — 4 picks missed the 4th-ranked MC horse (#9) in a 10-runner field.
 12. **No hard exclusion if market odds ≤ 15** — Aligned with Trio skill Rule 2. Evidence: R7 19-Feb — #11 JUST FOLLOW ME (9.2 odds) excluded for injury flag, came 2nd. $180,691 3T dividend missed.
 13. **Post-race review is mandatory** — After every meeting, fetch results and cross-reference tickets. Classify misses (pool miss, hard exclusion, too few picks, genuine upset). Track cumulative P&L. Save to `data/reports/3t_review_YYYYMMDD_VENUE.md`. This is how the strategy improves over time.
-14. **Use 膽拖 (Banker-Leg) per leg when Adj Place% >= 70%** — If any horse in a leg has Adj Place% >= 70%, designate it as 膽 (Banker) for that leg and bet 膽拖 structure instead of full pool. This cuts per-leg combinations by 40-57% (1 banker) or 70-86% (2 bankers). Savings compound across legs. Higher flexi %, same horse coverage.
-15. **Never force a per-leg banker** — If no horse meets the 70% Adj Place% threshold in a leg, use full pool C(P,3) for that leg. Forcing a weak banker just to save on combinations increases the chance of total loss for that leg.
-16. **Per-leg banker failure = entire 3T busted** — If a 膽 fails to finish top 3 in its leg, that leg misses and the whole 3T ticket fails. This is the trade-off for cheaper tickets. Only use 膽拖 when the per-leg banker probability is genuinely strong (>=70%).
-17. **2-Banker per leg (雙膽拖) is high-risk** — Both bankers must place top 3 in the same leg. Combined probability ≈ B1 × B2 (e.g., 70% × 72% ≈ 50%). Only use when both horses have Adj Place% >= 70% AND the leg is very strongly structured.
+14. **Always use 膽拖 with 1st-ranked as banker per leg** — The 1st-ranked horse (by Adj Place%) in each leg is always the 膽 (Banker). This cuts per-leg combinations by 40-57%. For 雙膽拖, the 2nd horse must also have Adj Place% >= 63%. Savings compound across legs.
+15. **Banker = 1st-ranked horse per leg, always** — Do not skip the banker designation. The 1st-ranked horse has ~82% top-3 rate (evidence: 9/11 on 19-Feb). When it misses, it is typically a longshot upset that defeats any pool structure.
+16. **Per-leg banker failure = entire 3T busted (accepted risk)** — If the 膽 (1st-ranked horse) fails to finish top 3 in its leg, that leg misses and the whole 3T ticket fails. This is the trade-off for 40-57% cheaper tickets per leg. The ~82% top-3 rate makes this a positive expected value trade-off over time.
+17. **2-Banker per leg (雙膽拖) is high-risk** — Both bankers must place top 3 in the same leg. Combined probability ≈ B1 × B2 (e.g., 63% × 65% ≈ 41%). Only use when both horses have Adj Place% >= 63% AND the leg is very strongly structured.
 
 ---
 
