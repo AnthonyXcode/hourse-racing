@@ -487,6 +487,8 @@ Save to: `data/reports/3t_review_YYYYMMDD_VENUE.md`
 DATA VALIDATION: ✅ All checks passed | Going: [X] | [N] scratchings
 MC SIMULATION: 10,000 iterations per leg | Jockey boost applied
 SCMP DATA: ✅ Loaded | Form/TIR/Vet/Odds parsed
+ODDS SOURCE: [HKJC early-morning pool / HKJC live / SCMP race card] ([tool name], captured [HH:MM HKT DD-Mon])
+             SCMP odds: [✅ loaded / ❌ not yet published] | HKJC live: [✅ loaded / ❌ not open]
 
 3T LEGS: Race [X] (Leg 1), Race [Y] (Leg 2), Race [Z] (Leg 3)
 UNIT BET: $10 per combination (fixed)

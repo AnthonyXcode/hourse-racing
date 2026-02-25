@@ -489,6 +489,8 @@ TRIO (ANY ORDER) STRATEGY - [Venue] | [Date] | Race [N]
 DATA VALIDATION: ✅ All checks passed | Going: [X] | [N] scratchings
 MC SIMULATION: 10,000 iterations | Jockey boost applied
 SCMP DATA: ✅ Loaded | Form/TIR/Vet/Odds parsed
+ODDS SOURCE: [HKJC early-morning pool / HKJC live / SCMP race card] ([tool name], captured [HH:MM HKT DD-Mon])
+             SCMP odds: [✅ loaded / ❌ not yet published] | HKJC live: [✅ loaded / ❌ not open]
 
 RACE: R[N] — [Class] | [Distance] | [Surface] | [Going] | [Field size] runners
 CLASSIFICATION: [Dominant / Competitive / Wide open] | POOL SIZE: [P]
