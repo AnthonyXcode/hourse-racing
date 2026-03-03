@@ -145,13 +145,6 @@ The SCMP publishes full **QP and Q odds matrices** for each race. These are the 
 - Trio is like an extended quinella (top 3 instead of top 2) — QP/Q matrices help confirm which horses the market expects to fill the frame
 - If the top-2 MC quinella is also a high-paying QP combination, that's a strong Trio value signal
 
-#### 1f-vii. Philip Woo's Formline
-
-A detailed **race-by-race narrative** from SCMP's senior form analyst. Extract:
-- Which horses he highlights as main chances
-- Draw analysis and pace scenario
-- Specific horse-by-horse notes that may not appear in Star Form
-
 ---
 
 ## Step 2: Validate Data
@@ -230,12 +223,12 @@ After MC simulation and jockey boosts, apply the following adjustments sourced f
 | **Age concern** | Vet notes "8 years of age or above" | -2% to MC Win% in C3+ races |
 | **Not ridden out** | TIR notes jockey didn't ride out | -2% to MC Win% |
 
-#### Positive Form Flags (from Star Form, Trackwork, Formline)
+#### Positive Form Flags (from Star Form, Trackwork)
 
 | Flag | Condition | Adjustment |
 |------|-----------|------------|
 | **Strong trial** | Trackwork highlight: "travelled well", "looks ready" | +2% to MC Win% |
-| **Draw advantage** | Star Form / Formline: "drawn to get his chance", "gate should help" | +1% to MC Win% |
+| **Draw advantage** | Star Form: "drawn to get his chance", "gate should help" | +1% to MC Win% |
 | **Improving form** | Star Form: "improved", "rallied", "made all" in recent run | +1% to MC Win% |
 | **Excuses last run** | TIR: "crowded", "steadied", "wide trip" = bad luck | +2% to MC Win% (bounce candidate) |
 
@@ -364,11 +357,11 @@ Pool selected (P horses, ranked by Adj Win%)
 #### Exclusion and demotion rules (CRITICAL — learned from 19-Feb-2026 review)
 
 **Rule 1: No narrative-based exclusion.**
-Do NOT use Woo's subjective labels (e.g., "not genuine", "minor claims") to exclude horses from the pool. Pool inclusion must be based ONLY on Adj Win% and Adj Place%.
+Do NOT use subjective labels (e.g., "not genuine", "minor claims") from any source to exclude horses from the pool. Pool inclusion must be based ONLY on Adj Win% and Adj Place%.
 - If Adj Place% >= 20%, the horse MUST be in the pool.
 - If Adj Win% >= 10%, the horse should be strongly considered for the pool.
-- Woo's narrative is for context and running-style assessment only — never for pool exclusion.
-- **Evidence**: R6 19-Feb — #10 Stunning Peach (17.3% Adj Win%) was demoted from 1st because Woo said "not genuine." She won at $59.
+- SCMP Star Form is for context and running-style assessment only — never for pool exclusion.
+- **Evidence**: R6 19-Feb — #10 Stunning Peach (17.3% Adj Win%) was demoted from 1st due to a subjective narrative label. She won at $59.
 
 **Rule 2: No hard exclusion if market odds <= 15.**
 Never completely exclude a horse from the pool if their SCMP Win odds are 15 or shorter (implied probability > 6.7%). The market incorporates vet reports, injury flags, and fitness concerns. If the collective market still rates a horse as a serious contender despite negative flags, respect it.
@@ -390,7 +383,7 @@ Running style is useful for assessing which horses are likely to finish in the t
 | **Stalker / Midfield** | Very consistent top-3 type. Reliable in all conditions. Prioritise for pool inclusion. |
 | **Closer / Back marker** | Strong in large fields with pace on. Include if pace scenario is favourable. |
 
-Use SCMP Star Form and Philip Woo's Formline to assess running styles:
+Use SCMP Star Form to assess running styles:
 - "Made all", "led", "set the pace" → front-runner
 - "Stalked the leader", "box seat", "handy position" → stalker
 - "Came from the rear", "closed well", "finished strongly" → closer
@@ -606,7 +599,7 @@ TOTAL TRIO STAKE: $[combos x 10]
 5. **Tight pool for dominant races** — Use Mode A (5-horse pool) when Adj Win% >= 35%. The dominant horse is the anchor; include 4 contenders by Adj Place%.
 6. **PASS when appropriate** — Wide open races with no clear edge should be skipped. Not every race is a Trio race. Typical meeting: play Trio on 2-3 races maximum. Default to PASS for Mode C unless strong form/pace conviction.
 7. **1st-ranked horse is ALWAYS the banker (膽)** — The model's #1 ranked horse (by Adj Win%) has ~82% top-3 rate. Always designate it as 膽 and use 膽拖 structure. This reduces combos by 40-57% vs full pool while maintaining high hit probability.
-8. **No narrative-based exclusion** — Never use Woo's labels ("not genuine", etc.) to exclude horses from the pool. Use Adj Place% thresholds only: >= 20% Adj Place% must be in the pool.
+8. **No narrative-based exclusion** — Never use subjective labels ("not genuine", etc.) from any source to exclude horses from the pool. Use Adj Place% thresholds only: >= 20% Adj Place% must be in the pool.
 9. **No hard exclusion if market odds <= 15** — The market knows about injuries, vet flags, and fitness. If a horse is still 15 odds or shorter despite negative flags, include in the pool. Only exclude at >30 odds with zero positive flags.
 10. **Scratchings** — Define replacement rules before the race. If the banker is scratched, void the ticket rather than restructuring.
 11. **Post-race review is mandatory** — After every meeting, fetch results and cross-reference tickets. Classify misses. Track cumulative P&L. This is how the strategy improves over time.
@@ -629,7 +622,7 @@ TOTAL TRIO STAKE: $[combos x 10]
 | Live Odds | `PLAYWRIGHT_BROWSERS_PATH=0 npx tsx tools/fetch-odds.ts --date=YYYY-MM-DD --venue=HV --json --save` | Current odds |
 | Race Analysis | `PLAYWRIGHT_BROWSERS_PATH=0 npx tsx tools/analyze-race.ts --date YYYY-MM-DD --venue "Happy Valley" --race N --bankroll BANKROLL --kelly 0.35 --min-edge 5` | MC simulation |
 | Race Card | `https://racing.hkjc.com/racing/information/English/Racing/RaceCard.aspx?RaceDate=YYYY/MM/DD&Racecourse=HV&RaceNo=N` | Entries, jockeys |
-| **SCMP Race Card** | `https://www.scmp.com/sport/racing/racecard/N` | **Odds, Star Form, TIR, Vet Report, Trackwork, QP/Q odds, Formline** |
+| **SCMP Race Card** | `https://www.scmp.com/sport/racing/racecard/N` | **Odds, Star Form, TIR, Vet Report, Trackwork, QP/Q odds** |
 
 ---
 
@@ -641,15 +634,15 @@ TOTAL TRIO STAKE: $[combos x 10]
 For each target race, build this SCMP data table:
 
 RACE [N] SCMP DATA
-| # | Horse | Win Odds | Place Odds | Star Form Signal | TIR Flag | Vet Flag | Trackwork | Woo Mention | Running Style |
-|---|-------|----------|------------|------------------|----------|----------|-----------|-------------|---------------|
-| X | NAME | X.X | X.X | +draw, +form | clear | clear | +trial | ✓ main chance | Front-runner |
-| X | NAME | X.X | X.X | -disappointed | -barrier | -injury30d | — | not mentioned | Closer |
+| # | Horse | Win Odds | Place Odds | Star Form Signal | TIR Flag | Vet Flag | Trackwork | Running Style |
+|---|-------|----------|------------|------------------|----------|----------|-----------|---------------|
+| X | NAME | X.X | X.X | +draw, +form | clear | clear | +trial | Front-runner |
+| X | NAME | X.X | X.X | -disappointed | -barrier | -injury30d | — | Closer |
 ```
 
 ### Shorthand flag codes
 - `+trial` = positive trackwork/trial
-- `+draw` = favourable draw (Star Form / Woo)
+- `+draw` = favourable draw (Star Form)
 - `+form` = improving recent form
 - `+excuses` = bad luck last run (TIR bounce)
 - `-injury` = recent injury flag (Vet)
@@ -713,7 +706,7 @@ Save to: `data/reports/trio_review_YYYYMMDD_VENUE.md`
 Expected agent behaviour:
 1. Fetch jockey stats → check elite tier
 2. Fetch odds for ST 2026-02-14 → save
-3. **Fetch SCMP race card for R7** → extract odds, Star Form, TIR, Vet, Trackwork, QP/Q odds, Formline (ignore tipster picks)
+3. **Fetch SCMP race card for R7** → extract odds, Star Form, TIR, Vet, Trackwork, QP/Q odds (ignore tipster picks)
 4. Run `analyze-race.ts` for R7
 5. Validate: ≥3 starters, odds populated, no critical scratchings, SCMP data loaded
 6. Apply jockey boosts + SCMP form adjustments

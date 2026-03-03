@@ -133,13 +133,6 @@ The SCMP publishes full **QP and Q odds matrices** for each race. These are the 
 - For 3T legs: use QP matrix to confirm which top-3 combinations the market undervalues
 - Save the QP/Q odds for horses in your 3T selections for the report
 
-#### 1f-vii. Philip Woo's Formline
-
-A detailed **race-by-race narrative** from SCMP's senior form analyst. Extract:
-- Which horses he highlights as main chances
-- Draw analysis and pace scenario
-- Specific horse-by-horse notes that may not appear in Star Form
-
 ---
 
 ### 1g. Confirm 3T legs
@@ -238,12 +231,12 @@ After MC simulation and jockey boosts, apply the following adjustments sourced f
 | **Age concern** | Vet notes "8 years of age or above" | -2% to MC Win% in C3+ races |
 | **Not ridden out** | TIR notes jockey didn't ride out | -2% to MC Win% |
 
-#### Positive Form Flags (from Star Form, Trackwork, Formline)
+#### Positive Form Flags (from Star Form, Trackwork)
 
 | Flag | Condition | Adjustment |
 |------|-----------|------------|
 | **Strong trial** | Trackwork highlight: "travelled well", "looks ready" | +2% to MC Win% |
-| **Draw advantage** | Star Form / Formline: "drawn to get his chance", "gate should help" | +1% to MC Win% |
+| **Draw advantage** | Star Form: "drawn to get his chance", "gate should help" | +1% to MC Win% |
 | **Improving form** | Star Form: "improved", "rallied", "made all" in recent run | +1% to MC Win% |
 | **Excuses last run** | TIR: "crowded", "steadied", "wide trip" = bad luck | +2% to MC Win% (bounce candidate) |
 
@@ -291,7 +284,7 @@ Use **adjusted** probabilities (after jockey + SCMP form boosts) for classificat
 **Tie-breaking rules** (when two horses have similar adjusted probabilities within 2%):
 1. Prefer the horse with positive SCMP flags (+trial, +draw) over neutral
 2. Prefer the horse without negative SCMP flags (-injury, -TIR)
-3. Refer to Philip Woo's Formline narrative for final tiebreak
+3. Prefer the horse with better recent finishing positions (last 3 runs)
 
 #### Exclusion rules (aligned with Trio skill)
 
@@ -507,7 +500,7 @@ LEG 1 (R[X]) — [Class] | [Distance] | [Type: Banker/Lean/Open]
 Note: ★ 膽 = Banker (1st-ranked horse per leg, always locked in every per-leg combo). For 雙膽拖, the 2nd horse must also have Adj Place% >= 63%.
 
 Reasoning: [Why these horses; MC evidence; jockey factor; SCMP form insights]
-SCMP highlights: [Key Star Form / Formline / Trackwork notes for selected horses]
+SCMP highlights: [Key Star Form / Trackwork notes for selected horses]
 Top quinella combos: [from MC output + SCMP Q/QP matrix cross-reference]
 
 [Repeat for Leg 2, Leg 3]
@@ -601,7 +594,7 @@ Example baseline: 5 × 5 × 5 = 125 combos = $1,250. Maximum: 6 × 6 × 7 = 252 
 | Race Card | `https://racing.hkjc.com/racing/information/English/Racing/RaceCard.aspx?RaceDate=YYYY/MM/DD&Racecourse=HV&RaceNo=N` | Entries, jockeys |
 | **General Info** | `https://racing.hkjc.com/en-us/local/info/summary` | **Confirm 3T legs (primary)** |
 | T-T Auto Pick | `https://racing.hkjc.com/en-us/local/information/ttautopick?racedate=YYYY/MM/DD` | Confirm 3T legs (fallback) |
-| **SCMP Race Card** | `https://www.scmp.com/sport/racing/racecard/N` | **Odds, Star Form, TIR, Vet Report, Trackwork, QP/Q odds, Formline** |
+| **SCMP Race Card** | `https://www.scmp.com/sport/racing/racecard/N` | **Odds, Star Form, TIR, Vet Report, Trackwork, QP/Q odds** |
 
 ---
 
@@ -613,15 +606,15 @@ Example baseline: 5 × 5 × 5 = 125 combos = $1,250. Maximum: 6 × 6 × 7 = 252 
 For each leg race, build this SCMP data table:
 
 RACE [N] SCMP DATA
-| # | Horse | Win Odds | Place Odds | Star Form Signal | TIR Flag | Vet Flag | Trackwork | Woo Mention |
-|---|-------|----------|------------|------------------|----------|----------|-----------|-------------|
-| X | NAME | X.X | X.X | +draw, +form | clear | clear | +trial | ✓ main chance |
-| X | NAME | X.X | X.X | -disappointed | -barrier | -injury30d | — | not mentioned |
+| # | Horse | Win Odds | Place Odds | Star Form Signal | TIR Flag | Vet Flag | Trackwork | Running Style |
+|---|-------|----------|------------|------------------|----------|----------|-----------|---------------|
+| X | NAME | X.X | X.X | +draw, +form | clear | clear | +trial | Front-runner |
+| X | NAME | X.X | X.X | -disappointed | -barrier | -injury30d | — | Closer |
 ```
 
 ### Shorthand flag codes
 - `+trial` = positive trackwork/trial
-- `+draw` = favourable draw (Star Form / Woo)
+- `+draw` = favourable draw (Star Form)
 - `+form` = improving recent form
 - `+excuses` = bad luck last run (TIR bounce)
 - `-injury` = recent injury flag (Vet)
@@ -641,7 +634,7 @@ Expected agent behaviour:
 1. Fetch jockey stats → check elite tier
 2. **Confirm 3T legs** → fetch `https://racing.hkjc.com/en-us/local/info/summary` to find the exact Triple Trio leg races (do NOT assume R4-R5-R6; legs vary by meeting)
 3. Fetch odds for HV 2026-02-11 → save
-4. **Fetch SCMP race card** → extract odds, Star Form, TIR, Vet, Trackwork, QP/Q odds, Formline for leg races (ignore tipster picks)
+4. **Fetch SCMP race card** → extract odds, Star Form, TIR, Vet, Trackwork, QP/Q odds for leg races (ignore tipster picks)
 5. Run `analyze-race.ts` for each confirmed leg race (3 races)
 6. Validate: all legs ≥ 4 starters, odds populated, no critical scratchings, SCMP data loaded
 7. Apply jockey boosts + SCMP form adjustments (Star Form, TIR, Vet, Trackwork flags)
