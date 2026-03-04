@@ -37,24 +37,8 @@ interface MeetingOdds {
   fetchedAt: string;
 }
 
-async function fetchRaceOdds(
-  page: Page,
-  date: string,
-  venue: string,
-  raceNumber: number
-): Promise<RaceOdds> {
-  const dateFormatted = date.replace(/-/g, "-");
-  const url = `https://bet.hkjc.com/en/racing/wp/${dateFormatted}/${venue}/${raceNumber}`;
-
-  await page.goto(url, {
-    waitUntil: "domcontentloaded",
-    timeout: 30000,
-  });
-
-  // Wait for odds table to render (structured cells with class "rc-odds")
-  await page.waitForSelector("td.rc-odds", { timeout: 20000 }).catch(() => {});
-
-  const horses = await page.evaluate(() => {
+function extractHorses(page: Page) {
+  return page.evaluate(() => {
     const results: {
       horseNumber: number;
       horseName: string;
@@ -89,6 +73,40 @@ async function fetchRaceOdds(
 
     return results;
   });
+}
+
+async function fetchRaceOdds(
+  page: Page,
+  date: string,
+  venue: string,
+  raceNumber: number
+): Promise<RaceOdds> {
+  const dateFormatted = date.replace(/-/g, "-");
+  const url = `https://bet.hkjc.com/en/racing/wp/${dateFormatted}/${venue}/${raceNumber}`;
+
+  await page.goto(url, {
+    waitUntil: "load",
+    timeout: 30000,
+  });
+
+  // React SPA needs time to hydrate — wait for the odds table, then retry
+  const MAX_ATTEMPTS = 3;
+  let horses: Awaited<ReturnType<typeof extractHorses>> = [];
+
+  for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+    await page
+      .waitForSelector("td.rc-odds", { timeout: 10000 })
+      .catch(() => {});
+    await page.waitForTimeout(1000);
+
+    horses = await extractHorses(page);
+    if (horses.length > 0) break;
+
+    if (attempt < MAX_ATTEMPTS) {
+      console.log(`  [RETRY] Attempt ${attempt}/${MAX_ATTEMPTS} returned 0 horses, waiting...`);
+      await page.waitForTimeout(3000);
+    }
+  }
 
   return {
     raceNumber,
