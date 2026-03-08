@@ -200,26 +200,19 @@ From each run, record:
 - **Market efficiency** (overround, favourite bias, undervalued/overvalued horses)
 
 ### 3c. Apply elite jockey priority
-For horses ridden by elite jockeys (season win% > 15%), add probability boost:
+For horses ridden by elite jockeys (season win% > 15%), add probability boost.
+If MC ranks the mount **outside its top 4**, cap the boost at **+4%** to prevent the jockey premium from overriding MC's assessment of the horse's underlying ability.
 
-| Win% Range | Rating Boost | Venue Adjustment |
-|------------|-------------|------------------|
-| > 20% | +7% to MC win prob | HV: cap at +4% |
-| 15-20% | +4% to MC win prob | HV: cap at +3% |
-| 10-15% | +2% to MC win prob | HV: cap at +2% |
+| Win% Range | Boost (MC top 4) | Boost (MC outside top 4) | HV cap |
+|------------|-------------------|--------------------------|--------|
+| > 20% | +7% to MC win prob | **+4% (capped)** | +4% |
+| 15-20% | +4% to MC win prob | +4% (under cap) | +3% |
+| 10-15% | +2% to MC win prob | +2% (under cap) | +2% |
 
-**Jockey boost cap when MC disagrees (CRITICAL — learned from 8-Mar-2026 review):**
-
-If MC ranks the jockey's mount **outside its top 3**, cap the jockey boost at **3%** (do not apply any boost). The jockey premium should not override MC's assessment of the horse's underlying ability.
-
-| MC rank of jockey's mount | Jockey boost applied |
-|--------------------------|---------------------|
-| MC top 3 (#1, #2, #3) | Full boost per table above |
-| MC outside top 3 | **3% (capped)** |
-
-- **Evidence (8-Mar R6)**: Purton on #6 LIVE WIRE (+7% boost). MC rated #6 outside top 6 ("overvalued 81%"). The +7% elevated #6 to 30.0% Adj Win% (banker). #6 finished 7th. MC's #1 pick (#2 YEE CHEONG GLORY) won at $30.5.
-- **Evidence (8-Mar R3)**: Purton on #2 ONE MAN SHOW (+7% boost). MC rated #2 as #1 (28.3%) — boost was justified. #2 finished 5th due to draw 12 AWT, not the boost logic.
-- **Rationale**: When MC and market/jockey agree (mount is in MC top 3), the boost reinforces a strong signal. When MC strongly disagrees, the boost can inflate a weak horse to banker status — the single most costly error pattern (3 "all legs" misses in 61 races, costing ~$3,400 in Trio dividends).
+> **Why cap at +4%?** (learned 8-Mar-2026)
+> - *R6*: Purton on #6 LIVE WIRE — MC rated outside top 6 ("overvalued 81%"). Full +7% inflated #6 to 30% Adj Win% (banker). #6 finished 7th. MC's #1 (#2 YEE CHEONG GLORY) won at $30.5.
+> - *R3*: Purton on #2 ONE MAN SHOW — MC rated #2 as #1 (28.3%), so full +7% was justified. Finished 5th due to draw 12 AWT, not boost logic.
+> - When MC and jockey agree, the boost reinforces a strong signal. When MC strongly disagrees, the boost can inflate a weak horse to banker — the costliest error pattern (3 "all legs" misses in 61 races, ~$3,400 missed Trio dividends).
 
 ### 3d. Apply SCMP form adjustments
 
@@ -628,7 +621,7 @@ TOTAL TRIO STAKE: $[combos x 10]
 15. **Gate penalties are reducers, not exclusions** — Wide gates (10+) reduce probability by 1-3% but never fully exclude. Gate 13 winners exist (R11 19-Feb, $350).
 16. **Always use 膽拖 with 1st-ranked as banker** — The 1st-ranked horse (by Adj Win%) is always the 膽 (Banker). This cuts combinations by 40-57% vs full pool. For 雙膽拖, the 2nd horse must also have Adj Place% >= 63%.
 17. **No debutants as banker** — Horses with <2 race starts cannot be banker. Demote to leg and use next eligible horse. Trial form ≠ race form. Evidence (8-Mar R1): debutant #7 MAPOGO (1.8x fav, 3/3 trials) led but faded to 4th.
-18. **Cap jockey boost when MC disagrees** — If MC ranks the jockey's mount outside its top 3, apply 0% jockey boost (capped). The premium should not override MC's assessment. Evidence (8-Mar R6): Purton +7% elevated #6 LIVE WIRE to banker despite MC rating him outside top 6. #6 finished 7th.
+18. **Cap jockey boost when MC disagrees** — If MC ranks the jockey's mount outside its top 4, cap jockey boost at +4%. The premium should not override MC's assessment. Evidence (8-Mar R6): Purton +7% elevated #6 LIVE WIRE to banker despite MC rating him outside top 6. #6 finished 7th.
 19. **Banker failure = total loss (accepted risk)** — If the 膽 fails to finish top 3, ALL tickets lose. This is the trade-off for cheaper tickets. Cross-meeting banker top-3 rate: ~56% (34/61).
 20. **2-Banker (雙膽拖) is high-risk** — Both bankers must place top 3. Combined probability ≈ B1 × B2 (e.g., 63% × 65% ≈ 41%). Only use when both horses have Adj Place% >= 63% AND the race is strongly structured.
 
