@@ -210,12 +210,12 @@ For horses ridden by elite jockeys (season win% > 15%), add probability boost:
 
 **Jockey boost cap when MC disagrees (CRITICAL — learned from 8-Mar-2026 review):**
 
-If MC ranks the jockey's mount **outside its top 3**, cap the jockey boost at **0%** (do not apply any boost). The jockey premium should not override MC's assessment of the horse's underlying ability.
+If MC ranks the jockey's mount **outside its top 3**, cap the jockey boost at **3%** (do not apply any boost). The jockey premium should not override MC's assessment of the horse's underlying ability.
 
 | MC rank of jockey's mount | Jockey boost applied |
 |--------------------------|---------------------|
 | MC top 3 (#1, #2, #3) | Full boost per table above |
-| MC outside top 3 | **0% (capped)** |
+| MC outside top 3 | **3% (capped)** |
 
 - **Evidence (8-Mar R6)**: Purton on #6 LIVE WIRE (+7% boost). MC rated #6 outside top 6 ("overvalued 81%"). The +7% elevated #6 to 30.0% Adj Win% (banker). #6 finished 7th. MC's #1 pick (#2 YEE CHEONG GLORY) won at $30.5.
 - **Evidence (8-Mar R3)**: Purton on #2 ONE MAN SHOW (+7% boost). MC rated #2 as #1 (28.3%) — boost was justified. #2 finished 5th due to draw 12 AWT, not the boost logic.
