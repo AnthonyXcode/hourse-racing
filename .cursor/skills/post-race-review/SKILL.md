@@ -270,11 +270,3 @@ Previous reviews are in `data/reports/trio_review_*.md`. Use the latest one to p
 | `data/historical/results_YYYYMMDD_VENUE.json` | Scraped race results |
 | `data/reports/trio_strategy_YYYYMMDD_VENUE_RN.md` | Pre-race strategy reports (bet records) |
 | `data/reviews/trio_review_YYYYMMDD_VENUE.md` | Saved reviews (output) |
-
----
-
-## Reference Review
-
-The canonical example of a complete review is:
-
-`data/reports/trio_review_20260308_ST_full.md` — Sha Tin | 8 Mar 2026 (R1–R11)
