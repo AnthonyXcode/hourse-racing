@@ -208,6 +208,19 @@ For horses ridden by elite jockeys (season win% > 15%), add probability boost:
 | 15-20% | +4% to MC win prob | HV: cap at +3% |
 | 10-15% | +2% to MC win prob | HV: cap at +2% |
 
+**Jockey boost cap when MC disagrees (CRITICAL — learned from 8-Mar-2026 review):**
+
+If MC ranks the jockey's mount **outside its top 3**, cap the jockey boost at **0%** (do not apply any boost). The jockey premium should not override MC's assessment of the horse's underlying ability.
+
+| MC rank of jockey's mount | Jockey boost applied |
+|--------------------------|---------------------|
+| MC top 3 (#1, #2, #3) | Full boost per table above |
+| MC outside top 3 | **0% (capped)** |
+
+- **Evidence (8-Mar R6)**: Purton on #6 LIVE WIRE (+7% boost). MC rated #6 outside top 6 ("overvalued 81%"). The +7% elevated #6 to 30.0% Adj Win% (banker). #6 finished 7th. MC's #1 pick (#2 YEE CHEONG GLORY) won at $30.5.
+- **Evidence (8-Mar R3)**: Purton on #2 ONE MAN SHOW (+7% boost). MC rated #2 as #1 (28.3%) — boost was justified. #2 finished 5th due to draw 12 AWT, not the boost logic.
+- **Rationale**: When MC and market/jockey agree (mount is in MC top 3), the boost reinforces a strong signal. When MC strongly disagrees, the boost can inflate a weak horse to banker status — the single most costly error pattern (3 "all legs" misses in 61 races, costing ~$3,400 in Trio dividends).
+
 ### 3d. Apply SCMP form adjustments
 
 After MC simulation and jockey boosts, apply the following adjustments sourced from SCMP data.
@@ -310,9 +323,14 @@ After selecting the pool, the **1st-ranked horse** (by Adj Win%) is **always** d
 | **Always (default)** | **膽拖** (1st-ranked as Banker + N Legs) | C(N, 2) = N × (N-1) / 2 |
 | **2nd horse also Adj Place% >= 63%** | **雙膽拖** (2 Bankers + N Legs) | N combos |
 
-**Why the 1st-ranked horse is always banker:**
-- **Evidence (19-Feb-2026)**: The 1st-ranked horse finished in the Top 4 in **9/11 races (81.8%)** and won in 2 races. It finished in the Top 3 in the majority of races. This is the single strongest predictor the model produces.
-- **Evidence (22-Feb-2026)**: Similar pattern — 1st-ranked horses consistently place.
+**Banker eligibility rules (CRITICAL — learned from 8-Mar-2026 review):**
+
+1. **No debutants as banker.** Horses with fewer than 2 race starts cannot be designated as banker. Move to the next-ranked horse with ≥2 starts. The debutant stays in the pool as a leg.
+   - **Evidence (8-Mar R1)**: #7 MAPOGO (debutant, 3/3 trials, 1.8x favourite) was banker. Led but faded to 4th under race pressure. Trial form ≠ race form. Next-ranked #8 RUN RUN SUNRISE won at 5.2x.
+
+**Why the 1st-ranked horse is the default banker:**
+- **Evidence (19-Feb-2026)**: The 1st-ranked horse finished in the Top 4 in **9/11 races (81.8%)**.
+- **Cross-meeting banker top-3 rate**: 34/61 = 55.7% (6 meetings). At Sha Tin: 26/43 = 60.5%.
 - When the 1st-ranked horse misses the top 3, it typically means a longshot upset where most pool selections also miss. The cost savings from banker structure outweigh the rare banker failure.
 
 **How it works:**
@@ -599,6 +617,7 @@ TOTAL TRIO STAKE: $[combos x 10]
 5. **Tight pool for dominant races** — Use Mode A (5-horse pool) when Adj Win% >= 35%. The dominant horse is the anchor; include 4 contenders by Adj Place%.
 6. **PASS when appropriate** — Wide open races with no clear edge should be skipped. Not every race is a Trio race. Typical meeting: play Trio on 2-3 races maximum. Default to PASS for Mode C unless strong form/pace conviction.
 7. **1st-ranked horse is ALWAYS the banker (膽)** — The model's #1 ranked horse (by Adj Win%) has ~82% top-3 rate. Always designate it as 膽 and use 膽拖 structure. This reduces combos by 40-57% vs full pool while maintaining high hit probability.
+**Never use debutants (<2 starts) as banker.**
 8. **No narrative-based exclusion** — Never use subjective labels ("not genuine", etc.) from any source to exclude horses from the pool. Use Adj Place% thresholds only: >= 20% Adj Place% must be in the pool.
 9. **No hard exclusion if market odds <= 15** — The market knows about injuries, vet flags, and fitness. If a horse is still 15 odds or shorter despite negative flags, include in the pool. Only exclude at >30 odds with zero positive flags.
 10. **Scratchings** — Define replacement rules before the race. If the banker is scratched, void the ticket rather than restructuring.
@@ -608,9 +627,10 @@ TOTAL TRIO STAKE: $[combos x 10]
 14. **Cross-reference with Quinella odds** — If the top MC quinella pair also shows high SCMP Q/QP odds, the Trio involving those horses likely offers outsized value.
 15. **Gate penalties are reducers, not exclusions** — Wide gates (10+) reduce probability by 1-3% but never fully exclude. Gate 13 winners exist (R11 19-Feb, $350).
 16. **Always use 膽拖 with 1st-ranked as banker** — The 1st-ranked horse (by Adj Win%) is always the 膽 (Banker). This cuts combinations by 40-57% vs full pool. For 雙膽拖, the 2nd horse must also have Adj Place% >= 63%.
-17. **Banker = 1st-ranked horse, always** — Do not skip the banker designation. The 1st-ranked horse has ~82% top-3 rate (evidence: 9/11 on 19-Feb). When it misses, it is typically a longshot upset that defeats any pool structure.
-18. **Banker failure = total loss (accepted risk)** — If the 膽 (1st-ranked horse) fails to finish top 3, ALL tickets lose. This is the trade-off for 40-57% cheaper tickets. The ~82% top-3 rate makes this a positive expected value trade-off over time.
-19. **2-Banker (雙膽拖) is high-risk** — Both bankers must place top 3. Combined probability ≈ B1 × B2 (e.g., 63% × 65% ≈ 41%). Only use when both horses have Adj Place% >= 63% AND the race is strongly structured.
+17. **No debutants as banker** — Horses with <2 race starts cannot be banker. Demote to leg and use next eligible horse. Trial form ≠ race form. Evidence (8-Mar R1): debutant #7 MAPOGO (1.8x fav, 3/3 trials) led but faded to 4th.
+18. **Cap jockey boost when MC disagrees** — If MC ranks the jockey's mount outside its top 3, apply 0% jockey boost (capped). The premium should not override MC's assessment. Evidence (8-Mar R6): Purton +7% elevated #6 LIVE WIRE to banker despite MC rating him outside top 6. #6 finished 7th.
+19. **Banker failure = total loss (accepted risk)** — If the 膽 fails to finish top 3, ALL tickets lose. This is the trade-off for cheaper tickets. Cross-meeting banker top-3 rate: ~56% (34/61).
+20. **2-Banker (雙膽拖) is high-risk** — Both bankers must place top 3. Combined probability ≈ B1 × B2 (e.g., 63% × 65% ≈ 41%). Only use when both horses have Adj Place% >= 63% AND the race is strongly structured.
 
 ---
 

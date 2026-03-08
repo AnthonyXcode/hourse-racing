@@ -559,9 +559,9 @@ export class HistoricalScraper {
     }
 
     // TRIO dividend
-    const trioMatch = pageText.match(/TRIO\s+[\d,]+\s+([\d.]+)/i);
+    const trioMatch = pageText.match(/TRIO\s+[\d,]+\s+([\d,.]+)/i);
     if (trioMatch) {
-      dividends.trioDividend = parseFloat(trioMatch[1]!);
+      dividends.trioDividend = parseFloat(trioMatch[1]!.replace(/,/g, ""));
     }
 
     return dividends;
