@@ -195,7 +195,7 @@ PLAYWRIGHT_BROWSERS_PATH=0 npx tsx tools/analyze-race.ts \
 
 ### 3b. Capture MC output
 From each run, record:
-- **Win% and Place%** for top 6 horses
+- **Win% and Place%** for all horses
 - **Top quinella combinations** with MC probability and fair odds
 - **Market efficiency** (overround, favourite bias, undervalued/overvalued horses)
 
@@ -253,9 +253,9 @@ Rank all horses by **Adjusted Win%** and **Adjusted Place%** to determine pool i
 
 ```
 RACE [N] — [Class] | [Distance] | [Going] | [Field size]
-| Rank | # | Horse | MC Win% | Adj Win% | MC Place% | Adj Place% | Odds | Jockey | SCMP Flags |
-|------|---|-------|---------|----------|-----------|------------|------|--------|------------|
-| 1 | X | NAME | XX.X% | XX.X% | XX.X% | XX.X% | X.X | Name | +trial, +draw |
+| Rank | # | Horse | MC Win% | Adj Win% | MC Place% | Form | Adj Place% | Odds | Jockey | SCMP Flags |
+|------|---|-------|---------|----------|-----------|------|------------|------|--------|------------|
+| 1 | X | NAME | XX.X% | XX.X% | XX.X% | N | XX.X% | X.X | Name | +trial, +draw |
 ```
 
 ### 4b. Classify the race
@@ -280,7 +280,7 @@ Select a **single pool** of P horses. The system generates all C(P,3) combinatio
 |-----------|-----------------|
 | **Adj Win%** | Horses most likely to win — also most likely to place top 3 |
 | **Adj Place%** | Horses likely to place in top 3 even if they don't win — consistent place-getters, each-way types |
-| **Adj Place% >= 20%** | Any horse with >= 20% Adj Place% MUST be included in the pool (learned from 19-Feb review: #12 HE WAS ME had 24.5% Adj Place%, was excluded, and came 3rd in R1) |
+| **Adj Place% >= 25%** | Any horse with >= 25% Adj Place% MUST be included in the pool |
 
 #### Selection modes (pool size by race classification)
 
@@ -364,25 +364,6 @@ Pool selected (P horses, ranked by Adj Win%)
   │   │   ├─ YES → 雙膽拖: 2 膽 + (P-2) 腳 → (P-2) combos
   │   │   └─ NO → 膽拖: 1 膽 + (P-1) 腳 → C(P-1, 2) combos
 ```
-
-#### Exclusion and demotion rules (CRITICAL — learned from 19-Feb-2026 review)
-
-**Rule 1: No narrative-based exclusion.**
-Do NOT use subjective labels (e.g., "not genuine", "minor claims") from any source to exclude horses from the pool. Pool inclusion must be based ONLY on Adj Win% and Adj Place%.
-- If Adj Place% >= 20%, the horse MUST be in the pool.
-- If Adj Win% >= 10%, the horse should be strongly considered for the pool.
-- SCMP Star Form is for context and running-style assessment only — never for pool exclusion.
-- **Evidence**: R6 19-Feb — #10 Stunning Peach (17.3% Adj Win%) was demoted from 1st due to a subjective narrative label. She won at $59.
-
-**Rule 2: No hard exclusion if market odds <= 15.**
-Never completely exclude a horse from the pool if their SCMP Win odds are 15 or shorter (implied probability > 6.7%). The market incorporates vet reports, injury flags, and fitness concerns. If the collective market still rates a horse as a serious contender despite negative flags, respect it.
-- Instead of excluding, include in the pool.
-- Only fully exclude horses with SCMP Win odds > 30 AND zero positive SCMP flags.
-- **Evidence**: R7 19-Feb — #11 Just Follow Me (9.2 odds, 5.9% Adj Win%) was excluded for "-injury 16d." He came 2nd at $23.50 place. The $2,030 Trio dividend was missed.
-
-**Rule 3: Gate penalties are probability reducers, not exclusions.**
-Wide gates (10+) should reduce Adj Win% by 1-3% depending on field size and distance, but NEVER trigger hard exclusion. Gate 13 horses have won in HK racing.
-- **Evidence**: R11 19-Feb — #6 Riding Together won from gate 13 at $350.
 
 #### Running style integration
 
@@ -485,6 +466,8 @@ HKJC offers two top-3 single-race bets:
 
 ## Output Format
 
+Every Trio report must include: (1) an **MC SIMULATION (raw)** table above HORSE RANKINGS (MC Win%, MC Place%, **Form** = form record count, optional Top Quinella), and (2) **HORSE RANKINGS** with columns **MC Win%** and **MC Place%** alongside Adj Win% and Adj Place%.
+
 ```
 ═══════════════════════════════════════════════════════════
 TRIO (ANY ORDER) STRATEGY - [Venue] | [Date] | Race [N]
@@ -503,18 +486,28 @@ BET STRUCTURE: [Full Pool C(P,3) / 膽拖 1膽+(P-1)腳 C(P-1,2) / 雙膽拖 2�
 UNIT BET: $10 per combination (fixed)
 
 ───────────────────────────────────────────────────────────
+MC SIMULATION (raw)
+───────────────────────────────────────────────────────────
+| # | Horse     | MC Win% | MC Place% | Form | Top Quinella (fair odds)     |
+|---|------------|---------|-----------|------|-------------------------------|
+| X | NAME       | XX.X%   | XX.X%     | N    | X-X: X.X% (X.X)               |
+| X | NAME       | XX.X%   | XX.X%     | N    | —                             |
+
+Market: [1–2 line summary of over/undervalued vs market]
+
+───────────────────────────────────────────────────────────
 HORSE RANKINGS
 ───────────────────────────────────────────────────────────
-| # | Horse | Adj Win% | Adj Place% | Odds | Jockey | Style | SCMP Flags | Role |
-|---|-------|----------|------------|------|--------|-------|------------|------|
-| X | NAME | XX.X% | XX.X% | X.X | Name | Front | +trial | ★ 膽 (Banker) |
-| X | NAME | XX.X% | XX.X% | X.X | Name | Stalk | +draw | 腳 (Leg) |
-| X | NAME | XX.X% | XX.X% | X.X | Name | Close | +excuses | 腳 (Leg) |
-| X | NAME | XX.X% | XX.X% | X.X | Name | Stalk | — | 腳 (Leg) |
-| X | NAME | XX.X% | XX.X% | X.X | Name | Close | — | 腳 (Leg) |
-| X | NAME | XX.X% | XX.X% | X.X | Name | Close | — | (reserve) |
+| # | Horse     | MC Win% | MC Place% | Adj Win% | Adj Place% | Odds | Jockey | Style | SCMP Flags | Role         |
+|---|------------|---------|-----------|----------|------------|------|--------|-------|------------|--------------|
+| X | NAME       | XX.X%   | XX.X%     | XX.X%    | XX.X%      | X.X  | Name   | Front | +trial     | ★ 膽 (Banker)|
+| X | NAME       | XX.X%   | XX.X%     | XX.X%    | XX.X%      | X.X  | Name   | Stalk | +draw      | 腳 (Leg)     |
+| X | NAME       | XX.X%   | XX.X%     | XX.X%    | XX.X%      | X.X  | Name   | Close | +excuses   | 腳 (Leg)     |
+| X | NAME       | XX.X%   | XX.X%     | XX.X%    | XX.X%      | X.X  | Name   | Stalk | —          | 腳 (Leg)     |
+| X | NAME       | XX.X%   | XX.X%     | XX.X%    | XX.X%      | X.X  | Name   | Close | —          | 腳 (Leg)     |
+| X | NAME       | —       | —         | ~X.X%    | ~XX.X%     | X.X  | Name   | —     | —          | 腳 (Leg)     |
 
-Note: ★ 膽 = Banker (1st-ranked horse by Adj Win%, always locked in every combo). For 雙膽拖, the 2nd horse must also have Adj Place% >= 63%.
+Note: ★ 膽 = Banker (1st-ranked horse by Adj Win%, always locked in every combo). For 雙膽拖, the 2nd horse must also have Adj Place% >= 63%. Show MC Win% / MC Place% from raw simulation; Adj Win% / Adj Place% after jockey boost and SCMP form adjustments. Horses without MC output (e.g. Rule 2 only) use estimated ~X.X%.
 
 Reasoning: [Why these horses are in the pool; MC evidence; pace scenario; SCMP insights]
 

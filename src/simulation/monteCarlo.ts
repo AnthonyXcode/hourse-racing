@@ -167,6 +167,9 @@ export class MonteCarloSimulator {
       const variance = posSqSum / this.config.runs - expectedPos * expectedPos;
       const stdDev = Math.sqrt(Math.max(0, variance));
 
+      const entry = race.entries.find((e) => e.horseNumber === horseNum);
+      const formRecordCount = entry?.horse.pastPerformances?.length ?? 0;
+
       results.push({
         horseNumber: horseNum,
         horseCode: analysis.horseCode,
@@ -176,6 +179,7 @@ export class MonteCarloSimulator {
         expectedPosition: expectedPos,
         positionStdDev: stdDev,
         simulationRuns: this.config.runs,
+        formRecordCount,
       });
     }
 

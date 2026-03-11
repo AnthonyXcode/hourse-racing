@@ -251,12 +251,15 @@ async function analyzeRace(args: CliArgs): Promise<void> {
     console.log("SIMULATION SUMMARY");
     console.log("─".repeat(60));
 
-    console.log("\nWin Probability Rankings:");
-    for (const result of simResults.slice(0, 6)) {
+    const runs = simResults[0]?.simulationRuns ?? 10000;
+    console.log(`\nWin Probability Rankings (all ${simResults.length} horses, ${runs.toLocaleString()} iterations):`);
+    for (const result of simResults) {
+      const recStr = result.formRecordCount !== undefined ? ` [${result.formRecordCount} form]` : "";
       console.log(
         `  #${result.horseNumber.toString().padStart(2)} ${result.horseName.padEnd(15).substring(0, 15)}: ` +
           `${(result.winProbability * 100).toFixed(1).padStart(5)}% win, ` +
-          `${(result.placeProbability * 100).toFixed(1).padStart(5)}% place`
+          `${(result.placeProbability * 100).toFixed(1).padStart(5)}% place` +
+          recStr
       );
     }
 

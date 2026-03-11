@@ -221,6 +221,8 @@ export interface SimulationResult {
   readonly expectedPosition: number;
   readonly positionStdDev: number;
   readonly simulationRuns: number;
+  /** Number of past performances (form records) used for this horse's analysis */
+  readonly formRecordCount: number;
 }
 
 export interface ExoticProbabilities {
