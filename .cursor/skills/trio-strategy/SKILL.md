@@ -201,16 +201,20 @@ From each run, record:
 - **Market efficiency** (overround, favourite bias, undervalued/overvalued horses)
 
 ### 3c. Apply elite jockey priority
-For horses ridden by elite jockeys (season win% > 15%), add probability boost.
+Apply a **linear** jockey boost by season win%: **+1%** when win% > 7%, **+7%** when win% > 20%, and linear in between (e.g. ~13.5% win% → +4%).
 If MC ranks the mount **outside its top 4**, cap the boost at **+4%** to prevent the jockey premium from overriding MC's assessment of the horse's underlying ability.
+
+**Formula:**  
+`boost = win% ≤ 7 ? 0 : min(7, 1 + (win% - 7) * 6 / 13)`  
+Then if MC outside top 4: `boost = min(boost, 4)`.
 
 | Win% Range | Boost (MC top 4) | Boost (MC outside top 4) |
 |------------|-------------------|--------------------------|
-| > 20% | +7% to MC win prob | **+4% (capped)** |
-| 15-20% | +4% to MC win prob | +4% (under cap) |
-| 10-15% | +2% to MC win prob | +2% (under cap) |
+| ≤ 7% | 0% | 0% |
+| 7–20% | Linear: +1% at 7% → +7% at 20% | **capped at +4%** |
+| > 20% | +7% | **+4% (capped)** |
 
-> **Why cap at +4%?** (learned 8-Mar-2026)
+> **Why cap at +4% when MC disagrees?** (learned 8-Mar-2026)
 > - *R6*: Purton on #6 LIVE WIRE — MC rated outside top 6 ("overvalued 81%"). Full +7% inflated #6 to 30% Adj Win% (banker). #6 finished 7th. MC's #1 (#2 YEE CHEONG GLORY) won at $30.5.
 > - *R3*: Purton on #2 ONE MAN SHOW — MC rated #2 as #1 (28.3%), so full +7% was justified. Finished 5th due to draw 12 AWT, not boost logic.
 > - When MC and jockey agree, the boost reinforces a strong signal. When MC strongly disagrees, the boost can inflate a weak horse to banker — the costliest error pattern (3 "all legs" misses in 61 races, ~$3,400 missed Trio dividends).
