@@ -4,12 +4,13 @@
  * 
  * Usage:
  *   npx tsx tools/fetch-jockey-stats.ts
+ *   npx tsx tools/fetch-jockey-stats.ts --date=YYYY-MM-DD
  *   npx tsx tools/fetch-jockey-stats.ts --json
  *   npx tsx tools/fetch-jockey-stats.ts --top=10
  *   npx tsx tools/fetch-jockey-stats.ts --add=ABC,XYZ  # Add new jockey codes
  * 
- * The script maintains a list of known jockey codes and fetches stats for each.
- * New jockeys can be added via --add flag.
+ * --date=YYYY-MM-DD  Use this racing date to find jockeys from race cards (and for output filename).
+ *                    Default: today. Example: --date=2026-03-11
  */
 
 import { chromium, Browser, Page } from "playwright";
@@ -76,55 +77,68 @@ const KNOWN_JOCKEY_CODES: JockeyBasic[] = [
 /**
  * Fetch the list of active jockeys from race cards of recent meetings
  * This is more reliable than the profile/ranking pages
+ * @param raceDate If set, use this date as the reference (and look back from it); otherwise use today
  */
-async function fetchJockeyList(page: Page): Promise<JockeyBasic[]> {
+async function fetchJockeyList(page: Page, raceDate?: Date): Promise<JockeyBasic[]> {
   console.log("Fetching jockey list from recent race cards...");
   
   // Try to get jockeys from a recent race card
-  const today = new Date();
+  const referenceDate = raceDate ? new Date(raceDate) : new Date();
   const venues = ["ST", "HV"];
   const foundJockeys = new Map<string, string>();
   
-  // Check last few days for race meetings
+  // Check last few days for race meetings (relative to referenceDate)
   for (let dayOffset = 0; dayOffset < 7 && foundJockeys.size < 5; dayOffset++) {
-    const date = new Date(today);
+    const date = new Date(referenceDate);
     date.setDate(date.getDate() - dayOffset);
     const dateStr = `${date.getFullYear()}/${String(date.getMonth() + 1).padStart(2, "0")}/${String(date.getDate()).padStart(2, "0")}`;
-    
-    for (const venue of venues) {
-      try {
-        const url = `https://racing.hkjc.com/en-us/local/information/racecard?RaceDate=${dateStr}&Racecourse=${venue}&RaceNo=1`;
-        await page.goto(url, { waitUntil: "domcontentloaded", timeout: 15000 });
-        await page.waitForTimeout(2000);
-        
-        const jockeys = await page.evaluate(() => {
-          const results: { code: string; name: string }[] = [];
-          const links = document.querySelectorAll('a[href*="JockeyId="]');
+    const sizeBeforeDay = foundJockeys.size;
+
+    venueLoop: for (const venue of venues) {
+      for (let raceNo = 1; raceNo <= 11; raceNo++) {
+        try {
+          const url = `https://racing.hkjc.com/en-us/local/information/racecard?RaceDate=${dateStr}&Racecourse=${venue}&RaceNo=${raceNo}`;
+          await page.goto(url, { waitUntil: "domcontentloaded", timeout: 15000 });
+          await page.waitForTimeout(1500);
+
+          const jockeys = await page.evaluate(() => {
+            const results: { code: string; name: string }[] = [];
+            // HKJC may use JockeyId= or jockeyid= (case varies); match any <a> with jockey id in href
+            const links = document.querySelectorAll('a[href*="jockey"]');
+            links.forEach((link: { getAttribute: (a: string) => string | null; textContent: string | null }) => {
+              const href = link.getAttribute("href") || "";
+              const codeMatch = href.match(/jockeyid[=\/]([^&\/]+)/i);
+              const name = (link.textContent || "").trim();
+              if (codeMatch && codeMatch[1] && name.length > 1) {
+                results.push({ code: codeMatch[1].toUpperCase(), name });
+              }
+            });
+            return results;
+          });
           
-          links.forEach((link: Element) => {
-            const href = link.getAttribute("href") || "";
-            const codeMatch = href.match(/JockeyId=([A-Z]+)/i);
-            const name = link.textContent?.trim() || "";
-            
-            if (codeMatch && codeMatch[1] && name && name.length > 1) {
-              results.push({ code: codeMatch[1].toUpperCase(), name });
+          jockeys.forEach(j => {
+            if (!foundJockeys.has(j.code)) {
+              foundJockeys.set(j.code, j.name);
             }
           });
           
-          return results;
-        });
-        
-        jockeys.forEach(j => {
-          if (!foundJockeys.has(j.code)) {
-            foundJockeys.set(j.code, j.name);
-          }
-        });
-        
-        if (foundJockeys.size >= 10) break;
-      } catch (error) {
-        console.log(`  [WARNING] Failed to fetch race card for ${dateStr} ${venue}: ${error instanceof Error ? error.message : error}`);
+          if (foundJockeys.size >= 10) break venueLoop;
+        } catch (error) {
+          console.log(`  [WARNING] Failed to fetch race card for ${dateStr} ${venue} R${raceNo}: ${error instanceof Error ? error.message : error}`);
+        }
       }
     }
+    // If we had a specific race date and this day yielded no new jockeys, skip remaining days (e.g. future date or no meeting)
+    if (raceDate && dayOffset === 0 && foundJockeys.size === sizeBeforeDay) {
+      console.log(`  No jockeys found for ${dateStr}; using known jockey list for stats.\n`);
+      break;
+    }
+  }
+  
+  if (foundJockeys.size === 0) {
+    throw new Error(
+      "Could not find any jockeys from race cards. Check date/venue and HKJC availability, or try without --date."
+    );
   }
   
   // Merge with known jockeys to ensure comprehensive list
@@ -232,14 +246,14 @@ async function fetchJockeyStats(
   }
 }
 
-async function fetchAllJockeyStats(): Promise<JockeyRanking> {
+async function fetchAllJockeyStats(raceDate?: Date): Promise<JockeyRanking> {
   const browser = await chromium.launch({ headless: true });
   const page = await browser.newPage();
   const jockeys: JockeyStats[] = [];
 
   try {
     // First, fetch the list of active jockeys from the ranking page
-    const jockeyList = await fetchJockeyList(page);
+    const jockeyList = await fetchJockeyList(page, raceDate);
     
     if (jockeyList.length === 0) {
       console.log("[WARNING] Could not scrape any jockeys from recent race cards. Using known jockey list as fallback.");
@@ -384,6 +398,28 @@ async function main() {
   const topArg = process.argv.find((a) => a.startsWith("--top="));
   const topN = topArg ? parseInt(topArg.split("=")[1] || "0", 10) : undefined;
   
+  // Parse optional --date=YYYY-MM-DD (racing date for race-card lookup and output filename)
+  const dateArg = process.argv.find((a) => a.startsWith("--date="));
+  let raceDate: Date | undefined;
+  if (dateArg) {
+    const dateStr = dateArg.split("=")[1]?.trim() || "";
+    const match = dateStr.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+    if (match && match[1] && match[2] && match[3]) {
+      const y = parseInt(match[1], 10);
+      const m = parseInt(match[2], 10) - 1;
+      const d = parseInt(match[3], 10);
+      const d2 = new Date(y, m, d);
+      if (d2.getFullYear() === y && d2.getMonth() === m && d2.getDate() === d) {
+        raceDate = d2;
+        console.log(`Using racing date: ${dateStr}\n`);
+      }
+    }
+    if (!raceDate) {
+      console.error("Invalid --date. Use YYYY-MM-DD (e.g. --date=2026-03-11)");
+      process.exit(1);
+    }
+  }
+  
   // Handle --add flag for adding new jockey codes
   const addArg = process.argv.find((a) => a.startsWith("--add="));
   if (addArg) {
@@ -401,7 +437,7 @@ async function main() {
   console.log("\nFetching jockey statistics from HKJC...\n");
 
   try {
-    const ranking = await fetchAllJockeyStats();
+    const ranking = await fetchAllJockeyStats(raceDate);
 
     if (jsonOutput) {
       console.log(JSON.stringify(ranking, null, 2));
@@ -415,7 +451,8 @@ async function main() {
       await mkdir(dir, { recursive: true });
     }
 
-    const dateStr = new Date().toISOString().split("T")[0] || "";
+    const fileDate = raceDate ?? new Date();
+    const dateStr = fileDate.toISOString().split("T")[0] || "";
     const date = dateStr.replace(/-/g, "");
     const filename = `${dir}/jockey_stats_${date}.json`;
     await writeFile(filename, JSON.stringify(ranking, null, 2));

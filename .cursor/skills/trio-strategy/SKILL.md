@@ -68,8 +68,9 @@ If the script reports "All historical data is up to date!" proceed immediately. 
 
 ### 1c. Fetch jockey stats
 ```bash
-PLAYWRIGHT_BROWSERS_PATH=0 npx tsx tools/fetch-jockey-stats.ts
+PLAYWRIGHT_BROWSERS_PATH=0 npx tsx tools/fetch-jockey-stats.ts --date=YYYY-MM-DD
 ```
+- **--date=YYYY-MM-DD** (optional): Racing date used to find jockeys from race cards and for the output filename. Omit to use today.
 Output: `data/jockeys/jockey_stats_YYYYMMDD.json` + `data/jockeys/JOCKEY_STATS.md`
 
 ### 1d. Fetch live odds
@@ -203,11 +204,11 @@ From each run, record:
 For horses ridden by elite jockeys (season win% > 15%), add probability boost.
 If MC ranks the mount **outside its top 4**, cap the boost at **+4%** to prevent the jockey premium from overriding MC's assessment of the horse's underlying ability.
 
-| Win% Range | Boost (MC top 4) | Boost (MC outside top 4) | HV cap |
-|------------|-------------------|--------------------------|--------|
-| > 20% | +7% to MC win prob | **+4% (capped)** | +4% |
-| 15-20% | +4% to MC win prob | +4% (under cap) | +3% |
-| 10-15% | +2% to MC win prob | +2% (under cap) | +2% |
+| Win% Range | Boost (MC top 4) | Boost (MC outside top 4) |
+|------------|-------------------|--------------------------|
+| > 20% | +7% to MC win prob | **+4% (capped)** |
+| 15-20% | +4% to MC win prob | +4% (under cap) |
+| 10-15% | +2% to MC win prob | +2% (under cap) |
 
 > **Why cap at +4%?** (learned 8-Mar-2026)
 > - *R6*: Purton on #6 LIVE WIRE — MC rated outside top 6 ("overvalued 81%"). Full +7% inflated #6 to 30% Adj Win% (banker). #6 finished 7th. MC's #1 (#2 YEE CHEONG GLORY) won at $30.5.
@@ -466,7 +467,7 @@ HKJC offers two top-3 single-race bets:
 
 ## Output Format
 
-Every Trio report must include: (1) an **MC SIMULATION (raw)** table above HORSE RANKINGS (MC Win%, MC Place%, **Form** = form record count, optional Top Quinella), and (2) **HORSE RANKINGS** with columns **MC Win%** and **MC Place%** alongside Adj Win% and Adj Place%.
+Every Trio report must include: (1) an **MC SIMULATION (raw)** table above HORSE RANKINGS listing **all horses** in the field (MC Win%, MC Place%, **Form** = form record count, optional Top Quinella for top runners), and (2) **HORSE RANKINGS** with columns **MC Win%** and **MC Place%** alongside Adj Win% and Adj Place%.
 
 ```
 ═══════════════════════════════════════════════════════════
@@ -488,10 +489,13 @@ UNIT BET: $10 per combination (fixed)
 ───────────────────────────────────────────────────────────
 MC SIMULATION (raw)
 ───────────────────────────────────────────────────────────
+Note: List **all** horses in the field (one row per runner). Top Quinella column: show the leading quinella pair for the top few only; use "—" for the rest.
+
 | # | Horse     | MC Win% | MC Place% | Form | Top Quinella (fair odds)     |
 |---|------------|---------|-----------|------|-------------------------------|
 | X | NAME       | XX.X%   | XX.X%     | N    | X-X: X.X% (X.X)               |
 | X | NAME       | XX.X%   | XX.X%     | N    | —                             |
+| … | (all runners) |
 
 Market: [1–2 line summary of over/undervalued vs market]
 
@@ -588,7 +592,6 @@ TOTAL TRIO STAKE: $[combos x 10]
 ### Happy Valley
 - **More upsets** — use wider pools (Mode B/C)
 - Tight track favours on-pace horses; closers need clear running
-- Reduce jockey boost caps (see Step 3c)
 - Consider wider pool (7 horses for Mode C) due to unpredictability
 - Front-runner bias in HV 1,200m races; stalker bias in 1,650m+
 
@@ -624,7 +627,7 @@ TOTAL TRIO STAKE: $[combos x 10]
 
 | Tool | Command / URL | Purpose |
 |------|--------------|---------|
-| Jockey Stats | `PLAYWRIGHT_BROWSERS_PATH=0 npx tsx tools/fetch-jockey-stats.ts` | Season win rates |
+| Jockey Stats | `PLAYWRIGHT_BROWSERS_PATH=0 npx tsx tools/fetch-jockey-stats.ts --date=YYYY-MM-DD` | Season win rates |
 | Live Odds | `PLAYWRIGHT_BROWSERS_PATH=0 npx tsx tools/fetch-odds.ts --date=YYYY-MM-DD --venue=HV --json --save` | Current odds |
 | Race Analysis | `PLAYWRIGHT_BROWSERS_PATH=0 npx tsx tools/analyze-race.ts --date YYYY-MM-DD --venue "Happy Valley" --race N --bankroll BANKROLL --kelly 0.35 --min-edge 5` | MC simulation |
 | Race Card | `https://racing.hkjc.com/racing/information/English/Racing/RaceCard.aspx?RaceDate=YYYY/MM/DD&Racecourse=HV&RaceNo=N` | Entries, jockeys |
