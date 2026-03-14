@@ -146,7 +146,7 @@ export class RaceCardScraper {
     const dateStr = format(date, "yyyy/MM/dd");
     const venueCode = venue === "Sha Tin" ? "ST" : "HV";
     // Use the correct HKJC URL format (en-us path)
-    const url = `${this.config.baseUrl}/en-us/local/information/racecard?RaceDate=${dateStr}&Racecourse=${venueCode}&RaceNo=${raceNumber}`;
+    const url = `${this.config.baseUrl}/en-us/local/information/racecard?raceDate=${dateStr}&Racecourse=${venueCode}&RaceNo=${raceNumber}`;
 
     await this.navigateTo(url);
     if (!this.page) throw new Error("Browser not initialized");

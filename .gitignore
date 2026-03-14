@@ -8,6 +8,9 @@ dist/
 data/
 *.json.bak
 
+# Always track (do not ignore)
+!src/data/horseEnricher.ts
+
 # Environment
 .env
 .env.local

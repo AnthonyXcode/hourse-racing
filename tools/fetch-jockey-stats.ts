@@ -97,7 +97,7 @@ async function fetchJockeyList(page: Page, raceDate?: Date): Promise<JockeyBasic
     venueLoop: for (const venue of venues) {
       for (let raceNo = 1; raceNo <= 11; raceNo++) {
         try {
-          const url = `https://racing.hkjc.com/en-us/local/information/racecard?RaceDate=${dateStr}&Racecourse=${venue}&RaceNo=${raceNo}`;
+          const url = `https://racing.hkjc.com/en-us/local/information/racecard?raceDate=${dateStr}&Racecourse=${venue}&RaceNo=${raceNo}`;
           await page.goto(url, { waitUntil: "domcontentloaded", timeout: 15000 });
           await page.waitForTimeout(1500);
 
