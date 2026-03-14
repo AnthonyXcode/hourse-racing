@@ -8,7 +8,8 @@ dist/
 data/
 *.json.bak
 
-# Always track (do not ignore)
+# Always track (do not ignore); un-ignore parent so negation applies
+!src/data/
 !src/data/horseEnricher.ts
 
 # Environment
