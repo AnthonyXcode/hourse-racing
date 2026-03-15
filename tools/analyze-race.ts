@@ -34,6 +34,8 @@ interface CliArgs {
   venue: Venue;
   /** Form data: "all" = HV + ST; if omitted, form uses --venue only. */
   formData?: "all";
+  /** Ignore historical files whose name contains any of these strings (e.g. 20260315,HV). */
+  ignoreRecords?: string[];
   raceNumber: number;
   bankroll?: number;
   kellyFraction?: number;
@@ -52,6 +54,7 @@ function parseArgs(): CliArgs {
   let date = new Date();
   let venue: Venue = "Sha Tin";
   let formData: "all" | undefined;
+  let ignoreRecords: string[] | undefined;
   let raceNumber = 1;
   let bankroll: number | undefined;
   let kellyFraction: number | undefined;
@@ -82,6 +85,13 @@ function parseArgs(): CliArgs {
       case "-f":
         if (next && next.toLowerCase() === "all") {
           formData = "all";
+          i++;
+        }
+        break;
+
+      case "--ignore-records":
+        if (next) {
+          ignoreRecords = next.split(",").map((s) => s.trim()).filter(Boolean);
           i++;
         }
         break;
@@ -126,6 +136,7 @@ function parseArgs(): CliArgs {
     raceNumber,
   };
   if (formData !== undefined) result.formData = formData;
+  if (ignoreRecords !== undefined && ignoreRecords.length > 0) result.ignoreRecords = ignoreRecords;
   if (bankroll !== undefined) result.bankroll = bankroll;
   if (kellyFraction !== undefined) result.kellyFraction = kellyFraction;
   if (minEdge !== undefined) result.minEdge = minEdge;
@@ -143,6 +154,7 @@ Options:
   -d, --date <YYYY-MM-DD>   Race date (default: today)
   -v, --venue <venue>       Venue for race card: "Sha Tin" or "Happy Valley" (default: Sha Tin)
   -f, --form-data <mode>    Form data: "all" = use HV + ST records; if omitted, use --venue only
+  --ignore-records <list>   Comma-separated list: skip historical files whose name contains any (e.g. 20260315,20260301,HV)
   -r, --race <number>       Race number (default: 1)
   -b, --bankroll <amount>   Bankroll in HKD (default: 10000)
   -k, --kelly <fraction>    Kelly fraction 0-1 (default: 0.25)
@@ -169,6 +181,9 @@ async function analyzeRace(args: CliArgs): Promise<void> {
   console.log(`Date: ${format(args.date, "yyyy-MM-dd")}`);
   console.log(`Venue: ${args.venue}`);
   console.log(`Form data: ${args.formData === "all" ? "all venues (HV + ST)" : args.venue + " only"}`);
+  if (args.ignoreRecords && args.ignoreRecords.length > 0) {
+    console.log(`Ignore records: ${args.ignoreRecords.join(", ")}`);
+  }
   console.log(`Race: ${args.raceNumber}`);
   console.log("");
 
@@ -188,7 +203,10 @@ async function analyzeRace(args: CliArgs): Promise<void> {
   try {
     // Load historical data for enrichment
     console.log("Loading historical data...");
-    const enricher = new HorseDataEnricher();
+    const enricher =
+      args.ignoreRecords && args.ignoreRecords.length > 0
+        ? new HorseDataEnricher({ ignoreFilePatterns: args.ignoreRecords })
+        : new HorseDataEnricher();
     await enricher.loadHistoricalData();
     const dataSummary = enricher.getDataSummary();
     if (dataSummary.totalRaces > 0) {

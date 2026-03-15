@@ -38,13 +38,26 @@ interface DataSummary {
 // ENRICHER
 // ============================================================================
 
+export interface HorseDataEnricherOptions {
+  dataDir?: string;
+  /** If set, skip any file whose name contains any of these strings (e.g. ["20260315", "HV"]). */
+  ignoreFilePatterns?: string[];
+}
+
 export class HorseDataEnricher {
   private horseIndex: Map<string, HorseRecord> = new Map();
   private totalRaces = 0;
   private dataDir: string;
+  private ignoreFilePatterns: string[];
 
-  constructor(dataDir?: string) {
-    this.dataDir = dataDir ?? join(process.cwd(), "data", "historical");
+  constructor(options?: string | HorseDataEnricherOptions) {
+    if (options === undefined || typeof options === "string") {
+      this.dataDir = options ?? join(process.cwd(), "data", "historical");
+      this.ignoreFilePatterns = [];
+    } else {
+      this.dataDir = options.dataDir ?? join(process.cwd(), "data", "historical");
+      this.ignoreFilePatterns = options.ignoreFilePatterns ?? [];
+    }
   }
 
   // --------------------------------------------------------------------------
@@ -58,7 +71,12 @@ export class HorseDataEnricher {
     }
 
     const files = await readdir(this.dataDir);
-    const jsonFiles = files.filter((f) => f.endsWith(".json"));
+    let jsonFiles = files.filter((f) => f.endsWith(".json"));
+    if (this.ignoreFilePatterns.length > 0) {
+      jsonFiles = jsonFiles.filter(
+        (f) => !this.ignoreFilePatterns.some((p) => f.includes(p))
+      );
+    }
 
     for (const file of jsonFiles) {
       try {
