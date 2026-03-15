@@ -30,7 +30,10 @@ import { HorseDataEnricher } from "../src/data/horseEnricher.js";
 
 interface CliArgs {
   date: Date;
+  /** Venue for fetching race card. */
   venue: Venue;
+  /** Form data: "all" = HV + ST; if omitted, form uses --venue only. */
+  formData?: "all";
   raceNumber: number;
   bankroll?: number;
   kellyFraction?: number;
@@ -48,6 +51,7 @@ function parseArgs(): CliArgs {
 
   let date = new Date();
   let venue: Venue = "Sha Tin";
+  let formData: "all" | undefined;
   let raceNumber = 1;
   let bankroll: number | undefined;
   let kellyFraction: number | undefined;
@@ -70,6 +74,14 @@ function parseArgs(): CliArgs {
       case "-v":
         if (next) {
           venue = next.includes("Happy") ? "Happy Valley" : "Sha Tin";
+          i++;
+        }
+        break;
+
+      case "--form-data":
+      case "-f":
+        if (next && next.toLowerCase() === "all") {
+          formData = "all";
           i++;
         }
         break;
@@ -108,7 +120,16 @@ function parseArgs(): CliArgs {
     }
   }
 
-  return { date, venue, raceNumber, bankroll, kellyFraction, minEdge };
+  const result: CliArgs = {
+    date,
+    venue,
+    raceNumber,
+  };
+  if (formData !== undefined) result.formData = formData;
+  if (bankroll !== undefined) result.bankroll = bankroll;
+  if (kellyFraction !== undefined) result.kellyFraction = kellyFraction;
+  if (minEdge !== undefined) result.minEdge = minEdge;
+  return result;
 }
 
 function printHelp(): void {
@@ -120,7 +141,8 @@ Usage:
 
 Options:
   -d, --date <YYYY-MM-DD>   Race date (default: today)
-  -v, --venue <venue>       Venue: "Sha Tin" or "Happy Valley" (default: Sha Tin)
+  -v, --venue <venue>       Venue for race card: "Sha Tin" or "Happy Valley" (default: Sha Tin)
+  -f, --form-data <mode>    Form data: "all" = use HV + ST records; if omitted, use --venue only
   -r, --race <number>       Race number (default: 1)
   -b, --bankroll <amount>   Bankroll in HKD (default: 10000)
   -k, --kelly <fraction>    Kelly fraction 0-1 (default: 0.25)
@@ -129,7 +151,8 @@ Options:
 
 Examples:
   npm run analyze -- --date 2026-01-29 --venue "Sha Tin" --race 5
-  npm run analyze -- -d 2026-01-29 -v ST -r 5 -b 20000
+  npm run analyze -- -d 2026-01-29 -v ST -r 5 --form-data all
+  npm run analyze -- -d 2026-01-29 -v "Happy Valley" -r 3 -f all
   npm run analyze -- --race 3 --kelly 0.35
 `);
 }
@@ -145,6 +168,7 @@ async function analyzeRace(args: CliArgs): Promise<void> {
 
   console.log(`Date: ${format(args.date, "yyyy-MM-dd")}`);
   console.log(`Venue: ${args.venue}`);
+  console.log(`Form data: ${args.formData === "all" ? "all venues (HV + ST)" : args.venue + " only"}`);
   console.log(`Race: ${args.raceNumber}`);
   console.log("");
 
@@ -194,7 +218,9 @@ async function analyzeRace(args: CliArgs): Promise<void> {
 
     // Enrich horses with historical data
     console.log("Enriching horses with past performances...");
-    race = enricher.enrichRace(race);
+    race = enricher.enrichRace(race, {
+      formVenue: args.formData === "all" ? "all" : args.venue,
+    });
     
     const horsesWithHistory = race.entries.filter(
       e => e.horse.pastPerformances.length > 0

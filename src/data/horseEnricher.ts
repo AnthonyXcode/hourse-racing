@@ -154,7 +154,12 @@ export class HorseDataEnricher {
   // Enrich a Race's entries with past performances from the index
   // --------------------------------------------------------------------------
 
-  enrichRace(race: Race): Race {
+  /**
+   * @param formVenue - If "all", use HV + ST records. If a venue, use only that venue's records.
+   */
+  enrichRace(race: Race, options?: { formVenue?: Venue | "all" }): Race {
+    const formVenue = options?.formVenue ?? "all";
+
     const enrichedEntries: RaceEntry[] = race.entries.map((entry) => {
       const key = this.normalizeHorseKey(entry.horse.name);
       const record = this.horseIndex.get(key);
@@ -185,13 +190,14 @@ export class HorseDataEnricher {
         (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
       );
 
-      // Only keep past performances from the same venue as the race
-      // (e.g. Sha Tin race → only use Sha Tin history; HV race → only HV history)
-      const sameVenuePerfs = allPerfs.filter((p) => p.venue === race.venue);
+      const pastPerformances =
+        formVenue === "all"
+          ? allPerfs
+          : allPerfs.filter((p) => p.venue === formVenue);
 
       const enrichedHorse: Horse = {
         ...entry.horse,
-        pastPerformances: sameVenuePerfs,
+        pastPerformances,
       };
 
       return { ...entry, horse: enrichedHorse } as unknown as RaceEntry;
