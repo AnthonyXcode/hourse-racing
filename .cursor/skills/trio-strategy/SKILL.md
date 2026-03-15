@@ -246,7 +246,7 @@ After MC simulation and jockey boosts, apply the following adjustments sourced f
 #### Cap rule
 - Total SCMP form adjustment per horse: **max ±8%** to MC Win%, **max ±10%** to MC Place%
 - If adjustments push any horse's probability above 50% Win or 85% Place, cap at those values
-- Always show **raw MC%** and **adjusted%** (after all boosts) in the report
+- Always show **raw MC%**, **Adj Win% factor** / **Adj Place% factor** as **lists of reasons with ±%** (e.g. jockey +2.3, excuses +2), and **adjusted%** (after all boosts) in the HORSE RANKINGS table
 
 ---
 
@@ -254,13 +254,13 @@ After MC simulation and jockey boosts, apply the following adjustments sourced f
 
 ### 4a. Build ranking table
 
-Rank all horses by **Adjusted Win%** and **Adjusted Place%** to determine pool inclusion:
+Rank all horses by **Adjusted Win%** and **Adjusted Place%** to determine pool inclusion. Include **Adj Win% factor** and **Adj Place% factor** as **lists of reasons with ±%** (e.g. `jockey +2.3, excuses +2` or `jockey +7, trial +2` or `jockey 0, -perf −2`), not a single number:
 
 ```
 RACE [N] — [Class] | [Distance] | [Going] | [Field size]
-| Rank | # | Horse | MC Win% | Adj Win% | MC Place% | Form | Adj Place% | Odds | Jockey | SCMP Flags |
-|------|---|-------|---------|----------|-----------|------|------------|------|--------|------------|
-| 1 | X | NAME | XX.X% | XX.X% | XX.X% | N | XX.X% | X.X | Name | +trial, +draw |
+| Rank | # | Horse | MC Win% | MC Place% | Adj Win% factor | Adj Place% factor | Adj Win% | Adj Place% | Odds | Jockey | SCMP Flags |
+|------|---|-------|---------|-----------|-----------------|-------------------|----------|------------|------|--------|------------|
+| 1 | X | NAME | XX.X% | XX.X% | jockey +2.3, excuses +2 | (same) | XX.X% | XX.X% | X.X | Name | +trial, +draw |
 ```
 
 ### 4b. Classify the race
@@ -471,7 +471,7 @@ HKJC offers two top-3 single-race bets:
 
 ## Output Format
 
-Every Trio report must include: (1) an **MC SIMULATION (raw)** table above HORSE RANKINGS listing **all horses** in the field (MC Win%, MC Place%, **Form** = form record count, optional Top Quinella for top runners), and (2) **HORSE RANKINGS** with columns **MC Win%** and **MC Place%** alongside Adj Win% and Adj Place%.
+Every Trio report must include: (1) an **MC SIMULATION (raw)** table above HORSE RANKINGS listing **all horses** in the field (MC Win%, MC Place%, **Form** = form record count, optional Top Quinella for top runners), and (2) **HORSE RANKINGS** with columns **MC Win%**, **MC Place%**, **Adj Win% factor**, **Adj Place% factor**, **Adj Win%**, and **Adj Place%**. **Factor columns** must show a **list of reasons with ±%** (e.g. `jockey +2.3, excuses +2` or `jockey +7, trial +2` or `jockey 0, -perf −2`), not a single combined percentage.
 
 ```
 ═══════════════════════════════════════════════════════════
@@ -506,16 +506,17 @@ Market: [1–2 line summary of over/undervalued vs market]
 ───────────────────────────────────────────────────────────
 HORSE RANKINGS
 ───────────────────────────────────────────────────────────
-| # | Horse     | MC Win% | MC Place% | Adj Win% | Adj Place% | Odds | Jockey | Style | SCMP Flags | Role         |
-|---|------------|---------|-----------|----------|------------|------|--------|-------|------------|--------------|
-| X | NAME       | XX.X%   | XX.X%     | XX.X%    | XX.X%      | X.X  | Name   | Front | +trial     | ★ 膽 (Banker)|
-| X | NAME       | XX.X%   | XX.X%     | XX.X%    | XX.X%      | X.X  | Name   | Stalk | +draw      | 腳 (Leg)     |
-| X | NAME       | XX.X%   | XX.X%     | XX.X%    | XX.X%      | X.X  | Name   | Close | +excuses   | 腳 (Leg)     |
-| X | NAME       | XX.X%   | XX.X%     | XX.X%    | XX.X%      | X.X  | Name   | Stalk | —          | 腳 (Leg)     |
-| X | NAME       | XX.X%   | XX.X%     | XX.X%    | XX.X%      | X.X  | Name   | Close | —          | 腳 (Leg)     |
-| X | NAME       | —       | —         | ~X.X%    | ~XX.X%     | X.X  | Name   | —     | —          | 腳 (Leg)     |
+| # | Horse     | MC Win% | MC Place% | Adj Win% factor | Adj Place% factor | Adj Win% | Adj Place% | Odds | Jockey | Style | SCMP Flags | Role         |
+|---|------------|---------|-----------|-----------------|-------------------|----------|------------|------|--------|-------|------------|--------------|
+| X | NAME       | XX.X%   | XX.X%     | jockey +2.3, trial +2 | jockey +2.3, trial +2 | XX.X%    | XX.X%      | X.X  | Name   | Front | +trial     | ★ 膽 (Banker)|
+| X | NAME       | XX.X%   | XX.X%     | jockey +7, excuses +2 | jockey +7, excuses +2 | XX.X%    | XX.X%      | X.X  | Name   | Stalk | +draw      | 腳 (Leg)     |
+| X | NAME       | XX.X%   | XX.X%     | jockey 0, -perf −2   | jockey 0, -perf −2   | XX.X%    | XX.X%      | X.X  | Name   | Close | +excuses   | 腳 (Leg)     |
+| X | NAME       | XX.X%   | XX.X%     | 0                   | 0                   | XX.X%    | XX.X%      | X.X  | Name   | Stalk | —          | 腳 (Leg)     |
+| X | NAME       | —       | —         | —               | —                 | ~X.X%    | ~XX.X%     | X.X  | Name   | —     | —          | 腳 (Leg)     |
 
-Note: ★ 膽 = Banker (1st-ranked horse by Adj Win%, always locked in every combo). For 雙膽拖, the 2nd horse must also have Adj Place% >= 63%. Show MC Win% / MC Place% from raw simulation; Adj Win% / Adj Place% after jockey boost and SCMP form adjustments. Horses without MC output (e.g. Rule 2 only) use estimated ~X.X%.
+**Factor columns:** Show a **list of reasons with ±%**, e.g. `jockey +2.3, excuses +2` (jockey boost + SCMP reason and percentage). Use reason labels: jockey (always first if non-zero), then SCMP reasons (e.g. excuses +2, trial +2, +draw +1, -perf −2, -injury30d −3). Omit jockey if 0; omit SCMP if 0; use `0` when no adjustment. Adj Win% = MC Win% + sum of factor reasons (after caps). Same for Adj Place% factor.
+
+Note: ★ 膽 = Banker (1st-ranked horse by Adj Win%, always locked in every combo). For 雙膽拖, the 2nd horse must also have Adj Place% >= 63%. Horses without MC output use estimated ~X.X% and "—" for factors.
 
 Reasoning: [Why these horses are in the pool; MC evidence; pace scenario; SCMP insights]
 
