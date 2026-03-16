@@ -16,6 +16,8 @@ import { RaceCardScraper } from "../src/scrapers/raceCard.js";
 import { FormAnalyzer } from "../src/analysis/formAnalysis.js";
 import { MonteCarloSimulator } from "../src/simulation/monteCarlo.js";
 import { HorseDataEnricher } from "../src/data/horseEnricher.js";
+import { JockeyEnricher } from "../src/data/jockeyEnricher.js";
+import { TrainerEnricher } from "../src/data/trainerEnricher.js";
 
 const RUNS = 10000;
 
@@ -209,9 +211,14 @@ async function main(): Promise<void> {
       ? new HorseDataEnricher({ ignoreFilePatterns: ignoreRecords })
       : new HorseDataEnricher();
 
+  const jockeyEnricher = new JockeyEnricher({ fetchFromHKJC: true });
+  const trainerEnricher = new TrainerEnricher({ fetchFromHKJC: true });
+
   console.log("Loading historical data...");
   if (ignoreRecords.length > 0) console.log(`  Ignore records: ${ignoreRecords.join(", ")}`);
   await enricher.loadHistoricalData();
+  await jockeyEnricher.loadFromDirectory();
+  await trainerEnricher.loadFromDirectory();
   console.log("Initializing scraper...");
   await scraper.init();
 
@@ -225,6 +232,8 @@ async function main(): Promise<void> {
         continue;
       }
       race = enricher.enrichRace(race, { formVenue: "all" });
+      race = await jockeyEnricher.enrichRace(race);
+      race = await trainerEnricher.enrichRace(race);
       formAnalyzer.analyzeRace(race);
       const { results: simResults, exoticProbabilities } = simulator.simulateRace(race);
       const topQuinellaList = simulator.getTopExoticOutcomes(exoticProbabilities.quinella, 10);
@@ -240,6 +249,9 @@ async function main(): Promise<void> {
     }
   }
   await scraper.close();
+  await jockeyEnricher.closeBrowser();
+  await trainerEnricher.closeBrowser();
+  console.log(`  ${jockeyEnricher.getCachedCount()} jockey profiles, ${trainerEnricher.getCachedCount()} trainer profiles loaded`);
 
   console.log("\nLoading results JSON...");
   const results = await loadResults(date, venue);

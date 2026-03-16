@@ -24,6 +24,7 @@ import {
 import { ValueCalculator, MarketOdds } from "../src/betting/valueCalculator.js";
 import { HorseDataEnricher } from "../src/data/horseEnricher.js";
 import { JockeyEnricher } from "../src/data/jockeyEnricher.js";
+import { TrainerEnricher } from "../src/data/trainerEnricher.js";
 
 // ============================================================================
 // CLI ARGUMENT PARSING
@@ -253,6 +254,14 @@ async function analyzeRace(args: CliArgs): Promise<void> {
     race = await jockeyEnricher.enrichRace(race);
     await jockeyEnricher.closeBrowser();
     console.log(`  ${jockeyEnricher.getCachedCount()} jockey profiles loaded\n`);
+
+    // Enrich race with trainer data (from HKJC trainerprofile page)
+    const trainerEnricher = new TrainerEnricher({ fetchFromHKJC: true });
+    await trainerEnricher.loadFromDirectory();
+    console.log("Enriching trainers with season stats...");
+    race = await trainerEnricher.enrichRace(race);
+    await trainerEnricher.closeBrowser();
+    console.log(`  ${trainerEnricher.getCachedCount()} trainer profiles loaded\n`);
 
     // Analyze horses
     console.log("Analyzing form factors...");

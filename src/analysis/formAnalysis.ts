@@ -135,28 +135,30 @@ export class FormAnalyzer {
   analyzeHorse(horse: Horse, race: Race, entry: RaceEntry): HorseAnalysis {
     const speedFigures = this.speedCalculator.calculateHorseSpeedFigures(horse);
 
-    return {
-      horseCode: horse.code,
-      horseName: horse.name,
-      averageSpeedRating: this.speedCalculator.getAverageSpeedRating(speedFigures),
-      bestSpeedRating: this.speedCalculator.getBestSpeedRating(speedFigures),
-      lastSpeedRating: this.speedCalculator.getLastSpeedRating(speedFigures),
-      formScore: this.calculateFormScore(horse),
-      classIndicator: this.calculateClassIndicator(horse, race.class),
-      daysSinceLastRace: this.calculateDaysSinceLastRace(horse, race.date),
-      drawAdvantage: this.calculateDrawAdvantage(
-        entry.draw,
-        race.venue,
-        race.surface,
-        race.distance
-      ),
-      jockeyEdge: this.calculateJockeyEdge(entry.jockey, race),
-      trainerForm: this.calculateTrainerForm(entry.trainer),
-      surfacePreference: this.calculateSurfacePreference(horse, race.surface),
-      goingPreference: this.calculateGoingPreference(horse, race.going),
-      distancePreference: this.calculateDistancePreference(horse, race.distance),
-      overallRating: 0, // Will be calculated below
-    };
+    const analysis: HorseAnalysis = {
+        horseCode: horse.code,
+        horseName: horse.name,
+        averageSpeedRating: this.speedCalculator.getAverageSpeedRating(speedFigures),
+        bestSpeedRating: this.speedCalculator.getBestSpeedRating(speedFigures),
+        lastSpeedRating: this.speedCalculator.getLastSpeedRating(speedFigures),
+        formScore: this.calculateFormScore(horse),
+        classIndicator: this.calculateClassIndicator(horse, race.class),
+        daysSinceLastRace: this.calculateDaysSinceLastRace(horse, race.date),
+        drawAdvantage: this.calculateDrawAdvantage(
+          entry.draw,
+          race.venue,
+          race.surface,
+          race.distance
+        ),
+        jockeyEdge: this.calculateJockeyEdge(entry.jockey, race),
+        trainerForm: this.calculateTrainerForm(entry.trainer),
+        surfacePreference: this.calculateSurfacePreference(horse, race.surface),
+        goingPreference: this.calculateGoingPreference(horse, race.going),
+        distancePreference: this.calculateDistancePreference(horse, race.distance),
+        overallRating: 0, // Will be calculated below
+    }
+
+    return analysis;
   }
 
   /**
