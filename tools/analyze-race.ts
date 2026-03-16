@@ -23,6 +23,7 @@ import {
 } from "../src/betting/recommendations.js";
 import { ValueCalculator, MarketOdds } from "../src/betting/valueCalculator.js";
 import { HorseDataEnricher } from "../src/data/horseEnricher.js";
+import { JockeyEnricher } from "../src/data/jockeyEnricher.js";
 
 // ============================================================================
 // CLI ARGUMENT PARSING
@@ -239,11 +240,19 @@ async function analyzeRace(args: CliArgs): Promise<void> {
     race = enricher.enrichRace(race, {
       formVenue: args.formData === "all" ? "all" : args.venue,
     });
-    
+
     const horsesWithHistory = race.entries.filter(
-      e => e.horse.pastPerformances.length > 0
+      (e) => e.horse.pastPerformances.length > 0
     ).length;
     console.log(`  ${horsesWithHistory}/${race.entries.length} horses enriched with form data\n`);
+
+    // Enrich race with jockey data (from data/jockeys/*.json or HKJC jockeyprofile page)
+    const jockeyEnricher = new JockeyEnricher({ fetchFromHKJC: true });
+    await jockeyEnricher.loadFromDirectory();
+    console.log("Enriching jockeys with season stats...");
+    race = await jockeyEnricher.enrichRace(race);
+    await jockeyEnricher.closeBrowser();
+    console.log(`  ${jockeyEnricher.getCachedCount()} jockey profiles loaded\n`);
 
     // Analyze horses
     console.log("Analyzing form factors...");
@@ -322,7 +331,6 @@ async function analyzeRace(args: CliArgs): Promise<void> {
     const topEntries = race.entries
       .filter(e => e.jockey.seasonStats.rides > 0 || e.trainer.seasonStats.rides > 0)
       .sort((a, b) => b.jockey.seasonStats.winRate - a.jockey.seasonStats.winRate)
-      .slice(0, 5);
     
     for (const entry of topEntries) {
       const jWR = (entry.jockey.seasonStats.winRate * 100).toFixed(0);

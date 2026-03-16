@@ -107,10 +107,11 @@ export class JockeyStatsScraper {
   }
 
   /**
-   * Get list of all active jockeys
+   * Get list of all active jockeys from HKJC jockey ranking page.
+   * URL: https://racing.hkjc.com/en-us/local/info/jockey-ranking?season=Current&view=Numbers&racecourse=ALL
    */
   async getActiveJockeys(): Promise<{ code: string; name: string }[]> {
-    const url = `${this.config.baseUrl}/en-us/racing/information/jockey`;
+    const url = `${this.config.baseUrl}/en-us/local/info/jockey-ranking?season=Current&view=Numbers&racecourse=ALL`;
 
     await this.navigateTo(url);
     if (!this.page) throw new Error("Browser not initialized");
@@ -120,16 +121,22 @@ export class JockeyStatsScraper {
 
     const jockeys: { code: string; name: string }[] = [];
 
-    // Find jockey links
+    // Find jockey links (ranking page may use JockeyId=, jockeyid=, or jockey/ in href)
     $("a").each((_, el) => {
       const href = $(el).attr("href") || "";
       const text = $(el).text().trim();
 
-      // Match jockey profile links
-      if (href.includes("jockey/") || href.includes("JockeyId=")) {
-        const codeMatch = href.match(/jockey\/([A-Z]+)/i) ||
-                          href.match(/JockeyId=([A-Z]+)/i);
-        if (codeMatch && text.length > 2) {
+      if (
+        href.includes("jockey/") ||
+        href.includes("JockeyId=") ||
+        href.includes("jockeyid=") ||
+        href.includes("jockeywinstat")
+      ) {
+        const codeMatch =
+          href.match(/jockey\/([A-Za-z0-9]+)/i) ||
+          href.match(/[Jj]ockey[Ii]d=([A-Za-z0-9]+)/i) ||
+          href.match(/jockeywinstat\?[^&]*[Jj]ockey[Ii]d=([A-Za-z0-9]+)/i);
+        if (codeMatch && text.length > 1 && text.length < 50) {
           jockeys.push({
             code: codeMatch[1]!.toUpperCase(),
             name: text,
@@ -138,7 +145,7 @@ export class JockeyStatsScraper {
       }
     });
 
-    // Remove duplicates
+    // Remove duplicates by code
     const unique = Array.from(
       new Map(jockeys.map((j) => [j.code, j])).values()
     );
@@ -597,9 +604,14 @@ export class JockeyStatsScraper {
 
   /**
    * Scrape stats for all active jockeys
+   * Falls back to KNOWN_ACTIVE_JOCKEYS if HKJC jockey list page returns none.
    */
   async scrapeAllJockeys(): Promise<JockeyProfile[]> {
-    const activeJockeys = await this.getActiveJockeys();
+    let activeJockeys = await this.getActiveJockeys();
+    if (activeJockeys.length === 0) {
+      console.log("Jockey list page returned no links; using known active jockey list.");
+      activeJockeys = KNOWN_ACTIVE_JOCKEYS;
+    }
     console.log(`Found ${activeJockeys.length} active jockeys`);
 
     const profiles: JockeyProfile[] = [];
@@ -644,6 +656,38 @@ export class JockeyStatsScraper {
     return JSON.parse(data) as JockeyProfile[];
   }
 }
+
+// ============================================================================
+// FALLBACK: Known active jockey codes when HKJC jockey list page returns none
+// (e.g. page structure changed). Used by scrapeAllJockeys().
+// ============================================================================
+
+const KNOWN_ACTIVE_JOCKEYS: { code: string; name: string }[] = [
+  { code: "PZ", name: "Z Purton" },
+  { code: "MOJ", name: "J Moreira" },
+  { code: "MCJ", name: "J McDonald" },
+  { code: "BH", name: "H Bowman" },
+  { code: "GM", name: "M Guyon" },
+  { code: "TEK", name: "K Teetan" },
+  { code: "BA", name: "A Badel" },
+  { code: "HEL", name: "L Hewitson" },
+  { code: "FEL", name: "L Ferraris" },
+  { code: "AA", name: "A Atzeni" },
+  { code: "CML", name: "M Chadwick" },
+  { code: "AVB", name: "B Avdulla" },
+  { code: "HCY", name: "C Y Ho" },
+  { code: "LDE", name: "K C Leung" },
+  { code: "MDB", name: "D B McMonagle" },
+  { code: "BHW", name: "H Bentley" },
+  { code: "WDJ", name: "D Whyte" },
+  { code: "CLR", name: "R Chotard" },
+  { code: "PFI", name: "F Poon" },
+  { code: "YML", name: "L Yeung" },
+  { code: "WJH", name: "J Wong" },
+  { code: "CCW", name: "W Chau" },
+  { code: "CKJ", name: "J Chao" },
+  { code: "SHB", name: "B Shinn" },
+];
 
 // ============================================================================
 // ELITE JOCKEY QUICK REFERENCE

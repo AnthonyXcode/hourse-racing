@@ -382,6 +382,11 @@ export class RaceCardScraper {
     const horseNumber = parseInt(horseNumText, 10);
     if (isNaN(horseNumber) || horseNumber < 1 || horseNumber > 20) return null;
 
+    // Require a horse link with horseid — rows without one (gear legend, notes) are not entries
+    const hasHorseLink = $row.find('a[href*="horse" i]').length > 0 ||
+                         $row.find('a[href*="Horse"]').length > 0;
+    if (!hasHorseLink) return null;
+
     // Find horse name - usually in a link with horse ID
     let horseName = "";
     let horseCode = `H${horseNumber}`;
@@ -389,35 +394,61 @@ export class RaceCardScraper {
     let weight = 126;
     let jockeyName = "";
     let jockeyCode = "UNK";
+    let hasJockeyLink = false;
     let trainerName = "";
     let trainerCode = "UNK";
 
     // Parse links in the row for horse/jockey/trainer info
     $row.find("a").each((_, link) => {
-      const href = $(link).attr("href") || "";
-      const text = $(link).text().trim();
+      const $link = $(link);
+      const href = $link.attr("href") || "";
+      const text = $link.text().trim();
 
       if (href.includes("horse") || href.includes("Horse")) {
         horseName = text;
         const codeMatch = href.match(/horseid[=\/]([^&\/]+)/i);
         if (codeMatch) horseCode = codeMatch[1]!;
       } else if (href.includes("jockey") || href.includes("Jockey")) {
-        jockeyName = text;
+        hasJockeyLink = true;
         const codeMatch = href.match(/jockeyid[=\/]([^&\/]+)/i);
         if (codeMatch) jockeyCode = codeMatch[1]!;
+        if (text.length >= 2) {
+          jockeyName = text;
+        } else {
+          // HKJC sometimes has jockey name in parent <td> or in link title (link itself has no text)
+          const title = $link.attr("title")?.trim();
+          let parentText = $link.closest("td").text().trim();
+          parentText = parentText.split(/\s*[\n\r]\s*/)[0]?.trim() ?? parentText; // first line only
+          if (title && title.length >= 2 && title.length < 50) {
+            jockeyName = title;
+          } else if (parentText && parentText.length >= 2 && parentText.length < 50) {
+            jockeyName = parentText;
+          }
+        }
       } else if (href.includes("trainer") || href.includes("Trainer")) {
-        trainerName = text;
+        if (text.length >= 2) {
+          trainerName = text;
+        } else {
+          const title = $link.attr("title")?.trim();
+          let parentText = $link.closest("td").text().trim();
+          parentText = parentText.split(/\s*[\n\r]\s*/)[0]?.trim() ?? parentText;
+          if (title && title.length >= 2 && title.length < 50) {
+            trainerName = title;
+          } else if (parentText && parentText.length >= 2 && parentText.length < 50) {
+            trainerName = parentText;
+          }
+        }
         const codeMatch = href.match(/trainerid[=\/]([^&\/]+)/i);
         if (codeMatch) trainerCode = codeMatch[1]!;
       }
     });
 
+    // No jockey link = stand-by starter (no jockey assigned yet); skip silently
+    if (!hasJockeyLink) return null;
+
     // Parse numeric values from cells
-    // Try to find weight and draw by position - HKJC table usually has specific columns
     for (let i = 0; i < cellTexts.length; i++) {
       const text = cellTexts[i]!;
-      
-      // Look for weight (usually 100-140 range, 3 digits)
       const weightMatch = text.match(/^(\d{3})$/);
       if (weightMatch) {
         const w = parseInt(weightMatch[1]!, 10);
@@ -425,20 +456,16 @@ export class RaceCardScraper {
       }
     }
 
-    // Draw is typically a specific column - try to find it by looking at cell with just a small number
-    // after horse number column, not weight column
+    // Draw is typically a specific column
     let drawFound = false;
     for (let i = 1; i < Math.min(cellTexts.length, 8); i++) {
       const text = cellTexts[i]!.trim();
-      // Draw is 1-14, single or double digit
       if (/^\d{1,2}$/.test(text) && !drawFound) {
         const d = parseInt(text, 10);
-        // Draw should be between 1-14 and not same as horse number
         if (d >= 1 && d <= 14 && d !== horseNumber) {
-          // Skip if this looks like a weight (3 digits) - but we only matched 1-2 digits
           draw = d;
           drawFound = true;
-          break; // Take first valid draw found
+          break;
         }
       }
     }
@@ -446,7 +473,6 @@ export class RaceCardScraper {
     // If no horse name found, try to get from cell text
     if (!horseName) {
       for (const text of cellTexts) {
-        // Horse names typically have uppercase letters and are longer
         if (text.length > 3 && /^[A-Z][A-Z\s']+$/i.test(text)) {
           horseName = text;
           break;
@@ -492,7 +518,7 @@ export class RaceCardScraper {
 
     // Validate essential data - skip entry if missing critical info
     if (!jockeyName || jockeyName.length < 2) {
-      console.warn(`Entry #${horseNumber} ${horseName}: Missing jockey name, skipping`);
+      console.warn(`Entry #${horseNumber} ${horseName}: Jockey link found but name empty, skipping`);
       return null;
     }
     if (!trainerName || trainerName.length < 2) {
