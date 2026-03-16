@@ -5,7 +5,23 @@ description: Review race results, calculate P&L, and extract learnings after a m
 
 # Trio Post-Race Review Skill
 
-Analyze Trio race results, calculate P&L, classify misses, calibrate the model, and extract actionable learnings after a race meeting.
+Analyze Trio race results, calculate P&L, classify misses, calibrate the model, and extract actionable learnings after a race meeting. Includes **A/B strategy comparison** to track whether the full pipeline outperforms a simpler MC-only baseline.
+
+## A/B Strategy Definitions
+
+Every review compares two strategies side-by-side:
+
+| | Strategy A (Full Pipeline) | Strategy B (MC Top 6 + #1 Banker) |
+|---|---|---|
+| **Pool selection** | MC + jockey boost + SCMP adjustments → Adj Win%/Place% → race classification (Dominant/Competitive/Wide) → Mode A (5), B (6), or C (7) | Always first **6** horses by **raw MC Win%** |
+| **Banker rule** | 1st by Adj Win%, no debutants (<2 starts) as banker, cap jockey boost if MC disagrees | Always MC rank **#1** (no debutant rule) |
+| **Bet structure** | 膽拖 (variable pool size per mode) | 膽拖 1膽 + 5腳 = **10 combos** fixed |
+| **Stake per race** | $10/combo × combos (varies by mode: $60–$150) | $10/combo × 10 = **$100 fixed** |
+| **SCMP data** | Used (form flags, TIR, vet, trackwork → ±% adjustments) | **Not used** |
+| **Jockey boost** | Applied (linear +1% to +7%, capped if MC disagrees) | **Not applied** |
+| **Races played** | May PASS wide-open races (Mode D) | **All races** (no PASS) |
+
+**Strategy B derivation:** For each race, read the **MC SIMULATION (raw)** table from the strategy report (or from `run-analyze-trio-report.ts` output). Sort horses by MC Win% descending. Take the first 6 as the pool. The #1 horse is the banker. No further adjustments.
 
 ## Quick Start
 
@@ -246,7 +262,92 @@ Show combined rate.
 | Banker top 3 | ... | ... | ... | **XX.X%** | ... |
 ```
 
-Close with a 2-3 sentence narrative summarising the session's impact on the season and the key structural finding.
+#### 10e. Cumulative A/B Comparison
+
+Track both strategies across all meetings to determine which approach is structurally better over time.
+
+```markdown
+| Meeting | Date | Venue | A Hits | A P&L | A ROI | B Hits | B P&L | B ROI | Winner |
+|---------|------|-------|--------|-------|-------|--------|-------|-------|--------|
+| 1 | YYYY-MM-DD | XX | X/N | ±$XXX | ±X% | X/N | ±$XXX | ±X% | A/B/Tie |
+| **[Current]** | ... | ... | ... | ... | ... | ... | ... | ... | ... |
+| **TOTAL** | | | **X/N** | **±$X,XXX** | **±X.X%** | **X/N** | **±$X,XXX** | **±X.X%** | **A/B** |
+```
+
+```markdown
+| Cumulative Metric | Strategy A | Strategy B | Delta (B − A) |
+|-------------------|-----------|-----------|---------------|
+| Total meetings | N | N | — |
+| Total races | N | N | ±N |
+| Hits (rate) | X/N (XX.X%) | X/N (XX.X%) | ±X |
+| Total staked | $X,XXX | $X,XXX | ±$XXX |
+| Total returned | $X,XXX | $X,XXX | ±$XXX |
+| **Cumulative P&L** | **±$X,XXX** | **±$X,XXX** | **±$X,XXX** |
+| **Cumulative ROI** | **±XX.X%** | **±XX.X%** | **±XX.X pp** |
+| Banker top 3 rate | X/N (XX.X%) | X/N (XX.X%) | ±X |
+```
+
+Close with a 2-3 sentence narrative summarising the session's impact on the season and the key structural finding. Include whether the cumulative A/B data is converging toward one strategy or still inconclusive.
+
+### Section 11: A/B Strategy Comparison
+
+Compare Strategy A (full pipeline) and Strategy B (MC top 6, #1 banker) for every race.
+
+#### 11a. How to derive Strategy B
+
+For each race, use the **MC SIMULATION (raw)** table from the strategy report or `run-analyze-trio-report.ts` output:
+1. Sort all horses by **MC Win%** descending
+2. Take the **first 6** as the pool
+3. **#1** (highest MC Win%) is the **banker**
+4. Bet: 膽拖 1膽 + 5腳 = **10 combos @ $10 = $100/race**
+5. Apply to **all races** (no PASS)
+6. Hit rule: banker in top 3 AND all 3 result horses in the 6-horse pool
+
+#### 11b. Race-by-Race A/B Table
+
+```markdown
+| Race | Strat A Pool | Strat A Banker | Strat B Pool (MC top 6) | Strat B Banker (MC #1) | Result (1→2→3) | A Hit? | B Hit? | Trio $ | A Return | B Return | A Stake | B Stake | Key Difference |
+|------|-------------|----------------|------------------------|----------------------|----------------|--------|--------|--------|----------|----------|---------|---------|----------------|
+| R1   | [horses]    | #X             | [horses]               | #X                   | X→X→X          | ✅/❌  | ✅/❌  | $X,XXX | $X       | $X       | $XXX    | $100    | [what differed] |
+```
+
+- **Strat A Pool/Banker**: From the strategy report (with SCMP/jockey adjustments)
+- **Strat B Pool/Banker**: From raw MC Win% ranking only
+- **Key Difference**: Note when pools or bankers diverge (e.g. "A banker #10 (debutant swap), B banker #2 (MC #1)", "A Mode A 5-horse pool, B always 6", "Same pool & banker")
+
+#### 11c. A/B Summary
+
+```markdown
+| Metric | Strategy A (Full Pipeline) | Strategy B (MC Top 6) | Delta (B − A) |
+|--------|---------------------------|----------------------|---------------|
+| Races played | N | N | [±N] |
+| Hits | X/N (XX.X%) | X/N (XX.X%) | [±X] |
+| Total staked | $X,XXX | $X,XXX | [±$XXX] |
+| Total returned | $X,XXX | $X,XXX | [±$XXX] |
+| **Net P&L** | **±$XXX** | **±$XXX** | **[±$XXX]** |
+| **ROI** | ±XX.X% | ±XX.X% | [±XX.X pp] |
+| Banker top 3 rate | X/N (XX.X%) | X/N (XX.X%) | [±X] |
+```
+
+#### 11d. Where A and B Diverged
+
+List only the races where the two strategies produced **different outcomes** (one hit, one miss, or different pools):
+
+```markdown
+| Race | What Differed | A Result | B Result | Impact |
+|------|--------------|----------|----------|--------|
+| RX   | Banker: A=#X, B=#Y | MISS ❌ | HIT ✅ | B gained $XXX |
+| RX   | Pool: A dropped #X, B included | HIT ✅ | HIT ✅ | Same |
+```
+
+For each divergence, note the **root cause** — e.g. "debutant banker swap", "SCMP -perf demotion", "jockey boost changed ranking", "Mode A tight pool excluded #X".
+
+#### 11e. Session Verdict
+
+One-paragraph assessment:
+- Which strategy won this session and by how much
+- Was the difference driven by **systematic edge** (e.g. A's adjustments consistently helped/hurt) or **variance** (one lucky/unlucky race swung the result)?
+- Any specific A-only rule that cost/saved money (e.g. "no debutant as banker" rule)
 
 ---
 
@@ -257,8 +358,9 @@ Load the most recent review file to carry forward:
 - Cross-meeting banker performance
 - Venue breakdown
 - Season trajectory
+- **Cumulative A/B comparison table** (10e) — carry forward all prior meeting rows and append the current meeting
 
-Previous reviews are in `data/reports/trio_review_*.md`. Use the latest one to populate the Running Total section.
+Previous reviews are in `data/reports/trio_review_*.md` and `data/reviews/trio_review_*.md`. Use the latest one to populate the Running Total and A/B cumulative sections.
 
 ---
 
@@ -267,6 +369,8 @@ Previous reviews are in `data/reports/trio_review_*.md`. Use the latest one to p
 | File | Purpose |
 |------|---------|
 | `tools/scrape-meeting.ts` | Fetch results from HKJC |
+| `tools/run-analyze-trio-report.ts` | Generate MC raw data for all races (Strategy B source) |
 | `data/historical/results_YYYYMMDD_VENUE.json` | Scraped race results |
-| `data/reports/trio_strategy_YYYYMMDD_VENUE_RN.md` | Pre-race strategy reports (bet records) |
-| `data/reviews/trio_review_YYYYMMDD_VENUE.md` | Saved reviews (output) |
+| `data/reports/trio_strategy_YYYYMMDD_VENUE_RN.md` | Pre-race strategy reports (Strategy A bet records) |
+| `data/test_reports/trio_mc_top6_banker_YYYYMMDD_VENUE.md` | Strategy B test results |
+| `data/reviews/trio_review_YYYYMMDD_VENUE.md` | Saved reviews (output, includes A/B comparison) |
