@@ -106,7 +106,8 @@ export interface Horse {
   readonly sire: string;
   readonly dam: string;
   readonly damSire?: string;
-  readonly currentRating: number; // HKJC rating
+  readonly currentRating: number; // HKJC handicap rating (e.g. 53)
+  readonly ratingChange?: number; // Rtg.+/- from handicapper (e.g. +8 or -2)
   readonly seasonStarts: number;
   readonly seasonWins: number;
   readonly seasonPlaces: number;
@@ -205,6 +206,7 @@ export interface HorseAnalysis {
   readonly surfacePreference: number; // -1 to 1, how much horse likes this surface
   readonly goingPreference: number; // -1 to 1, how much horse likes this going
   readonly distancePreference: number; // -1 to 1, how suited to this distance
+  readonly ratingMomentum: number; // -1 to 1, based on handicap Rtg.+/- and position within class
   readonly overallRating: number; // Composite score
 }
 

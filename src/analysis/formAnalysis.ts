@@ -155,8 +155,10 @@ export class FormAnalyzer {
         surfacePreference: this.calculateSurfacePreference(horse, race.surface),
         goingPreference: this.calculateGoingPreference(horse, race.going),
         distancePreference: this.calculateDistancePreference(horse, race.distance),
+        ratingMomentum: this.calculateRatingMomentum(horse, race),
         overallRating: 0, // Will be calculated below
     }
+
 
     return analysis;
   }
@@ -165,11 +167,12 @@ export class FormAnalyzer {
    * Calculate composite overall rating
    */
   calculateOverallRating(analysis: HorseAnalysis): number {
-    // Weights for each factor (should sum to 1)
+    // Weights for each factor (must sum to 1)
     const weights = {
       speedRating: 0.35,
-      formScore: 0.15,
-      classIndicator: 0.10,
+      formScore: 0.13,
+      classIndicator: 0.06,
+      ratingMomentum: 0.06,
       fitness: 0.10,
       drawAdvantage: 0.08,
       jockeyEdge: 0.08,
@@ -188,11 +191,15 @@ export class FormAnalyzer {
     // Class indicator normalized (-5 to +5 -> 0 to 1)
     const normalizedClass = (analysis.classIndicator + 5) / 10;
 
+    // Rating momentum normalized (-1 to 1 -> 0 to 1)
+    const normalizedMomentum = (analysis.ratingMomentum + 1) / 2;
+
     // Calculate weighted sum
     const rating =
       normalizedSpeed * weights.speedRating +
       analysis.formScore * weights.formScore +
       normalizedClass * weights.classIndicator +
+      normalizedMomentum * weights.ratingMomentum +
       fitnessScore * weights.fitness +
       (analysis.drawAdvantage + 0.1) * 5 * weights.drawAdvantage +
       (analysis.jockeyEdge + 0.1) * 5 * weights.jockeyEdge +
@@ -219,21 +226,73 @@ export class FormAnalyzer {
   }
 
   /**
-   * Calculate class indicator (positive = dropping, negative = rising)
+   * Calculate class indicator (positive = dropping, negative = rising).
+   * Uses the actual HKJC handicap rating when available for intra-class differentiation.
    */
   private calculateClassIndicator(horse: Horse, targetClass: RaceClass): number {
+    const targetClassRating = CLASS_RATINGS[targetClass];
+
+    // If we have the actual HKJC rating and past performances, use both
+    if (horse.currentRating > 0 && horse.pastPerformances.length > 0) {
+      const recentPerfs = horse.pastPerformances.slice(0, 3);
+      const avgRecentClass =
+        recentPerfs.reduce((sum, p) => sum + CLASS_RATINGS[p.raceClass], 0) /
+        recentPerfs.length;
+
+      // Blend: class-level drop/rise + intra-class position
+      // A high-rated horse in a class (e.g., Rtg 59 in C4 60-40) is at the top — disadvantaged by weight
+      // A low-rated horse (e.g., Rtg 40 in C4 60-40) carries less weight — advantaged
+      const classComponent = (avgRecentClass - targetClassRating) / 10;
+
+      // Intra-class: lower rating relative to class midpoint = advantage (less weight)
+      const classMid = targetClassRating - 5; // e.g., C4(70) → midpoint ~65, mapped to Rtg ~50
+      const ratingAdvantage = (classMid - horse.currentRating) / 20;
+
+      return classComponent * 0.6 + ratingAdvantage * 0.4;
+    }
+
     if (horse.pastPerformances.length === 0) return 0;
 
-    // Get average class from last 3 races
     const recentPerfs = horse.pastPerformances.slice(0, 3);
     const avgRecentClass =
       recentPerfs.reduce((sum, p) => sum + CLASS_RATINGS[p.raceClass], 0) /
       recentPerfs.length;
 
-    const targetClassRating = CLASS_RATINGS[targetClass];
-
-    // Positive = dropping in class (easier), Negative = rising (harder)
     return (avgRecentClass - targetClassRating) / 10;
+  }
+
+  /**
+   * Calculate rating momentum from the handicapper's Rtg.+/- and the horse's
+   * position within its class. Returns -1 to 1.
+   *
+   * Positive Rtg.+/- means the handicapper raised the rating (horse improving).
+   * But a large rise also means more weight, so there's a diminishing return.
+   * Negative Rtg.+/- means the handicapper dropped the rating (horse declining),
+   * but this also gives a weight relief advantage.
+   */
+  private calculateRatingMomentum(horse: Horse, race: Race): number {
+    const change = horse.ratingChange;
+
+    // No rating change data available
+    if (change === undefined) return 0;
+
+    // Large positive change (+5 to +10): horse improving, but now carrying more weight
+    // → net positive but tapered (improving form > weight penalty)
+    // Moderate positive (+1 to +4): mildly positive
+    // Zero: neutral
+    // Moderate negative (-1 to -4): declining form, but getting weight relief
+    // → net slightly negative (form decline > weight benefit)
+    // Large negative (-5 to -10): strongly declining
+    // → negative (even weight relief can't overcome poor form)
+
+    if (change > 0) {
+      // Positive: improving form signal. Taper effect at high values (weight penalty).
+      // +1 → ~0.15, +5 → ~0.55, +8 → ~0.70, +10 → ~0.75
+      return Math.min(1, change * 0.1 * (1 - change * 0.005));
+    }
+    // Negative: declining form. Small drops slightly buffered by weight relief.
+    // -1 → ~-0.07, -2 → ~-0.16, -5 → ~-0.50, -10 → ~-1.0
+    return Math.max(-1, change * 0.1);
   }
 
   /**

@@ -397,6 +397,7 @@ export class RaceCardScraper {
     let hasJockeyLink = false;
     let trainerName = "";
     let trainerCode = "UNK";
+    let trainerCellIdx = -1;
 
     // Parse links in the row for horse/jockey/trainer info
     $row.find("a").each((_, link) => {
@@ -440,6 +441,9 @@ export class RaceCardScraper {
         }
         const codeMatch = href.match(/trainerid[=\/]([^&\/]+)/i);
         if (codeMatch) trainerCode = codeMatch[1]!;
+        // Track trainer cell index for extracting Rtg/Rtg+/- from subsequent cells
+        const $trainerTd = $link.closest("td");
+        trainerCellIdx = cells.index($trainerTd);
       }
     });
 
@@ -483,6 +487,39 @@ export class RaceCardScraper {
     // Skip if essential data is missing
     if (!horseName || horseName.length < 2) return null;
 
+    // Extract Rtg. and Rtg.+/- from cells after the Trainer column
+    // Column order after Trainer: Int'l Rtg (skip), Rtg., Rtg.+/-
+    let currentRating = 60;
+    let ratingChange: number | undefined;
+    if (trainerCellIdx >= 0 && trainerCellIdx + 2 < cellTexts.length) {
+      const rtgText = cellTexts[trainerCellIdx + 2]?.trim();
+      const rtgChangeText = cellTexts[trainerCellIdx + 3]?.trim();
+      if (rtgText) {
+        const rtgVal = parseInt(rtgText, 10);
+        if (!isNaN(rtgVal) && rtgVal >= 10 && rtgVal <= 140) {
+          currentRating = rtgVal;
+        }
+      }
+      if (rtgChangeText) {
+        const changeVal = parseInt(rtgChangeText, 10);
+        if (!isNaN(changeVal) && changeVal >= -30 && changeVal <= 30) {
+          ratingChange = changeVal;
+        }
+      }
+    }
+
+    // Extract age from cells (after Horse Wt., Wt+/-, Best Time columns)
+    let age = 4;
+    if (trainerCellIdx >= 0 && trainerCellIdx + 7 < cellTexts.length) {
+      const ageText = cellTexts[trainerCellIdx + 7]?.trim();
+      if (ageText) {
+        const ageVal = parseInt(ageText, 10);
+        if (!isNaN(ageVal) && ageVal >= 2 && ageVal <= 12) {
+          age = ageVal;
+        }
+      }
+    }
+
     // Gear changes
     const gearText = $row.text();
     const gear = this.parseGear(gearText);
@@ -498,13 +535,13 @@ export class RaceCardScraper {
     const horse: Horse = {
       code: horseCode,
       name: horseName,
-      age: 4,
+      age,
       sex: "G",
       color: "Bay",
       origin: "AUS",
       sire: "",
       dam: "",
-      currentRating: 60,
+      currentRating,
       seasonStarts: 0,
       seasonWins: 0,
       seasonPlaces: 0,
@@ -514,6 +551,7 @@ export class RaceCardScraper {
       totalPrizeMoney: 0,
       gear,
       pastPerformances: [],
+      ...(ratingChange !== undefined ? { ratingChange } : {}),
     };
 
     // Validate essential data - skip entry if missing critical info
