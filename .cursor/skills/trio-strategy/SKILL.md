@@ -182,17 +182,22 @@ SCMP data: [✅ loaded / ⚠️ partial / ❌ unavailable]
 
 ### 3a. Run Monte Carlo for each target race
 
+Use **all form data** (HV + ST historical results) so horses with limited venue-specific form are not underrated:
+
 ```bash
 PLAYWRIGHT_BROWSERS_PATH=0 npx tsx tools/analyze-race.ts \
   --date YYYY-MM-DD \
   --venue "Happy Valley" \
   --race N \
+  --form-data all \
   --bankroll BANKROLL \
   --kelly 0.35 \
   --min-edge 5
 ```
 
-**IMPORTANT**: Use space-separated args (not `=` for `--venue`). Set `PLAYWRIGHT_BROWSERS_PATH=0`.
+**IMPORTANT**:
+- Use space-separated args (not `=` for `--venue`). Set `PLAYWRIGHT_BROWSERS_PATH=0`.
+- **`--form-data all`** (or `-f all`): Loads historical results from **all venues** (Happy Valley + Sha Tin) for horse form enrichment. Without it, only the current race venue is used — horses with little form at that venue can be severely underrated by MC (e.g. 0.8% Place% at HV vs 37.6% with all-form data). Always use this flag for Trio strategy.
 
 ### 3b. Capture MC output
 From each run, record:
@@ -634,7 +639,7 @@ TOTAL TRIO STAKE: $[combos x 10]
 |------|--------------|---------|
 | Jockey Stats | `PLAYWRIGHT_BROWSERS_PATH=0 npx tsx tools/fetch-jockey-stats.ts --date=YYYY-MM-DD` | Season win rates |
 | Live Odds | `PLAYWRIGHT_BROWSERS_PATH=0 npx tsx tools/fetch-odds.ts --date=YYYY-MM-DD --venue=HV --json --save` | Current odds |
-| Race Analysis | `PLAYWRIGHT_BROWSERS_PATH=0 npx tsx tools/analyze-race.ts --date YYYY-MM-DD --venue "Happy Valley" --race N --bankroll BANKROLL --kelly 0.35 --min-edge 5` | MC simulation |
+| Race Analysis | `PLAYWRIGHT_BROWSERS_PATH=0 npx tsx tools/analyze-race.ts --date YYYY-MM-DD --venue "Happy Valley" --race N --form-data all --bankroll BANKROLL --kelly 0.35 --min-edge 5` | MC simulation (use `--form-data all` for all-venue form) |
 | Race Card | `https://racing.hkjc.com/racing/information/English/Racing/RaceCard.aspx?RaceDate=YYYY/MM/DD&Racecourse=HV&RaceNo=N` | Entries, jockeys |
 | **SCMP Race Card** | `https://www.scmp.com/sport/racing/racecard/N` | **Odds, Star Form, TIR, Vet Report, Trackwork, QP/Q odds** |
 
@@ -721,7 +726,7 @@ Expected agent behaviour:
 1. Fetch jockey stats → check elite tier
 2. Fetch odds for ST 2026-02-14 → save
 3. **Fetch SCMP race card for R7** → extract odds, Star Form, TIR, Vet, Trackwork, QP/Q odds (ignore tipster picks)
-4. Run `analyze-race.ts` for R7
+4. Run `analyze-race.ts` for R7 with `--form-data all`
 5. Validate: ≥3 starters, odds populated, no critical scratchings, SCMP data loaded
 6. Apply jockey boosts + SCMP form adjustments
 7. Classify race (Dominant / Semi-Dominant / Competitive / Wide open)
