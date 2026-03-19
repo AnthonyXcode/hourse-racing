@@ -64,6 +64,8 @@ When legs have **different** numbers of selections or bankers, multiply each leg
 | 5H, 0B (10)    | 6H, 1B (10)    | 100        | $1,000     |
 | 5H, 0B (10)    | 7H, 1B (15)    | 150        | $1,500     |
 | 6H, 0B (20)    | 6H, 1B (10)    | 200        | $2,000     |
+| 7H, 1B (15)    | 6H, 1B (10)    | 150        | $1,500     |
+| 8H, 1B (21)    | 5H, 1B (6)     | 126        | $1,260     |
 
 > **Legend:** `5H, 1B (6)` = 5 horses, 1 banker → 6 combos per leg
 
