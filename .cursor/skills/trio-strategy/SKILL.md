@@ -18,12 +18,12 @@ You are an experienced HKJC bettor focused on the Trio (單T) pool. You MUST fol
 ```
 STEP 1: QUERY DATA       → Sync historical data, fetch race card, odds, jockey stats, SCMP race card
 STEP 2: VALIDATE DATA    → Check field size, going, scratchings, SCMP coverage
-STEP 3: RUN SIMULATION   → Monte Carlo 10,000 iterations + SCMP form adjustments
-STEP 4: COMPILE RESULTS  → Rank horses, build Trio matrix, calculate permutations
-STEP 5: GENERATE ADVICE  → Selections, tickets, stakes, pass conditions
+STEP 3: RUN SIMULATION   → Monte Carlo 10,000 iterations; derive both Strategy A (with boosts) and Strategy B (raw MC)
+STEP 4: COMPILE RESULTS  → Build Strategy A pool (modes A–D, 膽拖) and Strategy B pool (MC #1 banker, legs = Place%>20% or odds<10)
+STEP 5: GENERATE ADVICE  → Output both Strategy A and Strategy B suggestions in every report (tickets, stakes, pass conditions)
 ```
 
-**IMPORTANT**: Do NOT skip steps. Do NOT use manual probability estimates. Always run the tools.
+**IMPORTANT**: Do NOT skip steps. Do NOT use manual probability estimates. Always run the tools. **Every Trio report must include both Strategy A and Strategy B suggestions** — do not omit either.
 
 ---
 
@@ -36,6 +36,27 @@ STEP 5: GENERATE ADVICE  → Selections, tickets, stakes, pass conditions
 | **Bet type** | Single-race exotic | Multi-race pool |
 | **Ranking metric** | Adj Place% (who finishes top 3) | Adj Place% |
 | **Permutations** | Order does NOT matter: C(P,3) combos | Order doesn't matter: combinations |
+
+---
+
+## A/B Test: Strategy A vs Strategy B
+
+**Every Trio report must include both Strategy A and Strategy B suggestions** so the user can compare the difference on every race. Do not skip either.
+
+| | **Strategy A** | **Strategy B** (MC-only) |
+|---|---------------------------|---------------------------|
+| **Ranking** | Adjusted Win% / Place% (MC + jockey boost + SCMP form) | **Raw MC only** — no jockey boost, no SCMP adjustments |
+| **Banker** | 1st-ranked by Adj Win% (with banker eligibility: no debutants) | **1st-ranked by MC Win%** (MC #1) — always banker |
+| **Legs / Pool** | Modes A–D by race classification (Adj Place% ≥ 25% must-include, pool size 5–7) | **Legs** = horses with **MC Place% > 20%** OR **odds < 10** (union). Pool = banker + these legs |
+| **Cost** | 膽拖 (1 banker + legs) or 雙膽拖 when 2nd has Adj Place% ≥ 63% | 膽拖 only: 1 banker + N legs → C(N, 2) combos |
+| **Use case** | Full pipeline (jockey + SCMP) | Pure model baseline for A/B comparison |
+
+**Strategy B rules in short:**
+1. Use **raw MC only**; do not apply 3c (jockey boost) or 3d (SCMP form adjustments).
+2. **Banker** = the horse ranked **1st by MC Win%**.
+3. **Legs** = every horse that has **MC Place% > 20%** OR **odds < 10** (Win or Place odds; use same source as rest of report). Remove banker from the leg list if it appears (so banker is not duplicated).
+4. Build **膽拖**: 1 膽 (banker) + 腳 (legs). Combinations = C(N, 2) where N = number of legs.
+5. Include Strategy B in **every** report: show Strategy B pool, banker, legs, combos, and ticket summary alongside Strategy A.
 
 ---
 
@@ -199,6 +220,8 @@ PLAYWRIGHT_BROWSERS_PATH=0 npx tsx tools/analyze-race.ts \
 - Use space-separated args (not `=` for `--venue`). Set `PLAYWRIGHT_BROWSERS_PATH=0`.
 - **`--form-data all`** (or `-f all`): Loads historical results from **all venues** (Happy Valley + Sha Tin) for horse form enrichment. Without it, only the current race venue is used — horses with little form at that venue can be severely underrated by MC (e.g. 0.8% Place% at HV vs 37.6% with all-form data). Always use this flag for Trio strategy.
 
+**For Strategy B**: From the same MC run, use **raw MC output only** — do not apply 3c (jockey boost) or 3d (SCMP form adjustments) for the Strategy B branch. You still apply 3c and 3d for Strategy A; Strategy B uses only MC Win% and MC Place%.
+
 ### 3b. Capture MC output
 From each run, record:
 - **Win% and Place%** for all horses
@@ -278,7 +301,15 @@ Use **adjusted** probabilities for classification:
 | **Competitive** | Top horse Adj Win% 20-35% | **Standard Pool** (Mode B); 6-horse pool with top 3 by Adj Win% + 3 by Adj Place%. |
 | **Wide open** | No horse Adj Win% >= 20% | **Wide Pool or PASS** (Mode C/D); 7-horse pool if structural edge exists. Default to PASS. |
 
-### 4c. Select horses and build Trio pool
+### 4c. Select horses and build Trio pool — do both Strategy A and Strategy B
+
+**Strategy A** (below): Use adjusted rankings, classification, Modes A–D, and 膽拖/雙膽拖 as described.
+
+**Strategy B** (always also compile): **Banker** = 1st by MC Win%. **Legs** = all horses with **MC Place% > 20%** OR **odds < 10** (exclude banker from legs). Pool = 1 banker + N legs → 膽拖 with C(N, 2) combinations. No classification or Modes A–D. Include Strategy B pool and ticket in every report (see [A/B Test](#ab-test-strategy-a-vs-strategy-b)).
+
+---
+
+**Strategy A — pool selection**
 
 Trio (單T) requires picking the **1st, 2nd, and 3rd finishers in ANY ORDER**. No positional analysis is needed — just select the right horses to fill the top 3.
 
@@ -476,7 +507,13 @@ HKJC offers two top-3 single-race bets:
 
 ## Output Format
 
-Every Trio report must include: (1) an **MC SIMULATION (raw)** table above HORSE RANKINGS listing **all horses** in the field (MC Win%, MC Place%, **Form** = form record count, optional Top Quinella for top runners), and (2) **HORSE RANKINGS** with columns **MC Win%**, **MC Place%**, **Adj Win% factor**, **Adj Place% factor**, **Adj Win%**, and **Adj Place%**. **Factor columns** must show a **list of reasons with ±%** (e.g. `jockey +2.3, excuses +2` or `jockey +7, trial +2` or `jockey 0, -perf −2`), not a single combined percentage.
+Every Trio report must include **both Strategy A and Strategy B** in the same report. Structure:
+
+1. **Shared**: **MC SIMULATION (raw)** table listing **all horses** with columns: MC Win%, MC Place%, **Odds**, **Place%>20% OR odds<10** (✅/❌ for Strategy B leg qualification), Form, optional Top Quinella.
+2. **Strategy A**: **HORSE RANKINGS** with **Adj Win% factor**, **Adj Place% factor**, **Adj Win%**, **Adj Place%** (factor columns = list of reasons with ±%, e.g. `jockey +2.3, excuses +2`), then **TRIO POOL** and **TICKET SUMMARY** for Strategy A.
+3. **Strategy B**: A dedicated **STRATEGY B (MC-only)** block with: banker = MC #1, legs = Place% > 20% OR odds < 10, 膽拖 structure, combinations, and **TICKET SUMMARY** for Strategy B (no Adj columns; raw MC + Odds only).
+
+This allows the user to compare Strategy A vs Strategy B on every race.
 
 ```
 ═══════════════════════════════════════════════════════════
@@ -498,12 +535,12 @@ UNIT BET: $10 per combination (fixed)
 ───────────────────────────────────────────────────────────
 MC SIMULATION (raw)
 ───────────────────────────────────────────────────────────
-Note: List **all** horses in the field (one row per runner). Top Quinella column: show the leading quinella pair for the top few only; use "—" for the rest.
+Note: List **all** horses in the field (one row per runner). Include **Odds** and **Place%>20% OR odds<10**: show ✅ if the horse qualifies as a Strategy B leg (MC Place% > 20% OR odds < 10), otherwise ❌. Top Quinella: show the leading quinella pair for the top few only; use "—" for the rest.
 
-| # | Horse     | MC Win% | MC Place% | Form | Top Quinella (fair odds)     |
-|---|------------|---------|-----------|------|-------------------------------|
-| X | NAME       | XX.X%   | XX.X%     | N    | X-X: X.X% (X.X)               |
-| X | NAME       | XX.X%   | XX.X%     | N    | —                             |
+| # | Horse     | MC Win% | MC Place% | Odds | Place%>20% OR odds<10 | Form | Top Quinella (fair odds)     |
+|---|------------|---------|-----------|------|------------------------|------|-------------------------------|
+| X | NAME       | XX.X%   | XX.X%     | X.X  | ✅                        | N    | X-X: X.X% (X.X)               |
+| X | NAME       | XX.X%   | XX.X%     | X.X  | ❌                        | N    | —                             |
 | … | (all runners) |
 
 Market: [1–2 line summary of over/undervalued vs market]
@@ -567,6 +604,19 @@ CONFIDENCE: [HIGH/MEDIUM/LOW]
 
 CAVEATS:
 - [List any data gaps, missing odds, going uncertainty, SCMP data issues, etc.]
+
+───────────────────────────────────────────────────────────
+STRATEGY B (MC-only) — include in every report
+───────────────────────────────────────────────────────────
+Banker: #X [NAME] (MC Win% XX.X%, MC Place% XX.X%) ← 1st by MC Win%
+Legs (MC Place% > 20% OR odds < 10): #X, #X, #X, …
+BET STRUCTURE: 膽拖 | 1膽 + [N]腳 | COMBINATIONS: C([N],2) = [combos]
+UNIT BET: $10 (fixed)
+TOTAL STAKE: $[combos x 10]
+
+STRATEGY B TICKET: [List legs and combos]
+
+[Optional: 1–2 line comparison vs Strategy A — e.g. "Strategy B has more/fewer legs, higher/lower cost because…"]
 ═══════════════════════════════════════════════════════════
 ```
 
@@ -730,9 +780,9 @@ Expected agent behaviour:
 5. Validate: ≥3 starters, odds populated, no critical scratchings, SCMP data loaded
 6. Apply jockey boosts + SCMP form adjustments
 7. Classify race (Dominant / Semi-Dominant / Competitive / Wide open)
-8. Build Trio pool (select P horses ranked by Adj Win% and Adj Place%)
-9. Apply exclusion rules (Rules 1-3) — no narrative demotion, no hard exclusion if odds <= 15
-10. Calculate permutations and cost
-11. Output Trio ticket + summary
+8. Build **Strategy A** pool (modes A–D, 膽拖) and **Strategy B** pool (MC #1 banker, legs = Place% > 20% or odds < 10)
+9. Apply exclusion rules for Strategy A (Rules 1-3) — no narrative demotion, no hard exclusion if odds <= 15
+10. Calculate permutations and cost for both strategies
+11. **Output both Strategy A and Strategy B** Trio tickets + summary in the same report
 12. Save to `data/reports/trio_strategy_20260214_ST_R7.md`
 13. **After the meeting**: Fetch results, cross-reference, save review
