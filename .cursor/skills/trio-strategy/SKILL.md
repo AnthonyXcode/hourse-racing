@@ -47,14 +47,16 @@ STEP 5: GENERATE ADVICE  → Output both Strategy A and Strategy B suggestions i
 |---|---------------------------|---------------------------|
 | **Ranking** | Adjusted Win% / Place% (MC + jockey boost + SCMP form) | **Raw MC only** — no jockey boost, no SCMP adjustments |
 | **Banker** | 1st-ranked by Adj Win% (with banker eligibility: no debutants) | **1st-ranked by MC Win%** (MC #1) — always banker |
-| **Legs / Pool** | Modes A–D by race classification (Adj Place% ≥ 25% must-include, pool size 5–7) | **Legs** = horses with **MC Place% > 20%** OR **odds < 10** (union). Pool = banker + these legs |
+| **Legs / Pool** | Modes A–D by race classification (Adj Place% ≥ 25% must-include, pool size 5–7) | **Legs** = horses with **MC Place% > 20%**. Then any horse with **MC Place% ≤ 20% AND Win odds < 10** replaces the lowest MC Place% leg in the 20–25% range (1-for-1 swap). Pool = banker + final legs |
 | **Cost** | 膽拖 (1 banker + legs) or 雙膽拖 when 2nd has Adj Place% ≥ 63% | 膽拖 only: 1 banker + N legs → C(N, 2) combos |
 | **Use case** | Full pipeline (jockey + SCMP) | Pure model baseline for A/B comparison |
 
 **Strategy B rules in short:**
 1. Use **raw MC only**; do not apply 3c (jockey boost) or 3d (SCMP form adjustments).
 2. **Banker** = the horse ranked **1st by MC Win%**.
-3. **Legs** = every horse that has **MC Place% > 20%** OR **odds < 10** (Win or Place odds; use same source as rest of report). Remove banker from the leg list if it appears (so banker is not duplicated).
+3. **Legs (two-step selection):**
+   - **Step A — Primary legs**: every horse with **MC Place% > 20%** (excluding banker).
+   - **Step B — Win-odds replacement**: for each horse with **MC Place% ≤ 20% AND Win odds < 10**, it **replaces** the primary leg with the **lowest MC Place%** among those in the **20–25% range** (1-for-1 swap). If no primary leg has MC Place% in the 20–25% range, the Win-odds horse is **not** added. Process replacements one at a time, ordered by Win odds ascending (strongest market signal first).
 4. Build **膽拖**: 1 膽 (banker) + 腳 (legs). Combinations = C(N, 2) where N = number of legs.
 5. Include Strategy B in **every** report: show Strategy B pool, banker, legs, combos, and ticket summary alongside Strategy A.
 
@@ -305,7 +307,7 @@ Use **adjusted** probabilities for classification:
 
 **Strategy A** (below): Use adjusted rankings, classification, Modes A–D, and 膽拖/雙膽拖 as described.
 
-**Strategy B** (always also compile): **Banker** = 1st by MC Win%. **Legs** = all horses with **MC Place% > 20%** OR **odds < 10** (exclude banker from legs). Pool = 1 banker + N legs → 膽拖 with C(N, 2) combinations. No classification or Modes A–D. Include Strategy B pool and ticket in every report (see [A/B Test](#ab-test-strategy-a-vs-strategy-b)).
+**Strategy B** (always also compile): **Banker** = 1st by MC Win%. **Legs** = all horses with **MC Place% > 20%** (primary); then any horse with **MC Place% ≤ 20% AND Win odds < 10** replaces the lowest MC Place% leg in the 20–25% range (1-for-1 swap). Pool = 1 banker + final legs → 膽拖 with C(N, 2) combinations. No classification or Modes A–D. Include Strategy B pool and ticket in every report (see [A/B Test](#ab-test-strategy-a-vs-strategy-b)).
 
 ---
 
@@ -509,9 +511,9 @@ HKJC offers two top-3 single-race bets:
 
 Every Trio report must include **both Strategy A and Strategy B** in the same report. Structure:
 
-1. **Shared**: **MC SIMULATION (raw)** table listing **all horses** with columns: MC Win%, MC Place%, **Odds**, **Place%>20%** (✅/❌), **odds<10** (✅/❌; Win or Place odds < 10 per report source), Form, optional Top Quinella. **Strategy B leg** if **either** column is ✅ (same rule as MC Place% > 20% **OR** odds < 10).
+1. **Shared**: **MC SIMULATION (raw)** table listing **all horses** with columns: MC Win%, MC Place%, **Win Odds**, **Place%>20%** (✅/❌), **Win odds<10** (✅/❌), Form, optional Top Quinella. **Strategy B leg** = primary legs (Place%>20% ✅) after any Win-odds replacements (see Strategy B rules).
 2. **Strategy A**: **HORSE RANKINGS** with **Adj Win% factor**, **Adj Place% factor**, **Adj Win%**, **Adj Place%** (factor columns = list of reasons with ±%, e.g. `jockey +2.3, excuses +2`), then **TRIO POOL** and **TICKET SUMMARY** for Strategy A.
-3. **Strategy B**: A dedicated **STRATEGY B (MC-only)** block with: banker = MC #1, legs = Place% > 20% OR odds < 10, 膽拖 structure, combinations, and **TICKET SUMMARY** for Strategy B (no Adj columns; raw MC + Odds only).
+3. **Strategy B**: A dedicated **STRATEGY B (MC-only)** block with: banker = MC #1, primary legs = Place% > 20%, Win-odds replacements applied, 膽拖 structure, combinations, and **TICKET SUMMARY** for Strategy B (no Adj columns; raw MC + Odds only).
 
 This allows the user to compare Strategy A vs Strategy B on every race.
 
@@ -535,14 +537,14 @@ UNIT BET: $10 per combination (fixed)
 ───────────────────────────────────────────────────────────
 MC SIMULATION (raw)
 ───────────────────────────────────────────────────────────
-Note: List **all** horses in the field (one row per runner). Include **Odds** and two flags: **Place%>20%** — ✅ if MC Place% > 20%, else ❌; **win odds<10** — ✅ if Win odds < 10 (per report), else ❌. A **Strategy B leg** qualifies if **either** flag is ✅. Top Quinella: show the leading quinella pair for the top few only; use "—" for the rest.
+Note: List **all** horses in the field (one row per runner). Two flags: **Place%>20%** — ✅ if MC Place% > 20%, else ❌; **Win odds<10** — ✅ if Win odds < 10, else ❌. Strategy B primary legs = Place%>20% ✅. Horses with Place%>20% ❌ + Win odds<10 ✅ are **replacement candidates** — they swap out the weakest primary leg (MC Place% 20–25%) one-for-one (see Strategy B rules). Top Quinella: show the leading quinella pair for the top few only; use "—" for the rest.
 
-| # | Horse     | MC Win% | MC Place% | Win Odds | Place%>20% | odds<10 | Form | Top Quinella (fair odds)     |
-|---|------------|---------|-----------|------|------------|---------|------|-------------------------------|
-| X | NAME       | XX.X%   | XX.X%     | X.X  | ✅          | ✅      | N    | X-X: X.X% (X.X)               |
-| X | NAME       | XX.X%   | XX.X%     | X.X  | ✅          | ❌      | N    | —                             |
-| X | NAME       | XX.X%   | XX.X%     | X.X  | ❌          | ✅      | N    | —                             |
-| X | NAME       | XX.X%   | XX.X%     | X.X  | ❌          | ❌      | N    | —                             |
+| # | Horse     | MC Win% | MC Place% | Win Odds | Place%>20% | Win odds<10 | Form | Role (Strategy B) |Top Quinella (fair odds)     |
+|---|------------|---------|-----------|------|------------|-------------|------|-------------------------------|
+| X | NAME       | XX.X%   | XX.X%     | X.X  | ✅          | ✅           | N    | ★ 膽 (Banker)    | X-X: X.X% (X.X)               |
+| X | NAME       | XX.X%   | XX.X%     | X.X  | ✅          | ❌           | N    | 腳 (Leg)         | —                             |
+| X | NAME       | XX.X%   | XX.X%     | X.X  | ❌          | ✅           | N    | 腳 (Leg)         | — (replacement candidate)     |
+| X | NAME       | XX.X%   | XX.X%     | X.X  | ❌          | ❌           | N    | —                | —                             |
 | … | (all runners) |
 
 Market: [1–2 line summary of over/undervalued vs market]
@@ -611,7 +613,9 @@ CAVEATS:
 STRATEGY B (MC-only) — include in every report
 ───────────────────────────────────────────────────────────
 Banker: #X [NAME] (MC Win% XX.X%, MC Place% XX.X%) ← 1st by MC Win%
-Legs (MC Place% > 20% OR odds < 10): #X, #X, #X, …
+Primary legs (MC Place% > 20%): #X, #X, #X, …
+Win-odds replacements: #X [NAME] (Win odds X.X, MC Place% XX.X%) replaces #X [NAME] (MC Place% XX.X%, in 20–25% range)
+Final legs: #X, #X, #X, …
 BET STRUCTURE: 膽拖 | 1膽 + [N]腳 | COMBINATIONS: C([N],2) = [combos]
 UNIT BET: $10 (fixed)
 TOTAL STAKE: $[combos x 10]
@@ -782,7 +786,7 @@ Expected agent behaviour:
 5. Validate: ≥3 starters, odds populated, no critical scratchings, SCMP data loaded
 6. Apply jockey boosts + SCMP form adjustments
 7. Classify race (Dominant / Semi-Dominant / Competitive / Wide open)
-8. Build **Strategy A** pool (modes A–D, 膽拖) and **Strategy B** pool (MC #1 banker, legs = Place% > 20% or odds < 10)
+8. Build **Strategy A** pool (modes A–D, 膽拖) and **Strategy B** pool (MC #1 banker, primary legs = Place% > 20%, Win-odds < 10 replacements)
 9. Apply exclusion rules for Strategy A (Rules 1-3) — no narrative demotion, no hard exclusion if odds <= 15
 10. Calculate permutations and cost for both strategies
 11. **Output both Strategy A and Strategy B** Trio tickets + summary in the same report
