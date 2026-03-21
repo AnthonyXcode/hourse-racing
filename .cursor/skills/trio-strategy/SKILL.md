@@ -509,7 +509,7 @@ HKJC offers two top-3 single-race bets:
 
 Every Trio report must include **both Strategy A and Strategy B** in the same report. Structure:
 
-1. **Shared**: **MC SIMULATION (raw)** table listing **all horses** with columns: MC Win%, MC Place%, **Odds**, **Place%>20% OR odds<10** (✅/❌ for Strategy B leg qualification), Form, optional Top Quinella.
+1. **Shared**: **MC SIMULATION (raw)** table listing **all horses** with columns: MC Win%, MC Place%, **Odds**, **Place%>20%** (✅/❌), **odds<10** (✅/❌; Win or Place odds < 10 per report source), Form, optional Top Quinella. **Strategy B leg** if **either** column is ✅ (same rule as MC Place% > 20% **OR** odds < 10).
 2. **Strategy A**: **HORSE RANKINGS** with **Adj Win% factor**, **Adj Place% factor**, **Adj Win%**, **Adj Place%** (factor columns = list of reasons with ±%, e.g. `jockey +2.3, excuses +2`), then **TRIO POOL** and **TICKET SUMMARY** for Strategy A.
 3. **Strategy B**: A dedicated **STRATEGY B (MC-only)** block with: banker = MC #1, legs = Place% > 20% OR odds < 10, 膽拖 structure, combinations, and **TICKET SUMMARY** for Strategy B (no Adj columns; raw MC + Odds only).
 
@@ -535,12 +535,14 @@ UNIT BET: $10 per combination (fixed)
 ───────────────────────────────────────────────────────────
 MC SIMULATION (raw)
 ───────────────────────────────────────────────────────────
-Note: List **all** horses in the field (one row per runner). Include **Odds** and **Place%>20% OR odds<10**: show ✅ if the horse qualifies as a Strategy B leg (MC Place% > 20% OR odds < 10), otherwise ❌. Top Quinella: show the leading quinella pair for the top few only; use "—" for the rest.
+Note: List **all** horses in the field (one row per runner). Include **Odds** and two flags: **Place%>20%** — ✅ if MC Place% > 20%, else ❌; **win odds<10** — ✅ if Win odds < 10 (per report), else ❌. A **Strategy B leg** qualifies if **either** flag is ✅. Top Quinella: show the leading quinella pair for the top few only; use "—" for the rest.
 
-| # | Horse     | MC Win% | MC Place% | Odds | Place%>20% OR odds<10 | Form | Top Quinella (fair odds)     |
-|---|------------|---------|-----------|------|------------------------|------|-------------------------------|
-| X | NAME       | XX.X%   | XX.X%     | X.X  | ✅                        | N    | X-X: X.X% (X.X)               |
-| X | NAME       | XX.X%   | XX.X%     | X.X  | ❌                        | N    | —                             |
+| # | Horse     | MC Win% | MC Place% | Win Odds | Place%>20% | odds<10 | Form | Top Quinella (fair odds)     |
+|---|------------|---------|-----------|------|------------|---------|------|-------------------------------|
+| X | NAME       | XX.X%   | XX.X%     | X.X  | ✅          | ✅      | N    | X-X: X.X% (X.X)               |
+| X | NAME       | XX.X%   | XX.X%     | X.X  | ✅          | ❌      | N    | —                             |
+| X | NAME       | XX.X%   | XX.X%     | X.X  | ❌          | ✅      | N    | —                             |
+| X | NAME       | XX.X%   | XX.X%     | X.X  | ❌          | ❌      | N    | —                             |
 | … | (all runners) |
 
 Market: [1–2 line summary of over/undervalued vs market]
