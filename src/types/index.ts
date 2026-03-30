@@ -166,6 +166,8 @@ export interface RaceResult extends Race {
     readonly horseCode?: string;
     readonly jockeyName?: string;
     readonly trainerName?: string;
+    /** Weight carried (lb) from results — HKJC "Act. Wt." */
+    readonly actualWeight?: number;
     readonly winOdds?: number;
   }[];
   readonly winDividend?: number;

@@ -357,12 +357,65 @@ export class HistoricalScraper {
   }
 
   /**
+   * Locate HKJC results table column indices (English / Chinese headers).
+   * Returns null if no table with Act. Wt. / 實際負磅 header is found.
+   */
+  private findResultsWeightColumnIndices($: cheerio.CheerioAPI): {
+    actWt: number;
+  } | null {
+    const tables = $("table").toArray();
+    for (const table of tables) {
+      const $table = $(table);
+      const headerRows = $table.find("tr").toArray();
+      for (const tr of headerRows) {
+        const $ths = $(tr).find("th");
+        if ($ths.length < 8) continue;
+        const headerTexts = $ths
+          .map((_, th) => $(th).text().replace(/\s+/g, " ").trim().toLowerCase())
+          .get();
+        const looksLikeResultsTable =
+          headerTexts.some((t) => t.includes("horse") && t.includes("no")) ||
+          headerTexts.some((t) => t.includes("馬號"));
+        if (!looksLikeResultsTable) continue;
+
+        let actWt: number | undefined;
+        $ths.each((i, th) => {
+          const t = $(th).text().replace(/\s+/g, " ").trim();
+          const lower = t.toLowerCase();
+          const isActWt =
+            (lower.includes("act") && lower.includes("wt") && !lower.includes("declar")) ||
+            /^act\.?\s*wt/i.test(lower) ||
+            t.includes("實際負磅") ||
+            (t.includes("實際") && t.includes("負磅"));
+          if (isActWt) actWt = i;
+        });
+        if (actWt !== undefined) return { actWt };
+      }
+    }
+    return null;
+  }
+
+  /**
+   * Parse pounds carried from a table cell (HKJC Act. Wt. is typically 100–140 lb).
+   */
+  private parseActualWeightCarried(text: string): number | undefined {
+    const trimmed = text.trim();
+    const n = parseInt(trimmed.replace(/[^\d]/g, ""), 10);
+    if (Number.isNaN(n) || n < 100 || n > 140) return undefined;
+    return n;
+  }
+
+  /**
    * Parse finish order from results table
    * HKJC table columns: Pla., Horse No., Horse, Jockey, Trainer, Act. Wt., 
    * Declar. Horse Wt., Dr., LBW, RunningPosition, Finish Time, Win Odds
    */
   private parseFinishOrder($: cheerio.CheerioAPI): RaceResult["finishOrder"] {
-    const finishOrder: RaceResult["finishOrder"] = [];
+    type FinishRow = RaceResult["finishOrder"][number];
+    const finishOrder: FinishRow[] = [];
+    const weightCols = this.findResultsWeightColumnIndices($);
+    /** Fallback column when header row missing (standard HKJC English layout). */
+    const fallbackActWtCol = 5;
 
     // Find the main results table - look for table with horse data
     $("table tr").each((_, row) => {
@@ -462,16 +515,23 @@ export class HistoricalScraper {
         }
       });
 
+      const actCol = weightCols?.actWt ?? fallbackActWtCol;
+      const actualWeight =
+        cells.length > actCol
+          ? this.parseActualWeightCarried(cells.eq(actCol).text())
+          : undefined;
+
       finishOrder.push({
         horseNumber: horseNum,
         finishPosition: position,
-        finishTime,
-        margin,
-        horseName,
-        horseCode,
-        jockeyName,
-        trainerName,
-        winOdds: odds,
+        ...(finishTime !== undefined ? { finishTime } : {}),
+        ...(margin !== undefined ? { margin } : {}),
+        ...(horseName !== undefined ? { horseName } : {}),
+        ...(horseCode !== undefined ? { horseCode } : {}),
+        ...(jockeyName !== undefined ? { jockeyName } : {}),
+        ...(trainerName !== undefined ? { trainerName } : {}),
+        ...(actualWeight !== undefined ? { actualWeight } : {}),
+        ...(odds !== undefined ? { winOdds: odds } : {}),
       });
     });
 

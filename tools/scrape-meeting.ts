@@ -38,7 +38,7 @@ async function main() {
       if (race.finishOrder.length > 0) {
         console.log("\nTop 4 Finishers:");
         console.log("─".repeat(70));
-        console.log("Pos  #   Horse                      Jockey            Odds     Dividend");
+        console.log("Pos  #   Horse                      Jockey            Wt   Odds     Dividend");
         console.log("─".repeat(70));
         
         for (let i = 0; i < Math.min(4, race.finishOrder.length); i++) {
@@ -47,10 +47,14 @@ async function main() {
           const num = finish.horseNumber.toString().padStart(2);
           const name = (finish.horseName || "Unknown").padEnd(26).substring(0, 26);
           const jockey = (finish.jockeyName || "").padEnd(17).substring(0, 17);
+          const wt =
+            finish.actualWeight !== undefined
+              ? String(finish.actualWeight).padStart(3)
+              : "  -";
           const odds = finish.winOdds ? finish.winOdds.toFixed(1).padStart(6) : "   -  ";
           const div = i === 0 && race.winDividend ? `$${race.winDividend.toFixed(1)}` : "";
           
-          console.log(`${pos}   ${num}  ${name} ${jockey} ${odds}   ${div}`);
+          console.log(`${pos}   ${num}  ${name} ${jockey} ${wt}  ${odds}   ${div}`);
         }
         
         console.log("\nDividends:");

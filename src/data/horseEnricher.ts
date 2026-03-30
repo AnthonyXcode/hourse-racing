@@ -148,7 +148,7 @@ export class HorseDataEnricher {
         surface,
         going,
         draw: finish.draw ?? 0,
-        weight: finish.weight ?? 133,
+        weight: finish.actualWeight ?? finish.weight ?? 133,
         jockeyCode: finish.jockeyCode ?? finish.jockeyName ?? "",
         finishPosition: finish.finishPosition ?? 0,
         fieldSize,
