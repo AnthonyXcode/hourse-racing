@@ -1,7 +1,7 @@
 [
   {
     "id": "2026-03-11-HV-1",
-    "date": "2026-03-10T16:00:00.000Z",
+    "date": "2026-03-11T00:00:00.000Z",
     "venue": "Happy Valley",
     "raceNumber": 1,
     "name": "of HKJC\n                                                                                    \n                                                                                    \n                                                                                    \n                                                                                        Bloodstock Agents\n                                                                                    \n                                                                                    \n                                                                                    \n                                                                                        Handicap",
@@ -20,7 +20,12 @@
         "horseName": "ELEGANT LIFE",
         "horseCode": "HK_2023_J366",
         "jockeyName": "L Ferraris",
+        "jockeyId": "FEL",
         "trainerName": "C Fownes",
+        "trainerId": "FC",
+        "draw": 9,
+        "actualWeight": 135,
+        "horseWeight": 1151,
         "winOdds": 15
       },
       {
@@ -31,7 +36,12 @@
         "horseName": "MACANESE MASTER",
         "horseCode": "HK_2023_J532",
         "jockeyName": "Y L Chung",
+        "jockeyId": "CCY",
         "trainerName": "Y S Tsui",
+        "trainerId": "TYS",
+        "draw": 11,
+        "actualWeight": 125,
+        "horseWeight": 1085,
         "winOdds": 5.3
       },
       {
@@ -42,7 +52,12 @@
         "horseName": "KING ALLOY",
         "horseCode": "HK_2024_K099",
         "jockeyName": "R Kingscote",
+        "jockeyId": "KRW",
         "trainerName": "K H Ting",
+        "trainerId": "TKH",
+        "draw": 12,
+        "actualWeight": 131,
+        "horseWeight": 1194,
         "winOdds": 6.3
       },
       {
@@ -53,7 +68,12 @@
         "horseName": "ALWAYS MY FOLKS",
         "horseCode": "HK_2023_J345",
         "jockeyName": "Z Purton",
+        "jockeyId": "PZ",
         "trainerName": "C S Shum",
+        "trainerId": "SCS",
+        "draw": 8,
+        "actualWeight": 129,
+        "horseWeight": 1078,
         "winOdds": 6.5
       },
       {
@@ -64,7 +84,12 @@
         "horseName": "ROBOT KNIGHT",
         "horseCode": "HK_2022_H464",
         "jockeyName": "K Teetan",
+        "jockeyId": "TEK",
         "trainerName": "K L Man",
+        "trainerId": "MKL",
+        "draw": 7,
+        "actualWeight": 131,
+        "horseWeight": 1099,
         "winOdds": 11
       },
       {
@@ -75,7 +100,12 @@
         "horseName": "MODEST GENTLEMAN",
         "horseCode": "HK_2021_G352",
         "jockeyName": "M Chadwick",
+        "jockeyId": "CML",
         "trainerName": "C H Yip",
+        "trainerId": "YCH",
+        "draw": 5,
+        "actualWeight": 118,
+        "horseWeight": 1059,
         "winOdds": 6.2
       },
       {
@@ -86,7 +116,12 @@
         "horseName": "SPICY SPANGLE",
         "horseCode": "HK_2023_J087",
         "jockeyName": "H Bowman",
+        "jockeyId": "BH",
         "trainerName": "W K Mo",
+        "trainerId": "MWK",
+        "draw": 6,
+        "actualWeight": 132,
+        "horseWeight": 1121,
         "winOdds": 8.5
       },
       {
@@ -97,7 +132,12 @@
         "horseName": "NEBRASKAN",
         "horseCode": "HK_2023_J304",
         "jockeyName": "D B McMonagle",
+        "jockeyId": "MDB",
         "trainerName": "J Size",
+        "trainerId": "SJJ",
+        "draw": 4,
+        "actualWeight": 133,
+        "horseWeight": 1055,
         "winOdds": 11
       },
       {
@@ -108,7 +148,12 @@
         "horseName": "HAPPYDEARHAPPYDEER",
         "horseCode": "HK_2023_J002",
         "jockeyName": "A Badel",
+        "jockeyId": "BA",
         "trainerName": "A S Cruz",
+        "trainerId": "CAS",
+        "draw": 1,
+        "actualWeight": 133,
+        "horseWeight": 1100,
         "winOdds": 19
       },
       {
@@ -119,7 +164,12 @@
         "horseName": "CAMP FIRE",
         "horseCode": "HK_2023_J259",
         "jockeyName": "M L Yeung",
+        "jockeyId": "YML",
         "trainerName": "D J Whyte",
+        "trainerId": "WDJ",
+        "draw": 10,
+        "actualWeight": 115,
+        "horseWeight": 1169,
         "winOdds": 78
       },
       {
@@ -130,7 +180,12 @@
         "horseName": "SPORTIC WARRIOR",
         "horseCode": "HK_2023_J385",
         "jockeyName": "H T Mo",
+        "jockeyId": "MHT",
         "trainerName": "C W Chang",
+        "trainerId": "CCW",
+        "draw": 2,
+        "actualWeight": 115,
+        "horseWeight": 1061,
         "winOdds": 141
       },
       {
@@ -141,7 +196,12 @@
         "horseName": "ISLAND BREEZES",
         "horseCode": "HK_2023_J479",
         "jockeyName": "C L Chau",
+        "jockeyId": "CJE",
         "trainerName": "P C Ng",
+        "trainerId": "NPC",
+        "draw": 3,
+        "actualWeight": 131,
+        "horseWeight": 1094,
         "winOdds": 7.8
       }
     ],
@@ -162,7 +222,7 @@
   },
   {
     "id": "2026-03-11-HV-2",
-    "date": "2026-03-10T16:00:00.000Z",
+    "date": "2026-03-11T00:00:00.000Z",
     "venue": "Happy Valley",
     "raceNumber": 2,
     "name": "of HKJC\n                                                                                    \n                                                                                    \n                                                                                    \n                                                                                        Bloodstock Agents\n                                                                                    \n                                                                                    \n                                                                                    \n                                                                                        Handicap",
@@ -181,7 +241,12 @@
         "horseName": "LUCKY MCQUEEN",
         "horseCode": "HK_2024_K064",
         "jockeyName": "M F Poon",
+        "jockeyId": "PMF",
         "trainerName": "W K Mo",
+        "trainerId": "MWK",
+        "draw": 10,
+        "actualWeight": 122,
+        "horseWeight": 1102,
         "winOdds": 5.9
       },
       {
@@ -192,7 +257,12 @@
         "horseName": "SMART FIGHTER",
         "horseCode": "HK_2022_H278",
         "jockeyName": "A Badel",
+        "jockeyId": "BA",
         "trainerName": "P F Yiu",
+        "trainerId": "YPF",
+        "draw": 6,
+        "actualWeight": 124,
+        "horseWeight": 1163,
         "winOdds": 25
       },
       {
@@ -203,7 +273,12 @@
         "horseName": "THE HEIR",
         "horseCode": "HK_2022_H459",
         "jockeyName": "J Orman",
+        "jockeyId": "OJM",
         "trainerName": "C Fownes",
+        "trainerId": "FC",
+        "draw": 1,
+        "actualWeight": 129,
+        "horseWeight": 1186,
         "winOdds": 2.2
       },
       {
@@ -214,7 +289,12 @@
         "horseName": "JOKER ORBIT",
         "horseCode": "HK_2025_L115",
         "jockeyName": "H Bowman",
+        "jockeyId": "BH",
         "trainerName": "C S Shum",
+        "trainerId": "SCS",
+        "draw": 9,
+        "actualWeight": 135,
+        "horseWeight": 1051,
         "winOdds": 38
       },
       {
@@ -225,7 +305,12 @@
         "horseName": "VIVA FIRECRACKER",
         "horseCode": "HK_2025_L065",
         "jockeyName": "M Chadwick",
+        "jockeyId": "CML",
         "trainerName": "A S Cruz",
+        "trainerId": "CAS",
+        "draw": 8,
+        "actualWeight": 122,
+        "horseWeight": 1098,
         "winOdds": 6.9
       },
       {
@@ -236,7 +321,12 @@
         "horseName": "KING GLORIOSO",
         "horseCode": "HK_2023_J247",
         "jockeyName": "B Avdulla",
+        "jockeyId": "AVB",
         "trainerName": "D J Whyte",
+        "trainerId": "WDJ",
+        "draw": 12,
+        "actualWeight": 125,
+        "horseWeight": 1063,
         "winOdds": 23
       },
       {
@@ -247,7 +337,12 @@
         "horseName": "FASHION LEGEND",
         "horseCode": "HK_2023_J080",
         "jockeyName": "L Ferraris",
+        "jockeyId": "FEL",
         "trainerName": "D Eustace",
+        "trainerId": "EDJ",
+        "draw": 2,
+        "actualWeight": 125,
+        "horseWeight": 1077,
         "winOdds": 12
       },
       {
@@ -258,7 +353,12 @@
         "horseName": "LEAN MASTER",
         "horseCode": "HK_2022_H134",
         "jockeyName": "H Bentley",
+        "jockeyId": "BHW",
         "trainerName": "C H Yip",
+        "trainerId": "YCH",
+        "draw": 3,
+        "actualWeight": 121,
+        "horseWeight": 1107,
         "winOdds": 9.4
       },
       {
@@ -269,7 +369,12 @@
         "horseName": "NOBLE FANS",
         "horseCode": "HK_2024_K038",
         "jockeyName": "A Atzeni",
+        "jockeyId": "AA",
         "trainerName": "J Size",
+        "trainerId": "SJJ",
+        "draw": 11,
+        "actualWeight": 116,
+        "horseWeight": 1138,
         "winOdds": 66
       },
       {
@@ -280,7 +385,12 @@
         "horseName": "SUPREME FEELING",
         "horseCode": "HK_2025_L130",
         "jockeyName": "M L Yeung",
+        "jockeyId": "YML",
         "trainerName": "D A Hayes",
+        "trainerId": "HDA",
+        "draw": 5,
+        "actualWeight": 124,
+        "horseWeight": 1083,
         "winOdds": 37
       },
       {
@@ -291,7 +401,12 @@
         "horseName": "BLAZING BEAM",
         "horseCode": "HK_2024_K103",
         "jockeyName": "R Kingscote",
+        "jockeyId": "KRW",
         "trainerName": "K H Ting",
+        "trainerId": "TKH",
+        "draw": 7,
+        "actualWeight": 121,
+        "horseWeight": 1082,
         "winOdds": 24
       }
     ],
@@ -312,7 +427,7 @@
   },
   {
     "id": "2026-03-11-HV-3",
-    "date": "2026-03-10T16:00:00.000Z",
+    "date": "2026-03-11T00:00:00.000Z",
     "venue": "Happy Valley",
     "raceNumber": 3,
     "name": "of HKJC\n                                                                                    \n                                                                                    \n                                                                                    \n                                                                                        Bloodstock Agents\n                                                                                    \n                                                                                    \n                                                                                    \n                                                                                        Handicap",
@@ -331,7 +446,12 @@
         "horseName": "GOLDEN BRILLIANT",
         "horseCode": "HK_2024_K347",
         "jockeyName": "A Badel",
+        "jockeyId": "BA",
         "trainerName": "C Fownes",
+        "trainerId": "FC",
+        "draw": 9,
+        "actualWeight": 120,
+        "horseWeight": 1086,
         "winOdds": 8.2
       },
       {
@@ -342,7 +462,12 @@
         "horseName": "STAR ELEGANCE",
         "horseCode": "HK_2024_K536",
         "jockeyName": "K C Leung",
+        "jockeyId": "LDE",
         "trainerName": "D J Whyte",
+        "trainerId": "WDJ",
+        "draw": 7,
+        "actualWeight": 123,
+        "horseWeight": 1105,
         "winOdds": 40
       },
       {
@@ -353,7 +478,12 @@
         "horseName": "WINNING DATA",
         "horseCode": "HK_2022_H230",
         "jockeyName": "K Teetan",
+        "jockeyId": "TEK",
         "trainerName": "P F Yiu",
+        "trainerId": "YPF",
+        "draw": 8,
+        "actualWeight": 122,
+        "horseWeight": 1139,
         "winOdds": 10
       },
       {
@@ -364,7 +494,12 @@
         "horseName": "AMAZING AWARD",
         "horseCode": "HK_2023_J236",
         "jockeyName": "D B McMonagle",
+        "jockeyId": "MDB",
         "trainerName": "D Eustace",
+        "trainerId": "EDJ",
+        "draw": 6,
+        "actualWeight": 128,
+        "horseWeight": 1067,
         "winOdds": 4.6
       },
       {
@@ -375,7 +510,12 @@
         "horseName": "HARMONY GALAXY",
         "horseCode": "HK_2023_J266",
         "jockeyName": "H Bowman",
+        "jockeyId": "BH",
         "trainerName": "C S Shum",
+        "trainerId": "SCS",
+        "draw": 1,
+        "actualWeight": 133,
+        "horseWeight": 1041,
         "winOdds": 7.8
       },
       {
@@ -386,7 +526,12 @@
         "horseName": "THE AZURE",
         "horseCode": "HK_2023_J227",
         "jockeyName": "M F Poon",
+        "jockeyId": "PMF",
         "trainerName": "F C Lor",
+        "trainerId": "LFC",
+        "draw": 5,
+        "actualWeight": 128,
+        "horseWeight": 1132,
         "winOdds": 9.6
       },
       {
@@ -397,7 +542,12 @@
         "horseName": "FORTUNE STAR",
         "horseCode": "HK_2024_K003",
         "jockeyName": "L Ferraris",
+        "jockeyId": "FEL",
         "trainerName": "M Newnham",
+        "trainerId": "NM",
+        "draw": 12,
+        "actualWeight": 132,
+        "horseWeight": 1127,
         "winOdds": 6.5
       },
       {
@@ -408,7 +558,12 @@
         "horseName": "STELLAR SWIFT",
         "horseCode": "HK_2023_J139",
         "jockeyName": "H Bentley",
+        "jockeyId": "BHW",
         "trainerName": "D A Hayes",
+        "trainerId": "HDA",
+        "draw": 2,
+        "actualWeight": 134,
+        "horseWeight": 1188,
         "winOdds": 5
       },
       {
@@ -419,7 +574,12 @@
         "horseName": "TO INFINITY",
         "horseCode": "HK_2021_G277",
         "jockeyName": "J Orman",
+        "jockeyId": "OJM",
         "trainerName": "J Richards",
+        "trainerId": "RW",
+        "draw": 10,
+        "actualWeight": 128,
+        "horseWeight": 1047,
         "winOdds": 21
       },
       {
@@ -430,7 +590,12 @@
         "horseName": "DIRIYA",
         "horseCode": "HK_2024_K282",
         "jockeyName": "L Hewitson",
+        "jockeyId": "HEL",
         "trainerName": "C H Yip",
+        "trainerId": "YCH",
+        "draw": 3,
+        "actualWeight": 118,
+        "horseWeight": 1021,
         "winOdds": 13
       },
       {
@@ -441,7 +606,12 @@
         "horseName": "WAVE GARDEN",
         "horseCode": "HK_2024_K209",
         "jockeyName": "R Kingscote",
+        "jockeyId": "KRW",
         "trainerName": "K H Ting",
+        "trainerId": "TKH",
+        "draw": 4,
+        "actualWeight": 121,
+        "horseWeight": 1080,
         "winOdds": 29
       },
       {
@@ -452,7 +622,12 @@
         "horseName": "KING OF SELECTION",
         "horseCode": "HK_2024_K397",
         "jockeyName": "C L Chau",
+        "jockeyId": "CJE",
         "trainerName": "W K Mo",
+        "trainerId": "MWK",
+        "draw": 11,
+        "actualWeight": 133,
+        "horseWeight": 1003,
         "winOdds": 85
       }
     ],
@@ -473,7 +648,7 @@
   },
   {
     "id": "2026-03-11-HV-4",
-    "date": "2026-03-10T16:00:00.000Z",
+    "date": "2026-03-11T00:00:00.000Z",
     "venue": "Happy Valley",
     "raceNumber": 4,
     "name": "of HKJC\n                                                                                    \n                                                                                    \n                                                                                    \n                                                                                        Bloodstock Agents\n                                                                                    \n                                                                                    \n                                                                                    \n                                                                                        Handicap",
@@ -492,7 +667,12 @@
         "horseName": "WIN METHOD",
         "horseCode": "HK_2024_K406",
         "jockeyName": "L Hewitson",
+        "jockeyId": "HEL",
         "trainerName": "C S Shum",
+        "trainerId": "SCS",
+        "draw": 5,
+        "actualWeight": 122,
+        "horseWeight": 1065,
         "winOdds": 16
       },
       {
@@ -503,7 +683,12 @@
         "horseName": "RUN RUN TIMING",
         "horseCode": "HK_2022_H403",
         "jockeyName": "R Kingscote",
+        "jockeyId": "KRW",
         "trainerName": "P F Yiu",
+        "trainerId": "YPF",
+        "draw": 1,
+        "actualWeight": 118,
+        "horseWeight": 1156,
         "winOdds": 2.2
       },
       {
@@ -514,7 +699,12 @@
         "horseName": "ROMANTIC LAOS",
         "horseCode": "HK_2021_G476",
         "jockeyName": "C L Chau",
+        "jockeyId": "CJE",
         "trainerName": "W K Mo",
+        "trainerId": "MWK",
+        "draw": 9,
+        "actualWeight": 133,
+        "horseWeight": 1190,
         "winOdds": 18
       },
       {
@@ -525,7 +715,12 @@
         "horseName": "VIVACIOUS WIN",
         "horseCode": "HK_2024_K223",
         "jockeyName": "K Teetan",
+        "jockeyId": "TEK",
         "trainerName": "D Eustace",
+        "trainerId": "EDJ",
+        "draw": 12,
+        "actualWeight": 121,
+        "horseWeight": 1061,
         "winOdds": 5.7
       },
       {
@@ -536,7 +731,12 @@
         "horseName": "CELTIC TIMES",
         "horseCode": "HK_2021_G230",
         "jockeyName": "K C Leung",
+        "jockeyId": "LDE",
         "trainerName": "K L Man",
+        "trainerId": "MKL",
+        "draw": 3,
+        "actualWeight": 130,
+        "horseWeight": 1238,
         "winOdds": 37
       },
       {
@@ -547,7 +747,12 @@
         "horseName": "DASHING MAURISON",
         "horseCode": "HK_2024_K374",
         "jockeyName": "H Bentley",
+        "jockeyId": "BHW",
         "trainerName": "D A Hayes",
+        "trainerId": "HDA",
+        "draw": 11,
+        "actualWeight": 117,
+        "horseWeight": 1028,
         "winOdds": 14
       },
       {
@@ -558,7 +763,12 @@
         "horseName": "ABSOLUTE AWAKENED",
         "horseCode": "HK_2024_K039",
         "jockeyName": "Z Purton",
+        "jockeyId": "PZ",
         "trainerName": "F C Lor",
+        "trainerId": "LFC",
+        "draw": 4,
+        "actualWeight": 129,
+        "horseWeight": 1100,
         "winOdds": 6.9
       },
       {
@@ -569,7 +779,12 @@
         "horseName": "GOOD LUCK WIN",
         "horseCode": "HK_2023_J135",
         "jockeyName": "Y L Chung",
+        "jockeyId": "CCY",
         "trainerName": "K H Ting",
+        "trainerId": "TKH",
+        "draw": 2,
+        "actualWeight": 118,
+        "horseWeight": 1092,
         "winOdds": 9.8
       },
       {
@@ -580,7 +795,12 @@
         "horseName": "DILBAGH",
         "horseCode": "HK_2024_K055",
         "jockeyName": "M L Yeung",
+        "jockeyId": "YML",
         "trainerName": "D J Whyte",
+        "trainerId": "WDJ",
+        "draw": 7,
+        "actualWeight": 118,
+        "horseWeight": 1037,
         "winOdds": 80
       },
       {
@@ -591,7 +811,12 @@
         "horseName": "SETANTA",
         "horseCode": "HK_2021_G095",
         "jockeyName": "A Atzeni",
+        "jockeyId": "AA",
         "trainerName": "M Newnham",
+        "trainerId": "NM",
+        "draw": 6,
+        "actualWeight": 117,
+        "horseWeight": 1180,
         "winOdds": 17
       },
       {
@@ -602,7 +827,12 @@
         "horseName": "DERRYNBLUE",
         "horseCode": "HK_2024_K539",
         "jockeyName": "A Badel",
+        "jockeyId": "BA",
         "trainerName": "C H Yip",
+        "trainerId": "YCH",
+        "draw": 10,
+        "actualWeight": 122,
+        "horseWeight": 1012,
         "winOdds": 96
       },
       {
@@ -613,7 +843,12 @@
         "horseName": "WIN EASE",
         "horseCode": "HK_2024_K384",
         "jockeyName": "H Bowman",
+        "jockeyId": "BH",
         "trainerName": "K W Lui",
+        "trainerId": "LKW",
+        "draw": 8,
+        "actualWeight": 133,
+        "horseWeight": 1057,
         "winOdds": 19
       }
     ],
@@ -634,7 +869,7 @@
   },
   {
     "id": "2026-03-11-HV-5",
-    "date": "2026-03-10T16:00:00.000Z",
+    "date": "2026-03-11T00:00:00.000Z",
     "venue": "Happy Valley",
     "raceNumber": 5,
     "name": "of HKJC\n                                                                                    \n                                                                                    \n                                                                                    \n                                                                                        Bloodstock Agents\n                                                                                    \n                                                                                    \n                                                                                    \n                                                                                        Handicap",
@@ -653,7 +888,12 @@
         "horseName": "SIGHT HERMOSO",
         "horseCode": "HK_2025_L003",
         "jockeyName": "D B McMonagle",
+        "jockeyId": "MDB",
         "trainerName": "J Size",
+        "trainerId": "SJJ",
+        "draw": 9,
+        "actualWeight": 128,
+        "horseWeight": 1108,
         "winOdds": 9.9
       },
       {
@@ -664,7 +904,12 @@
         "horseName": "KING OF FIGHTERS",
         "horseCode": "HK_2024_K174",
         "jockeyName": "K Teetan",
+        "jockeyId": "TEK",
         "trainerName": "B Crawford",
+        "trainerId": "CBJ",
+        "draw": 5,
+        "actualWeight": 120,
+        "horseWeight": 1127,
         "winOdds": 12
       },
       {
@@ -675,7 +920,12 @@
         "horseName": "JUMBO TREASURE",
         "horseCode": "HK_2024_K249",
         "jockeyName": "K C Leung",
+        "jockeyId": "LDE",
         "trainerName": "W K Mo",
+        "trainerId": "MWK",
+        "draw": 7,
+        "actualWeight": 134,
+        "horseWeight": 1132,
         "winOdds": 7.6
       },
       {
@@ -686,7 +936,12 @@
         "horseName": "IGOR STRAVINSKY",
         "horseCode": "HK_2024_K086",
         "jockeyName": "Y L Chung",
+        "jockeyId": "CCY",
         "trainerName": "A S Cruz",
+        "trainerId": "CAS",
+        "draw": 10,
+        "actualWeight": 120,
+        "horseWeight": 1169,
         "winOdds": 15
       },
       {
@@ -697,7 +952,12 @@
         "horseName": "KING MILES",
         "horseCode": "HK_2023_J158",
         "jockeyName": "C L Chau",
+        "jockeyId": "CJE",
         "trainerName": "K W Lui",
+        "trainerId": "LKW",
+        "draw": 6,
+        "actualWeight": 133,
+        "horseWeight": 1156,
         "winOdds": 10
       },
       {
@@ -708,7 +968,12 @@
         "horseName": "BIENVENUE",
         "horseCode": "HK_2023_J490",
         "jockeyName": "Z Purton",
+        "jockeyId": "PZ",
         "trainerName": "D A Hayes",
+        "trainerId": "HDA",
+        "draw": 1,
+        "actualWeight": 129,
+        "horseWeight": 1139,
         "winOdds": 2.9
       },
       {
@@ -719,7 +984,12 @@
         "horseName": "SUGAR SUGAR",
         "horseCode": "HK_2021_G016",
         "jockeyName": "B Avdulla",
+        "jockeyId": "AVB",
         "trainerName": "C Fownes",
+        "trainerId": "FC",
+        "draw": 3,
+        "actualWeight": 126,
+        "horseWeight": 1093,
         "winOdds": 6.5
       },
       {
@@ -730,7 +1000,12 @@
         "horseName": "PRESTIGE ALWAYS",
         "horseCode": "HK_2023_J300",
         "jockeyName": "H Bentley",
+        "jockeyId": "BHW",
         "trainerName": "P C Ng",
+        "trainerId": "NPC",
+        "draw": 4,
+        "actualWeight": 124,
+        "horseWeight": 1110,
         "winOdds": 5.4
       },
       {
@@ -741,7 +1016,12 @@
         "horseName": "IGOT",
         "horseCode": "HK_2024_K170",
         "jockeyName": "M L Yeung",
+        "jockeyId": "YML",
         "trainerName": "C H Yip",
+        "trainerId": "YCH",
+        "draw": 8,
+        "actualWeight": 122,
+        "horseWeight": 1132,
         "winOdds": 33
       },
       {
@@ -752,7 +1032,12 @@
         "horseName": "VULCANUS",
         "horseCode": "HK_2023_J150",
         "jockeyName": "H Bowman",
+        "jockeyId": "BH",
         "trainerName": "Y S Tsui",
+        "trainerId": "TYS",
+        "draw": 2,
+        "actualWeight": 126,
+        "horseWeight": 1175,
         "winOdds": 29
       }
     ],
@@ -773,7 +1058,7 @@
   },
   {
     "id": "2026-03-11-HV-6",
-    "date": "2026-03-10T16:00:00.000Z",
+    "date": "2026-03-11T00:00:00.000Z",
     "venue": "Happy Valley",
     "raceNumber": 6,
     "name": "of HKJC\n                                                                                    \n                                                                                    \n                                                                                    \n                                                                                        Bloodstock Agents\n                                                                                    \n                                                                                    \n                                                                                    \n                                                                                        Handicap",
@@ -792,7 +1077,12 @@
         "horseName": "SOMELOVEFROMABOVE",
         "horseCode": "HK_2023_J503",
         "jockeyName": "J Orman",
+        "jockeyId": "OJM",
         "trainerName": "C Fownes",
+        "trainerId": "FC",
+        "draw": 6,
+        "actualWeight": 128,
+        "horseWeight": 1173,
         "winOdds": 5.2
       },
       {
@@ -803,7 +1093,12 @@
         "horseName": "VICTOR THE RAPID",
         "horseCode": "HK_2023_J393",
         "jockeyName": "C L Chau",
+        "jockeyId": "CJE",
         "trainerName": "P C Ng",
+        "trainerId": "NPC",
+        "draw": 4,
+        "actualWeight": 133,
+        "horseWeight": 1039,
         "winOdds": 8
       },
       {
@@ -814,7 +1109,12 @@
         "horseName": "SAME TO YOU",
         "horseCode": "HK_2022_H057",
         "jockeyName": "L Hewitson",
+        "jockeyId": "HEL",
         "trainerName": "M Newnham",
+        "trainerId": "NM",
+        "draw": 5,
+        "actualWeight": 120,
+        "horseWeight": 985,
         "winOdds": 10
       },
       {
@@ -825,7 +1125,12 @@
         "horseName": "RIDING HIGH",
         "horseCode": "HK_2023_J403",
         "jockeyName": "A Badel",
+        "jockeyId": "BA",
         "trainerName": "D J Whyte",
+        "trainerId": "WDJ",
+        "draw": 11,
+        "actualWeight": 118,
+        "horseWeight": 1091,
         "winOdds": 4.6
       },
       {
@@ -836,7 +1141,12 @@
         "horseName": "HAPPY PARK",
         "horseCode": "HK_2023_J311",
         "jockeyName": "K Teetan",
+        "jockeyId": "TEK",
         "trainerName": "B Crawford",
+        "trainerId": "CBJ",
+        "draw": 3,
+        "actualWeight": 120,
+        "horseWeight": 1213,
         "winOdds": 3.4
       },
       {
@@ -847,7 +1157,12 @@
         "horseName": "FUN ELITE",
         "horseCode": "HK_2023_J042",
         "jockeyName": "K C Leung",
+        "jockeyId": "LDE",
         "trainerName": "C W Chang",
+        "trainerId": "CCW",
+        "draw": 2,
+        "actualWeight": 129,
+        "horseWeight": 1140,
         "winOdds": 6.1
       },
       {
@@ -858,7 +1173,12 @@
         "horseName": "CALIFORNIA DEEPLY",
         "horseCode": "HK_2021_G451",
         "jockeyName": "B Avdulla",
+        "jockeyId": "AVB",
         "trainerName": "A S Cruz",
+        "trainerId": "CAS",
+        "draw": 7,
+        "actualWeight": 121,
+        "horseWeight": 1060,
         "winOdds": 14
       },
       {
@@ -869,7 +1189,12 @@
         "horseName": "KING CANNON",
         "horseCode": "HK_2024_K543",
         "jockeyName": "R Kingscote",
+        "jockeyId": "KRW",
         "trainerName": "D Eustace",
+        "trainerId": "EDJ",
+        "draw": 12,
+        "actualWeight": 127,
+        "horseWeight": 1175,
         "winOdds": 82
       },
       {
@@ -880,7 +1205,12 @@
         "horseName": "STARRY SHOW",
         "horseCode": "HK_2025_L074",
         "jockeyName": "M F Poon",
+        "jockeyId": "PMF",
         "trainerName": "D A Hayes",
+        "trainerId": "HDA",
+        "draw": 8,
+        "actualWeight": 131,
+        "horseWeight": 1024,
         "winOdds": 157
       },
       {
@@ -891,7 +1221,12 @@
         "horseName": "UP WITH CHARM",
         "horseCode": "HK_2024_K139",
         "jockeyName": "Y L Chung",
+        "jockeyId": "CCY",
         "trainerName": "K L Man",
+        "trainerId": "MKL",
+        "draw": 9,
+        "actualWeight": 116,
+        "horseWeight": 1037,
         "winOdds": 168
       },
       {
@@ -902,7 +1237,12 @@
         "horseName": "TOPSPIN KING",
         "horseCode": "HK_2025_L141",
         "jockeyName": "C Y Ho",
+        "jockeyId": "HCY",
         "trainerName": "K W Lui",
+        "trainerId": "LKW",
+        "draw": 1,
+        "actualWeight": 127,
+        "horseWeight": 1032,
         "winOdds": 58
       },
       {
@@ -913,7 +1253,12 @@
         "horseName": "FORTUNE WARRIOR",
         "horseCode": "HK_2022_H229",
         "jockeyName": "M L Yeung",
+        "jockeyId": "YML",
         "trainerName": "C H Yip",
+        "trainerId": "YCH",
+        "draw": 10,
+        "actualWeight": 115,
+        "horseWeight": 1118,
         "winOdds": 49
       }
     ],
@@ -934,7 +1279,7 @@
   },
   {
     "id": "2026-03-11-HV-7",
-    "date": "2026-03-10T16:00:00.000Z",
+    "date": "2026-03-11T00:00:00.000Z",
     "venue": "Happy Valley",
     "raceNumber": 7,
     "name": "of HKJC\n                                                                                    \n                                                                                    \n                                                                                    \n                                                                                        Bloodstock Agents\n                                                                                    \n                                                                                    \n                                                                                    \n                                                                                        Handicap",
@@ -953,7 +1298,12 @@
         "horseName": "TEAM TEAM FOLKS",
         "horseCode": "HK_2024_K302",
         "jockeyName": "C Y Ho",
+        "jockeyId": "HCY",
         "trainerName": "K H Ting",
+        "trainerId": "TKH",
+        "draw": 7,
+        "actualWeight": 129,
+        "horseWeight": 1086,
         "winOdds": 8.5
       },
       {
@@ -964,7 +1314,12 @@
         "horseName": "FORERUNNER",
         "horseCode": "HK_2021_G465",
         "jockeyName": "A Badel",
+        "jockeyId": "BA",
         "trainerName": "W K Mo",
+        "trainerId": "MWK",
+        "draw": 8,
+        "actualWeight": 123,
+        "horseWeight": 1059,
         "winOdds": 21
       },
       {
@@ -975,7 +1330,12 @@
         "horseName": "GOLDEN EMPIRE",
         "horseCode": "HK_2020_E490",
         "jockeyName": "L Ferraris",
+        "jockeyId": "FEL",
         "trainerName": "B Crawford",
+        "trainerId": "CBJ",
+        "draw": 2,
+        "actualWeight": 133,
+        "horseWeight": 1082,
         "winOdds": 8.9
       },
       {
@@ -986,7 +1346,12 @@
         "horseName": "NORTHERN FIRE BALL",
         "horseCode": "HK_2023_J488",
         "jockeyName": "K C Leung",
+        "jockeyId": "LDE",
         "trainerName": "C H Yip",
+        "trainerId": "YCH",
+        "draw": 1,
+        "actualWeight": 134,
+        "horseWeight": 1124,
         "winOdds": 6.5
       },
       {
@@ -997,7 +1362,12 @@
         "horseName": "KIAMA",
         "horseCode": "HK_2024_K359",
         "jockeyName": "A Atzeni",
+        "jockeyId": "AA",
         "trainerName": "J Size",
+        "trainerId": "SJJ",
+        "draw": 5,
+        "actualWeight": 122,
+        "horseWeight": 1089,
         "winOdds": 15
       },
       {
@@ -1008,7 +1378,12 @@
         "horseName": "ICONICAL",
         "horseCode": "HK_2023_J504",
         "jockeyName": "M Chadwick",
+        "jockeyId": "CML",
         "trainerName": "J Richards",
+        "trainerId": "RW",
+        "draw": 4,
+        "actualWeight": 116,
+        "horseWeight": 1218,
         "winOdds": 12
       },
       {
@@ -1019,7 +1394,12 @@
         "horseName": "WINNING MONEY",
         "horseCode": "HK_2023_J116",
         "jockeyName": "Z Purton",
+        "jockeyId": "PZ",
         "trainerName": "K W Lui",
+        "trainerId": "LKW",
+        "draw": 10,
+        "actualWeight": 129,
+        "horseWeight": 1189,
         "winOdds": 3.9
       },
       {
@@ -1030,7 +1410,12 @@
         "horseName": "CHEERFUL WONGCHOY",
         "horseCode": "HK_2025_L045",
         "jockeyName": "J Orman",
+        "jockeyId": "OJM",
         "trainerName": "P C Ng",
+        "trainerId": "NPC",
+        "draw": 3,
+        "actualWeight": 127,
+        "horseWeight": 1070,
         "winOdds": 30
       },
       {
@@ -1041,7 +1426,12 @@
         "horseName": "THOUSAND SPIRIT",
         "horseCode": "HK_2024_K365",
         "jockeyName": "L Hewitson",
+        "jockeyId": "HEL",
         "trainerName": "M Newnham",
+        "trainerId": "NM",
+        "draw": 6,
+        "actualWeight": 133,
+        "horseWeight": 1032,
         "winOdds": 3.4
       },
       {
@@ -1052,7 +1442,12 @@
         "horseName": "ALWAYS AHEAD",
         "horseCode": "HK_2025_L055",
         "jockeyName": "C L Chau",
+        "jockeyId": "CJE",
         "trainerName": "K L Man",
+        "trainerId": "MKL",
+        "draw": 11,
+        "actualWeight": 133,
+        "horseWeight": 1197,
         "winOdds": 113
       },
       {
@@ -1063,7 +1458,12 @@
         "horseName": "FLASH STAR",
         "horseCode": "HK_2024_K431",
         "jockeyName": "R Kingscote",
+        "jockeyId": "KRW",
         "trainerName": "C S Shum",
+        "trainerId": "SCS",
+        "draw": 12,
+        "actualWeight": 123,
+        "horseWeight": 1124,
         "winOdds": 25
       },
       {
@@ -1074,7 +1474,12 @@
         "horseName": "PRESTIGE SUPERIOR",
         "horseCode": "HK_2024_K383",
         "jockeyName": "H T Mo",
+        "jockeyId": "MHT",
         "trainerName": "C W Chang",
+        "trainerId": "CCW",
+        "draw": 9,
+        "actualWeight": 131,
+        "horseWeight": 1049,
         "winOdds": 111
       }
     ],
@@ -1095,7 +1500,7 @@
   },
   {
     "id": "2026-03-11-HV-8",
-    "date": "2026-03-10T16:00:00.000Z",
+    "date": "2026-03-11T00:00:00.000Z",
     "venue": "Happy Valley",
     "raceNumber": 8,
     "name": "of HKJC\n                                                                                    \n                                                                                    \n                                                                                    \n                                                                                        Bloodstock Agents\n                                                                                    \n                                                                                    \n                                                                                    \n                                                                                        Handicap",
@@ -1114,7 +1519,12 @@
         "horseName": "METRO POWER",
         "horseCode": "HK_2024_K408",
         "jockeyName": "J Orman",
+        "jockeyId": "OJM",
         "trainerName": "D A Hayes",
+        "trainerId": "HDA",
+        "draw": 6,
+        "actualWeight": 124,
+        "horseWeight": 1096,
         "winOdds": 7.2
       },
       {
@@ -1125,7 +1535,12 @@
         "horseName": "ACE CHAMPION",
         "horseCode": "HK_2024_K379",
         "jockeyName": "R Kingscote",
+        "jockeyId": "KRW",
         "trainerName": "P C Ng",
+        "trainerId": "NPC",
+        "draw": 1,
+        "actualWeight": 120,
+        "horseWeight": 997,
         "winOdds": 15
       },
       {
@@ -1136,7 +1551,12 @@
         "horseName": "MEOWTH",
         "horseCode": "HK_2023_J487",
         "jockeyName": "A Badel",
+        "jockeyId": "BA",
         "trainerName": "W K Mo",
+        "trainerId": "MWK",
+        "draw": 7,
+        "actualWeight": 120,
+        "horseWeight": 1094,
         "winOdds": 5.1
       },
       {
@@ -1147,7 +1567,12 @@
         "horseName": "WONDER KIT",
         "horseCode": "HK_2021_G455",
         "jockeyName": "L Hewitson",
+        "jockeyId": "HEL",
         "trainerName": "Y S Tsui",
+        "trainerId": "TYS",
+        "draw": 3,
+        "actualWeight": 132,
+        "horseWeight": 1110,
         "winOdds": 24
       },
       {
@@ -1158,7 +1583,12 @@
         "horseName": "SPIRIT OF PEACE",
         "horseCode": "HK_2024_K007",
         "jockeyName": "A Atzeni",
+        "jockeyId": "AA",
         "trainerName": "J Size",
+        "trainerId": "SJJ",
+        "draw": 2,
+        "actualWeight": 122,
+        "horseWeight": 1051,
         "winOdds": 3.2
       },
       {
@@ -1169,7 +1599,12 @@
         "horseName": "OUTGATE",
         "horseCode": "HK_2022_H113",
         "jockeyName": "Y L Chung",
+        "jockeyId": "CCY",
         "trainerName": "A S Cruz",
+        "trainerId": "CAS",
+        "draw": 8,
+        "actualWeight": 124,
+        "horseWeight": 1065,
         "winOdds": 9.6
       },
       {
@@ -1180,7 +1615,12 @@
         "horseName": "LOVE TOGETHER",
         "horseCode": "HK_2025_L052",
         "jockeyName": "C Y Ho",
+        "jockeyId": "HCY",
         "trainerName": "C Fownes",
+        "trainerId": "FC",
+        "draw": 11,
+        "actualWeight": 135,
+        "horseWeight": 1173,
         "winOdds": 7.4
       },
       {
@@ -1191,7 +1631,12 @@
         "horseName": "YOUNG ARROW",
         "horseCode": "HK_2023_J401",
         "jockeyName": "K C Leung",
+        "jockeyId": "LDE",
         "trainerName": "D J Whyte",
+        "trainerId": "WDJ",
+        "draw": 4,
+        "actualWeight": 123,
+        "horseWeight": 1121,
         "winOdds": 14
       },
       {
@@ -1202,7 +1647,12 @@
         "horseName": "LUCKY TOGETHER",
         "horseCode": "HK_2025_L079",
         "jockeyName": "M Chadwick",
+        "jockeyId": "CML",
         "trainerName": "F C Lor",
+        "trainerId": "LFC",
+        "draw": 10,
+        "actualWeight": 118,
+        "horseWeight": 1102,
         "winOdds": 102
       },
       {
@@ -1213,7 +1663,12 @@
         "horseName": "WONDERSTAR",
         "horseCode": "HK_2023_J531",
         "jockeyName": "D B McMonagle",
+        "jockeyId": "MDB",
         "trainerName": "Y S Tsui",
+        "trainerId": "TYS",
+        "draw": 5,
+        "actualWeight": 126,
+        "horseWeight": 1274,
         "winOdds": 7.3
       },
       {
@@ -1224,7 +1679,12 @@
         "horseName": "LEAPING STAR",
         "horseCode": "HK_2025_L189",
         "jockeyName": "M L Yeung",
+        "jockeyId": "YML",
         "trainerName": "D A Hayes",
+        "trainerId": "HDA",
+        "draw": 9,
+        "actualWeight": 118,
+        "horseWeight": 1150,
         "winOdds": 130
       }
     ],
@@ -1245,7 +1705,7 @@
   },
   {
     "id": "2026-03-11-HV-9",
-    "date": "2026-03-10T16:00:00.000Z",
+    "date": "2026-03-11T00:00:00.000Z",
     "venue": "Happy Valley",
     "raceNumber": 9,
     "name": "of HKJC\n                                                                                    \n                                                                                    \n                                                                                    \n                                                                                        Bloodstock Agents\n                                                                                    \n                                                                                    \n                                                                                    \n                                                                                        Handicap",
@@ -1264,7 +1724,12 @@
         "horseName": "FALLON",
         "horseCode": "HK_2022_H219",
         "jockeyName": "M L Yeung",
+        "jockeyId": "YML",
         "trainerName": "A S Cruz",
+        "trainerId": "CAS",
+        "draw": 4,
+        "actualWeight": 127,
+        "horseWeight": 1122,
         "winOdds": 16
       },
       {
@@ -1275,7 +1740,12 @@
         "horseName": "CHINA WIN",
         "horseCode": "HK_2024_K395",
         "jockeyName": "Z Purton",
+        "jockeyId": "PZ",
         "trainerName": "D A Hayes",
+        "trainerId": "HDA",
+        "draw": 3,
+        "actualWeight": 121,
+        "horseWeight": 1100,
         "winOdds": 1.7
       },
       {
@@ -1286,7 +1756,12 @@
         "horseName": "KEEFY",
         "horseCode": "HK_2021_G306",
         "jockeyName": "M F Poon",
+        "jockeyId": "PMF",
         "trainerName": "F C Lor",
+        "trainerId": "LFC",
+        "draw": 5,
+        "actualWeight": 129,
+        "horseWeight": 1165,
         "winOdds": 14
       },
       {
@@ -1297,7 +1772,12 @@
         "horseName": "LE ZONDA",
         "horseCode": "HK_2025_L110",
         "jockeyName": "C L Chau",
+        "jockeyId": "CJE",
         "trainerName": "P C Ng",
+        "trainerId": "NPC",
+        "draw": 10,
+        "actualWeight": 127,
+        "horseWeight": 1027,
         "winOdds": 52
       },
       {
@@ -1308,7 +1788,12 @@
         "horseName": "HIGHLAND RAHY",
         "horseCode": "HK_2023_J298",
         "jockeyName": "L Hewitson",
+        "jockeyId": "HEL",
         "trainerName": "K W Lui",
+        "trainerId": "LKW",
+        "draw": 6,
+        "actualWeight": 128,
+        "horseWeight": 1187,
         "winOdds": 11
       },
       {
@@ -1319,7 +1804,12 @@
         "horseName": "MIGHTY STRENGTH",
         "horseCode": "HK_2022_H450",
         "jockeyName": "K Teetan",
+        "jockeyId": "TEK",
         "trainerName": "P F Yiu",
+        "trainerId": "YPF",
+        "draw": 8,
+        "actualWeight": 120,
+        "horseWeight": 1030,
         "winOdds": 45
       },
       {
@@ -1330,7 +1820,12 @@
         "horseName": "MISTER DAPPER",
         "horseCode": "HK_2022_H376",
         "jockeyName": "B Avdulla",
+        "jockeyId": "AVB",
         "trainerName": "D Eustace",
+        "trainerId": "EDJ",
+        "draw": 7,
+        "actualWeight": 131,
+        "horseWeight": 1211,
         "winOdds": 12
       },
       {
@@ -1341,7 +1836,12 @@
         "horseName": "ANOTHER WORLD",
         "horseCode": "HK_2024_K005",
         "jockeyName": "C Y Ho",
+        "jockeyId": "HCY",
         "trainerName": "C H Yip",
+        "trainerId": "YCH",
+        "draw": 1,
+        "actualWeight": 127,
+        "horseWeight": 1080,
         "winOdds": 14
       },
       {
@@ -1352,7 +1852,12 @@
         "horseName": "EXCELLENCE VALUE",
         "horseCode": "HK_2024_K093",
         "jockeyName": "K C Leung",
+        "jockeyId": "LDE",
         "trainerName": "W Y So",
+        "trainerId": "SWY",
+        "draw": 2,
+        "actualWeight": 122,
+        "horseWeight": 1213,
         "winOdds": 17
       },
       {
@@ -1363,7 +1868,12 @@
         "horseName": "JUMBO LEGEND",
         "horseCode": "HK_2021_G266",
         "jockeyName": "H Bowman",
+        "jockeyId": "BH",
         "trainerName": "C Fownes",
+        "trainerId": "FC",
+        "draw": 9,
+        "actualWeight": 132,
+        "horseWeight": 1150,
         "winOdds": 12
       },
       {
@@ -1374,7 +1884,12 @@
         "horseName": "ENTHUSIUM",
         "horseCode": "HK_2025_L107",
         "jockeyName": "D B McMonagle",
+        "jockeyId": "MDB",
         "trainerName": "J Size",
+        "trainerId": "SJJ",
+        "draw": 12,
+        "actualWeight": 124,
+        "horseWeight": 1048,
         "winOdds": 11
       },
       {
@@ -1385,7 +1900,12 @@
         "horseName": "LA CITY BLANCHE",
         "horseCode": "HK_2021_G371",
         "jockeyName": "H Bentley",
+        "jockeyId": "BHW",
         "trainerName": "D J Whyte",
+        "trainerId": "WDJ",
+        "draw": 11,
+        "actualWeight": 130,
+        "horseWeight": 978,
         "winOdds": 146
       }
     ],
