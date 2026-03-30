@@ -165,9 +165,17 @@ export interface RaceResult extends Race {
     readonly horseName?: string;
     readonly horseCode?: string;
     readonly jockeyName?: string;
+    /** HKJC jockey profile id, e.g. from jockeyprofile?jockeyid=PZ */
+    readonly jockeyId?: string;
     readonly trainerName?: string;
+    /** HKJC trainer profile id, e.g. from trainerprofile?trainerid=SJJ */
+    readonly trainerId?: string;
+    /** Barrier / draw — HKJC "Dr." */
+    readonly draw?: number;
     /** Weight carried (lb) from results — HKJC "Act. Wt." */
     readonly actualWeight?: number;
+    /** Declared horse body weight on raceday — HKJC "Declar. Horse Wt." (club scale units) */
+    readonly horseWeight?: number;
     readonly winOdds?: number;
   }[];
   readonly winDividend?: number;
