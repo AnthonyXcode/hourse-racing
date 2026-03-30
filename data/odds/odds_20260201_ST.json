@@ -1,0 +1,359 @@
+{
+  "date": "2026-02-01",
+  "venue": "ST",
+  "races": [
+    {
+      "raceNumber": 1,
+      "date": "2026-02-01",
+      "venue": "ST",
+      "horses": [
+        {
+          "horseNumber": 1,
+          "horseName": "BLING BLING GENIUS",
+          "jockey": "",
+          "trainer": "",
+          "winOdds": 3.2,
+          "placeOdds": 1.8
+        },
+        {
+          "horseNumber": 4,
+          "horseName": "TELECOM POWER",
+          "jockey": "",
+          "trainer": "",
+          "winOdds": 5.2,
+          "placeOdds": 1.7
+        },
+        {
+          "horseNumber": 8,
+          "horseName": "RUN RUN TIMING",
+          "jockey": "",
+          "trainer": "",
+          "winOdds": 8.1,
+          "placeOdds": 2.5
+        }
+      ],
+      "fetchedAt": "2026-02-11T09:14:01.666Z"
+    },
+    {
+      "raceNumber": 2,
+      "date": "2026-02-01",
+      "venue": "ST",
+      "horses": [
+        {
+          "horseNumber": 1,
+          "horseName": "BLING BLING GENIUS",
+          "jockey": "",
+          "trainer": "",
+          "winOdds": 3.2,
+          "placeOdds": 1.8
+        },
+        {
+          "horseNumber": 4,
+          "horseName": "TELECOM POWER",
+          "jockey": "",
+          "trainer": "",
+          "winOdds": 5.2,
+          "placeOdds": 1.7
+        },
+        {
+          "horseNumber": 8,
+          "horseName": "RUN RUN TIMING",
+          "jockey": "",
+          "trainer": "",
+          "winOdds": 8.1,
+          "placeOdds": 2.5
+        }
+      ],
+      "fetchedAt": "2026-02-11T09:14:06.079Z"
+    },
+    {
+      "raceNumber": 3,
+      "date": "2026-02-01",
+      "venue": "ST",
+      "horses": [
+        {
+          "horseNumber": 1,
+          "horseName": "BLING BLING GENIUS",
+          "jockey": "",
+          "trainer": "",
+          "winOdds": 3.2,
+          "placeOdds": 1.8
+        },
+        {
+          "horseNumber": 4,
+          "horseName": "TELECOM POWER",
+          "jockey": "",
+          "trainer": "",
+          "winOdds": 5.2,
+          "placeOdds": 1.7
+        },
+        {
+          "horseNumber": 8,
+          "horseName": "RUN RUN TIMING",
+          "jockey": "",
+          "trainer": "",
+          "winOdds": 8.1,
+          "placeOdds": 2.5
+        }
+      ],
+      "fetchedAt": "2026-02-11T09:14:10.451Z"
+    },
+    {
+      "raceNumber": 4,
+      "date": "2026-02-01",
+      "venue": "ST",
+      "horses": [
+        {
+          "horseNumber": 1,
+          "horseName": "BLING BLING GENIUS",
+          "jockey": "",
+          "trainer": "",
+          "winOdds": 3.2,
+          "placeOdds": 1.8
+        },
+        {
+          "horseNumber": 4,
+          "horseName": "TELECOM POWER",
+          "jockey": "",
+          "trainer": "",
+          "winOdds": 5.2,
+          "placeOdds": 1.7
+        },
+        {
+          "horseNumber": 8,
+          "horseName": "RUN RUN TIMING",
+          "jockey": "",
+          "trainer": "",
+          "winOdds": 8.1,
+          "placeOdds": 2.5
+        }
+      ],
+      "fetchedAt": "2026-02-11T09:14:14.875Z"
+    },
+    {
+      "raceNumber": 5,
+      "date": "2026-02-01",
+      "venue": "ST",
+      "horses": [
+        {
+          "horseNumber": 1,
+          "horseName": "BLING BLING GENIUS",
+          "jockey": "",
+          "trainer": "",
+          "winOdds": 3.2,
+          "placeOdds": 1.8
+        },
+        {
+          "horseNumber": 4,
+          "horseName": "TELECOM POWER",
+          "jockey": "",
+          "trainer": "",
+          "winOdds": 5.2,
+          "placeOdds": 1.7
+        },
+        {
+          "horseNumber": 8,
+          "horseName": "RUN RUN TIMING",
+          "jockey": "",
+          "trainer": "",
+          "winOdds": 8.1,
+          "placeOdds": 2.5
+        }
+      ],
+      "fetchedAt": "2026-02-11T09:14:18.688Z"
+    },
+    {
+      "raceNumber": 6,
+      "date": "2026-02-01",
+      "venue": "ST",
+      "horses": [
+        {
+          "horseNumber": 1,
+          "horseName": "BLING BLING GENIUS",
+          "jockey": "",
+          "trainer": "",
+          "winOdds": 3.2,
+          "placeOdds": 1.8
+        },
+        {
+          "horseNumber": 4,
+          "horseName": "TELECOM POWER",
+          "jockey": "",
+          "trainer": "",
+          "winOdds": 5.2,
+          "placeOdds": 1.7
+        },
+        {
+          "horseNumber": 8,
+          "horseName": "RUN RUN TIMING",
+          "jockey": "",
+          "trainer": "",
+          "winOdds": 8.1,
+          "placeOdds": 2.5
+        }
+      ],
+      "fetchedAt": "2026-02-11T09:14:22.549Z"
+    },
+    {
+      "raceNumber": 7,
+      "date": "2026-02-01",
+      "venue": "ST",
+      "horses": [
+        {
+          "horseNumber": 1,
+          "horseName": "BLING BLING GENIUS",
+          "jockey": "",
+          "trainer": "",
+          "winOdds": 3.2,
+          "placeOdds": 1.8
+        },
+        {
+          "horseNumber": 4,
+          "horseName": "TELECOM POWER",
+          "jockey": "",
+          "trainer": "",
+          "winOdds": 5.2,
+          "placeOdds": 1.7
+        },
+        {
+          "horseNumber": 8,
+          "horseName": "RUN RUN TIMING",
+          "jockey": "",
+          "trainer": "",
+          "winOdds": 8.1,
+          "placeOdds": 2.5
+        }
+      ],
+      "fetchedAt": "2026-02-11T09:14:26.372Z"
+    },
+    {
+      "raceNumber": 8,
+      "date": "2026-02-01",
+      "venue": "ST",
+      "horses": [
+        {
+          "horseNumber": 1,
+          "horseName": "BLING BLING GENIUS",
+          "jockey": "",
+          "trainer": "",
+          "winOdds": 3.2,
+          "placeOdds": 1.8
+        },
+        {
+          "horseNumber": 4,
+          "horseName": "TELECOM POWER",
+          "jockey": "",
+          "trainer": "",
+          "winOdds": 5.2,
+          "placeOdds": 1.7
+        },
+        {
+          "horseNumber": 8,
+          "horseName": "RUN RUN TIMING",
+          "jockey": "",
+          "trainer": "",
+          "winOdds": 8.1,
+          "placeOdds": 2.5
+        }
+      ],
+      "fetchedAt": "2026-02-11T09:14:30.139Z"
+    },
+    {
+      "raceNumber": 9,
+      "date": "2026-02-01",
+      "venue": "ST",
+      "horses": [
+        {
+          "horseNumber": 1,
+          "horseName": "BLING BLING GENIUS",
+          "jockey": "",
+          "trainer": "",
+          "winOdds": 3.2,
+          "placeOdds": 1.8
+        },
+        {
+          "horseNumber": 4,
+          "horseName": "TELECOM POWER",
+          "jockey": "",
+          "trainer": "",
+          "winOdds": 5.2,
+          "placeOdds": 1.7
+        },
+        {
+          "horseNumber": 8,
+          "horseName": "RUN RUN TIMING",
+          "jockey": "",
+          "trainer": "",
+          "winOdds": 8.1,
+          "placeOdds": 2.5
+        }
+      ],
+      "fetchedAt": "2026-02-11T09:14:33.912Z"
+    },
+    {
+      "raceNumber": 10,
+      "date": "2026-02-01",
+      "venue": "ST",
+      "horses": [
+        {
+          "horseNumber": 1,
+          "horseName": "BLING BLING GENIUS",
+          "jockey": "",
+          "trainer": "",
+          "winOdds": 3.2,
+          "placeOdds": 1.8
+        },
+        {
+          "horseNumber": 4,
+          "horseName": "TELECOM POWER",
+          "jockey": "",
+          "trainer": "",
+          "winOdds": 5.2,
+          "placeOdds": 1.7
+        },
+        {
+          "horseNumber": 8,
+          "horseName": "RUN RUN TIMING",
+          "jockey": "",
+          "trainer": "",
+          "winOdds": 8.1,
+          "placeOdds": 2.5
+        }
+      ],
+      "fetchedAt": "2026-02-11T09:14:37.755Z"
+    },
+    {
+      "raceNumber": 11,
+      "date": "2026-02-01",
+      "venue": "ST",
+      "horses": [
+        {
+          "horseNumber": 1,
+          "horseName": "BLING BLING GENIUS",
+          "jockey": "",
+          "trainer": "",
+          "winOdds": 3.2,
+          "placeOdds": 1.8
+        },
+        {
+          "horseNumber": 4,
+          "horseName": "TELECOM POWER",
+          "jockey": "",
+          "trainer": "",
+          "winOdds": 5.2,
+          "placeOdds": 1.7
+        },
+        {
+          "horseNumber": 8,
+          "horseName": "RUN RUN TIMING",
+          "jockey": "",
+          "trainer": "",
+          "winOdds": 8.1,
+          "placeOdds": 2.5
+        }
+      ],
+      "fetchedAt": "2026-02-11T09:14:41.558Z"
+    }
+  ],
+  "fetchedAt": "2026-02-11T09:14:41.587Z"
+}

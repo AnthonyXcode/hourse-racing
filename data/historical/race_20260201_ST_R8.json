@@ -1,0 +1,161 @@
+{
+  "id": "2026-02-01-ST-8",
+  "date": "2026-02-01T00:00:00.000Z",
+  "venue": "Sha Tin",
+  "raceNumber": 8,
+  "name": "of HKJC\n                                                                                    \n                                                                                    \n                                                                                    \n                                                                                        Bloodstock Agents\n                                                                                    \n                                                                                    \n                                                                                    \n                                                                                        Handicap",
+  "class": "Class 5",
+  "distance": 1000,
+  "surface": "Turf",
+  "going": "Good",
+  "prizeMoney": 875000,
+  "entries": [],
+  "finishOrder": [
+    {
+      "horseNumber": 4,
+      "finishPosition": 1,
+      "finishTime": 56.98,
+      "margin": 1,
+      "horseName": "SAVVY TWINKLE",
+      "horseCode": "HK_2024_K067",
+      "jockeyName": "Z Purton",
+      "trainerName": "F C Lor",
+      "winOdds": 4.8
+    },
+    {
+      "horseNumber": 11,
+      "finishPosition": 2,
+      "finishTime": 57.09,
+      "margin": 2,
+      "horseName": "MODEST GENTLEMAN",
+      "horseCode": "HK_2021_G352",
+      "jockeyName": "M Chadwick",
+      "trainerName": "C H Yip",
+      "winOdds": 24
+    },
+    {
+      "horseNumber": 1,
+      "finishPosition": 3,
+      "finishTime": 57.13,
+      "margin": 3,
+      "horseName": "ISLAND BREEZES",
+      "horseCode": "HK_2023_J479",
+      "jockeyName": "L Ferraris",
+      "trainerName": "P C Ng",
+      "winOdds": 7.8
+    },
+    {
+      "horseNumber": 2,
+      "finishPosition": 4,
+      "finishTime": 57.2,
+      "margin": 4,
+      "horseName": "SPICY SPANGLE",
+      "horseCode": "HK_2023_J087",
+      "jockeyName": "K C Leung",
+      "trainerName": "W K Mo",
+      "winOdds": 3.3
+    },
+    {
+      "horseNumber": 12,
+      "finishPosition": 5,
+      "finishTime": 57.26,
+      "margin": 5,
+      "horseName": "GLORIOUS EXPERT",
+      "horseCode": "HK_2023_J028",
+      "jockeyName": "H Bentley",
+      "trainerName": "K H Ting",
+      "winOdds": 10
+    },
+    {
+      "horseNumber": 9,
+      "finishPosition": 6,
+      "finishTime": 57.34,
+      "margin": 6,
+      "horseName": "ORIENTAL SURPRISE",
+      "horseCode": "HK_2024_K028",
+      "jockeyName": "B Avdulla",
+      "trainerName": "D A Hayes",
+      "winOdds": 11
+    },
+    {
+      "horseNumber": 5,
+      "finishPosition": 7,
+      "finishTime": 57.47,
+      "margin": 7,
+      "horseName": "CONCORDE STAR",
+      "horseCode": "HK_2023_J344",
+      "jockeyName": "J Orman",
+      "trainerName": "Y S Tsui",
+      "winOdds": 7.5
+    },
+    {
+      "horseNumber": 7,
+      "finishPosition": 8,
+      "finishTime": 57.5,
+      "margin": 8,
+      "horseName": "SKY SONG",
+      "horseCode": "HK_2023_J159",
+      "jockeyName": "H Bowman",
+      "trainerName": "C Fownes",
+      "winOdds": 9.4
+    },
+    {
+      "horseNumber": 3,
+      "finishPosition": 9,
+      "finishTime": 57.51,
+      "margin": 9,
+      "horseName": "HAPPY BOYS",
+      "horseCode": "HK_2023_J545",
+      "jockeyName": "D B McMonagle",
+      "trainerName": "M Newnham",
+      "winOdds": 15
+    },
+    {
+      "horseNumber": 10,
+      "finishPosition": 10,
+      "finishTime": 57.59,
+      "margin": 10,
+      "horseName": "SMART ENGINEER",
+      "horseCode": "HK_2024_K244",
+      "jockeyName": "D Probert",
+      "trainerName": "K W Lui",
+      "winOdds": 75
+    },
+    {
+      "horseNumber": 8,
+      "finishPosition": 11,
+      "finishTime": 57.74,
+      "margin": 11,
+      "horseName": "TURF PHOENIX",
+      "horseCode": "HK_2023_J294",
+      "jockeyName": "H T Mo",
+      "trainerName": "W Y So",
+      "winOdds": 66
+    },
+    {
+      "horseNumber": 6,
+      "finishPosition": 12,
+      "finishTime": 58.5,
+      "margin": 12,
+      "horseName": "MULTIDUTCH",
+      "horseCode": "HK_2024_K171",
+      "jockeyName": "Y L Chung",
+      "trainerName": "A S Cruz",
+      "winOdds": 52
+    }
+  ],
+  "winDividend": 48,
+  "placeDividends": [
+    18.5,
+    56.5,
+    20.5
+  ],
+  "quinellaDividend": 581.5,
+  "quinellaPlaceDividends": [
+    158.5,
+    56.5,
+    203.5
+  ],
+  "tierceDividend": 7477,
+  "trioDividend": 1
+}

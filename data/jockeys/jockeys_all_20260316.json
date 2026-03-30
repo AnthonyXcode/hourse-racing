@@ -1,0 +1,737 @@
+[
+  {
+    "code": "PZ",
+    "name": "Unknown",
+    "nationality": "Hong Kong",
+    "weightClaim": 0,
+    "seasonStats": {
+      "wins": 85,
+      "places": 116,
+      "rides": 423,
+      "winRate": 0.20094562647754138,
+      "placeRate": 0.475177304964539,
+      "roi": 1
+    },
+    "courseStats": [
+      {
+        "venue": "Sha Tin",
+        "wins": 964,
+        "places": 0,
+        "rides": 920,
+        "winRate": 1.0478260869565217,
+        "placeRate": 1.0478260869565217,
+        "roi": 1
+      }
+    ],
+    "recentForm": [],
+    "trainerCombinations": [],
+    "distanceStats": []
+  },
+  {
+    "code": "MOJ",
+    "name": "Unknown",
+    "nationality": "Hong Kong",
+    "weightClaim": 0,
+    "seasonStats": {
+      "wins": 2,
+      "places": 0,
+      "rides": 8,
+      "winRate": 0.25,
+      "placeRate": 0.25,
+      "roi": 1
+    },
+    "courseStats": [
+      {
+        "venue": "Sha Tin",
+        "wins": 964,
+        "places": 0,
+        "rides": 920,
+        "winRate": 1.0478260869565217,
+        "placeRate": 1.0478260869565217,
+        "roi": 1
+      }
+    ],
+    "recentForm": [],
+    "trainerCombinations": [],
+    "distanceStats": []
+  },
+  {
+    "code": "MCJ",
+    "name": "Unknown",
+    "nationality": "Hong Kong",
+    "weightClaim": 0,
+    "seasonStats": {
+      "wins": 16,
+      "places": 25,
+      "rides": 101,
+      "winRate": 0.15841584158415842,
+      "placeRate": 0.40594059405940597,
+      "roi": 1
+    },
+    "courseStats": [
+      {
+        "venue": "Sha Tin",
+        "wins": 964,
+        "places": 0,
+        "rides": 920,
+        "winRate": 1.0478260869565217,
+        "placeRate": 1.0478260869565217,
+        "roi": 1
+      }
+    ],
+    "recentForm": [],
+    "trainerCombinations": [],
+    "distanceStats": []
+  },
+  {
+    "code": "BH",
+    "name": "Unknown",
+    "nationality": "Hong Kong",
+    "weightClaim": 0,
+    "seasonStats": {
+      "wins": 40,
+      "places": 75,
+      "rides": 346,
+      "winRate": 0.11560693641618497,
+      "placeRate": 0.33236994219653176,
+      "roi": 1
+    },
+    "courseStats": [
+      {
+        "venue": "Sha Tin",
+        "wins": 964,
+        "places": 0,
+        "rides": 920,
+        "winRate": 1.0478260869565217,
+        "placeRate": 1.0478260869565217,
+        "roi": 1
+      }
+    ],
+    "recentForm": [],
+    "trainerCombinations": [],
+    "distanceStats": []
+  },
+  {
+    "code": "GM",
+    "name": "Unknown",
+    "nationality": "Hong Kong",
+    "weightClaim": 0,
+    "seasonStats": {
+      "wins": 15,
+      "places": 35,
+      "rides": 169,
+      "winRate": 0.08875739644970414,
+      "placeRate": 0.2958579881656805,
+      "roi": 1
+    },
+    "courseStats": [
+      {
+        "venue": "Sha Tin",
+        "wins": 964,
+        "places": 0,
+        "rides": 920,
+        "winRate": 1.0478260869565217,
+        "placeRate": 1.0478260869565217,
+        "roi": 1
+      }
+    ],
+    "recentForm": [],
+    "trainerCombinations": [],
+    "distanceStats": []
+  },
+  {
+    "code": "TEK",
+    "name": "Unknown",
+    "nationality": "Hong Kong",
+    "weightClaim": 0,
+    "seasonStats": {
+      "wins": 25,
+      "places": 51,
+      "rides": 375,
+      "winRate": 0.06666666666666667,
+      "placeRate": 0.20266666666666666,
+      "roi": 1
+    },
+    "courseStats": [
+      {
+        "venue": "Sha Tin",
+        "wins": 964,
+        "places": 0,
+        "rides": 920,
+        "winRate": 1.0478260869565217,
+        "placeRate": 1.0478260869565217,
+        "roi": 1
+      }
+    ],
+    "recentForm": [],
+    "trainerCombinations": [],
+    "distanceStats": []
+  },
+  {
+    "code": "BA",
+    "name": "Unknown",
+    "nationality": "Hong Kong",
+    "weightClaim": 0,
+    "seasonStats": {
+      "wins": 18,
+      "places": 58,
+      "rides": 289,
+      "winRate": 0.06228373702422145,
+      "placeRate": 0.2629757785467128,
+      "roi": 1
+    },
+    "courseStats": [
+      {
+        "venue": "Sha Tin",
+        "wins": 964,
+        "places": 0,
+        "rides": 920,
+        "winRate": 1.0478260869565217,
+        "placeRate": 1.0478260869565217,
+        "roi": 1
+      }
+    ],
+    "recentForm": [],
+    "trainerCombinations": [],
+    "distanceStats": []
+  },
+  {
+    "code": "HEL",
+    "name": "Unknown",
+    "nationality": "Hong Kong",
+    "weightClaim": 0,
+    "seasonStats": {
+      "wins": 21,
+      "places": 48,
+      "rides": 297,
+      "winRate": 0.0707070707070707,
+      "placeRate": 0.23232323232323232,
+      "roi": 1
+    },
+    "courseStats": [
+      {
+        "venue": "Sha Tin",
+        "wins": 964,
+        "places": 0,
+        "rides": 920,
+        "winRate": 1.0478260869565217,
+        "placeRate": 1.0478260869565217,
+        "roi": 1
+      }
+    ],
+    "recentForm": [],
+    "trainerCombinations": [],
+    "distanceStats": []
+  },
+  {
+    "code": "FEL",
+    "name": "Unknown",
+    "nationality": "Hong Kong",
+    "weightClaim": 0,
+    "seasonStats": {
+      "wins": 26,
+      "places": 41,
+      "rides": 288,
+      "winRate": 0.09027777777777778,
+      "placeRate": 0.2326388888888889,
+      "roi": 1
+    },
+    "courseStats": [
+      {
+        "venue": "Sha Tin",
+        "wins": 964,
+        "places": 0,
+        "rides": 920,
+        "winRate": 1.0478260869565217,
+        "placeRate": 1.0478260869565217,
+        "roi": 1
+      }
+    ],
+    "recentForm": [],
+    "trainerCombinations": [],
+    "distanceStats": []
+  },
+  {
+    "code": "AA",
+    "name": "Unknown",
+    "nationality": "Hong Kong",
+    "weightClaim": 0,
+    "seasonStats": {
+      "wins": 36,
+      "places": 58,
+      "rides": 355,
+      "winRate": 0.10140845070422536,
+      "placeRate": 0.2647887323943662,
+      "roi": 1
+    },
+    "courseStats": [
+      {
+        "venue": "Sha Tin",
+        "wins": 964,
+        "places": 0,
+        "rides": 920,
+        "winRate": 1.0478260869565217,
+        "placeRate": 1.0478260869565217,
+        "roi": 1
+      }
+    ],
+    "recentForm": [],
+    "trainerCombinations": [],
+    "distanceStats": []
+  },
+  {
+    "code": "CML",
+    "name": "Unknown",
+    "nationality": "Hong Kong",
+    "weightClaim": 0,
+    "seasonStats": {
+      "wins": 11,
+      "places": 43,
+      "rides": 286,
+      "winRate": 0.038461538461538464,
+      "placeRate": 0.1888111888111888,
+      "roi": 1
+    },
+    "courseStats": [
+      {
+        "venue": "Sha Tin",
+        "wins": 964,
+        "places": 0,
+        "rides": 920,
+        "winRate": 1.0478260869565217,
+        "placeRate": 1.0478260869565217,
+        "roi": 1
+      }
+    ],
+    "recentForm": [],
+    "trainerCombinations": [],
+    "distanceStats": []
+  },
+  {
+    "code": "AVB",
+    "name": "Unknown",
+    "nationality": "Hong Kong",
+    "weightClaim": 0,
+    "seasonStats": {
+      "wins": 11,
+      "places": 43,
+      "rides": 275,
+      "winRate": 0.04,
+      "placeRate": 0.19636363636363635,
+      "roi": 1
+    },
+    "courseStats": [
+      {
+        "venue": "Sha Tin",
+        "wins": 964,
+        "places": 0,
+        "rides": 920,
+        "winRate": 1.0478260869565217,
+        "placeRate": 1.0478260869565217,
+        "roi": 1
+      }
+    ],
+    "recentForm": [],
+    "trainerCombinations": [],
+    "distanceStats": []
+  },
+  {
+    "code": "HCY",
+    "name": "Unknown",
+    "nationality": "Hong Kong",
+    "weightClaim": 0,
+    "seasonStats": {
+      "wins": 25,
+      "places": 46,
+      "rides": 281,
+      "winRate": 0.08896797153024912,
+      "placeRate": 0.2526690391459075,
+      "roi": 1
+    },
+    "courseStats": [
+      {
+        "venue": "Sha Tin",
+        "wins": 964,
+        "places": 0,
+        "rides": 920,
+        "winRate": 1.0478260869565217,
+        "placeRate": 1.0478260869565217,
+        "roi": 1
+      }
+    ],
+    "recentForm": [],
+    "trainerCombinations": [],
+    "distanceStats": []
+  },
+  {
+    "code": "LDE",
+    "name": "Unknown",
+    "nationality": "Hong Kong",
+    "weightClaim": 0,
+    "seasonStats": {
+      "wins": 17,
+      "places": 34,
+      "rides": 267,
+      "winRate": 0.06367041198501873,
+      "placeRate": 0.19101123595505617,
+      "roi": 1
+    },
+    "courseStats": [
+      {
+        "venue": "Sha Tin",
+        "wins": 964,
+        "places": 0,
+        "rides": 920,
+        "winRate": 1.0478260869565217,
+        "placeRate": 1.0478260869565217,
+        "roi": 1
+      }
+    ],
+    "recentForm": [],
+    "trainerCombinations": [],
+    "distanceStats": []
+  },
+  {
+    "code": "MDB",
+    "name": "Unknown",
+    "nationality": "Hong Kong",
+    "weightClaim": 0,
+    "seasonStats": {
+      "wins": 10,
+      "places": 18,
+      "rides": 127,
+      "winRate": 0.07874015748031496,
+      "placeRate": 0.2204724409448819,
+      "roi": 1
+    },
+    "courseStats": [
+      {
+        "venue": "Sha Tin",
+        "wins": 964,
+        "places": 0,
+        "rides": 920,
+        "winRate": 1.0478260869565217,
+        "placeRate": 1.0478260869565217,
+        "roi": 1
+      }
+    ],
+    "recentForm": [],
+    "trainerCombinations": [],
+    "distanceStats": []
+  },
+  {
+    "code": "BHW",
+    "name": "Unknown",
+    "nationality": "Hong Kong",
+    "weightClaim": 0,
+    "seasonStats": {
+      "wins": 21,
+      "places": 39,
+      "rides": 287,
+      "winRate": 0.07317073170731707,
+      "placeRate": 0.20905923344947736,
+      "roi": 1
+    },
+    "courseStats": [
+      {
+        "venue": "Sha Tin",
+        "wins": 964,
+        "places": 0,
+        "rides": 920,
+        "winRate": 1.0478260869565217,
+        "placeRate": 1.0478260869565217,
+        "roi": 1
+      }
+    ],
+    "recentForm": [],
+    "trainerCombinations": [],
+    "distanceStats": []
+  },
+  {
+    "code": "WDJ",
+    "name": "Unknown",
+    "nationality": "Hong Kong",
+    "weightClaim": 0,
+    "seasonStats": {
+      "wins": 0,
+      "places": 0,
+      "rides": 0,
+      "winRate": 0,
+      "placeRate": 0,
+      "roi": 1
+    },
+    "courseStats": [
+      {
+        "venue": "Sha Tin",
+        "wins": 964,
+        "places": 0,
+        "rides": 920,
+        "winRate": 1.0478260869565217,
+        "placeRate": 1.0478260869565217,
+        "roi": 1
+      },
+      {
+        "venue": "Happy Valley",
+        "wins": 0,
+        "places": 0,
+        "rides": 64,
+        "winRate": 0,
+        "placeRate": 0,
+        "roi": 1
+      }
+    ],
+    "recentForm": [],
+    "trainerCombinations": [],
+    "distanceStats": []
+  },
+  {
+    "code": "CLR",
+    "name": "Unknown",
+    "nationality": "Hong Kong",
+    "weightClaim": 0,
+    "seasonStats": {
+      "wins": 0,
+      "places": 0,
+      "rides": 0,
+      "winRate": 0,
+      "placeRate": 0,
+      "roi": 1
+    },
+    "courseStats": [
+      {
+        "venue": "Sha Tin",
+        "wins": 964,
+        "places": 0,
+        "rides": 920,
+        "winRate": 1.0478260869565217,
+        "placeRate": 1.0478260869565217,
+        "roi": 1
+      },
+      {
+        "venue": "Happy Valley",
+        "wins": 0,
+        "places": 0,
+        "rides": 64,
+        "winRate": 0,
+        "placeRate": 0,
+        "roi": 1
+      }
+    ],
+    "recentForm": [],
+    "trainerCombinations": [],
+    "distanceStats": []
+  },
+  {
+    "code": "PFI",
+    "name": "Unknown",
+    "nationality": "Hong Kong",
+    "weightClaim": 0,
+    "seasonStats": {
+      "wins": 0,
+      "places": 0,
+      "rides": 0,
+      "winRate": 0,
+      "placeRate": 0,
+      "roi": 1
+    },
+    "courseStats": [
+      {
+        "venue": "Sha Tin",
+        "wins": 964,
+        "places": 0,
+        "rides": 920,
+        "winRate": 1.0478260869565217,
+        "placeRate": 1.0478260869565217,
+        "roi": 1
+      },
+      {
+        "venue": "Happy Valley",
+        "wins": 0,
+        "places": 0,
+        "rides": 64,
+        "winRate": 0,
+        "placeRate": 0,
+        "roi": 1
+      }
+    ],
+    "recentForm": [],
+    "trainerCombinations": [],
+    "distanceStats": []
+  },
+  {
+    "code": "YML",
+    "name": "Unknown",
+    "nationality": "Hong Kong",
+    "weightClaim": 0,
+    "seasonStats": {
+      "wins": 15,
+      "places": 24,
+      "rides": 278,
+      "winRate": 0.0539568345323741,
+      "placeRate": 0.14028776978417265,
+      "roi": 1
+    },
+    "courseStats": [
+      {
+        "venue": "Sha Tin",
+        "wins": 964,
+        "places": 0,
+        "rides": 920,
+        "winRate": 1.0478260869565217,
+        "placeRate": 1.0478260869565217,
+        "roi": 1
+      }
+    ],
+    "recentForm": [],
+    "trainerCombinations": [],
+    "distanceStats": []
+  },
+  {
+    "code": "WJH",
+    "name": "Unknown",
+    "nationality": "Hong Kong",
+    "weightClaim": 0,
+    "seasonStats": {
+      "wins": 0,
+      "places": 0,
+      "rides": 0,
+      "winRate": 0,
+      "placeRate": 0,
+      "roi": 1
+    },
+    "courseStats": [
+      {
+        "venue": "Sha Tin",
+        "wins": 964,
+        "places": 0,
+        "rides": 920,
+        "winRate": 1.0478260869565217,
+        "placeRate": 1.0478260869565217,
+        "roi": 1
+      },
+      {
+        "venue": "Happy Valley",
+        "wins": 0,
+        "places": 0,
+        "rides": 64,
+        "winRate": 0,
+        "placeRate": 0,
+        "roi": 1
+      }
+    ],
+    "recentForm": [],
+    "trainerCombinations": [],
+    "distanceStats": []
+  },
+  {
+    "code": "CCW",
+    "name": "Unknown",
+    "nationality": "Hong Kong",
+    "weightClaim": 0,
+    "seasonStats": {
+      "wins": 0,
+      "places": 0,
+      "rides": 0,
+      "winRate": 0,
+      "placeRate": 0,
+      "roi": 1
+    },
+    "courseStats": [
+      {
+        "venue": "Sha Tin",
+        "wins": 964,
+        "places": 0,
+        "rides": 920,
+        "winRate": 1.0478260869565217,
+        "placeRate": 1.0478260869565217,
+        "roi": 1
+      },
+      {
+        "venue": "Happy Valley",
+        "wins": 0,
+        "places": 0,
+        "rides": 64,
+        "winRate": 0,
+        "placeRate": 0,
+        "roi": 1
+      }
+    ],
+    "recentForm": [],
+    "trainerCombinations": [],
+    "distanceStats": []
+  },
+  {
+    "code": "CKJ",
+    "name": "Unknown",
+    "nationality": "Hong Kong",
+    "weightClaim": 0,
+    "seasonStats": {
+      "wins": 0,
+      "places": 0,
+      "rides": 0,
+      "winRate": 0,
+      "placeRate": 0,
+      "roi": 1
+    },
+    "courseStats": [
+      {
+        "venue": "Sha Tin",
+        "wins": 964,
+        "places": 0,
+        "rides": 920,
+        "winRate": 1.0478260869565217,
+        "placeRate": 1.0478260869565217,
+        "roi": 1
+      },
+      {
+        "venue": "Happy Valley",
+        "wins": 0,
+        "places": 0,
+        "rides": 64,
+        "winRate": 0,
+        "placeRate": 0,
+        "roi": 1
+      }
+    ],
+    "recentForm": [],
+    "trainerCombinations": [],
+    "distanceStats": []
+  },
+  {
+    "code": "SHB",
+    "name": "Unknown",
+    "nationality": "Hong Kong",
+    "weightClaim": 0,
+    "seasonStats": {
+      "wins": 0,
+      "places": 0,
+      "rides": 0,
+      "winRate": 0,
+      "placeRate": 0,
+      "roi": 1
+    },
+    "courseStats": [
+      {
+        "venue": "Sha Tin",
+        "wins": 964,
+        "places": 0,
+        "rides": 920,
+        "winRate": 1.0478260869565217,
+        "placeRate": 1.0478260869565217,
+        "roi": 1
+      },
+      {
+        "venue": "Happy Valley",
+        "wins": 0,
+        "places": 0,
+        "rides": 64,
+        "winRate": 0,
+        "placeRate": 0,
+        "roi": 1
+      }
+    ],
+    "recentForm": [],
+    "trainerCombinations": [],
+    "distanceStats": []
+  }
+]

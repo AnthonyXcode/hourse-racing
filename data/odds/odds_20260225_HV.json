@@ -1,0 +1,487 @@
+{
+  "date": "2026-02-25",
+  "venue": "HV",
+  "races": [
+    {
+      "raceNumber": 1,
+      "date": "2026-02-25",
+      "venue": "HV",
+      "horses": [
+        {
+          "horseNumber": 1,
+          "horseName": "COUNTRY DANCER",
+          "jockey": "D B McMonagle",
+          "trainer": "J Size",
+          "winOdds": 6.6,
+          "placeOdds": 2.6
+        },
+        {
+          "horseNumber": 2,
+          "horseName": "TOP TO SKY",
+          "jockey": "K C Leung",
+          "trainer": "C H Yip",
+          "winOdds": 9.5,
+          "placeOdds": 3.6
+        },
+        {
+          "horseNumber": 3,
+          "horseName": "KING ALLOY",
+          "jockey": "R Kingscote",
+          "trainer": "K H Ting",
+          "winOdds": 9.6,
+          "placeOdds": 2.7
+        },
+        {
+          "horseNumber": 4,
+          "horseName": "TRIUMPHANT WARRIOR",
+          "jockey": "M Guyon",
+          "trainer": "J Richards",
+          "winOdds": 11,
+          "placeOdds": 3.5
+        },
+        {
+          "horseNumber": 5,
+          "horseName": "CHILL MASTER",
+          "jockey": "C L Chau (-2)",
+          "trainer": "K L Man",
+          "winOdds": 24,
+          "placeOdds": 6.2
+        },
+        {
+          "horseNumber": 6,
+          "horseName": "MY FLYING ANGEL",
+          "jockey": "A Badel",
+          "trainer": "F C Lor",
+          "winOdds": 12,
+          "placeOdds": 3.6
+        },
+        {
+          "horseNumber": 7,
+          "horseName": "RICH HORSE",
+          "jockey": "M F Poon",
+          "trainer": "D J Hall",
+          "winOdds": 35,
+          "placeOdds": 9.1
+        },
+        {
+          "horseNumber": 8,
+          "horseName": "YOU'REMYEVERYTHING",
+          "jockey": "K Teetan",
+          "trainer": "C W Chang",
+          "winOdds": 31,
+          "placeOdds": 8.6
+        },
+        {
+          "horseNumber": 9,
+          "horseName": "LUCKY GENERATIONS",
+          "jockey": "E C W Wong (-5)",
+          "trainer": "C Fownes",
+          "winOdds": 5.8,
+          "placeOdds": 2.2
+        },
+        {
+          "horseNumber": 10,
+          "horseName": "TAIHANG SCENERY",
+          "jockey": "L Hewitson",
+          "trainer": "C S Shum",
+          "winOdds": 4.5,
+          "placeOdds": 2
+        },
+        {
+          "horseNumber": 11,
+          "horseName": "ORIENTAL SURPRISE",
+          "jockey": "Z Purton",
+          "trainer": "D A Hayes",
+          "winOdds": 13,
+          "placeOdds": 3.7
+        },
+        {
+          "horseNumber": 12,
+          "horseName": "SONIC BOOM",
+          "jockey": "H Bentley",
+          "trainer": "W K Mo",
+          "winOdds": 8.9,
+          "placeOdds": 2.2
+        }
+      ],
+      "fetchedAt": "2026-02-25T09:52:42.599Z"
+    },
+    {
+      "raceNumber": 2,
+      "date": "2026-02-25",
+      "venue": "HV",
+      "horses": [
+        {
+          "horseNumber": 1,
+          "horseName": "VICTOR THE RAPID",
+          "jockey": "C L Chau (-2)",
+          "trainer": "P C Ng",
+          "winOdds": 5.1,
+          "placeOdds": 1.7
+        },
+        {
+          "horseNumber": 2,
+          "horseName": "AUTOMATED",
+          "jockey": "M L Yeung",
+          "trainer": "W Y So",
+          "winOdds": 64,
+          "placeOdds": 10
+        },
+        {
+          "horseNumber": 3,
+          "horseName": "SIR CHARGE",
+          "jockey": "D B McMonagle",
+          "trainer": "D Eustace",
+          "winOdds": 26,
+          "placeOdds": 6.5
+        },
+        {
+          "horseNumber": 4,
+          "horseName": "IMPRESSIVE CHAMP",
+          "jockey": "B Avdulla",
+          "trainer": "P F Yiu",
+          "winOdds": 67,
+          "placeOdds": 13
+        },
+        {
+          "horseNumber": 5,
+          "horseName": "NORTHERN FIRE BALL",
+          "jockey": "K C Leung",
+          "trainer": "C H Yip",
+          "winOdds": 4.6,
+          "placeOdds": 1.8
+        },
+        {
+          "horseNumber": 6,
+          "horseName": "TOPSPIN KING",
+          "jockey": "C Y Ho",
+          "trainer": "K W Lui",
+          "winOdds": 18,
+          "placeOdds": 5.2
+        },
+        {
+          "horseNumber": 7,
+          "horseName": "AWESOME TREASURE",
+          "jockey": "E C W Wong (-5)",
+          "trainer": "J Richards",
+          "winOdds": 12,
+          "placeOdds": 3.5
+        },
+        {
+          "horseNumber": 8,
+          "horseName": "BITS SUPERSTAR",
+          "jockey": "Z Purton",
+          "trainer": "D J Hall",
+          "winOdds": 2.3,
+          "placeOdds": 1.1
+        },
+        {
+          "horseNumber": 9,
+          "horseName": "FULL OF LAUGHTER",
+          "jockey": "R Kingscote",
+          "trainer": "C W Chang",
+          "winOdds": 24,
+          "placeOdds": 5.2
+        },
+        {
+          "horseNumber": 10,
+          "horseName": "ZEPHYR",
+          "jockey": "L Hewitson",
+          "trainer": "M Newnham",
+          "winOdds": 18,
+          "placeOdds": 4.7
+        },
+        {
+          "horseNumber": 11,
+          "horseName": "WINNING CIGAR",
+          "jockey": "H Bentley",
+          "trainer": "D A Hayes",
+          "winOdds": 15,
+          "placeOdds": 3.3
+        },
+        {
+          "horseNumber": 12,
+          "horseName": "HAPPY BUDDIES",
+          "jockey": "K Teetan",
+          "trainer": "W K Mo",
+          "winOdds": 53,
+          "placeOdds": 10
+        }
+      ],
+      "fetchedAt": "2026-02-25T09:52:43.032Z"
+    },
+    {
+      "raceNumber": 3,
+      "date": "2026-02-25",
+      "venue": "HV",
+      "horses": [
+        {
+          "horseNumber": 1,
+          "horseName": "CALIFORNIATOTALITY",
+          "jockey": "B Avdulla",
+          "trainer": "A S Cruz",
+          "winOdds": 6,
+          "placeOdds": 2.3
+        },
+        {
+          "horseNumber": 2,
+          "horseName": "HUGE WAVE",
+          "jockey": "A Badel",
+          "trainer": "K H Ting",
+          "winOdds": 3.7,
+          "placeOdds": 1.3
+        },
+        {
+          "horseNumber": 3,
+          "horseName": "SWORD POINT",
+          "jockey": "K C Leung",
+          "trainer": "F C Lor",
+          "winOdds": 21,
+          "placeOdds": 4.2
+        },
+        {
+          "horseNumber": 4,
+          "horseName": "AWESOME FLUKE",
+          "jockey": "A Atzeni",
+          "trainer": "P F Yiu",
+          "winOdds": 5.2,
+          "placeOdds": 1.7
+        },
+        {
+          "horseNumber": 5,
+          "horseName": "SOLEIL FIGHTER",
+          "jockey": "H Bowman",
+          "trainer": "D A Hayes",
+          "winOdds": 5.7,
+          "placeOdds": 1.7
+        },
+        {
+          "horseNumber": 6,
+          "horseName": "SKY HEART",
+          "jockey": "E C W Wong (-5)",
+          "trainer": "C Fownes",
+          "winOdds": 3.6,
+          "placeOdds": 1.5
+        },
+        {
+          "horseNumber": 7,
+          "horseName": "JUMBO LEGEND",
+          "jockey": "K Teetan",
+          "trainer": "C Fownes",
+          "winOdds": 10,
+          "placeOdds": 2.7
+        }
+      ],
+      "fetchedAt": "2026-02-25T09:52:43.329Z"
+    },
+    {
+      "raceNumber": 4,
+      "date": "2026-02-25",
+      "venue": "HV",
+      "horses": [
+        {
+          "horseNumber": 1,
+          "horseName": "VERY GRATEFUL",
+          "jockey": "C L Chau (-2)",
+          "trainer": "W K Mo",
+          "winOdds": 6.8,
+          "placeOdds": 2.6
+        },
+        {
+          "horseNumber": 2,
+          "horseName": "TACTICAL COMMAND",
+          "jockey": "A Badel",
+          "trainer": "M Newnham",
+          "winOdds": 16,
+          "placeOdds": 3.7
+        },
+        {
+          "horseNumber": 3,
+          "horseName": "CHEERFUL WONGCHOY",
+          "jockey": "Z Purton",
+          "trainer": "P C Ng",
+          "winOdds": 6.2,
+          "placeOdds": 2.9
+        },
+        {
+          "horseNumber": 4,
+          "horseName": "JOLLY COMPANION",
+          "jockey": "C Y Ho",
+          "trainer": "K L Man",
+          "winOdds": 7.5,
+          "placeOdds": 2
+        },
+        {
+          "horseNumber": 5,
+          "horseName": "KWAI CHUNG TALENTS",
+          "jockey": "M L Yeung",
+          "trainer": "C W Chang",
+          "winOdds": 19,
+          "placeOdds": 4.1
+        },
+        {
+          "horseNumber": 6,
+          "horseName": "CELESTIAL STRIDER",
+          "jockey": "J Orman",
+          "trainer": "W Y So",
+          "winOdds": 64,
+          "placeOdds": 11
+        },
+        {
+          "horseNumber": 7,
+          "horseName": "DAN ATTACK",
+          "jockey": "H Bentley",
+          "trainer": "D J Whyte",
+          "winOdds": 3,
+          "placeOdds": 1.5
+        },
+        {
+          "horseNumber": 8,
+          "horseName": "FORTUNE SUPERNOVA",
+          "jockey": "K C Leung",
+          "trainer": "K H Ting",
+          "winOdds": 6.4,
+          "placeOdds": 2.3
+        },
+        {
+          "horseNumber": 9,
+          "horseName": "SUPREME FEELING",
+          "jockey": "L Ferraris",
+          "trainer": "D A Hayes",
+          "winOdds": 33,
+          "placeOdds": 8.3
+        },
+        {
+          "horseNumber": 10,
+          "horseName": "GIMME FIVE",
+          "jockey": "K Teetan",
+          "trainer": "F C Lor",
+          "winOdds": 29,
+          "placeOdds": 6.2
+        },
+        {
+          "horseNumber": 11,
+          "horseName": "ICONICAL",
+          "jockey": "M Chadwick",
+          "trainer": "J Richards",
+          "winOdds": 20,
+          "placeOdds": 5.1
+        },
+        {
+          "horseNumber": 12,
+          "horseName": "LEGEND STAR",
+          "jockey": "Y L Chung (-2)",
+          "trainer": "C S Shum",
+          "winOdds": 19,
+          "placeOdds": 3.8
+        }
+      ],
+      "fetchedAt": "2026-02-25T09:52:43.685Z"
+    },
+    {
+      "raceNumber": 6,
+      "date": "2026-02-25",
+      "venue": "HV",
+      "horses": [
+        {
+          "horseNumber": 1,
+          "horseName": "STORMI",
+          "jockey": "C L Chau (-2)",
+          "trainer": "W K Mo",
+          "winOdds": 4.6,
+          "placeOdds": 1.7
+        },
+        {
+          "horseNumber": 2,
+          "horseName": "FORTUNE STAR",
+          "jockey": "L Ferraris",
+          "trainer": "M Newnham",
+          "winOdds": 2.8,
+          "placeOdds": 1.4
+        },
+        {
+          "horseNumber": 3,
+          "horseName": "CELTIC TIMES",
+          "jockey": "K C Leung",
+          "trainer": "K L Man",
+          "winOdds": 29,
+          "placeOdds": 7.2
+        },
+        {
+          "horseNumber": 4,
+          "horseName": "SURE JOYFUL",
+          "jockey": "M F Poon",
+          "trainer": "P F Yiu",
+          "winOdds": 21,
+          "placeOdds": 6.2
+        },
+        {
+          "horseNumber": 5,
+          "horseName": "AMAZING AWARD",
+          "jockey": "D B McMonagle",
+          "trainer": "D Eustace",
+          "winOdds": 7.3,
+          "placeOdds": 2.3
+        },
+        {
+          "horseNumber": 6,
+          "horseName": "TO INFINITY",
+          "jockey": "J Orman",
+          "trainer": "J Richards",
+          "winOdds": 20,
+          "placeOdds": 5.2
+        },
+        {
+          "horseNumber": 7,
+          "horseName": "GOOD LUCK WIN",
+          "jockey": "Y L Chung (-2)",
+          "trainer": "K H Ting",
+          "winOdds": 9.4,
+          "placeOdds": 2.5
+        },
+        {
+          "horseNumber": 8,
+          "horseName": "MATSU VICTOR",
+          "jockey": "M L Yeung",
+          "trainer": "K W Lui",
+          "winOdds": 16,
+          "placeOdds": 4.4
+        },
+        {
+          "horseNumber": 9,
+          "horseName": "NIGHT PUROSANGUE",
+          "jockey": "R Kingscote",
+          "trainer": "Y S Tsui",
+          "winOdds": 19,
+          "placeOdds": 4.8
+        },
+        {
+          "horseNumber": 10,
+          "horseName": "PRINCE ALEX",
+          "jockey": "H Bentley",
+          "trainer": "D J Whyte",
+          "winOdds": 32,
+          "placeOdds": 7.2
+        },
+        {
+          "horseNumber": 11,
+          "horseName": "STAR BROSE",
+          "jockey": "K Teetan",
+          "trainer": "D A Hayes",
+          "winOdds": 13,
+          "placeOdds": 4
+        },
+        {
+          "horseNumber": 12,
+          "horseName": "WINNING DIAMOND",
+          "jockey": "A Badel",
+          "trainer": "C H Yip",
+          "winOdds": 17,
+          "placeOdds": 4.4
+        }
+      ],
+      "fetchedAt": "2026-02-25T09:52:44.206Z"
+    }
+  ],
+  "fetchedAt": "2026-02-25T09:54:24.402Z"
+}

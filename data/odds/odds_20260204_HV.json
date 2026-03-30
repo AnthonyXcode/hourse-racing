@@ -1,0 +1,527 @@
+{
+  "date": "2026-02-04",
+  "venue": "HV",
+  "races": [
+    {
+      "raceNumber": 2,
+      "date": "2026-02-04",
+      "venue": "HV",
+      "horses": [
+        {
+          "horseNumber": 1,
+          "horseName": "KASA PAPA",
+          "jockey": "Z Purton",
+          "trainer": "A S Cruz",
+          "winOdds": 4.3,
+          "placeOdds": 1.9
+        },
+        {
+          "horseNumber": 2,
+          "horseName": "ON THE LASH",
+          "jockey": "E C W Wong (-3)",
+          "trainer": "P C Ng",
+          "winOdds": 25,
+          "placeOdds": 6.3
+        },
+        {
+          "horseNumber": 3,
+          "horseName": "CONSPIRACY WITNESS",
+          "jockey": "D B McMonagle",
+          "trainer": "D A Hayes",
+          "winOdds": 7.9,
+          "placeOdds": 2.6
+        },
+        {
+          "horseNumber": 4,
+          "horseName": "HAILTOTHEVICTORS",
+          "jockey": "C L Chau (-2)",
+          "trainer": "D Eustace",
+          "winOdds": 8.4,
+          "placeOdds": 2.7
+        },
+        {
+          "horseNumber": 5,
+          "horseName": "PERFECT PAIRING",
+          "jockey": "A Atzeni",
+          "trainer": "J Size",
+          "winOdds": 17,
+          "placeOdds": 5.3
+        },
+        {
+          "horseNumber": 6,
+          "horseName": "ROSEWOOD FLEETFOOT",
+          "jockey": "R Kingscote",
+          "trainer": "P F Yiu",
+          "winOdds": 21,
+          "placeOdds": 5.9
+        },
+        {
+          "horseNumber": 7,
+          "horseName": "SUPER SICARIO",
+          "jockey": "H Bowman",
+          "trainer": "C Fownes",
+          "winOdds": 4.9,
+          "placeOdds": 1.8
+        },
+        {
+          "horseNumber": 8,
+          "horseName": "SMILING EMPEROR",
+          "jockey": "L Ferraris",
+          "trainer": "K H Ting",
+          "winOdds": 13,
+          "placeOdds": 4.2
+        },
+        {
+          "horseNumber": 9,
+          "horseName": "ALL ARE MINE",
+          "jockey": "A Badel",
+          "trainer": "B Crawford",
+          "winOdds": 8.6,
+          "placeOdds": 2.4
+        },
+        {
+          "horseNumber": 10,
+          "horseName": "JOLLY JUMPER",
+          "jockey": "M F Poon",
+          "trainer": "W K Mo",
+          "winOdds": 26,
+          "placeOdds": 6.1
+        },
+        {
+          "horseNumber": 11,
+          "horseName": "PERPETUAL POWER",
+          "jockey": "M L Yeung",
+          "trainer": "C W Chang",
+          "winOdds": 60,
+          "placeOdds": 11
+        },
+        {
+          "horseNumber": 12,
+          "horseName": "DRAGON SUNRISE",
+          "jockey": "L Hewitson",
+          "trainer": "K W Lui",
+          "winOdds": 6.9,
+          "placeOdds": 2.3
+        }
+      ],
+      "fetchedAt": "2026-03-04T09:04:07.740Z"
+    },
+    {
+      "raceNumber": 3,
+      "date": "2026-02-04",
+      "venue": "HV",
+      "horses": [
+        {
+          "horseNumber": 1,
+          "horseName": "KASA PAPA",
+          "jockey": "Z Purton",
+          "trainer": "A S Cruz",
+          "winOdds": 4.3,
+          "placeOdds": 1.9
+        },
+        {
+          "horseNumber": 2,
+          "horseName": "ON THE LASH",
+          "jockey": "E C W Wong (-3)",
+          "trainer": "P C Ng",
+          "winOdds": 25,
+          "placeOdds": 6.3
+        },
+        {
+          "horseNumber": 3,
+          "horseName": "CONSPIRACY WITNESS",
+          "jockey": "D B McMonagle",
+          "trainer": "D A Hayes",
+          "winOdds": 7.9,
+          "placeOdds": 2.6
+        },
+        {
+          "horseNumber": 4,
+          "horseName": "HAILTOTHEVICTORS",
+          "jockey": "C L Chau (-2)",
+          "trainer": "D Eustace",
+          "winOdds": 8.4,
+          "placeOdds": 2.7
+        },
+        {
+          "horseNumber": 5,
+          "horseName": "PERFECT PAIRING",
+          "jockey": "A Atzeni",
+          "trainer": "J Size",
+          "winOdds": 17,
+          "placeOdds": 5.3
+        },
+        {
+          "horseNumber": 6,
+          "horseName": "ROSEWOOD FLEETFOOT",
+          "jockey": "R Kingscote",
+          "trainer": "P F Yiu",
+          "winOdds": 21,
+          "placeOdds": 5.9
+        },
+        {
+          "horseNumber": 7,
+          "horseName": "SUPER SICARIO",
+          "jockey": "H Bowman",
+          "trainer": "C Fownes",
+          "winOdds": 4.9,
+          "placeOdds": 1.8
+        },
+        {
+          "horseNumber": 8,
+          "horseName": "SMILING EMPEROR",
+          "jockey": "L Ferraris",
+          "trainer": "K H Ting",
+          "winOdds": 13,
+          "placeOdds": 4.2
+        },
+        {
+          "horseNumber": 9,
+          "horseName": "ALL ARE MINE",
+          "jockey": "A Badel",
+          "trainer": "B Crawford",
+          "winOdds": 8.6,
+          "placeOdds": 2.4
+        },
+        {
+          "horseNumber": 10,
+          "horseName": "JOLLY JUMPER",
+          "jockey": "M F Poon",
+          "trainer": "W K Mo",
+          "winOdds": 26,
+          "placeOdds": 6.1
+        },
+        {
+          "horseNumber": 11,
+          "horseName": "PERPETUAL POWER",
+          "jockey": "M L Yeung",
+          "trainer": "C W Chang",
+          "winOdds": 60,
+          "placeOdds": 11
+        },
+        {
+          "horseNumber": 12,
+          "horseName": "DRAGON SUNRISE",
+          "jockey": "L Hewitson",
+          "trainer": "K W Lui",
+          "winOdds": 6.9,
+          "placeOdds": 2.3
+        }
+      ],
+      "fetchedAt": "2026-03-04T09:04:08.263Z"
+    },
+    {
+      "raceNumber": 4,
+      "date": "2026-02-04",
+      "venue": "HV",
+      "horses": [
+        {
+          "horseNumber": 1,
+          "horseName": "KASA PAPA",
+          "jockey": "Z Purton",
+          "trainer": "A S Cruz",
+          "winOdds": 4.3,
+          "placeOdds": 1.9
+        },
+        {
+          "horseNumber": 2,
+          "horseName": "ON THE LASH",
+          "jockey": "E C W Wong (-3)",
+          "trainer": "P C Ng",
+          "winOdds": 25,
+          "placeOdds": 6.3
+        },
+        {
+          "horseNumber": 3,
+          "horseName": "CONSPIRACY WITNESS",
+          "jockey": "D B McMonagle",
+          "trainer": "D A Hayes",
+          "winOdds": 7.9,
+          "placeOdds": 2.6
+        },
+        {
+          "horseNumber": 4,
+          "horseName": "HAILTOTHEVICTORS",
+          "jockey": "C L Chau (-2)",
+          "trainer": "D Eustace",
+          "winOdds": 8.4,
+          "placeOdds": 2.7
+        },
+        {
+          "horseNumber": 5,
+          "horseName": "PERFECT PAIRING",
+          "jockey": "A Atzeni",
+          "trainer": "J Size",
+          "winOdds": 17,
+          "placeOdds": 5.3
+        },
+        {
+          "horseNumber": 6,
+          "horseName": "ROSEWOOD FLEETFOOT",
+          "jockey": "R Kingscote",
+          "trainer": "P F Yiu",
+          "winOdds": 21,
+          "placeOdds": 5.9
+        },
+        {
+          "horseNumber": 7,
+          "horseName": "SUPER SICARIO",
+          "jockey": "H Bowman",
+          "trainer": "C Fownes",
+          "winOdds": 4.9,
+          "placeOdds": 1.8
+        },
+        {
+          "horseNumber": 8,
+          "horseName": "SMILING EMPEROR",
+          "jockey": "L Ferraris",
+          "trainer": "K H Ting",
+          "winOdds": 13,
+          "placeOdds": 4.2
+        },
+        {
+          "horseNumber": 9,
+          "horseName": "ALL ARE MINE",
+          "jockey": "A Badel",
+          "trainer": "B Crawford",
+          "winOdds": 8.6,
+          "placeOdds": 2.4
+        },
+        {
+          "horseNumber": 10,
+          "horseName": "JOLLY JUMPER",
+          "jockey": "M F Poon",
+          "trainer": "W K Mo",
+          "winOdds": 26,
+          "placeOdds": 6.1
+        },
+        {
+          "horseNumber": 11,
+          "horseName": "PERPETUAL POWER",
+          "jockey": "M L Yeung",
+          "trainer": "C W Chang",
+          "winOdds": 60,
+          "placeOdds": 11
+        },
+        {
+          "horseNumber": 12,
+          "horseName": "DRAGON SUNRISE",
+          "jockey": "L Hewitson",
+          "trainer": "K W Lui",
+          "winOdds": 6.9,
+          "placeOdds": 2.3
+        }
+      ],
+      "fetchedAt": "2026-03-04T09:04:08.684Z"
+    },
+    {
+      "raceNumber": 5,
+      "date": "2026-02-04",
+      "venue": "HV",
+      "horses": [
+        {
+          "horseNumber": 1,
+          "horseName": "KASA PAPA",
+          "jockey": "Z Purton",
+          "trainer": "A S Cruz",
+          "winOdds": 4.3,
+          "placeOdds": 1.9
+        },
+        {
+          "horseNumber": 2,
+          "horseName": "ON THE LASH",
+          "jockey": "E C W Wong (-3)",
+          "trainer": "P C Ng",
+          "winOdds": 25,
+          "placeOdds": 6.3
+        },
+        {
+          "horseNumber": 3,
+          "horseName": "CONSPIRACY WITNESS",
+          "jockey": "D B McMonagle",
+          "trainer": "D A Hayes",
+          "winOdds": 7.9,
+          "placeOdds": 2.6
+        },
+        {
+          "horseNumber": 4,
+          "horseName": "HAILTOTHEVICTORS",
+          "jockey": "C L Chau (-2)",
+          "trainer": "D Eustace",
+          "winOdds": 8.4,
+          "placeOdds": 2.7
+        },
+        {
+          "horseNumber": 5,
+          "horseName": "PERFECT PAIRING",
+          "jockey": "A Atzeni",
+          "trainer": "J Size",
+          "winOdds": 17,
+          "placeOdds": 5.3
+        },
+        {
+          "horseNumber": 6,
+          "horseName": "ROSEWOOD FLEETFOOT",
+          "jockey": "R Kingscote",
+          "trainer": "P F Yiu",
+          "winOdds": 21,
+          "placeOdds": 5.9
+        },
+        {
+          "horseNumber": 7,
+          "horseName": "SUPER SICARIO",
+          "jockey": "H Bowman",
+          "trainer": "C Fownes",
+          "winOdds": 4.9,
+          "placeOdds": 1.8
+        },
+        {
+          "horseNumber": 8,
+          "horseName": "SMILING EMPEROR",
+          "jockey": "L Ferraris",
+          "trainer": "K H Ting",
+          "winOdds": 13,
+          "placeOdds": 4.2
+        },
+        {
+          "horseNumber": 9,
+          "horseName": "ALL ARE MINE",
+          "jockey": "A Badel",
+          "trainer": "B Crawford",
+          "winOdds": 8.6,
+          "placeOdds": 2.4
+        },
+        {
+          "horseNumber": 10,
+          "horseName": "JOLLY JUMPER",
+          "jockey": "M F Poon",
+          "trainer": "W K Mo",
+          "winOdds": 26,
+          "placeOdds": 6.1
+        },
+        {
+          "horseNumber": 11,
+          "horseName": "PERPETUAL POWER",
+          "jockey": "M L Yeung",
+          "trainer": "C W Chang",
+          "winOdds": 60,
+          "placeOdds": 11
+        },
+        {
+          "horseNumber": 12,
+          "horseName": "DRAGON SUNRISE",
+          "jockey": "L Hewitson",
+          "trainer": "K W Lui",
+          "winOdds": 6.9,
+          "placeOdds": 2.3
+        }
+      ],
+      "fetchedAt": "2026-03-04T09:04:09.102Z"
+    },
+    {
+      "raceNumber": 7,
+      "date": "2026-02-04",
+      "venue": "HV",
+      "horses": [
+        {
+          "horseNumber": 1,
+          "horseName": "KASA PAPA",
+          "jockey": "Z Purton",
+          "trainer": "A S Cruz",
+          "winOdds": 4.3,
+          "placeOdds": 1.9
+        },
+        {
+          "horseNumber": 2,
+          "horseName": "ON THE LASH",
+          "jockey": "E C W Wong (-3)",
+          "trainer": "P C Ng",
+          "winOdds": 25,
+          "placeOdds": 6.3
+        },
+        {
+          "horseNumber": 3,
+          "horseName": "CONSPIRACY WITNESS",
+          "jockey": "D B McMonagle",
+          "trainer": "D A Hayes",
+          "winOdds": 7.9,
+          "placeOdds": 2.6
+        },
+        {
+          "horseNumber": 4,
+          "horseName": "HAILTOTHEVICTORS",
+          "jockey": "C L Chau (-2)",
+          "trainer": "D Eustace",
+          "winOdds": 8.4,
+          "placeOdds": 2.7
+        },
+        {
+          "horseNumber": 5,
+          "horseName": "PERFECT PAIRING",
+          "jockey": "A Atzeni",
+          "trainer": "J Size",
+          "winOdds": 17,
+          "placeOdds": 5.3
+        },
+        {
+          "horseNumber": 6,
+          "horseName": "ROSEWOOD FLEETFOOT",
+          "jockey": "R Kingscote",
+          "trainer": "P F Yiu",
+          "winOdds": 21,
+          "placeOdds": 5.9
+        },
+        {
+          "horseNumber": 7,
+          "horseName": "SUPER SICARIO",
+          "jockey": "H Bowman",
+          "trainer": "C Fownes",
+          "winOdds": 4.9,
+          "placeOdds": 1.8
+        },
+        {
+          "horseNumber": 8,
+          "horseName": "SMILING EMPEROR",
+          "jockey": "L Ferraris",
+          "trainer": "K H Ting",
+          "winOdds": 13,
+          "placeOdds": 4.2
+        },
+        {
+          "horseNumber": 9,
+          "horseName": "ALL ARE MINE",
+          "jockey": "A Badel",
+          "trainer": "B Crawford",
+          "winOdds": 8.6,
+          "placeOdds": 2.4
+        },
+        {
+          "horseNumber": 10,
+          "horseName": "JOLLY JUMPER",
+          "jockey": "M F Poon",
+          "trainer": "W K Mo",
+          "winOdds": 26,
+          "placeOdds": 6.1
+        },
+        {
+          "horseNumber": 11,
+          "horseName": "PERPETUAL POWER",
+          "jockey": "M L Yeung",
+          "trainer": "C W Chang",
+          "winOdds": 60,
+          "placeOdds": 11
+        },
+        {
+          "horseNumber": 12,
+          "horseName": "DRAGON SUNRISE",
+          "jockey": "L Hewitson",
+          "trainer": "K W Lui",
+          "winOdds": 6.9,
+          "placeOdds": 2.3
+        }
+      ],
+      "fetchedAt": "2026-03-04T09:04:09.876Z"
+    }
+  ],
+  "fetchedAt": "2026-03-04T09:04:22.890Z"
+}

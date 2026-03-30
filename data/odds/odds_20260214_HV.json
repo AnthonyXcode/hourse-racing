@@ -1,0 +1,471 @@
+{
+  "date": "2026-02-14",
+  "venue": "HV",
+  "races": [
+    {
+      "raceNumber": 1,
+      "date": "2026-02-14",
+      "venue": "HV",
+      "horses": [
+        {
+          "horseNumber": 4,
+          "horseName": "LIVE WIRE",
+          "jockey": "",
+          "trainer": "",
+          "winOdds": 5.2,
+          "placeOdds": 2.7
+        },
+        {
+          "horseNumber": 5,
+          "horseName": "VIGOR EYE",
+          "jockey": "",
+          "trainer": "",
+          "winOdds": 5.3,
+          "placeOdds": 1.8
+        },
+        {
+          "horseNumber": 6,
+          "horseName": "WINNING CHAMPION",
+          "jockey": "",
+          "trainer": "",
+          "winOdds": 7.7,
+          "placeOdds": 2.3
+        },
+        {
+          "horseNumber": 10,
+          "horseName": "GOR GOR",
+          "jockey": "",
+          "trainer": "",
+          "winOdds": 7.9,
+          "placeOdds": 2.7
+        },
+        {
+          "horseNumber": 12,
+          "horseName": "SHOTGUN",
+          "jockey": "",
+          "trainer": "",
+          "winOdds": 4.8,
+          "placeOdds": 1.6
+        }
+      ],
+      "fetchedAt": "2026-02-14T03:58:52.103Z"
+    },
+    {
+      "raceNumber": 2,
+      "date": "2026-02-14",
+      "venue": "HV",
+      "horses": [
+        {
+          "horseNumber": 3,
+          "horseName": "STELLAR SWIFT",
+          "jockey": "",
+          "trainer": "",
+          "winOdds": 6.2,
+          "placeOdds": 2.1
+        },
+        {
+          "horseNumber": 4,
+          "horseName": "AMAZING PARTNERS",
+          "jockey": "",
+          "trainer": "",
+          "winOdds": 3,
+          "placeOdds": 1.4
+        },
+        {
+          "horseNumber": 7,
+          "horseName": "RAGING RAPIDS",
+          "jockey": "",
+          "trainer": "",
+          "winOdds": 8.4,
+          "placeOdds": 2.8
+        },
+        {
+          "horseNumber": 10,
+          "horseName": "CALIFORNIA BAY",
+          "jockey": "",
+          "trainer": "",
+          "winOdds": 7.9,
+          "placeOdds": 3.6
+        }
+      ],
+      "fetchedAt": "2026-02-14T03:58:56.641Z"
+    },
+    {
+      "raceNumber": 3,
+      "date": "2026-02-14",
+      "venue": "HV",
+      "horses": [
+        {
+          "horseNumber": 1,
+          "horseName": "MICKLEY",
+          "jockey": "",
+          "trainer": "",
+          "winOdds": 9.7,
+          "placeOdds": 3
+        },
+        {
+          "horseNumber": 2,
+          "horseName": "RED SEA",
+          "jockey": "",
+          "trainer": "",
+          "winOdds": 2.7,
+          "placeOdds": 1.6
+        },
+        {
+          "horseNumber": 5,
+          "horseName": "HAROLD WIN",
+          "jockey": "",
+          "trainer": "",
+          "winOdds": 8,
+          "placeOdds": 2.1
+        },
+        {
+          "horseNumber": 6,
+          "horseName": "CHILL BUDDY",
+          "jockey": "",
+          "trainer": "",
+          "winOdds": 3.7,
+          "placeOdds": 1.5
+        }
+      ],
+      "fetchedAt": "2026-02-14T03:59:01.013Z"
+    },
+    {
+      "raceNumber": 4,
+      "date": "2026-02-14",
+      "venue": "HV",
+      "horses": [
+        {
+          "horseNumber": 1,
+          "horseName": "AUDACIOUS PURSUIT",
+          "jockey": "",
+          "trainer": "",
+          "winOdds": 2.8,
+          "placeOdds": 1.6
+        },
+        {
+          "horseNumber": 4,
+          "horseName": "GOOD GOOD",
+          "jockey": "",
+          "trainer": "",
+          "winOdds": 6,
+          "placeOdds": 2.2
+        },
+        {
+          "horseNumber": 5,
+          "horseName": "RELIABLE DAD",
+          "jockey": "",
+          "trainer": "",
+          "winOdds": 5.9,
+          "placeOdds": 2
+        }
+      ],
+      "fetchedAt": "2026-02-14T03:59:05.432Z"
+    },
+    {
+      "raceNumber": 5,
+      "date": "2026-02-14",
+      "venue": "HV",
+      "horses": [
+        {
+          "horseNumber": 2,
+          "horseName": "DRAGON AIR FORCE",
+          "jockey": "",
+          "trainer": "",
+          "winOdds": 9.5,
+          "placeOdds": 3
+        },
+        {
+          "horseNumber": 3,
+          "horseName": "DEFINITIVE",
+          "jockey": "",
+          "trainer": "",
+          "winOdds": 9.2,
+          "placeOdds": 2.8
+        },
+        {
+          "horseNumber": 5,
+          "horseName": "ANOTHER WORLD",
+          "jockey": "",
+          "trainer": "",
+          "winOdds": 9,
+          "placeOdds": 2.6
+        },
+        {
+          "horseNumber": 6,
+          "horseName": "THUNDER BLAZE",
+          "jockey": "",
+          "trainer": "",
+          "winOdds": 9.6,
+          "placeOdds": 2.8
+        },
+        {
+          "horseNumber": 8,
+          "horseName": "SKY VINO",
+          "jockey": "",
+          "trainer": "",
+          "winOdds": 3.3,
+          "placeOdds": 1.6
+        },
+        {
+          "horseNumber": 13,
+          "horseName": "WUKONG JEWELLERY",
+          "jockey": "",
+          "trainer": "",
+          "winOdds": 9.3,
+          "placeOdds": 3.5
+        }
+      ],
+      "fetchedAt": "2026-02-14T03:59:09.863Z"
+    },
+    {
+      "raceNumber": 6,
+      "date": "2026-02-14",
+      "venue": "HV",
+      "horses": [
+        {
+          "horseNumber": 3,
+          "horseName": "SIGHT DREAMER",
+          "jockey": "",
+          "trainer": "",
+          "winOdds": 3,
+          "placeOdds": 1.4
+        },
+        {
+          "horseNumber": 7,
+          "horseName": "CALIFORNIA STAR",
+          "jockey": "",
+          "trainer": "",
+          "winOdds": 3.9,
+          "placeOdds": 1.8
+        }
+      ],
+      "fetchedAt": "2026-02-14T03:59:14.269Z"
+    },
+    {
+      "raceNumber": 7,
+      "date": "2026-02-14",
+      "venue": "HV",
+      "horses": [
+        {
+          "horseNumber": 1,
+          "horseName": "LUCKY WITH YOU",
+          "jockey": "",
+          "trainer": "",
+          "winOdds": 7.4,
+          "placeOdds": 2.4
+        },
+        {
+          "horseNumber": 2,
+          "horseName": "WUNDERBAR",
+          "jockey": "",
+          "trainer": "",
+          "winOdds": 6.6,
+          "placeOdds": 2.9
+        },
+        {
+          "horseNumber": 3,
+          "horseName": "INVINCIBLE SHIELD",
+          "jockey": "",
+          "trainer": "",
+          "winOdds": 5.1,
+          "placeOdds": 1.9
+        },
+        {
+          "horseNumber": 7,
+          "horseName": "PATCH OF STARS",
+          "jockey": "",
+          "trainer": "",
+          "winOdds": 4.1,
+          "placeOdds": 1.9
+        },
+        {
+          "horseNumber": 10,
+          "horseName": "GUSTOSISIMO",
+          "jockey": "",
+          "trainer": "",
+          "winOdds": 8,
+          "placeOdds": 2.9
+        },
+        {
+          "horseNumber": 11,
+          "horseName": "SWIFT ASCEND",
+          "jockey": "",
+          "trainer": "",
+          "winOdds": 9.4,
+          "placeOdds": 2.3
+        }
+      ],
+      "fetchedAt": "2026-02-14T03:59:18.037Z"
+    },
+    {
+      "raceNumber": 8,
+      "date": "2026-02-14",
+      "venue": "HV",
+      "horses": [
+        {
+          "horseNumber": 2,
+          "horseName": "NYX GLUCK",
+          "jockey": "",
+          "trainer": "",
+          "winOdds": 6,
+          "placeOdds": 2.3
+        },
+        {
+          "horseNumber": 4,
+          "horseName": "SOLID CAR",
+          "jockey": "",
+          "trainer": "",
+          "winOdds": 3.8,
+          "placeOdds": 1.8
+        },
+        {
+          "horseNumber": 10,
+          "horseName": "AMAZING DUCK",
+          "jockey": "",
+          "trainer": "",
+          "winOdds": 5.1,
+          "placeOdds": 2
+        },
+        {
+          "horseNumber": 11,
+          "horseName": "DECISION LINK",
+          "jockey": "",
+          "trainer": "",
+          "winOdds": 9.1,
+          "placeOdds": 2.7
+        }
+      ],
+      "fetchedAt": "2026-02-14T03:59:22.507Z"
+    },
+    {
+      "raceNumber": 9,
+      "date": "2026-02-14",
+      "venue": "HV",
+      "horses": [
+        {
+          "horseNumber": 2,
+          "horseName": "CITY GOLD BANNER",
+          "jockey": "",
+          "trainer": "",
+          "winOdds": 2.3,
+          "placeOdds": 1.6
+        },
+        {
+          "horseNumber": 12,
+          "horseName": "SPARKLING FELLOW",
+          "jockey": "",
+          "trainer": "",
+          "winOdds": 9,
+          "placeOdds": 2.2
+        },
+        {
+          "horseNumber": 14,
+          "horseName": "TURQUOISE VELOCITY",
+          "jockey": "",
+          "trainer": "",
+          "winOdds": 5.6,
+          "placeOdds": 2.1
+        }
+      ],
+      "fetchedAt": "2026-02-14T03:59:26.914Z"
+    },
+    {
+      "raceNumber": 10,
+      "date": "2026-02-14",
+      "venue": "HV",
+      "horses": [
+        {
+          "horseNumber": 3,
+          "horseName": "LUCKY SAM GOR",
+          "jockey": "",
+          "trainer": "",
+          "winOdds": 3.4,
+          "placeOdds": 1.5
+        },
+        {
+          "horseNumber": 4,
+          "horseName": "NATURAL NUMBERS",
+          "jockey": "",
+          "trainer": "",
+          "winOdds": 8.8,
+          "placeOdds": 2.8
+        },
+        {
+          "horseNumber": 5,
+          "horseName": "MIGHTY MASTS",
+          "jockey": "",
+          "trainer": "",
+          "winOdds": 5,
+          "placeOdds": 2.3
+        },
+        {
+          "horseNumber": 10,
+          "horseName": "ENDUED",
+          "jockey": "",
+          "trainer": "",
+          "winOdds": 9,
+          "placeOdds": 2.7
+        },
+        {
+          "horseNumber": 11,
+          "horseName": "WITHOUT COMPARE",
+          "jockey": "",
+          "trainer": "",
+          "winOdds": 9.3,
+          "placeOdds": 2.9
+        }
+      ],
+      "fetchedAt": "2026-02-14T03:59:31.264Z"
+    },
+    {
+      "raceNumber": 11,
+      "date": "2026-02-14",
+      "venue": "HV",
+      "horses": [
+        {
+          "horseNumber": 4,
+          "horseName": "LIVE WIRE",
+          "jockey": "",
+          "trainer": "",
+          "winOdds": 5.2,
+          "placeOdds": 2.7
+        },
+        {
+          "horseNumber": 5,
+          "horseName": "VIGOR EYE",
+          "jockey": "",
+          "trainer": "",
+          "winOdds": 5.3,
+          "placeOdds": 1.8
+        },
+        {
+          "horseNumber": 6,
+          "horseName": "WINNING CHAMPION",
+          "jockey": "",
+          "trainer": "",
+          "winOdds": 7.7,
+          "placeOdds": 2.3
+        },
+        {
+          "horseNumber": 10,
+          "horseName": "GOR GOR",
+          "jockey": "",
+          "trainer": "",
+          "winOdds": 7.9,
+          "placeOdds": 2.7
+        },
+        {
+          "horseNumber": 12,
+          "horseName": "SHOTGUN",
+          "jockey": "",
+          "trainer": "",
+          "winOdds": 4.8,
+          "placeOdds": 1.7
+        }
+      ],
+      "fetchedAt": "2026-02-14T03:59:35.612Z"
+    }
+  ],
+  "fetchedAt": "2026-02-14T03:59:35.637Z"
+}

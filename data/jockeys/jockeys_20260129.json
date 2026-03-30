@@ -1,0 +1,30 @@
+[
+  {
+    "code": "PZ",
+    "name": "Unknown",
+    "nationality": "Hong Kong",
+    "weightClaim": 0,
+    "seasonStats": {
+      "wins": 71,
+      "places": 82,
+      "rides": 320,
+      "winRate": 0.221875,
+      "placeRate": 0.478125,
+      "roi": 1
+    },
+    "courseStats": [
+      {
+        "venue": "Sha Tin",
+        "wins": 964,
+        "places": 0,
+        "rides": 920,
+        "winRate": 1.0478260869565217,
+        "placeRate": 1.0478260869565217,
+        "roi": 1
+      }
+    ],
+    "recentForm": [],
+    "trainerCombinations": [],
+    "distanceStats": []
+  }
+]

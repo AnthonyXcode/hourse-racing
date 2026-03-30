@@ -1,0 +1,1334 @@
+[
+  {
+    "id": "2025-10-12-ST-1",
+    "date": "2025-10-12T00:00:00.000Z",
+    "venue": "Sha Tin",
+    "raceNumber": 1,
+    "name": "of HKJC\n                                                                                    \n                                                                                    \n                                                                                    \n                                                                                        Bloodstock Agents\n                                                                                    \n                                                                                    \n                                                                                    \n                                                                                        Handicap",
+    "class": "Class 5",
+    "distance": 1200,
+    "surface": "Turf",
+    "going": "Good",
+    "prizeMoney": 875000,
+    "entries": [],
+    "finishOrder": [
+      {
+        "horseNumber": 3,
+        "finishPosition": 1,
+        "finishTime": 68.69,
+        "margin": 1,
+        "horseName": "HE WAS YOU",
+        "horseCode": "HK_2023_J547",
+        "jockeyName": "Y L Chung",
+        "trainerName": "A S Cruz",
+        "winOdds": 4.8
+      },
+      {
+        "horseNumber": 12,
+        "finishPosition": 2,
+        "finishTime": 69.03,
+        "margin": 2,
+        "horseName": "SONIC BOOM",
+        "horseCode": "HK_2022_H144",
+        "jockeyName": "M Chadwick",
+        "trainerName": "W K Mo",
+        "winOdds": 7.3
+      },
+      {
+        "horseNumber": 7,
+        "finishPosition": 3,
+        "finishTime": 69.41,
+        "margin": 3,
+        "horseName": "NOBLE DELUXE",
+        "horseCode": "HK_2024_K052",
+        "jockeyName": "H Bowman",
+        "trainerName": "J Size",
+        "winOdds": 2.4
+      },
+      {
+        "horseNumber": 5,
+        "finishPosition": 4,
+        "finishTime": 69.49,
+        "margin": 4,
+        "horseName": "ORIENTAL SURPRISE",
+        "horseCode": "HK_2024_K028",
+        "jockeyName": "L Ferraris",
+        "trainerName": "D A Hayes",
+        "winOdds": 13
+      },
+      {
+        "horseNumber": 1,
+        "finishPosition": 5,
+        "finishTime": 69.5,
+        "margin": 5,
+        "horseName": "SKY SONG",
+        "horseCode": "HK_2023_J159",
+        "jockeyName": "E C W Wong",
+        "trainerName": "C Fownes",
+        "winOdds": 5.8
+      },
+      {
+        "horseNumber": 2,
+        "finishPosition": 6,
+        "finishTime": 69.62,
+        "margin": 6,
+        "horseName": "SOMETHING JONAH",
+        "horseCode": "HK_2024_K024",
+        "jockeyName": "J Orman",
+        "trainerName": "D J Hall",
+        "winOdds": 92
+      },
+      {
+        "horseNumber": 9,
+        "finishPosition": 7,
+        "finishTime": 69.72,
+        "margin": 7,
+        "horseName": "HAPPY TANGO",
+        "horseCode": "HK_2019_D075",
+        "jockeyName": "R Kingscote",
+        "trainerName": "Y S Tsui",
+        "winOdds": 46
+      },
+      {
+        "horseNumber": 10,
+        "finishPosition": 8,
+        "finishTime": 69.81,
+        "margin": 8,
+        "horseName": "SUPER ELITE",
+        "horseCode": "HK_2022_H247",
+        "jockeyName": "B Avdulla",
+        "trainerName": "D J Whyte",
+        "winOdds": 23
+      },
+      {
+        "horseNumber": 4,
+        "finishPosition": 9,
+        "finishTime": 70.2,
+        "margin": 9,
+        "horseName": "SHINE BRIGHT",
+        "horseCode": "HK_2022_H385",
+        "jockeyName": "Z Purton",
+        "trainerName": "C H Yip",
+        "winOdds": 10
+      },
+      {
+        "horseNumber": 8,
+        "finishPosition": 10,
+        "finishTime": 70.78999999999999,
+        "margin": 10,
+        "horseName": "WISDOM STAR",
+        "horseCode": "HK_2023_J351",
+        "jockeyName": "K C Leung",
+        "trainerName": "W Y So",
+        "winOdds": 66
+      },
+      {
+        "horseNumber": 6,
+        "finishPosition": 11,
+        "finishTime": 71.61,
+        "margin": 11,
+        "horseName": "FORTUNE RACER",
+        "horseCode": "HK_2023_J234",
+        "jockeyName": "M L Yeung",
+        "trainerName": "K H Ting",
+        "winOdds": 72
+      },
+      {
+        "horseNumber": 11,
+        "finishPosition": 12,
+        "finishTime": 71.77,
+        "margin": 12,
+        "horseName": "FUNG",
+        "horseCode": "HK_2023_J101",
+        "jockeyName": "H T Mo",
+        "trainerName": "C W Chang",
+        "winOdds": 70
+      }
+    ],
+    "winDividend": 48,
+    "placeDividends": [
+      18,
+      22,
+      12
+    ],
+    "quinellaDividend": 187.5,
+    "quinellaPlaceDividends": [
+      59.5,
+      28.5,
+      33.5
+    ],
+    "tierceDividend": 1065,
+    "trioDividend": 144
+  },
+  {
+    "id": "2025-10-12-ST-2",
+    "date": "2025-10-12T00:00:00.000Z",
+    "venue": "Sha Tin",
+    "raceNumber": 2,
+    "name": "of HKJC\n                                                                                    \n                                                                                    \n                                                                                    \n                                                                                        Bloodstock Agents\n                                                                                    \n                                                                                    \n                                                                                    \n                                                                                        Handicap",
+    "class": "Class 4",
+    "distance": 1200,
+    "surface": "Turf",
+    "going": "Good",
+    "prizeMoney": 1170000,
+    "entries": [],
+    "finishOrder": [
+      {
+        "horseNumber": 3,
+        "finishPosition": 1,
+        "finishTime": 68.99,
+        "margin": 1,
+        "horseName": "JUBILANT WINNER",
+        "horseCode": "HK_2023_J346",
+        "jockeyName": "A Atzeni",
+        "trainerName": "J Richards",
+        "winOdds": 1.2
+      },
+      {
+        "horseNumber": 6,
+        "finishPosition": 2,
+        "finishTime": 69.05,
+        "margin": 2,
+        "horseName": "INCREDIBLE MOMENT",
+        "horseCode": "HK_2024_K275",
+        "jockeyName": "L Ferraris",
+        "trainerName": "M Newnham",
+        "winOdds": 7
+      },
+      {
+        "horseNumber": 2,
+        "finishPosition": 3,
+        "finishTime": 69.31,
+        "margin": 3,
+        "horseName": "ALL'S WELL",
+        "horseCode": "HK_2024_K294",
+        "jockeyName": "M Chadwick",
+        "trainerName": "C H Yip",
+        "winOdds": 10
+      },
+      {
+        "horseNumber": 12,
+        "finishPosition": 4,
+        "finishTime": 69.62,
+        "margin": 4,
+        "horseName": "CIRCUIT VICTORY",
+        "horseCode": "HK_2022_H487",
+        "jockeyName": "P N Wong",
+        "trainerName": "K L Man",
+        "winOdds": 16
+      },
+      {
+        "horseNumber": 1,
+        "finishPosition": 5,
+        "finishTime": 69.63,
+        "margin": 5,
+        "horseName": "CHEVAL VICTORIOUS",
+        "horseCode": "HK_2023_J458",
+        "jockeyName": "K De Melo",
+        "trainerName": "D J Whyte",
+        "winOdds": 88
+      },
+      {
+        "horseNumber": 7,
+        "finishPosition": 6,
+        "finishTime": 70.09,
+        "margin": 6,
+        "horseName": "SPEEDY TRIDENT",
+        "horseCode": "HK_2024_K230",
+        "jockeyName": "R Kingscote",
+        "trainerName": "Y S Tsui",
+        "winOdds": 181
+      },
+      {
+        "horseNumber": 10,
+        "finishPosition": 7,
+        "finishTime": 70.24,
+        "margin": 7,
+        "horseName": "SNOWTHORN",
+        "horseCode": "HK_2024_K025",
+        "jockeyName": "D Probert",
+        "trainerName": "P F Yiu",
+        "winOdds": 49
+      },
+      {
+        "horseNumber": 8,
+        "finishPosition": 8,
+        "finishTime": 70.37,
+        "margin": 8,
+        "horseName": "BOWSER",
+        "horseCode": "HK_2022_H460",
+        "jockeyName": "Y L Chung",
+        "trainerName": "A S Cruz",
+        "winOdds": 16
+      },
+      {
+        "horseNumber": 5,
+        "finishPosition": 9,
+        "finishTime": 70.47,
+        "margin": 9,
+        "horseName": "CALL TO COMMAND",
+        "horseCode": "HK_2023_J243",
+        "jockeyName": "J Orman",
+        "trainerName": "C W Chang",
+        "winOdds": 267
+      },
+      {
+        "horseNumber": 9,
+        "finishPosition": 10,
+        "finishTime": 70.61,
+        "margin": 10,
+        "horseName": "WIN METHOD",
+        "horseCode": "HK_2024_K406",
+        "jockeyName": "H Bentley",
+        "trainerName": "C S Shum",
+        "winOdds": 95
+      },
+      {
+        "horseNumber": 4,
+        "finishPosition": 11,
+        "finishTime": 70.95,
+        "margin": 11,
+        "horseName": "HAPPY ALLIANCE",
+        "horseCode": "HK_2024_K316",
+        "jockeyName": "C Y Ho",
+        "trainerName": "K W Lui",
+        "winOdds": 86
+      }
+    ],
+    "winDividend": 12.5,
+    "placeDividends": [
+      10.1,
+      13,
+      18.5
+    ],
+    "quinellaDividend": 30,
+    "quinellaPlaceDividends": [
+      14.5,
+      20,
+      52
+    ],
+    "tierceDividend": 157,
+    "trioDividend": 60
+  },
+  {
+    "id": "2025-10-12-ST-4",
+    "date": "2025-10-12T00:00:00.000Z",
+    "venue": "Sha Tin",
+    "raceNumber": 4,
+    "name": "of HKJC\n                                                                                    \n                                                                                    \n                                                                                    \n                                                                                        Bloodstock Agents\n                                                                                    \n                                                                                    \n                                                                                    \n                                                                                        Handicap",
+    "class": "Class 4",
+    "distance": 1400,
+    "surface": "Turf",
+    "going": "Good",
+    "prizeMoney": 1170000,
+    "entries": [],
+    "finishOrder": [
+      {
+        "horseNumber": 2,
+        "finishPosition": 1,
+        "finishTime": 81.73,
+        "margin": 1,
+        "horseName": "GOOD LUCK BABE",
+        "horseCode": "HK_2024_K016",
+        "jockeyName": "Y L Chung",
+        "trainerName": "A S Cruz",
+        "winOdds": 3.1
+      },
+      {
+        "horseNumber": 10,
+        "finishPosition": 2,
+        "finishTime": 81.76,
+        "margin": 2,
+        "horseName": "POSITIVE SMILE",
+        "horseCode": "HK_2023_J467",
+        "jockeyName": "M L Yeung",
+        "trainerName": "D A Hayes",
+        "winOdds": 12
+      },
+      {
+        "horseNumber": 6,
+        "finishPosition": 3,
+        "finishTime": 81.78,
+        "margin": 3,
+        "horseName": "EXCEL WONGCHOY",
+        "horseCode": "HK_2023_J194",
+        "jockeyName": "R Kingscote",
+        "trainerName": "P C Ng",
+        "winOdds": 78
+      },
+      {
+        "horseNumber": 7,
+        "finishPosition": 4,
+        "finishTime": 81.78,
+        "margin": 4,
+        "horseName": "INNO SUPER",
+        "horseCode": "HK_2024_K319",
+        "jockeyName": "C L Chau",
+        "trainerName": "D Eustace",
+        "winOdds": 7.5
+      },
+      {
+        "horseNumber": 4,
+        "finishPosition": 5,
+        "finishTime": 81.83,
+        "margin": 5,
+        "horseName": "BLING BLING GENIUS",
+        "horseCode": "HK_2023_J397",
+        "jockeyName": "A Badel",
+        "trainerName": "D J Whyte",
+        "winOdds": 5
+      },
+      {
+        "horseNumber": 13,
+        "finishPosition": 6,
+        "finishTime": 81.95,
+        "margin": 6,
+        "horseName": "DREAMING WINNER",
+        "horseCode": "HK_2024_K046",
+        "jockeyName": "M F Poon",
+        "trainerName": "F C Lor",
+        "winOdds": 30
+      },
+      {
+        "horseNumber": 5,
+        "finishPosition": 7,
+        "finishTime": 82.01,
+        "margin": 7,
+        "horseName": "GLORIASTAR",
+        "horseCode": "HK_2024_K439",
+        "jockeyName": "L Ferraris",
+        "trainerName": "M Newnham",
+        "winOdds": 22
+      },
+      {
+        "horseNumber": 1,
+        "finishPosition": 8,
+        "finishTime": 82.24,
+        "margin": 8,
+        "horseName": "TIER FLY",
+        "horseCode": "HK_2024_K311",
+        "jockeyName": "H Bowman",
+        "trainerName": "K L Man",
+        "winOdds": 15
+      },
+      {
+        "horseNumber": 11,
+        "finishPosition": 9,
+        "finishTime": 82.27,
+        "margin": 9,
+        "horseName": "SIGHT DREAMER",
+        "horseCode": "HK_2023_J542",
+        "jockeyName": "M Chadwick",
+        "trainerName": "J Size",
+        "winOdds": 30
+      },
+      {
+        "horseNumber": 9,
+        "finishPosition": 10,
+        "finishTime": 82.31,
+        "margin": 10,
+        "horseName": "BIG STRIDE",
+        "horseCode": "HK_2024_K194",
+        "jockeyName": "A Atzeni",
+        "trainerName": "J Richards",
+        "winOdds": 196
+      },
+      {
+        "horseNumber": 3,
+        "finishPosition": 11,
+        "finishTime": 82.31,
+        "margin": 11,
+        "horseName": "THE HEIR",
+        "horseCode": "HK_2022_H459",
+        "jockeyName": "E C W Wong",
+        "trainerName": "C Fownes",
+        "winOdds": 8.6
+      },
+      {
+        "horseNumber": 12,
+        "finishPosition": 12,
+        "finishTime": 82.39,
+        "margin": 12,
+        "horseName": "WINNING MACHINE",
+        "horseCode": "HK_2024_K239",
+        "jockeyName": "H Bentley",
+        "trainerName": "C S Shum",
+        "winOdds": 7.1
+      },
+      {
+        "horseNumber": 8,
+        "finishPosition": 13,
+        "finishTime": 82.61,
+        "margin": 13,
+        "horseName": "SUPERB GUY",
+        "horseCode": "HK_2024_K323",
+        "jockeyName": "L Hewitson",
+        "trainerName": "K W Lui",
+        "winOdds": 40
+      },
+      {
+        "horseNumber": 14,
+        "finishPosition": 14,
+        "finishTime": 82.93,
+        "margin": 14,
+        "horseName": "TOY SOLTERO",
+        "horseCode": "HK_2023_J268",
+        "jockeyName": "D Probert",
+        "trainerName": "W Y So",
+        "winOdds": 155
+      }
+    ],
+    "winDividend": 31.5,
+    "placeDividends": [
+      15,
+      36,
+      171
+    ],
+    "quinellaDividend": 210.5,
+    "quinellaPlaceDividends": [
+      80.5,
+      454.5,
+      1
+    ],
+    "tierceDividend": 12424,
+    "trioDividend": 4127
+  },
+  {
+    "id": "2025-10-12-ST-5",
+    "date": "2025-10-12T00:00:00.000Z",
+    "venue": "Sha Tin",
+    "raceNumber": 5,
+    "name": "of HKJC\n                                                                                    \n                                                                                    \n                                                                                    \n                                                                                        Bloodstock Agents\n                                                                                    \n                                                                                    \n                                                                                    \n                                                                                        Handicap",
+    "class": "Class 4",
+    "distance": 1200,
+    "surface": "Turf",
+    "going": "Good",
+    "prizeMoney": 1170000,
+    "entries": [],
+    "finishOrder": [
+      {
+        "horseNumber": 6,
+        "finishPosition": 1,
+        "finishTime": 69.31,
+        "margin": 1,
+        "horseName": "OLDTOWN",
+        "horseCode": "HK_2024_K105",
+        "jockeyName": "Z Purton",
+        "trainerName": "W Y So",
+        "winOdds": 3.4
+      },
+      {
+        "horseNumber": 4,
+        "finishPosition": 2,
+        "finishTime": 69.32,
+        "margin": 2,
+        "horseName": "JUBILANT STAR",
+        "horseCode": "HK_2024_K410",
+        "jockeyName": "H Bowman",
+        "trainerName": "D J Hall",
+        "winOdds": 14
+      },
+      {
+        "horseNumber": 8,
+        "finishPosition": 3,
+        "finishTime": 69.41,
+        "margin": 3,
+        "horseName": "BUNTA BABY",
+        "horseCode": "HK_2023_J465",
+        "jockeyName": "P N Wong",
+        "trainerName": "K L Man",
+        "winOdds": 20
+      },
+      {
+        "horseNumber": 1,
+        "finishPosition": 4,
+        "finishTime": 69.43,
+        "margin": 4,
+        "horseName": "VOYAGE BOSS",
+        "horseCode": "HK_2024_K321",
+        "jockeyName": "K C Leung",
+        "trainerName": "F C Lor",
+        "winOdds": 34
+      },
+      {
+        "horseNumber": 7,
+        "finishPosition": 5,
+        "finishTime": 69.45,
+        "margin": 5,
+        "horseName": "INVICTUS DRAGON",
+        "horseCode": "HK_2024_K318",
+        "jockeyName": "C Y Ho",
+        "trainerName": "K W Lui",
+        "winOdds": 73
+      },
+      {
+        "horseNumber": 5,
+        "finishPosition": 6,
+        "finishTime": 69.59,
+        "margin": 6,
+        "horseName": "GOOD FORTUNE",
+        "horseCode": "HK_2022_H349",
+        "jockeyName": "C L Chau",
+        "trainerName": "P C Ng",
+        "winOdds": 2.7
+      },
+      {
+        "horseNumber": 9,
+        "finishPosition": 7,
+        "finishTime": 69.66,
+        "margin": 7,
+        "horseName": "VON BAER",
+        "horseCode": "HK_2024_K198",
+        "jockeyName": "E C W Wong",
+        "trainerName": "D A Hayes",
+        "winOdds": 12
+      },
+      {
+        "horseNumber": 3,
+        "finishPosition": 8,
+        "finishTime": 69.78,
+        "margin": 8,
+        "horseName": "GIDDY UP",
+        "horseCode": "HK_2023_J020",
+        "jockeyName": "A Atzeni",
+        "trainerName": "J Richards",
+        "winOdds": 11
+      },
+      {
+        "horseNumber": 2,
+        "finishPosition": 9,
+        "finishTime": 69.99,
+        "margin": 9,
+        "horseName": "WAVE GARDEN",
+        "horseCode": "HK_2024_K209",
+        "jockeyName": "L Ferraris",
+        "trainerName": "K H Ting",
+        "winOdds": 52
+      },
+      {
+        "horseNumber": 11,
+        "finishPosition": 10,
+        "finishTime": 70.26,
+        "margin": 10,
+        "horseName": "CLUB ACE",
+        "horseCode": "HK_2023_J523",
+        "jockeyName": "D Probert",
+        "trainerName": "J Size",
+        "winOdds": 48
+      },
+      {
+        "horseNumber": 10,
+        "finishPosition": 11,
+        "finishTime": 70.26,
+        "margin": 11,
+        "horseName": "LUCKY MCQUEEN",
+        "horseCode": "HK_2024_K064",
+        "jockeyName": "M Chadwick",
+        "trainerName": "W K Mo",
+        "winOdds": 28
+      },
+      {
+        "horseNumber": 12,
+        "finishPosition": 12,
+        "finishTime": 71.19,
+        "margin": 12,
+        "horseName": "ELEGANT LIFE",
+        "horseCode": "HK_2023_J366",
+        "jockeyName": "A Badel",
+        "trainerName": "C Fownes",
+        "winOdds": 6.6
+      }
+    ],
+    "winDividend": 34,
+    "placeDividends": [
+      14.5,
+      34,
+      45.5
+    ],
+    "quinellaDividend": 249,
+    "quinellaPlaceDividends": [
+      81.5,
+      96.5,
+      287.5
+    ],
+    "tierceDividend": 4314,
+    "trioDividend": 1174
+  },
+  {
+    "id": "2025-10-12-ST-6",
+    "date": "2025-10-12T00:00:00.000Z",
+    "venue": "Sha Tin",
+    "raceNumber": 6,
+    "name": "of HKJC\n                                                                                    \n                                                                                    \n                                                                                    \n                                                                                        Bloodstock Agents\n                                                                                    \n                                                                                    \n                                                                                    \n                                                                                        Handicap",
+    "class": "Class 4",
+    "distance": 1600,
+    "surface": "Turf",
+    "going": "Good",
+    "prizeMoney": 1170000,
+    "entries": [],
+    "finishOrder": [
+      {
+        "horseNumber": 11,
+        "finishPosition": 1,
+        "finishTime": 94.39,
+        "margin": 1,
+        "horseName": "BULL ATTITUDE",
+        "horseCode": "HK_2024_K305",
+        "jockeyName": "L Hewitson",
+        "trainerName": "M Newnham",
+        "winOdds": 7.1
+      },
+      {
+        "horseNumber": 8,
+        "finishPosition": 2,
+        "finishTime": 94.47,
+        "margin": 2,
+        "horseName": "HAPPY UNIVERSE",
+        "horseCode": "HK_2023_J533",
+        "jockeyName": "R Kingscote",
+        "trainerName": "K H Ting",
+        "winOdds": 11
+      },
+      {
+        "horseNumber": 6,
+        "finishPosition": 3,
+        "finishTime": 94.93,
+        "margin": 3,
+        "horseName": "PEARL OF PANG'S",
+        "horseCode": "HK_2023_J447",
+        "jockeyName": "K C Leung",
+        "trainerName": "K L Man",
+        "winOdds": 3.7
+      },
+      {
+        "horseNumber": 14,
+        "finishPosition": 4,
+        "finishTime": 95,
+        "margin": 4,
+        "horseName": "BEAUTY MISSILE",
+        "horseCode": "HK_2022_H123",
+        "jockeyName": "A Badel",
+        "trainerName": "B Crawford",
+        "winOdds": 10
+      },
+      {
+        "horseNumber": 1,
+        "finishPosition": 5,
+        "finishTime": 95.12,
+        "margin": 5,
+        "horseName": "GLORIOUS SUCCESS",
+        "horseCode": "HK_2024_K062",
+        "jockeyName": "Z Purton",
+        "trainerName": "D Eustace",
+        "winOdds": 4.8
+      },
+      {
+        "horseNumber": 4,
+        "finishPosition": 6,
+        "finishTime": 95.12,
+        "margin": 6,
+        "horseName": "GOOD GOOD",
+        "horseCode": "HK_2023_J224",
+        "jockeyName": "B Avdulla",
+        "trainerName": "J Size",
+        "winOdds": 15
+      },
+      {
+        "horseNumber": 2,
+        "finishPosition": 7,
+        "finishTime": 95.17,
+        "margin": 7,
+        "horseName": "PRESTIGE RICKY",
+        "horseCode": "HK_2024_K009",
+        "jockeyName": "C L Chau",
+        "trainerName": "P F Yiu",
+        "winOdds": 24
+      },
+      {
+        "horseNumber": 10,
+        "finishPosition": 8,
+        "finishTime": 95.25,
+        "margin": 8,
+        "horseName": "FIGHT TIME",
+        "horseCode": "HK_2022_H409",
+        "jockeyName": "P N Wong",
+        "trainerName": "D J Hall",
+        "winOdds": 4.8
+      },
+      {
+        "horseNumber": 12,
+        "finishPosition": 9,
+        "finishTime": 95.35,
+        "margin": 9,
+        "horseName": "TURF PHOENIX",
+        "horseCode": "HK_2023_J294",
+        "jockeyName": "H T Mo",
+        "trainerName": "W Y So",
+        "winOdds": 129
+      },
+      {
+        "horseNumber": 13,
+        "finishPosition": 10,
+        "finishTime": 95.46000000000001,
+        "margin": 10,
+        "horseName": "ROMANTIC FANTASY",
+        "horseCode": "HK_2022_H168",
+        "jockeyName": "Y L Chung",
+        "trainerName": "J Richards",
+        "winOdds": 96
+      },
+      {
+        "horseNumber": 7,
+        "finishPosition": 11,
+        "finishTime": 95.5,
+        "margin": 11,
+        "horseName": "SPLENDID FORCE",
+        "horseCode": "HK_2024_K120",
+        "jockeyName": "M L Yeung",
+        "trainerName": "D J Whyte",
+        "winOdds": 66
+      },
+      {
+        "horseNumber": 5,
+        "finishPosition": 12,
+        "finishTime": 96.08,
+        "margin": 12,
+        "horseName": "MEGA FORCE",
+        "horseCode": "HK_2024_K200",
+        "jockeyName": "D Probert",
+        "trainerName": "P C Ng",
+        "winOdds": 122
+      },
+      {
+        "horseNumber": 3,
+        "finishPosition": 13,
+        "finishTime": 96.36,
+        "margin": 13,
+        "horseName": "MATSU VICTOR",
+        "horseCode": "HK_2022_H472",
+        "jockeyName": "C Y Ho",
+        "trainerName": "K W Lui",
+        "winOdds": 30
+      },
+      {
+        "horseNumber": 9,
+        "finishPosition": 14,
+        "finishTime": 96.91,
+        "margin": 14,
+        "horseName": "DASHING DRAGON",
+        "horseCode": "HK_2023_J464",
+        "jockeyName": "E C W Wong",
+        "trainerName": "D A Hayes",
+        "winOdds": 53
+      }
+    ],
+    "winDividend": 71,
+    "placeDividends": [
+      24,
+      35.5,
+      14.5
+    ],
+    "quinellaDividend": 484.5,
+    "quinellaPlaceDividends": [
+      143,
+      62,
+      76.5
+    ],
+    "tierceDividend": 4314,
+    "trioDividend": 634
+  },
+  {
+    "id": "2025-10-12-ST-7",
+    "date": "2025-10-12T00:00:00.000Z",
+    "venue": "Sha Tin",
+    "raceNumber": 7,
+    "name": "of HKJC\n                                                                                    \n                                                                                    \n                                                                                    \n                                                                                        Bloodstock Agents\n                                                                                    \n                                                                                    \n                                                                                    \n                                                                                        Handicap",
+    "class": "Class 3",
+    "distance": 1200,
+    "surface": "Turf",
+    "going": "Good",
+    "prizeMoney": 1860000,
+    "entries": [],
+    "finishOrder": [
+      {
+        "horseNumber": 9,
+        "finishPosition": 1,
+        "finishTime": 68.87,
+        "margin": 1,
+        "horseName": "MATTERS MOST",
+        "horseCode": "HK_2024_K154",
+        "jockeyName": "E C W Wong",
+        "trainerName": "C S Shum",
+        "winOdds": 66
+      },
+      {
+        "horseNumber": 3,
+        "finishPosition": 2,
+        "finishTime": 69.03999999999999,
+        "margin": 2,
+        "horseName": "SUPER STRONG KID",
+        "horseCode": "HK_2024_K180",
+        "jockeyName": "Z Purton",
+        "trainerName": "K L Man",
+        "winOdds": 1.9
+      },
+      {
+        "horseNumber": 7,
+        "finishPosition": 3,
+        "finishTime": 69.1,
+        "margin": 3,
+        "horseName": "ALSONSO",
+        "horseCode": "HK_2023_J405",
+        "jockeyName": "A Badel",
+        "trainerName": "M Newnham",
+        "winOdds": 13
+      },
+      {
+        "horseNumber": 4,
+        "finishPosition": 4,
+        "finishTime": 69.19,
+        "margin": 4,
+        "horseName": "DEVAS TWELVE",
+        "horseCode": "HK_2022_H435",
+        "jockeyName": "M Chadwick",
+        "trainerName": "W Y So",
+        "winOdds": 36
+      },
+      {
+        "horseNumber": 8,
+        "finishPosition": 5,
+        "finishTime": 69.44,
+        "margin": 5,
+        "horseName": "FLYING KNIGHT",
+        "horseCode": "HK_2024_K370",
+        "jockeyName": "H Bentley",
+        "trainerName": "W K Mo",
+        "winOdds": 51
+      },
+      {
+        "horseNumber": 1,
+        "finishPosition": 6,
+        "finishTime": 69.46000000000001,
+        "margin": 6,
+        "horseName": "POWER KOEPP",
+        "horseCode": "HK_2020_E301",
+        "jockeyName": "H Bowman",
+        "trainerName": "M Newnham",
+        "winOdds": 35
+      },
+      {
+        "horseNumber": 2,
+        "finishPosition": 7,
+        "finishTime": 69.52,
+        "margin": 7,
+        "horseName": "GOLDEN EMPIRE",
+        "horseCode": "HK_2020_E490",
+        "jockeyName": "K De Melo",
+        "trainerName": "B Crawford",
+        "winOdds": 26
+      },
+      {
+        "horseNumber": 11,
+        "finishPosition": 8,
+        "finishTime": 69.53999999999999,
+        "margin": 8,
+        "horseName": "YEE CHEONG GLORY",
+        "horseCode": "HK_2024_K074",
+        "jockeyName": "A Atzeni",
+        "trainerName": "J Richards",
+        "winOdds": 2.2
+      },
+      {
+        "horseNumber": 6,
+        "finishPosition": 9,
+        "finishTime": 69.63,
+        "margin": 9,
+        "horseName": "BIGTIME GENERATION",
+        "horseCode": "HK_2024_K496",
+        "jockeyName": "M F Poon",
+        "trainerName": "P F Yiu",
+        "winOdds": 57
+      },
+      {
+        "horseNumber": 5,
+        "finishPosition": 10,
+        "finishTime": 69.86,
+        "margin": 10,
+        "horseName": "NOVA KNIGHT",
+        "horseCode": "HK_2024_K518",
+        "jockeyName": "M L Yeung",
+        "trainerName": "D A Hayes",
+        "winOdds": 66
+      },
+      {
+        "horseNumber": 10,
+        "finishPosition": 11,
+        "finishTime": 70.13,
+        "margin": 11,
+        "horseName": "TACTICAL COMMAND",
+        "horseCode": "HK_2022_H197",
+        "jockeyName": "D Probert",
+        "trainerName": "M Newnham",
+        "winOdds": 85
+      }
+    ],
+    "winDividend": 660.5,
+    "placeDividends": [
+      81.5,
+      11,
+      24
+    ],
+    "quinellaDividend": 381,
+    "quinellaPlaceDividends": [
+      118.5,
+      423,
+      34
+    ],
+    "tierceDividend": 10067,
+    "trioDividend": 777
+  },
+  {
+    "id": "2025-10-12-ST-9",
+    "date": "2025-10-12T00:00:00.000Z",
+    "venue": "Sha Tin",
+    "raceNumber": 9,
+    "name": "of HKJC\n                                                                                    \n                                                                                    \n                                                                                    \n                                                                                        Bloodstock Agents\n                                                                                    \n                                                                                    \n                                                                                    \n                                                                                        Handicap",
+    "class": "Class 2",
+    "distance": 1200,
+    "surface": "Turf",
+    "going": "Good",
+    "prizeMoney": 2840000,
+    "entries": [],
+    "finishOrder": [
+      {
+        "horseNumber": 2,
+        "finishPosition": 1,
+        "finishTime": 68.33,
+        "margin": 1,
+        "horseName": "TOMODACHI KOKOROE",
+        "horseCode": "HK_2022_H303",
+        "jockeyName": "H Bentley",
+        "trainerName": "D A Hayes",
+        "winOdds": 2.9
+      },
+      {
+        "horseNumber": 1,
+        "finishPosition": 2,
+        "finishTime": 68.38,
+        "margin": 2,
+        "horseName": "LADY'S CHOICE",
+        "horseCode": "HK_2022_H155",
+        "jockeyName": "K C Leung",
+        "trainerName": "C W Chang",
+        "winOdds": 10
+      },
+      {
+        "horseNumber": 6,
+        "finishPosition": 3,
+        "finishTime": 68.51,
+        "margin": 3,
+        "horseName": "BABY CRYSTAL",
+        "horseCode": "HK_2022_H081",
+        "jockeyName": "K De Melo",
+        "trainerName": "K W Lui",
+        "winOdds": 55
+      },
+      {
+        "horseNumber": 11,
+        "finishPosition": 4,
+        "finishTime": 68.53999999999999,
+        "margin": 4,
+        "horseName": "AERIS NOVA",
+        "horseCode": "HK_2023_J534",
+        "jockeyName": "M Chadwick",
+        "trainerName": "W K Mo",
+        "winOdds": 24
+      },
+      {
+        "horseNumber": 8,
+        "finishPosition": 5,
+        "finishTime": 68.58,
+        "margin": 5,
+        "horseName": "WONDER KIT",
+        "horseCode": "HK_2021_G455",
+        "jockeyName": "P N Wong",
+        "trainerName": "K W Lui",
+        "winOdds": 53
+      },
+      {
+        "horseNumber": 10,
+        "finishPosition": 6,
+        "finishTime": 68.59,
+        "margin": 6,
+        "horseName": "SKY TRUST",
+        "horseCode": "HK_2023_J161",
+        "jockeyName": "D Probert",
+        "trainerName": "C Fownes",
+        "winOdds": 10
+      },
+      {
+        "horseNumber": 7,
+        "finishPosition": 7,
+        "finishTime": 68.65,
+        "margin": 7,
+        "horseName": "MASTEROFMYUNIVERSE",
+        "horseCode": "HK_2023_J325",
+        "jockeyName": "Z Purton",
+        "trainerName": "J Size",
+        "winOdds": 7.5
+      },
+      {
+        "horseNumber": 5,
+        "finishPosition": 8,
+        "finishTime": 68.77,
+        "margin": 8,
+        "horseName": "DANCING CODE",
+        "horseCode": "HK_2021_G365",
+        "jockeyName": "E C W Wong",
+        "trainerName": "C Fownes",
+        "winOdds": 3.1
+      },
+      {
+        "horseNumber": 12,
+        "finishPosition": 9,
+        "finishTime": 68.88,
+        "margin": 9,
+        "horseName": "BRAVE STAR",
+        "horseCode": "HK_2021_G268",
+        "jockeyName": "A Atzeni",
+        "trainerName": "K W Lui",
+        "winOdds": 91
+      },
+      {
+        "horseNumber": 4,
+        "finishPosition": 10,
+        "finishTime": 69,
+        "margin": 10,
+        "horseName": "YOUNG CHAMPION",
+        "horseCode": "HK_2023_J195",
+        "jockeyName": "B Avdulla",
+        "trainerName": "J Size",
+        "winOdds": 34
+      },
+      {
+        "horseNumber": 3,
+        "finishPosition": 11,
+        "finishTime": 69.01,
+        "margin": 11,
+        "horseName": "GORGEOUS WIN",
+        "horseCode": "HK_2023_J008",
+        "jockeyName": "H Bowman",
+        "trainerName": "C S Shum",
+        "winOdds": 15
+      },
+      {
+        "horseNumber": 9,
+        "finishPosition": 12,
+        "finishTime": 69.07,
+        "margin": 12,
+        "horseName": "MID WINTER WIND",
+        "horseCode": "HK_2024_K208",
+        "jockeyName": "L Hewitson",
+        "trainerName": "M Newnham",
+        "winOdds": 25
+      }
+    ],
+    "winDividend": 29.5,
+    "placeDividends": [
+      13.5,
+      25.5,
+      119
+    ],
+    "quinellaDividend": 174.5,
+    "quinellaPlaceDividends": [
+      60.5,
+      673.5,
+      715
+    ],
+    "tierceDividend": 16532,
+    "trioDividend": 4022
+  },
+  {
+    "id": "2025-10-12-ST-10",
+    "date": "2025-10-12T00:00:00.000Z",
+    "venue": "Sha Tin",
+    "raceNumber": 10,
+    "name": "of HKJC\n                                                                                    \n                                                                                    \n                                                                                    \n                                                                                        Bloodstock Agents\n                                                                                    \n                                                                                    \n                                                                                    \n                                                                                        Handicap",
+    "class": "Class 3",
+    "distance": 1400,
+    "surface": "Turf",
+    "going": "Good",
+    "prizeMoney": 1860000,
+    "entries": [],
+    "finishOrder": [
+      {
+        "horseNumber": 2,
+        "finishPosition": 1,
+        "finishTime": 81.11,
+        "margin": 1,
+        "horseName": "SKY HEART",
+        "horseCode": "HK_2023_J092",
+        "jockeyName": "E C W Wong",
+        "trainerName": "C Fownes",
+        "winOdds": 15
+      },
+      {
+        "horseNumber": 5,
+        "finishPosition": 2,
+        "finishTime": 81.19,
+        "margin": 2,
+        "horseName": "MASTER OF ALL",
+        "horseCode": "HK_2022_H177",
+        "jockeyName": "A Badel",
+        "trainerName": "W Y So",
+        "winOdds": 12
+      },
+      {
+        "horseNumber": 9,
+        "finishPosition": 3,
+        "finishTime": 81.32,
+        "margin": 3,
+        "horseName": "TIN FOOK",
+        "horseCode": "HK_2024_K167",
+        "jockeyName": "M F Poon",
+        "trainerName": "D J Hall",
+        "winOdds": 10
+      },
+      {
+        "horseNumber": 11,
+        "finishPosition": 4,
+        "finishTime": 81.32,
+        "margin": 4,
+        "horseName": "SOLID WIN",
+        "horseCode": "HK_2023_J225",
+        "jockeyName": "A Atzeni",
+        "trainerName": "P F Yiu",
+        "winOdds": 7.9
+      },
+      {
+        "horseNumber": 13,
+        "finishPosition": 5,
+        "finishTime": 81.36,
+        "margin": 5,
+        "horseName": "THE RED HARE",
+        "horseCode": "HK_2024_K312",
+        "jockeyName": "L Hewitson",
+        "trainerName": "F C Lor",
+        "winOdds": 10
+      },
+      {
+        "horseNumber": 1,
+        "finishPosition": 6,
+        "finishTime": 81.71000000000001,
+        "margin": 6,
+        "horseName": "JUNEAU PRIDE",
+        "horseCode": "HK_2023_J443",
+        "jockeyName": "B Avdulla",
+        "trainerName": "J Size",
+        "winOdds": 6.4
+      },
+      {
+        "horseNumber": 7,
+        "finishPosition": 7,
+        "finishTime": 81.73,
+        "margin": 7,
+        "horseName": "SUGAR BALL",
+        "horseCode": "HK_2022_H394",
+        "jockeyName": "K C Leung",
+        "trainerName": "W K Mo",
+        "winOdds": 14
+      },
+      {
+        "horseNumber": 10,
+        "finishPosition": 8,
+        "finishTime": 81.74,
+        "margin": 8,
+        "horseName": "URANUS STAR",
+        "horseCode": "HK_2024_K511",
+        "jockeyName": "Z Purton",
+        "trainerName": "K W Lui",
+        "winOdds": 3.3
+      },
+      {
+        "horseNumber": 12,
+        "finishPosition": 9,
+        "finishTime": 81.77,
+        "margin": 9,
+        "horseName": "LEGENDARY YEARS",
+        "horseCode": "HK_2024_K286",
+        "jockeyName": "M L Yeung",
+        "trainerName": "B Crawford",
+        "winOdds": 158
+      },
+      {
+        "horseNumber": 8,
+        "finishPosition": 10,
+        "finishTime": 81.92,
+        "margin": 10,
+        "horseName": "STAR MAC",
+        "horseCode": "HK_2023_J053",
+        "jockeyName": "D Probert",
+        "trainerName": "D A Hayes",
+        "winOdds": 16
+      },
+      {
+        "horseNumber": 3,
+        "finishPosition": 11,
+        "finishTime": 81.93,
+        "margin": 11,
+        "horseName": "ANOTHER WORLD",
+        "horseCode": "HK_2024_K005",
+        "jockeyName": "C Y Ho",
+        "trainerName": "C H Yip",
+        "winOdds": 13
+      },
+      {
+        "horseNumber": 6,
+        "finishPosition": 12,
+        "finishTime": 82.35,
+        "margin": 12,
+        "horseName": "IGOR STRAVINSKY",
+        "horseCode": "HK_2024_K086",
+        "jockeyName": "M Chadwick",
+        "trainerName": "A S Cruz",
+        "winOdds": 21
+      },
+      {
+        "horseNumber": 4,
+        "finishPosition": 13,
+        "finishTime": 83.32,
+        "margin": 13,
+        "horseName": "LIM'S SHAVANO",
+        "horseCode": "HK_2024_K424",
+        "jockeyName": "J Orman",
+        "trainerName": "M Newnham",
+        "winOdds": 36
+      },
+      {
+        "horseNumber": 14,
+        "finishPosition": 14,
+        "finishTime": 84.75,
+        "margin": 14,
+        "horseName": "COLOURFUL KNIGHT",
+        "horseCode": "HK_2024_K366",
+        "jockeyName": "Y L Chung",
+        "trainerName": "C S Shum",
+        "winOdds": 116
+      }
+    ],
+    "winDividend": 153,
+    "placeDividends": [
+      51,
+      36,
+      32.5
+    ],
+    "quinellaDividend": 909.5,
+    "quinellaPlaceDividends": [
+      279,
+      270.5,
+      246.5
+    ],
+    "tierceDividend": 22750,
+    "trioDividend": 3316
+  }
+]
