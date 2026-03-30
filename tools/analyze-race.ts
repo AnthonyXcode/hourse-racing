@@ -15,6 +15,7 @@ import type {
 } from "../src/types/index.js";
 import { DEFAULT_BETTING_CONFIG } from "../src/types/index.js";
 import { RaceCardScraper } from "../src/scrapers/raceCard.js";
+import { RaceCardHistoryScraper } from "../src/scrapers/raceCardHistory.js";
 import { FormAnalyzer } from "../src/analysis/formAnalysis.js";
 import { MonteCarloSimulator } from "../src/simulation/monteCarlo.js";
 import {
@@ -190,7 +191,6 @@ async function analyzeRace(args: CliArgs): Promise<void> {
   console.log("");
 
   // Initialize components
-  const scraper = new RaceCardScraper({ headless: true });
   const formAnalyzer = new FormAnalyzer();
   const simulator = new MonteCarloSimulator({ runs: 10000 });
 
@@ -201,6 +201,7 @@ async function analyzeRace(args: CliArgs): Promise<void> {
   };
 
   const recommendationEngine = new RecommendationEngine(config);
+  let scraper: RaceCardScraper | null = null;
 
   try {
     // Load historical data for enrichment
@@ -216,25 +217,64 @@ async function analyzeRace(args: CliArgs): Promise<void> {
       console.log(`  Indexed ${dataSummary.totalHorses} horse performances`);
     }
 
-    console.log("Initializing scraper...");
-    await scraper.init();
+    // -------------------------------------------------------------------
+    // Try scraping race card first; fall back to historical data if needed
+    // -------------------------------------------------------------------
+    let race: Race | null = null;
+    let prefetchedWinOdds: Map<number, number> | null = null;
 
-    console.log("Fetching race card...");
-    let race = await scraper.scrapeRaceCard(
-      args.date,
-      args.venue,
-      args.raceNumber
-    );
+    scraper = new RaceCardScraper({ headless: true });
+    try {
+      console.log("Initializing scraper...");
+      await scraper.init();
 
-    // Validate race has entries
-    if (race.entries.length === 0) {
-      throw new Error(
-        `No entries found for Race ${args.raceNumber} at ${args.venue} on ${format(args.date, "yyyy-MM-dd")}. ` +
-        `This could mean: (1) No racing on this date, (2) Race card not yet published, or (3) Invalid race number.`
+      console.log("Fetching race card...");
+      const scraped = await scraper.scrapeRaceCard(
+        args.date,
+        args.venue,
+        args.raceNumber
+      );
+
+      if (scraped.entries.length > 0) {
+        race = scraped;
+      }
+    } catch (err) {
+      console.warn(
+        `[WARNING] Race card scrape failed: ${err instanceof Error ? err.message : err}`
       );
     }
 
-    console.log(`Found ${race.entries.length} entries`);
+    const historyScraper = new RaceCardHistoryScraper();
+
+    if (!race) {
+      // Fallback: try a previously saved race card snapshot (preserves race-day ratings)
+      const saved = await historyScraper.loadSavedRaceCard(args.date, args.venue, args.raceNumber);
+      if (saved) {
+        race = saved.race;
+        prefetchedWinOdds = saved.winOddsMap;
+        console.log(
+          `\n[INFO] Loaded saved race card (${race.entries.length} runners, race-day snapshot)`
+        );
+      } else {
+        throw new Error(
+          `No entries found for Race ${args.raceNumber} at ${args.venue} on ${format(args.date, "yyyy-MM-dd")}. ` +
+          `Live race card is unavailable and no saved race card found in data/racecards/. ` +
+          `Run analyze-race before race day to save the race card.`
+        );
+      }
+    } else {
+      console.log(`Found ${race.entries.length} entries`);
+
+      // Save the live race card so it can be reused after the meeting
+      try {
+        const savedPath = await historyScraper.saveRaceCard(race);
+        console.log(`[INFO] Race card saved to ${savedPath}`);
+      } catch (err) {
+        console.warn(
+          `[WARNING] Could not save race card: ${err instanceof Error ? err.message : err}`
+        );
+      }
+    }
 
     // Enrich horses with historical data
     console.log("Enriching horses with past performances...");
@@ -272,13 +312,25 @@ async function analyzeRace(args: CliArgs): Promise<void> {
     const { results: simResults, exoticProbabilities } =
       simulator.simulateRace(race);
 
-    // Fetch current odds
-    console.log("Fetching current odds...");
-    const winOddsMap = await scraper.fetchCurrentOdds(
-      args.date,
-      args.venue,
-      args.raceNumber
-    );
+    // Fetch current odds (or use historical SP)
+    let winOddsMap: Map<number, number>;
+    if (prefetchedWinOdds && prefetchedWinOdds.size > 0) {
+      winOddsMap = prefetchedWinOdds;
+      console.log(`[INFO] Using final SP odds from historical data for ${winOddsMap.size} horses`);
+    } else if (scraper) {
+      console.log("Fetching current odds...");
+      winOddsMap = await scraper.fetchCurrentOdds(
+        args.date,
+        args.venue,
+        args.raceNumber
+      );
+      // Re-save race card with odds so the snapshot includes them
+      if (winOddsMap.size > 0) {
+        historyScraper.saveRaceCard(race, winOddsMap).catch(() => {});
+      }
+    } else {
+      winOddsMap = new Map();
+    }
 
     // Estimate place odds (live place odds not fetched by this scraper)
     const valueCalc = new ValueCalculator();
@@ -387,7 +439,7 @@ async function analyzeRace(args: CliArgs): Promise<void> {
     
     process.exit(1);
   } finally {
-    await scraper.close();
+    if (scraper) await scraper.close();
   }
 }
 
