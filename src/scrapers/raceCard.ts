@@ -637,8 +637,8 @@ export class RaceCardScraper {
 
   /**
    * Fetch current win odds for a race from the betting site (bet.hkjc.com).
-   * The racing.hkjc.com "winodd" page often has no odds or different HTML, so we use
-   * the same source as the fetch-odds tool.
+   * Uses Playwright DOM selectors (same approach as tools/fetch-odds.ts)
+   * instead of cheerio text regex, which missed whole-number odds.
    */
   async fetchCurrentOdds(
     date: Date,
@@ -651,28 +651,52 @@ export class RaceCardScraper {
 
     if (!this.page) throw new Error("Browser not initialized");
 
-    await this.navigateTo(url);
-    await sleep(3000); // Allow odds to load
+    await this.page.goto(url, { waitUntil: "load", timeout: 30000 });
 
-    const content = await this.page.content();
-    const $ = cheerio.load(content);
-    const odds = new Map<number, number>();
-    const seen = new Set<number>();
+    const MAX_ATTEMPTS = 3;
+    let extracted: { horseNumber: number; winOdds: number }[] = [];
 
-    // bet.hkjc.com: runner rows contain horse number and win/place decimals (e.g. "1 ... 3.6 2.3")
-    $("tr, [class*='runner'], [class*='horse'], [class*='row']").each((_, row) => {
-      const text = $(row).text().trim().replace(/\s+/g, " ");
-      const numMatch = text.match(/^(\d+)/);
-      const oddsMatch = text.match(/(\d+\.\d+)\s*(\d+\.\d+)\s*$/);
-      if (numMatch && oddsMatch) {
-        const horseNumber = parseInt(numMatch[1]!, 10);
-        if (horseNumber >= 1 && horseNumber <= 14 && !seen.has(horseNumber)) {
-          seen.add(horseNumber);
-          odds.set(horseNumber, parseFloat(oddsMatch[1]!));
-        }
+    for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+      await this.page
+        .waitForSelector("td.rc-odds", { timeout: 10000 })
+        .catch(() => {});
+      await sleep(1000);
+
+      extracted = await this.page.evaluate(() => {
+        const results: { horseNumber: number; winOdds: number }[] = [];
+        // @ts-expect-error runs in browser context where document exists
+        document.querySelectorAll("tr").forEach((row: Element) => {
+          const noCell = row.querySelector("td.rc-no");
+          const oddsCells = row.querySelectorAll("td.rc-odds");
+          if (!noCell || oddsCells.length < 1) return;
+
+          const horseNumber = parseInt(noCell.textContent?.trim() || "0", 10);
+          const winText = oddsCells[0].textContent?.trim() || "0";
+          const winOdds = parseFloat(winText);
+
+          if (horseNumber > 0 && !isNaN(winOdds) && winOdds > 0) {
+            results.push({ horseNumber, winOdds });
+          }
+        });
+        return results;
+      });
+
+      if (extracted.length > 0) break;
+
+      if (attempt < MAX_ATTEMPTS) {
+        console.log(
+          `  [RETRY] fetchCurrentOdds attempt ${attempt}/${MAX_ATTEMPTS} returned 0 horses, waiting...`
+        );
+        await sleep(3000);
       }
-    });
+    }
 
+    this.lastRequestTime = Date.now();
+
+    const odds = new Map<number, number>();
+    for (const h of extracted) {
+      odds.set(h.horseNumber, h.winOdds);
+    }
     return odds;
   }
 }
