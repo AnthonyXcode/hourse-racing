@@ -228,3 +228,43 @@ One hit from eight races (R6, $446); net -$454. Tickets are from the **regenerat
 | Banker top 3 | 81.8% | 50.0% | 44.4% | 45.5% | 44.4% | 63.6% | **25.0%** | 11-Mar weak |
 
 The 11-Mar HV meeting (1 hit, -$454) turned the season P&L negative (+$109 → -$345). Banker top-3 rate was only 25% (2/8). Pool gaps drove most misses; the single hit came from the only 7-horse (Mode C) pool. **Takeaway:** At HV with mode-only pools, consider defaulting to 7 horses for Competitive races to reduce single-horse pool-gap misses.
+
+---
+
+## Banker Place Bet Analysis
+
+If the banker (Adj Win% #1) was used as a flat $10 Place bet each race (R2 excluded — no strategy):
+
+| Race | Banker | Odds | Finished | Placed? | Place Div |
+|------|--------|------|----------|---------|-----------|
+| R1 | #6 KING ALLOY | — | 3rd | ✅ | $24.5 |
+| R3 | #5 AMAZING AWARD | — | 4th | ❌ | $0 |
+| R4 | #7 VIVACIOUS WIN | — | 4th | ❌ | $0 |
+| R5 | #5 SUGAR SUGAR | — | 7th | ❌ | $0 |
+| R6 | #1 VICTOR THE RAPID | — | 2nd | ✅ | $20.0 |
+| R7 | #2 NORTHERN FIRE BALL | — | 4th | ❌ | $0 |
+| R8 | #7 SPIRIT OF PEACE | — | 5th | ❌ | $0 |
+| R9 | #11 CHINA WIN | — | 2nd | ✅ | $12.0 |
+
+| Metric | Value |
+|--------|-------|
+| Place strike rate | 3/8 (37.5%) |
+| Total staked | $80 |
+| Total returned | $56.5 |
+| **Net P&L** | **-$23.5** |
+| **ROI** | **-29.4%** |
+
+### Cross-Meeting Banker Place Bet Cumulative
+
+| Meeting | Races | Placed | Rate | Staked | Returned | P&L | ROI |
+|---------|-------|--------|------|--------|----------|-----|-----|
+| 19 Feb ST | 11 | 9/11 | 81.8% | $110 | $124.1 | +$14.1 | +12.8% |
+| 22 Feb ST | 10 | 5/10 | 50.0% | $100 | $74.1 | -$25.9 | -25.9% |
+| 25 Feb HV | 9 | 4/9 | 44.4% | $90 | $67.0 | -$23.0 | -25.6% |
+| 1 Mar ST | 11 | 6/11 | 54.5% | $110 | $130.0 | +$20.0 | +18.2% |
+| 4 Mar HV | 9 | 4/9 | 44.4% | $90 | $64.5 | -$25.5 | -28.3% |
+| 8 Mar ST | 11 | 7/11 | 63.6% | $110 | $108.0 | -$2.0 | -1.8% |
+| 11 Mar HV | 8 | 3/8 | 37.5% | $80 | $56.5 | -$23.5 | -29.4% |
+| **Cumulative** | **69** | **38/69** | **55.1%** | **$690** | **$624.2** | **-$65.8** | **-9.5%** |
+
+**Note:** The Adj Win% #1 banker place bet strategy is **unprofitable** over 7 meetings (-9.5% ROI). The banker's 55.1% place rate combined with mostly short-odds dividends ($10-$32 range) doesn't generate enough return. Contrast with the MC #1 Place strategy (raw MC ranking, no adjustments) which runs at +21.3% ROI over 5 later meetings — suggesting raw MC rankings may be a better selection method than Adj Win% for place bets.

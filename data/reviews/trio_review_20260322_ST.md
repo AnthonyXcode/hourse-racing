@@ -401,4 +401,47 @@ Cumulatively, **Strategy A leads by $296** over 2 meetings. The data is convergi
 
 ---
 
+---
+
+## Banker Place Bet Analysis
+
+If the banker (Adj Win% #1) was used as a flat $10 Place bet each race:
+
+| Race | Banker | Odds | Finished | Placed? | Place Div |
+|------|--------|------|----------|---------|-----------|
+| R1 | #1 ROBOT STAR | 2.6 | 6th | ❌ | $0 |
+| R2 | #9 PRESTIGE HALL | 3.9 | 2nd | ✅ | $14.0 |
+| R3 | #9 CIRCUIT CHAMPION | 1.9 | 1st | ✅ | $10.1 |
+| R4 | #3 GOLD PATCH | 2.9 | 1st | ✅ | $15.0 |
+| R5 | #1 AEROINVINCIBLE | 6.3 | 1st | ✅ | $22.0 |
+| R6 | #4 HOT DELIGHT | 4.5 | 1st | ✅ | $10.1 |
+| R7 | #3 STORMY GROVE | 6.5 | 3rd | ✅ | $22.5 |
+| R8 | #5 MONEY CATCHER | — | 3rd | ✅ | $40.0 |
+| R9 | #9 AEROVOLANIC | 2.8 | 1st | ✅ | $14.0 |
+| R10 | #12 SIX PACK | 4.3 | 2nd | ✅ | $15.5 |
+
+| Metric | Value |
+|--------|-------|
+| Place strike rate | 9/10 (90.0%) |
+| Total staked | $100 |
+| Total returned | $163.2 |
+| **Net P&L** | **+$63.2** |
+| **ROI** | **+63.2%** |
+
+### Cross-Meeting Banker Place Bet Cumulative
+
+| Meeting | Races | Placed | Rate | Staked | Returned | P&L | ROI |
+|---------|-------|--------|------|--------|----------|-----|-----|
+| 19 Feb ST | 11 | 9/11 | 81.8% | $110 | $124.1 | +$14.1 | +12.8% |
+| 22 Feb ST | 10 | 5/10 | 50.0% | $100 | $74.1 | -$25.9 | -25.9% |
+| 25 Feb HV | 9 | 4/9 | 44.4% | $90 | $67.0 | -$23.0 | -25.6% |
+| 1 Mar ST | 11 | 6/11 | 54.5% | $110 | $130.0 | +$20.0 | +18.2% |
+| 4 Mar HV | 9 | 4/9 | 44.4% | $90 | $64.5 | -$25.5 | -28.3% |
+| 8 Mar ST | 11 | 7/11 | 63.6% | $110 | $108.0 | -$2.0 | -1.8% |
+| 11 Mar HV | 8 | 3/8 | 37.5% | $80 | $56.5 | -$23.5 | -29.4% |
+| 15 Mar ST | 11 | 4/11 | 36.4% | $110 | $57.0 | -$53.0 | -48.2% |
+| 18 Mar HV | 9 | 6/9 | 66.7% | $90 | $82.5 | -$7.5 | -8.3% |
+| 22 Mar ST | 10 | 9/10 | 90.0% | $100 | $163.2 | +$63.2 | +63.2% |
+| **Cumulative** | **99** | **57/99** | **57.6%** | **$990** | **$926.9** | **-$63.1** | **-6.4%** |
+
 *Review complete. 10 races analysed. Next meeting: carry forward cumulative tables.*

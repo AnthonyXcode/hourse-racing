@@ -117,4 +117,46 @@ In each case the three placers were in our pool (legs), but with 膽拖 we need 
 - **Pool width in wide-open races (e.g. R9):** Consider 7-horse pool or adding one “next by Adj Place%” leg when no horse has Adj Win% ≥ 20%.
 - **Market favourite in sprints:** When MC heavily overvalues the favourite but form is credible, consider including as a leg (e.g. R6 #10).
 - **AWT / low-MC longshots:** Consider a rule for one longshot leg when top MC win% is modest and field is open (e.g. R4 #5, R5 #1).
-- **Pattern A:** Continue tracking “banker 4th, all three in legs”; no change to banker rule — variance.
+- **Pattern A:** Continue tracking "banker 4th, all three in legs"; no change to banker rule — variance.
+
+---
+
+## Banker Place Bet Analysis
+
+If the banker (Adj Win% #1) was used as a flat $10 Place bet each race:
+
+| Race | Banker | Odds | Finished | Placed? | Place Div |
+|------|--------|------|----------|---------|-----------|
+| R1 | #2 COURIER MAGIC | — | 7th | ❌ | $0 |
+| R2 | #8 YEE CHEONG RAIDER | — | 2nd | ✅ | $14.0 |
+| R3 | #1 CROSSBORDERDUDE | — | 3rd | ✅ | $10.5 |
+| R4 | #1 NYX GLUCK | — | >3rd | ❌ | $0 |
+| R5 | #5 CALIFORNIA STAR | — | 2nd | ✅ | $21.5 |
+| R6 | #8 MUST GO | — | >3rd | ❌ | $0 |
+| R7 | #10 THUNDER PRINCE | — | 4th | ❌ | $0 |
+| R8 | #2 DRAGON AIR FORCE | — | 4th | ❌ | $0 |
+| R9 | #9 AMAZING DUCK | — | >3rd | ❌ | $0 |
+| R10 | #4 SMART GOLF | — | 1st | ✅ | $11.0 |
+| R11 | #1 RIDING TOGETHER | — | >3rd | ❌ | $0 |
+
+| Metric | Value |
+|--------|-------|
+| Place strike rate | 4/11 (36.4%) |
+| Total staked | $110 |
+| Total returned | $57.0 |
+| **Net P&L** | **-$53.0** |
+| **ROI** | **-48.2%** |
+
+### Cross-Meeting Banker Place Bet Cumulative
+
+| Meeting | Races | Placed | Rate | Staked | Returned | P&L | ROI |
+|---------|-------|--------|------|--------|----------|-----|-----|
+| 19 Feb ST | 11 | 9/11 | 81.8% | $110 | $124.1 | +$14.1 | +12.8% |
+| 22 Feb ST | 10 | 5/10 | 50.0% | $100 | $74.1 | -$25.9 | -25.9% |
+| 25 Feb HV | 9 | 4/9 | 44.4% | $90 | $67.0 | -$23.0 | -25.6% |
+| 1 Mar ST | 11 | 6/11 | 54.5% | $110 | $130.0 | +$20.0 | +18.2% |
+| 4 Mar HV | 9 | 4/9 | 44.4% | $90 | $64.5 | -$25.5 | -28.3% |
+| 8 Mar ST | 11 | 7/11 | 63.6% | $110 | $108.0 | -$2.0 | -1.8% |
+| 11 Mar HV | 8 | 3/8 | 37.5% | $80 | $56.5 | -$23.5 | -29.4% |
+| 15 Mar ST | 11 | 4/11 | 36.4% | $110 | $57.0 | -$53.0 | -48.2% |
+| **Cumulative** | **80** | **42/80** | **52.5%** | **$800** | **$681.2** | **-$118.8** | **-14.9%** | “banker 4th, all three in legs”; no change to banker rule — variance.

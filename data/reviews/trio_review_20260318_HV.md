@@ -331,6 +331,47 @@ The session was driven by **variance, not systematic failure** — Purton banker
 
 *First tracked meeting. Cumulative data begins here.*
 
+---
+
+## Banker Place Bet Analysis
+
+If the banker (Adj Win% #1) was used as a flat $10 Place bet each race:
+
+| Race | Banker | Odds | Finished | Placed? | Place Div |
+|------|--------|------|----------|---------|-----------|
+| R1 | #10 DRAGON SUNRISE | 3.5 | 3rd | ✅ | $15.5 |
+| R2 | #7 INNO SUPER | 9.7 | >3rd | ❌ | $0 |
+| R3 | #3 BEAUTY THUNDER | 3.9 | 2nd | ✅ | $15.5 |
+| R4 | #2 SUPERB KING | 2.9 | 2nd | ✅ | $15.5 |
+| R5 | #5 RAINBOW SEVEN | 2.1 | 2nd | ✅ | $11.5 |
+| R6 | #3 ACE WAR | 1.7 | 1st | ✅ | $12.0 |
+| R7 | #7 ROMANTIC SON | 8.1 | 4th | ❌ | $0 |
+| R8 | #4 SOVEREIGN FUND | — | >3rd | ❌ | $0 |
+| R9 | #1 MAX QUE | 2.5 | 3rd | ✅ | $12.5 |
+
+| Metric | Value |
+|--------|-------|
+| Place strike rate | 6/9 (66.7%) |
+| Total staked | $90 |
+| Total returned | $82.5 |
+| **Net P&L** | **-$7.5** |
+| **ROI** | **-8.3%** |
+
+### Cross-Meeting Banker Place Bet Cumulative
+
+| Meeting | Races | Placed | Rate | Staked | Returned | P&L | ROI |
+|---------|-------|--------|------|--------|----------|-----|-----|
+| 19 Feb ST | 11 | 9/11 | 81.8% | $110 | $124.1 | +$14.1 | +12.8% |
+| 22 Feb ST | 10 | 5/10 | 50.0% | $100 | $74.1 | -$25.9 | -25.9% |
+| 25 Feb HV | 9 | 4/9 | 44.4% | $90 | $67.0 | -$23.0 | -25.6% |
+| 1 Mar ST | 11 | 6/11 | 54.5% | $110 | $130.0 | +$20.0 | +18.2% |
+| 4 Mar HV | 9 | 4/9 | 44.4% | $90 | $64.5 | -$25.5 | -28.3% |
+| 8 Mar ST | 11 | 7/11 | 63.6% | $110 | $108.0 | -$2.0 | -1.8% |
+| 11 Mar HV | 8 | 3/8 | 37.5% | $80 | $56.5 | -$23.5 | -29.4% |
+| 15 Mar ST | 11 | 4/11 | 36.4% | $110 | $57.0 | -$53.0 | -48.2% |
+| 18 Mar HV | 9 | 6/9 | 66.7% | $90 | $82.5 | -$7.5 | -8.3% |
+| **Cumulative** | **89** | **48/89** | **53.9%** | **$890** | **$763.7** | **-$126.3** | **-14.2%** |
+
 ════════════════════════════════════════════════════════════
 HK HORSE RACING ANALYZER R4
 ════════════════════════════════════════════════════════════

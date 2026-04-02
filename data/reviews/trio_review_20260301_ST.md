@@ -267,3 +267,41 @@ Note: The single HIGH confidence race (R3) missed due to a 42-1 upset, not a mod
 | Banker top 3 | 81.8% | 50.0% | 44.4% | 45.5% | Stabilising ~45-50% |
 
 The 1-Mar meeting single-handedly pulled the season into profit. The SKILL.md rule changes (unified pool, Rule 1-3, jockey boosts, mandatory inclusion) applied from 1-Mar onward produced a dramatic improvement: 45.5% hit rate and +247.4% ROI vs the 22-Feb/25-Feb average of 31.6% and -73.4%. The R10 contrarian banker ($2,487) was the pivotal bet that turned the season around.
+
+---
+
+## Banker Place Bet Analysis
+
+If the banker (Adj Win% #1) was used as a flat $10 Place bet each race:
+
+| Race | Banker | Adj Win% | Odds | Finished | Placed? | Place Div |
+|------|--------|----------|------|----------|---------|-----------|
+| R1 | #9 STORM RUNNER | 21.4% | 14 | 1st | ✅ | $32.0 |
+| R2 | #2 MR COOL | — | 10 | 3rd | ✅ | $31.0 |
+| R3 | #8 CIRCUIT FIERY | — | 1.7 | 1st | ✅ | $12.0 |
+| R4 | #8 GLACIATED | 30.4% | 8.5 | >3rd | ❌ | $0 |
+| R5 | #3 ISLAND BUDDY | 27.4% | 12 | >3rd | ❌ | $0 |
+| R6 | #6 PERFECTDAY | 24.8% | — | >3rd | ❌ | $0 |
+| R7 | #1 ROMANTIC WARRIOR | — | 1.0 | 1st | ✅ | $10.5 |
+| R8 | #6 AURIO | 27.1% | — | >3rd | ❌ | $0 |
+| R9 | #2 NUMBERS | 20.4% | — | >3rd | ❌ | $0 |
+| R10 | #1 GENTLEMEN LEGACY | 21.5% | 11 | 1st | ✅ | $32.0 |
+| R11 | #9 EMBLAZON | 31.3% | 2.6 | 1st | ✅ | $12.5 |
+
+| Metric | Value |
+|--------|-------|
+| Place strike rate | 6/11 (54.5%) |
+| Total staked | $110 |
+| Total returned | $130.0 |
+| **Net P&L** | **+$20.0** |
+| **ROI** | **+18.2%** |
+
+### Cross-Meeting Banker Place Bet Cumulative
+
+| Meeting | Races | Placed | Rate | Staked | Returned | P&L | ROI |
+|---------|-------|--------|------|--------|----------|-----|-----|
+| 19 Feb ST | 11 | 9/11 | 81.8% | $110 | $124.1 | +$14.1 | +12.8% |
+| 22 Feb ST | 10 | 5/10 | 50.0% | $100 | $74.1 | -$25.9 | -25.9% |
+| 25 Feb HV | 9 | 4/9 | 44.4% | $90 | $67.0 | -$23.0 | -25.6% |
+| 1 Mar ST | 11 | 6/11 | 54.5% | $110 | $130.0 | +$20.0 | +18.2% |
+| **Cumulative** | **41** | **24/41** | **58.5%** | **$410** | **$395.2** | **-$14.8** | **-3.6%** |

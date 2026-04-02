@@ -264,3 +264,40 @@ Note: The HIGH confidence race (R6) missed due to banker failure — #2 Sports L
 | Banker top 3 | 81.8% | 50.0% | 44.4% | 45.5% | 44.4% | Stable ~45% |
 
 The 4-Mar HV meeting eroded the gains from the excellent 1-Mar ST session. Happy Valley continues to be the weaker venue: 4/18 hit rate (22.2%) vs Sha Tin 13/32 (40.6%). HV banker strike rate (44.4%) is notably lower than ST (59.4%). The tight HV track with draw-dependent results and more upsets creates volatility that the MC model struggles to capture. The critical structural finding remains: **banker dependency in 膽拖 is the single biggest drag on HV performance** — 3 of 7 misses had perfect leg pools destroyed by banker failure.
+
+---
+
+## Banker Place Bet Analysis
+
+If the banker (Adj Win% #1) was used as a flat $10 Place bet each race:
+
+| Race | Banker | Adj Win% | Odds | Finished | Placed? | Place Div |
+|------|--------|----------|------|----------|---------|-----------|
+| R1 | #12 DRAGON SUNRISE | 20.9% | — | 6th | ❌ | $0 |
+| R2 | #6 ONLY U | — | — | 2nd | ✅ | $18.5 |
+| R3 | #6 ACE WAR | 26.1% | 2.8 | 1st | ✅ | $16.0 |
+| R4 | #7 FLASH STAR | 15.8% | 15 | 5th | ❌ | $0 |
+| R5 | #5 GIANT BALLON | — | 2.6 | 1st | ✅ | $13.5 |
+| R6 | #2 SPORTS LEGEND | 26.1% | 3.0 | 9th | ❌ | $0 |
+| R7 | #1 RAGGA BOMB | — | 3.2 | 3rd | ✅ | $16.5 |
+| R8 | #1 LUCKY PLANET | 26.8% | — | 6th | ❌ | $0 |
+| R9 | #3 CORLEONE | — | — | 8th | ❌ | $0 |
+
+| Metric | Value |
+|--------|-------|
+| Place strike rate | 4/9 (44.4%) |
+| Total staked | $90 |
+| Total returned | $64.5 |
+| **Net P&L** | **-$25.5** |
+| **ROI** | **-28.3%** |
+
+### Cross-Meeting Banker Place Bet Cumulative
+
+| Meeting | Races | Placed | Rate | Staked | Returned | P&L | ROI |
+|---------|-------|--------|------|--------|----------|-----|-----|
+| 19 Feb ST | 11 | 9/11 | 81.8% | $110 | $124.1 | +$14.1 | +12.8% |
+| 22 Feb ST | 10 | 5/10 | 50.0% | $100 | $74.1 | -$25.9 | -25.9% |
+| 25 Feb HV | 9 | 4/9 | 44.4% | $90 | $67.0 | -$23.0 | -25.6% |
+| 1 Mar ST | 11 | 6/11 | 54.5% | $110 | $130.0 | +$20.0 | +18.2% |
+| 4 Mar HV | 9 | 4/9 | 44.4% | $90 | $64.5 | -$25.5 | -28.3% |
+| **Cumulative** | **50** | **28/50** | **56.0%** | **$500** | **$459.7** | **-$40.3** | **-8.1%** |

@@ -202,4 +202,39 @@ vs Full Pool cumulative: Cost $4,100, Return $1,295, P/L -$2,805, ROI -68.4%.
 
 ---
 
+## Banker Place Bet Analysis
+
+If the banker (Adj Win% #1) was used as a flat $10 Place bet each race (R4 excluded — no strategy):
+
+| Race | Banker | Adj Win% | Odds | Finished | Placed? | Place Div |
+|------|--------|----------|------|----------|---------|-----------|
+| R1 | #5 ALMIGHTY LIGHTNING | 24.0% | 3.0 | 1st | ✅ | $16.0 |
+| R2 | #5 GIANT BALLON | 39.4% | 2.6 | >4th | ❌ | $0 |
+| R3 | #11 COOL BLUE | 25.6% | 4.4 | 1st | ✅ | $16.0 |
+| R5 | #4 GALLANT DESIGN | 36.1% | 5.8 | >4th | ❌ | $0 |
+| R6 | #1 ALL ROUND WINNER | 34.6% | 5.9 | 3rd | ✅ | $19.0 |
+| R7 | #1 TURIN CHAMPIONS | 31.3% | 3.3 | >4th | ❌ | $0 |
+| R8 | #1 KA YING RISING | 39.0% | 1.0 | 1st | ✅ | $10.1 |
+| R9 | #4 COOL BOY | 36.4% | 2.4 | 1st | ✅ | $13.0 |
+| R10 | #2 FLYING LUCK | 23.4% | 13 | >4th | ❌ | $0 |
+| R11 | #1 SIX PACK | 24.1% | 6.7 | 4th | ❌ | $0 |
+
+| Metric | Value |
+|--------|-------|
+| Place strike rate | 5/10 (50.0%) |
+| Total staked | $100 |
+| Total returned | $74.1 |
+| **Net P&L** | **-$25.9** |
+| **ROI** | **-25.9%** |
+
+### Cross-Meeting Banker Place Bet Cumulative
+
+| Meeting | Races | Placed | Rate | Staked | Returned | P&L | ROI |
+|---------|-------|--------|------|--------|----------|-----|-----|
+| 19 Feb ST | 11 | 9/11 | 81.8% | $110 | $124.1 | +$14.1 | +12.8% |
+| 22 Feb ST | 10 | 5/10 | 50.0% | $100 | $74.1 | -$25.9 | -25.9% |
+| **Cumulative** | **21** | **14/21** | **66.7%** | **$210** | **$198.2** | **-$11.8** | **-5.6%** |
+
+---
+
 *Report generated: 2026-02-22 | Strategy: Trio 膽拖 with 1st-ranked horse as mandatory banker | Unit: $10/combo*

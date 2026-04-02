@@ -344,4 +344,50 @@ Per user table: **MC-only** pool sizes (10–21 combos), **#1 MC Win%** banker e
 
 ### 11e. Session Verdict
 
-**Strategy A won the session by $670** versus Strategy B (**−$501** vs **−$1,171**) with the **same** two winning races. The outcome is **not** variance in selection — it is **pure staking efficiency** on a day when **pool gaps** and **banker misses** were aligned across both systems. The **full pipeline** kept more capital in pocket (notably **R7** at $100 vs $210) without sacrificing hits. Season-wide, Meeting 9 **extends** Strategy A’s cumulative drawdown to **−$1,616** through 91 races; rebuilding **B** history for meetings 1–8 would be needed for a like-for-like lifetime B comparison.
+**Strategy A won the session by $670** versus Strategy B (**−$501** vs **−$1,171**) with the **same** two winning races. The outcome is **not** variance in selection — it is **pure staking efficiency** on a day when **pool gaps** and **banker misses** were aligned across both systems. The **full pipeline** kept more capital in pocket (notably **R7** at $100 vs $210) without sacrificing hits. Season-wide, Meeting 9 **extends** Strategy A's cumulative drawdown to **−$1,616** through 91 races; rebuilding **B** history for meetings 1–8 would be needed for a like-for-like lifetime B comparison.
+
+---
+
+## Banker Place Bet Analysis
+
+If the banker (Adj Win% #1) was used as a flat $10 Place bet each race:
+
+| Race | Banker | Odds | Finished | Placed? | Place Div |
+|------|--------|------|----------|---------|-----------|
+| R1 | #11 | — | >3rd | ❌ | $0 |
+| R2 | #13 | — | 1st | ✅ | $12.5 |
+| R3 | #6 | — | >3rd | ❌ | $0 |
+| R4 | #9 | — | 1st | ✅ | $12.0 |
+| R5 | #4 | — | 2nd | ✅ | $18.5 |
+| R6 | #3 | — | 3rd | ✅ | $17.5 |
+| R7 | #4 | — | >3rd | ❌ | $0 |
+| R8 | #1 | — | 1st | ✅ | $10.1 |
+| R9 | #6 | — | >3rd | ❌ | $0 |
+| R10 | #1 | — | 3rd | ✅ | $18.5 |
+| R11 | #8 | — | 3rd | ✅ | $25.5 |
+
+| Metric | Value |
+|--------|-------|
+| Place strike rate | 7/11 (63.6%) |
+| Total staked | $110 |
+| Total returned | $114.6 |
+| **Net P&L** | **+$4.6** |
+| **ROI** | **+4.2%** |
+
+### Cross-Meeting Banker Place Bet Cumulative
+
+| Meeting | Races | Placed | Rate | Staked | Returned | P&L | ROI |
+|---------|-------|--------|------|--------|----------|-----|-----|
+| 19 Feb ST | 11 | 9/11 | 81.8% | $110 | $124.1 | +$14.1 | +12.8% |
+| 22 Feb ST | 10 | 5/10 | 50.0% | $100 | $74.1 | -$25.9 | -25.9% |
+| 25 Feb HV | 9 | 4/9 | 44.4% | $90 | $67.0 | -$23.0 | -25.6% |
+| 1 Mar ST | 11 | 6/11 | 54.5% | $110 | $130.0 | +$20.0 | +18.2% |
+| 4 Mar HV | 9 | 4/9 | 44.4% | $90 | $64.5 | -$25.5 | -28.3% |
+| 8 Mar ST | 11 | 7/11 | 63.6% | $110 | $108.0 | -$2.0 | -1.8% |
+| 11 Mar HV | 8 | 3/8 | 37.5% | $80 | $56.5 | -$23.5 | -29.4% |
+| 15 Mar ST | 11 | 4/11 | 36.4% | $110 | $57.0 | -$53.0 | -48.2% |
+| 18 Mar HV | 9 | 6/9 | 66.7% | $90 | $82.5 | -$7.5 | -8.3% |
+| 22 Mar ST | 10 | 9/10 | 90.0% | $100 | $163.2 | +$63.2 | +63.2% |
+| 25 Mar HV | 9 | 6/9 | 66.7% | $90 | $135.0 | +$45.0 | +50.0% |
+| 29 Mar ST | 11 | 7/11 | 63.6% | $110 | $114.6 | +$4.6 | +4.2% |
+| **Cumulative** | **119** | **70/119** | **58.8%** | **$1,190** | **$1,176.5** | **-$13.5** | **-1.1%** | Season-wide, Meeting 9 **extends** Strategy A’s cumulative drawdown to **−$1,616** through 91 races; rebuilding **B** history for meetings 1–8 would be needed for a like-for-like lifetime B comparison.

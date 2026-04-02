@@ -351,5 +351,40 @@ vs Current cumulative: Cost $3,020, Return $1,425, P/L -$1,595, ROI -52.8%.
 
 ---
 
+## Banker Place Bet Analysis
+
+If the banker (Adj Win% #1) was used as a flat $10 Place bet each race:
+
+| Race | Banker | Adj Win% | Odds | Finished | Placed? | Place Div |
+|------|--------|----------|------|----------|---------|-----------|
+| R1 | #6 MY FLYING ANGEL | 27.9% | 11 | >4th | ❌ | $0 |
+| R2 | #8 BITS SUPERSTAR | 36.1% | 2.5 | 2nd | ✅ | $12.0 |
+| R3 | #2 HUGE WAVE | 30.6% | 3.9 | 2nd | ✅ | $13.5 |
+| R4 | #7 DAN ATTACK | 36.7% | 3.3 | >4th | ❌ | $0 |
+| R5 | #6 GREAT SPIRIT | 29.1% | 5.9 | >4th | ❌ | $0 |
+| R6 | #1 STORMI | 26.0% | 4.5 | 1st | ✅ | $15.5 |
+| R7 | #2 EMBRACES | 19.7% | 6.6 | >4th | ❌ | $0 |
+| R8 | #4 GREATER BAE | 27.6% | 2.2 | >4th | ❌ | $0 |
+| R9 | #6 CALIFORNIA BLITZ | 28.9% | 9.6 | 3rd | ✅ | $26.0 |
+
+| Metric | Value |
+|--------|-------|
+| Place strike rate | 4/9 (44.4%) |
+| Total staked | $90 |
+| Total returned | $67.0 |
+| **Net P&L** | **-$23.0** |
+| **ROI** | **-25.6%** |
+
+### Cross-Meeting Banker Place Bet Cumulative
+
+| Meeting | Races | Placed | Rate | Staked | Returned | P&L | ROI |
+|---------|-------|--------|------|--------|----------|-----|-----|
+| 19 Feb ST | 11 | 9/11 | 81.8% | $110 | $124.1 | +$14.1 | +12.8% |
+| 22 Feb ST | 10 | 5/10 | 50.0% | $100 | $74.1 | -$25.9 | -25.9% |
+| 25 Feb HV | 9 | 4/9 | 44.4% | $90 | $67.0 | -$23.0 | -25.6% |
+| **Cumulative** | **30** | **18/30** | **60.0%** | **$300** | **$265.2** | **-$34.8** | **-11.6%** |
+
+---
+
 *Report generated: 2026-02-25 post-meeting | Strategy: Trio 膽拖 with 1st-ranked horse as mandatory banker | Unit: $10/combo*
 *Comparison: Top 5 in Rank = top 5 horses by Adj Win%, full C(5,3) per race, no banker*

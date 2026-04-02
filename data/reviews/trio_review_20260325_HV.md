@@ -406,3 +406,46 @@ For each race: sort all horses by **MC Win%** descending → take the **first 6*
 ### 11e. Session Verdict
 
 **Strategy A won this session by +$322**, converting a $490 higher staking outlay into $812 more in returns. The advantage was driven by **systematic edge**, not variance: two unique A-only hits (R1 and R6) resulted directly from Rule 8's wider pool catching horses that SCMP adjustments elevated above the 20% Adj Place% threshold. In both cases, the winning horse carried a +excuses flag from TIR data that Strategy B's raw-MC-only approach structurally cannot capture. The R8 Pattern A miss (identical for both strategies) confirms this wasn't about lucky avoidance — A's advantage came from its information advantage on pool construction. After 3 meetings, A leads B cumulatively by $618, with the gap widening each session. The evidence increasingly supports A's structural superiority for Trio coverage.
+
+---
+
+## Banker Place Bet Analysis
+
+If the banker (Adj Win% #1) was used as a flat $10 Place bet each race:
+
+| Race | Banker | Odds | Finished | Placed? | Place Div |
+|------|--------|------|----------|---------|-----------|
+| R1 | #2 MANAGEMENT FOLKS | 8.6 | 3rd | ✅ | $22.0 |
+| R2 | #1 RAGGA BOMB | 2.8 | >3rd | ❌ | $0 |
+| R3 | #6 BITS SUPERSTAR | 4.1 | >3rd | ❌ | $0 |
+| R4 | #5 HARMONY GALAXY | 16 | 3rd | ✅ | $47.0 |
+| R5 | #1 HORSEPOWER | 7.2 | 2nd | ✅ | $26.0 |
+| R6 | #3 KING PROFIT | 1.7 | 2nd | ✅ | $13.0 |
+| R7 | #2 GIANT BALLON | 2.6 | 1st | ✅ | $13.5 |
+| R8 | #8 CALIFORNIA MOXIE | 5.9 | >3rd | ❌ | $0 |
+| R9 | #2 GREATER BAE | 2.7 | 2nd | ✅ | $13.5 |
+
+| Metric | Value |
+|--------|-------|
+| Place strike rate | 6/9 (66.7%) |
+| Total staked | $90 |
+| Total returned | $135.0 |
+| **Net P&L** | **+$45.0** |
+| **ROI** | **+50.0%** |
+
+### Cross-Meeting Banker Place Bet Cumulative
+
+| Meeting | Races | Placed | Rate | Staked | Returned | P&L | ROI |
+|---------|-------|--------|------|--------|----------|-----|-----|
+| 19 Feb ST | 11 | 9/11 | 81.8% | $110 | $124.1 | +$14.1 | +12.8% |
+| 22 Feb ST | 10 | 5/10 | 50.0% | $100 | $74.1 | -$25.9 | -25.9% |
+| 25 Feb HV | 9 | 4/9 | 44.4% | $90 | $67.0 | -$23.0 | -25.6% |
+| 1 Mar ST | 11 | 6/11 | 54.5% | $110 | $130.0 | +$20.0 | +18.2% |
+| 4 Mar HV | 9 | 4/9 | 44.4% | $90 | $64.5 | -$25.5 | -28.3% |
+| 8 Mar ST | 11 | 7/11 | 63.6% | $110 | $108.0 | -$2.0 | -1.8% |
+| 11 Mar HV | 8 | 3/8 | 37.5% | $80 | $56.5 | -$23.5 | -29.4% |
+| 15 Mar ST | 11 | 4/11 | 36.4% | $110 | $57.0 | -$53.0 | -48.2% |
+| 18 Mar HV | 9 | 6/9 | 66.7% | $90 | $82.5 | -$7.5 | -8.3% |
+| 22 Mar ST | 10 | 9/10 | 90.0% | $100 | $163.2 | +$63.2 | +63.2% |
+| 25 Mar HV | 9 | 6/9 | 66.7% | $90 | $135.0 | +$45.0 | +50.0% |
+| **Cumulative** | **108** | **63/108** | **58.3%** | **$1,080** | **$1,061.9** | **-$18.1** | **-1.7%** |

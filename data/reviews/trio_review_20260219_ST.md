@@ -234,4 +234,32 @@ vs Full Pool cumulative: Cost $4,100, Return $1,295, P/L -$2,805, ROI -68.4%.
 
 ---
 
+## Banker Place Bet Analysis
+
+If the banker (Adj Win% #1) was used as a flat $10 Place bet each race:
+
+| Race | Banker | Adj Win% | Odds | Finished | Placed? | Place Div |
+|------|--------|----------|------|----------|---------|-----------|
+| R1 | #8 MAJESTIC DELIGHT | 18.9% | 3.6 | 2nd | ✅ | $14.5 |
+| R2 | #9 PRESTIGE HALL | 36.2% | 2.1 | 2nd | ✅ | $12.5 |
+| R3 | #9 TIME TO FIRE | 18.9% | 7.8 | 8th | ❌ | $0 |
+| R4 | #6 GOOD LUCK HAPPY | 39.2% | 2.8 | 13th | ❌ | $0 |
+| R5 | #1 CROSSBORDERDUDE | 36.4% | 3.1 | 2nd | ✅ | $14.0 |
+| R6 | #11 TOP DRAGON | 30.2% | 2.0 | 2nd | ✅ | $11.5 |
+| R7 | #4 AEROINVINCIBLE | 23.4% | 3.2 | 1st | ✅ | $16.0 |
+| R8 | #1 HAPPY INDEX | 38.1% | 2.9 | 2nd | ✅ | $15.5 |
+| R9 | #8 LIVEANDLETLIVE | 18.9% | 4.3 | 2nd | ✅ | $17.5 |
+| R10 | #13 HOT DELIGHT | 45.3% | 1.2 | 1st | ✅ | $10.1 |
+| R11 | #2 SUPER EXPRESS | 24.4% | 2.7 | 2nd | ✅ | $12.5 |
+
+| Metric | Value |
+|--------|-------|
+| Place strike rate | 9/11 (81.8%) |
+| Total staked | $110 |
+| Total returned | $124.1 |
+| **Net P&L** | **+$14.1** |
+| **ROI** | **+12.8%** |
+
+---
+
 *Report generated: 2026-02-19 | Strategy: Trio 膽拖 with 1st-ranked horse as mandatory banker | Unit: $10/combo*

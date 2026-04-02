@@ -294,3 +294,43 @@ R1–R6: +Excuses hit rate 9/17 pool horses = 52.9%. Decent signal for winners a
 | Banker top 3 | 81.8% | 50.0% | 44.4% | 45.5% | 44.4% | **63.6%** | Recovered |
 
 The 8-Mar ST full meeting eroded gains (season P&L dropped from +$825 to +$109) but remains marginally positive. Banker performance recovered to 63.6%, but pool gaps (Pattern B) and one costly divergence override (R9) dominated. **Key takeaways**: (1) R8 mandatory Adj Place% rule was the model's finest hour; (2) divergence override must never replace banker — only downgrade structure; (3) Pattern B at 5/9 says expand pool for reserves with Adj Place% ≥20%, odds ≤16.
+
+---
+
+## Banker Place Bet Analysis
+
+If the banker (Adj Win% #1) was used as a flat $10 Place bet each race:
+
+| Race | Banker | Odds | Finished | Placed? | Place Div |
+|------|--------|------|----------|---------|-----------|
+| R1 | #7 MAPOGO | — | 4th | ❌ | $0 |
+| R2 | #1 THE CONCENTRATION | — | 3rd | ✅ | $17.5 |
+| R3 | #2 ONE MAN SHOW | 2.5 | 5th | ❌ | $0 |
+| R4 | #6 GOOD CHAP | — | 1st | ✅ | $14.0 |
+| R5 | #4 THE GOLDEN KNIGHT | — | 1st | ✅ | $14.5 |
+| R6 | #6 LIVE WIRE | 3.4 | 7th | ❌ | $0 |
+| R7 | #6 STUNNING PEACH | — | 1st | ✅ | $16.5 |
+| R8 | #6 VICTORY SKY | — | 2nd | ✅ | $21.0 |
+| R9 | #5 POWER OF VITAM | — | >3rd | ❌ | $0 |
+| R10 | #1 FAST NETWORK | — | 1st | ✅ | $13.0 |
+| R11 | #3 SUPER EXPRESS | — | 2nd | ✅ | $11.5 |
+
+| Metric | Value |
+|--------|-------|
+| Place strike rate | 7/11 (63.6%) |
+| Total staked | $110 |
+| Total returned | $108.0 |
+| **Net P&L** | **-$2.0** |
+| **ROI** | **-1.8%** |
+
+### Cross-Meeting Banker Place Bet Cumulative
+
+| Meeting | Races | Placed | Rate | Staked | Returned | P&L | ROI |
+|---------|-------|--------|------|--------|----------|-----|-----|
+| 19 Feb ST | 11 | 9/11 | 81.8% | $110 | $124.1 | +$14.1 | +12.8% |
+| 22 Feb ST | 10 | 5/10 | 50.0% | $100 | $74.1 | -$25.9 | -25.9% |
+| 25 Feb HV | 9 | 4/9 | 44.4% | $90 | $67.0 | -$23.0 | -25.6% |
+| 1 Mar ST | 11 | 6/11 | 54.5% | $110 | $130.0 | +$20.0 | +18.2% |
+| 4 Mar HV | 9 | 4/9 | 44.4% | $90 | $64.5 | -$25.5 | -28.3% |
+| 8 Mar ST | 11 | 7/11 | 63.6% | $110 | $108.0 | -$2.0 | -1.8% |
+| **Cumulative** | **61** | **35/61** | **57.4%** | **$610** | **$567.7** | **-$42.3** | **-6.9%** |

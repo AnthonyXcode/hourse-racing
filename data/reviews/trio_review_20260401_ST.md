@@ -366,3 +366,50 @@ For each race: Sort by raw **MC Win%** descending. Take the first **6** horses a
 **Strategy A won the session by $683** in absolute P&L terms (−$177 vs −$860) despite **one fewer hit**. Strategy B's extra hit in R4 returned only $77 — not enough to offset its $760 higher total stake across 9 races. The win-odds addition rule in R4 was **strategically correct** (it captured the market favourite the MC missed), but the **low Trio dividend ($77)** on a favourite-dominated result made it unprofitable after the $150 stake. Meanwhile, Strategy A's 雙膽拖 structure in R8 was the session's star — **$30 for $263** — demonstrating that staking efficiency matters more than pool width when hit rates are low.
 
 The **structural takeaway** from this session: on an all-weather Sha Tin card with 7/9 "Dominant" classifications, the MC's dominant picks failed at an alarming rate (5/7 outside top 3). Strategy B's wider pools picked up one extra hit but burned **$760 more** stake with minimal return uplift. Until hit rates improve, **capital preservation (Strategy A)** remains the better approach.
+
+---
+
+## Banker Place Bet Analysis
+
+If the banker (Adj Win% #1) was used as a flat $10 Place bet each race:
+
+| Race | Banker | Odds | Finished | Placed? | Place Div |
+|------|--------|------|----------|---------|-----------|
+| R1 | #3 ONLY U | 3.6 | 10th | ❌ | $0 |
+| R2 | #8 HAILTOTHEVICTORS | 9.8 | 1st | ✅ | $22.5 |
+| R3 | #4 NEVER PETER OUT | 2.2 | 5th | ❌ | $0 |
+| R4 | #3 | 5.2 | 3rd | ✅ | $24.5 |
+| R5 | #2 CALIFORNIA STAR | 4.1 | 7th | ❌ | $0 |
+| R6 | #3 ONE MAN SHOW | 3.5 | 5th | ❌ | $0 |
+| R7 | #5 LYG | 17 | 4th | ❌ | $0 |
+| R8 | #4 VICTORY SKY | 2.2 | 1st | ✅ | $12.0 |
+| R9 | #9 NEZHA | 7.9 | 7th | ❌ | $0 |
+
+| Metric | Value |
+|--------|-------|
+| Place strike rate | 3/9 (33.3%) |
+| Total staked | $90 |
+| Total returned | $59.0 |
+| **Net P&L** | **-$31.0** |
+| **ROI** | **-34.4%** |
+
+### Cross-Meeting Banker Place Bet Cumulative
+
+| Meeting | Races | Placed | Rate | Staked | Returned | P&L | ROI |
+|---------|-------|--------|------|--------|----------|-----|-----|
+| 19 Feb ST | 11 | 9/11 | 81.8% | $110 | $124.1 | +$14.1 | +12.8% |
+| 22 Feb ST | 10 | 5/10 | 50.0% | $100 | $74.1 | -$25.9 | -25.9% |
+| 25 Feb HV | 9 | 4/9 | 44.4% | $90 | $67.0 | -$23.0 | -25.6% |
+| 1 Mar ST | 11 | 6/11 | 54.5% | $110 | $130.0 | +$20.0 | +18.2% |
+| 4 Mar HV | 9 | 4/9 | 44.4% | $90 | $64.5 | -$25.5 | -28.3% |
+| 8 Mar ST | 11 | 7/11 | 63.6% | $110 | $108.0 | -$2.0 | -1.8% |
+| 11 Mar HV | 8 | 3/8 | 37.5% | $80 | $56.5 | -$23.5 | -29.4% |
+| 15 Mar ST | 11 | 4/11 | 36.4% | $110 | $57.0 | -$53.0 | -48.2% |
+| 18 Mar HV | 9 | 6/9 | 66.7% | $90 | $82.5 | -$7.5 | -8.3% |
+| 22 Mar ST | 10 | 9/10 | 90.0% | $100 | $163.2 | +$63.2 | +63.2% |
+| 25 Mar HV | 9 | 6/9 | 66.7% | $90 | $135.0 | +$45.0 | +50.0% |
+| 29 Mar ST | 11 | 7/11 | 63.6% | $110 | $114.6 | +$4.6 | +4.2% |
+| 1 Apr ST | 9 | 3/9 | 33.3% | $90 | $59.0 | -$31.0 | -34.4% |
+| **Cumulative** | **128** | **73/128** | **57.0%** | **$1,280** | **$1,235.5** | **-$44.5** | **-3.5%** |
+
+**Note:** Over 13 meetings (128 races), the Adj Win% #1 banker place bet strategy produces a **57.0% strike rate** but a **-3.5% ROI**. The strategy is approaching breakeven. Best sessions: 22 Mar ST (+63.2% ROI, 9/10 placed) and 25 Mar HV (+50.0% ROI). Worst: 15 Mar ST (-48.2%), 1 Apr ST (-34.4%). Venue split: ST meetings average **56.5%** place rate with **-9.6%** avg ROI; HV meetings average **51.9%** place rate with **-11.5%** avg ROI.
