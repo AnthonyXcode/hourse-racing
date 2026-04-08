@@ -139,7 +139,36 @@
 
 ---
 
-## Cumulative Summary (5 meetings)
+## Meeting 6: Sha Tin | 6 Apr 2026 (11 races)
+
+| Race | MC #1 (Win%) | MC Place% | Odds | Finished | Placed? | Return |
+|------|-------------|-----------|------|----------|---------|--------|
+| R1 | #1 ALMIGHTY LIGHTNING (78.6%) | 96.1% | 1.5 | 2nd | ✅ | $10.10 |
+| R2 | #8 KING ALLOY (41.3%) | 82.5% | 3.9 | 4th | ❌ | $0 |
+| R3 | #1 MR COOL (60.7%) | 92.8% | 3.7 | 3rd | ✅ | $16.50 |
+| R4 | #3 ROBOT STAR (39.0%) | 82.8% | 13 | 2nd | ✅ | $23.50 |
+| R5 | #3 THOUSAND SPIRIT (50.7%) | 90.0% | 15 | 1st | ✅ | $38.00 |
+| R6 | #1 GLOWING PRAISES (52.7%) | 90.2% | 4 | 2nd | ✅ | $15.50 |
+| R7 | #1 KA YING RISING (23.4%) | 60.3% | 1.0 | 1st | ✅ | $10.10 |
+| R8 | #1 LUCY IN THE SKY (48.4%) | 84.7% | 26 | 8th | ❌ | $0 |
+| R9 | #12 PATCH OF THETA (32.0%) | 68.9% | 50 | 10th | ❌ | $0 |
+| R10 | #8 SIX PACK (63.8%) | 93.2% | 2.6 | 3rd | ✅ | $12.00 |
+| R11 | #3 LIVEANDLETLIVE (38.1%) | 78.6% | 3.9 | 2nd | ✅ | $16.50 |
+| **Total** | | **avg 83.6%** | | | **8/11 (72.7%)** | **$142.20** |
+
+| Metric | Value |
+|--------|-------|
+| Place strike rate | 8/11 (72.7%) |
+| Total staked | $110 |
+| Total returned | $142.20 |
+| **Net P&L** | **+$32.20** |
+| **ROI** | **+29.3%** |
+
+**Strong bounce-back after the AWT disaster.** Return to turf at Sha Tin produced the second-highest strike rate (72.7%) since Meeting 2 and the best ROI (+29.3%) since Meeting 3. The 3 failures (R2, R8, R9) all had specific explanations: R2 KING ALLOY was 4th by a narrow margin despite MC 82.5% Place; R8 LUCY IN THE SKY bled (substantial blood in trachea — a vet event MC cannot predict); R9 PATCH OF THETA was bumped and eased near the 250M in a Group 2 with 14 runners from gate 13. The 8 placed horses included two major value hits: R5 THOUSAND SPIRIT ($38.00) and R4 ROBOT STAR ($23.50), both double-digit-odds horses the MC correctly ranked #1.
+
+---
+
+## Cumulative Summary (6 meetings)
 
 | Meeting | Date | Venue | Races | Placed | Rate | Staked | Returned | P&L | ROI |
 |---------|------|-------|-------|--------|------|--------|----------|-----|-----|
@@ -148,7 +177,8 @@
 | 3 | 25 Mar | HV | 9 | 6/9 | 66.7% | $90 | $145.5 | +$55.5 | +61.7% |
 | 4 | 29 Mar | ST | 11 | 7/11 | 63.6% | $110 | $114.6 | +$4.6 | +4.2% |
 | 5 | 1 Apr | ST | 9 | 4/9 | 44.4% | $90 | $81.0 | -$9.0 | -10.0% |
-| **TOTAL** | | | **48** | **32/48** | **66.7%** | **$480** | **$582.3** | **+$102.3** | **+21.3%** |
+| 6 | 6 Apr | ST | 11 | 8/11 | 72.7% | $110 | $142.2 | +$32.2 | +29.3% |
+| **TOTAL** | | | **59** | **40/59** | **67.8%** | **$590** | **$724.5** | **+$134.5** | **+22.8%** |
 
 ---
 
@@ -156,7 +186,7 @@
 
 | Strategy | Meetings | Bets | Staked | Returned | P&L | ROI |
 |----------|----------|------|--------|----------|-----|-----|
-| **MC #1 Place only** | **5** | **48** | **$480** | **$582.3** | **+$102.3** | **+21.3%** |
+| **MC #1 Place only** | **6** | **59** | **$590** | **$724.5** | **+$134.5** | **+22.8%** |
 | MC Top 3 Place | 3 | 84 | $840 | $932.7 | +$92.7 | +11.0% |
 | MC Top 3 Win | 3 | 84 | $840 | $762.0 | -$78.0 | -9.3% |
 | Trio Strategy B | 3 | 28 races | $4,150 | $3,434 | -$716.0 | -17.3% |
@@ -178,11 +208,11 @@ MC #2 and #3 dilute returns. Across 28 races (Meetings 1-3):
 | MC #3 | 10/28 | 35.7% | $280 | $235.5 | -$44.5 | -15.9% |
 | **Combined Top 3** | **45/84** | **53.6%** | **$840** | **$932.7** | **+$92.7** | **+11.0%** |
 
-- **MC #1** places 75% of the time (Meetings 1-3), 71.8% across 4 meetings, and **66.7% across all 5 meetings** — still profitable but the trend is declining.
+- **MC #1** places 75% of the time (Meetings 1-3), 71.8% across 4 meetings, 66.7% across 5 meetings, and **67.8% across all 6 meetings** — stabilized after the AWT dip.
 - **MC #2** places 50% — marginally profitable, with occasional high-dividend outsider places boosting returns.
 - **MC #3** places only 35.7% — **unprofitable**. Adding this pick costs $280 and returns only $235.5, dragging down the combined ROI.
 
-### When MC #1 fails (16 races across 5 meetings)
+### When MC #1 fails (19 races across 6 meetings)
 
 | Meeting | Race | MC #1 | MC Win% | MC Place% | Odds | Finished | Class | Surface |
 |---------|------|-------|---------|-----------|------|----------|-------|---------|
@@ -197,15 +227,18 @@ MC #2 and #3 dilute returns. Across 28 races (Meetings 1-3):
 | 29 Mar | R3 | #6 STORM RUNNER | 31.4% | 67.5% | 4.1 | 12th | C4 | Turf |
 | 29 Mar | R7 | #4 WARRIORS DREAM | 34.6% | 66.8% | 7.6 | 5th | C4 | Turf |
 | 29 Mar | R9 | #6 MAGNIFIQUE | 28.7% | 66.4% | 5.8 | 9th | C2 | Turf |
-| **1 Apr** | **R1** | **#3 ONLY U** | **65.0%** | **92.7%** | **2.9** | **10th** | **C5** | **AWT** |
-| **1 Apr** | **R3** | **#4 NEVER PETER OUT** | **65.6%** | **90.5%** | **3.6** | **5th** | **C4** | **AWT** |
-| **1 Apr** | **R6** | **#3 ONE MAN SHOW** | **73.1%** | **95.5%** | **5.5** | **5th** | **C4** | **AWT** |
-| **1 Apr** | **R7** | **#5 LIGHT YEARS GLORY** | **39.0%** | **80.6%** | **17** | **4th** | **C4** | **AWT** |
-| **1 Apr** | **R9** | **#9 NEZHA** | **54.0%** | **85.2%** | **7.9** | **7th** | **C3** | **AWT** |
+| 1 Apr | R1 | #3 ONLY U | 65.0% | 92.7% | 2.9 | 10th | C5 | AWT |
+| 1 Apr | R3 | #4 NEVER PETER OUT | 65.6% | 90.5% | 3.6 | 5th | C4 | AWT |
+| 1 Apr | R6 | #3 ONE MAN SHOW | 73.1% | 95.5% | 5.5 | 5th | C4 | AWT |
+| 1 Apr | R7 | #5 LIGHT YEARS GLORY | 39.0% | 80.6% | 17 | 4th | C4 | AWT |
+| 1 Apr | R9 | #9 NEZHA | 54.0% | 85.2% | 7.9 | 7th | C3 | AWT |
+| **6 Apr** | **R2** | **#8 KING ALLOY** | **41.3%** | **82.5%** | **3.9** | **4th** | **C5** | **Turf** |
+| **6 Apr** | **R8** | **#1 LUCY IN THE SKY** | **48.4%** | **84.7%** | **26** | **8th** | **C3** | **Turf** |
+| **6 Apr** | **R9** | **#12 PATCH OF THETA** | **32.0%** | **68.9%** | **50** | **10th** | **G2** | **Turf** |
 
-**Class breakdown of failures:** C4 = 10/16 (62.5%), C2 = 2/16, C3 = 2/16, C5 = 2/16. Class 4 remains the primary danger zone.
+**Class breakdown of failures:** C4 = 10/19 (52.6%), C5 = 3/19, C3 = 3/19, C2 = 2/19, G2 = 1/19. Class 4 remains the primary danger zone but its share is declining as failures spread across other classes.
 
-**Surface breakdown:** Turf = 11/16, AWT = 5/16. All 5 AWT failures came from a single meeting (1 Apr), where MC overconfidence was extreme — 3 of the 5 had MC Place% > 90% yet finished outside top 3.
+**Surface breakdown:** Turf = 14/19, AWT = 5/19. All 5 AWT failures came from a single meeting (1 Apr). On turf the failure rate is 14/54 (25.9%) vs AWT 5/9 (55.6%) — turf remains the strategy's reliable surface.
 
 ### Meeting 4 observations (29 Mar ST)
 
@@ -216,23 +249,33 @@ MC #2 and #3 dilute returns. Across 28 races (Meetings 1-3):
 
 ### Meeting 5 observations (1 Apr ST — all AWT)
 
-- **First losing meeting (-$9.0, -10.0% ROI).** Strike rate crashed to 44.4% — the worst across all 5 meetings by a wide margin.
+- **First losing meeting (-$9.0, -10.0% ROI).** Strike rate crashed to 44.4% — the worst across all 6 meetings by a wide margin.
 - **AWT surface is the culprit.** All 9 races were on the all-weather track. The MC model's form-based assessments proved unreliable on AWT, where pace dynamics and surface preferences diverge sharply from turf.
-- **Three >90% MC Place% failures:** R1 ONLY U (92.7%, 10th), R3 NEVER PETER OUT (90.5%, 5th), R6 ONE MAN SHOW (95.5%, 5th). These were the three highest MC Place% picks across the entire 5-meeting dataset — and all three lost. MC assigned near-certainty to horses that had no chance on the day.
-- **R1 ONLY U (Purton, 2.9 odds, 10th)** — the most shocking single result across all meetings. The MC model and the market both had this horse as a near-certainty, yet it finished 10th of 12.
-- **R7 LIGHT YEARS GLORY (17 odds, 4th)** — missed by a single position. At 80.6% MC Place%, this was the closest miss and the only one where a narrow margin cost the strategy.
-- **The 4 hits were all convincing:** R2 HAILTOTHEVICTORS (1st, $22.5), R4 FLOWING RICHES (3rd, $24.5), R5 HAPPY UNIVERSE (1st, $22.0), R8 VICTORY SKY (1st, $12.0). The winners that hit returned well — it was the unprecedented 5 failures that sank the session.
+- **Three >90% MC Place% failures:** R1 ONLY U (92.7%, 10th), R3 NEVER PETER OUT (90.5%, 5th), R6 ONE MAN SHOW (95.5%, 5th). These were the three highest MC Place% picks across the entire dataset — and all three lost.
+- **R1 ONLY U (Purton, 2.9 odds, 10th)** — the most shocking single result across all meetings.
+- **The 4 hits were all convincing:** R2 HAILTOTHEVICTORS (1st, $22.5), R4 FLOWING RICHES (3rd, $24.5), R5 HAPPY UNIVERSE (1st, $22.0), R8 VICTORY SKY (1st, $12.0).
 
-### Profit drivers (top single-race returns, all 5 meetings)
+### Meeting 6 observations (6 Apr ST — all Turf)
+
+- **Strong recovery: +$32.20, +29.3% ROI.** Strike rate 72.7% — back to the turf-meeting average (71.8% across turf-dominant Meetings 1-4).
+- **Two major value Place hits:** R5 THOUSAND SPIRIT ($38.00 return on $10) and R4 ROBOT STAR ($23.50) were both double-digit-odds MC #1 picks that the market undervalued. R5 alone returned +$28.00 profit — the 3rd-largest single-race return across all 6 meetings.
+- **R8 LUCY IN THE SKY (MC 48.4%, 84.7% Place, 26 odds, 8th):** Post-race vet found substantial blood in trachea (EIPH). Massive market drift from $12 to $26 suggests insiders knew. MC cannot predict bleeding events — this is a "vet lottery" failure, not a model error.
+- **R9 PATCH OF THETA (MC 32.0%, 68.9% Place, 50 odds, 10th):** Gate 13 in a 14-runner Group 2 over 1600m. Bumped near 250M and eased. MC relied heavily on old Class 1 form. Market drift from $44 to $50 showed fading confidence. This is a "class/fitness" misread.
+- **R2 KING ALLOY (MC 41.3%, 82.5% Place, 3.9 odds, 4th):** The narrowest miss — 4th by less than a length. Market favourite at $3.9. Pace compression in a 14-runner Class 5 proved too much.
+- **R7 KA YING RISING ($1.0, 1st, $10.10):** The strategy's first bet on a $1.0 horse. Return of $10.10 is essentially break-even — but confirms model reliability for genuine superstars.
+
+### Profit drivers (top single-race returns, all 6 meetings)
 
 | Meeting | Race | MC #1 | Odds | Place Div | P&L |
 |---------|------|-------|------|-----------|-----|
 | 25 Mar | R4 | #5 HARMONY GALAXY | 16 | $47.0 | +$37.0 |
 | 22 Mar | R8 | #5 MONEY CATCHER | 15 | $40.0 | +$30.0 |
+| **6 Apr** | **R5** | **#3 THOUSAND SPIRIT** | **15** | **$38.0** | **+$28.0** |
 | 25 Mar | R5 | #1 HORSEPOWER | 7.2 | $26.0 | +$16.0 |
 | 29 Mar | R11 | #8 CHINA WIN | 4.1 | $25.5 | +$15.5 |
 | 1 Apr | R4 | #3 FLOWING RICHES | 5.2 | $24.5 | +$14.5 |
 | 25 Mar | R9 | #5 AMAZING KID | 7.0 | $24.0 | +$14.0 |
+| **6 Apr** | **R4** | **#3 ROBOT STAR** | **13** | **$23.5** | **+$13.5** |
 | 1 Apr | R2 | #8 HAILTOTHEVICTORS | 9.8 | $22.5 | +$12.5 |
 | 22 Mar | R7 | #3 STORMY GROVE | 7.2 | $22.5 | +$12.5 |
 | 25 Mar | R1 | #2 MANAGEMENT FOLKS | 8.6 | $22.0 | +$12.0 |
@@ -245,24 +288,25 @@ The biggest profits come when MC ranks a horse #1 but the market disagrees (long
 
 | MC Place% Range | Bets | Placed | Rate | Avg Return (placed) |
 |----------------|------|--------|------|---------------------|
-| ≥ 75% | 18 | 11/18 | 61.1% | $14.9 |
-| 60-74% | 15 | 10/15 | 66.7% | $15.9 |
+| ≥ 75% | 27 | 18/27 | 66.7% | $16.4 |
+| 60-74% | 17 | 11/17 | 64.7% | $15.4 |
 | < 60% | 15 | 11/15 | 73.3% | $16.1 |
-| **All** | **48** | **32/48** | **66.7%** | **$18.2** |
+| **All** | **59** | **40/59** | **67.8%** | **$18.1** |
 
-- **≥ 75% MC Place%** strike rate **collapsed from 81.8% to 61.1%** after Meeting 5. The AWT meeting added 7 bets to this band (6 of the 9 AWT races had MC Place% ≥ 75%) but only 2 placed — a catastrophic 28.6% hit rate within the meeting. This is now the *worst* performing threshold band.
-- **< 60% MC Place%** continues to outperform at 73.3%. The model's lower-confidence picks tend to be longer-odds horses whose Place dividends compensate handsomely.
-- **Key takeaway:** High MC Place% no longer guarantees placement — especially on AWT, where the model is systematically overconfident.
+- **≥ 75% MC Place%** strike rate **recovered from 61.1% to 66.7%** after Meeting 6. The turf meeting added 9 bets to this band with 7 placing (77.8%) — a strong correction from the AWT disaster. On turf, this band is performing at ~73%.
+- **60-74%** dipped slightly to 64.7% (from 66.7%) after adding 2 bets (1 placed). Small sample size in this band makes it volatile.
+- **< 60% MC Place%** continues to outperform at 73.3% (unchanged — no new bets in this band from Meeting 6). The model's lower-confidence picks tend to be longer-odds horses whose Place dividends compensate handsomely.
+- **Key takeaway:** High MC Place% is reliable on turf (≥75% band: ~73% on turf vs ~29% on AWT). The AWT discount recommendation from Meeting 5 remains valid.
 
 ---
 
 ## Recommendations
 
-- [ ] **Continue MC #1 Place as the primary low-risk strategy** — still profitable at +21.3% cumulative ROI across 5 meetings, despite the first losing session
-- [ ] **Add AWT surface discount**: reduce stake or skip MC #1 Place on all-AWT meetings — the model went 4/9 (44.4%) on AWT vs 28/39 (71.8%) on turf-dominant cards. Consider halving the stake ($5) for AWT races until the model is recalibrated
+- [ ] **Continue MC #1 Place as the primary low-risk strategy** — profitable at +22.8% cumulative ROI across 6 meetings (59 bets), with a strong turf rebound in Meeting 6
+- [ ] **AWT surface discount remains valid**: 4/9 (44.4%) on AWT vs 36/50 (72.0%) on turf. Consider halving the stake ($5) for AWT races until the model is recalibrated
 - [ ] **Drop MC #3 from Top 3 Place**: it's unprofitable (-15.9% ROI) and drags down the combined result
 - [ ] **Consider MC #1 + #2 Place** ($20/race): combined ROI would be ~+24.5% — a good middle ground
-- [ ] **Exercise caution in Class 4**: 10 of 16 failures are C4 — consider reducing stake or skipping MC #1 Place when MC Place% < 55% in C4
-- [ ] **Don't trust extreme MC Place% on AWT**: 3 horses with MC Place% > 90% all failed on 1 Apr AWT — high model confidence does not translate to AWT surfaces
-- [ ] **Track by odds range**: profits concentrate in odds 5-16 range — consider increasing stake when MC #1 drifts in market
-- [ ] **Monitor ROI trend**: declining from +61.7% (M3) → +4.2% (M4) → -10.0% (M5). The turf-only strike rate remains strong but the overall trend needs watching
+- [ ] **Exercise caution in Class 4-5**: 13 of 19 failures are C4/C5 — consider reducing stake or skipping MC #1 Place when MC Place% < 55% in lower classes
+- [ ] **Watch for market drift as a red flag**: R8 LUCY IN THE SKY drifted from $12 to $26 (bled), R9 PATCH OF THETA drifted from $44 to $50. Large drift away from MC suggests the market knows something the model doesn't
+- [ ] **Track by odds range**: profits concentrate in odds 5-16 range — consider increasing stake when MC #1 drifts in market. Meeting 6's top hits (R5 $38, R4 $23.50) were both in this sweet spot
+- [ ] **ROI trend stabilizing**: +61.7% (M3) → +4.2% (M4) → -10.0% (M5) → **+29.3% (M6)**. The turf-only ROI remains strong; the AWT meeting was an outlier
