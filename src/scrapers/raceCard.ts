@@ -390,6 +390,7 @@ export class RaceCardScraper {
     // Find horse name - usually in a link with horse ID
     let horseName = "";
     let horseCode = `H${horseNumber}`;
+    // Barrier draw; HKJC "Dr." column is often past the first few cells — do not default to horseNumber.
     let draw = horseNumber;
     let weight = 126;
     let jockeyName = "";
@@ -460,18 +461,37 @@ export class RaceCardScraper {
       }
     }
 
-    // Draw is typically a specific column
+    // Draw ("Dr.") — HKJC English cards put barrier after Wt./Jockey/Trainer/Rtg. blocks (often col >= 5).
+    // Scan from index 4 onward for the first standalone 1–14 (avoids mistaking early cells for barrier).
+    // Do not require d !== horseNumber: horse #9 can legitimately draw barrier 9.
     let drawFound = false;
-    for (let i = 1; i < Math.min(cellTexts.length, 8); i++) {
+    const minDrawCol = 4;
+    for (let i = minDrawCol; i < cellTexts.length; i++) {
       const text = cellTexts[i]!.trim();
-      if (/^\d{1,2}$/.test(text) && !drawFound) {
+      if (!/^\d{1,2}$/.test(text)) continue;
+      const d = parseInt(text, 10);
+      if (d >= 1 && d <= 14) {
+        draw = d;
+        drawFound = true;
+        break;
+      }
+    }
+    if (!drawFound) {
+      for (let i = 1; i < minDrawCol && i < cellTexts.length; i++) {
+        const text = cellTexts[i]!.trim();
+        if (!/^\d{1,2}$/.test(text)) continue;
         const d = parseInt(text, 10);
-        if (d >= 1 && d <= 14 && d !== horseNumber) {
+        if (d >= 1 && d <= 14) {
           draw = d;
           drawFound = true;
           break;
         }
       }
+    }
+    if (!drawFound) {
+      console.warn(
+        `Entry #${horseNumber} ${horseName || "?"}: barrier draw not parsed; using horse number as draw (often wrong)`
+      );
     }
 
     // If no horse name found, try to get from cell text
