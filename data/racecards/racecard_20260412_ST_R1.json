@@ -1,0 +1,472 @@
+{
+  "race": {
+    "id": "2026-04-12-ST-1",
+    "date": "2026-04-11T16:00:00.000Z",
+    "venue": "Sha Tin",
+    "raceNumber": 1,
+    "name": "of HKJC\n                                                                                    \n                                                                                    \n                                                                                    \n                                                                                        Bloodstock Agents\n                                                                                    \n                                                                                    \n                                                                                    \n                                                                                        Handicap",
+    "class": "Group 1",
+    "distance": 1000,
+    "surface": "Turf",
+    "going": "Good",
+    "prizeMoney": 0,
+    "entries": [
+      {
+        "horse": {
+          "code": "HK_2025_L114",
+          "name": "KA YING GRATEFUL",
+          "age": 3,
+          "sex": "G",
+          "color": "Bay",
+          "origin": "AUS",
+          "sire": "",
+          "dam": "",
+          "currentRating": 60,
+          "seasonStarts": 0,
+          "seasonWins": 0,
+          "seasonPlaces": 0,
+          "careerStarts": 0,
+          "careerWins": 0,
+          "careerPlaces": 0,
+          "totalPrizeMoney": 0,
+          "gear": [
+            "P",
+            "TT",
+            "E"
+          ],
+          "pastPerformances": []
+        },
+        "jockey": {
+          "code": "LDE",
+          "name": "K C Leung",
+          "nationality": "Hong Kong",
+          "weightClaim": 0,
+          "seasonStats": {
+            "wins": 17,
+            "places": 34,
+            "rides": 267,
+            "winRate": 0.06367041198501873,
+            "placeRate": 0.19101123595505617,
+            "roi": 1
+          },
+          "courseStats": [
+            {
+              "venue": "Sha Tin",
+              "wins": 964,
+              "places": 0,
+              "rides": 920,
+              "winRate": 1.0478260869565217,
+              "placeRate": 1.0478260869565217,
+              "roi": 1
+            }
+          ]
+        },
+        "trainer": {
+          "code": "MWK",
+          "name": "W K Mo",
+          "seasonStats": {
+            "wins": 28,
+            "places": 59,
+            "rides": 359,
+            "winRate": 0.078,
+            "placeRate": 0.24233983286908078,
+            "roi": 1
+          },
+          "courseStats": [],
+          "specialties": []
+        },
+        "horseNumber": 1,
+        "draw": 2,
+        "weight": 126,
+        "gearChanges": [
+          "P",
+          "TT",
+          "E"
+        ],
+        "isScratched": false
+      },
+      {
+        "horse": {
+          "code": "HK_2025_L183",
+          "name": "PERFECT ONE",
+          "age": 3,
+          "sex": "G",
+          "color": "Bay",
+          "origin": "AUS",
+          "sire": "",
+          "dam": "",
+          "currentRating": 60,
+          "seasonStarts": 0,
+          "seasonWins": 0,
+          "seasonPlaces": 0,
+          "careerStarts": 0,
+          "careerWins": 0,
+          "careerPlaces": 0,
+          "totalPrizeMoney": 0,
+          "gear": [
+            "H",
+            "P",
+            "E"
+          ],
+          "pastPerformances": []
+        },
+        "jockey": {
+          "code": "PZ",
+          "name": "Z Purton",
+          "nationality": "Hong Kong",
+          "weightClaim": 0,
+          "seasonStats": {
+            "wins": 71,
+            "places": 82,
+            "rides": 320,
+            "winRate": 0.221875,
+            "placeRate": 0.478125,
+            "roi": 1
+          },
+          "courseStats": [
+            {
+              "venue": "Sha Tin",
+              "wins": 964,
+              "places": 0,
+              "rides": 920,
+              "winRate": 1.0478260869565217,
+              "placeRate": 1.0478260869565217,
+              "roi": 1
+            }
+          ]
+        },
+        "trainer": {
+          "code": "YCH",
+          "name": "C H Yip",
+          "seasonStats": {
+            "wins": 14,
+            "places": 27,
+            "rides": 299,
+            "winRate": 0.046799999999999994,
+            "placeRate": 0.13712374581939799,
+            "roi": 1
+          },
+          "courseStats": [],
+          "specialties": []
+        },
+        "horseNumber": 2,
+        "draw": 4,
+        "weight": 126,
+        "gearChanges": [
+          "H",
+          "P",
+          "E"
+        ],
+        "isScratched": false
+      },
+      {
+        "horse": {
+          "code": "HK_2025_L236",
+          "name": "SILVERY KNIGHT",
+          "age": 3,
+          "sex": "G",
+          "color": "Bay",
+          "origin": "AUS",
+          "sire": "",
+          "dam": "",
+          "currentRating": 60,
+          "seasonStarts": 0,
+          "seasonWins": 0,
+          "seasonPlaces": 0,
+          "careerStarts": 0,
+          "careerWins": 0,
+          "careerPlaces": 0,
+          "totalPrizeMoney": 0,
+          "gear": [
+            "H",
+            "P",
+            "V",
+            "E"
+          ],
+          "pastPerformances": []
+        },
+        "jockey": {
+          "code": "HEL",
+          "name": "L Hewitson",
+          "nationality": "Hong Kong",
+          "weightClaim": 0,
+          "seasonStats": {
+            "wins": 21,
+            "places": 48,
+            "rides": 297,
+            "winRate": 0.0707070707070707,
+            "placeRate": 0.23232323232323232,
+            "roi": 1
+          },
+          "courseStats": [
+            {
+              "venue": "Sha Tin",
+              "wins": 964,
+              "places": 0,
+              "rides": 920,
+              "winRate": 1.0478260869565217,
+              "placeRate": 1.0478260869565217,
+              "roi": 1
+            }
+          ]
+        },
+        "trainer": {
+          "code": "WDJ",
+          "name": "D J Whyte",
+          "seasonStats": {
+            "wins": 16,
+            "places": 52,
+            "rides": 315,
+            "winRate": 0.0508,
+            "placeRate": 0.21587301587301588,
+            "roi": 1
+          },
+          "courseStats": [],
+          "specialties": []
+        },
+        "horseNumber": 3,
+        "draw": 3,
+        "weight": 126,
+        "gearChanges": [
+          "H",
+          "P",
+          "V",
+          "E"
+        ],
+        "isScratched": false
+      },
+      {
+        "horse": {
+          "code": "HK_2025_L348",
+          "name": "GLORIOUS HERO",
+          "age": 2,
+          "sex": "G",
+          "color": "Bay",
+          "origin": "AUS",
+          "sire": "",
+          "dam": "",
+          "currentRating": 60,
+          "seasonStarts": 0,
+          "seasonWins": 0,
+          "seasonPlaces": 0,
+          "careerStarts": 0,
+          "careerWins": 0,
+          "careerPlaces": 0,
+          "totalPrizeMoney": 0,
+          "gear": [
+            "H",
+            "P",
+            "E"
+          ],
+          "pastPerformances": []
+        },
+        "jockey": {
+          "code": "TEK",
+          "name": "K Teetan",
+          "nationality": "Hong Kong",
+          "weightClaim": 0,
+          "seasonStats": {
+            "wins": 20,
+            "places": 37,
+            "rides": 285,
+            "winRate": 0.07017543859649122,
+            "placeRate": 0.2,
+            "roi": 1
+          },
+          "courseStats": [
+            {
+              "venue": "Sha Tin",
+              "wins": 964,
+              "places": 0,
+              "rides": 920,
+              "winRate": 1.0478260869565217,
+              "placeRate": 1.0478260869565217,
+              "roi": 1
+            }
+          ]
+        },
+        "trainer": {
+          "code": "HDA",
+          "name": "D A Hayes",
+          "seasonStats": {
+            "wins": 41,
+            "places": 61,
+            "rides": 474,
+            "winRate": 0.08650000000000001,
+            "placeRate": 0.21518987341772153,
+            "roi": 1
+          },
+          "courseStats": [],
+          "specialties": []
+        },
+        "horseNumber": 4,
+        "draw": 5,
+        "weight": 121,
+        "gearChanges": [
+          "H",
+          "P",
+          "E"
+        ],
+        "isScratched": false
+      },
+      {
+        "horse": {
+          "code": "HK_2025_L290",
+          "name": "SECRET INGREDIENT",
+          "age": 2,
+          "sex": "G",
+          "color": "Bay",
+          "origin": "AUS",
+          "sire": "",
+          "dam": "",
+          "currentRating": 60,
+          "seasonStarts": 0,
+          "seasonWins": 0,
+          "seasonPlaces": 0,
+          "careerStarts": 0,
+          "careerWins": 0,
+          "careerPlaces": 0,
+          "totalPrizeMoney": 0,
+          "gear": [
+            "B",
+            "H",
+            "P",
+            "E"
+          ],
+          "pastPerformances": []
+        },
+        "jockey": {
+          "code": "BHW",
+          "name": "H Bentley",
+          "nationality": "Hong Kong",
+          "weightClaim": 0,
+          "seasonStats": {
+            "wins": 21,
+            "places": 39,
+            "rides": 287,
+            "winRate": 0.07317073170731707,
+            "placeRate": 0.20905923344947736,
+            "roi": 1
+          },
+          "courseStats": [
+            {
+              "venue": "Sha Tin",
+              "wins": 964,
+              "places": 0,
+              "rides": 920,
+              "winRate": 1.0478260869565217,
+              "placeRate": 1.0478260869565217,
+              "roi": 1
+            }
+          ]
+        },
+        "trainer": {
+          "code": "HDA",
+          "name": "D A Hayes",
+          "seasonStats": {
+            "wins": 41,
+            "places": 61,
+            "rides": 474,
+            "winRate": 0.08650000000000001,
+            "placeRate": 0.21518987341772153,
+            "roi": 1
+          },
+          "courseStats": [],
+          "specialties": []
+        },
+        "horseNumber": 5,
+        "draw": 6,
+        "weight": 121,
+        "gearChanges": [
+          "B",
+          "H",
+          "P",
+          "E"
+        ],
+        "isScratched": false
+      },
+      {
+        "horse": {
+          "code": "HK_2025_L295",
+          "name": "TALENTS CHAMPION",
+          "age": 2,
+          "sex": "G",
+          "color": "Bay",
+          "origin": "AUS",
+          "sire": "",
+          "dam": "",
+          "currentRating": 60,
+          "seasonStarts": 0,
+          "seasonWins": 0,
+          "seasonPlaces": 0,
+          "careerStarts": 0,
+          "careerWins": 0,
+          "careerPlaces": 0,
+          "totalPrizeMoney": 0,
+          "gear": [
+            "H",
+            "P",
+            "E"
+          ],
+          "pastPerformances": []
+        },
+        "jockey": {
+          "code": "YML",
+          "name": "M L Yeung",
+          "nationality": "Hong Kong",
+          "weightClaim": 0,
+          "seasonStats": {
+            "wins": 15,
+            "places": 24,
+            "rides": 278,
+            "winRate": 0.0539568345323741,
+            "placeRate": 0.14028776978417265,
+            "roi": 1
+          },
+          "courseStats": [
+            {
+              "venue": "Sha Tin",
+              "wins": 964,
+              "places": 0,
+              "rides": 920,
+              "winRate": 1.0478260869565217,
+              "placeRate": 1.0478260869565217,
+              "roi": 1
+            }
+          ]
+        },
+        "trainer": {
+          "code": "HDA",
+          "name": "D A Hayes",
+          "seasonStats": {
+            "wins": 41,
+            "places": 61,
+            "rides": 474,
+            "winRate": 0.08650000000000001,
+            "placeRate": 0.21518987341772153,
+            "roi": 1
+          },
+          "courseStats": [],
+          "specialties": []
+        },
+        "horseNumber": 6,
+        "draw": 1,
+        "weight": 121,
+        "gearChanges": [
+          "H",
+          "P",
+          "E"
+        ],
+        "isScratched": false
+      }
+    ]
+  },
+  "winOdds": {
+    "1": 16,
+    "2": 2.2,
+    "3": 12,
+    "4": 23,
+    "5": 4,
+    "6": 2.9
+  }
+}

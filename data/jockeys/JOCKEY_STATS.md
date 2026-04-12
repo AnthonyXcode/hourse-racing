@@ -1,31 +1,32 @@
 ## Elite Jockey Statistics
 
-*Data fetched: 4/8/2026, 9:47:39 AM*
+*Data fetched: 4/12/2026, 2:00:33 PM*
 
 ### Current Season Win Rates
 
 | Rank | Jockey | Code | Wins | Rides | Win % | Tier |
 |------|--------|------|------|-------|-------|------|
-| 1 | J Moreira | MOJ | 2 | 8 | 25.00% | ⭐⭐⭐ Elite |
-| 2 | Z Purton | PZ | 94 | 477 | 19.71% | ⭐⭐ Strong |
+| 1 | J Moreira | MOJ | 6 | 17 | 35.29% | ⭐⭐⭐ Elite |
+| 2 | Z Purton | PZ | 95 | 484 | 19.63% | ⭐⭐ Strong |
 | 3 | J McDonald | MCJ | 16 | 101 | 15.84% | ⭐⭐ Strong |
-| 4 | H Bowman | BH | 45 | 390 | 11.54% | ⭐ Good |
-| 5 | A Atzeni | AA | 45 | 406 | 11.08% | ⭐ Good |
-| 6 | L Chau | CJE | 34 | 337 | 10.09% | ⭐ Good |
-| 7 | M Guyon | GM | 15 | 169 | 8.88% | - |
-| 8 | L Ferraris | FEL | 28 | 322 | 8.70% | - |
-| 9 | Y Ho | HCY | 27 | 311 | 8.68% | - |
-| 10 | J Orman | OJM | 25 | 306 | 8.17% | - |
-| 11 | H Bentley | BHW | 25 | 320 | 7.81% | - |
+| 4 | H Bowman | BH | 47 | 397 | 11.84% | ⭐ Good |
+| 5 | A Atzeni | AA | 45 | 412 | 10.92% | ⭐ Good |
+| 6 | M Guyon | GM | 15 | 169 | 8.88% | - |
+| 7 | L Ferraris | FEL | 28 | 322 | 8.70% | - |
+| 8 | Y Ho | HCY | 27 | 317 | 8.52% | - |
+| 9 | N Wong | WPN | 7 | 87 | 8.05% | - |
+| 10 | J Orman | OJM | 25 | 312 | 8.01% | - |
+| 11 | H Bentley | BHW | 25 | 327 | 7.65% | - |
 | 12 | B McMonagle | MDB | 10 | 142 | 7.04% | - |
-| 13 | L Hewitson | HEL | 23 | 327 | 7.03% | - |
-| 14 | A Badel | BA | 23 | 330 | 6.97% | - |
-| 15 | C Leung | LDE | 20 | 292 | 6.85% | - |
-| 16 | K Teetan | TEK | 25 | 419 | 5.97% | - |
-| 17 | L Chung | CCY | 16 | 275 | 5.82% | - |
-| 18 | L Yeung | YML | 16 | 315 | 5.08% | - |
-| 19 | B Avdulla | AVB | 12 | 302 | 3.97% | - |
-| 20 | M Chadwick | CML | 11 | 308 | 3.57% | - |
+| 13 | L Hewitson | HEL | 23 | 333 | 6.91% | - |
+| 14 | A Badel | BA | 23 | 338 | 6.80% | - |
+| 15 | C Leung | LDE | 20 | 298 | 6.71% | - |
+| 16 | L Chung | CCY | 18 | 281 | 6.41% | - |
+| 17 | K Teetan | TEK | 25 | 425 | 5.88% | - |
+| 18 | L Yeung | YML | 16 | 318 | 5.03% | - |
+| 19 | B Avdulla | AVB | 12 | 305 | 3.93% | - |
+| 20 | R Kingscote | KRW | 12 | 320 | 3.75% | - |
+| 21 | M Chadwick | CML | 11 | 310 | 3.55% | - |
 
 ### Rating Boosts (for model)
 
