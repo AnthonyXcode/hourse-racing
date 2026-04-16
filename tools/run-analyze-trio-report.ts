@@ -205,7 +205,8 @@ async function main(): Promise<void> {
   const { date, venue, ignoreRecords } = parseArgs();
   const scraper = new RaceCardScraper({ headless: true });
   const formAnalyzer = new FormAnalyzer();
-  const simulator = new MonteCarloSimulator({ runs: RUNS });
+  const hvStdDev = venue === "Happy Valley" ? 11 : 8;
+  const simulator = new MonteCarloSimulator({ runs: RUNS, performanceStdDev: hvStdDev });
   const enricher =
     ignoreRecords.length > 0
       ? new HorseDataEnricher({ ignoreFilePatterns: ignoreRecords })

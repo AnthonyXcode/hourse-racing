@@ -217,6 +217,7 @@ export interface HorseAnalysis {
   readonly goingPreference: number; // -1 to 1, how much horse likes this going
   readonly distancePreference: number; // -1 to 1, how suited to this distance
   readonly ratingMomentum: number; // -1 to 1, based on handicap Rtg.+/- and position within class
+  readonly formRecordCount: number; // Number of past performances used for analysis
   readonly overallRating: number; // Composite score
 }
 

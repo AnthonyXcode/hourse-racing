@@ -156,7 +156,8 @@ export class FormAnalyzer {
         goingPreference: this.calculateGoingPreference(horse, race.going),
         distancePreference: this.calculateDistancePreference(horse, race.distance),
         ratingMomentum: this.calculateRatingMomentum(horse, race),
-        overallRating: 0, // Will be calculated below
+        formRecordCount: horse.pastPerformances?.length ?? 0,
+        overallRating: 0,
     }
 
 
@@ -164,26 +165,40 @@ export class FormAnalyzer {
   }
 
   /**
-   * Calculate composite overall rating
+   * Calculate composite overall rating.
+   * Uses venue-specific weights: HV is a tight, tactical track where jockey
+   * skill, form momentum, and class advantages matter more than raw speed.
    */
-  calculateOverallRating(analysis: HorseAnalysis): number {
-    // Weights for each factor (must sum to 1)
-    const weights = {
-      speedRating: 0.35,
-      formScore: 0.13,
-      classIndicator: 0.06,
-      ratingMomentum: 0.06,
-      fitness: 0.10,
-      drawAdvantage: 0.08,
-      jockeyEdge: 0.08,
-      trainerForm: 0.05,
-      surfacePreference: 0.03,
-      goingPreference: 0.03,
-      distancePreference: 0.03,
-    };
+  calculateOverallRating(analysis: HorseAnalysis, venue?: Venue): number {
+    const weights = venue === "Happy Valley"
+      ? {
+          speedRating: 0.18,
+          formScore: 0.14,
+          classIndicator: 0.10,
+          ratingMomentum: 0.13,
+          fitness: 0.10,
+          drawAdvantage: 0.07,
+          jockeyEdge: 0.13,
+          trainerForm: 0.07,
+          surfacePreference: 0.03,
+          goingPreference: 0.03,
+          distancePreference: 0.02,
+        }
+      : {
+          speedRating: 0.35,
+          formScore: 0.13,
+          classIndicator: 0.06,
+          ratingMomentum: 0.06,
+          fitness: 0.10,
+          drawAdvantage: 0.08,
+          jockeyEdge: 0.08,
+          trainerForm: 0.05,
+          surfacePreference: 0.03,
+          goingPreference: 0.03,
+          distancePreference: 0.03,
+        };
 
-    // Normalize speed rating to 0-1 scale (60-120 range)
-    const normalizedSpeed = (analysis.averageSpeedRating - 60) / 60;
+    const normalizedSpeed = Math.max(0, Math.min(1, (analysis.averageSpeedRating - 60) / 60));
 
     // Fitness score based on days since last race
     const fitnessScore = this.calculateFitnessScore(analysis.daysSinceLastRace);
@@ -194,8 +209,7 @@ export class FormAnalyzer {
     // Rating momentum normalized (-1 to 1 -> 0 to 1)
     const normalizedMomentum = (analysis.ratingMomentum + 1) / 2;
 
-    // Calculate weighted sum
-    const rating =
+    let rating =
       normalizedSpeed * weights.speedRating +
       analysis.formScore * weights.formScore +
       normalizedClass * weights.classIndicator +
@@ -208,7 +222,14 @@ export class FormAnalyzer {
       (analysis.goingPreference + 1) / 2 * weights.goingPreference +
       (analysis.distancePreference + 1) / 2 * weights.distancePreference;
 
-    // Scale to 0-100
+    // Discount for sparse form data — pull toward neutral (0.5) when <4 records
+    const MIN_CONFIDENT_RECORDS = 4;
+    if (analysis.formRecordCount < MIN_CONFIDENT_RECORDS) {
+      const confidence = analysis.formRecordCount / MIN_CONFIDENT_RECORDS;
+      const neutral = 0.5;
+      rating = neutral + (rating - neutral) * confidence;
+    }
+
     return Math.round(rating * 100);
   }
 
@@ -352,13 +373,11 @@ export class FormAnalyzer {
    * Calculate jockey edge compared to field average
    */
   private calculateJockeyEdge(jockey: Jockey, race: Race): number {
-    // Base on season win rate vs field average
-    const baseWinRate = 0.08; // Average jockey win rate ~8%
+    const baseWinRate = 0.08;
     const jockeyWinRate = jockey.seasonStats.winRate;
 
     let edge = jockeyWinRate - baseWinRate;
 
-    // Check for course-specific stats
     const courseStats = jockey.courseStats.find(
       (cs) =>
         cs.venue === race.venue &&
@@ -367,11 +386,19 @@ export class FormAnalyzer {
     );
 
     if (courseStats && courseStats.rides >= 10) {
-      // Weight course stats more heavily
       edge = edge * 0.5 + (courseStats.winRate - baseWinRate) * 0.5;
     }
 
-    // Clamp to reasonable range
+    // HV: sqrt compression — top jockeys still ahead but the gap to average
+    // is compressed, preventing Moreira/Purton mounts from auto-ranking #1.
+    if (race.venue === "Happy Valley") {
+      const clamped = Math.max(-0.1, Math.min(0.15, edge));
+      if (clamped > 0) {
+        return Math.sqrt(clamped / 0.15) * 0.10;
+      }
+      return clamped;
+    }
+
     return Math.max(-0.1, Math.min(0.15, edge));
   }
 
@@ -501,7 +528,7 @@ export class FormAnalyzer {
       if (entry.isScratched) continue;
 
       const analysis = this.analyzeHorse(entry.horse, race, entry);
-      const overallRating = this.calculateOverallRating(analysis);
+      const overallRating = this.calculateOverallRating(analysis, race.venue);
 
       analyses.push({
         ...analysis,

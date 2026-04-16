@@ -206,7 +206,8 @@ async function analyzeRace(args: CliArgs): Promise<void> {
 
   // Initialize components
   const formAnalyzer = new FormAnalyzer();
-  const simulator = new MonteCarloSimulator({ runs: 10000 });
+  const hvStdDev = args.venue === "Happy Valley" ? 11 : 8;
+  const simulator = new MonteCarloSimulator({ runs: 10000, performanceStdDev: hvStdDev });
 
   const config: Partial<BettingConfig> = {
     bankroll: args.bankroll ?? DEFAULT_BETTING_CONFIG.bankroll,
