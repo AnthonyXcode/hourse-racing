@@ -1,0 +1,1127 @@
+{
+  "date": "2026-04-18",
+  "venue": "ST",
+  "races": [
+    {
+      "raceNumber": 1,
+      "date": "2026-04-18",
+      "venue": "ST",
+      "horses": [
+        {
+          "horseNumber": 1,
+          "horseName": "Aix En Provence (AUS)",
+          "jockey": "Anna Roper (a) (-5)",
+          "trainer": "Nacim Dilmi",
+          "winOdds": 24,
+          "placeOdds": 6.5
+        },
+        {
+          "horseNumber": 2,
+          "horseName": "Pleasure Artist (AUS)",
+          "jockey": "Chad Schofield",
+          "trainer": "R & W Freedman",
+          "winOdds": 39,
+          "placeOdds": 9.9
+        },
+        {
+          "horseNumber": 3,
+          "horseName": "Mailata (AUS)",
+          "jockey": "James McDonald",
+          "trainer": "Bryce Heys",
+          "winOdds": 4.1,
+          "placeOdds": 1.5
+        },
+        {
+          "horseNumber": 4,
+          "horseName": "Audrey's Lane (AUS)",
+          "jockey": "Alysha Collett",
+          "trainer": "Brad Widdup",
+          "winOdds": 3.7,
+          "placeOdds": 1.5
+        },
+        {
+          "horseNumber": 5,
+          "horseName": "Vetwelve (AUS)",
+          "jockey": "Rachel King",
+          "trainer": "John Sargent",
+          "winOdds": 13,
+          "placeOdds": 4.2
+        },
+        {
+          "horseNumber": 7,
+          "horseName": "Unique Ambition (NZ)",
+          "jockey": "Nash Rawiller",
+          "trainer": "John Sargent",
+          "winOdds": 10,
+          "placeOdds": 3.6
+        },
+        {
+          "horseNumber": 8,
+          "horseName": "Annie's Rose (AUS)",
+          "jockey": "Craig Williams",
+          "trainer": "Kristen Buchanan",
+          "winOdds": 4.6,
+          "placeOdds": 1.6
+        },
+        {
+          "horseNumber": 9,
+          "horseName": "Cosmeena (AUS)",
+          "jockey": "Siena Grima (a) (-7)",
+          "trainer": "Michael Vella",
+          "winOdds": 13,
+          "placeOdds": 3.4
+        },
+        {
+          "horseNumber": 10,
+          "horseName": "Danish Prince (AUS)",
+          "jockey": "Tim Clark",
+          "trainer": "M & M Conners",
+          "winOdds": 13,
+          "placeOdds": 3.4
+        },
+        {
+          "horseNumber": 12,
+          "horseName": "Dusty Bay (AUS)",
+          "jockey": "Jason Collett",
+          "trainer": "Tracey Bartley",
+          "winOdds": 13,
+          "placeOdds": 4.2
+        },
+        {
+          "horseNumber": 17,
+          "horseName": "Totoka (AUS)",
+          "jockey": "Reece Jones",
+          "trainer": "Paul Perry",
+          "winOdds": 31,
+          "placeOdds": 7.9
+        }
+      ],
+      "fetchedAt": "2026-04-18T13:49:21.078Z"
+    },
+    {
+      "raceNumber": 2,
+      "date": "2026-04-18",
+      "venue": "ST",
+      "horses": [
+        {
+          "horseNumber": 1,
+          "horseName": "Micro Mikki (AUS)",
+          "jockey": "W Stanley (a) (-7)",
+          "trainer": "Brett Robb",
+          "winOdds": 5.8,
+          "placeOdds": 2.1
+        },
+        {
+          "horseNumber": 3,
+          "horseName": "Occult (AUS)",
+          "jockey": "Jason Collett",
+          "trainer": "B & G Cavanough",
+          "winOdds": 4.8,
+          "placeOdds": 2.2
+        },
+        {
+          "horseNumber": 4,
+          "horseName": "Punch One Out (AUS)",
+          "jockey": "Adam Hyeronimus",
+          "trainer": "Glen Milligan",
+          "winOdds": 17,
+          "placeOdds": 5
+        },
+        {
+          "horseNumber": 6,
+          "horseName": "Danxia (NZ)",
+          "jockey": "Braith Nock (a) (-3)",
+          "trainer": "Colt Prosser",
+          "winOdds": 17,
+          "placeOdds": 5.3
+        },
+        {
+          "horseNumber": 7,
+          "horseName": "Christa (AUS)",
+          "jockey": "Alysha Collett",
+          "trainer": "Todd Howlett",
+          "winOdds": 13,
+          "placeOdds": 4.2
+        },
+        {
+          "horseNumber": 9,
+          "horseName": "Whateley (AUS)",
+          "jockey": "Tom Sherry",
+          "trainer": "Todd Howlett",
+          "winOdds": 16,
+          "placeOdds": 5
+        },
+        {
+          "horseNumber": 10,
+          "horseName": "Ishikari (NZ)",
+          "jockey": "Rachel King",
+          "trainer": "Dean Mirfin",
+          "winOdds": 12,
+          "placeOdds": 4.3
+        },
+        {
+          "horseNumber": 11,
+          "horseName": "Red Rags To Bulls (AUS)",
+          "jockey": "Siena Grima (a) (-6)",
+          "trainer": "Jeremy Gask",
+          "winOdds": 7.1,
+          "placeOdds": 3
+        },
+        {
+          "horseNumber": 12,
+          "horseName": "Cruizingthestars (AUS)",
+          "jockey": "Pierre Boudvillain",
+          "trainer": "Scott Collings",
+          "winOdds": 6.3,
+          "placeOdds": 1.4
+        },
+        {
+          "horseNumber": 13,
+          "horseName": "Andale Andale (AUS)",
+          "jockey": "Ashley Morgan",
+          "trainer": "Lyle Chandler",
+          "winOdds": 18,
+          "placeOdds": 6
+        },
+        {
+          "horseNumber": 14,
+          "horseName": "Bonnie Murringo (AUS)",
+          "jockey": "Blaike McDougall",
+          "trainer": "Darrell Burnet",
+          "winOdds": 15,
+          "placeOdds": 5.1
+        },
+        {
+          "horseNumber": 17,
+          "horseName": "Tanglewood Jimmy (AUS)",
+          "jockey": "Dylan Gibbons",
+          "trainer": "Wayne Wilkes",
+          "winOdds": 17,
+          "placeOdds": 5.6
+        },
+        {
+          "horseNumber": 18,
+          "horseName": "Santatime (AUS)",
+          "jockey": "Reece Jones",
+          "trainer": "Glen Milligan",
+          "winOdds": 39,
+          "placeOdds": 10
+        }
+      ],
+      "fetchedAt": "2026-04-18T13:49:22.636Z"
+    },
+    {
+      "raceNumber": 3,
+      "date": "2026-04-18",
+      "venue": "ST",
+      "horses": [
+        {
+          "horseNumber": 1,
+          "horseName": "Gallant Star (AUS)",
+          "jockey": "W Stanley (a) (-7)",
+          "trainer": "Brett Robb",
+          "winOdds": 7.8,
+          "placeOdds": 2.6
+        },
+        {
+          "horseNumber": 2,
+          "horseName": "Signor Tortoni (AUS)",
+          "jockey": "Kerrin McEvoy",
+          "trainer": "Ron Quinton",
+          "winOdds": 5.9,
+          "placeOdds": 1.8
+        },
+        {
+          "horseNumber": 3,
+          "horseName": "De Bergerac (AUS)",
+          "jockey": "Craig Williams",
+          "trainer": "Grahame Begg",
+          "winOdds": 10,
+          "placeOdds": 3.2
+        },
+        {
+          "horseNumber": 5,
+          "horseName": "Raikkonen (AUS)",
+          "jockey": "Dylan Gibbons",
+          "trainer": "Bjorn Baker",
+          "winOdds": 54,
+          "placeOdds": 12
+        },
+        {
+          "horseNumber": 8,
+          "horseName": "Bandi's Boy (AUS)",
+          "jockey": "Rachel King",
+          "trainer": "Danny Williams",
+          "winOdds": 16,
+          "placeOdds": 4.5
+        },
+        {
+          "horseNumber": 9,
+          "horseName": "Stay Focused (AUS)",
+          "jockey": "Zac Lloyd",
+          "trainer": "Ciaron Maher",
+          "winOdds": 9.5,
+          "placeOdds": 3.6
+        },
+        {
+          "horseNumber": 10,
+          "horseName": "Asgarda (AUS)",
+          "jockey": "Alysha Collett",
+          "trainer": "John Sargent",
+          "winOdds": 24,
+          "placeOdds": 5.5
+        },
+        {
+          "horseNumber": 11,
+          "horseName": "Estremo (AUS)",
+          "jockey": "James McDonald",
+          "trainer": "Chris Waller",
+          "winOdds": 4.7,
+          "placeOdds": 2
+        },
+        {
+          "horseNumber": 12,
+          "horseName": "Shirvington (AUS)",
+          "jockey": "Ashley Morgan",
+          "trainer": "Bjorn Baker",
+          "winOdds": 28,
+          "placeOdds": 7.3
+        },
+        {
+          "horseNumber": 14,
+          "horseName": "Our Queen (IRE)",
+          "jockey": "Jason Collett",
+          "trainer": "Bjorn Baker",
+          "winOdds": 5.7,
+          "placeOdds": 2.1
+        },
+        {
+          "horseNumber": 16,
+          "horseName": "Scintilla (AUS)",
+          "jockey": "Reece Jones",
+          "trainer": "Les Bridge",
+          "winOdds": 5.7,
+          "placeOdds": 1.9
+        }
+      ],
+      "fetchedAt": "2026-04-18T13:49:24.007Z"
+    },
+    {
+      "raceNumber": 4,
+      "date": "2026-04-18",
+      "venue": "ST",
+      "horses": [
+        {
+          "horseNumber": 1,
+          "horseName": "Plaintiff (AUS)",
+          "jockey": "Jordan Childs",
+          "trainer": "Peter Snowden",
+          "winOdds": 1.8,
+          "placeOdds": 1.1
+        },
+        {
+          "horseNumber": 2,
+          "horseName": "Bellazaine (AUS)",
+          "jockey": "Tim Clark",
+          "trainer": "G Waterhouse & A Bott",
+          "winOdds": 9.8,
+          "placeOdds": 3.1
+        },
+        {
+          "horseNumber": 3,
+          "horseName": "Karinska (AUS)",
+          "jockey": "James McDonald",
+          "trainer": "Chris Waller",
+          "winOdds": 7.9,
+          "placeOdds": 1.8
+        },
+        {
+          "horseNumber": 4,
+          "horseName": "Tomato Toastie (AUS)",
+          "jockey": "Regan Bayliss",
+          "trainer": "G Waterhouse & A Bott",
+          "winOdds": 6.9,
+          "placeOdds": 1.9
+        },
+        {
+          "horseNumber": 5,
+          "horseName": "Bird Whistle (AUS)",
+          "jockey": "Andrew Adkins",
+          "trainer": "B & G Cavanough",
+          "winOdds": 42,
+          "placeOdds": 5.9
+        },
+        {
+          "horseNumber": 7,
+          "horseName": "Horseshoe Hill (AUS)",
+          "jockey": "Rachel King",
+          "trainer": "Bjorn Baker",
+          "winOdds": 10,
+          "placeOdds": 2.4
+        },
+        {
+          "horseNumber": 9,
+          "horseName": "Beside The Ocean (AUS)",
+          "jockey": "Jason Collett",
+          "trainer": "Chris Waller",
+          "winOdds": 22,
+          "placeOdds": 4.4
+        },
+        {
+          "horseNumber": 10,
+          "horseName": "Snitzel Dancer (AUS)",
+          "jockey": "Kerrin McEvoy",
+          "trainer": "G Ryan & S Alexiou",
+          "winOdds": 25,
+          "placeOdds": 5.2
+        },
+        {
+          "horseNumber": 11,
+          "horseName": "Little Iris (AUS)",
+          "jockey": "Zac Lloyd",
+          "trainer": "G Waterhouse & A Bott",
+          "winOdds": 16,
+          "placeOdds": 3.8
+        },
+        {
+          "horseNumber": 13,
+          "horseName": "Blue Monday (AUS)",
+          "jockey": "Dylan Gibbons",
+          "trainer": "M Beer & G Carpenter",
+          "winOdds": 54,
+          "placeOdds": 10
+        }
+      ],
+      "fetchedAt": "2026-04-18T13:49:25.378Z"
+    },
+    {
+      "raceNumber": 5,
+      "date": "2026-04-18",
+      "venue": "ST",
+      "horses": [
+        {
+          "horseNumber": 1,
+          "horseName": "Matias (AUS)",
+          "jockey": "Nash Rawiller",
+          "trainer": "G Ryan & S Alexiou",
+          "winOdds": 2.5,
+          "placeOdds": 1.2
+        },
+        {
+          "horseNumber": 2,
+          "horseName": "Providence (AUS)",
+          "jockey": "James McDonald",
+          "trainer": "Chris Waller",
+          "winOdds": 9.1,
+          "placeOdds": 3
+        },
+        {
+          "horseNumber": 3,
+          "horseName": "Eureka Rebel (AUS)",
+          "jockey": "Kerrin McEvoy",
+          "trainer": "Matthew Smith",
+          "winOdds": 10,
+          "placeOdds": 2.5
+        },
+        {
+          "horseNumber": 4,
+          "horseName": "Olympian (AUS)",
+          "jockey": "Craig Williams",
+          "trainer": "P Messara/L Gavranich",
+          "winOdds": 5.3,
+          "placeOdds": 2
+        },
+        {
+          "horseNumber": 6,
+          "horseName": "O'Sheamus (AUS)",
+          "jockey": "Zac Lloyd",
+          "trainer": "Tom Charlton",
+          "winOdds": 23,
+          "placeOdds": 6.1
+        },
+        {
+          "horseNumber": 7,
+          "horseName": "Pictor (AUS)",
+          "jockey": "Tim Clark",
+          "trainer": "Chris Waller",
+          "winOdds": 13,
+          "placeOdds": 3.6
+        },
+        {
+          "horseNumber": 8,
+          "horseName": "Agent Zero (AUS)",
+          "jockey": "Chad Schofield",
+          "trainer": "Ciaron Maher",
+          "winOdds": 34,
+          "placeOdds": 9.4
+        },
+        {
+          "horseNumber": 9,
+          "horseName": "Monopolistic (NZ)",
+          "jockey": "Adam Hyeronimus",
+          "trainer": "Chris Waller",
+          "winOdds": 13,
+          "placeOdds": 4.2
+        },
+        {
+          "horseNumber": 10,
+          "horseName": "Barrengarry (AUS)",
+          "jockey": "Jason Collett",
+          "trainer": "Joseph Ible",
+          "winOdds": 11,
+          "placeOdds": 2.8
+        },
+        {
+          "horseNumber": 11,
+          "horseName": "Coulter (AUS)",
+          "jockey": "Rachel King",
+          "trainer": "Bjorn Baker",
+          "winOdds": 30,
+          "placeOdds": 8.1
+        },
+        {
+          "horseNumber": 12,
+          "horseName": "Your Chilli (AUS)",
+          "jockey": "Sam Clipperton",
+          "trainer": "Chris Waller",
+          "winOdds": 25,
+          "placeOdds": 6.9
+        },
+        {
+          "horseNumber": 13,
+          "horseName": "C'mon Flyer (AUS)",
+          "jockey": "Regan Bayliss",
+          "trainer": "Ross McConville",
+          "winOdds": 95,
+          "placeOdds": 21
+        },
+        {
+          "horseNumber": 14,
+          "horseName": "Listen Sweetheart (AUS)",
+          "jockey": "Dylan Gibbons",
+          "trainer": "John Sargent",
+          "winOdds": 135,
+          "placeOdds": 31
+        },
+        {
+          "horseNumber": 15,
+          "horseName": "Mister Martini (AUS)",
+          "jockey": "Ben Melham",
+          "trainer": "M, J & W Hawkes",
+          "winOdds": 65,
+          "placeOdds": 14
+        }
+      ],
+      "fetchedAt": "2026-04-18T13:49:26.768Z"
+    },
+    {
+      "raceNumber": 6,
+      "date": "2026-04-18",
+      "venue": "ST",
+      "horses": [
+        {
+          "horseNumber": 1,
+          "horseName": "Asterix (NZ)",
+          "jockey": "Jason Collett",
+          "trainer": "Chris Waller",
+          "winOdds": 15,
+          "placeOdds": 4.1
+        },
+        {
+          "horseNumber": 2,
+          "horseName": "Just Fine (IRE)",
+          "jockey": "Tim Clark",
+          "trainer": "G Waterhouse & A Bott",
+          "winOdds": 14,
+          "placeOdds": 4.5
+        },
+        {
+          "horseNumber": 4,
+          "horseName": "She's A Dealer (AUS)",
+          "jockey": "Jordan Childs",
+          "trainer": "R James & R Wellwood",
+          "winOdds": 9.4,
+          "placeOdds": 2.9
+        },
+        {
+          "horseNumber": 5,
+          "horseName": "Travolta (GB)",
+          "jockey": "James McDonald",
+          "trainer": "Chris Waller",
+          "winOdds": 2.9,
+          "placeOdds": 1.3
+        },
+        {
+          "horseNumber": 6,
+          "horseName": "Encoder (AUS)",
+          "jockey": "Zac Lloyd",
+          "trainer": "Michael Freedman",
+          "winOdds": 12,
+          "placeOdds": 3.5
+        },
+        {
+          "horseNumber": 7,
+          "horseName": "Star Of India (IRE)",
+          "jockey": "Chad Schofield",
+          "trainer": "Chris Waller",
+          "winOdds": 23,
+          "placeOdds": 6.1
+        },
+        {
+          "horseNumber": 8,
+          "horseName": "Our Anchorage (IRE)",
+          "jockey": "Ashley Morgan",
+          "trainer": "Bjorn Baker",
+          "winOdds": 153,
+          "placeOdds": 28
+        },
+        {
+          "horseNumber": 9,
+          "horseName": "Portland (IRE)",
+          "jockey": "Kerrin McEvoy",
+          "trainer": "Matthew Smith",
+          "winOdds": 11,
+          "placeOdds": 3.2
+        },
+        {
+          "horseNumber": 10,
+          "horseName": "Touristic (GB)",
+          "jockey": "Andrew Adkins",
+          "trainer": "Peter Snowden",
+          "winOdds": 52,
+          "placeOdds": 11
+        },
+        {
+          "horseNumber": 11,
+          "horseName": "Les Vampires (AUS)",
+          "jockey": "Winona Costin",
+          "trainer": "Lucy Longmire",
+          "winOdds": 113,
+          "placeOdds": 26
+        },
+        {
+          "horseNumber": 13,
+          "horseName": "You Wahng (AUS)",
+          "jockey": "Tom Sherry",
+          "trainer": "Kris Lees",
+          "winOdds": 7.9,
+          "placeOdds": 2.9
+        },
+        {
+          "horseNumber": 14,
+          "horseName": "Sunset Park (GB)",
+          "jockey": "Jamie Melham",
+          "trainer": "Brad Widdup",
+          "winOdds": 16,
+          "placeOdds": 4.8
+        },
+        {
+          "horseNumber": 15,
+          "horseName": "Bear On The Loose (IRE)",
+          "jockey": "Regan Bayliss",
+          "trainer": "G Waterhouse & A Bott",
+          "winOdds": 5,
+          "placeOdds": 1.7
+        }
+      ],
+      "fetchedAt": "2026-04-18T13:49:28.215Z"
+    },
+    {
+      "raceNumber": 7,
+      "date": "2026-04-18",
+      "venue": "ST",
+      "horses": [
+        {
+          "horseNumber": 1,
+          "horseName": "Campione D'Italia (AUS)",
+          "jockey": "James McDonald",
+          "trainer": "Chris Waller",
+          "winOdds": 1.7,
+          "placeOdds": 1.1
+        },
+        {
+          "horseNumber": 2,
+          "horseName": "Fireball (AUS)",
+          "jockey": "Tim Clark",
+          "trainer": "Chris Waller",
+          "winOdds": 7,
+          "placeOdds": 1.8
+        },
+        {
+          "horseNumber": 3,
+          "horseName": "Zambales (AUS)",
+          "jockey": "Kerrin McEvoy",
+          "trainer": "Anthony & Sam Freedman",
+          "winOdds": 12,
+          "placeOdds": 3
+        },
+        {
+          "horseNumber": 4,
+          "horseName": "Southend (AUS)",
+          "jockey": "Dylan Gibbons",
+          "trainer": "G Ryan & S Alexiou",
+          "winOdds": 12,
+          "placeOdds": 2.5
+        },
+        {
+          "horseNumber": 5,
+          "horseName": "Diameter (AUS)",
+          "jockey": "Adam Hyeronimus",
+          "trainer": "Chris Waller",
+          "winOdds": 28,
+          "placeOdds": 4.8
+        },
+        {
+          "horseNumber": 6,
+          "horseName": "Persian Wonder (NZ)",
+          "jockey": "Chad Schofield",
+          "trainer": "David Payne",
+          "winOdds": 59,
+          "placeOdds": 12
+        },
+        {
+          "horseNumber": 7,
+          "horseName": "Don't Look Back (AUS)",
+          "jockey": "Ethan Brown",
+          "trainer": "Paul Perry",
+          "winOdds": 62,
+          "placeOdds": 12
+        },
+        {
+          "horseNumber": 8,
+          "horseName": "Nomadic (AUS)",
+          "jockey": "Nash Rawiller",
+          "trainer": "John Thompson",
+          "winOdds": 67,
+          "placeOdds": 11
+        },
+        {
+          "horseNumber": 9,
+          "horseName": "Am I Dreaming (AUS)",
+          "jockey": "Jamie Melham",
+          "trainer": "Jack Pilkington",
+          "winOdds": 97,
+          "placeOdds": 19
+        },
+        {
+          "horseNumber": 10,
+          "horseName": "Miss Chanel (AUS)",
+          "jockey": "Regan Bayliss",
+          "trainer": "G Waterhouse & A Bott",
+          "winOdds": 6.5,
+          "placeOdds": 1.7
+        },
+        {
+          "horseNumber": 11,
+          "horseName": "Grinzinger Heart (AUS)",
+          "jockey": "Craig Williams",
+          "trainer": "Ben Brisbourne",
+          "winOdds": 21,
+          "placeOdds": 5.1
+        },
+        {
+          "horseNumber": 13,
+          "horseName": "Sumac (AUS)",
+          "jockey": "Zac Lloyd",
+          "trainer": "Lee & Cherie Curtis",
+          "winOdds": 25,
+          "placeOdds": 5.2
+        }
+      ],
+      "fetchedAt": "2026-04-18T13:49:29.619Z"
+    },
+    {
+      "raceNumber": 8,
+      "date": "2026-04-18",
+      "venue": "ST",
+      "horses": [
+        {
+          "horseNumber": 1,
+          "horseName": "Private Eye (AUS)",
+          "jockey": "Nash Rawiller",
+          "trainer": "Joseph Pride",
+          "winOdds": 3.1,
+          "placeOdds": 1.4
+        },
+        {
+          "horseNumber": 4,
+          "horseName": "Mazu (AUS)",
+          "jockey": "Rachel King",
+          "trainer": "Joseph Pride",
+          "winOdds": 3.5,
+          "placeOdds": 1.3
+        },
+        {
+          "horseNumber": 5,
+          "horseName": "Ostraka (AUS)",
+          "jockey": "Tom Sherry",
+          "trainer": "A & R Archibald",
+          "winOdds": 20,
+          "placeOdds": 5.1
+        },
+        {
+          "horseNumber": 6,
+          "horseName": "The Inflictor (AUS)",
+          "jockey": "Chad Schofield",
+          "trainer": "Craig Cousins",
+          "winOdds": 41,
+          "placeOdds": 10
+        },
+        {
+          "horseNumber": 7,
+          "horseName": "King's Secret (AUS)",
+          "jockey": "Andrew Adkins",
+          "trainer": "Joseph Pride",
+          "winOdds": 8.7,
+          "placeOdds": 2.5
+        },
+        {
+          "horseNumber": 8,
+          "horseName": "Kerguelen (AUS)",
+          "jockey": "Adam Hyeronimus",
+          "trainer": "Joseph Pride",
+          "winOdds": 5.6,
+          "placeOdds": 2.1
+        },
+        {
+          "horseNumber": 9,
+          "horseName": "Mal Coupe (AUS)",
+          "jockey": "Winona Costin",
+          "trainer": "Stephen O'Halloran",
+          "winOdds": 10,
+          "placeOdds": 2.2
+        },
+        {
+          "horseNumber": 10,
+          "horseName": "Brave One (AUS)",
+          "jockey": "Dylan Gibbons",
+          "trainer": "M, J & W Hawkes",
+          "winOdds": 19,
+          "placeOdds": 5
+        },
+        {
+          "horseNumber": 11,
+          "horseName": "Bauhinia (AUS)",
+          "jockey": "Craig Williams",
+          "trainer": "Lee & Cherie Curtis",
+          "winOdds": 10,
+          "placeOdds": 3
+        }
+      ],
+      "fetchedAt": "2026-04-18T13:49:31.109Z"
+    },
+    {
+      "raceNumber": 9,
+      "date": "2026-04-18",
+      "venue": "ST",
+      "horses": [
+        {
+          "horseNumber": 1,
+          "horseName": "Giga Kick (AUS)",
+          "jockey": "Rachel King",
+          "trainer": "Clayton Douglas",
+          "winOdds": 10,
+          "placeOdds": 2.9
+        },
+        {
+          "horseNumber": 2,
+          "horseName": "Jimmysstar (NZ)",
+          "jockey": "Ethan Brown",
+          "trainer": "Ciaron Maher",
+          "winOdds": 6,
+          "placeOdds": 2.4
+        },
+        {
+          "horseNumber": 3,
+          "horseName": "Briasa (AUS)",
+          "jockey": "Zac Lloyd",
+          "trainer": "M, J & W Hawkes",
+          "winOdds": 19,
+          "placeOdds": 5.5
+        },
+        {
+          "horseNumber": 5,
+          "horseName": "Half Yours (AUS)",
+          "jockey": "Jamie Melham",
+          "trainer": "Tony & Calvin McEvoy",
+          "winOdds": 26,
+          "placeOdds": 6.7
+        },
+        {
+          "horseNumber": 6,
+          "horseName": "Pericles (AUS)",
+          "jockey": "Craig Williams",
+          "trainer": "Bjorn Baker",
+          "winOdds": 8.1,
+          "placeOdds": 1.9
+        },
+        {
+          "horseNumber": 7,
+          "horseName": "Royal Patronage (FR)",
+          "jockey": "Tim Clark",
+          "trainer": "G Waterhouse & A Bott",
+          "winOdds": 49,
+          "placeOdds": 13
+        },
+        {
+          "horseNumber": 8,
+          "horseName": "Angel Capital (AUS)",
+          "jockey": "James McDonald",
+          "trainer": "Chris Waller",
+          "winOdds": 2.9,
+          "placeOdds": 1.3
+        },
+        {
+          "horseNumber": 9,
+          "horseName": "Headley Grange (AUS)",
+          "jockey": "Adam Hyeronimus",
+          "trainer": "Joseph Pride",
+          "winOdds": 37,
+          "placeOdds": 9.6
+        },
+        {
+          "horseNumber": 10,
+          "horseName": "Kovalica (NZ)",
+          "jockey": "Sam Clipperton",
+          "trainer": "Chris Waller",
+          "winOdds": 112,
+          "placeOdds": 24
+        },
+        {
+          "horseNumber": 11,
+          "horseName": "Fangirl (AUS)",
+          "jockey": "Ben Melham",
+          "trainer": "Chris Waller",
+          "winOdds": 15,
+          "placeOdds": 5.6
+        },
+        {
+          "horseNumber": 12,
+          "horseName": "Lazzura (AUS)",
+          "jockey": "Jason Collett",
+          "trainer": "Chris Waller",
+          "winOdds": 13,
+          "placeOdds": 3.9
+        },
+        {
+          "horseNumber": 13,
+          "horseName": "Magic Time (AUS)",
+          "jockey": "Jordan Childs",
+          "trainer": "Grahame Begg",
+          "winOdds": 64,
+          "placeOdds": 17
+        },
+        {
+          "horseNumber": 14,
+          "horseName": "Beiwacht (AUS)",
+          "jockey": "Nash Rawiller",
+          "trainer": "Chris Waller",
+          "winOdds": 5.4,
+          "placeOdds": 1.7
+        }
+      ],
+      "fetchedAt": "2026-04-18T13:49:32.532Z"
+    },
+    {
+      "raceNumber": 10,
+      "date": "2026-04-18",
+      "venue": "ST",
+      "horses": [
+        {
+          "horseNumber": 1,
+          "horseName": "Tavi Time (NZ)",
+          "jockey": "W Stanley (a) (-7)",
+          "trainer": "Kris Lees",
+          "winOdds": 14,
+          "placeOdds": 3.8
+        },
+        {
+          "horseNumber": 2,
+          "horseName": "Zambardo (NZ)",
+          "jockey": "Siena Grima (a) (-7)",
+          "trainer": "M Price & M Kent (Jnr)",
+          "winOdds": 14,
+          "placeOdds": 3.7
+        },
+        {
+          "horseNumber": 3,
+          "horseName": "Unspoken (IRE)",
+          "jockey": "Tom Sherry",
+          "trainer": "Peter Snowden",
+          "winOdds": 81,
+          "placeOdds": 17
+        },
+        {
+          "horseNumber": 5,
+          "horseName": "Media World (AUS)",
+          "jockey": "Chad Schofield",
+          "trainer": "Peter Snowden",
+          "winOdds": 16,
+          "placeOdds": 3.9
+        },
+        {
+          "horseNumber": 6,
+          "horseName": "Lord Penman (NZ)",
+          "jockey": "James McDonald",
+          "trainer": "Chris Waller",
+          "winOdds": 4.9,
+          "placeOdds": 1.7
+        },
+        {
+          "horseNumber": 9,
+          "horseName": "Cool Jakey (AUS)",
+          "jockey": "Nash Rawiller",
+          "trainer": "Joseph Pride",
+          "winOdds": 3.8,
+          "placeOdds": 1.9
+        },
+        {
+          "horseNumber": 12,
+          "horseName": "Sky Lab (AUS)",
+          "jockey": "Ethan Brown",
+          "trainer": "Paul Perry",
+          "winOdds": 69,
+          "placeOdds": 15
+        },
+        {
+          "horseNumber": 13,
+          "horseName": "Snow In May (AUS)",
+          "jockey": "Zac Lloyd",
+          "trainer": "Tom Charlton",
+          "winOdds": 11,
+          "placeOdds": 2.6
+        },
+        {
+          "horseNumber": 14,
+          "horseName": "War Eternal (NZ)",
+          "jockey": "Regan Bayliss",
+          "trainer": "Bjorn Baker",
+          "winOdds": 62,
+          "placeOdds": 14
+        },
+        {
+          "horseNumber": 16,
+          "horseName": "God's Window (GB)",
+          "jockey": "Jason Collett",
+          "trainer": "Chris Waller",
+          "winOdds": 15,
+          "placeOdds": 3.9
+        },
+        {
+          "horseNumber": 18,
+          "horseName": "Captain Furai (AUS)",
+          "jockey": "Kerrin McEvoy",
+          "trainer": "Chris Waller",
+          "winOdds": 3.2,
+          "placeOdds": 1.3
+        },
+        {
+          "horseNumber": 20,
+          "horseName": "Hyperbolic (NZ)",
+          "jockey": "Jamie Melham",
+          "trainer": "Brad Widdup",
+          "winOdds": 20,
+          "placeOdds": 5.1
+        }
+      ],
+      "fetchedAt": "2026-04-18T13:49:33.933Z"
+    },
+    {
+      "raceNumber": 11,
+      "date": "2026-04-18",
+      "venue": "ST",
+      "horses": [
+        {
+          "horseNumber": 1,
+          "horseName": "Aix En Provence (AUS)",
+          "jockey": "Anna Roper (a) (-5)",
+          "trainer": "Nacim Dilmi",
+          "winOdds": 24,
+          "placeOdds": 6.5
+        },
+        {
+          "horseNumber": 2,
+          "horseName": "Pleasure Artist (AUS)",
+          "jockey": "Chad Schofield",
+          "trainer": "R & W Freedman",
+          "winOdds": 39,
+          "placeOdds": 9.9
+        },
+        {
+          "horseNumber": 3,
+          "horseName": "Mailata (AUS)",
+          "jockey": "James McDonald",
+          "trainer": "Bryce Heys",
+          "winOdds": 4.1,
+          "placeOdds": 1.5
+        },
+        {
+          "horseNumber": 4,
+          "horseName": "Audrey's Lane (AUS)",
+          "jockey": "Alysha Collett",
+          "trainer": "Brad Widdup",
+          "winOdds": 3.7,
+          "placeOdds": 1.5
+        },
+        {
+          "horseNumber": 5,
+          "horseName": "Vetwelve (AUS)",
+          "jockey": "Rachel King",
+          "trainer": "John Sargent",
+          "winOdds": 13,
+          "placeOdds": 4.2
+        },
+        {
+          "horseNumber": 7,
+          "horseName": "Unique Ambition (NZ)",
+          "jockey": "Nash Rawiller",
+          "trainer": "John Sargent",
+          "winOdds": 10,
+          "placeOdds": 3.6
+        },
+        {
+          "horseNumber": 8,
+          "horseName": "Annie's Rose (AUS)",
+          "jockey": "Craig Williams",
+          "trainer": "Kristen Buchanan",
+          "winOdds": 4.6,
+          "placeOdds": 1.6
+        },
+        {
+          "horseNumber": 9,
+          "horseName": "Cosmeena (AUS)",
+          "jockey": "Siena Grima (a) (-7)",
+          "trainer": "Michael Vella",
+          "winOdds": 13,
+          "placeOdds": 3.4
+        },
+        {
+          "horseNumber": 10,
+          "horseName": "Danish Prince (AUS)",
+          "jockey": "Tim Clark",
+          "trainer": "M & M Conners",
+          "winOdds": 13,
+          "placeOdds": 3.4
+        },
+        {
+          "horseNumber": 12,
+          "horseName": "Dusty Bay (AUS)",
+          "jockey": "Jason Collett",
+          "trainer": "Tracey Bartley",
+          "winOdds": 13,
+          "placeOdds": 4.2
+        },
+        {
+          "horseNumber": 17,
+          "horseName": "Totoka (AUS)",
+          "jockey": "Reece Jones",
+          "trainer": "Paul Perry",
+          "winOdds": 31,
+          "placeOdds": 7.9
+        }
+      ],
+      "fetchedAt": "2026-04-18T13:49:35.407Z"
+    }
+  ],
+  "fetchedAt": "2026-04-18T13:49:35.431Z"
+}
