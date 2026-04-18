@@ -18,7 +18,7 @@ You are an experienced HKJC bettor focused on the Trio (單T) pool. You MUST fol
 ```
 STEP 1: QUERY DATA       → Sync historical data, fetch race card, odds, jockey stats, SCMP race card
 STEP 2: VALIDATE DATA    → Check field size, going, scratchings, SCMP coverage
-STEP 3: RUN SIMULATION   → Monte Carlo 10,000 iterations; derive both Strategy A (with boosts) and Strategy B (raw MC)
+STEP 3: RUN SIMULATION   → Monte Carlo 10,000 iterations; derive both Strategy A (with SCMP adjustments) and Strategy B (raw MC)
 STEP 4: COMPILE RESULTS  → Build Strategy A pool (modes A–D, 膽拖) and Strategy B pool (MC #1 banker, legs = Place%>20% or odds<10)
 STEP 5: GENERATE ADVICE  → Output both Strategy A and Strategy B suggestions in every report (tickets, stakes, pass conditions)
 ```
@@ -45,14 +45,14 @@ STEP 5: GENERATE ADVICE  → Output both Strategy A and Strategy B suggestions i
 
 | | **Strategy A** | **Strategy B** (MC-only) |
 |---|---------------------------|---------------------------|
-| **Ranking** | Adjusted Win% / Place% (MC + jockey boost + SCMP form) | **Raw MC only** — no jockey boost, no SCMP adjustments |
+| **Ranking** | Adjusted Win% / Place% (MC + SCMP form) | **Raw MC only** — no SCMP adjustments |
 | **Banker** | 1st-ranked by Adj Win% (with banker eligibility: no debutants) | **1st-ranked by MC Win%** (MC #1) — always banker |
 | **Legs / Pool** | Modes A–D by race classification (Adj Place% ≥ 25% must-include, pool size 5–7) | **Legs** = horses with **MC Place% > 20%**. Then any horse with **MC Place% ≤ 20% AND Win odds < 10** replaces the lowest MC Place% leg that is in the 20–30% range **with Win odds > 10** (1-for-1 swap). If no such replaceable leg exists, the Win-odds horse is **added directly** as an extra leg. Pool = banker + final legs |
-| **Cost** | 膽拖 (1 banker + legs) or 雙膽拖 when 2nd has Adj Place% ≥ 63% | 膽拖 only: 1 banker + N legs → C(N, 2) combos |
-| **Use case** | Full pipeline (jockey + SCMP) | Pure model baseline for A/B comparison |
+| **Cost** | 膽拖 (1 banker + legs) or 雙膽拖 when 2nd has Adj Place% ≥ 70% | 膽拖 only: 1 banker + N legs → C(N, 2) combos |
+| **Use case** | Full pipeline (MC + SCMP) | Pure model baseline for A/B comparison |
 
 **Strategy B rules in short:**
-1. Use **raw MC only**; do not apply 3c (jockey boost) or 3d (SCMP form adjustments).
+1. Use **raw MC only**; do not apply 3c (SCMP form adjustments).
 2. **Banker** = the horse ranked **1st by MC Win%**.
 3. **Legs (two-step selection):**
    - **Step A — Primary legs**: every horse with **MC Place% > 20%** (excluding banker).
@@ -222,7 +222,7 @@ PLAYWRIGHT_BROWSERS_PATH=0 npx tsx tools/analyze-race.ts \
 - Use space-separated args (not `=` for `--venue`). Set `PLAYWRIGHT_BROWSERS_PATH=0`.
 - **`--form-data all`** (or `-f all`): Loads historical results from **all venues** (Happy Valley + Sha Tin) for horse form enrichment. Without it, only the current race venue is used — horses with little form at that venue can be severely underrated by MC (e.g. 0.8% Place% at HV vs 37.6% with all-form data). Always use this flag for Trio strategy.
 
-**For Strategy B**: From the same MC run, use **raw MC output only** — do not apply 3c (jockey boost) or 3d (SCMP form adjustments) for the Strategy B branch. You still apply 3c and 3d for Strategy A; Strategy B uses only MC Win% and MC Place%.
+**For Strategy B**: From the same MC run, use **raw MC output only** — do not apply 3c (SCMP form adjustments) for the Strategy B branch. You still apply 3c for Strategy A; Strategy B uses only MC Win% and MC Place%.
 
 ### 3b. Capture MC output
 From each run, record:
@@ -230,28 +230,9 @@ From each run, record:
 - **Top quinella combinations** with MC probability and fair odds
 - **Market efficiency** (overround, favourite bias, undervalued/overvalued horses)
 
-### 3c. Apply elite jockey priority
-Apply a **linear** jockey boost by season win%: **+1%** when win% > 7%, **+7%** when win% > 20%, and linear in between (e.g. ~13.5% win% → +4%).
-If MC ranks the mount **outside its top 4**, cap the boost at **+4%** to prevent the jockey premium from overriding MC's assessment of the horse's underlying ability.
+### 3c. Apply SCMP form adjustments
 
-**Formula:**  
-`boost = win% ≤ 7 ? 0 : min(7, 1 + (win% - 7) * 6 / 13)`  
-Then if MC outside top 4: `boost = min(boost, 4)`.
-
-| Win% Range | Boost (MC top 4) | Boost (MC outside top 4) |
-|------------|-------------------|--------------------------|
-| ≤ 7% | 0% | 0% |
-| 7–20% | Linear: +1% at 7% → +7% at 20% | **capped at +4%** |
-| > 20% | +7% | **+4% (capped)** |
-
-> **Why cap at +4% when MC disagrees?** (learned 8-Mar-2026)
-> - *R6*: Purton on #6 LIVE WIRE — MC rated outside top 6 ("overvalued 81%"). Full +7% inflated #6 to 30% Adj Win% (banker). #6 finished 7th. MC's #1 (#2 YEE CHEONG GLORY) won at $30.5.
-> - *R3*: Purton on #2 ONE MAN SHOW — MC rated #2 as #1 (28.3%), so full +7% was justified. Finished 5th due to draw 12 AWT, not boost logic.
-> - When MC and jockey agree, the boost reinforces a strong signal. When MC strongly disagrees, the boost can inflate a weak horse to banker — the costliest error pattern (3 "all legs" misses in 61 races, ~$3,400 missed Trio dividends).
-
-### 3d. Apply SCMP form adjustments
-
-After MC simulation and jockey boosts, apply the following adjustments sourced from SCMP data.
+After MC simulation, apply the following adjustments sourced from SCMP data.
 **Skip this step if SCMP data was unavailable (note as caveat in report).**
 
 #### Negative Form Flags (from Star Form, TIR, Vet Report)
@@ -276,7 +257,7 @@ After MC simulation and jockey boosts, apply the following adjustments sourced f
 #### Cap rule
 - Total SCMP form adjustment per horse: **max ±8%** to MC Win%, **max ±10%** to MC Place%
 - If adjustments push any horse's probability above 50% Win or 85% Place, cap at those values
-- Always show **raw MC%**, **Adj Win% factor** / **Adj Place% factor** as **lists of reasons with ±%** (e.g. jockey +2.3, excuses +2), and **adjusted%** (after all boosts) in the HORSE RANKINGS table
+- Always show **raw MC%**, **Adj Win% factor** / **Adj Place% factor** as **lists of reasons with ±%** (e.g. excuses +2, trial +2), and **adjusted%** (after all adjustments) in the HORSE RANKINGS table
 
 ---
 
@@ -284,13 +265,13 @@ After MC simulation and jockey boosts, apply the following adjustments sourced f
 
 ### 4a. Build ranking table
 
-Rank all horses by **Adjusted Win%** and **Adjusted Place%** to determine pool inclusion. Include **Adj Win% factor** and **Adj Place% factor** as **lists of reasons with ±%** (e.g. `jockey +2.3, excuses +2` or `jockey +7, trial +2` or `jockey 0, -perf −2`), not a single number:
+Rank all horses by **Adjusted Win%** and **Adjusted Place%** to determine pool inclusion. Include **Adj Win% factor** and **Adj Place% factor** as **lists of reasons with ±%** (e.g. `excuses +2, trial +2` or `-perf −2, -injury30d −3` or `0`), not a single number:
 
 ```
 RACE [N] — [Class] | [Distance] | [Going] | [Field size]
 | Rank | # | Horse | MC Win% | MC Place% | Adj Win% factor | Adj Place% factor | Adj Win% | Adj Place% | Odds | Jockey | SCMP Flags |
 |------|---|-------|---------|-----------|-----------------|-------------------|----------|------------|------|--------|------------|
-| 1 | X | NAME | XX.X% | XX.X% | jockey +2.3, excuses +2 | (same) | XX.X% | XX.X% | X.X | Name | +trial, +draw |
+| 1 | X | NAME | XX.X% | XX.X% | excuses +2, trial +2 | (same) | XX.X% | XX.X% | X.X | Name | +trial, +draw |
 ```
 
 ### 4b. Classify the race
@@ -512,7 +493,7 @@ HKJC offers two top-3 single-race bets:
 Every Trio report must include **both Strategy A and Strategy B** in the same report. Structure:
 
 1. **Shared**: **MC SIMULATION (raw)** table listing **all horses** with columns: MC Win%, MC Place%, **Win Odds**, **Place%>20%** (✅/❌), **Win odds<10** (✅/❌), Form, optional Top Quinella. **Strategy B leg** = primary legs (Place%>20% ✅) after any Win-odds replacements (see Strategy B rules).
-2. **Strategy A**: **HORSE RANKINGS** with **Adj Win% factor**, **Adj Place% factor**, **Adj Win%**, **Adj Place%** (factor columns = list of reasons with ±%, e.g. `jockey +2.3, excuses +2`), then **TRIO POOL** and **TICKET SUMMARY** for Strategy A.
+2. **Strategy A**: **HORSE RANKINGS** with **Adj Win% factor**, **Adj Place% factor**, **Adj Win%**, **Adj Place%** (factor columns = list of SCMP reasons with ±%, e.g. `excuses +2, trial +2`), then **TRIO POOL** and **TICKET SUMMARY** for Strategy A.
 3. **Strategy B**: A dedicated **STRATEGY B (MC-only)** block with: banker = MC #1, primary legs = Place% > 20%, Win-odds replacements applied, 膽拖 structure, combinations, and **TICKET SUMMARY** for Strategy B (no Adj columns; raw MC + Odds only).
 
 This allows the user to compare Strategy A vs Strategy B on every race.
@@ -523,7 +504,7 @@ TRIO (ANY ORDER) STRATEGY - [Venue] | [Date] | Race [N]
 ═══════════════════════════════════════════════════════════
 
 DATA VALIDATION: ✅ All checks passed | Going: [X] | [N] scratchings
-MC SIMULATION: 10,000 iterations | Jockey boost applied
+MC SIMULATION: 10,000 iterations
 SCMP DATA: ✅ Loaded | Form/TIR/Vet/Odds parsed
 ODDS SOURCE: [HKJC early-morning pool / HKJC live / SCMP race card] ([tool name], captured [HH:MM HKT DD-Mon])
              SCMP odds: [✅ loaded / ❌ not yet published] | HKJC live: [✅ loaded / ❌ not open]
@@ -554,13 +535,13 @@ HORSE RANKINGS
 ───────────────────────────────────────────────────────────
 | # | Horse     | MC Win% | MC Place% | Adj Win% factor | Adj Place% factor | Adj Win% | Adj Place% | Odds | Jockey | Style | SCMP Flags | Role         |
 |---|------------|---------|-----------|-----------------|-------------------|----------|------------|------|--------|-------|------------|--------------|
-| X | NAME       | XX.X%   | XX.X%     | jockey +2.3, trial +2 | jockey +2.3, trial +2 | XX.X%    | XX.X%      | X.X  | Name   | Front | +trial     | ★ 膽 (Banker)|
-| X | NAME       | XX.X%   | XX.X%     | jockey +7, excuses +2 | jockey +7, excuses +2 | XX.X%    | XX.X%      | X.X  | Name   | Stalk | +draw      | 腳 (Leg)     |
-| X | NAME       | XX.X%   | XX.X%     | jockey 0, -perf −2   | jockey 0, -perf −2   | XX.X%    | XX.X%      | X.X  | Name   | Close | +excuses   | 腳 (Leg)     |
+| X | NAME       | XX.X%   | XX.X%     | trial +2              | trial +2              | XX.X%    | XX.X%      | X.X  | Name   | Front | +trial     | ★ 膽 (Banker)|
+| X | NAME       | XX.X%   | XX.X%     | excuses +2            | excuses +2            | XX.X%    | XX.X%      | X.X  | Name   | Stalk | +draw      | 腳 (Leg)     |
+| X | NAME       | XX.X%   | XX.X%     | -perf −2              | -perf −2              | XX.X%    | XX.X%      | X.X  | Name   | Close | +excuses   | 腳 (Leg)     |
 | X | NAME       | XX.X%   | XX.X%     | 0                   | 0                   | XX.X%    | XX.X%      | X.X  | Name   | Stalk | —          | 腳 (Leg)     |
 | X | NAME       | —       | —         | —               | —                 | ~X.X%    | ~XX.X%     | X.X  | Name   | —     | —          | 腳 (Leg)     |
 
-**Factor columns:** Show a **list of reasons with ±%**, e.g. `jockey +2.3, excuses +2` (jockey boost + SCMP reason and percentage). Use reason labels: jockey (always first if non-zero), then SCMP reasons (e.g. excuses +2, trial +2, +draw +1, -perf −2, -injury30d −3). Omit jockey if 0; omit SCMP if 0; use `0` when no adjustment. Adj Win% = MC Win% + sum of factor reasons (after caps). Same for Adj Place% factor.
+**Factor columns:** Show a **list of SCMP reasons with ±%**, e.g. `excuses +2, trial +2`. Use reason labels: excuses +2, trial +2, +draw +1, -perf −2, -injury30d −3, -barrier −1, -age −2, -notRO −2. Use `0` when no adjustment. Adj Win% = MC Win% + sum of SCMP factor reasons (after caps). Same for Adj Place% factor.
 
 Note: ★ 膽 = Banker (1st-ranked horse by Adj Win%, always locked in every combo). For 雙膽拖, the 2nd horse must also have Adj Place% >= 63%. Horses without MC output use estimated ~X.X% and "—" for factors.
 
@@ -655,7 +636,6 @@ TOTAL TRIO STAKE: $[combos x 10]
 - Standard selections; trust MC top picks
 - Favourites more reliable (~50% win rate) → Mode A (tight pool) more viable
 - Front-runners hold up well on standard track settings
-- Jockey boosts at full value
 
 ### Happy Valley
 - **More upsets** — use wider pools (Mode B/C)
@@ -685,9 +665,8 @@ TOTAL TRIO STAKE: $[combos x 10]
 15. **Gate penalties are reducers, not exclusions** — Wide gates (10+) reduce probability by 1-3% but never fully exclude. Gate 13 winners exist (R11 19-Feb, $350).
 16. **Always use 膽拖 with 1st-ranked as banker** — The 1st-ranked horse (by Adj Win%) is always the 膽 (Banker). This cuts combinations by 40-57% vs full pool. For 雙膽拖, the 2nd horse must also have Adj Place% >= 63%.
 17. **No debutants as banker** — Horses with <2 race starts cannot be banker. Demote to leg and use next eligible horse. Trial form ≠ race form. Evidence (8-Mar R1): debutant #7 MAPOGO (1.8x fav, 3/3 trials) led but faded to 4th.
-18. **Cap jockey boost when MC disagrees** — If MC ranks the jockey's mount outside its top 4, cap jockey boost at +4%. The premium should not override MC's assessment. Evidence (8-Mar R6): Purton +7% elevated #6 LIVE WIRE to banker despite MC rating him outside top 6. #6 finished 7th.
-19. **Banker failure = total loss (accepted risk)** — If the 膽 fails to finish top 3, ALL tickets lose. This is the trade-off for cheaper tickets. Cross-meeting banker top-3 rate: ~56% (34/61).
-20. **2-Banker (雙膽拖) is high-risk** — Both bankers must place top 3. Combined probability ≈ B1 × B2 (e.g., 63% × 65% ≈ 41%). Only use when both horses have Adj Place% >= 63% AND the race is strongly structured.
+18. **Banker failure = total loss (accepted risk)** — If the 膽 fails to finish top 3, ALL tickets lose. This is the trade-off for cheaper tickets. Cross-meeting banker top-3 rate: ~56% (34/61).
+19. **2-Banker (雙膽拖) is high-risk** — Both bankers must place top 3. Combined probability ≈ B1 × B2 (e.g., 63% × 65% ≈ 41%). Only use when both horses have Adj Place% >= 63% AND the race is strongly structured.
 
 ---
 
@@ -786,7 +765,7 @@ Expected agent behaviour:
 3. **Fetch SCMP race card for R7** → extract odds, Star Form, TIR, Vet, Trackwork, QP/Q odds (ignore tipster picks)
 4. Run `analyze-race.ts` for R7 with `--form-data all`
 5. Validate: ≥3 starters, odds populated, no critical scratchings, SCMP data loaded
-6. Apply jockey boosts + SCMP form adjustments
+6. Apply SCMP form adjustments
 7. Classify race (Dominant / Semi-Dominant / Competitive / Wide open)
 8. Build **Strategy A** pool (modes A–D, 膽拖) and **Strategy B** pool (MC #1 banker, primary legs = Place% > 20%, Win-odds < 10 replacements)
 9. Apply exclusion rules for Strategy A (Rules 1-3) — no narrative demotion, no hard exclusion if odds <= 15
