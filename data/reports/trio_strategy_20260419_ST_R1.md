@@ -18,22 +18,22 @@ UNIT BET: $10 per combination (fixed)
 MC SIMULATION (raw)
 ───────────────────────────────────────────────────────────
 
-| # | Horse | MC Win% | MC Place% | Win Odds | Place%>20% | Win odds<10 | Form | Role (Strategy B) | Top Quinella (fair odds) |
-|---|-------|---------|-----------|----------|------------|-------------|------|-------------------|--------------------------|
-| 2 | HAILTOTHEVICTORS | 41.7 | 83.3 | 28 | ✅ | ❌ | 8 | ★ 膽 (Banker) | 2-10: 24.5% (4.1) |
-| 10 | MEEPMEEP | 22.6 | 66.7 | 4.5 | ✅ | ✅ | 11 | 腳 (Leg) | 2-10: 24.5% (4.1) |
-| 11 | ALL ARE MINE | 14.5 | 56.6 | 10 | ✅ | ❌ | 5 | 腳 (Leg) | 2-11: 18.0% (5.5) |
-| 12 | CONSPIRACY WITNESS | 11.6 | 47.6 | 34 | ✅ | ❌ | 12 | 腳 (Leg) | 2-12: 13.2% (7.6) |
-| 13 | ROSEWOOD FLEETFOOT | 9.3 | 40.5 | 37 | ✅ | ❌ | 6 | 腳 (Leg) | 2-13: 10.6% (9.5) |
-| 3 | MANAGEMENT FOLKS | 0.1 | 1.5 | 47 | ❌ | ❌ | 6 | — | — |
-| 8 | SUPER HONG KONG | 0.1 | 2.0 | 16 | ❌ | ❌ | 8 | — | — |
-| 9 | HAPPYDEARHAPPYDEER | 0.1 | 0.8 | 10 | ❌ | ❌ | 4 | — | — |
-| 4 | FIREFOOT | 0.0 | 0.1 | 5.5 | ❌ | ✅ | 11 | 腳 (added) | — |
-| 1 | FOREMOST TEDDY | 0.0 | 0.0 | 6.7 | ❌ | ✅ | 10 | 腳 (added) | — |
-| 5 | VIVA TASTE | 0.0 | 0.0 | 8.1 | ❌ | ✅ | 7 | 腳 (added) | — |
-| 7 | SPANGLE FORTUNE | 0.0 | 0.2 | 25 | ❌ | ❌ | 4 | — | — |
-| 14 | ALL EYES ON ME | 0.0 | 0.5 | 27 | ❌ | ❌ | 8 | — | — |
-| 6 | MEGA FORCE | 0.0 | 0.0 | 10 | ❌ | ❌ | 7 | — | — |
+| #   | Horse              | MC Win% | MC Place% | Win Odds | Place%>20% | Win odds<10 | Form | Role (Strategy B) | Top Quinella (fair odds) |
+| --- | ------------------ | ------- | --------- | -------- | ---------- | ----------- | ---- | ----------------- | ------------------------ |
+| 2   | HAILTOTHEVICTORS   | 41.7    | 83.3      | 28       | ✅          | ❌           | 8    | ★ 膽 (Banker)      | 2-10: 24.5% (4.1)        |
+| 10  | MEEPMEEP           | 22.6    | 66.7      | 4.5      | ✅          | ✅           | 11   | 腳 (Leg)           | 2-10: 24.5% (4.1)        |
+| 11  | ALL ARE MINE       | 14.5    | 56.6      | 10       | ✅          | ❌           | 5    | 腳 (Leg)           | 2-11: 18.0% (5.5)        |
+| 12  | CONSPIRACY WITNESS | 11.6    | 47.6      | 34       | ✅          | ❌           | 12   | 腳 (Leg)           | 2-12: 13.2% (7.6)        |
+| 13  | ROSEWOOD FLEETFOOT | 9.3     | 40.5      | 37       | ✅          | ❌           | 6    | 腳 (Leg)           | 2-13: 10.6% (9.5)        |
+| 3   | MANAGEMENT FOLKS   | 0.1     | 1.5       | 47       | ❌          | ❌           | 6    | —                 | —                        |
+| 8   | SUPER HONG KONG    | 0.1     | 2.0       | 16       | ❌          | ❌           | 8    | —                 | —                        |
+| 9   | HAPPYDEARHAPPYDEER | 0.1     | 0.8       | 10       | ❌          | ❌           | 4    | —                 | —                        |
+| 4   | FIREFOOT           | 0.0     | 0.1       | 5.5      | ❌          | ✅           | 11   | 腳 (added)         | —                        |
+| 1   | FOREMOST TEDDY     | 0.0     | 0.0       | 6.7      | ❌          | ✅           | 10   | 腳 (added)         | —                        |
+| 5   | VIVA TASTE         | 0.0     | 0.0       | 8.1      | ❌          | ✅           | 7    | 腳 (added)         | —                        |
+| 7   | SPANGLE FORTUNE    | 0.0     | 0.2       | 25       | ❌          | ❌           | 4    | —                 | —                        |
+| 14  | ALL EYES ON ME     | 0.0     | 0.5       | 27       | ❌          | ❌           | 8    | —                 | —                        |
+| 6   | MEGA FORCE         | 0.0     | 0.0       | 10       | ❌          | ❌           | 7    | —                 | —                        |
 
 Market: MC strongly favours #2 HAILTOTHEVICTORS (41.7% Win vs 28 odds — market rank ~7th) and #10 MEEPMEEP (22.6% vs 4.5 odds — aligns). Market favourites #4 FIREFOOT (5.5), #1 FOREMOST TEDDY (6.7), #5 VIVA TASTE (8.1) all show ~0% MC — extreme model-market discrepancy.
 

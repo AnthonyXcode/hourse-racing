@@ -4,21 +4,21 @@
     "type": "split",
     "children": [
       {
-        "id": "bfad620d2f983e25",
+        "id": "8c1dc2ff601ae21e",
         "type": "tabs",
         "children": [
           {
-            "id": "2a1125371fc671fa",
+            "id": "27542e100a413f84",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "reviews/trio_review_stratC_20260419_ST.md",
+                "file": "test_reports/mc_top1_place_allup_summary.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "trio_review_stratC_20260419_ST"
+              "title": "mc_top1_place_allup_summary"
             }
           }
         ]
@@ -78,7 +78,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 423.5
+    "width": 324.5
   },
   "right": {
     "id": "3b5cac039487f0fc",
@@ -183,43 +183,43 @@
       "bases:Create new base": false
     }
   },
-  "active": "2a1125371fc671fa",
+  "active": "27542e100a413f84",
   "lastOpenFiles": [
+    "static/mc_top1_place_hit_rate_by_segment_20260419.md",
+    "static/trio_stratC_hit_rate_by_segment_20260419.md",
+    "test_reports/mc_top1_quinella_summary.md",
+    "test_reports/mc_top1_place_allup_summary.md",
+    "reports/trio_strategy_20260419_ST_R5.md",
+    "reviews/trio_review_stratC_20260318_HV.md",
+    "reports/trio_strategy_20260419_ST_R2.md",
+    "reviews/trio_review_stratC_20260322_ST.md",
+    "reviews/trio_review_stratC_20260325_HV.md",
+    "reviews/trio_review_stratC_20260329_ST.md",
+    "reviews/trio_review_stratC_20260401_ST.md",
+    "reviews/trio_review_stratC_20260406_ST.md",
+    "reviews/trio_review_stratC_20260408_HV.md",
+    "reviews/trio_review_stratC_20260412_ST.md",
     "reviews/trio_review_stratC_20260415_HV.md",
     "reviews/trio_review_stratC_20260419_ST.md",
-    "test_reports/mc_top1_place_allup_summary.md",
-    "reviews/_trio_section_new.md",
-    "test_reports/mc_top3_place_bet_summary.md",
-    "reviews/trio_review_20260419_ST.md",
-    "reviews/trio_review_stratC_20260412_ST.md",
-    "reports/trio_strategy_20260419_ST_R11.md",
-    "historical/results_20260419_ST.json",
-    "reports/trio_strategy_20260419_ST_R10.md",
-    "reports/trio_strategy_20260419_ST_R1.md",
-    "reports/trio_strategy_20260419_ST_R2.md",
-    "test_reports/trio_mc_place_replace_review_20260219_ST.md",
-    "reports/trio_strategy_20260419_ST_R5.md",
     "reports/trio_strategy_20260419_ST_R4.md",
     "reports/trio_strategy_20260419_ST_R3.md",
-    "reviews/trio_review_stratC_20260318_HV.md",
-    "test_reports/mc_top1_place_bet_summary.md",
-    "reports/trio_strategy_20260419_ST_R9.md",
-    "reports/trio_strategy_20260419_ST_R8.md",
-    "reports/trio_strategy_20260419_ST_R7.md",
-    "reports/trio_strategy_20260419_ST_R6.md",
-    "racecards/racecard_20260419_ST_R11.json",
-    "racecards/racecard_20260419_ST_R9.json",
-    "racecards/racecard_20260419_ST_R10.json",
-    "racecards/racecard_20260419_ST_R8.json",
-    "racecards/racecard_20260419_ST_R4.json",
-    "racecards/racecard_20260419_ST_R6.json",
-    "racecards/racecard_20260419_ST_R5.json",
-    "racecards/racecard_20260419_ST_R7.json",
-    "racecards/racecard_20260419_ST_R3.json",
-    "reviews/trio_review_stratC_20260408_HV.md",
-    "reviews/trio_review_20260415_HV.md",
-    "reviews/trio_review_20260412_ST.md",
-    "reports/trio_strategy_20260415_HV_R4.md",
-    "reviews/trio_review_stratC_20260322_ST.md"
+    "reports/trio_strategy_20260419_ST_R1.md",
+    "static",
+    "test_reports/mc_top1_place_hit_rate_by_segment.md",
+    "reviews/trio_review_20260419_ST.md",
+    "reviews/mc_top1_place_backtest_20260401_to_20260415.md",
+    "reviews/mc_top1_place_root_cause_20260419_ST.md",
+    "backtest/after_20260415_HV.json",
+    "backtest/after_20260412_ST.json",
+    "backtest/after_20260408_HV.json",
+    "backtest/after_20260406_ST.json",
+    "backtest/after_20260401_ST.json",
+    "backtest/before_20260415_HV.json",
+    "backtest/before_20260412_ST.json",
+    "backtest/before_20260408_HV.json",
+    "backtest/before_20260406_ST.json",
+    "test_reports/trio_mc_place_replace_review_20260219_ST.md",
+    "test_reports/trio_mc_top6_banker_20260315_ST.md",
+    "reviews/_trio_section_new.md"
   ]
 }
