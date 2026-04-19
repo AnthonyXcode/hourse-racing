@@ -18,20 +18,20 @@ UNIT BET: $10 per combination (fixed)
 MC SIMULATION (raw)
 ───────────────────────────────────────────────────────────
 
-| # | Horse | MC Win% | MC Place% | Win Odds | Place%>20% | Win odds<10 | Form | Role (Strategy B) | Top Quinella (fair odds) |
-|---|-------|---------|-----------|----------|------------|-------------|------|-------------------|--------------------------|
-| 7 | NOBLE DELUXE | 49.6 | 83.9 | 15 | ✅ | ❌ | 13 | ★ 膽 (Banker) | 4-7: 20.9% (4.8) |
-| 4 | COLOURFUL WINNER | 15.8 | 54.4 | 10 | ✅ | ❌ | 5 | 腳 (Leg) | 4-7: 20.9% (4.8) |
-| 9 | VIVA CHALEUR | 13.5 | 50.1 | 3.9 | ✅ | ✅ | 6 | 腳 (Leg) | 7-9: 18.8% (5.3) |
-| 8 | TRIUMPHANT WARRIOR | 9.2 | 39.9 | 21 | ✅ | ❌ | 4 | 腳 (Leg) | 7-8: 12.8% (7.8) |
-| 6 | ISLAND BREEZES | 7.5 | 35.4 | 81 | ✅ | ❌ | 8 | 腳 (Leg) | 6-7: 10.6% (9.5) |
-| 10 | CHEER FOR SOUTH | 2.5 | 16.4 | 28 | ❌ | ❌ | 6 | — | — |
-| 11 | MODEST GENTLEMAN | 0.9 | 8.5 | 5.1 | ❌ | ✅ | 8 | 腳 (added) | — |
-| 1 | GLORY CLOUD | 0.4 | 5.0 | 8 | ❌ | ✅ | 9 | 腳 (added) | — |
-| 5 | SUPERB GUY | 0.3 | 3.0 | 17 | ❌ | ❌ | 11 | — | — |
-| 12 | SONIC BOOM | 0.1 | 1.8 | 19 | ❌ | ❌ | 8 | — | — |
-| 2 | RUNJEET | 0.1 | 0.8 | 12 | ❌ | ❌ | 4 | — | — |
-| 3 | WIN SPEED | 0.0 | 1.0 | 5.1 | ❌ | ✅ | 5 | 腳 (added) | — |
+| #   | Horse              | MC Win% | MC Place% | Win Odds | Place%>20% | Win odds<10 | Form | Role (Strategy B) | Top Quinella (fair odds) |
+| --- | ------------------ | ------- | --------- | -------- | ---------- | ----------- | ---- | ----------------- | ------------------------ |
+| 7   | NOBLE DELUXE       | 49.6    | 83.9      | 15       | ✅          | ❌           | 13   | ★ 膽 (Banker)      | 4-7: 20.9% (4.8)         |
+| 4   | COLOURFUL WINNER   | 15.8    | 54.4      | 10       | ✅          | ❌           | 5    | 腳 (Leg)           | 4-7: 20.9% (4.8)         |
+| 9   | VIVA CHALEUR       | 13.5    | 50.1      | 3.9      | ✅          | ✅           | 6    | 腳 (Leg)           | 7-9: 18.8% (5.3)         |
+| 8   | TRIUMPHANT WARRIOR | 9.2     | 39.9      | 21       | ✅          | ❌           | 4    | 腳 (Leg)           | 7-8: 12.8% (7.8)         |
+| 6   | ISLAND BREEZES     | 7.5     | 35.4      | 81       | ✅          | ❌           | 8    | 腳 (Leg)           | 6-7: 10.6% (9.5)         |
+| 10  | CHEER FOR SOUTH    | 2.5     | 16.4      | 28       | ❌          | ❌           | 6    | —                 | —                        |
+| 11  | MODEST GENTLEMAN   | 0.9     | 8.5       | 5.1      | ❌          | ✅           | 8    | 腳 (added)         | —                        |
+| 1   | GLORY CLOUD        | 0.4     | 5.0       | 8        | ❌          | ✅           | 9    | 腳 (added)         | —                        |
+| 5   | SUPERB GUY         | 0.3     | 3.0       | 17       | ❌          | ❌           | 11   | —                 | —                        |
+| 12  | SONIC BOOM         | 0.1     | 1.8       | 19       | ❌          | ❌           | 8    | —                 | —                        |
+| 2   | RUNJEET            | 0.1     | 0.8       | 12       | ❌          | ❌           | 4    | —                 | —                        |
+| 3   | WIN SPEED          | 0.0     | 1.0       | 5.1      | ❌          | ✅           | 5    | 腳 (added)         | —                        |
 
 Market: MC strongly favours #7 NOBLE DELUXE (49.6% Win vs 15 odds) and sees #6 ISLAND BREEZES (7.5% vs 81 odds) as undervalued. Market favourites #9 VIVA CHALEUR (3.9), #3 WIN SPEED (5.1), #11 MODEST GENTLEMAN (5.1) show low MC.
 

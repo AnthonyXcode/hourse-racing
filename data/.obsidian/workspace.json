@@ -11,10 +11,14 @@
             "id": "2a1125371fc671fa",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {},
+              "type": "markdown",
+              "state": {
+                "file": "reviews/trio_review_stratC_20260419_ST.md",
+                "mode": "source",
+                "source": false
+              },
               "icon": "lucide-file",
-              "title": "New tab"
+              "title": "trio_review_stratC_20260419_ST"
             }
           }
         ]
@@ -181,17 +185,24 @@
   },
   "active": "2a1125371fc671fa",
   "lastOpenFiles": [
+    "reviews/trio_review_stratC_20260415_HV.md",
+    "reviews/trio_review_stratC_20260419_ST.md",
     "test_reports/mc_top1_place_allup_summary.md",
-    "test_reports/trio_mc_place_replace_review_20260219_ST.md",
-    "reports/trio_strategy_20260419_ST_R2.md",
+    "reviews/_trio_section_new.md",
+    "test_reports/mc_top3_place_bet_summary.md",
+    "reviews/trio_review_20260419_ST.md",
+    "reviews/trio_review_stratC_20260412_ST.md",
+    "reports/trio_strategy_20260419_ST_R11.md",
+    "historical/results_20260419_ST.json",
+    "reports/trio_strategy_20260419_ST_R10.md",
     "reports/trio_strategy_20260419_ST_R1.md",
+    "reports/trio_strategy_20260419_ST_R2.md",
+    "test_reports/trio_mc_place_replace_review_20260219_ST.md",
     "reports/trio_strategy_20260419_ST_R5.md",
     "reports/trio_strategy_20260419_ST_R4.md",
     "reports/trio_strategy_20260419_ST_R3.md",
     "reviews/trio_review_stratC_20260318_HV.md",
     "test_reports/mc_top1_place_bet_summary.md",
-    "reports/trio_strategy_20260419_ST_R11.md",
-    "reports/trio_strategy_20260419_ST_R10.md",
     "reports/trio_strategy_20260419_ST_R9.md",
     "reports/trio_strategy_20260419_ST_R8.md",
     "reports/trio_strategy_20260419_ST_R7.md",
@@ -205,17 +216,10 @@
     "racecards/racecard_20260419_ST_R5.json",
     "racecards/racecard_20260419_ST_R7.json",
     "racecards/racecard_20260419_ST_R3.json",
-    "racecards/racecard_20260419_ST_R2.json",
     "reviews/trio_review_stratC_20260408_HV.md",
     "reviews/trio_review_20260415_HV.md",
-    "reviews/trio_review_stratC_20260415_HV.md",
     "reviews/trio_review_20260412_ST.md",
     "reports/trio_strategy_20260415_HV_R4.md",
-    "reviews/trio_review_stratC_20260322_ST.md",
-    "reviews/trio_review_stratC_20260325_HV.md",
-    "reviews/trio_review_stratC_20260329_ST.md",
-    "reviews/trio_review_stratC_20260401_ST.md",
-    "reviews/trio_review_stratC_20260406_ST.md",
-    "reviews/trio_review_stratC_20260412_ST.md"
+    "reviews/trio_review_stratC_20260322_ST.md"
   ]
 }
