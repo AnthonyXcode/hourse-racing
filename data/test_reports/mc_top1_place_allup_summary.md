@@ -31,6 +31,20 @@
 
 ## Meeting 1: Happy Valley | 18 Mar 2026 (9 races)
 
+**MC #1** = raw MC Win% rank from `mc_top1_place_bet_summary.md`. **Results** from `data/historical/results_20260318_HV.json`.
+
+| Race | MC #1 | MC Win% | MC Place% | Placed? | Place $ (if placed) |
+|------|-------|---------|-----------|---------|---------------------|
+| R1 | #10 DRAGON SUNRISE | 30.5% | 62.8% | ✅ 3rd | $15.50 |
+| R2 | #7 INNO SUPER | 32.1% | 66.6% | ❌ (8th) | — |
+| R3 | #3 BEAUTY THUNDER | 43.3% | 75.3% | ✅ 2nd | $15.50 |
+| R4 | #2 SUPERB KING | 28.7% | 60.7% | ✅ 2nd | $15.50 |
+| R5 | #5 RAINBOW SEVEN | 46.7% | 80.3% | ✅ 2nd | $11.50 |
+| R6 | #3 ACE WAR | 54.1% | 83.3% | ✅ 1st | $12.00 |
+| R7 | #1 COLOURFUL KING | 38.5% | 75.4% | ❌ (6th) | — |
+| R8 | #7 AURIO | 34.1% | 65.0% | ✅ 1st | $14.00 |
+| R9 | #1 MAX QUE | 39.5% | 77.7% | ✅ 3rd | $12.50 |
+
 Place dividends: R1=$15.50, R3=$15.50, R4=$15.50, R5=$11.50, R6=$12.00, R8=$14.00, R9=$12.50
 
 ### 2-Leg (8 bets)
@@ -77,6 +91,21 @@ Place dividends: R1=$15.50, R3=$15.50, R4=$15.50, R5=$11.50, R6=$12.00, R8=$14.0
 ---
 
 ## Meeting 2: Sha Tin | 22 Mar 2026 (10 races)
+
+**MC #1** = raw MC Win% rank from `mc_top1_place_bet_summary.md`. **Results** from `data/historical/results_20260322_ST.json`.
+
+| Race | MC #1 | MC Win% | MC Place% | Placed? | Place $ (if placed) |
+|------|-------|---------|-----------|---------|---------------------|
+| R1 | #5 GLORIOUS SUCCESS | 18.7% | 45.1% | ❌ (12th) | — |
+| R2 | #1 BABY SAKURA | 24.6% | 59.4% | ✅ 3rd | $10.50 |
+| R3 | #9 CIRCUIT CHAMPION | 45.5% | 79.4% | ✅ 1st | $10.10 |
+| R4 | #5 HAPPY SHOOTER | 25.7% | 59.1% | ❌ (8th) | — |
+| R5 | #1 AEROINVINCIBLE | 28.6% | 63.0% | ✅ 1st | $22.00 |
+| R6 | #4 HOT DELIGHT | 42.6% | 87.0% | ✅ 1st | $10.10 |
+| R7 | #3 STORMY GROVE | 21.2% | 49.4% | ✅ 3rd | $22.50 |
+| R8 | #5 MONEY CATCHER | 19.7% | 48.0% | ✅ 3rd | $40.00 |
+| R9 | #9 AEROVOLANIC | 30.7% | 68.8% | ✅ 1st | $14.00 |
+| R10 | #12 SIX PACK | 21.7% | 53.6% | ✅ 2nd | $15.50 |
 
 Place dividends: R2=$10.50, R3=$10.10, R5=$22.00, R6=$10.10, R7=$22.50, R8=$40.00, R9=$14.00, R10=$15.50
 
@@ -128,20 +157,34 @@ Place dividends: R2=$10.50, R3=$10.10, R5=$22.00, R6=$10.10, R7=$22.50, R8=$40.0
 | 5 | R5+R6+R7+R8+R9+R10 | ✅ | $433.96 |
 | Others | — | ❌ | $0 |
 
-| Legs | Bets | Staked | Winners | Returned | P&L | ROI |
-|------|------|--------|---------|----------|-----|-----|
-| 1 | 10 | $100 | 8 | $144.70 | +$44.70 | +44.7% |
-| 2 | 9 | $90 | 6 | $223.26 | +$133.26 | +148.1% |
-| 3 | 8 | $80 | 4 | $353.69 | +$273.69 | +342.1% |
-| 4 | 7 | $70 | 3 | $522.54 | +$452.54 | +646.5% |
-| 5 | 6 | $60 | 2 | $477.22 | +$417.22 | +695.4% |
-| 6 | 5 | $50 | 1 | $433.96 | +$383.96 | +768.0% |
+| Legs | Bets | Staked | Winners | Returned | P&L      | ROI     |
+| ---- | ---- | ------ | ------- | -------- | -------- | ------- |
+| 1    | 10   | $100   | 8       | $144.70  | +$44.70  | +44.7%  |
+| 2    | 9    | $90    | 6       | $223.26  | +$133.26 | +148.1% |
+| 3    | 8    | $80    | 4       | $353.69  | +$273.69 | +342.1% |
+| 4    | 7    | $70    | 3       | $522.54  | +$452.54 | +646.5% |
+| 5    | 6    | $60    | 2       | $477.22  | +$417.22 | +695.4% |
+| 6    | 5    | $50    | 1       | $433.96  | +$383.96 | +768.0% |
 
 **Observation:** The best all-up meeting by far. The 6-race streak (R5-R10) with R8 MONEY CATCHER's $40.00 Place dividend created explosive compounding. Every leg count was profitable. R7+R8 alone returned $90 on a $10 2-leg all-up (9x).
 
 ---
 
 ## Meeting 3: Happy Valley | 25 Mar 2026 (9 races)
+
+**MC #1** = raw MC Win% rank from `mc_top1_place_bet_summary.md`. **Results** from `data/historical/results_20260325_HV.json`.
+
+| Race | MC #1 | MC Win% | MC Place% | Placed? | Place $ (if placed) |
+|------|-------|---------|-----------|---------|---------------------|
+| R1 | #2 MANAGEMENT FOLKS | 24.6% | 55.5% | ✅ 3rd | $22.00 |
+| R2 | #1 RAGGA BOMB | 28.6% | 59.9% | ❌ (7th) | — |
+| R3 | #6 BITS SUPERSTAR | 34.1% | 69.8% | ❌ (5th) | — |
+| R4 | #5 HARMONY GALAXY | 23.7% | 58.1% | ✅ 3rd | $47.00 |
+| R5 | #1 HORSEPOWER | 20.1% | 50.1% | ✅ 2nd | $26.00 |
+| R6 | #3 KING PROFIT | 24.3% | 55.1% | ✅ 2nd | $13.00 |
+| R7 | #2 GIANT BALLON | 47.3% | 79.3% | ✅ 1st | $13.50 |
+| R8 | #8 CALIFORNIA MOXIE | 45.5% | 78.6% | ❌ (6th) | — |
+| R9 | #5 AMAZING KID | 17.5% | 44.0% | ✅ 3rd | $24.00 |
 
 Place dividends: R1=$22.00, R4=$47.00, R5=$26.00, R6=$13.00, R7=$13.50, R9=$24.00
 
@@ -171,20 +214,36 @@ Place dividends: R1=$22.00, R4=$47.00, R5=$26.00, R6=$13.00, R7=$13.50, R9=$24.0
 
 ### 5-Leg+: All lose (max streak = 4)
 
-| Legs | Bets | Staked | Winners | Returned | P&L | ROI |
-|------|------|--------|---------|----------|-----|-----|
-| 1 | 9 | $90 | 6 | $145.50 | +$55.50 | +61.7% |
-| 2 | 8 | $80 | 3 | $173.55 | +$93.55 | +116.9% |
-| 3 | 7 | $70 | 2 | $204.49 | +$134.49 | +192.1% |
-| 4 | 6 | $60 | 1 | $214.46 | +$154.46 | +257.4% |
-| 5 | 5 | $50 | 0 | $0 | -$50.00 | -100% |
-| 6 | 4 | $40 | 0 | $0 | -$40.00 | -100% |
+| Legs | Bets | Staked | Winners | Returned | P&L      | ROI     |
+| ---- | ---- | ------ | ------- | -------- | -------- | ------- |
+| 1    | 9    | $90    | 6       | $145.50  | +$55.50  | +61.7%  |
+| 2    | 8    | $80    | 3       | $173.55  | +$93.55  | +116.9% |
+| 3    | 7    | $70    | 2       | $204.49  | +$134.49 | +192.1% |
+| 4    | 6    | $60    | 1       | $214.46  | +$154.46 | +257.4% |
+| 5    | 5    | $50    | 0       | $0       | -$50.00  | -100%   |
+| 6    | 4    | $40    | 0       | $0       | -$40.00  | -100%   |
 
 **Observation:** R4 HARMONY GALAXY's $47.00 dividend (16x odds) was the profit engine. The R4+R5 2-leg all-up alone returned $122.20 — a 12.2x return on $10. The 4-leg window (R4-R7) captured one massive combo ($214.46) but 5+ legs failed because R8 broke the streak.
 
 ---
 
 ## Meeting 4: Sha Tin | 29 Mar 2026 (11 races)
+
+**MC #1** = raw MC Win% rank from `mc_top1_place_bet_summary.md`. **Results** from `data/historical/results_20260329_ST.json`.
+
+| Race | MC #1 | MC Win% | MC Place% | Placed? | Place $ (if placed) |
+|------|-------|---------|-----------|---------|---------------------|
+| R1 | #11 HE WAS ME | 21.7% | 52.0% | ❌ (8th) | — |
+| R2 | #13 SHOTGUN | 32.0% | 63.6% | ✅ 1st | $12.50 |
+| R3 | #6 STORM RUNNER | 31.4% | 67.5% | ❌ (12th) | — |
+| R4 | #9 MAX QUE | 35.7% | 78.1% | ✅ 1st | $12.00 |
+| R5 | #4 RUN RUN SUNRISE | 33.2% | 70.7% | ✅ 2nd | $18.50 |
+| R6 | #3 CIRCUIT FIERY | 44.3% | 80.0% | ✅ 3rd | $17.50 |
+| R7 | #4 WARRIORS DREAM | 34.6% | 66.8% | ❌ (5th) | — |
+| R8 | #1 SALON S | 26.6% | 59.5% | ✅ 1st | $10.10 |
+| R9 | #6 MAGNIFIQUE | 28.7% | 66.4% | ❌ (9th) | — |
+| R10 | #1 HAPPY INDEX | 27.2% | 60.7% | ✅ 3rd | $18.50 |
+| R11 | #8 CHINA WIN | 30.9% | 66.4% | ✅ 3rd | $25.50 |
 
 Place dividends: R2=$12.50, R4=$12.00, R5=$18.50, R6=$17.50, R8=$10.10, R10=$18.50, R11=$25.50
 
@@ -221,6 +280,20 @@ Place dividends: R2=$12.50, R4=$12.00, R5=$18.50, R6=$17.50, R8=$10.10, R10=$18.
 
 ## Meeting 5: Sha Tin | 1 Apr 2026 (9 races — ALL AWT)
 
+**MC #1** = raw MC Win% rank from `mc_top1_place_bet_summary.md`. **Results** from `data/historical/results_20260401_ST.json`.
+
+| Race | MC #1 | MC Win% | MC Place% | Placed? | Place $ (if placed) |
+|------|-------|---------|-----------|---------|---------------------|
+| R1 | #3 ONLY U | 65.0% | 92.7% | ❌ (10th) | — |
+| R2 | #8 HAILTOTHEVICTORS | 23.5% | 58.8% | ✅ 1st | $22.50 |
+| R3 | #4 NEVER PETER OUT | 65.6% | 90.5% | ❌ (5th) | — |
+| R4 | #3 FLOWING RICHES | 28.7% | 68.2% | ✅ 3rd | $24.50 |
+| R5 | #5 HAPPY UNIVERSE | 33.3% | 79.0% | ✅ 1st | $22.00 |
+| R6 | #3 ONE MAN SHOW | 73.1% | 95.5% | ❌ (5th) | — |
+| R7 | #5 LIGHT YEARS GLORY | 39.0% | 80.6% | ❌ (4th) | — |
+| R8 | #4 VICTORY SKY | 58.0% | 90.7% | ✅ 1st | $12.00 |
+| R9 | #9 NEZHA | 54.0% | 85.2% | ❌ (7th) | — |
+
 Place dividends: R2=$22.50, R4=$24.50, R5=$22.00, R8=$12.00
 
 ### 2-Leg (8 bets)
@@ -246,6 +319,22 @@ Place dividends: R2=$22.50, R4=$24.50, R5=$22.00, R8=$12.00
 ---
 
 ## Meeting 6: Sha Tin | 6 Apr 2026 (11 races)
+
+**MC #1** = raw MC Win% rank from `mc_top1_place_bet_summary.md`. **Results** from `data/historical/results_20260406_ST.json`.
+
+| Race | MC #1 | MC Win% | MC Place% | Placed? | Place $ (if placed) |
+|------|-------|---------|-----------|---------|---------------------|
+| R1 | #1 ALMIGHTY LIGHTNING | 78.6% | 96.1% | ✅ 2nd | $10.10 |
+| R2 | #8 KING ALLOY | 41.3% | 82.5% | ❌ (4th) | — |
+| R3 | #1 MR COOL | 60.7% | 92.8% | ✅ 3rd | $16.50 |
+| R4 | #3 ROBOT STAR | 39.0% | 82.8% | ✅ 2nd | $23.50 |
+| R5 | #3 THOUSAND SPIRIT | 50.7% | 90.0% | ✅ 1st | $38.00 |
+| R6 | #1 GLOWING PRAISES | 52.7% | 90.2% | ✅ 2nd | $15.50 |
+| R7 | #1 KA YING RISING | 23.4% | 60.3% | ✅ 1st | $10.10 |
+| R8 | #1 LUCY IN THE SKY | 48.4% | 84.7% | ❌ (8th) | — |
+| R9 | #12 PATCH OF THETA | 32.0% | 68.9% | ❌ (10th) | — |
+| R10 | #8 SIX PACK | 63.8% | 93.2% | ✅ 3rd | $12.00 |
+| R11 | #3 LIVEANDLETLIVE | 38.1% | 78.6% | ✅ 2nd | $16.50 |
 
 Place dividends: R1=$10.10, R3=$16.50, R4=$23.50, R5=$38.00, R6=$15.50, R7=$10.10, R10=$12.00, R11=$16.50
 
@@ -413,14 +502,14 @@ Place dividends (MC #1 when paid): R2=$11.00, R5=$13.50, R6=$10.10, R7=$19.50, R
 
 ### 6-Leg: All lose (max paying streak = 5)
 
-| Legs | Bets | Staked | Winners | Returned | P&L | ROI |
-|------|------|--------|---------|----------|-----|-----|
-| 1 | 11 | $110 | 6 | $93.10 | −$16.90 | −15.4% |
-| 2 | 10 | $100 | 4 | $102.63 | +$2.63 | +2.6% |
-| 3 | 9 | $90 | 3 | $131.48 | +$41.48 | +46.1% |
-| 4 | 8 | $80 | 2 | $116.99 | +$36.99 | +46.2% |
-| 5 | 7 | $70 | 1 | $98.71 | +$28.71 | +41.0% |
-| 6 | 6 | $60 | 0 | $0 | −$60.00 | −100% |
+| Legs | Bets | Staked | Winners | Returned | P&L     | ROI    |
+| ---- | ---- | ------ | ------- | -------- | ------- | ------ |
+| 1    | 11   | $110   | 6       | $93.10   | −$16.90 | −15.4% |
+| 2    | 10   | $100   | 4       | $102.63  | +$2.63  | +2.6%  |
+| 3    | 9    | $90    | 3       | $131.48  | +$41.48 | +46.1% |
+| 4    | 8    | $80    | 2       | $116.99  | +$36.99 | +46.2% |
+| 5    | 7    | $70    | 1       | $98.71   | +$28.71 | +41.0% |
+| 6    | 6    | $60    | 0       | $0       | −$60.00 | −100%  |
 
 **Observation:** **High avg MC Place% (77.1%)** but only **6/11** legs paid Place (**54.5%**): **R1** field-size rule, **R10** scratch on MC #1, plus **R3/R4/R11** out of frame. The **R5–R9** paying streak (**5**) made **2- through 5-leg** all-ups **profitable**; **flat Place** lost (**−$16.90**) on thin divs + misses. Same shape as **Meeting 6** (long turf streak) but weaker than **Meeting 2** (no $40+ leg in the window).
 
