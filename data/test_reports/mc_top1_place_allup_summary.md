@@ -35,17 +35,17 @@
 
 **MC #1** = raw MC Win% rank from `mc_top1_place_bet_summary.md`. **Results** from `data/historical/results_20260318_HV.json`.
 
-| Race | MC #1 | MC Win% | MC Place% | Placed? | Place $ (if placed) |
-|------|-------|---------|-----------|---------|---------------------|
-| R1 | #10 DRAGON SUNRISE | 30.5% | 62.8% | ✅ 3rd | $15.50 |
-| R2 | #7 INNO SUPER | 32.1% | 66.6% | ❌ (8th) | — |
-| R3 | #3 BEAUTY THUNDER | 43.3% | 75.3% | ✅ 2nd | $15.50 |
-| R4 | #2 SUPERB KING | 28.7% | 60.7% | ✅ 2nd | $15.50 |
-| R5 | #5 RAINBOW SEVEN | 46.7% | 80.3% | ✅ 2nd | $11.50 |
-| R6 | #3 ACE WAR | 54.1% | 83.3% | ✅ 1st | $12.00 |
-| R7 | #1 COLOURFUL KING | 38.5% | 75.4% | ❌ (6th) | — |
-| R8 | #7 AURIO | 34.1% | 65.0% | ✅ 1st | $14.00 |
-| R9 | #1 MAX QUE | 39.5% | 77.7% | ✅ 3rd | $12.50 |
+| Race | Class   | Dist (m) | MC #1              | MC Win% | MC Place% | Placed? | Place $ (if placed) |     |
+| ---- | ------- | -------- | ------------------ | ------- | --------- | ------- | ------------------- | --- |
+| R1   | Class 5 | 1650     | #10 DRAGON SUNRISE | 30.5%   | 62.8%     | ✅ 3rd   | $15.50              |     |
+| R2   | Class 4 | 1650     | #7 INNO SUPER      | 32.1%   | 66.6%     | ❌ (8th) | —                   |     |
+| R3   | Class 4 | 1000     | #3 BEAUTY THUNDER  | 43.3%   | 75.3%     | ✅ 2nd   | $15.50              |     |
+| R4   | Class 4 | 1200     | #2 SUPERB KING     | 28.7%   | 60.7%     | ✅ 2nd   | $15.50              |     |
+| R5   | Class 4 | 1200     | #5 RAINBOW SEVEN   | 46.7%   | 80.3%     | ✅ 2nd   | $11.50              |     |
+| R6   | Class 4 | 1800     | #3 ACE WAR         | 54.1%   | 83.3%     | ✅ 1st   | $12.00              |     |
+| R7   | Class 2 | 1200     | #1 COLOURFUL KING  | 38.5%   | 75.4%     | ❌ (6th) | —                   |     |
+| R8   | Class 3 | 1200     | #7 AURIO           | 34.1%   | 65.0%     | ✅ 1st   | $14.00              |     |
+| R9   | Class 3 | 1650     | #1 MAX QUE         | 39.5%   | 77.7%     | ✅ 3rd   | $12.50              |     |
 
 Place dividends: R1=$15.50, R3=$15.50, R4=$15.50, R5=$11.50, R6=$12.00, R8=$14.00, R9=$12.50
 
@@ -96,18 +96,18 @@ Place dividends: R1=$15.50, R3=$15.50, R4=$15.50, R5=$11.50, R6=$12.00, R8=$14.0
 
 **MC #1** = raw MC Win% rank from `mc_top1_place_bet_summary.md`. **Results** from `data/historical/results_20260322_ST.json`.
 
-| Race | MC #1 | MC Win% | MC Place% | Placed? | Place $ (if placed) |
-|------|-------|---------|-----------|---------|---------------------|
-| R1 | #5 GLORIOUS SUCCESS | 18.7% | 45.1% | ❌ (12th) | — |
-| R2 | #1 BABY SAKURA | 24.6% | 59.4% | ✅ 3rd | $10.50 |
-| R3 | #9 CIRCUIT CHAMPION | 45.5% | 79.4% | ✅ 1st | $10.10 |
-| R4 | #5 HAPPY SHOOTER | 25.7% | 59.1% | ❌ (8th) | — |
-| R5 | #1 AEROINVINCIBLE | 28.6% | 63.0% | ✅ 1st | $22.00 |
-| R6 | #4 HOT DELIGHT | 42.6% | 87.0% | ✅ 1st | $10.10 |
-| R7 | #3 STORMY GROVE | 21.2% | 49.4% | ✅ 3rd | $22.50 |
-| R8 | #5 MONEY CATCHER | 19.7% | 48.0% | ✅ 3rd | $40.00 |
-| R9 | #9 AEROVOLANIC | 30.7% | 68.8% | ✅ 1st | $14.00 |
-| R10 | #12 SIX PACK | 21.7% | 53.6% | ✅ 2nd | $15.50 |
+| Race | Class | Dist (m) | MC #1 | MC Win% | MC Place% | Placed? | Place $ (if placed) |
+|------|-------|----------|-------|---------|-----------|-------------|----------------------|
+| R1 | Class 4 | 1600 | #5 GLORIOUS SUCCESS | 18.7% | 45.1% | ❌ (12th) | — |  |
+| R2 | Class 4 | 1200 | #1 BABY SAKURA | 24.6% | 59.4% | ✅ 3rd | $10.50 |  |
+| R3 | Class 3 | 1200 | #9 CIRCUIT CHAMPION | 45.5% | 79.4% | ✅ 1st | $10.10 |  |
+| R4 | Class 4 | 1200 | #5 HAPPY SHOOTER | 25.7% | 59.1% | ❌ (8th) | — |  |
+| R5 | Class 4 | 1400 | #1 AEROINVINCIBLE | 28.6% | 63.0% | ✅ 1st | $22.00 |  |
+| R6 | Class 3 | 1200 | #4 HOT DELIGHT | 42.6% | 87.0% | ✅ 1st | $10.10 |  |
+| R7 | Group 1 | 2000 | #3 STORMY GROVE | 21.2% | 49.4% | ✅ 3rd | $22.50 |  |
+| R8 | Class 3 | 1800 | #5 MONEY CATCHER | 19.7% | 48.0% | ✅ 3rd | $40.00 |  |
+| R9 | Class 3 | 1400 | #9 AEROVOLANIC | 30.7% | 68.8% | ✅ 1st | $14.00 |  |
+| R10 | Class 2 | 1400 | #12 SIX PACK | 21.7% | 53.6% | ✅ 2nd | $15.50 |  |
 
 Place dividends: R2=$10.50, R3=$10.10, R5=$22.00, R6=$10.10, R7=$22.50, R8=$40.00, R9=$14.00, R10=$15.50
 
@@ -176,17 +176,17 @@ Place dividends: R2=$10.50, R3=$10.10, R5=$22.00, R6=$10.10, R7=$22.50, R8=$40.0
 
 **MC #1** = raw MC Win% rank from `mc_top1_place_bet_summary.md`. **Results** from `data/historical/results_20260325_HV.json`.
 
-| Race | MC #1 | MC Win% | MC Place% | Placed? | Place $ (if placed) |
-|------|-------|---------|-----------|---------|---------------------|
-| R1 | #2 MANAGEMENT FOLKS | 24.6% | 55.5% | ✅ 3rd | $22.00 |
-| R2 | #1 RAGGA BOMB | 28.6% | 59.9% | ❌ (7th) | — |
-| R3 | #6 BITS SUPERSTAR | 34.1% | 69.8% | ❌ (5th) | — |
-| R4 | #5 HARMONY GALAXY | 23.7% | 58.1% | ✅ 3rd | $47.00 |
-| R5 | #1 HORSEPOWER | 20.1% | 50.1% | ✅ 2nd | $26.00 |
-| R6 | #3 KING PROFIT | 24.3% | 55.1% | ✅ 2nd | $13.00 |
-| R7 | #2 GIANT BALLON | 47.3% | 79.3% | ✅ 1st | $13.50 |
-| R8 | #8 CALIFORNIA MOXIE | 45.5% | 78.6% | ❌ (6th) | — |
-| R9 | #5 AMAZING KID | 17.5% | 44.0% | ✅ 3rd | $24.00 |
+| Race | Class   | Dist (m) | MC #1               | MC Win% | MC Place% | Placed? | Place $ (if placed) |     |
+| ---- | ------- | -------- | ------------------- | ------- | --------- | ------- | ------------------- | --- |
+| R1   | Class 5 | 2200     | #2 MANAGEMENT FOLKS | 24.6%   | 55.5%     | ✅ 3rd   | $22.00              |     |
+| R2   | Class 4 | 1650     | #1 RAGGA BOMB       | 28.6%   | 59.9%     | ❌ (7th) | —                   |     |
+| R3   | Class 4 | 1200     | #6 BITS SUPERSTAR   | 34.1%   | 69.8%     | ❌ (5th) | —                   |     |
+| R4   | Class 4 | 1650     | #5 HARMONY GALAXY   | 23.7%   | 58.1%     | ✅ 3rd   | $47.00              |     |
+| R5   | Class 3 | 1000     | #1 HORSEPOWER       | 20.1%   | 50.1%     | ✅ 2nd   | $26.00              |     |
+| R6   | Class 4 | 1200     | #3 KING PROFIT      | 24.3%   | 55.1%     | ✅ 2nd   | $13.00              |     |
+| R7   | Class 4 | 1200     | #2 GIANT BALLON     | 47.3%   | 79.3%     | ✅ 1st   | $13.50              |     |
+| R8   | Class 3 | 1650     | #8 CALIFORNIA MOXIE | 45.5%   | 78.6%     | ❌ (6th) | —                   |     |
+| R9   | Class 3 | 1200     | #5 AMAZING KID      | 17.5%   | 44.0%     | ✅ 3rd   | $24.00              |     |
 
 Place dividends: R1=$22.00, R4=$47.00, R5=$26.00, R6=$13.00, R7=$13.50, R9=$24.00
 
@@ -233,19 +233,19 @@ Place dividends: R1=$22.00, R4=$47.00, R5=$26.00, R6=$13.00, R7=$13.50, R9=$24.0
 
 **MC #1** = raw MC Win% rank from `mc_top1_place_bet_summary.md`. **Results** from `data/historical/results_20260329_ST.json`.
 
-| Race | MC #1 | MC Win% | MC Place% | Placed? | Place $ (if placed) |
-|------|-------|---------|-----------|---------|---------------------|
-| R1 | #11 HE WAS ME | 21.7% | 52.0% | ❌ (8th) | — |
-| R2 | #13 SHOTGUN | 32.0% | 63.6% | ✅ 1st | $12.50 |
-| R3 | #6 STORM RUNNER | 31.4% | 67.5% | ❌ (12th) | — |
-| R4 | #9 MAX QUE | 35.7% | 78.1% | ✅ 1st | $12.00 |
-| R5 | #4 RUN RUN SUNRISE | 33.2% | 70.7% | ✅ 2nd | $18.50 |
-| R6 | #3 CIRCUIT FIERY | 44.3% | 80.0% | ✅ 3rd | $17.50 |
-| R7 | #4 WARRIORS DREAM | 34.6% | 66.8% | ❌ (5th) | — |
-| R8 | #1 SALON S | 26.6% | 59.5% | ✅ 1st | $10.10 |
-| R9 | #6 MAGNIFIQUE | 28.7% | 66.4% | ❌ (9th) | — |
-| R10 | #1 HAPPY INDEX | 27.2% | 60.7% | ✅ 3rd | $18.50 |
-| R11 | #8 CHINA WIN | 30.9% | 66.4% | ✅ 3rd | $25.50 |
+| Race | Class   | Dist (m) | MC #1              | MC Win% | MC Place% | Placed?  | Place $ (if placed) |     |
+| ---- | ------- | -------- | ------------------ | ------- | --------- | -------- | ------------------- | --- |
+| R1   | Class 5 | 1400     | #11 HE WAS ME      | 21.7%   | 52.0%     | ❌ (8th)  | —                   |     |
+| R2   | Class 4 | 1400     | #13 SHOTGUN        | 32.0%   | 63.6%     | ✅ 1st    | $12.50              |     |
+| R3   | Class 4 | 2000     | #6 STORM RUNNER    | 31.4%   | 67.5%     | ❌ (12th) | —                   |     |
+| R4   | Class 2 | 1600     | #9 MAX QUE         | 35.7%   | 78.1%     | ✅ 1st    | $12.00              |     |
+| R5   | Class 4 | 1000     | #4 RUN RUN SUNRISE | 33.2%   | 70.7%     | ✅ 2nd    | $18.50              |     |
+| R6   | Class 4 | 1400     | #3 CIRCUIT FIERY   | 44.3%   | 80.0%     | ✅ 3rd    | $17.50              |     |
+| R7   | Class 4 | 1200     | #4 WARRIORS DREAM  | 34.6%   | 66.8%     | ❌ (5th)  | —                   |     |
+| R8   | Class 3 | 1400     | #1 SALON S         | 26.6%   | 59.5%     | ✅ 1st    | $10.10              |     |
+| R9   | Class 2 | 1200     | #6 MAGNIFIQUE      | 28.7%   | 66.4%     | ❌ (9th)  | —                   |     |
+| R10  | Class 3 | 1200     | #1 HAPPY INDEX     | 27.2%   | 60.7%     | ✅ 3rd    | $18.50              |     |
+| R11  | Class 3 | 1600     | #8 CHINA WIN       | 30.9%   | 66.4%     | ✅ 3rd    | $25.50              |     |
 
 Place dividends: R2=$12.50, R4=$12.00, R5=$18.50, R6=$17.50, R8=$10.10, R10=$18.50, R11=$25.50
 
@@ -284,17 +284,17 @@ Place dividends: R2=$12.50, R4=$12.00, R5=$18.50, R6=$17.50, R8=$10.10, R10=$18.
 
 **MC #1** = raw MC Win% rank from `mc_top1_place_bet_summary.md`. **Results** from `data/historical/results_20260401_ST.json`.
 
-| Race | MC #1 | MC Win% | MC Place% | Placed? | Place $ (if placed) |
-|------|-------|---------|-----------|---------|---------------------|
-| R1 | #3 ONLY U | 65.0% | 92.7% | ❌ (10th) | — |
-| R2 | #8 HAILTOTHEVICTORS | 23.5% | 58.8% | ✅ 1st | $22.50 |
-| R3 | #4 NEVER PETER OUT | 65.6% | 90.5% | ❌ (5th) | — |
-| R4 | #3 FLOWING RICHES | 28.7% | 68.2% | ✅ 3rd | $24.50 |
-| R5 | #5 HAPPY UNIVERSE | 33.3% | 79.0% | ✅ 1st | $22.00 |
-| R6 | #3 ONE MAN SHOW | 73.1% | 95.5% | ❌ (5th) | — |
-| R7 | #5 LIGHT YEARS GLORY | 39.0% | 80.6% | ❌ (4th) | — |
-| R8 | #4 VICTORY SKY | 58.0% | 90.7% | ✅ 1st | $12.00 |
-| R9 | #9 NEZHA | 54.0% | 85.2% | ❌ (7th) | — |
+| Race | Class   | Dist (m) | MC #1                | MC Win% | MC Place% | Placed?  | Place $ (if placed) |     |
+| ---- | ------- | -------- | -------------------- | ------- | --------- | -------- | ------------------- | --- |
+| R1   | Class 5 | 1200     | #3 ONLY U            | 65.0%   | 92.7%     | ❌ (10th) | —                   |     |
+| R2   | Class 5 | 1650     | #8 HAILTOTHEVICTORS  | 23.5%   | 58.8%     | ✅ 1st    | $22.50              |     |
+| R3   | Class 4 | 1650     | #4 NEVER PETER OUT   | 65.6%   | 90.5%     | ❌ (5th)  | —                   |     |
+| R4   | Class 4 | 1200     | #3 FLOWING RICHES    | 28.7%   | 68.2%     | ✅ 3rd    | $24.50              |     |
+| R5   | Class 4 | 1800     | #5 HAPPY UNIVERSE    | 33.3%   | 79.0%     | ✅ 1st    | $22.00              |     |
+| R6   | Class 4 | 1200     | #3 ONE MAN SHOW      | 73.1%   | 95.5%     | ❌ (5th)  | —                   |     |
+| R7   | Class 4 | 1200     | #5 LIGHT YEARS GLORY | 39.0%   | 80.6%     | ❌ (4th)  | —                   |     |
+| R8   | Class 3 | 1200     | #4 VICTORY SKY       | 58.0%   | 90.7%     | ✅ 1st    | $12.00              |     |
+| R9   | Class 3 | 1650     | #9 NEZHA             | 54.0%   | 85.2%     | ❌ (7th)  | —                   |     |
 
 Place dividends: R2=$22.50, R4=$24.50, R5=$22.00, R8=$12.00
 
@@ -324,19 +324,19 @@ Place dividends: R2=$22.50, R4=$24.50, R5=$22.00, R8=$12.00
 
 **MC #1** = raw MC Win% rank from `mc_top1_place_bet_summary.md`. **Results** from `data/historical/results_20260406_ST.json`.
 
-| Race | MC #1 | MC Win% | MC Place% | Placed? | Place $ (if placed) |
-|------|-------|---------|-----------|---------|---------------------|
-| R1 | #1 ALMIGHTY LIGHTNING | 78.6% | 96.1% | ✅ 2nd | $10.10 |
-| R2 | #8 KING ALLOY | 41.3% | 82.5% | ❌ (4th) | — |
-| R3 | #1 MR COOL | 60.7% | 92.8% | ✅ 3rd | $16.50 |
-| R4 | #3 ROBOT STAR | 39.0% | 82.8% | ✅ 2nd | $23.50 |
-| R5 | #3 THOUSAND SPIRIT | 50.7% | 90.0% | ✅ 1st | $38.00 |
-| R6 | #1 GLOWING PRAISES | 52.7% | 90.2% | ✅ 2nd | $15.50 |
-| R7 | #1 KA YING RISING | 23.4% | 60.3% | ✅ 1st | $10.10 |
-| R8 | #1 LUCY IN THE SKY | 48.4% | 84.7% | ❌ (8th) | — |
-| R9 | #12 PATCH OF THETA | 32.0% | 68.9% | ❌ (10th) | — |
-| R10 | #8 SIX PACK | 63.8% | 93.2% | ✅ 3rd | $12.00 |
-| R11 | #3 LIVEANDLETLIVE | 38.1% | 78.6% | ✅ 2nd | $16.50 |
+| Race | Class   | Dist (m) | MC #1                 | MC Win% | MC Place% | Placed?  | Place $ (if placed) |     |
+| ---- | ------- | -------- | --------------------- | ------- | --------- | -------- | ------------------- | --- |
+| R1   | Class 4 | 1000     | #1 ALMIGHTY LIGHTNING | 78.6%   | 96.1%     | ✅ 2nd    | $10.10              |     |
+| R2   | Class 5 | 1200     | #8 KING ALLOY         | 41.3%   | 82.5%     | ❌ (4th)  | —                   |     |
+| R3   | Class 4 | 1600     | #1 MR COOL            | 60.7%   | 92.8%     | ✅ 3rd    | $16.50              |     |
+| R4   | Class 4 | 1400     | #3 ROBOT STAR         | 39.0%   | 82.8%     | ✅ 2nd    | $23.50              |     |
+| R5   | Class 4 | 1200     | #3 THOUSAND SPIRIT    | 50.7%   | 90.0%     | ✅ 1st    | $38.00              |     |
+| R6   | Class 3 | 1000     | #1 GLOWING PRAISES    | 52.7%   | 90.2%     | ✅ 2nd    | $15.50              |     |
+| R7   | Group 1 | 1200     | #1 KA YING RISING     | 23.4%   | 60.3%     | ✅ 1st    | $10.10              |     |
+| R8   | Class 3 | 1400     | #1 LUCY IN THE SKY    | 48.4%   | 84.7%     | ❌ (8th)  | —                   |     |
+| R9   | Group 1 | 1600     | #12 PATCH OF THETA    | 32.0%   | 68.9%     | ❌ (10th) | —                   |     |
+| R10  | Class 2 | 1400     | #8 SIX PACK           | 63.8%   | 93.2%     | ✅ 3rd    | $12.00              |     |
+| R11  | Class 3 | 2000     | #3 LIVEANDLETLIVE     | 38.1%   | 78.6%     | ✅ 2nd    | $16.50              |     |
 
 Place dividends: R1=$10.10, R3=$16.50, R4=$23.50, R5=$38.00, R6=$15.50, R7=$10.10, R10=$12.00, R11=$16.50
 
@@ -394,17 +394,17 @@ Place dividends: R1=$10.10, R3=$16.50, R4=$23.50, R5=$38.00, R6=$15.50, R7=$10.1
 
 **Results / Place dividends:** HKJC verified ([results 08/04/2026 HV](https://racing.hkjc.com/zh-hk/local/information/resultsall?racedate=2026/04/08)). MC #1 = raw MC Win% rank from `trio_strategy_20260408_HV_R*.md` (same definition as prior meetings).
 
-| Race | MC #1 | MC Win% | MC Place% | Placed? | Place $ (if placed) |
-|------|-------|---------|-----------|---------|---------------------|
-| R1 | #10 ALWAYS MY FOLKS | 27.9% | 68.6% | ❌ | — |
-| R2 | #5 FORTUNE STAR | 40.0% | 82.1% | ❌ (4th) | — |
-| R3 | #2 BEAUTY THUNDER | 31.9% | 69.4% | ❌ (4th) | — |
-| R4 | #5 AMAZING AWARD | 29.1% | 67.3% | ❌ (4th) | — |
-| R5 | #5 BRIGHT DAY | 16.4% | 44.2% | ✅ 2nd | $19.50 |
-| R6 | #1 CROSSBORDERDUDE | 55.6% | 90.2% | ✅ 3rd | $14.00 |
-| R7 | #1 SILVERY BREEZE | 71.5% | 95.1% | ✅ 1st | $15.00 |
-| R8 | #1 CELESTIAL HERO | 35.7% | 78.3% | ❌ | — |
-| R9 | #3 RED SEA | 31.9% | 68.3% | ❌ | — |
+| Race | Class   | Dist (m) | MC #1               | MC Win% | MC Place% | Placed? | Place $ (if placed) |     |
+| ---- | ------- | -------- | ------------------- | ------- | --------- | ------- | ------------------- | --- |
+| R1   | Class 5 | 1200     | #10 ALWAYS MY FOLKS | 27.9%   | 68.6%     | ❌       | —                   |     |
+| R2   | Class 4 | 1650     | #5 FORTUNE STAR     | 40.0%   | 82.1%     | ❌ (4th) | —                   |     |
+| R3   | Class 4 | 1000     | #2 BEAUTY THUNDER   | 31.9%   | 69.4%     | ❌ (4th) | —                   |     |
+| R4   | Class 4 | 1650     | #5 AMAZING AWARD    | 29.1%   | 67.3%     | ❌ (4th) | —                   |     |
+| R5   | Class 4 | 1200     | #5 BRIGHT DAY       | 16.4%   | 44.2%     | ✅ 2nd   | $19.50              |     |
+| R6   | Class 4 | 1200     | #1 CROSSBORDERDUDE  | 55.6%   | 90.2%     | ✅ 3rd   | $14.00              |     |
+| R7   | Class 3 | 1650     | #1 SILVERY BREEZE   | 71.5%   | 95.1%     | ✅ 1st   | $15.00              |     |
+| R8   | Class 3 | 1200     | #1 CELESTIAL HERO   | 35.7%   | 78.3%     | ❌       | —                   |     |
+| R9   | Class 3 | 1200     | #3 RED SEA          | 31.9%   | 68.3%     | ❌       | —                   |     |
 
 Place dividends: R5=$19.50, R6=$14.00, R7=$15.00
 
@@ -447,19 +447,19 @@ Place dividends: R5=$19.50, R6=$14.00, R7=$15.00
 
 **Results / Place dividends:** `data/historical/results_20260412_ST.json` (scrape `tools/scrape-meeting-results.ts 2026-04-12 ST`). **MC #1** = raw MC Win% rank from `data/reports/trio_strategy_20260412_ST_R*.md` (same definition as prior meetings). **Leg eligible** = horse receives an **HKJC Place** payout (finish position ≤ number of Place dividends on the result).
 
-| Race | MC #1 | MC Win% | MC Place% | Paid Place? | Place $ (if paid) |
-|------|-------|---------|-----------|-------------|-------------------|
-| R1 | #6 TALENTS CHAMPION | 24.0% | 60.4% | ❌ (3rd, **6 runners → 2 places**) | — |
-| R2 | #9 WINNING MACHINE | 44.1% | 88.6% | ✅ 3rd | $11.00 |
-| R3 | #1 BEAUTY MISSILE | 28.8% | 68.9% | ❌ (10th) | — |
-| R4 | #14 THE CONCENTRATION | 34.5% | 72.5% | ❌ (7th) | — |
-| R5 | #1 SPICY STANDARD | 29.8% | 71.7% | ✅ 2nd | $13.50 |
-| R6 | #1 BABY SAKURA | 51.5% | 84.7% | ✅ 3rd | $10.10 |
-| R7 | #3 FORZA TORO | 36.0% | 70.9% | ✅ 2nd | $19.50 |
-| R8 | #7 AMAZING PARTNERS | 48.7% | 85.9% | ✅ 1st | $16.50 |
-| R9 | #5 ALL'S WELL | 41.3% | 73.4% | ✅ 3rd | $22.50 |
-| R10 | #2 SMART GOLF | 46.6% | 82.8% | ❌ (**SCR** — not in `finishOrder`) | — |
-| R11 | #12 PAKISTAN LEGACY | 57.6% | 88.3% | ❌ (11th) | — |
+| Race | Class   | Dist (m) | MC #1                 | MC Win% | MC Place% | Paid Place?                        | Place $ (if paid) |     |
+| ---- | ------- | -------- | --------------------- | ------- | --------- | ---------------------------------- | ----------------- | --- |
+| R1   | Group 1 | 1000     | #6 TALENTS CHAMPION   | 24.0%   | 60.4%     | ❌ (3rd, **6 runners → 2 places**)  | —                 |     |
+| R2   | Class 5 | 1400     | #9 WINNING MACHINE    | 44.1%   | 88.6%     | ✅ 3rd                              | $11.00            |     |
+| R3   | Class 5 | 1600     | #1 BEAUTY MISSILE     | 28.8%   | 68.9%     | ❌ (10th)                           | —                 |     |
+| R4   | Class 4 | 1400     | #14 THE CONCENTRATION | 34.5%   | 72.5%     | ❌ (7th)                            | —                 |     |
+| R5   | Class 4 | 1200     | #1 SPICY STANDARD     | 29.8%   | 71.7%     | ✅ 2nd                              | $13.50            |     |
+| R6   | Class 4 | 1200     | #1 BABY SAKURA        | 51.5%   | 84.7%     | ✅ 3rd                              | $10.10            |     |
+| R7   | Class 4 | 1400     | #3 FORZA TORO         | 36.0%   | 70.9%     | ✅ 2nd                              | $19.50            |     |
+| R8   | Class 3 | 1600     | #7 AMAZING PARTNERS   | 48.7%   | 85.9%     | ✅ 1st                              | $16.50            |     |
+| R9   | Class 3 | 1400     | #5 ALL'S WELL         | 41.3%   | 73.4%     | ✅ 3rd                              | $22.50            |     |
+| R10  | Class 3 | 1200     | #2 SMART GOLF         | 46.6%   | 82.8%     | ❌ (**SCR** — not in `finishOrder`) | —                 |     |
+| R11  | Class 2 | 1200     | #12 PAKISTAN LEGACY   | 57.6%   | 88.3%     | ❌ (11th)                           | —                 |     |
 
 Place dividends (MC #1 when paid): R2=$11.00, R5=$13.50, R6=$10.10, R7=$19.50, R8=$16.50, R9=$22.50
 
@@ -521,17 +521,17 @@ Place dividends (MC #1 when paid): R2=$11.00, R5=$13.50, R6=$10.10, R7=$19.50, R
 
 **Results / Place dividends:** `data/historical/results_20260415_HV.json` (scrape `tools/scrape-meeting.ts --date=2026-04-15 --venue=HV`). **MC #1** = top row by **MC Win%** in `data/reports/trio_strategy_20260415_HV_R*.md` (raw MC table). **Leg eligible** = horse receives an **HKJC Place** payout (finish position ≤ number of Place dividends paid for that field size).
 
-| Race | MC #1 | MC Win% | MC Place% | Paid Place? | Place $ (if paid) |
-|------|-------|---------|-----------|-------------|-------------------|
-| R1 | #4 SPICY SPANGLE | 44.7% | 84.2% | ✅ 3rd | $20.00 |
-| R2 | #8 COURIER MAGIC | 46.8% | 87.5% | ❌ (9th) | — |
-| R3 | #2 WIN EASE | 27.3% | 61.1% | ❌ (12th) | — |
-| R4 | #11 ROMANTIC FANTASY | 52.5% | 95.4% | ✅ 3rd | $22.00 |
-| R5 | #1 BEAUTY ALLIANCE | 33.7% | 74.4% | ✅ 1st | $19.00 |
-| R6 | #8 QUARTZ LEGEND | 32.2% | 69.0% | ❌ (5th) | — |
-| R7 | #6 THE HEIR | 35.5% | 72.0% | ✅ 3rd | $16.50 |
-| R8 | #10 RAGGA BOMB | 23.6% | 58.0% | ❌ (6th) | — |
-| R9 | #12 SOMELOVEFROMABOVE | 37.4% | 73.6% | ✅ 3rd | $17.50 |
+| Race | Class   | Dist (m) | MC #1                 | MC Win% | MC Place% | Paid Place? | Place $ (if paid) |     |
+| ---- | ------- | -------- | --------------------- | ------- | --------- | ----------- | ----------------- | --- |
+| R1   | Class 5 | 1000     | #4 SPICY SPANGLE      | 44.7%   | 84.2%     | ✅ 3rd       | $20.00            |     |
+| R2   | Class 5 | 1650     | #8 COURIER MAGIC      | 46.8%   | 87.5%     | ❌ (9th)     | —                 |     |
+| R3   | Class 4 | 1650     | #2 WIN EASE           | 27.3%   | 61.1%     | ❌ (12th)    | —                 |     |
+| R4   | Class 4 | 1800     | #11 ROMANTIC FANTASY  | 52.5%   | 95.4%     | ✅ 3rd       | $22.00            |     |
+| R5   | Class 3 | 1650     | #1 BEAUTY ALLIANCE    | 33.7%   | 74.4%     | ✅ 1st       | $19.00            |     |
+| R6   | Class 4 | 1200     | #8 QUARTZ LEGEND      | 32.2%   | 69.0%     | ❌ (5th)     | —                 |     |
+| R7   | Class 4 | 1200     | #6 THE HEIR           | 35.5%   | 72.0%     | ✅ 3rd       | $16.50            |     |
+| R8   | Class 3 | 1650     | #10 RAGGA BOMB        | 23.6%   | 58.0%     | ❌ (6th)     | —                 |     |
+| R9   | Class 3 | 1200     | #12 SOMELOVEFROMABOVE | 37.4%   | 73.6%     | ✅ 3rd       | $17.50            |     |
 
 Place dividends (MC #1 when paid): R1=$20.00, R4=$22.00, R5=$19.00, R7=$16.50, R9=$17.50
 
@@ -569,19 +569,19 @@ Place dividends (MC #1 when paid): R1=$20.00, R4=$22.00, R5=$19.00, R7=$16.50, R
 
 **Surface split:** R1–R2 AWT (Good), R3–R5 Turf (Good to Firm), R6–R8 AWT (Good), R9–R11 Turf (Good to Firm).
 
-| Race | MC #1 | MC Win% | MC Place% | Paid Place? | Place $ (if paid) |
-|------|-------|---------|-----------|-------------|-------------------|
-| R1 | #2 HAILTOTHEVICTORS | 41.7% | 83.3% | ❌ (4th) | — |
-| R2 | #7 NOBLE DELUXE | 49.6% | 83.9% | ✅ 1st | $30.00 |
-| R3 | #3 ALSONSO | 66.2% | 93.2% | ❌ (4th) | — |
-| R4 | #8 VOYAGE BOSS | 41.0% | 77.0% | ❌ (4th) | — |
-| R5 | #3 MEGA MASTERMIND | 35.8% | 68.1% | ✅ 2nd | $19.00 |
-| R6 | #1 SUPREME AGILITY | 34.7% | 72.5% | ❌ (4th) | — |
-| R7 | #8 LIGHT YEARS GLORY | 43.1% | 81.1% | ✅ 3rd | $43.00 |
-| R8 | #3 AURORA PATCH | 49.4% | 85.7% | ✅ 2nd | $11.00 |
-| R9 | #4 AEROVOLANIC | 48.9% | 94.2% | ❌ (6th) | — |
-| R10 | #7 THOUSAND SPIRIT | 44.4% | 85.4% | ✅ 2nd | $30.50 |
-| R11 | #6 GENTLEMEN LEGACY | 54.5% | 89.5% | ❌ (4th) | — |
+| Race | Class   | Dist (m) | MC #1                | MC Win% | MC Place% | Paid Place? | Place $ (if paid) |     |
+| ---- | ------- | -------- | -------------------- | ------- | --------- | ----------- | ----------------- | --- |
+| R1   | Class 5 | 1800     | #2 HAILTOTHEVICTORS  | 41.7%   | 83.3%     | ❌ (4th)     | —                 |     |
+| R2   | Class 5 | 1200     | #7 NOBLE DELUXE      | 49.6%   | 83.9%     | ✅ 1st       | $30.00            |     |
+| R3   | Class 4 | 1000     | #3 ALSONSO           | 66.2%   | 93.2%     | ❌ (4th)     | —                 |     |
+| R4   | Class 4 | 1400     | #8 VOYAGE BOSS       | 41.0%   | 77.0%     | ❌ (4th)     | —                 |     |
+| R5   | Class 4 | 1600     | #3 MEGA MASTERMIND   | 35.8%   | 68.1%     | ✅ 2nd       | $19.00            |     |
+| R6   | Class 4 | 1650     | #1 SUPREME AGILITY   | 34.7%   | 72.5%     | ❌ (4th)     | —                 |     |
+| R7   | Class 4 | 1200     | #8 LIGHT YEARS GLORY | 43.1%   | 81.1%     | ✅ 3rd       | $43.00            |     |
+| R8   | Class 3 | 1200     | #3 AURORA PATCH      | 49.4%   | 85.7%     | ✅ 2nd       | $11.00            |     |
+| R9   | Class 3 | 1400     | #4 AEROVOLANIC       | 48.9%   | 94.2%     | ❌ (6th)     | —                 |     |
+| R10  | Class 3 | 1200     | #7 THOUSAND SPIRIT   | 44.4%   | 85.4%     | ✅ 2nd       | $30.50            |     |
+| R11  | Class 2 | 1800     | #6 GENTLEMEN LEGACY  | 54.5%   | 89.5%     | ❌ (4th)     | —                 |     |
 
 Place dividends (MC #1 when paid): R2=$30.00, R5=$19.00, R7=$43.00, R8=$11.00, R10=$30.50
 
