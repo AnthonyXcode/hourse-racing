@@ -1,7 +1,7 @@
 #!/usr/bin/env tsx
 /**
  * Aggregate Strategy B (stratC) Trio hit rate from trio_review_stratC_*.md files,
- * joined to historical results JSON for venue / class / surface.
+ * joined to historical results JSON for venue / class / surface / distance.
  */
 import { mkdirSync, readFileSync, writeFileSync } from "fs";
 import { dirname, join } from "path";
@@ -47,6 +47,7 @@ interface RaceLeg {
   venue: string;
   raceClass: string;
   surface: string;
+  distance: number;
   reviewFile: string;
 }
 
@@ -92,6 +93,7 @@ type JsonRace = {
   venue: string;
   class: string;
   surface: string;
+  distance: number;
 };
 
 function loadMeeting(path: string): JsonRace[] {
@@ -101,6 +103,7 @@ function loadMeeting(path: string): JsonRace[] {
     venue: r.venue,
     class: r.class,
     surface: r.surface ?? "Unknown",
+    distance: r.distance,
   }));
 }
 
@@ -127,6 +130,7 @@ function main() {
         venue: r.venue,
         raceClass: r.class,
         surface: r.surface,
+        distance: r.distance,
         reviewFile,
       });
     }
@@ -143,12 +147,14 @@ function main() {
   const byClass = new Map<string, Bucket>();
   const byVenue = new Map<string, Bucket>();
   const bySurface = new Map<string, Bucket>();
+  const byDistance = new Map<string, Bucket>();
   const byVenueClass = new Map<string, Bucket>();
 
   for (const row of legs) {
     add(byClass, row.raceClass, row.hit);
     add(byVenue, row.venue, row.hit);
     add(bySurface, row.surface, row.hit);
+    add(byDistance, String(row.distance), row.hit);
     add(byVenueClass, `${row.venue} / ${row.raceClass}`, row.hit);
   }
 
@@ -187,7 +193,7 @@ function main() {
   out.push("");
   out.push("**Definition:** Hit = Trio (單T) **Hit?** = ✅ in each file’s *Race-by-Race Results* table (Strategy B pool: MC #1 banker + legs per that review).");
   out.push("");
-  out.push("**Venue / class / surface:** from `data/historical/results_*.json` for the matching meeting.");
+  out.push("**Venue / class / surface / distance:** from `data/historical/results_*.json` for the matching meeting.");
   out.push("");
   out.push(
     `**Sample:** ${totalN} races across ${REVIEW_FILES.length} meetings (${totalHits} hits, **${((100 * totalHits) / totalN).toFixed(1)}%** overall). Segments with few races are indicative only.`
@@ -201,6 +207,12 @@ function main() {
     "By class",
     sortKeys(byClass, (a, b) => a.localeCompare(b, undefined, { numeric: true })),
     (k) => byClass.get(k)!
+  );
+  mdTable(
+    out,
+    "By distance (metres)",
+    sortKeys(byDistance, (a, b) => Number(a) - Number(b)),
+    (k) => byDistance.get(k)!
   );
   mdTable(out, "By venue × class", sortKeys(byVenueClass), (k) => byVenueClass.get(k)!);
 

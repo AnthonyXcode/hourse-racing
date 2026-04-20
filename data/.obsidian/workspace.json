@@ -4,11 +4,11 @@
     "type": "split",
     "children": [
       {
-        "id": "8c1dc2ff601ae21e",
+        "id": "03f38be6a20b3478",
         "type": "tabs",
         "children": [
           {
-            "id": "27542e100a413f84",
+            "id": "bde5ff29d558cd7b",
             "type": "leaf",
             "state": {
               "type": "markdown",
@@ -94,7 +94,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "test_reports/mc_top1_place_allup_summary.md",
+                "file": "static/mc_top1_place_hit_rate_by_segment_20260419.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -104,7 +104,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for mc_top1_place_allup_summary"
+              "title": "Backlinks for mc_top1_place_hit_rate_by_segment_20260419"
             }
           },
           {
@@ -183,12 +183,13 @@
       "bases:Create new base": false
     }
   },
-  "active": "27542e100a413f84",
+  "active": "bde5ff29d558cd7b",
   "lastOpenFiles": [
     "static/mc_top1_place_hit_rate_by_segment_20260419.md",
+    "test_reports/mc_top1_place_allup_summary.md",
+    "test_reports/mc_top1_place_bet_summary.md",
     "static/trio_stratC_hit_rate_by_segment_20260419.md",
     "test_reports/mc_top1_quinella_summary.md",
-    "test_reports/mc_top1_place_allup_summary.md",
     "reports/trio_strategy_20260419_ST_R5.md",
     "reviews/trio_review_stratC_20260318_HV.md",
     "reports/trio_strategy_20260419_ST_R2.md",
@@ -219,7 +220,6 @@
     "backtest/before_20260408_HV.json",
     "backtest/before_20260406_ST.json",
     "test_reports/trio_mc_place_replace_review_20260219_ST.md",
-    "test_reports/trio_mc_top6_banker_20260315_ST.md",
-    "reviews/_trio_section_new.md"
+    "test_reports/trio_mc_top6_banker_20260315_ST.md"
   ]
 }

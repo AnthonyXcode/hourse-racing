@@ -4,7 +4,7 @@
 
 **Definition:** Hit = Trio (單T) **Hit?** = ✅ in each file’s *Race-by-Race Results* table (Strategy B pool: MC #1 banker + legs per that review).
 
-**Venue / class / surface:** from `data/historical/results_*.json` for the matching meeting.
+**Venue / class / surface / distance:** from `data/historical/results_*.json` for the matching meeting.
 
 **Sample:** 99 races across 10 meetings (30 hits, **30.3%** overall). Segments with few races are indicative only.
 
@@ -32,19 +32,32 @@
 | Class 5 | 3 | 13 | 23.1% |
 | Group 1 | 3 | 4 | 75.0% |
 
+## By distance (metres)
+
+| Segment | Hits | Races | Hit rate |
+|---------|------|-------|----------|
+| 1000 | 5 | 9 | 55.6% |
+| 1200 | 15 | 39 | 38.5% |
+| 1400 | 2 | 16 | 12.5% |
+| 1600 | 3 | 8 | 37.5% |
+| 1650 | 2 | 17 | 11.8% |
+| 1800 | 1 | 6 | 16.7% |
+| 2000 | 1 | 3 | 33.3% |
+| 2200 | 1 | 1 | 100.0% |
+
 ## By venue × class
 
-| Segment                | Hits | Races | Hit rate |
-| ---------------------- | ---- | ----- | -------- |
-| Happy Valley / Class 2 | 0    | 1     | 0.0%     |
-| Happy Valley / Class 3 | 5    | 11    | 45.5%    |
-| Happy Valley / Class 4 | 5    | 19    | 26.3%    |
-| Happy Valley / Class 5 | 2    | 5     | 40.0%    |
-| Sha Tin / Class 2      | 1    | 6     | 16.7%    |
-| Sha Tin / Class 3      | 8    | 18    | 44.4%    |
-| Sha Tin / Class 4      | 5    | 27    | 18.5%    |
-| Sha Tin / Class 5      | 1    | 8     | 12.5%    |
-| Sha Tin / Group 1      | 3    | 4     | 75.0%    |
+| Segment | Hits | Races | Hit rate |
+|---------|------|-------|----------|
+| Happy Valley / Class 2 | 0 | 1 | 0.0% |
+| Happy Valley / Class 3 | 5 | 11 | 45.5% |
+| Happy Valley / Class 4 | 5 | 19 | 26.3% |
+| Happy Valley / Class 5 | 2 | 5 | 40.0% |
+| Sha Tin / Class 2 | 1 | 6 | 16.7% |
+| Sha Tin / Class 3 | 8 | 18 | 44.4% |
+| Sha Tin / Class 4 | 5 | 27 | 18.5% |
+| Sha Tin / Class 5 | 1 | 8 | 12.5% |
+| Sha Tin / Group 1 | 3 | 4 | 75.0% |
 
 ---
 
