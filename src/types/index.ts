@@ -29,6 +29,7 @@ export type RaceClass =
   | "Group 1"
   | "Group 2"
   | "Group 3"
+  | "4 Year Olds"
   | "Handicap";
 
 // ============================================================================

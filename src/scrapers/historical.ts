@@ -283,7 +283,7 @@ export class HistoricalScraper {
     let raceClass: RaceClass = "Class 4";
     let distance = 1200;
     const combinedMatch = allText.match(
-      /(Griffin|Group\s*(?:\d|One|Two|Three)|Class\s*\d)\s*(?:Race\s*)?-?\s*(\d{3,4})\s*M/i
+      /(4\s*(?:Year|Yr)\s*Olds?|Griffin|Group\s*(?:\d|One|Two|Three)|Class\s*\d)\s*(?:Race\s*)?-?\s*(\d{3,4})\s*M/i
     );
     if (combinedMatch) {
       const classStr = combinedMatch[1]!;
@@ -294,7 +294,9 @@ export class HistoricalScraper {
       const classMatch = allText.match(/Class\s*(\d)/i);
       const groupMatch = allText.match(/Group\s*(\d)/i) ||
                          allText.match(/Group\s*(One|Two|Three)/i);
-      if (/Griffin/i.test(allText)) {
+      if (/4\s*(?:Year|Yr)\s*Olds?/i.test(allText)) {
+        raceClass = "4 Year Olds";
+      } else if (/Griffin/i.test(allText)) {
         raceClass = "Griffin";
       } else if (classMatch) {
         raceClass = `Class ${classMatch[1]}` as RaceClass;
@@ -879,6 +881,7 @@ export class HistoricalScraper {
    * Normalize class string to RaceClass type
    */
   private normalizeClass(classText: string): RaceClass {
+    if (/4\s*(?:Year|Yr)\s*Olds?/i.test(classText)) return "4 Year Olds";
     const classDigit = classText.match(/Class\s*(\d)/i);
     if (classDigit) {
       return `Class ${classDigit[1]}` as RaceClass;
@@ -899,8 +902,9 @@ export class HistoricalScraper {
     return map[value.toLowerCase()] ?? value;
   }
 
-  /** Parse a class descriptor string like "Class 4", "Group Two", "Griffin" into RaceClass. */
+  /** Parse a class descriptor string like "Class 4", "Group Two", "Griffin", "4 Year Olds" into RaceClass. */
   private parseClassString(classStr: string): RaceClass {
+    if (/4\s*(?:Year|Yr)\s*Olds?/i.test(classStr)) return "4 Year Olds";
     if (/Griffin/i.test(classStr)) return "Griffin";
     const classDigit = classStr.match(/Class\s*(\d)/i);
     if (classDigit) return `Class ${classDigit[1]}` as RaceClass;

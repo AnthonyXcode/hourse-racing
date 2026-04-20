@@ -59,12 +59,17 @@ function parseMdRows(): Omit<RaceRow, "venue" | "surface" | "raceClass" | "dista
     const block = blocks[i]!;
     const lines = block.split("\n");
     for (const line of lines) {
-      const m = line.match(/^\|\s*R(\d+)\s*\|\s*#(\d+)\s+/);
-      if (!m) continue;
-      const raceNumber = parseInt(m[1]!, 10);
-      const horseNumber = parseInt(m[2]!, 10);
+      // Format: | R1 | Class 5 | 1650 | #10 DRAGON SUNRISE | ... | ✅ 3rd | ...
       const parts = line.split("|").map((s) => s.trim());
-      const placedCol = parts[5] ?? "";
+      const raceCol = parts[1] ?? "";
+      const raceMatch = raceCol.match(/^R(\d+)$/);
+      if (!raceMatch) continue;
+      const raceNumber = parseInt(raceMatch[1]!, 10);
+      const mcCol = parts[4] ?? "";
+      const horseMatch = mcCol.match(/^#(\d+)\s/);
+      if (!horseMatch) continue;
+      const horseNumber = parseInt(horseMatch[1]!, 10);
+      const placedCol = parts[7] ?? "";
       const hit = placedCol.startsWith("✅");
       rows.push({ raceNumber, horseNumber, hit });
     }

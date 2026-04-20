@@ -109,13 +109,14 @@ const CLASS_RATINGS: Record<RaceClass, number> = {
   "Group 1": 120,
   "Group 2": 115,
   "Group 3": 110,
+  "4 Year Olds": 110,
   "Class 1": 100,
   "Class 2": 90,
   "Class 3": 80,
   "Class 4": 70,
   "Class 5": 60,
   Griffin: 55,
-  Handicap: 85, // Average
+  Handicap: 85,
 };
 
 // ============================================================================

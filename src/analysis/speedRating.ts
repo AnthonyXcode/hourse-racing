@@ -44,6 +44,7 @@ const PAR_TIMES: Record<
         "Group 1": 54.8,
         "Group 2": 55.2,
         "Group 3": 55.5,
+        "4 Year Olds": 55.5,
         Handicap: 56.5,
       },
       1200: {
@@ -56,6 +57,7 @@ const PAR_TIMES: Record<
         "Group 1": 67.0,
         "Group 2": 67.5,
         "Group 3": 68.0,
+        "4 Year Olds": 68.0,
         Handicap: 69.0,
       },
       1400: {
@@ -68,6 +70,7 @@ const PAR_TIMES: Record<
         "Group 1": 79.5,
         "Group 2": 80.0,
         "Group 3": 80.5,
+        "4 Year Olds": 80.5,
         Handicap: 81.5,
       },
       1600: {
@@ -80,6 +83,7 @@ const PAR_TIMES: Record<
         "Group 1": 91.5,
         "Group 2": 92.0,
         "Group 3": 92.5,
+        "4 Year Olds": 92.5,
         Handicap: 94.0,
       },
       1800: {
@@ -92,6 +96,7 @@ const PAR_TIMES: Record<
         "Group 1": 104.5,
         "Group 2": 105.0,
         "Group 3": 105.5,
+        "4 Year Olds": 105.5,
         Handicap: 107.5,
       },
       2000: {
@@ -104,6 +109,7 @@ const PAR_TIMES: Record<
         "Group 1": 118.0,
         "Group 2": 118.5,
         "Group 3": 119.0,
+        "4 Year Olds": 119.0,
         Handicap: 121.0,
       },
       2400: {
@@ -116,6 +122,7 @@ const PAR_TIMES: Record<
         "Group 1": 142.0,
         "Group 2": 143.0,
         "Group 3": 144.0,
+        "4 Year Olds": 144.0,
         Handicap: 147.0,
       },
     },
@@ -130,6 +137,7 @@ const PAR_TIMES: Record<
         "Group 1": 68.5,
         "Group 2": 69.0,
         "Group 3": 69.5,
+        "4 Year Olds": 69.5,
         Handicap: 70.5,
       },
       1650: {
@@ -142,6 +150,7 @@ const PAR_TIMES: Record<
         "Group 1": 96.5,
         "Group 2": 97.0,
         "Group 3": 97.5,
+        "4 Year Olds": 97.5,
         Handicap: 99.0,
       },
     },
@@ -158,6 +167,7 @@ const PAR_TIMES: Record<
         "Group 1": 55.0,
         "Group 2": 55.5,
         "Group 3": 56.0,
+        "4 Year Olds": 56.0,
         Handicap: 57.0,
       },
       1200: {
@@ -170,6 +180,7 @@ const PAR_TIMES: Record<
         "Group 1": 68.0,
         "Group 2": 68.5,
         "Group 3": 69.0,
+        "4 Year Olds": 69.0,
         Handicap: 70.0,
       },
       1650: {
@@ -182,6 +193,7 @@ const PAR_TIMES: Record<
         "Group 1": 97.0,
         "Group 2": 97.5,
         "Group 3": 98.0,
+        "4 Year Olds": 98.0,
         Handicap: 99.5,
       },
       1800: {
@@ -194,6 +206,7 @@ const PAR_TIMES: Record<
         "Group 1": 106.0,
         "Group 2": 106.5,
         "Group 3": 107.0,
+        "4 Year Olds": 107.0,
         Handicap: 109.0,
       },
       2200: {
@@ -206,6 +219,7 @@ const PAR_TIMES: Record<
         "Group 1": 131.0,
         "Group 2": 131.5,
         "Group 3": 132.0,
+        "4 Year Olds": 132.0,
         Handicap: 134.5,
       },
     },

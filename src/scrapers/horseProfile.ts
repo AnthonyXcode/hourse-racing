@@ -586,6 +586,7 @@ export class HorseProfileScraper {
         "Group 1": 120,
         "Group 2": 110,
         "Group 3": 100,
+        "4 Year Olds": 100,
         "Handicap": 60,
       };
 
@@ -739,6 +740,7 @@ export function isHorseImproving(profile: HorseProfile): boolean {
     "Group 3": 0,
     "Group 2": -1,
     "Group 1": -2,
+    "4 Year Olds": 0,
     "Griffin": 6,
     "Handicap": 4,
   };

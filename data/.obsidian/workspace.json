@@ -4,6 +4,26 @@
     "type": "split",
     "children": [
       {
+        "id": "5e8c3acdbc5511fa",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "b59f08e1719c1f04",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "static/mc_top1_place_hit_rate_by_segment_20260419.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "mc_top1_place_hit_rate_by_segment_20260419"
+            }
+          }
+        ]
+      },
+      {
         "id": "88abdc9c2397350e",
         "type": "tabs",
         "children": [
@@ -13,32 +33,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "static/trio_stratC_hit_rate_by_segment_20260419.md",
+                "file": "static/mc_top1_place_hit_rate_by_segment_20260420.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "trio_stratC_hit_rate_by_segment_20260419"
-            }
-          }
-        ]
-      },
-      {
-        "id": "c79c2e3b0fbd552a",
-        "type": "tabs",
-        "children": [
-          {
-            "id": "218f0720c7a2a726",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "reviews/trio_review_stratC_20260408_HV.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "trio_review_stratC_20260408_HV"
+              "title": "mc_top1_place_hit_rate_by_segment_20260420"
             }
           }
         ]
@@ -203,20 +203,23 @@
       "bases:Create new base": false
     }
   },
-  "active": "e228998220eed881",
+  "active": "b59f08e1719c1f04",
   "lastOpenFiles": [
+    "static/trio_stratC_hit_rate_by_segment_20260419.md",
+    "static/mc_top1_place_hit_rate_by_segment_20260420.md",
+    "static/mc_top1_place_hit_rate_by_segment_20260419.md",
+    "static/trio_stratC_hit_rate_by_segment_20260420.md",
+    "test_reports/mc_top1_place_allup_summary.md",
+    "reviews/trio_review_stratC_20260419_ST.md",
+    "reviews/trio_review_stratC_20260408_HV.md",
     "historical/results_20250928_ST.json",
     "reports/trio_strategy_20260408_HV_R4.md",
     "reports/trio_strategy_20260408_HV_R3.md",
     "reports/trio_strategy_20260408_HV_R2.md",
-    "reviews/trio_review_stratC_20260408_HV.md",
     "reports/trio_strategy_20260419_ST_R3.md",
-    "test_reports/mc_top1_place_allup_summary.md",
-    "static/mc_top1_place_hit_rate_by_segment_20260419.md",
     "reports/trio_strategy_20260408_HV_R1.md",
     "reports/trio_strategy_20260415_HV_R1.md",
     "test_reports/mc_top1_place_bet_summary.md",
-    "static/trio_stratC_hit_rate_by_segment_20260419.md",
     "test_reports/mc_top1_quinella_summary.md",
     "reports/trio_strategy_20260419_ST_R5.md",
     "reviews/trio_review_stratC_20260318_HV.md",
@@ -228,9 +231,7 @@
     "reviews/trio_review_stratC_20260406_ST.md",
     "reviews/trio_review_stratC_20260412_ST.md",
     "reviews/trio_review_stratC_20260415_HV.md",
-    "reviews/trio_review_stratC_20260419_ST.md",
     "reports/trio_strategy_20260419_ST_R4.md",
-    "reports/trio_strategy_20260419_ST_R1.md",
     "static",
     "backtest/after_20260415_HV.json",
     "backtest/after_20260412_ST.json",
@@ -239,7 +240,6 @@
     "backtest/after_20260401_ST.json",
     "backtest/before_20260415_HV.json",
     "backtest/before_20260412_ST.json",
-    "backtest/before_20260408_HV.json",
-    "backtest/before_20260406_ST.json"
+    "backtest/before_20260408_HV.json"
   ]
 }
