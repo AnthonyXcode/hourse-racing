@@ -17,20 +17,20 @@ UNIT BET: $10 per combination (fixed)
 MC SIMULATION (raw)
 ───────────────────────────────────────────────────────────
 
-| # | Horse | MC Win% | MC Place% | Win Odds | Place%>20% | Win odds<10 | Form | Role (Strategy B) | Top Quinella (fair odds) |
-|---|-------|---------|-----------|----------|------------|-------------|------|-------------------|--------------------------|
-| 5 | FORTUNE STAR | 40.0% | 82.1% | 6.8 | ✅ | ✅ | 8 | ★ 膽 (Banker) | 4-5: 27.2% (3.7) |
-| 4 | AESTHETICISM | 26.3% | 70.5% | 21 | ✅ | ❌ | 10 | 腳 (Leg) | 1-5: 17.3% (5.8) |
-| 1 | BEAUTY VIVA | 15.7% | 57.5% | 4.8 | ✅ | ✅ | 10 | 腳 (Leg) | 5-6: 14.8% (6.8) |
-| 6 | CELTIC TIMES | 13.4% | 52.1% | 17 | ✅ | ❌ | 10 | 腳 (Leg) | 1-4: 10.8% (9.3) |
-| 3 | VERMILION TEMPEST | 3.1% | 19.7% | 4.9 | ❌ | ✅ | 5 | 腳 (Leg) — added | 4-6: 8.8% (11.4) |
-| 7 | GENERAL REDWOOD | 0.4% | 4.5% | 27 | ❌ | ❌ | 3 | — | — |
-| 9 | PRECISION HOPE | 0.4% | 4.8% | 13 | ❌ | ❌ | 5 | — | — |
-| 11 | SUPER GOLDENDRAGON | 0.3% | 2.8% | 78 | ❌ | ❌ | 4 | — | — |
-| 10 | YIU CHEUNG VICTORY | 0.2% | 2.9% | 13 | ❌ | ❌ | 13 | — | — |
-| 12 | VIVACIOUS WIN | 0.1% | 1.8% | 3.3 | ❌ | ✅ | 6 | 腳 (Leg) — added | — |
-| 8 | GOLDEN DARCI | 0.1% | 1.3% | 25 | ❌ | ❌ | 4 | — | — |
-| 2 | OSI HONOUR | 0.0% | 0.0% | 66 | ❌ | ❌ | 3 | — | — |
+| #   | Horse              | MC Win% | MC Place% | Win Odds | Place%>20% | Win odds<10 | Form | Role (Strategy B) | Top Quinella (fair odds) |
+| --- | ------------------ | ------- | --------- | -------- | ---------- | ----------- | ---- | ----------------- | ------------------------ |
+| 5   | FORTUNE STAR       | 40.0%   | 82.1%     | 6.8      | ✅          | ✅           | 8    | ★ 膽 (Banker)      | 4-5: 27.2% (3.7)         |
+| 4   | AESTHETICISM       | 26.3%   | 70.5%     | 21       | ✅          | ❌           | 10   | 腳 (Leg)           | 1-5: 17.3% (5.8)         |
+| 1   | BEAUTY VIVA        | 15.7%   | 57.5%     | 4.8      | ✅          | ✅           | 10   | 腳 (Leg)           | 5-6: 14.8% (6.8)         |
+| 6   | CELTIC TIMES       | 13.4%   | 52.1%     | 17       | ✅          | ❌           | 10   | 腳 (Leg)           | 1-4: 10.8% (9.3)         |
+| 3   | VERMILION TEMPEST  | 3.1%    | 19.7%     | 4.9      | ❌          | ✅           | 5    | 腳 (Leg) — added   | 4-6: 8.8% (11.4)         |
+| 7   | GENERAL REDWOOD    | 0.4%    | 4.5%      | 27       | ❌          | ❌           | 3    | —                 | —                        |
+| 9   | PRECISION HOPE     | 0.4%    | 4.8%      | 13       | ❌          | ❌           | 5    | —                 | —                        |
+| 11  | SUPER GOLDENDRAGON | 0.3%    | 2.8%      | 78       | ❌          | ❌           | 4    | —                 | —                        |
+| 10  | YIU CHEUNG VICTORY | 0.2%    | 2.9%      | 13       | ❌          | ❌           | 13   | —                 | —                        |
+| 12  | VIVACIOUS WIN      | 0.1%    | 1.8%      | 3.3      | ❌          | ✅           | 6    | 腳 (Leg) — added   | —                        |
+| 8   | GOLDEN DARCI       | 0.1%    | 1.3%      | 25       | ❌          | ❌           | 4    | —                 | —                        |
+| 2   | OSI HONOUR         | 0.0%    | 0.0%      | 66       | ❌          | ❌           | 3    | —                 | —                        |
 
 Market: #5 FORTUNE STAR undervalued (MC 40% vs 6.8 odds ~15% implied). #4 AESTHETICISM massively undervalued (MC 26.3% vs 21 odds ~5%). #12 VIVACIOUS WIN severely overvalued (MC 0.1% vs 3.3 odds ~30% implied) — but market favourite with strong recent form (2nd twice). #3 VERMILION TEMPEST also overvalued (MC 3.1% vs 4.9 odds ~20%) but Moreira + pacifiers first time.
 

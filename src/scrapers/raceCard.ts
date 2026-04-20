@@ -248,36 +248,52 @@ export class RaceCardScraper {
     prizeMoney: number;
     raceType?: string;
   } {
-    // Get all text from the page for parsing
+    // Extract the race header/info section text rather than the full page body.
+    // HKJC race card pages put the race class/distance line in a compact header area.
+    const raceHeaderCandidates = [
+      $(".race_head, .raceHead, .race-head, .race-info, .raceInfo").text(),
+      $("table").first().text(),
+      $("table td").map((_, el) => $(el).text()).get().join(" "),
+    ];
+    const raceHeaderText = raceHeaderCandidates.join(" ");
+
+    // Fallback to full page only when header candidates are too sparse
     const pageText = $("body").text();
-    const raceInfoCells = $("table td").map((_, el) => $(el).text()).get().join(" ");
-    const allText = pageText + " " + raceInfoCells;
+    const allText = raceHeaderText.length > 50 ? raceHeaderText : pageText;
 
-    // Parse class - look for "Class X" pattern
+    // Parse class + distance together using the HKJC format:
+    //   "Class 4 - 1200M", "Group Two - 1200M", "Griffin Race - 1000M"
+    // A single anchored regex avoids false positives from stray "Group 1" etc.
+    // on the page (navigation, other race links, sidebar).
     let raceClass: RaceClass = "Class 4";
-    const classMatch = allText.match(/Class\s*(\d)/i);
-    if (classMatch) {
-      raceClass = `Class ${classMatch[1]}` as RaceClass;
-    } else if (/Group\s*1/i.test(allText)) {
-      raceClass = "Group 1";
-    } else if (/Group\s*2/i.test(allText)) {
-      raceClass = "Group 2";
-    } else if (/Group\s*3/i.test(allText)) {
-      raceClass = "Group 3";
-    } else if (/Griffin/i.test(allText)) {
-      raceClass = "Griffin";
-    }
-
-    // Parse distance - look for "1200M" pattern (common HK distances: 1000, 1200, 1400, 1600, 1650, 1800, 2000, 2200, 2400)
     let distance = 1200;
-    // More specific pattern: distance followed by M and surrounded by non-digit chars
-    const distanceMatch = allText.match(/(?:^|[^\d])(\d{4})\s*M(?:\s|$|-)/i) || 
-                          allText.match(/(\d{4})\s*M[^0-9]/i);
-    if (distanceMatch) {
-      const d = parseInt(distanceMatch[1]!, 10);
-      // Validate it's a reasonable race distance (1000-2400m)
-      if (d >= 1000 && d <= 2400) {
-        distance = d;
+    const combinedMatch = allText.match(
+      /(Griffin|Group\s*(?:\d|One|Two|Three)|Class\s*\d)\s*(?:Race\s*)?-?\s*(\d{3,4})\s*M/i
+    );
+    if (combinedMatch) {
+      const classStr = combinedMatch[1]!;
+      distance = parseInt(combinedMatch[2]!, 10);
+      raceClass = this.parseClassString(classStr);
+    } else {
+      // Fallback: parse separately when the combined pattern doesn't match
+      const classMatch = allText.match(/Class\s*(\d)/i);
+      const groupMatch = allText.match(/Group\s*(\d)/i) ||
+                         allText.match(/Group\s*(One|Two|Three)/i);
+      if (/Griffin/i.test(allText)) {
+        raceClass = "Griffin";
+      } else if (classMatch) {
+        raceClass = `Class ${classMatch[1]}` as RaceClass;
+      } else if (groupMatch) {
+        raceClass = `Group ${this.groupWordToNumber(groupMatch[1]!)}` as RaceClass;
+      }
+
+      const distanceMatch = allText.match(/(?:^|[^\d])(\d{4})\s*M(?:\s|$|-)/i) ||
+                            allText.match(/(\d{4})\s*M[^0-9]/i);
+      if (distanceMatch) {
+        const d = parseInt(distanceMatch[1]!, 10);
+        if (d >= 1000 && d <= 2400) {
+          distance = d;
+        }
       }
     }
 
@@ -626,6 +642,23 @@ export class RaceCardScraper {
       currentOdds: undefined,
       isScratched,
     };
+  }
+
+  /** Convert "One"/"Two"/"Three" or "1"/"2"/"3" to the numeric string. */
+  private groupWordToNumber(value: string): string {
+    const map: Record<string, string> = { one: "1", two: "2", three: "3" };
+    return map[value.toLowerCase()] ?? value;
+  }
+
+  /** Parse a class descriptor string like "Class 4", "Group Two", "Griffin" into RaceClass. */
+  private parseClassString(classStr: string): RaceClass {
+    if (/Griffin/i.test(classStr)) return "Griffin";
+    const classDigit = classStr.match(/Class\s*(\d)/i);
+    if (classDigit) return `Class ${classDigit[1]}` as RaceClass;
+    const groupMatch = classStr.match(/Group\s*(\d)/i) ||
+                       classStr.match(/Group\s*(One|Two|Three)/i);
+    if (groupMatch) return `Group ${this.groupWordToNumber(groupMatch[1]!)}` as RaceClass;
+    return "Class 4";
   }
 
   /**

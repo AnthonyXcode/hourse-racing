@@ -47,17 +47,17 @@
 
 ## By venue × class
 
-| Segment | Hits | Races | Hit rate |
-|---------|------|-------|----------|
-| Happy Valley / Class 2 | 0 | 1 | 0.0% |
-| Happy Valley / Class 3 | 5 | 11 | 45.5% |
-| Happy Valley / Class 4 | 5 | 19 | 26.3% |
-| Happy Valley / Class 5 | 2 | 5 | 40.0% |
-| Sha Tin / Class 2 | 1 | 6 | 16.7% |
-| Sha Tin / Class 3 | 8 | 18 | 44.4% |
-| Sha Tin / Class 4 | 5 | 27 | 18.5% |
-| Sha Tin / Class 5 | 1 | 8 | 12.5% |
-| Sha Tin / Group 1 | 3 | 4 | 75.0% |
+| Segment                | Hits | Races | Hit rate |
+| ---------------------- | ---- | ----- | -------- |
+| Happy Valley / Class 2 | 0    | 1     | 0.0%     |
+| Happy Valley / Class 3 | 5    | 11    | 45.5%    |
+| Happy Valley / Class 4 | 5    | 19    | 26.3%    |
+| Happy Valley / Class 5 | 2    | 5     | 40.0%    |
+| Sha Tin / Class 2      | 1    | 6     | 16.7%    |
+| Sha Tin / Class 3      | 8    | 18    | 44.4%    |
+| Sha Tin / Class 4      | 5    | 27    | 18.5%    |
+| Sha Tin / Class 5      | 1    | 8     | 12.5%    |
+| Sha Tin / Group 1      | 3    | 4     | 75.0%    |
 
 ---
 
