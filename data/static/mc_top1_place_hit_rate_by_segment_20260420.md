@@ -47,19 +47,19 @@ Source: `data/test_reports/mc_top1_place_allup_summary.md` (same MC #1 / place-p
 
 ## By venue × class
 
-| Segment | Hits | Races | Hit rate |
-|---------|------|-------|----------|
-| Happy Valley / Class 2 | 0 | 1 | 0.0% |
-| Happy Valley / Class 3 | 7 | 11 | 63.6% |
-| Happy Valley / Class 4 | 11 | 19 | 57.9% |
-| Happy Valley / Class 5 | 3 | 5 | 60.0% |
-| Sha Tin / 4 Year Olds | 1 | 1 | 100.0% |
-| Sha Tin / Class 2 | 3 | 6 | 50.0% |
-| Sha Tin / Class 3 | 14 | 18 | 77.8% |
-| Sha Tin / Class 4 | 16 | 27 | 59.3% |
-| Sha Tin / Class 5 | 3 | 8 | 37.5% |
-| Sha Tin / Griffin | 0 | 1 | 0.0% |
-| Sha Tin / Group 2 | 1 | 2 | 50.0% |
+| Segment                | Hits | Races | Hit rate |
+| ---------------------- | ---- | ----- | -------- |
+| Happy Valley / Class 2 | 0    | 1     | 0.0%     |
+| Happy Valley / Class 3 | 7    | 11    | 63.6%    |
+| Happy Valley / Class 4 | 11   | 19    | 57.9%    |
+| Happy Valley / Class 5 | 3    | 5     | 60.0%    |
+| Sha Tin / 4 Year Olds  | 1    | 1     | 100.0%   |
+| Sha Tin / Class 2      | 3    | 6     | 50.0%    |
+| Sha Tin / Class 3      | 14   | 18    | 77.8%    |
+| Sha Tin / Class 4      | 16   | 27    | 59.3%    |
+| Sha Tin / Class 5      | 3    | 8     | 37.5%    |
+| Sha Tin / Griffin      | 0    | 1     | 0.0%     |
+| Sha Tin / Group 2      | 1    | 2     | 50.0%    |
 
 ---
 

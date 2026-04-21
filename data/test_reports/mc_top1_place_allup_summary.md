@@ -96,18 +96,18 @@ Place dividends: R1=$15.50, R3=$15.50, R4=$15.50, R5=$11.50, R6=$12.00, R8=$14.0
 
 **MC #1** = raw MC Win% rank from `mc_top1_place_bet_summary.md`. **Results** from `data/historical/results_20260322_ST.json`.
 
-| Race | Class | Dist (m) | MC #1 | MC Win% | MC Place% | Placed? | Place $ (if placed) |
-|------|-------|----------|-------|---------|-----------|-------------|----------------------|
-| R1 | Class 4 | 1600 | #5 GLORIOUS SUCCESS | 18.7% | 45.1% | ❌ (12th) | — |  |
-| R2 | Class 4 | 1200 | #1 BABY SAKURA | 24.6% | 59.4% | ✅ 3rd | $10.50 |  |
-| R3 | Class 3 | 1200 | #9 CIRCUIT CHAMPION | 45.5% | 79.4% | ✅ 1st | $10.10 |  |
-| R4 | Class 4 | 1200 | #5 HAPPY SHOOTER | 25.7% | 59.1% | ❌ (8th) | — |  |
-| R5 | Class 4 | 1400 | #1 AEROINVINCIBLE | 28.6% | 63.0% | ✅ 1st | $22.00 |  |
-| R6 | Class 3 | 1200 | #4 HOT DELIGHT | 42.6% | 87.0% | ✅ 1st | $10.10 |  |
-| R7 | Group 1 | 2000 | #3 STORMY GROVE | 21.2% | 49.4% | ✅ 3rd | $22.50 |  |
-| R8 | Class 3 | 1800 | #5 MONEY CATCHER | 19.7% | 48.0% | ✅ 3rd | $40.00 |  |
-| R9 | Class 3 | 1400 | #9 AEROVOLANIC | 30.7% | 68.8% | ✅ 1st | $14.00 |  |
-| R10 | Class 2 | 1400 | #12 SIX PACK | 21.7% | 53.6% | ✅ 2nd | $15.50 |  |
+| Race | Class   | Dist (m) | MC #1               | MC Win% | MC Place% | Placed?  | Place $ (if placed) |     |
+| ---- | ------- | -------- | ------------------- | ------- | --------- | -------- | ------------------- | --- |
+| R1   | Class 4 | 1600     | #5 GLORIOUS SUCCESS | 18.7%   | 45.1%     | ❌ (12th) | —                   |     |
+| R2   | Class 4 | 1200     | #1 BABY SAKURA      | 24.6%   | 59.4%     | ✅ 3rd    | $10.50              |     |
+| R3   | Class 3 | 1200     | #9 CIRCUIT CHAMPION | 45.5%   | 79.4%     | ✅ 1st    | $10.10              |     |
+| R4   | Class 4 | 1200     | #5 HAPPY SHOOTER    | 25.7%   | 59.1%     | ❌ (8th)  | —                   |     |
+| R5   | Class 4 | 1400     | #1 AEROINVINCIBLE   | 28.6%   | 63.0%     | ✅ 1st    | $22.00              |     |
+| R6   | Class 3 | 1200     | #4 HOT DELIGHT      | 42.6%   | 87.0%     | ✅ 1st    | $10.10              |     |
+| R7   | Group 1 | 2000     | #3 STORMY GROVE     | 21.2%   | 49.4%     | ✅ 3rd    | $22.50              |     |
+| R8   | Class 3 | 1800     | #5 MONEY CATCHER    | 19.7%   | 48.0%     | ✅ 3rd    | $40.00              |     |
+| R9   | Class 3 | 1400     | #9 AEROVOLANIC      | 30.7%   | 68.8%     | ✅ 1st    | $14.00              |     |
+| R10  | Class 2 | 1400     | #12 SIX PACK        | 21.7%   | 53.6%     | ✅ 2nd    | $15.50              |     |
 
 Place dividends: R2=$10.50, R3=$10.10, R5=$22.00, R6=$10.10, R7=$22.50, R8=$40.00, R9=$14.00, R10=$15.50
 
