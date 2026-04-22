@@ -17,20 +17,20 @@ UNIT BET: $10 per combination (fixed)
 MC SIMULATION (raw)
 ───────────────────────────────────────────────────────────
 
-| # | Horse | MC Win% | MC Place% | Win Odds | Place%>20% | Win odds<10 | Form | Role (Strategy B) | Top Quinella (fair odds) |
-|---|-------|---------|-----------|----------|------------|-------------|------|-------------------|-------------------------|
-| 11 | ACE WAR | 53.1% | 85.7% | 4.1 | ✅ | ✅ | 9 | ★ 膽 (Banker) | 1-11: 26.6% (3.8) |
-| 1 | LIVEANDLETLIVE | 18.6% | 58.8% | 5.8 | ✅ | ✅ | 10 | 腳 (Leg) | 4-11: 12.5% (8.0) |
-| 4 | NEZHA | 8.1% | 36.3% | 19 | ✅ | ❌ | 6 | 腳 (Leg) | 5-11: 12.2% (8.2) |
-| 5 | SO YOU WILL | 7.6% | 35.6% | 5.0 | ✅ | ✅ | 5 | 腳 (Leg) | 2-11: 9.5% (10.5) |
-| 2 | HIGHLAND RAHY | 5.7% | 29.6% | 12 | ✅ | ❌ | 6 | — (replaced by #3) | 3-11: 4.5% (22.4) |
-| 3 | CHINA WIN | 2.4% | 15.8% | 6.2 | ❌ | ✅ | 9 | 腳 (Leg) ← replaces #2 | — |
-| 9 | VIOLET STAR | 1.4% | 10.4% | 11 | ❌ | ❌ | 5 | — | — |
-| 8 | THE AUSPICIOUS | 0.8% | 7.8% | 16 | ❌ | ❌ | 13 | — | — |
-| 10 | MISSION GIANT | 0.7% | 4.7% | 63 | ❌ | ❌ | 1 | — | — |
-| 6 | MIGHTY STRENGTH | 0.6% | 5.5% | 21 | ❌ | ❌ | 5 | — | — |
-| 12 | PACKING FIGHTER | 0.6% | 6.0% | 17 | ❌ | ❌ | 6 | — | — |
-| 7 | EXCELLENCE VALUE | 0.3% | 3.9% | 26 | ❌ | ❌ | 10 | — | — |
+| #   | Horse            | MC Win% | MC Place% | Win Odds | Place%>20% | Win odds<10 | Form | Role (Strategy B)     | Top Quinella (fair odds) |
+| --- | ---------------- | ------- | --------- | -------- | ---------- | ----------- | ---- | --------------------- | ------------------------ |
+| 11  | ACE WAR          | 53.1%   | 85.7%     | 4.1      | ✅          | ✅           | 9    | ★ 膽 (Banker)          | 1-11: 26.6% (3.8)        |
+| 1   | LIVEANDLETLIVE   | 18.6%   | 58.8%     | 5.8      | ✅          | ✅           | 10   | 腳 (Leg)               | 4-11: 12.5% (8.0)        |
+| 4   | NEZHA            | 8.1%    | 36.3%     | 19       | ✅          | ❌           | 6    | 腳 (Leg)               | 5-11: 12.2% (8.2)        |
+| 5   | SO YOU WILL      | 7.6%    | 35.6%     | 5.0      | ✅          | ✅           | 5    | 腳 (Leg)               | 2-11: 9.5% (10.5)        |
+| 2   | HIGHLAND RAHY    | 5.7%    | 29.6%     | 12       | ✅          | ❌           | 6    | — (replaced by #3)    | 3-11: 4.5% (22.4)        |
+| 3   | CHINA WIN        | 2.4%    | 15.8%     | 6.2      | ❌          | ✅           | 9    | 腳 (Leg) ← replaces #2 | —                        |
+| 9   | VIOLET STAR      | 1.4%    | 10.4%     | 11       | ❌          | ❌           | 5    | —                     | —                        |
+| 8   | THE AUSPICIOUS   | 0.8%    | 7.8%      | 16       | ❌          | ❌           | 13   | —                     | —                        |
+| 10  | MISSION GIANT    | 0.7%    | 4.7%      | 63       | ❌          | ❌           | 1    | —                     | —                        |
+| 6   | MIGHTY STRENGTH  | 0.6%    | 5.5%      | 21       | ❌          | ❌           | 5    | —                     | —                        |
+| 12  | PACKING FIGHTER  | 0.6%    | 6.0%      | 17       | ❌          | ❌           | 6    | —                     | —                        |
+| 7   | EXCELLENCE VALUE | 0.3%    | 3.9%      | 26       | ❌          | ❌           | 10   | —                     | —                        |
 
 Market: #11 ACE WAR undervalued by 139%. Clear dominant horse. Top quinella 1-11 at 26.6% is exceptionally strong.
 

@@ -17,20 +17,20 @@ UNIT BET: $10 per combination (fixed)
 MC SIMULATION (raw)
 ───────────────────────────────────────────────────────────
 
-| # | Horse | MC Win% | MC Place% | Win Odds | Place%>20% | Win odds<10 | Form | Role (Strategy B) | Top Quinella (fair odds) |
-|---|-------|---------|-----------|----------|------------|-------------|------|-------------------|-------------------------|
-| 1 | SPEEDY SMARTIE | 25.7% | 56.6% | 7.0 | ✅ | ✅ | 8 | ★ 膽 (Banker) | 1-4: 7.6% (13.2) |
-| 4 | WINNING MONEY | 13.1% | 37.1% | 9.0 | ✅ | ✅ | 6 | 腳 (Leg) | 1-9: 7.1% (14.1) |
-| 9 | LOVING VIBES | 12.6% | 37.3% | 7.1 | ✅ | ✅ | 9 | 腳 (Leg) | 1-7: 5.6% (17.9) |
-| 7 | SILVER SPURS | 10.0% | 30.3% | 8.0 | ✅ | ✅ | 8 | 腳 (Leg) | 1-11: 5.3% (19.0) |
-| 11 | THUNDER PRINCE | 9.4% | 29.7% | 4.0 | ✅ | ✅ | 10 | 腳 (Leg) | 1-3: 5.2% (19.3) |
-| 3 | KING OBERON | 8.6% | 27.5% | 37 | ✅ | ❌ | 8 | — (replaced by #12) | — |
-| 6 | FUN ELITE | 6.1% | 21.6% | 9.6 | ✅ | ✅ | 6 | 腳 (Leg) | — |
-| 2 | SUPER LOVE | 5.4% | 19.6% | 38 | ❌ | ❌ | 7 | — | — |
-| 8 | LITTLE MONSTER | 3.9% | 16.4% | 11 | ❌ | ❌ | 8 | — | — |
-| 12 | WINNING CHAMPION | 3.5% | 14.9% | 8.3 | ❌ | ✅ | 9 | 腳 (Leg) ← replaces #3 | — |
-| 5 | TURBO JEFFERIES | 1.2% | 6.2% | 19 | ❌ | ❌ | 1 | — | — |
-| 10 | BLAZING BEAM | 0.5% | 2.6% | 30 | ❌ | ❌ | 7 | — | — |
+| #   | Horse            | MC Win% | MC Place% | Win Odds | Place%>20% | Win odds<10 | Form | Role (Strategy B)     | Top Quinella (fair odds) |
+| --- | ---------------- | ------- | --------- | -------- | ---------- | ----------- | ---- | --------------------- | ------------------------ |
+| 1   | SPEEDY SMARTIE   | 25.7%   | 56.6%     | 7.0      | ✅          | ✅           | 8    | ★ 膽 (Banker)          | 1-4: 7.6% (13.2)         |
+| 4   | WINNING MONEY    | 13.1%   | 37.1%     | 9.0      | ✅          | ✅           | 6    | 腳 (Leg)               | 1-9: 7.1% (14.1)         |
+| 9   | LOVING VIBES     | 12.6%   | 37.3%     | 7.1      | ✅          | ✅           | 9    | 腳 (Leg)               | 1-7: 5.6% (17.9)         |
+| 7   | SILVER SPURS     | 10.0%   | 30.3%     | 8.0      | ✅          | ✅           | 8    | 腳 (Leg)               | 1-11: 5.3% (19.0)        |
+| 11  | THUNDER PRINCE   | 9.4%    | 29.7%     | 4.0      | ✅          | ✅           | 10   | 腳 (Leg)               | 1-3: 5.2% (19.3)         |
+| 3   | KING OBERON      | 8.6%    | 27.5%     | 37       | ✅          | ❌           | 8    | — (replaced by #12)   | —                        |
+| 6   | FUN ELITE        | 6.1%    | 21.6%     | 9.6      | ✅          | ✅           | 6    | 腳 (Leg)               | —                        |
+| 2   | SUPER LOVE       | 5.4%    | 19.6%     | 38       | ❌          | ❌           | 7    | —                     | —                        |
+| 8   | LITTLE MONSTER   | 3.9%    | 16.4%     | 11       | ❌          | ❌           | 8    | —                     | —                        |
+| 12  | WINNING CHAMPION | 3.5%    | 14.9%     | 8.3      | ❌          | ✅           | 9    | 腳 (Leg) ← replaces #3 | —                        |
+| 5   | TURBO JEFFERIES  | 1.2%    | 6.2%      | 19       | ❌          | ❌           | 1    | —                     | —                        |
+| 10  | BLAZING BEAM     | 0.5%    | 2.6%      | 30       | ❌          | ❌           | 7    | —                     | —                        |
 
 Market: #3 KING OBERON massively undervalued by MC (201% edge vs market). #1 SPEEDY SMARTIE shows 62% edge. #5 TURBO JEFFERIES overvalued by 90%.
 

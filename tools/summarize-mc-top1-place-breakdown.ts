@@ -38,6 +38,7 @@ const MEETING_FILES: string[] = [
   "results_20260412_ST.json",
   "results_20260415_HV.json",
   "results_20260419_ST.json",
+  "results_20260422_HV.json",
 ];
 
 interface RaceRow {

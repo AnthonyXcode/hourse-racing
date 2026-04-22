@@ -20,6 +20,7 @@ const REVIEW_FILES = [
   "trio_review_stratC_20260412_ST.md",
   "trio_review_stratC_20260415_HV.md",
   "trio_review_stratC_20260419_ST.md",
+  "trio_review_stratC_20260422_HV.md",
 ] as const;
 
 function reviewToResultsJson(reviewFile: string): string {

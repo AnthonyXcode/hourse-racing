@@ -17,20 +17,20 @@ UNIT BET: $10 per combination (fixed)
 MC SIMULATION (raw)
 ───────────────────────────────────────────────────────────
 
-| # | Horse | MC Win% | MC Place% | Win Odds | Place%>20% | Win odds<10 | Form | Role (Strategy B) | Top Quinella (fair odds) |
-|---|-------|---------|-----------|----------|------------|-------------|------|-------------------|-------------------------|
-| 3 | KING PROFIT | 31.8% | 65.7% | 10 | ✅ | ❌ | 4 | ★ 膽 (Banker) | 3-6: 13.0% (7.7) |
-| 6 | GRAND NOVA | 17.9% | 47.1% | 5.9 | ✅ | ✅ | 4 | 腳 (Leg) | 3-5: 12.0% (8.3) |
-| 5 | DAY DAY VICTORY | 17.4% | 46.3% | 19 | ✅ | ❌ | 8 | 腳 (Leg) | 5-6: 6.6% (15.2) |
-| 8 | JUMBO BLESSING | 6.0% | 23.0% | 4.7 | ✅ | ✅ | 2 | 腳 (Leg) | 3-8: 4.8% (21.0) |
-| 11 | HAPPY UNITED | 5.6% | 22.9% | 15 | ✅ | ❌ | 6 | — (replaced by #4) | 3-11: 4.6% (21.8) |
-| 1 | HEALTHY HEALTHY | 5.3% | 20.7% | 10 | ✅ | ❌ | 8 | 腳 (Leg) | — |
-| 4 | BEAUTY SHOW | 4.2% | 18.5% | 2.9 | ❌ | ✅ | 1 | 腳 (Leg) ← replaces #11 | — |
-| 7 | HARMONY FIRE | 4.1% | 18.3% | 21 | ❌ | ❌ | 7 | — | — |
-| 9 | TOPSPIN KING | 2.9% | 13.5% | 33 | ❌ | ❌ | 2 | — | — |
-| 12 | CRYSTAL POWERFUL | 2.7% | 12.7% | 33 | ❌ | ❌ | 6 | — | — |
-| 10 | HYANNIS STAR | 1.1% | 6.2% | 33 | ❌ | ❌ | 2 | — | — |
-| 2 | E HO HO | 0.9% | 5.1% | 22 | ❌ | ❌ | 5 | — | — |
+| #   | Horse            | MC Win% | MC Place% | Win Odds | Place%>20% | Win odds<10 | Form | Role (Strategy B)      | Top Quinella (fair odds) |
+| --- | ---------------- | ------- | --------- | -------- | ---------- | ----------- | ---- | ---------------------- | ------------------------ |
+| 3   | KING PROFIT      | 31.8%   | 65.7%     | 10       | ✅          | ❌           | 4    | ★ 膽 (Banker)           | 3-6: 13.0% (7.7)         |
+| 6   | GRAND NOVA       | 17.9%   | 47.1%     | 5.9      | ✅          | ✅           | 4    | 腳 (Leg)                | 3-5: 12.0% (8.3)         |
+| 5   | DAY DAY VICTORY  | 17.4%   | 46.3%     | 19       | ✅          | ❌           | 8    | 腳 (Leg)                | 5-6: 6.6% (15.2)         |
+| 8   | JUMBO BLESSING   | 6.0%    | 23.0%     | 4.7      | ✅          | ✅           | 2    | 腳 (Leg)                | 3-8: 4.8% (21.0)         |
+| 11  | HAPPY UNITED     | 5.6%    | 22.9%     | 15       | ✅          | ❌           | 6    | — (replaced by #4)     | 3-11: 4.6% (21.8)        |
+| 1   | HEALTHY HEALTHY  | 5.3%    | 20.7%     | 10       | ✅          | ❌           | 8    | 腳 (Leg)                | —                        |
+| 4   | BEAUTY SHOW      | 4.2%    | 18.5%     | 2.9      | ❌          | ✅           | 1    | 腳 (Leg) ← replaces #11 | —                        |
+| 7   | HARMONY FIRE     | 4.1%    | 18.3%     | 21       | ❌          | ❌           | 7    | —                      | —                        |
+| 9   | TOPSPIN KING     | 2.9%    | 13.5%     | 33       | ❌          | ❌           | 2    | —                      | —                        |
+| 12  | CRYSTAL POWERFUL | 2.7%    | 12.7%     | 33       | ❌          | ❌           | 6    | —                      | —                        |
+| 10  | HYANNIS STAR     | 1.1%    | 6.2%      | 33       | ❌          | ❌           | 2    | —                      | —                        |
+| 2   | E HO HO          | 0.9%    | 5.1%      | 22       | ❌          | ❌           | 5    | —                      | —                        |
 
 Market: #3 KING PROFIT undervalued by 217%. #5 DAY DAY VICTORY undervalued by 179%. #4 BEAUTY SHOW (market fav at 2.9) overvalued by 89% — massive MC vs market disconnect (only 1 form entry).
 

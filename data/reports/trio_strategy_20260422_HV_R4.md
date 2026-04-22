@@ -18,20 +18,20 @@ UNIT BET: $10 per combination (fixed)
 MC SIMULATION (raw)
 ───────────────────────────────────────────────────────────
 
-| # | Horse | MC Win% | MC Place% | Win Odds | Place%>20% | Win odds<10 | Form | Role (Strategy B) | Top Quinella (fair odds) |
-|---|-------|---------|-----------|----------|------------|-------------|------|-------------------|-------------------------|
-| 6 | VIGOR EYE | 34.5% | 68.2% | 3.1 | ✅ | ✅ | 5 | ★ 膽 (Banker) | 4-6: 14.2% (7.1) |
-| 4 | JOLLY COMPANION | 18.7% | 51.5% | 7.4 | ✅ | ✅ | 11 | 腳 (Leg) | 6-9: 11.5% (8.7) |
-| 9 | LEADING AGILITY | 13.8% | 43.2% | 5.2 | ✅ | ✅ | 4 | 腳 (Leg) | 2-6: 8.3% (12.1) |
-| 2 | CAPTAIN LINK | 10.3% | 34.0% | 13 | ✅ | ❌ | 5 | 腳 (Leg) | 3-6: 6.6% (15.1) |
-| 3 | LUCKY MCQUEEN | 7.7% | 29.5% | 17 | ✅ | ❌ | 9 | — (replaced by #1) | 4-9: 6.2% (16.2) |
-| 5 | LUCKY XANDER | 3.5% | 15.3% | 27 | ❌ | ❌ | 8 | — | — |
-| 7 | FLYING SNIPER | 3.5% | 16.6% | 23 | ❌ | ❌ | 2 | — | — |
-| 10 | YEUX DE LIFELINE | 3.0% | 14.3% | 14 | ❌ | ❌ | 3 | — | — |
-| 8 | KWAI CHUNG TALENTS | 2.5% | 12.8% | 21 | ❌ | ❌ | 3 | — | — |
-| 11 | SOLAR RIVER | 1.2% | 8.1% | 15 | ❌ | ❌ | 0 | — | — |
-| 1 | YOUNG ARROW | 0.6% | 3.6% | 9.4 | ❌ | ✅ | 7 | 腳 (Leg) ← replaces #3 | — |
-| 12 | ZHOU GONGJIN | 0.4% | 3.0% | 13 | ❌ | ❌ | 4 | — | — |
+| #   | Horse              | MC Win% | MC Place% | Win Odds | Place%>20% | Win odds<10 | Form | Role (Strategy B)     | Top Quinella (fair odds) |
+| --- | ------------------ | ------- | --------- | -------- | ---------- | ----------- | ---- | --------------------- | ------------------------ |
+| 6   | VIGOR EYE          | 34.5%   | 68.2%     | 3.1      | ✅          | ✅           | 5    | ★ 膽 (Banker)          | 4-6: 14.2% (7.1)         |
+| 4   | JOLLY COMPANION    | 18.7%   | 51.5%     | 7.4      | ✅          | ✅           | 11   | 腳 (Leg)               | 6-9: 11.5% (8.7)         |
+| 9   | LEADING AGILITY    | 13.8%   | 43.2%     | 5.2      | ✅          | ✅           | 4    | 腳 (Leg)               | 2-6: 8.3% (12.1)         |
+| 2   | CAPTAIN LINK       | 10.3%   | 34.0%     | 13       | ✅          | ❌           | 5    | 腳 (Leg)               | 3-6: 6.6% (15.1)         |
+| 3   | LUCKY MCQUEEN      | 7.7%    | 29.5%     | 17       | ✅          | ❌           | 9    | — (replaced by #1)    | 4-9: 6.2% (16.2)         |
+| 5   | LUCKY XANDER       | 3.5%    | 15.3%     | 27       | ❌          | ❌           | 8    | —                     | —                        |
+| 7   | FLYING SNIPER      | 3.5%    | 16.6%     | 23       | ❌          | ❌           | 2    | —                     | —                        |
+| 10  | YEUX DE LIFELINE   | 3.0%    | 14.3%     | 14       | ❌          | ❌           | 3    | —                     | —                        |
+| 8   | KWAI CHUNG TALENTS | 2.5%    | 12.8%     | 21       | ❌          | ❌           | 3    | —                     | —                        |
+| 11  | SOLAR RIVER        | 1.2%    | 8.1%      | 15       | ❌          | ❌           | 0    | —                     | —                        |
+| 1   | YOUNG ARROW        | 0.6%    | 3.6%      | 9.4      | ❌          | ✅           | 7    | 腳 (Leg) ← replaces #3 | —                        |
+| 12  | ZHOU GONGJIN       | 0.4%    | 3.0%      | 13       | ❌          | ❌           | 4    | —                     | —                        |
 
 Market: #1 YOUNG ARROW overvalued by 95% (MC 0.6% vs implied ~10.6%). #12 ZHOU GONGJIN overvalued by 94%. #11 SOLAR RIVER overvalued by 80%. #4 JOLLY COMPANION shows 44% edge vs market.
 

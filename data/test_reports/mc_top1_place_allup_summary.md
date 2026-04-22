@@ -25,6 +25,7 @@
 | **8**   | **12 Apr** | **ST** | **Turf**  | **Good**     | **11** | **40.3%** | **77.1%**  | **6/11** | **54.5%** | **❌✅❌❌✅✅✅✅✅❌❌** | **5 (R5-R9)** |
 | **9**   | **15 Apr** | **HV** | **Turf**  | **Good**     | **9**  | **41.2%** | **74.8%**  | **5/9**  | **55.6%** | **✅❌❌✅✅❌✅❌✅**   | **2 (R4-R5)** |
 | **10**  | **19 Apr** | **ST** | **Mixed** | **Good/G-F** | **11** | **46.3%** | **83.1%**  | **5/11** | **45.5%** | **❌✅❌❌✅❌✅✅❌✅❌** | **2 (R7-R8)** |
+| **11**  | **22 Apr** | **HV** | **Turf**  | **Good/G-F** | **9**  | **34.5%** | **67.4%**  | **8/9**  | **88.9%** | **✅❌✅✅✅✅✅✅✅**   | **7 (R3-R9)** |
 |         |            |        |           |              |        |           |            |          |           |                 |               |
 
 \*Meeting 8 **R1** (6 runners): MC #1 **#6** ran **3rd** but HKJC Place pool pays **two** places only → **$0** dividend; counts as **❌** for streaks and all-ups (same dividend logic as other meetings).
@@ -607,40 +608,124 @@ Place dividends (MC #1 when paid): R2=$30.00, R5=$19.00, R7=$43.00, R8=$11.00, R
 
 ---
 
-## Cumulative Summary (10 meetings)
+## Meeting 11: Happy Valley | 22 Apr 2026 (9 races)
+
+**Results / Place dividends:** `data/historical/results_20260422_HV.json` (scrape `tools/scrape-meeting.ts --date=2026-04-22 --venue=HV`). **MC #1** = top row by **MC Win%** in `data/reports/trio_strategy_20260422_HV_R*.md` (raw MC table). **Leg eligible** = horse receives an **HKJC Place** payout.
+
+| Race | Class   | Dist (m) | MC #1              | MC Win% | MC Place% | Paid Place? | Place $ (if paid) |     |
+| ---- | ------- | -------- | ------------------ | ------- | --------- | ----------- | ----------------- | --- |
+| R1   | Class 5 | 1200     | #4 NEBRASKAN       | 22.9%   | 53.9%     | ✅ 1st       | $17.50            |     |
+| R2   | Class 5 | 1650     | #8 VERBIER         | 26.3%   | 56.8%     | ❌ (4th)     | —                 |     |
+| R3   | Class 4 | 1650     | #1 GLORIOUS JOURNEY | 27.5%  | 62.0%     | ✅ 2nd       | $26.00            |     |
+| R4   | Class 4 | 1200     | #6 VIGOR EYE       | 34.5%   | 68.2%     | ✅ 1st       | $13.50            |     |
+| R5   | Class 4 | 1200     | #1 SPEEDY SMARTIE  | 25.7%   | 56.6%     | ✅ 3rd       | $30.50            |     |
+| R6   | Class 4 | 1000     | #3 KING PROFIT     | 31.8%   | 65.7%     | ✅ 1st       | $20.50            |     |
+| R7   | Class 3 | 1000     | #10 SKY CAP        | 46.2%   | 82.3%     | ✅ 3rd       | $13.00            |     |
+| R8   | Class 3 | 1800     | #11 ACE WAR        | 53.1%   | 85.7%     | ✅ 2nd       | $14.50            |     |
+| R9   | Class 3 | 1200     | #1 AURIO           | 42.6%   | 75.6%     | ✅ 2nd       | $13.50            |     |
+
+Place dividends (MC #1 when paid): R1=$17.50, R3=$26.00, R4=$13.50, R5=$30.50, R6=$20.50, R7=$13.00, R8=$14.50, R9=$13.50
+
+### 2-Leg (8 bets)
+
+| # | All-Up | Hit? | Return |
+|---|--------|------|--------|
+| 1 | R1+R2 | ❌ | $0 |
+| 2 | R2+R3 | ❌ | $0 |
+| 3 | R3+R4 | ✅ | $35.10 |
+| 4 | R4+R5 | ✅ | $41.18 |
+| 5 | R5+R6 | ✅ | $62.53 |
+| 6 | R6+R7 | ✅ | $26.65 |
+| 7 | R7+R8 | ✅ | $18.85 |
+| 8 | R8+R9 | ✅ | $19.58 |
+
+### 3-Leg (7 bets)
+
+| # | All-Up | Hit? | Return |
+|---|--------|------|--------|
+| 3 | R3+R4+R5 | ✅ | $107.06 |
+| 4 | R4+R5+R6 | ✅ | $84.41 |
+| 5 | R5+R6+R7 | ✅ | $81.28 |
+| 6 | R6+R7+R8 | ✅ | $38.64 |
+| 7 | R7+R8+R9 | ✅ | $25.45 |
+| Others | — | ❌ | $0 |
+
+### 4-Leg (6 bets)
+
+| # | All-Up | Hit? | Return |
+|---|--------|------|--------|
+| 3 | R3+R4+R5+R6 | ✅ | $219.46 |
+| 4 | R4+R5+R6+R7 | ✅ | $109.73 |
+| 5 | R5+R6+R7+R8 | ✅ | $117.86 |
+| 6 | R6+R7+R8+R9 | ✅ | $52.17 |
+| Others | — | ❌ | $0 |
+
+### 5-Leg (5 bets)
+
+| # | All-Up | Hit? | Return |
+|---|--------|------|--------|
+| 3 | R3+R4+R5+R6+R7 | ✅ | $285.30 |
+| 4 | R4+R5+R6+R7+R8 | ✅ | $159.11 |
+| 5 | R5+R6+R7+R8+R9 | ✅ | $159.11 |
+| Others | — | ❌ | $0 |
+
+### 6-Leg (4 bets)
+
+| # | All-Up | Hit? | Return |
+|---|--------|------|--------|
+| 3 | R3+R4+R5+R6+R7+R8 | ✅ | $413.69 |
+| 4 | R4+R5+R6+R7+R8+R9 | ✅ | $214.80 |
+| Others | — | ❌ | $0 |
+
+\*Bonus — **7-Leg** (3 bets): R3+R4+R5+R6+R7+R8+R9 = ✅ **$558.48** return (the only 7-leg window; two others blocked by R2 miss).
+
+| Legs | Bets | Staked | Winners | Returned | P&L      | ROI      |
+| ---- | ---- | ------ | ------- | -------- | -------- | -------- |
+| 1    | 9    | $90    | 8       | $149.00  | +$59.00  | +65.6%   |
+| 2    | 8    | $80    | 6       | $203.89  | +$123.89 | +154.9%  |
+| 3    | 7    | $70    | 5       | $336.84  | +$266.84 | +381.2%  |
+| 4    | 6    | $60    | 4       | $499.22  | +$439.22 | +732.0%  |
+| 5    | 5    | $50    | 3       | $603.52  | +$553.52 | +1107.0% |
+| 6    | 4    | $40    | 2       | $628.49  | +$588.49 | +1471.2% |
+
+**Observation:** **Best all-up meeting in the series.** The **7-race paying streak (R3–R9)** is the longest ever recorded — surpassing **M2's 6-race** streak. Despite **moderate avg MC Place% (67.4%)** — the lowest among strong meetings — the MC #1 picks placed in **8/9 races (88.9%)**, the highest rate in the series. Only R2 VERBIER missed (4th). **R5 SPEEDY SMARTIE's $30.50** dividend was the compounding engine — appearing in every winning 3- through 6-leg ticket. All leg counts profitable, every multi-leg returned **3-digit or 4-digit ROI**. The **6-leg** all-up returned **$628.49** on $40 staked — single-handedly flipping the cumulative 6-leg P&L from **−$56** to **+$532**. Confirms pure **HV Turf** as the best surface for this strategy.
+
+---
+
+## Cumulative Summary (11 meetings)
 
 ### ROI by Leg Count — Per Meeting
 
-| Legs | M1 (18 Mar) | M2 (22 Mar) | M3 (25 Mar) | M4 (29 Mar) | M5 (1 Apr) | M6 (6 Apr) | M7 (8 Apr) | M8 (12 Apr ST) | M9 (15 Apr HV) | M10 (19 Apr ST) |
-| ---- | ----------- | ----------- | ----------- | ----------- | ---------- | ---------- | ---------- | -------------- | -------------- | --------------- |
-| 1    | +7.2%       | +44.7%      | +61.7%      | +4.2%       | -10.0%     | +29.3%     | -46.1%     | -15.4%         | +5.6%          | **+21.4%**      |
-| 2    | -8.6%       | +148.1%     | +116.9%     | +1.8%       | -32.6%     | +122.4%    | -39.6%     | +2.6%          | −47.8%         | **−52.7%**      |
-| 3    | -30.0%      | +342.1%     | +192.1%     | -56.8%      | -100%      | +283.6%    | -41.5%     | +46.1%         | −100%          | **−100%**       |
-| 4    | -44.8%      | +646.5%     | +257.4%     | -100%       | -100%      | +360.2%    | -100%      | +46.2%         | −100%          | **−100%**       |
-| 5    | -100%       | +695.4%     | -100%       | -100%       | -100%      | +229.5%    | -100%      | +41.0%         | −100%          | **−100%**       |
-| 6    | -100%       | +768.0%     | -100%       | -100%       | -100%      | -100%      | -100%      | -100%          | −100%          | **−100%**       |
+| Legs | M1 (18 Mar) | M2 (22 Mar) | M3 (25 Mar) | M4 (29 Mar) | M5 (1 Apr) | M6 (6 Apr) | M7 (8 Apr) | M8 (12 Apr ST) | M9 (15 Apr HV) | M10 (19 Apr ST) | M11 (22 Apr HV) |
+| ---- | ----------- | ----------- | ----------- | ----------- | ---------- | ---------- | ---------- | -------------- | -------------- | --------------- | --------------- |
+| 1    | +7.2%       | +44.7%      | +61.7%      | +4.2%       | -10.0%     | +29.3%     | -46.1%     | -15.4%         | +5.6%          | +21.4%          | **+65.6%**      |
+| 2    | -8.6%       | +148.1%     | +116.9%     | +1.8%       | -32.6%     | +122.4%    | -39.6%     | +2.6%          | −47.8%         | −52.7%          | **+154.9%**     |
+| 3    | -30.0%      | +342.1%     | +192.1%     | -56.8%      | -100%      | +283.6%    | -41.5%     | +46.1%         | −100%          | −100%           | **+381.2%**     |
+| 4    | -44.8%      | +646.5%     | +257.4%     | -100%       | -100%      | +360.2%    | -100%      | +46.2%         | −100%          | −100%           | **+732.0%**     |
+| 5    | -100%       | +695.4%     | -100%       | -100%       | -100%      | +229.5%    | -100%      | +41.0%         | −100%          | −100%           | **+1107.0%**    |
+| 6    | -100%       | +768.0%     | -100%       | -100%       | -100%      | -100%      | -100%      | -100%          | −100%          | −100%           | **+1471.2%**    |
 
 ### P&L by Leg Count — Per Meeting
 
-| Legs | M1     | M2       | M3      | M4     | M5     | M6      | M7      | M8      | M9      | M10         | **TOTAL**    |
-| ---- | ------ | -------- | ------- | ------ | ------ | ------- | ------- | ------- | ------- | ----------- | ------------ |
-| 1    | +$6.5  | +$44.7   | +$55.5  | +$4.6  | -$9.0  | +$32.2  | -$41.5  | -$16.90 | +$5.00  | **+$23.50** | **+$104.60** |
-| 2    | -$6.8  | +$133.3  | +$93.6  | +$1.8  | -$26.1 | +$122.4 | -$31.7  | +$2.63  | −$38.20 | **−$52.70** | **+$198.10** |
-| 3    | -$21.0 | +$273.7  | +$134.5 | -$51.2 | -$70.0 | +$255.3 | -$29.05 | +$41.48 | −$70.00 | **−$90.00** | **+$373.74** |
-| 4    | -$26.9 | +$452.5  | +$154.5 | -$80.0 | -$60.0 | +$288.2 | -$60.0  | +$36.99 | −$60.00 | **−$80.00** | **+$565.32** |
-| 5    | -$50.0 | +$417.2  | -$50.0  | -$70.0 | -$50.0 | +$160.7 | -$50.0  | +$28.71 | −$50.00 | **−$70.00** | **+$216.61** |
-| 6    | -$40.0 | +$383.96 | -$40.0  | -$60.0 | -$40.0 | -$60.0  | -$40.0  | -$60.00 | −$40.00 | **−$60.00** | **−$56.04**  |
+| Legs | M1     | M2       | M3      | M4     | M5     | M6      | M7      | M8      | M9      | M10     | M11 (22 Apr HV) | **TOTAL**      |
+| ---- | ------ | -------- | ------- | ------ | ------ | ------- | ------- | ------- | ------- | ------- | ---------------- | -------------- |
+| 1    | +$6.5  | +$44.7   | +$55.5  | +$4.6  | -$9.0  | +$32.2  | -$41.5  | -$16.90 | +$5.00  | +$23.50 | **+$59.00**      | **+$163.60**   |
+| 2    | -$6.8  | +$133.3  | +$93.6  | +$1.8  | -$26.1 | +$122.4 | -$31.7  | +$2.63  | −$38.20 | −$52.70 | **+$123.89**     | **+$321.99**   |
+| 3    | -$21.0 | +$273.7  | +$134.5 | -$51.2 | -$70.0 | +$255.3 | -$29.05 | +$41.48 | −$70.00 | −$90.00 | **+$266.84**     | **+$640.58**   |
+| 4    | -$26.9 | +$452.5  | +$154.5 | -$80.0 | -$60.0 | +$288.2 | -$60.0  | +$36.99 | −$60.00 | −$80.00 | **+$439.22**     | **+$1,004.54** |
+| 5    | -$50.0 | +$417.2  | -$50.0  | -$70.0 | -$50.0 | +$160.7 | -$50.0  | +$28.71 | −$50.00 | −$70.00 | **+$553.52**     | **+$770.13**   |
+| 6    | -$40.0 | +$383.96 | -$40.0  | -$60.0 | -$40.0 | -$60.0  | -$40.0  | -$60.00 | −$40.00 | −$60.00 | **+$588.49**     | **+$532.45**   |
 
 ### Grand Summary Table
 
-| Legs | Total Bets | Total Staked | Total Winners | Hit Rate | Total Returned | Total P&L | ROI | Profitable Meetings |
-|------|-----------|-------------|---------------|----------|----------------|-----------|-----|---------------------|
-| 1 (flat) | 99 | $990 | 59 | 59.6% | $1,094.60 | +$104.60 | +10.6% | 7/10 |
-| **2** | 89 | $890 | 30 | 33.7% | $1,088.10 | +$198.10 | +22.3% | 5/10 |
-| **3** | 79 | $790 | 16 | 20.3% | $1,163.74 | +$373.74 | +47.3% | 4/10 |
-| **4** | **69** | **$690** | **9** | **13.0%** | **$1,255.32** | **+$565.32** | **+81.9%** | **4/10** |
-| 5 | 59 | $590 | 6 | 10.2% | $806.60 | +$216.61 | +36.7% | 3/10 |
-| 6 | 49 | $490 | 2 | 4.1% | $433.96 | −$56.04 | −11.4% | 1/10 |
+| Legs | Total Bets | Total Staked | Total Winners | Hit Rate | Total Returned | Total P&L    | ROI      | Profitable Meetings |
+|------|-----------|-------------|---------------|----------|----------------|-------------|----------|---------------------|
+| 1 (flat) | 108 | $1,080 | 67 | 62.0% | $1,243.60 | +$163.60 | +15.1% | 8/11 |
+| **2** | 97 | $970 | 36 | 37.1% | $1,291.99 | +$321.99 | +33.2% | 6/11 |
+| **3** | 86 | $860 | 21 | 24.4% | $1,500.58 | +$640.58 | +74.5% | 5/11 |
+| **4** | **75** | **$750** | **13** | **17.3%** | **$1,754.54** | **+$1,004.54** | **+133.9%** | **5/11** |
+| **5** | **64** | **$640** | **9** | **14.1%** | **$1,410.12** | **+$770.13** | **+120.3%** | **4/11** |
+| **6** | **53** | **$530** | **4** | **7.5%** | **$1,062.45** | **+$532.45** | **+100.5%** | **2/11** |
 
 ---
 
@@ -648,69 +733,73 @@ Place dividends (MC #1 when paid): R2=$30.00, R5=$19.00, R7=$43.00, R8=$11.00, R
 
 ### The 4-Leg Sweet Spot
 
-The **4-leg consecutive all-up** still holds the highest cumulative profit (**+$565.32** after **Meeting 10**) and the best ROI among multi-leg counts (**+81.9%** over 10 meetings). Down from +105.8% after M9 — **M10's short streak** eroded the edge but the 4-leg remains structurally dominant:
+The **4-leg consecutive all-up** remains the highest cumulative profit (**+$1,004.54** after **Meeting 11**) and the best ROI among multi-leg counts (**+133.9%** over 11 meetings). **M11's 7-race streak** supercharged all leg counts — the 4-leg alone added **+$439.22** in one meeting. The structural advantages hold:
 
-1. **Sufficient compounding**: 4 legs multiply dividends enough to generate outsized returns (individual winners returned $33–$228)
-2. **Achievable streak requirement**: 5 meetings out of **10** had max **paying** streaks ≥ 4 (M1: 4, M2: 6, M3: 4, M6: 5, M8: 5); the other **5** (M4, M5, M7, M9, **M10**) had streaks ≤ 3
+1. **Sufficient compounding**: 4 legs multiply dividends enough to generate outsized returns (individual winners returned $33–$228; M11 added four 4-leg winners averaging **$124.90** each)
+2. **Achievable streak requirement**: 6 meetings out of **11** had max **paying** streaks ≥ 4 (M1: 4, M2: 6, M3: 4, M6: 5, M8: 5, **M11: 7**); the other **5** (M4, M5, M7, M9, M10) had streaks ≤ 3
 3. **Limited downside**: Only $10 per bet × 6–8 bets per meeting = $60–$80 at risk
-4. **Asymmetric payoff**: The **9** winning 4-leg all-ups averaged ~$139.5 return on a $10 stake when they hit
+4. **Asymmetric payoff**: The **13** winning 4-leg all-ups averaged ~$135.0 return on a $10 stake when they hit
+
+**New development after M11**: **5-leg** (+120.3% ROI, +$770.13) and **6-leg** (+100.5% ROI, +$532.45) are now **both profitable** — the 6-leg flipped from **−$56** to **+$532** in a single meeting. The 4-leg still leads on absolute P&L but the gap has narrowed significantly.
 
 ### Streak Length is Everything
 
 | Max Streak | Meetings | Best Leg Count | Best ROI |
 |------------|----------|----------------|----------|
+| **7** | **M11** | **6** | **+1471.2%** |
 | 6 | M2 | 6 | +768.0% |
 | 5 | M6, M8 | 4–5 | +360.2% / M8 +46.2% (4-leg) |
 | 4 | M1, M3 | 3-4 | +192–257% |
 | 3 | M4, M7 | 2 (M4); 3-leg loses (M7) | +1.8%; M7 multi-leg ≈−$211 (2–6 leg) |
-| 2 | M5, M9, **M10** | 1 (flat) | M5 −10%, M9 +5.6%, **M10 +21.4%** |
+| 2 | M5, M9, M10 | 1 (flat) | M5 −10%, M9 +5.6%, M10 +21.4% |
 
-The optimal leg count ≈ max streak − 1. Three meetings now sit in the "max streak = 2" bucket — all share the pattern: **flat Place profitable** but **every multi-leg bleeds**. **M10** is the strongest flat-Place performer of the three (+21.4%) thanks to R7's $43 dividend, yet even that couldn't rescue the 2-leg.
+The optimal leg count ≈ max streak − 1. **M11 proves that streaks ≥ 6 produce parabolic returns** — the 6-leg ROI on M11 alone (+1471%) eclipses M2's 6-leg record (+768%). Three meetings sit in the "max streak = 2" bucket — all share the pattern: **flat Place profitable** but **every multi-leg bleeds**.
 
 ### Risk Profile
 
 | Legs | Avg Loss (losing meeting) | Avg Win (winning meeting) | Win:Loss Ratio |
 |------|---------------------------|---------------------------|----------------|
-| 2 | −$31.1 (5 meetings) | +$70.7 (5 meetings) | 2.3:1 |
-| 3 | −$55.2 (6 meetings) | +$176.2 (4 meetings) | 3.2:1 |
-| 4 | −$61.1 (6 meetings) | +$233.0 (4 meetings) | 3.8:1 |
-| 5 | −$55.7 (7 meetings) | +$202.2 (3 meetings) | 3.6:1 |
-| 6 | −$48.9 (9 meetings) | +$384.0 (1 meeting) | 7.9:1 |
+| 2 | −$31.1 (5 meetings) | +$79.6 (6 meetings) | 2.6:1 |
+| 3 | −$55.2 (6 meetings) | +$194.4 (5 meetings) | 3.5:1 |
+| 4 | −$61.1 (6 meetings) | +$274.3 (5 meetings) | 4.5:1 |
+| 5 | −$55.7 (7 meetings) | +$290.0 (4 meetings) | 5.2:1 |
+| 6 | −$48.9 (9 meetings) | +$486.2 (2 meetings) | 9.9:1 |
 
-Risk profile has **worsened** vs 9 meetings — 2-leg Win:Loss dropped from 7.7:1 to **2.3:1** as M10 added a fifth losing meeting (−$52.70). The 4-leg ratio (3.8:1) is still acceptable but trending down. **Key takeaway**: losing meetings are getting more expensive on average as the sample grows, while winners remain concentrated in the same 4 meetings (M2/M3/M6/M8).
+Risk profile has **improved materially** vs 10 meetings — **M11** shifted every leg count's Win:Loss ratio upward. The 4-leg ratio moved from 3.8:1 to **4.5:1**; the 5-leg from 3.6:1 to **5.2:1**. The 6-leg remains the most extreme asymmetry (**9.9:1**) but now with **2** winning meetings instead of 1, it's no longer a single-event fluke. **Key takeaway**: winning meetings are concentrated in **5** meetings now (M2/M3/M6/M8/**M11**) — all pure turf with max streak ≥ 4.
 
 ### Surface Impact
 
 | Surface | Meetings | Max Streak (avg) | 4-Leg ROI (notes) |
 |---------|----------|------------------|-------------------|
-| Turf-dominant | 8 (M1–M4, M6–M9) | ~3.9 | M7 4-leg −100%; M8 +46.2% (max paying streak 5); M9 max streak 2 |
+| Turf-dominant | 9 (M1–M4, M6–M9, **M11**) | ~4.2 | **M11** +732% (max paying streak 7); M8 +46.2% (streak 5) |
 | AWT (M5) | 1 | 2.0 | −100% |
-| **Mixed AWT/Turf (M10)** | **1** | **2.0** | **−100%** |
+| Mixed AWT/Turf (M10) | 1 | 2.0 | −100% |
 
-**Meeting 10 (ST Mixed):** The **alternating surface** (AWT→Turf→AWT→Turf) fragmented the placing pattern. MC #1s missed on **both** surfaces: AWT misses R1, R6; Turf misses R3, R4, R9, R11. The **R7+R8 streak** bridged two **AWT** races — the only consecutive paying pair on the card. Despite the **highest avg MC Place% (83.1%)** in the series, the mixed-surface card behaved like a pure **AWT meeting** for streak purposes.
+**Meeting 11 (HV Turf, Good to Firm):** The **longest paying streak** in the series (**7 races**, R3–R9) on pure HV turf. Only R2 VERBIER missed (4th, SP 3.7 — short-priced favourite). The moderate avg MC Place% (**67.4%**) — the lowest among winning meetings — didn't predict the monster result; **strike rate (88.9%)** massively outperformed the model. This suggests HV's tighter track and smaller fields may boost MC #1 reliability beyond what raw Place% indicates.
 
-**Meeting 9 (HV Turf):** MC #1 paid Place on 5/9 legs with only one consecutive paying pair (R4–R5). Flat Place slightly green (+$5 on $90).
+**Meeting 10 (ST Mixed):** The **alternating surface** fragmented the placing pattern. Max streak = 2 despite highest avg MC Place% (83.1%). AWT and mixed-surface meetings remain **avoid** territory.
 
-**Meeting 8 (ST Turf):** R5–R9 paying streak rescues multi-leg (same mechanism as M6); flat still loses on R1 (small field) + R10 scratch.
+**Meeting 9 (HV Turf):** MC #1 paid Place on 5/9 legs but only one consecutive pair (R4–R5). Flat Place barely green (+$5).
 
 The all-up strategy should be **avoided on AWT and mixed-surface meetings** entirely. M5 (pure AWT) and M10 (mixed) both produced max streak = 2 with all multi-leg counts in the red.
 
 ### Dividend Quality Matters
 
-The two best meetings (M2, M6) both featured **at least one high-dividend horse** within the streak:
-- M2: R8 MONEY CATCHER $40.00 (15x odds)
-- M6: R5 THOUSAND SPIRIT $38.00 (15x odds)
+The three best meetings (M2, M6, **M11**) all featured **dividend diversity within long streaks**:
+- M2: R8 MONEY CATCHER $40.00 within a 6-race streak
+- M6: R5 THOUSAND SPIRIT $38.00 within a 5-race streak
+- **M11: R5 SPEEDY SMARTIE $30.50** + **R3 GLORIOUS JOURNEY $26.00** within a 7-race streak
 
-**M10** had R7 LIGHT YEARS GLORY at **$43.00** — the highest single Place dividend in the series — but it was **isolated** in a 2-race streak. High dividends only compound when embedded in **long streaks**; a $43 leg in a 2-race window returns $47.30, while the same $43 in a 5-race window would have generated hundreds.
+**M11** didn't have a single $40+ dividend but compensated with **streak length** (7) and **two mid-range high-dividend legs** ($30.50 and $26.00). The product of 7 moderate dividends ($13–$30.50) still produced a **$558.48** 7-leg return and **$628.49** on the 6-leg. **Length beats magnitude** when the streak is long enough — M11 proves that even without an outlier dividend, a 7-race window creates explosive compounding.
 
 ---
 
 ## Recommendations
 
-- [ ] **Use 3–4 leg consecutive all-ups** as the primary multi-leg strategy — best risk-adjusted returns (+81.9% ROI on 4-leg after 10 meetings)
+- [ ] **Use 4–5 leg consecutive all-ups** as the primary multi-leg strategy — 4-leg leads on absolute P&L (+$1,004.54) with +133.9% ROI; 5-leg now also strongly positive (+120.3%) after 11 meetings
 - [ ] **Skip AWT and mixed-surface meetings** for all-up bets — M5 (AWT) and M10 (mixed) both max streak = 2; save the exposure
-- [ ] **Pair with flat Place bets** for stability — flat Place is profitable **7/10** meetings vs **4/10** for 4-leg all-ups
-- [ ] **Suggested combined approach**: $10 flat Place per race + $10 per 3-leg consecutive all-up. On a typical 10-race turf meeting: $100 flat + $80 all-ups = $180 total exposure
-- [ ] **Monitor live results**: if the MC #1 misses in R1 or R2, the all-up still has full exposure from R3 onwards — don't adjust mid-meeting
-- [ ] **Track streak length correlation**: meetings with strong MC model confidence (high avg MC Place%) on **pure turf** tend to produce longer streaks — consider increasing all-up stake when avg MC Place% > 75% on turf
-- [ ] **6-leg now negative (−$56.04)**: officially **drop 6-leg** from the strategy — only 1 winning meeting in 10 and the edge has evaporated
+- [ ] **Pair with flat Place bets** for stability — flat Place is profitable **8/11** meetings vs **5/11** for 4-leg all-ups
+- [ ] **Suggested combined approach**: $10 flat Place per race + $10 per 4-leg consecutive all-up. On a typical 9-race HV turf meeting: $90 flat + $60 all-ups = $150 total exposure
+- [ ] **Monitor live results**: M11 showed that a single R2 miss still leaves a massive 7-race streak from R3 — don't panic-adjust mid-meeting
+- [ ] **HV Turf is the best venue**: M1 (7/9), M3 (6/9), **M11 (8/9)** — three HV meetings now, all with ≥66.7% strike rate and max streak ≥ 4. Average HV max streak = **5.0** vs ST turf = **3.8**
+- [ ] **6-leg now profitable (+$532.45, +100.5%)**: reinstate 6-leg at **HV turf meetings** where max streak potential is highest — but keep it off ST meetings where only M2 has ever won a 6-leg

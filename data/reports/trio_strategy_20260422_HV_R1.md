@@ -18,20 +18,20 @@ UNIT BET: $10 per combination (fixed)
 MC SIMULATION (raw)
 ───────────────────────────────────────────────────────────
 
-| # | Horse | MC Win% | MC Place% | Win Odds | Place%>20% | Win odds<10 | Form | Role (Strategy B) | Top Quinella (fair odds) |
-|---|-------|---------|-----------|----------|------------|-------------|------|-------------------|-------------------------|
-| 4 | NEBRASKAN | 22.9% | 53.9% | 3.7 | ✅ | ✅ | 8 | ★ 膽 (Banker) | 4-8: 8.9% (11.2) |
-| 8 | TEAM HAPPY | 18.1% | 47.6% | 6.0 | ✅ | ✅ | 9 | 腳 (Leg) | 4-5: 7.5% (13.3) |
-| 5 | THOUSAND CUPS | 15.0% | 42.4% | 8.3 | ✅ | ✅ | 8 | 腳 (Leg) | 4-6: 7.2% (13.9) |
-| 6 | HAPPY BOYS | 14.1% | 39.5% | 8.8 | ✅ | ✅ | 9 | 腳 (Leg) | 5-8: 6.3% (15.8) |
-| 3 | CONCORDE STAR | 9.2% | 29.3% | 9.4 | ✅ | ✅ | 7 | 腳 (Leg) | 6-8: 5.6% (17.9) |
-| 10 | TAIHANG SCENERY | 6.7% | 23.7% | 15 | ✅ | ❌ | 4 | — (replaced by #2) | — |
-| 7 | TURF PHOENIX | 3.6% | 14.9% | 15 | ❌ | ❌ | 6 | — | — |
-| 11 | RICH HORSE | 2.9% | 13.1% | 41 | ❌ | ❌ | 7 | — | — |
-| 2 | GIDDY UP | 2.6% | 11.1% | 9.1 | ❌ | ✅ | 8 | 腳 (Leg) ← replaces #10 | — |
-| 1 | HAPPY ALLIANCE | 2.4% | 10.8% | 35 | ❌ | ❌ | 7 | — | — |
-| 9 | BRILLIANT FIRE | 1.8% | 9.4% | 17 | ❌ | ❌ | 6 | — | — |
-| 12 | BINGO BABE | 0.7% | 4.3% | 11 | ❌ | ❌ | 9 | — | — |
+| #   | Horse           | MC Win% | MC Place% | Win Odds | Place%>20% | Win odds<10 | Form | Role (Strategy B)      | Top Quinella (fair odds) |
+| --- | --------------- | ------- | --------- | -------- | ---------- | ----------- | ---- | ---------------------- | ------------------------ |
+| 4   | NEBRASKAN       | 22.9%   | 53.9%     | 3.7      | ✅          | ✅           | 8    | ★ 膽 (Banker)           | 4-8: 8.9% (11.2)         |
+| 8   | TEAM HAPPY      | 18.1%   | 47.6%     | 6.0      | ✅          | ✅           | 9    | 腳 (Leg)                | 4-5: 7.5% (13.3)         |
+| 5   | THOUSAND CUPS   | 15.0%   | 42.4%     | 8.3      | ✅          | ✅           | 8    | 腳 (Leg)                | 4-6: 7.2% (13.9)         |
+| 6   | HAPPY BOYS      | 14.1%   | 39.5%     | 8.8      | ✅          | ✅           | 9    | 腳 (Leg)                | 5-8: 6.3% (15.8)         |
+| 3   | CONCORDE STAR   | 9.2%    | 29.3%     | 9.4      | ✅          | ✅           | 7    | 腳 (Leg)                | 6-8: 5.6% (17.9)         |
+| 10  | TAIHANG SCENERY | 6.7%    | 23.7%     | 15       | ✅          | ❌           | 4    | — (replaced by #2)     | —                        |
+| 7   | TURF PHOENIX    | 3.6%    | 14.9%     | 15       | ❌          | ❌           | 6    | —                      | —                        |
+| 11  | RICH HORSE      | 2.9%    | 13.1%     | 41       | ❌          | ❌           | 7    | —                      | —                        |
+| 2   | GIDDY UP        | 2.6%    | 11.1%     | 9.1      | ❌          | ✅           | 8    | 腳 (Leg) ← replaces #10 | —                        |
+| 1   | HAPPY ALLIANCE  | 2.4%    | 10.8%     | 35       | ❌          | ❌           | 7    | —                      | —                        |
+| 9   | BRILLIANT FIRE  | 1.8%    | 9.4%      | 17       | ❌          | ❌           | 6    | —                      | —                        |
+| 12  | BINGO BABE      | 0.7%    | 4.3%      | 11       | ❌          | ❌           | 9    | —                      | —                        |
 
 Market: #8 TEAM HAPPY shows 30% edge vs market (MC 18.1% vs implied ~16.7%). #5 and #6 also slightly undervalued. #2 GIDDY UP and #12 BINGO BABE overvalued by market.
 
