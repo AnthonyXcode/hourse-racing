@@ -116,7 +116,8 @@
     ],
     "quinellaDividend": 48,
     "tierceDividend": 100,
-    "trioDividend": 18
+    "trioDividend": 18,
+    "first4Dividend": 27.0
   },
   {
     "id": "2026-04-12-ST-2",
@@ -369,7 +370,8 @@
       39
     ],
     "tierceDividend": 2790,
-    "trioDividend": 230
+    "trioDividend": 230,
+    "first4Dividend": 568.0
   },
   {
     "id": "2026-04-12-ST-3",
@@ -622,7 +624,8 @@
       307
     ],
     "tierceDividend": 8374,
-    "trioDividend": 1830
+    "trioDividend": 1830,
+    "first4Dividend": 8313.0
   },
   {
     "id": "2026-04-12-ST-4",
@@ -875,7 +878,8 @@
       72
     ],
     "tierceDividend": 3001,
-    "trioDividend": 500
+    "trioDividend": 500,
+    "first4Dividend": 832.0
   },
   {
     "id": "2026-04-12-ST-5",
@@ -1096,7 +1100,8 @@
       191
     ],
     "tierceDividend": 8296,
-    "trioDividend": 1636
+    "trioDividend": 1636,
+    "first4Dividend": 1680.0
   },
   {
     "id": "2026-04-12-ST-6",
@@ -1317,7 +1322,8 @@
       27
     ],
     "tierceDividend": 968,
-    "trioDividend": 90
+    "trioDividend": 90,
+    "first4Dividend": 367.0
   },
   {
     "id": "2026-04-12-ST-7",
@@ -1570,7 +1576,8 @@
       88.5
     ],
     "tierceDividend": 6173,
-    "trioDividend": 982
+    "trioDividend": 982,
+    "first4Dividend": 435.0
   },
   {
     "id": "2026-04-12-ST-8",
@@ -1791,7 +1798,8 @@
       229
     ],
     "tierceDividend": 4846,
-    "trioDividend": 1055
+    "trioDividend": 1055,
+    "first4Dividend": 1473.0
   },
   {
     "id": "2026-04-12-ST-9",
@@ -2012,7 +2020,8 @@
       89
     ],
     "tierceDividend": 8651,
-    "trioDividend": 1380
+    "trioDividend": 1380,
+    "first4Dividend": 4616.0
   },
   {
     "id": "2026-04-12-ST-10",
@@ -2217,7 +2226,8 @@
       311
     ],
     "tierceDividend": 47131,
-    "trioDividend": 6560
+    "trioDividend": 6560,
+    "first4Dividend": 6677.0
   },
   {
     "id": "2026-04-12-ST-11",
@@ -2438,6 +2448,7 @@
       30.5
     ],
     "tierceDividend": 1858,
-    "trioDividend": 243
+    "trioDividend": 243,
+    "first4Dividend": 184.0
   }
 ]

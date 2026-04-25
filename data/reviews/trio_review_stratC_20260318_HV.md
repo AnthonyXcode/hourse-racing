@@ -71,20 +71,20 @@ Banker #10 placed (3rd). #8 and #7 included as legs via odds<10; #7 placed 2nd b
 
 ### R2 — Class 4 | 1650m Turf | Actual: 2→4→9
 
-| # | Horse | Win% | Place% | Odds | Place%>20% OR odds<10 | Form | Role | Finished |
-|---|-------|------|--------|------|------------------------|------|------|----------|
-| 7 | INNO SUPER | 32.1% | 66.6% | 9.1 | ✅ | 7 | ★ Banker | **8th** |
-| 4 | FANTASTIC FUN | 16.6% | 47.3% | 6.1 | ✅ | 9 | Leg | 2nd |
-| 1 | MIGHTY STEED | 16.4% | 47.3% | 3.2 | ✅ | 7 | Leg | 5th |
-| 11 | LESLIE | 9.5% | 33.0% | 25 | ✅ | 5 | Leg | 11th |
-| 9 | THE LION KING | 9.2% | 33.1% | 7 | ✅ | 7 | Leg | 3rd |
-| 8 | SHOOTING TO TOP | 6.6% | 24.6% | 16 | ✅ | 1 | Leg | 6th |
-| 2 | ARMOR GOLDEN EAGLE | 4.8% | 20.8% | 4.7 | ✅ | 5 | Leg | 1st |
-| 6 | AESTHETICISM | 2.0% | 10.5% | 10 | ❌ | 9 | — | 4th |
-| 5 | VERMILION TEMPEST | 0.9% | 5.5% | 16 | ❌ | 3 | — | 6th |
-| 12 | LUCKY FIELD | 0.9% | 4.6% | 117 | ❌ | 4 | — | 9th |
-| 3 | COLOURFUL GAN | 0.8% | 5.0% | 93 | ❌ | 4 | — | 10th |
-| 10 | REGROWTH WINNER | 0.2% | 1.7% | 137 | ❌ | 3 | — | 12th |
+| #   | Horse              | Win%  | Place% | Odds | Place%>20% OR odds<10 | Form | Role     | Finished |
+| --- | ------------------ | ----- | ------ | ---- | --------------------- | ---- | -------- | -------- |
+| 7   | INNO SUPER         | 32.1% | 66.6%  | 9.1  | ✅                     | 7    | ★ Banker | **8th**  |
+| 4   | FANTASTIC FUN      | 16.6% | 47.3%  | 6.1  | ✅                     | 9    | Leg      | 2nd      |
+| 1   | MIGHTY STEED       | 16.4% | 47.3%  | 3.2  | ✅                     | 7    | Leg      | 5th      |
+| 11  | LESLIE             | 9.5%  | 33.0%  | 25   | ✅                     | 5    | Leg      | 11th     |
+| 9   | THE LION KING      | 9.2%  | 33.1%  | 7    | ✅                     | 7    | Leg      | 3rd      |
+| 8   | SHOOTING TO TOP    | 6.6%  | 24.6%  | 16   | ✅                     | 1    | Leg      | 6th      |
+| 2   | ARMOR GOLDEN EAGLE | 4.8%  | 20.8%  | 4.7  | ✅                     | 5    | Leg      | 1st      |
+| 6   | AESTHETICISM       | 2.0%  | 10.5%  | 10   | ❌                     | 9    | —        | 4th      |
+| 5   | VERMILION TEMPEST  | 0.9%  | 5.5%   | 16   | ❌                     | 3    | —        | 6th      |
+| 12  | LUCKY FIELD        | 0.9%  | 4.6%   | 117  | ❌                     | 4    | —        | 9th      |
+| 3   | COLOURFUL GAN      | 0.8%  | 5.0%   | 93   | ❌                     | 4    | —        | 10th     |
+| 10  | REGROWTH WINNER    | 0.2%  | 1.7%   | 137  | ❌                     | 3    | —        | 12th     |
 
 **Banker failed**: #7 finished 8th. All three placers were in legs; odds<10 did not add legs here (#6 odds 10 = not <10).
 
@@ -109,20 +109,20 @@ Banker #3 placed (2nd). #1 included as leg via odds 4.7<10. #11 (8.2%, 15) not i
 
 ### R4 — Class 4 | 1200m Turf | Actual: 12→2→4 ✅
 
-| # | Horse | Win% | Place% | Odds | Place%>20% OR odds<10 | Form | Role | Finished |
-|---|-------|------|--------|------|------------------------|------|------|----------|
-| 2 | SUPERB KING | 28.7% | 60.7% | 2.9 | ✅ | 9 | ★ Banker | 2nd |
-| 9 | LEGEND STAR | 20.1% | 51.3% | 18 | ✅ | 8 | Leg | 7th |
-| 3 | QUARTZ LEGEND | 13.5% | 41.1% | 6 | ✅ | 6 | Leg | 4th |
-| 4 | FREE PONY | 9.3% | 31.8% | 18 | ✅ | 7 | Leg | 3rd |
-| 1 | VERY GRATEFUL | 6.6% | 24.6% | 13 | ✅ | 3 | Leg | 10th |
-| 5 | GOKO WIN | 5.7% | 21.9% | 7.2 | ✅ | 5 | Leg | 5th |
-| 10 | ZEPHYR | 4.5% | 17.7% | 20 | ❌ | 4 | — | 9th |
-| 6 | MARVEL AND GOLD | 4.4% | 17.6% | 54 | ❌ | 4 | — | 6th |
-| 12 | WORLD HERO | 3.9% | 16.7% | 4 | ✅ | 7 | Leg | **1st** |
-| 8 | FORTUNE SUPERNOVA | 2.3% | 11.3% | 32 | ❌ | 5 | — | 12th |
-| 11 | MAGIC SUPER | 0.9% | 4.9% | 185 | ❌ | 4 | — | 11th |
-| 7 | TRENDY RUSH | 0.1% | 0.5% | 43 | ❌ | 0 | — | 8th |
+| #   | Horse             | Win%  | Place% | Odds | Place%>20% OR odds<10 | Form | Role     | Finished |
+| --- | ----------------- | ----- | ------ | ---- | --------------------- | ---- | -------- | -------- |
+| 2   | SUPERB KING       | 28.7% | 60.7%  | 2.9  | ✅                     | 9    | ★ Banker | 2nd      |
+| 9   | LEGEND STAR       | 20.1% | 51.3%  | 18   | ✅                     | 8    | Leg      | 7th      |
+| 3   | QUARTZ LEGEND     | 13.5% | 41.1%  | 6    | ✅                     | 6    | Leg      | 4th      |
+| 4   | FREE PONY         | 9.3%  | 31.8%  | 18   | ✅                     | 7    | Leg      | 3rd      |
+| 1   | VERY GRATEFUL     | 6.6%  | 24.6%  | 13   | ✅                     | 3    | Leg      | 10th     |
+| 5   | GOKO WIN          | 5.7%  | 21.9%  | 7.2  | ✅                     | 5    | Leg      | 5th      |
+| 10  | ZEPHYR            | 4.5%  | 17.7%  | 20   | ❌                     | 4    | —        | 9th      |
+| 6   | MARVEL AND GOLD   | 4.4%  | 17.6%  | 54   | ❌                     | 4    | —        | 6th      |
+| 12  | WORLD HERO        | 3.9%  | 16.7%  | 4    | ✅                     | 7    | Leg      | **1st**  |
+| 8   | FORTUNE SUPERNOVA | 2.3%  | 11.3%  | 32   | ❌                     | 5    | —        | 12th     |
+| 11  | MAGIC SUPER       | 0.9%  | 4.9%   | 185  | ❌                     | 4    | —        | 11th     |
+| 7   | TRENDY RUSH       | 0.1%  | 0.5%   | 43   | ❌                     | 0    | —        | 8th      |
 
 **Hit.** #12 included as leg via odds 4<10; banker #2 and legs #12, #4 filled top 3.
 

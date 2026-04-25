@@ -4,21 +4,17 @@
     "type": "split",
     "children": [
       {
-        "id": "26aa1df2b7f0ffe6",
+        "id": "2eb9e748e3080c1b",
         "type": "tabs",
         "children": [
           {
-            "id": "f83f44a59e495728",
+            "id": "236736c5b1fab887",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "reviews/trio_review_stratC_20260419_ST.md",
-                "mode": "source",
-                "source": false
-              },
+              "type": "empty",
+              "state": {},
               "icon": "lucide-file",
-              "title": "trio_review_stratC_20260419_ST"
+              "title": "New tab"
             }
           }
         ]
@@ -183,10 +179,15 @@
       "bases:Create new base": false
     }
   },
-  "active": "f83f44a59e495728",
+  "active": "236736c5b1fab887",
   "lastOpenFiles": [
-    "reviews/trio_review_20260301_ST.md",
+    "reviews/trio_review_stratC_20260318_HV.md",
     "test_reports/mc_top1_place_allup_summary.md",
+    "test_reports/trio_mc_place_replace_review_20260219_ST.md",
+    "test_reports/first4_stratB_invest_return.md",
+    "reports/3t_sixup_strategy_20260211_HV.md",
+    "reviews/trio_review_stratC_20260419_ST.md",
+    "reviews/trio_review_20260301_ST.md",
     "reviews/trio_review_stratC_20260422_HV.md",
     "static/trio_banker_place_hit_rate_by_segment_20260420.md",
     "static/trio_stratC_hit_rate_by_segment_20260422.md",
@@ -206,11 +207,6 @@
     "reports/trio_strategy_20260422_HV_R7.md",
     "reports/trio_strategy_20260422_HV_R6.md",
     "reports/trio_strategy_20260422_HV_R5.md",
-    "reports/trio_strategy_20260422_HV_R3.md",
-    "reviews/trio_review_stratC_20260325_HV.md",
-    "reports/trio_strategy_20260422_HV_R4.md",
-    "reports/trio_strategy_20260422_HV_R2.md",
-    "reports/trio_strategy_20260422_HV_R1.md",
     "historical/results_20250928_ST.json",
     "static",
     "backtest/after_20260415_HV.json",

@@ -633,6 +633,7 @@ export class HistoricalScraper {
     quinellaPlaceDividends?: number[];
     tierceDividend?: number;
     trioDividend?: number;
+    first4Dividend?: number;
   } {
     const dividends: {
       winDividend?: number;
@@ -641,6 +642,7 @@ export class HistoricalScraper {
       quinellaPlaceDividends?: number[];
       tierceDividend?: number;
       trioDividend?: number;
+      first4Dividend?: number;
     } = {};
 
     // Get all text from the page
@@ -703,6 +705,12 @@ export class HistoricalScraper {
     const trioMatch = pageText.match(/TRIO\s+[\d,]+\s+([\d,.]+)/i);
     if (trioMatch) {
       dividends.trioDividend = parseFloat(trioMatch[1]!.replace(/,/g, ""));
+    }
+
+    // FIRST 4 (any order) — same merged pool line as on HKJC local results
+    const f4Match = pageText.match(/FIRST\s*4\s+[\d,]+\s+([\d,.]+)/i);
+    if (f4Match) {
+      dividends.first4Dividend = parseFloat(f4Match[1]!.replace(/,/g, ""));
     }
 
     return dividends;

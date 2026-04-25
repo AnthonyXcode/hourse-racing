@@ -185,6 +185,8 @@ export interface RaceResult extends Race {
   readonly quinellaPlaceDividends?: readonly number[];
   readonly tierceDividend?: number;
   readonly trioDividend?: number;
+  /** First 4 (any order) merged pool — dividend per $10 as shown on HKJC results (FIRST 4 row). */
+  readonly first4Dividend?: number;
 }
 
 // ============================================================================
