@@ -1,33 +1,33 @@
 ## Elite Jockey Statistics
 
-*Data fetched: 4/21/2026, 1:38:42 PM*
+*Data fetched: 4/25/2026, 2:51:40 PM*
 
 ### Current Season Win Rates
 
 | Rank | Jockey | Code | Wins | Rides | Win % | Tier |
 |------|--------|------|------|-------|-------|------|
-| 1 | J Moreira | MOJ | 8 | 39 | 20.51% | ⭐⭐⭐ Elite |
-| 2 | Z Purton | PZ | 100 | 507 | 19.72% | ⭐⭐ Strong |
-| 3 | J McDonald | MCJ | 16 | 101 | 15.84% | ⭐⭐ Strong |
-| 4 | H Bowman | BH | 50 | 418 | 11.96% | ⭐ Good |
-| 5 | A Atzeni | AA | 47 | 439 | 10.71% | ⭐ Good |
-| 6 | M Guyon | GM | 15 | 169 | 8.88% | - |
-| 7 | Y Ho | HCY | 28 | 325 | 8.62% | - |
-| 8 | L Ferraris | FEL | 29 | 339 | 8.55% | - |
-| 9 | H Bentley | BHW | 29 | 346 | 8.38% | - |
-| 10 | W Wong | WEC | 19 | 235 | 8.09% | - |
-| 11 | J Orman | OJM | 25 | 334 | 7.49% | - |
-| 12 | B McMonagle | MDB | 10 | 142 | 7.04% | - |
-| 13 | A Badel | BA | 24 | 345 | 6.96% | - |
-| 14 | L Hewitson | HEL | 23 | 348 | 6.61% | - |
-| 15 | C Leung | LDE | 20 | 306 | 6.54% | - |
-| 16 | K Teetan | TEK | 29 | 449 | 6.46% | - |
-| 17 | L Chung | CCY | 19 | 298 | 6.38% | - |
-| 18 | F Poon | PMF | 22 | 357 | 6.16% | - |
-| 19 | L Yeung | YML | 16 | 341 | 4.69% | - |
-| 20 | B Avdulla | AVB | 15 | 322 | 4.66% | - |
-| 21 | R Kingscote | KRW | 12 | 338 | 3.55% | - |
-| 22 | M Chadwick | CML | 11 | 324 | 3.40% | - |
+| 1 | Z Purton | PZ | 102 | 514 | 19.84% | ⭐⭐ Strong |
+| 2 | J Moreira | MOJ | 8 | 47 | 17.02% | ⭐⭐ Strong |
+| 3 | Y Yuen | YHY | 4 | 24 | 16.67% | ⭐⭐ Strong |
+| 4 | J McDonald | MCJ | 16 | 101 | 15.84% | ⭐⭐ Strong |
+| 5 | E Brown | BEP | 1 | 7 | 14.29% | ⭐ Good |
+| 6 | H Bowman | BH | 50 | 424 | 11.79% | ⭐ Good |
+| 7 | A Atzeni | AA | 48 | 447 | 10.74% | ⭐ Good |
+| 8 | L Chau | CJE | 35 | 368 | 9.51% | - |
+| 9 | M Guyon | GM | 15 | 169 | 8.88% | - |
+| 10 | Y Ho | HCY | 28 | 328 | 8.54% | - |
+| 11 | L Ferraris | FEL | 29 | 341 | 8.50% | - |
+| 12 | H Bentley | BHW | 29 | 349 | 8.31% | - |
+| 13 | A Badel | BA | 26 | 351 | 7.41% | - |
+| 14 | J Orman | OJM | 25 | 338 | 7.40% | - |
+| 15 | B McMonagle | MDB | 10 | 142 | 7.04% | - |
+| 16 | L Hewitson | HEL | 23 | 352 | 6.53% | - |
+| 17 | C Leung | LDE | 20 | 310 | 6.45% | - |
+| 18 | K Teetan | TEK | 29 | 456 | 6.36% | - |
+| 19 | L Chung | CCY | 19 | 301 | 6.31% | - |
+| 20 | L Yeung | YML | 16 | 345 | 4.64% | - |
+| 21 | B Avdulla | AVB | 15 | 325 | 4.62% | - |
+| 22 | M Chadwick | CML | 11 | 325 | 3.38% | - |
 
 ### Rating Boosts (for model)
 

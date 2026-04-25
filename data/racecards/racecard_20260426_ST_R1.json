@@ -962,11 +962,11 @@
           "nationality": "CHN",
           "weightClaim": 0,
           "seasonStats": {
-            "wins": 34,
-            "places": 54,
-            "rides": 337,
-            "winRate": 0.1009,
-            "placeRate": 0.26112759643916916,
+            "wins": 35,
+            "places": 59,
+            "rides": 368,
+            "winRate": 0.0951,
+            "placeRate": 0.2554347826086957,
             "roi": 1
           },
           "courseStats": []
@@ -1031,10 +1031,10 @@
           "weightClaim": 0,
           "seasonStats": {
             "wins": 25,
-            "places": 56,
-            "rides": 334,
-            "winRate": 0.07490000000000001,
-            "placeRate": 0.24251497005988024,
+            "places": 57,
+            "rides": 338,
+            "winRate": 0.07400000000000001,
+            "placeRate": 0.24260355029585798,
             "roi": 1
           },
           "courseStats": []
@@ -1273,11 +1273,11 @@
           "nationality": "CHN",
           "weightClaim": 0,
           "seasonStats": {
-            "wins": 1,
-            "places": 2,
-            "rides": 5,
-            "winRate": 0.2,
-            "placeRate": 0.6,
+            "wins": 4,
+            "places": 6,
+            "rides": 24,
+            "winRate": 0.16670000000000001,
+            "placeRate": 0.4166666666666667,
             "roi": 1
           },
           "courseStats": []
@@ -1578,9 +1578,9 @@
           "seasonStats": {
             "wins": 19,
             "places": 26,
-            "rides": 298,
-            "winRate": 0.0638,
-            "placeRate": 0.15100671140939598,
+            "rides": 301,
+            "winRate": 0.06309999999999999,
+            "placeRate": 0.14950166112956811,
             "roi": 1
           },
           "courseStats": []
@@ -1887,5 +1887,20 @@
       }
     ]
   },
-  "winOdds": {}
+  "winOdds": {
+    "1": 11,
+    "2": 17,
+    "3": 15,
+    "4": 27,
+    "5": 3.5,
+    "6": 81,
+    "7": 39,
+    "8": 59,
+    "9": 5.4,
+    "10": 11,
+    "11": 4.6,
+    "12": 41,
+    "13": 9.5,
+    "14": 80
+  }
 }
