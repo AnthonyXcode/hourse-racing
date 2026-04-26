@@ -2,89 +2,89 @@
 TRIO (ANY ORDER) STRATEGY - Sha Tin | 2026-04-26 | Race 3
 ═══════════════════════════════════════════════════════════
 
-DATA VALIDATION: ✅ All checks passed | Going: Good | 0 scratchings
-MC SIMULATION: 10,000 iterations
-SCMP DATA: ✅ Loaded | Form/TIR/Vet/Odds parsed
-ODDS SOURCE: HKJC early-morning pool (fetch-odds.ts, captured ~14:50 HKT 25-Apr) + live scrape odds
-             SCMP odds: ❌ (Win/Place columns not yet published on SCMP R3) | HKJC live: ✅ loaded
+DATA VALIDATION: ✅ All checks passed | Going: Good to Firm | 0 scratchings (2 reserves on SCMP card — not in HKJC field of 14)
+MC SIMULATION: 10,000 iterations (--ignore-records 20260426, --form-data all, --use-saved)
+SCMP DATA: ✅ Loaded | Star Form/TIR/Vet/Trackwork/QP/Q odds parsed (tipster grids ignored)
+ODDS SOURCE: HKJC pool (`data/odds/odds_20260426_ST.json`, fetched 25-Apr)
+             SCMP odds: ✅ loaded (race table) | HKJC live: ✅ loaded
 
-RACE: R3 — Class 4 | 1200m Turf | Good | 14 runners
-CLASSIFICATION: Dominant | POOL SIZE: 5
-MODE: A: Tight Pool (5)
-BET STRUCTURE: 膽拖 1膽+4腳 C(4,2) = 6 (Strategy A) / 膽拖 1膽+6腳 C(6,2) = 15 (Strategy B)
+RACE: R3 — Class 4 | 1200M Turf "A" Course | Good to Firm | 14 runners
+CLASSIFICATION: Competitive | POOL SIZE: 6
+MODE: B: Standard Pool (6)
+BET STRUCTURE: 膽拖 1膽+5腳 C(5,2) = 10 (Strategy A) / 膽拖 1膽+6腳 C(6,2) = 15 (Strategy B)
 UNIT BET: $10 per combination (fixed)
 
 ───────────────────────────────────────────────────────────
 MC SIMULATION (raw)
 ───────────────────────────────────────────────────────────
 
-| # | Horse | MC Win% | MC Place% | Win Odds | Place%>20% | Win odds<10 | Form | Role (Strategy B) | Top Quinella (fair odds) |
-|---|-------|---------|-----------|----------|------------|-------------|------|-------------------|--------------------------|
-| 3 | HAYDAY | 45.8 | 79.0 | 11 | ✅ | ❌ | 8 | ★ 膽 (Banker) | 3-4: 14.1% (7.1) |
-| 4 | GOLDENTRONICMIGHTY | 12.3 | 42.8 | 26 | ✅ | ❌ | 9 | 腳 (Leg) | 3-6: 14.0% (7.2) |
-| 6 | SOLID CAR | 11.3 | 42.1 | 11 | ✅ | ❌ | 3 | 腳 (Leg) | 3-5: 11.4% (8.7) |
-| 5 | OLDTOWN | 10.5 | 37.0 | 14 | ✅ | ❌ | 5 | 腳 (Leg) | 3-14: 8.6% (11.7) |
-| 14 | MAJESTIC LIFE | 6.8 | 28.3 | 96 | ✅ | ❌ | 4 | 腳 (Leg) | — |
-| 2 | MR INCREDIBLE | 5.9 | 27.7 | 7.5 | ✅ | ✅ | 2 | 腳 (Leg) | 2-3: 7.8% (12.8) |
-| 13 | BETTER AND BETTER | 5.6 | 27.6 | 9.9 | ✅ | ✅ | 8 | 腳 (Leg) | — |
-| 1 | ABSOLUTE HEART | 0.7 | 5.8 | 2.9 | ❌ | ✅ | 1 | — (Step B candidate) | — |
-| 9 | HAPPY PROMISE | 0.0 | 0.7 | 6.7 | ❌ | ✅ | 0 | — (Step B candidate) | — |
-| 12 | PRECISION MIND | 0.3 | 3.2 | 28 | ❌ | ❌ | 1 | — | — |
-| 10 | JACKSON HABIT | 0.3 | 2.3 | 33 | ❌ | ❌ | 1 | — | — |
-| 8 | CLASSIC TRIPLE | 0.3 | 1.9 | 86 | ❌ | ❌ | 1 | — | — |
-| 11 | MASSIVE REWARD | 0.1 | 0.8 | 11 | ❌ | ❌ | 0 | — | — |
-| 7 | APEX GLORY | 0.1 | 0.8 | 31 | ❌ | ❌ | 0 | — | — |
+| #  | Horse               | MC Win% | MC Place% | Win Odds | Place%>20% | Win odds<10 | Form | Role (Strategy B)        | Top Quinella (fair odds)   |
+|----|---------------------|---------|-----------|----------|------------|-------------|------|--------------------------|----------------------------|
+| 13 | BETTER AND BETTER   | 34.3    | 70.3      | 9.9      | ✅          | ✅           | 8    | ★ 膽 (Banker)             | 3-13: 16.9% (5.9)          |
+| 3  | HAYDAY              | 21.6    | 56.1      | 11       | ✅          | ❌           | 8    | 腳 (Leg)                  | 4-13: 12.3% (8.2)          |
+| 4  | GOLDENTRONICMIGHTY  | 15.2    | 46.3      | 26       | ✅          | ❌           | 9    | 腳 (Leg)                  | 3-4: 7.7% (12.9)           |
+| 14 | MAJESTIC LIFE       | 8.8     | 31.8      | 96       | ✅          | ❌           | 4    | 腳 (Leg)                  | 13-14: 7.4% (13.5)         |
+| 2  | MR INCREDIBLE       | 7.5     | 30.4      | 7.5      | ✅          | ✅           | 2    | 腳 (Leg)                  | 2-13: 6.7% (15.0)          |
+| 6  | SOLID CAR           | 6.3     | 26.5      | 11       | ✅          | ❌           | 3    | — (replaced by #1)       | —                          |
+| 5  | OLDTOWN             | 3.0     | 14.6      | 14       | ❌          | ❌           | 5    | —                        | —                          |
+| 1  | ABSOLUTE HEART      | 1.3     | 8.6       | 2.9      | ❌          | ✅           | 1    | 腳 (Leg — replaced #6)   | —                          |
+| 12 | PRECISION MIND      | 0.6     | 4.8       | 28       | ❌          | ❌           | 1    | —                        | —                          |
+| 10 | JACKSON HABIT       | 0.5     | 3.3       | 33       | ❌          | ❌           | 1    | —                        | —                          |
+| 8  | CLASSIC TRIPLE      | 0.5     | 3.4       | 86       | ❌          | ❌           | 1    | —                        | —                          |
+| 11 | MASSIVE REWARD      | 0.2     | 1.2       | 11       | ❌          | ❌           | 0    | —                        | —                          |
+| 7  | APEX GLORY          | 0.1     | 1.3       | 31       | ❌          | ❌           | 0    | —                        | —                          |
+| 9  | HAPPY PROMISE       | 0.1     | 1.4       | 6.7      | ❌          | ✅           | 0    | 腳 (Leg — added direct)   | —                          |
 
-Market: MC strongly favours #3 HAYDAY (45.8% Win vs 11 odds — MC sees dominant, market prices mid-range). #1 ABSOLUTE HEART (0.7% MC vs 2.9 market favourite!) is the most extreme model-market gap — MC has almost zero confidence (1 form line, won on debut only) but the market has it as clear favourite. #9 HAPPY PROMISE (0% MC vs 6.7 odds, debutant) is another blind spot.
+Market: MC now favours **#13 BETTER AND BETTER** (34.3% / 9.9) over **#3 HAYDAY** (21.6% / 11). **#1 ABSOLUTE HEART** remains a classic “1-start” mismatch for the sim (1.3% / 8.6% vs **2.9** odds). **#9 HAPPY PROMISE** is a debutant blind spot (0.1% / 1.4% vs **6.7**). **#14 MAJESTIC LIFE** stays a long-odds MC place contributor (31.8% / 96).
 
 ───────────────────────────────────────────────────────────
 HORSE RANKINGS (Strategy A — Adj = MC + SCMP)
 ───────────────────────────────────────────────────────────
 
-| # | Horse | MC Win% | MC Place% | Adj Win% factor | Adj Place% factor | Adj Win% | Adj Place% | Odds | Jockey | SCMP Flags |
-|---|-------|---------|-----------|-----------------|-------------------|----------|------------|------|--------|------------|
-| 3 | HAYDAY | 45.8 | 79.0 | 0 | 0 | **45.8** | **79.0** | 11 | H Y Yuen | (ran inside standard time, top weight 135 — excuses TIR notes weight, not pace) |
-| 4 | GOLDENTRONICMIGHTY | 12.3 | 42.8 | 0 | 0 | **12.3** | **42.8** | 26 | M L Yeung | — |
-| 6 | SOLID CAR | 11.3 | 42.1 | -injury30d −3 | -injury30d −4 | **8.3** | **38.1** | 11 | E Brown | -injury30d (substantial blood in trachea 14/02, respiratory condition, passed 27/03 — 30 days ago exactly) |
-| 5 | OLDTOWN | 10.5 | 37.0 | 0 | 0 | **10.5** | **37.0** | 14 | J Orman | — |
-| 14 | MAJESTIC LIFE | 6.8 | 28.3 | excuses +2 | excuses +2 | **8.8** | **30.3** | 96 | B Avdulla | +excuses (jumped fairly, shifted across from outside gate) |
-| 2 | MR INCREDIBLE | 5.9 | 27.7 | excuses +2 | excuses +2 | **7.9** | **29.7** | 7.5 | K Teetan | +excuses (shifted out, bumped, held up 300–150M, steadied) |
-| 13 | BETTER AND BETTER | 5.6 | 27.6 | 0 | 0 | **5.6** | **27.6** | 9.9 | A Badel | — |
-| 1 | ABSOLUTE HEART | 0.7 | 5.8 | 0 | 0 | **~1** | **~6** | 2.9 | K C Leung | (won on debut — but only 1 form line; MC can't price) |
-| 12 | PRECISION MIND | 0.3 | 3.2 | 0 | 0 | **~0** | **~3** | 28 | M Chadwick | (jumped fairly, raced tight, lay out 300M) |
-| 10 | JACKSON HABIT | 0.3 | 2.3 | excuses +2 | excuses +2 | **~2** | **~4** | 33 | H Bowman | +excuses (jumped fairly, raced very wide throughout) |
-| 8 | CLASSIC TRIPLE | 0.3 | 1.9 | 0 | 0 | **~0** | **~2** | 86 | A Atzeni | (blood at mouth on arrival, passed vet — monitor) |
-| 9 | HAPPY PROMISE | 0.0 | 0.7 | 0 | 0 | **~0** | **~1** | 6.7 | J McDonald | — (debutant, 0 form, Hayes/McDonald) |
-| 11 | MASSIVE REWARD | 0.1 | 0.8 | 0 | 0 | **~0** | **~1** | 11 | L Hewitson | — (debutant, 0 form) |
-| 7 | APEX GLORY | 0.1 | 0.8 | 0 | 0 | **~0** | **~1** | 31 | C L Chau | — (debutant, 0 form) |
+| Rank | # | Horse | MC Win% | MC Place% | Adj Win% factor | Adj Place% factor | Adj Win% | Adj Place% | Odds | Jockey | Style | SCMP Flags | Role |
+|------|---|-------|---------|-----------|-----------------|-------------------|----------|------------|------|--------|-------|------------|------|
+| 1 | 13 | BETTER AND BETTER | 34.3 | 70.3 | 0 | 0 | **34.3** | **70.3** | 9.9 | A Badel | Midfield | Star form consistent; no qualifying TIR lift | ★ 膽 (Banker) |
+| 2 | 3 | HAYDAY | 21.6 | 56.1 | −perf −2 | −perf −2 | **19.6** | **54.1** | 11 | H Y Yuen | On-pace | −perf (top-weight / tempo note in TIR — “unable to finish off” narrative) | 腳 (Leg) |
+| 3 | 4 | GOLDENTRONICMIGHTY | 15.2 | 46.3 | 0 | 0 | **15.2** | **46.3** | 26 | M L Yeung | Midfield | — | 腳 (Leg) |
+| 4 | 14 | MAJESTIC LIFE | 8.8 | 31.8 | excuses +2 | excuses +2 | **10.8** | **33.8** | 96 | B Avdulla | Rear | +excuses (outside map; shifted across early) | 腳 (Leg) |
+| 5 | 2 | MR INCREDIBLE | 7.5 | 30.4 | excuses +2 | excuses +2 | **9.5** | **32.4** | 7.5 | K Teetan | Midfield | +excuses (bumped; held up; steadied late) | 腳 (Leg) |
+| 6 | 1 | ABSOLUTE HEART | 1.3 | 8.6 | trial +2, +form +1 | trial +2, +form +1 | **4.3** | **11.6** | 2.9 | K C Leung | Front | +trial (Conghua trial highlight); +form (smart debut win) | 腳 (Leg) |
+| 7 | 5 | OLDTOWN | 3.0 | 14.6 | +form +1 | +form +1 | **4.0** | **15.6** | 14 | J Orman | Midfield | +form (returns to winning track/trip; new-trainer angle in notes) | — |
+| 8 | 6 | SOLID CAR | 6.3 | 26.5 | −injury30d −3 | −injury30d −4 | **3.3** | **22.5** | 11 | E Brown | On-pace | Vet: trachea blood / respiratory episode (**14/02**); **passed 27/03** (−injury30d) | — |
+| 9 | 12 | PRECISION MIND | 0.6 | 4.8 | excuses +2 | excuses +2 | **2.6** | **6.8** | 28 | M Chadwick | Midfield | +excuses (tight midrace; lay out late) | — |
+| 10 | 10 | JACKSON HABIT | 0.5 | 3.3 | excuses +2 | excuses +2 | **2.5** | **5.3** | 33 | H Bowman | Wide | +excuses (very wide/no cover majority) | — |
+| 11 | 8 | CLASSIC TRIPLE | 0.5 | 3.4 | 0 | 0 | **0.5** | **3.4** | 86 | A Atzeni | Midfield | Blood at mouth on arrival (passed) — no automatic factor | — |
+| 12 | 11 | MASSIVE REWARD | 0.2 | 1.2 | 0 | 0 | **~0** | **~1** | 11 | L Hewitson | — | debut | — |
+| 13 | 7 | APEX GLORY | 0.1 | 1.3 | 0 | 0 | **~0** | **~1** | 31 | C L Chau | — | debut | — |
+| 14 | 9 | HAPPY PROMISE | 0.1 | 1.4 | 0 | 0 | **~0** | **~1** | 6.7 | J McDonald | — | debut | — |
 
-**Banker (Strategy A):** **#3 HAYDAY** — highest Adj Win% (45.8%). 8 form lines, ≥2 starts ✓. 6yo dropping from C3 form to C4 conditions, distance specialist at 1200m ST.
+**Banker (Strategy A):** **#13 BETTER AND BETTER** — highest Adj Win% (**34.3%**). 8 form lines, ≥2 starts ✓.
 
-**2nd-ranked:** **#4 GOLDENTRONICMIGHTY** — Adj Place% **42.8%** < 63% → **no 雙膽拖**. Use 膽拖.
+**2nd-ranked:** **#3 HAYDAY** — Adj Place% **54.1%** < 63% → **no 雙膽拖** (膽拖 only).
 
-Reasoning: MC dominates #3 HAYDAY at 45.8% Win. Field has 3 debutants (#7, #9, #11) and several horses with 1 form line (#1, #8, #10, #12) — MC is structurally unreliable for pricing these. The main risk is **#1 ABSOLUTE HEART** (2.9 market fav, won on debut, but MC only has 1 data point → 0.7%). Strategy A pool uses Adj Place% ≥ 25% must-include: #4 (42.8%), #6 (38.1%), #5 (37.0%), #14 (30.3%), #2 (29.7%), #13 (27.6%). That's 6 horses ≥ 25%. For Mode A (5 pool), take top 4 by Adj Place% after banker: #4, #5, #14, #2 — but #6 at 38.1% must also be included (≥25% rule). Expanding to **6-horse pool** to satisfy ≥25% must-include for #4, #6, #5, #14, #2. But #13 (27.6%) also qualifies. This pushes towards **Mode B** pool of 6, but classification remains Dominant. Use **6-horse 膽拖** = C(5,2) = 10 combos.
+Reasoning: Top Adj Win% sits just under the **35% Dominant** cut-off → **Competitive / Mode B (6)**. **Mandatory pool rule (Adj Place% ≥ 25%):** #13, #3, #4, #14, #2. **#6 SOLID CAR** drops to **22.5%** Adj Place after **−injury30d** → **not** forced. Sixth slot: **#1 ABSOLUTE HEART** (SCMP **+trial/+form**) beats **#5 OLDTOWN** on Adj Win% while keeping the ticket honest about the market favourite despite MC’s 1-start discount.
 
-**Revised pool (Adj Place% ≥ 25% must-include):** #3, #4, #6, #5, #14, #2. **#13** at 27.6% also qualifies but pool is already 6.
+**Key vet flag:** **SOLID CAR** — substantial trachea blood / respiratory work-up; official pass dated **27/03/2026** (applied as **−injury30d** on win/place adjustments).
 
 ───────────────────────────────────────────────────────────
 TRIO POOL (any order) — Strategy A
 ───────────────────────────────────────────────────────────
-POOL: #3, #4, #6, #5, #14, #2
-MODE: A (Dominant — Adj Win% 45.8% ≥ 35%) expanded to 6 (Adj Place% ≥ 25% must-include) | POOL SIZE: 6
+POOL: #13, #3, #4, #14, #2, #1
+MODE: B (Competitive — top Adj Win% **34.3%** in 20–35%) | POOL SIZE: 6
 
 膽拖 STRUCTURE:
-膽 (Banker): #3 HAYDAY (Adj Place% 79.0%) ← locked in every combo
-腳 (Legs): #4, #6, #5, #14, #2
+膽 (Banker): #13 BETTER AND BETTER (Adj Place% **70.3%**) ← locked in every combo
+腳 (Legs): #3, #4, #14, #2, #1
 BET STRUCTURE: 膽拖 | 1膽 + 5腳 | COMBINATIONS: C(5,2) = 10
 
 TOP TRIO COMBINATIONS (by combined Adj Place%):
 | Rank | Horses (any order) | Combined Place% | Est. Fair Odds |
-|------|-------------------|----------------|----------------|
-| 1 | #3, #4, #6 | 79×43×38 ≈ 12.9% | ~$78 |
-| 2 | #3, #4, #5 | 79×43×37 ≈ 12.6% | ~$79 |
-| 3 | #3, #6, #5 | 79×38×37 ≈ 11.1% | ~$90 |
-| 4 | #3, #4, #2 | 79×43×30 ≈ 10.2% | ~$98 |
-| 5 | #3, #4, #14 | 79×43×30 ≈ 10.2% | ~$98 |
+|------|-------------------|-----------------|----------------|
+| 1 | #13, #3, #4 | 70.3×54.1×46.3 ≈ 17.6% | ~$57 |
+| 2 | #13, #3, #2 | 70.3×54.1×32.4 ≈ 12.3% | ~$81 |
+| 3 | #13, #3, #14 | 70.3×54.1×33.8 ≈ 12.8% | ~$78 |
+| 4 | #13, #4, #2 | 70.3×46.3×32.4 ≈ 10.5% | ~$95 |
+| 5 | #13, #4, #14 | 70.3×46.3×33.8 ≈ 11.0% | ~$91 |
 
 ───────────────────────────────────────────────────────────
 TICKET SUMMARY — Strategy A
@@ -93,46 +93,44 @@ COMBINATIONS: 10 (膽拖: C(5,2))
 UNIT BET: $10 (fixed)
 TOTAL STAKE: $100
 
-TOP COMBINATIONS:
-  3-4-6, 3-4-5, 3-4-14, 3-4-2
-  3-6-5, 3-6-14, 3-6-2
-  3-5-14, 3-5-2
-  3-14-2
+TOP COMBINATIONS (all 10):
+  13-3-4, 13-3-14, 13-3-2, 13-3-1, 13-4-14
+  13-4-2, 13-4-1, 13-14-2, 13-14-1, 13-2-1
 
 PASS CONDITIONS:
-- If #3 HAYDAY (banker) is scratched → VOID ticket
+- If #13 BETTER AND BETTER (banker) scratched → VOID ticket
 - If field drops below 3 → pool refunded
+- If **#6 SOLID CAR** winds up a late market steam horse despite vet history → remember it is **not** in Strategy A pool on Adj rules (but can appear in Strategy B via odds leg logic)
 
-CONFIDENCE: MEDIUM — MC dominant signal on #3 (45.8% Win) but **#1 ABSOLUTE HEART** (2.9 market fav, 1 form line) is the key unknown. If #1 places top 3, this ticket likely loses unless #1 is one of the legs — and it's NOT in the pool. This is a structural risk inherent in MC's inability to price 1-start horses.
+CONFIDENCE: MEDIUM — MC lead on **#13** is coherent, but **#1** / **#9** remain high-variance “market knows more” legs (low MC data). **#1** is included in Strategy A here specifically because SCMP adjustments lift it into the 6-horse Mode B construction.
 
 CAVEATS:
-- **#1 ABSOLUTE HEART** (2.9 market fav) is NOT in the Strategy A pool — MC prices at 0.7% (1 form line). Market clearly respects this horse. If #1 places top 3, the ticket misses. This is the biggest single risk.
-- **#9 HAPPY PROMISE** (6.7 odds, debutant, Hayes/McDonald) is another MC blind spot.
-- #6 SOLID CAR had **substantial blood in trachea** (14/02) + respiratory condition (passed 27/03). The -injury30d penalty applies (passed exactly ~30 days ago). Monitor fitness.
-- SCMP Win/Place odds not yet published for R3.
+- **Model shift vs prior report:** banker moves from **#3 → #13** on raw MC Win%; Trio structure should be re-read before betting.
+- **#1 ABSOLUTE HEART** is still a structural risk if you require “MC Place% > 20%” thinking — Strategy A includes it as the **6th Mode B** slot after SCMP **trial/form** lifts.
+- **QP/Q matrix (SCMP):** multiple tight lines involve **#1** with **#13/#6** — use only as a market sanity check.
 
 ───────────────────────────────────────────────────────────
 STRATEGY B (MC-only)
 ───────────────────────────────────────────────────────────
-Banker: #3 HAYDAY (MC Win% 45.8%, MC Place% 79.0%) ← 1st by MC Win%
-Primary legs (MC Place% > 20%): #4 (42.8%), #6 (42.1%), #5 (37.0%), #14 (28.3%), #2 (27.7%), #13 (27.6%)
-Replaceable legs (MC Place% 20–30% AND Win odds > 10): #14 (28.3%, odds 96), #5 (37.0% — above 30%, NOT replaceable), #2 (27.7%, odds 7.5 — **not > 10**, NOT replaceable), #13 (27.6%, odds 9.9 — **not > 10**, NOT replaceable). Only **#14** is replaceable (28.3% Place, 96 odds).
-Win-odds candidates (MC Place% ≤ 20% AND Win odds < 10): #1 ABSOLUTE HEART (2.9 odds, 5.8%), #9 HAPPY PROMISE (6.7 odds, 0.7%)
+Banker: #13 BETTER AND BETTER (MC Win% **34.3%**, MC Place% **70.3%**) ← 1st by MC Win%
+Primary legs (MC Place% > 20%): #3 (56.1%), #4 (46.3%), #14 (31.8%), #2 (30.4%), #6 (26.5%)
+Replaceable legs (MC Place% 20–30% AND Win odds > 10): **#6 SOLID CAR (26.5%, 11)** ✅  
+  — *#14 (31.8%) and #2 (30.4%) are outside the 20–30% Place band; #2 also fails win odds > 10.*
+Win-odds candidates (MC Place% ≤ 20% AND Win odds < 10): #1 ABSOLUTE HEART (**2.9**, 8.6%), #9 HAPPY PROMISE (**6.7**, 1.4%)
 Action (process by Win odds ascending):
-  1. **#1 ABSOLUTE HEART** (2.9 odds) → replaceable leg #14 exists → **replace #14 with #1** (1-for-1 swap)
-  2. **#9 HAPPY PROMISE** (6.7 odds) → no more replaceable legs → **add #9 directly** as extra leg
-Final legs: #4, #6, #5, #2, #13, #1, #9
-BET STRUCTURE: 膽拖 | 1膽 + 7腳 | COMBINATIONS: C(7,2) = 21
+  1. **#1** (**2.9**): replaced **#6** (only replaceable primary leg; weakest by MC Place% among replaceables)
+  2. **#9** (**6.7**): no replaceable legs remain → **added directly**
+Final legs: #3, #4, #14, #2, #1, #9
+BET STRUCTURE: 膽拖 | 1膽 + 6腳 | COMBINATIONS: C(6,2) = 15
 UNIT BET: $10 (fixed)
-TOTAL STAKE: $210
+TOTAL STAKE: $150
 
 STRATEGY B TICKET:
-  3-4-6, 3-4-5, 3-4-2, 3-4-13, 3-4-1, 3-4-9
-  3-6-5, 3-6-2, 3-6-13, 3-6-1, 3-6-9
-  3-5-2, 3-5-13, 3-5-1, 3-5-9
-  3-2-13, 3-2-1, 3-2-9
-  3-13-1, 3-13-9
-  3-1-9
+  13-3-4, 13-3-14, 13-3-2, 13-3-1, 13-3-9
+  13-4-14, 13-4-2, 13-4-1, 13-4-9
+  13-14-2, 13-14-1, 13-14-9
+  13-2-1, 13-2-9
+  13-1-9
 
-Strategy B vs A: B **replaces #14 MAJESTIC LIFE** (28.3% MC, 96 odds — weak market) with **#1 ABSOLUTE HEART** (2.9 market fav, 5.8% MC) and **adds #9 HAPPY PROMISE** (6.7 odds, debutant). B covers both market favourites that MC can't price. B costs $210 vs A's $100. The Step B swap captures #1 (the market's top pick) — this is the critical A vs B divergence for R3.
+Strategy B vs A: **A** keeps **#6 SOLID CAR** inside the SCMP pool (via mandatory Place rules / Mode B sizing) but **B** drops **#6** for **#1** (market favourite) using the replaceable-leg rule, then adds **#9** (debut market). **B** is **$150** vs **A $100** in this refresh.
 ═══════════════════════════════════════════════════════════

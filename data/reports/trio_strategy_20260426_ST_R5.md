@@ -2,111 +2,112 @@
 TRIO (ANY ORDER) STRATEGY - Sha Tin | 2026-04-26 | Race 5
 ═══════════════════════════════════════════════════════════
 
-DATA VALIDATION: ✅ All checks passed | Going: Good | 0 scratchings
-MC SIMULATION: 10,000 iterations
-SCMP DATA: ✅ Loaded | TIR/Vet parsed
-ODDS SOURCE: HKJC live (scrape, ~14:50 HKT 25-Apr)
+DATA VALIDATION: ✅ All checks passed | Going: Good to Firm | 0 scratchings
+MC SIMULATION: 10,000 iterations (--ignore-records 20260426, --form-data all, --use-saved)
+SCMP DATA: ✅ Loaded | Star Form/TIR/Vet/Trackwork/QP/Q odds parsed (tipster tables ignored)
+ODDS SOURCE: `data/odds/odds_20260426_ST.json` (fetch-odds.ts, captured ~06:50 UTC 25-Apr)
+             SCMP odds: ✅ cross-check | HKJC file: ✅ loaded
 
-RACE: R5 — **Group 1 Chairman's Sprint Prize** | 1200m Turf | Good | 8 runners
-CLASSIFICATION: Dominant | POOL SIZE: 5
-MODE: A: Tight Pool (5)
-BET STRUCTURE: 膽拖 1膽+4腳 C(4,2) = 6 (Strategy A)
+RACE: R5 — **Group 1 Chairman's Sprint Prize** | 1200M Turf "A" Course | Good to Firm | 8 runners
+CLASSIFICATION: Dominant | POOL SIZE: 6 (Mode B structure — see below)
+MODE: B: Six-horse pool (6) — forced because six runners post-SCMP carry Adj Place% ≥ 25%
+BET STRUCTURE: 膽拖 1膽+5腳 C(5,2) = 10 (Strategy A) / 膽拖 1膽+5腳 C(5,2) = 10 (Strategy B)
 UNIT BET: $10 per combination (fixed)
 
 ───────────────────────────────────────────────────────────
 MC SIMULATION (raw)
 ───────────────────────────────────────────────────────────
 
-| #   | Horse             | MC Win% | MC Place% | Win Odds | Place%>20% | Win odds<10 | Form | Role (Strategy B) | Top Quinella (fair odds) |
-| --- | ----------------- | ------- | --------- | -------- | ---------- | ----------- | ---- | ----------------- | ------------------------ |
-| 1   | KA YING RISING    | 34.5    | 74.4      | 1.0      | ✅          | ✅           | 6    | ★ 膽 (Banker)      | 1-7: 16.4% (6.1)         |
-| 7   | TOMODACHI KOKOROE | 18.9    | 56.3      | 212      | ✅          | ❌           | 10   | 腳 (Leg)           | 1-8: 13.4% (7.5)         |
-| 8   | BEAUTY WAVES      | 16.4    | 51.0      | 178      | ✅          | ❌           | 10   | 腳 (Leg)           | 1-4: 13.1% (7.7)         |
-| 4   | FAST NETWORK      | 14.5    | 49.9      | 252      | ✅          | ❌           | 8    | 腳 (Leg)           | 1-3: 9.5% (10.5)         |
-| 3   | HELIOS EXPRESS    | 10.3    | 40.9      | 72       | ✅          | ❌           | 6    | 腳 (Leg)           | —                        |
-| 5   | RAGING BLIZZARD   | 5.4     | 26.1      | 124      | ✅          | ❌           | 8    | 腳 (Leg)           | —                        |
-| 2   | SATONO REVE       | 0.0     | 0.8       | 67       | ❌          | ❌           | 1    | —                 | —                        |
-| 6   | COMANCHE BRAVE    | 0.0     | 0.6       | 174      | ❌          | ❌           | 0    | —                 | —                        |
+| #  | Horse             | MC Win% | MC Place% | Win Odds | Place%>20% | Win odds<10 | Form | Role (Strategy B) | Top Quinella (fair odds)   |
+|----|-------------------|---------|-----------|----------|------------|-------------|------|-------------------|----------------------------|
+| 1  | KA YING RISING    | 37.1    | 75.8      | 1        | ✅          | ✅           | 6    | ★ 膽 (Banker)      | 1-3: 14.6% (6.8)           |
+| 3  | HELIOS EXPRESS    | 15.1    | 51.5      | 106      | ✅          | ❌           | 6    | 腳 (Leg)           | 1-3: 14.6% (6.8)           |
+| 4  | FAST NETWORK      | 14.8    | 50.4      | 273      | ✅          | ❌           | 8    | 腳 (Leg)           | 1-4: 13.8% (7.2)           |
+| 7  | TOMODACHI KOKOROE | 13.3    | 45.9      | 287      | ✅          | ❌           | 10   | 腳 (Leg)           | 1-7: 12.4% (8.1)           |
+| 5  | RAGING BLIZZARD   | 10.4    | 39.1      | 167      | ✅          | ❌           | 8    | 腳 (Leg)           | 1-5: 9.6% (10.4)           |
+| 8  | BEAUTY WAVES      | 9.3     | 35.8      | 190      | ✅          | ❌           | 10   | 腳 (Leg)           | 1-8: 8.9% (11.2)           |
+| 2  | SATONO REVE       | 0.1     | 0.9       | 74       | ❌          | ❌           | 1    | —                 | 1-2: ~0.1% (~770)          |
+| 6  | COMANCHE BRAVE    | 0.1     | 0.6       | 229      | ❌          | ❌           | 0    | —                 | —                          |
 
-Market: Extreme gap — MC sees #1 KA YING RISING as dominant (34.5%) and market has it at 1.0 (unbackable odds — already accounting for it). But MC also rates #7 TOMODACHI (18.9%) and #8 BEAUTY WAVES (16.4%) highly, while market has them at 212 and 178 — massive longshot odds vs strong MC placement. This G1 field is small (8 runners) and MC form data may not reflect international class accurately.
+Market: **#1** is a short-priced G1 standard-setter (37.1% MC vs $1.00). The model still spreads meaningful Place% across **#3–#8**, while the board prices **#3–#8** at triple-digit win odds — huge model-vs-tote gap that often reflects international class the HK form stack undervalues.
 
 ───────────────────────────────────────────────────────────
 HORSE RANKINGS (Strategy A — Adj = MC + SCMP)
 ───────────────────────────────────────────────────────────
 
-| #   | Horse             | MC Win% | MC Place% | Adj Win% factor | Adj Place% factor | Adj Win% | Adj Place% | Odds | Jockey     | SCMP Flags                                                         |
-| --- | ----------------- | ------- | --------- | --------------- | ----------------- | -------- | ---------- | ---- | ---------- | ------------------------------------------------------------------ |
-| 1   | KA YING RISING    | 34.5    | 74.4      | 0               | 0                 | **34.5** | **74.4**   | 1.0  | Z Purton   | — (6 straight wins, record holder here)                            |
-| 7   | TOMODACHI KOKOROE | 18.9    | 56.3      | 0               | 0                 | **18.9** | **56.3**   | 212  | H Bentley  | —                                                                  |
-| 8   | BEAUTY WAVES      | 16.4    | 51.0      | 0               | 0                 | **16.4** | **51.0**   | 178  | A Badel    | (bumped after 100M — minor)                                        |
-| 4   | FAST NETWORK      | 14.5    | 49.9      | excuses +2      | excuses +2        | **16.5** | **51.9**   | 252  | J McDonald | +excuses (held up 300M, lay out, conservative ride from wide gate) |
-| 3   | HELIOS EXPRESS    | 10.3    | 40.9      | excuses +2      | excuses +2        | **12.3** | **42.9**   | 72   | H Bowman   | +excuses (shifted across, held up 350–150M)                        |
-| 5   | RAGING BLIZZARD   | 5.4     | 26.1      | 0               | 0                 | **5.4**  | **26.1**   | 124  | B Avdulla  | (shifted across — standard)                                        |
-| 2   | SATONO REVE       | 0.0     | 0.8       | 0               | 0                 | **~0**   | **~1**     | 67   | J Moreira  | (jumped awkwardly, shifted out)                                    |
-| 6   | COMANCHE BRAVE    | 0.0     | 0.6       | 0               | 0                 | **~0**   | **~1**     | 174  | O Murphy   | — (overseas raider, 0 HK form)                                     |
+| Rank | # | Horse | MC Win% | MC Place% | Adj Win% factor | Adj Place% factor | Adj Win% | Adj Place% | Odds | Jockey | Style | SCMP Flags | Role |
+|------|---|-------|---------|-----------|-----------------|-------------------|----------|------------|------|--------|-------|------------|------|
+| 1 | 1 | KA YING RISING | 37.1 | 75.8 | 0 | 0 | **37.1** | **75.8** | 1.0 | Z Purton | On-pace | — (six straight wins; record holder — Star Form) | ★ 膽 (Banker) |
+| 2 | 3 | HELIOS EXPRESS | 15.1 | 51.5 | excuses +2 | excuses +2 | **17.1** | **53.5** | 106 | H Bowman | Stalker | +excuses (held up 350–150M — TIR) | 腳 (Leg) |
+| 3 | 4 | FAST NETWORK | 14.8 | 50.4 | excuses +2 | excuses +2 | **16.8** | **52.4** | 273 | J McDonald | Midfield | +excuses (held near 300M; lay out / contact late; conservative ride notes — TIR) | 腳 (Leg) |
+| 4 | 7 | TOMODACHI KOKOROE | 13.3 | 45.9 | 0 | 0 | **13.3** | **45.9** | 287 | H Bentley | Midfield | — | 腳 (Leg) |
+| 5 | 5 | RAGING BLIZZARD | 10.4 | 39.1 | 0 | 0 | **10.4** | **39.1** | 167 | B Avdulla | Midfield | (shifted across early — standard) | 腳 (Leg) |
+| 6 | 8 | BEAUTY WAVES | 9.3 | 35.8 | excuses +2 | excuses +2 | **11.3** | **37.8** | 190 | A Badel | Midfield | +excuses (bumped after 100M — TIR) | 腳 (Leg) |
+| 7 | 2 | SATONO REVE | 0.1 | 0.9 | excuses +2 | excuses +2 | **2.1** | **2.9** | 74 | J Moreira | — | +excuses (awkward jump/contact — TIR); Japan G1 form (Star Form) | — |
+| 8 | 6 | COMANCHE BRAVE | 0.1 | 0.6 | 0 | 0 | **0.1** | **0.6** | 229 | O Murphy | — | overseas raider; **0** HK form lines — MC blind spot | — |
 
-**Banker (Strategy A):** **#1 KA YING RISING** — Adj Win% 34.5%. 6 form lines, all wins (1/1/1/1/1/1). ≥2 starts ✓. Record holder at this course/distance. Purton aboard.
+**Banker (Strategy A):** **#1 KA YING RISING** — highest Adj Win% (37.1%). 6 form lines, ≥2 starts ✓.
 
-**Note:** Adj Win% 34.5% just under 35% threshold → technically Competitive (Mode B). But 6 straight wins + G1 class = functionally dominant. Using **Mode A (Tight Pool 5)**.
+**2nd-ranked:** **#3 HELIOS EXPRESS** — Adj Place% **53.5%** < 63% → **no 雙膽拖** (single-banker 膽拖).
 
-**2nd-ranked:** #4 FAST NETWORK Adj Place% 51.9% < 63% → **no 雙膽拖**.
-
-Pool (Adj Place% ≥ 25%): #1 (74.4%), #7 (56.3%), #4 (51.9%), #8 (51.0%), #3 (42.9%), #5 (26.1%). All 6 non-banker runners ≥ 25%. Small 8-runner field → 5 horses in pool (Mode A), top 4 legs by Adj Place%.
+**Pool rule:** Horses with **Adj Place% ≥ 25%** after adjustments: **#1, #3, #4, #7, #5, #8** (six runners). That exceeds Mode A (5) capacity without violating the must-include rule → **Mode B pool of 6** with **#1** banker and **five legs**.
 
 ───────────────────────────────────────────────────────────
 TRIO POOL (any order) — Strategy A
 ───────────────────────────────────────────────────────────
-POOL: #1, #7, #4, #8, #3
-MODE: A (Dominant, functionally — 6 straight wins G1 class) | POOL SIZE: 5
+POOL: #1, #3, #4, #7, #5, #8
+MODE: Dominant headline (Adj Win% 37.1% ≥ 35%) with **Mode B** pool geometry (6) | POOL SIZE: 6
 
 膽拖 STRUCTURE:
-膽 (Banker): #1 KA YING RISING (Adj Place% 74.4%) ← locked in every combo
-腳 (Legs): #7, #4, #8, #3
-BET STRUCTURE: 膽拖 | 1膽 + 4腳 | COMBINATIONS: C(4,2) = 6
+膽 (Banker): #1 KA YING RISING (Adj Place% 75.8%) ← locked in every combo
+腳 (Legs): #3, #4, #7, #5, #8
+BET STRUCTURE: 膽拖 | 1膽 + 5腳 | COMBINATIONS: C(5,2) = 10
 
 TOP TRIO COMBINATIONS (by combined Adj Place%):
 | Rank | Horses (any order) | Combined Place% | Est. Fair Odds |
 |------|-------------------|----------------|----------------|
-| 1 | #1, #7, #4 | 74×56×52 ≈ 21.6% | ~$46 |
-| 2 | #1, #7, #8 | 74×56×51 ≈ 21.1% | ~$47 |
-| 3 | #1, #4, #8 | 74×52×51 ≈ 19.6% | ~$51 |
-| 4 | #1, #7, #3 | 74×56×43 ≈ 17.8% | ~$56 |
-| 5 | #1, #4, #3 | 74×52×43 ≈ 16.5% | ~$61 |
+| 1 | #1, #3, #4 | 75.8×53.5×52.4 ≈ 21.2% | ~$47           |
+| 2 | #1, #3, #7 | 75.8×53.5×45.9 ≈ 18.6% | ~$54           |
+| 3 | #1, #4, #7 | 75.8×52.4×45.9 ≈ 18.2% | ~$55           |
+| 4 | #1, #3, #5 | 75.8×53.5×39.1 ≈ 15.9% | ~$63           |
+| 5 | #1, #3, #8 | 75.8×53.5×37.8 ≈ 15.3% | ~$65           |
 
 ───────────────────────────────────────────────────────────
 TICKET SUMMARY — Strategy A
 ───────────────────────────────────────────────────────────
-COMBINATIONS: 6 (膽拖: C(4,2))
+COMBINATIONS: 10 (膽拖: C(5,2))
 UNIT BET: $10 (fixed)
-TOTAL STAKE: $60
+TOTAL STAKE: $100
 
 PASS CONDITIONS:
 - If #1 KA YING RISING (banker) is scratched → VOID ticket
 
-CONFIDENCE: HIGH — G1 superstar, 6 straight wins, Purton, record holder. Small field (8 runners) = fewer ways to miss. Main risk is banker finishing >3rd in a G1 against international raiders.
+CONFIDENCE: HIGH on structure — small field, dominant local MC signal on #1. **Calibration:** MC is built from HK historicals; international profiles may be mis-ranked (see caveats).
 
 CAVEATS:
-- G1 international field — MC form data based on HK historical only; overseas raiders (#2 SATONO REVE, #6 COMANCHE BRAVE) may outperform MC's pricing of ~0%.
-- Market odds for #7, #8, #4 (212, 178, 252) are extremely long — these are the MC model's 2nd–4th picks but market treats them as rank outsiders. The market may be pricing in factors MC misses.
+- **G1 / 8 runners:** variance is concentrated — one pace meltdown can bust a heavy favourite ticket.
+- **#2 SATONO REVE** (Japan, 1 HK form line in snapshot) and **#6 COMANCHE BRAVE** (**0** local form) may be materially underrated by MC even though they stay **out** of Strategy A on Adj Place rules.
+- Long win odds on **#3–#8** vs healthy MC Place% — respect tote shocks; this is not an “odds = probability” field.
 
 ───────────────────────────────────────────────────────────
 STRATEGY B (MC-only)
 ───────────────────────────────────────────────────────────
-Banker: #1 KA YING RISING (MC Win% 34.5%, MC Place% 74.4%) ← 1st by MC Win%
-Primary legs (MC Place% > 20%): #7 (56.3%), #8 (51.0%), #4 (49.9%), #3 (40.9%), #5 (26.1%)
-Replaceable legs (MC Place% 20–30% AND Win odds > 10): #5 RAGING BLIZZARD (26.1%, odds 124) — replaceable.
-Win-odds candidates (MC Place% ≤ 20% AND Win odds < 10): **None** (all remaining horses have odds > 10).
-Action: No Win-odds candidates exist → no replacements. #5 stays.
-Final legs: #7, #8, #4, #3, #5
+Banker: #1 KA YING RISING (MC Win% 37.1%, MC Place% 75.8%) ← 1st by MC Win%
+Primary legs (MC Place% > 20%): #3 (51.5%), #4 (50.4%), #7 (45.9%), #5 (39.1%), #8 (35.8%)
+Replaceable legs (MC Place% 20–30% AND Win odds > 10): **None** (all primary legs either >30% Place or have win odds >10 but Place outside 20–30% band)
+Win-odds candidates (MC Place% ≤ 20% AND Win odds < 10): **None** (#1 is banker; all other win odds ≥ 74)
+Action: No replacements or add-ons from the odds rule.
+Final legs: #3, #4, #7, #5, #8
 BET STRUCTURE: 膽拖 | 1膽 + 5腳 | COMBINATIONS: C(5,2) = 10
 UNIT BET: $10 (fixed)
 TOTAL STAKE: $100
 
 STRATEGY B TICKET:
-  1-7-8, 1-7-4, 1-7-3, 1-7-5
-  1-8-4, 1-8-3, 1-8-5
-  1-4-3, 1-4-5
-  1-3-5
+  1-3-4, 1-3-7, 1-3-5, 1-3-8
+  1-4-7, 1-4-5, 1-4-8
+  1-7-5, 1-7-8
+  1-5-8
 
-Strategy B vs A: B includes #5 RAGING BLIZZARD (26.1% MC Place, 124 odds) as extra leg. No Step B swaps — no horse under 10 odds outside primary legs. B costs $100 vs A's $60.
+Strategy B vs A: **Identical geometry** this week — both are **#1** plus the same five MC-place legs; A re-orders/ranks with SCMP (+excuses on #3, #4, #8) but does not drop anyone below the 25% Adj Place cut-off.
+
 ═══════════════════════════════════════════════════════════

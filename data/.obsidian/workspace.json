@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "reports/trio_strategy_20260426_ST_R1.md",
+                "file": "static/mc_top1_place_hit_rate_by_segment_20260426.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "trio_strategy_20260426_ST_R1"
+              "title": "mc_top1_place_hit_rate_by_segment_20260426"
             }
           }
         ]
@@ -185,23 +185,26 @@
   },
   "active": "e5c96460c580b5b7",
   "lastOpenFiles": [
-    "test_reports/mc_top1_place_allup_summary.md",
     "static/trio_stratC_hit_rate_by_segment_20260426.md",
     "static/mc_top1_place_hit_rate_by_segment_20260426.md",
-    "reports/trio_strategy_20260426_ST_R8.md",
-    "reports/trio_strategy_20260426_ST_R10.md",
+    "reviews/trio_review_stratC_20260422_HV.md",
+    "reviews/trio_review_stratC_20260426_ST.md",
+    "test_reports/mc_top1_place_allup_summary.md",
     "reports/trio_strategy_20260426_ST_R11.md",
+    "reports/trio_strategy_20260426_ST_R10.md",
     "reports/trio_strategy_20260426_ST_R9.md",
+    "reports/trio_strategy_20260426_ST_R8.md",
     "reports/trio_strategy_20260426_ST_R7.md",
-    "test_reports/mc_top1_place_bet_summary.md",
-    "test_reports/mc_top1_quinella_summary.md",
-    "test_reports/mc_top3_place_bet_summary.md",
     "reports/trio_strategy_20260426_ST_R6.md",
     "reports/trio_strategy_20260426_ST_R5.md",
     "reports/trio_strategy_20260426_ST_R4.md",
-    "reports/trio_strategy_20260426_ST_R2.md",
     "reports/trio_strategy_20260426_ST_R3.md",
+    "reports/trio_strategy_20260426_ST_R2.md",
     "reports/trio_strategy_20260426_ST_R1.md",
+    "test_reports/mc_top3_place_bet_summary.md",
+    "static/trio_stratC_hit_rate_by_segment_20260422.md",
+    "test_reports/mc_top1_place_bet_summary.md",
+    "test_reports/mc_top1_quinella_summary.md",
     "racecards/racecard_20260426_ST_R10.json",
     "racecards/racecard_20260426_ST_R8.json",
     "racecards/racecard_20260426_ST_R11.json",
@@ -217,9 +220,6 @@
     "reviews/trio_review_stratC_20260318_HV.md",
     "test_reports/trio_mc_place_replace_review_20260219_ST.md",
     "test_reports/first4_stratB_invest_return.md",
-    "reports/3t_sixup_strategy_20260211_HV.md",
-    "reviews/trio_review_stratC_20260419_ST.md",
-    "reviews/trio_review_20260301_ST.md",
-    "reviews/trio_review_stratC_20260422_HV.md"
+    "reports/3t_sixup_strategy_20260211_HV.md"
   ]
 }

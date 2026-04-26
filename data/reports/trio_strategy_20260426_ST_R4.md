@@ -2,122 +2,133 @@
 TRIO (ANY ORDER) STRATEGY - Sha Tin | 2026-04-26 | Race 4
 ═══════════════════════════════════════════════════════════
 
-DATA VALIDATION: ✅ All checks passed | Going: Good | 0 scratchings
-MC SIMULATION: 10,000 iterations
-SCMP DATA: ✅ Loaded | TIR/Vet parsed
-ODDS SOURCE: HKJC live (fetch-odds.ts + live scrape, ~14:50 HKT 25-Apr)
+DATA VALIDATION: ✅ All checks passed | Going: Good to Firm | 0 scratchings (reserve entries only on card)
+MC SIMULATION: 10,000 iterations (--ignore-records 20260426, --form-data all, --use-saved)
+SCMP DATA: ✅ Loaded | Star Form/TIR/Vet/Trackwork/QP/Q odds parsed (tipster tables ignored)
+ODDS SOURCE: `data/odds/odds_20260426_ST.json` (fetch-odds.ts, captured ~06:50 UTC 25-Apr)
+             SCMP odds: ✅ cross-check | HKJC file: ✅ loaded
 
-RACE: R4 — Class 4 | 1400m Turf | Good | 14 runners
+RACE: R4 — Class 4 | 1400M Turf "A" Course | Good to Firm | 14 runners
 CLASSIFICATION: Dominant | POOL SIZE: 5
-MODE: A: Tight Pool (5)
-BET STRUCTURE: 膽拖 1膽+4腳 C(4,2) = 6 (Strategy A)
+MODE: A: Tight Pool (5) — 雙膽拖 eligible (2nd Adj Place% ≥ 63%)
+BET STRUCTURE: 雙膽拖 2膽+3腳 = 3 combos (Strategy A) / 膽拖 1膽+6腳 C(6,2) = 15 (Strategy B)
 UNIT BET: $10 per combination (fixed)
 
 ───────────────────────────────────────────────────────────
 MC SIMULATION (raw)
 ───────────────────────────────────────────────────────────
 
-| # | Horse | MC Win% | MC Place% | Win Odds | Place%>20% | Win odds<10 | Form | Role (Strategy B) | Top Quinella (fair odds) |
-|---|-------|---------|-----------|----------|------------|-------------|------|-------------------|--------------------------|
-| 3 | ROBOT STAR | 48.2 | 82.3 | 7.8 | ✅ | ✅ | 6 | ★ 膽 (Banker) | 3-4: 18.9% (5.3) |
-| 4 | NYX GLUCK | 15.2 | 50.8 | 8.1 | ✅ | ✅ | 9 | 腳 (Leg) | 3-5: 18.4% (5.4) |
-| 5 | KING DANCE | 14.3 | 51.4 | 6.1 | ✅ | ✅ | 6 | 腳 (Leg) | 3-10: 11.9% (8.4) |
-| 10 | PHOENIX LIGHT | 9.0 | 36.5 | 9.7 | ✅ | ✅ | 4 | 腳 (Leg) | 3-7: 9.3% (10.7) |
-| 7 | WARRIORS DREAM | 6.4 | 31.5 | 42 | ✅ | ❌ | 7 | 腳 (Leg) | — |
-| 14 | STAR FIGURE | 3.5 | 19.7 | 48 | ❌ | ❌ | 6 | — | — |
-| 13 | CALIFORNIA BAY | 1.6 | 11.4 | 19 | ❌ | ❌ | 11 | — | — |
-| 12 | ACE | 1.2 | 8.9 | 5.9 | ❌ | ✅ | 6 | — (Step B cand.) | — |
-| 9 | DAILY ACCLAIM | 0.6 | 4.8 | 4.8 | ❌ | ✅ | 2 | — (Step B cand.) | — |
-| 1 | STAR MAC | 0.0 | 0.8 | 11 | ❌ | ❌ | 5 | — | — |
-| 6 | POET'S REIGN | 0.0 | 1.0 | 24 | ❌ | ❌ | 2 | — | — |
-| 11 | LUCKY BALERION | 0.0 | 0.8 | 20 | ❌ | ❌ | 2 | — | — |
-| 2 | JOLTIN | 0.0 | 0.0 | 81 | ❌ | ❌ | 4 | — | — |
-| 8 | GREEN ANGEL | 0.0 | 0.2 | 28 | ❌ | ❌ | 0 | — | — |
+| #  | Horse             | MC Win% | MC Place% | Win Odds | Place%>20% | Win odds<10 | Form | Role (Strategy B)      | Top Quinella (fair odds)   |
+|----|-------------------|---------|-----------|----------|------------|-------------|------|------------------------|----------------------------|
+| 5  | KING DANCE        | 36.1    | 74.4      | 5.9      | ✅          | ✅           | 6    | ★ 膽 (Banker)           | 3-5: 27.1% (3.7)           |
+| 3  | ROBOT STAR        | 31.4    | 69.7      | 8        | ✅          | ✅           | 6    | 腳 (Leg)                | 3-5: 27.1% (3.7)           |
+| 7  | WARRIORS DREAM    | 10.1    | 40.3      | 40       | ✅          | ❌           | 7    | 腳 (Leg)                | 5-7: 10.0% (10.0)          |
+| 4  | NYX GLUCK         | 5.6     | 26.1      | 7.8      | ✅          | ✅           | 9    | 腳 (Leg)                | 4-5: 5.5% (18.3)           |
+| 10 | PHOENIX LIGHT     | 4.5     | 23.6      | 10       | ✅          | ❌           | 4    | 腳 (Leg)                | 5-10: ~5.2% (~19)          |
+| 14 | STAR FIGURE       | 4.8     | 22.1      | 46       | ✅          | ❌           | 6    | 腳 (Leg — replaced #14) | 5-14: 4.7% (21.4)          |
+| 13 | CALIFORNIA BAY    | 3.7     | 18.3      | 19       | ❌          | ❌           | 11   | —                      | 5-13: ~3.6% (~28)          |
+| 12 | ACE               | 3.0     | 16.2      | 6.4      | ❌          | ✅           | 6    | 腳 (Leg — added direct) | 5-12: ~3.1% (~32)          |
+| 9  | DAILY ACCLAIM     | 0.5     | 4.3       | 4.7      | ❌          | ✅           | 2    | 腳 (Leg — replaced #14) | 5-9: ~0.6% (~164)          |
+| 1  | STAR MAC          | 0.3     | 3.6       | 12       | ❌          | ❌           | 5    | —                      | 1-3: ~0.5% (~200)          |
+| 6  | POET'S REIGN      | 0.0     | 0.4       | 21       | ❌          | ❌           | 2    | —                      | —                          |
+| 11 | LUCKY BALERION    | 0.0     | 0.4       | 19       | ❌          | ❌           | 2    | —                      | —                          |
+| 2  | JOLTIN            | 0.0     | 0.1       | 85       | ❌          | ❌           | 4    | —                      | —                          |
+| 8  | GREEN ANGEL       | 0.0     | 0.2       | 28       | ❌          | ❌           | 0    | —                      | —                          |
 
-Market: MC strongly favours #3 ROBOT STAR (48.2% vs 7.8 odds — market agrees it's contending but not dominant). #9 DAILY ACCLAIM (0.6% MC vs 4.8 odds, Moreira) is a massive model-market gap — MC has 2 form lines only. #12 ACE (1.2% vs 5.9) is another market-backed MC blind spot.
+Market: MC now favours **#5 KING DANCE** (36.1% Win vs 5.9 odds) ahead of **#3 ROBOT STAR** (31.4% vs 8.0) — a flip vs earlier snapshots where Robot Star led. #9 DAILY ACCLAIM (0.5% MC vs 4.7 odds, Moreira) remains a deep model–market gap on only 2 local form lines. #12 ACE (3.0% vs 6.4) is another short-priced runner MC discounts.
 
 ───────────────────────────────────────────────────────────
 HORSE RANKINGS (Strategy A — Adj = MC + SCMP)
 ───────────────────────────────────────────────────────────
 
-| # | Horse | MC Win% | MC Place% | Adj Win% factor | Adj Place% factor | Adj Win% | Adj Place% | Odds | Jockey | SCMP Flags |
-|---|-------|---------|-----------|-----------------|-------------------|----------|------------|------|--------|------------|
-| 3 | ROBOT STAR | 48.2 | 82.3 | excuses +2 | excuses +2 | **50.0** (cap) | **84.3** | 7.8 | H Bowman | +excuses (shifted out on jumping, severely checked 250M) |
-| 5 | KING DANCE | 14.3 | 51.4 | 0 | 0 | **14.3** | **51.4** | 6.1 | C Y Ho | — |
-| 4 | NYX GLUCK | 15.2 | 50.8 | 0 | 0 | **15.2** | **50.8** | 8.1 | E Brown | (rider dropped rein 250M — minor error, no excuse) |
-| 10 | PHOENIX LIGHT | 9.0 | 36.5 | -age −2 | -age −2 | **7.0** | **34.5** | 9.7 | A Atzeni | -age (8 years old — C4 race) |
-| 7 | WARRIORS DREAM | 6.4 | 31.5 | 0 | 0 | **6.4** | **31.5** | 42 | L Hewitson | (bumped after start — minor) |
-| 14 | STAR FIGURE | 3.5 | 19.7 | 0 | 0 | **3.5** | **19.7** | 48 | B Avdulla | (eased 200M, one-paced) |
-| 13 | CALIFORNIA BAY | 1.6 | 11.4 | excuses +2 | excuses +2 | **3.6** | **13.4** | 19 | K Teetan | +excuses (bumped 250M, wide trip, blood in mouth post-race) |
-| 12 | ACE | 1.2 | 8.9 | 0 | 0 | **1.2** | **8.9** | 5.9 | C L Chau | (jumped awkwardly, lost plate) |
-| 9 | DAILY ACCLAIM | 0.6 | 4.8 | excuses +2 | excuses +2 | **2.6** | **6.8** | 4.8 | J Moreira | +excuses (jumped fairly, bumped 850M, held up final 150M) |
-| 1 | STAR MAC | 0.0 | 0.8 | -injury30d −3 | -injury30d −4 | **~0** | **~0** | 11 | J McDonald | -injury30d (bled both nostrils 10/12/25, passed 27/03/26 — within 30 days) |
-| 11 | LUCKY BALERION | 0.0 | 0.8 | -injury30d −3 | -injury30d −4 | **~0** | **~0** | 20 | M F Poon | -injury30d (substantial blood trachea 22/02, passed 25/03 — 31 days) + raced greenly |
-| 6 | POET'S REIGN | 0.0 | 1.0 | 0 | 0 | **~0** | **~1** | 24 | O Murphy | (fractious saddling, raced greenly — immature) |
-| 2 | JOLTIN | 0.0 | 0.0 | 0 | 0 | **~0** | **~0** | 81 | E C W Wong | — |
-| 8 | GREEN ANGEL | 0.0 | 0.2 | 0 | 0 | **~0** | **~0** | 28 | R Kingscote | — (debutant) |
+| Rank | # | Horse | MC Win% | MC Place% | Adj Win% factor | Adj Place% factor | Adj Win% | Adj Place% | Odds | Jockey | Style | SCMP Flags | Role |
+|------|---|-------|---------|-----------|-----------------|-------------------|----------|------------|------|--------|-------|------------|------|
+| 1 | 5 | KING DANCE | 36.1 | 74.4 | excuses +2 | excuses +2 | **38.1** | **76.4** | 5.9 | C Y Ho | On-pace | +excuses (Philip Woo: badly held up much of straight on dirt win before 1400m success) | ★ 膽 (Banker) |
+| 2 | 3 | ROBOT STAR | 31.4 | 69.7 | excuses +2 | excuses +2 | **33.4** | **71.7** | 8 | H Bowman | Midfield | +excuses (shifted out on jump; severely checked 250M — TIR) | ★ 膽 (Banker 2) |
+| 3 | 7 | WARRIORS DREAM | 10.1 | 40.3 | 0 | 0 | **10.1** | **40.3** | 40 | L Hewitson | Midfield | (bumped after start — minor; not scored) | 腳 (Leg) |
+| 4 | 4 | NYX GLUCK | 5.6 | 26.1 | 0 | 0 | **5.6** | **26.1** | 7.8 | E Brown | Midfield | (rider dropped rein 250M — rider error, no +excuses) | 腳 (Leg) |
+| 5 | 14 | STAR FIGURE | 4.8 | 22.1 | excuses +2 | excuses +2 | **6.8** | **24.1** | 46 | B Avdulla | Closer | +excuses (hampered/eased 200M, one-paced — TIR) | 腳 (Leg) |
+| 6 | 10 | PHOENIX LIGHT | 4.5 | 23.6 | excuses +2, -age −2 | excuses +2, -age −2 | **4.5** | **23.6** | 10 | A Atzeni | Midfield | +excuses (wide/no cover — TIR); -age (8yo) | — |
+| 7 | 13 | CALIFORNIA BAY | 3.7 | 18.3 | excuses +2, trial +2 | excuses +2, trial +2 | **7.7** | **22.3** | 19 | K Teetan | Midfield | +excuses (bumped/steadied/wide; blood in mouth — TIR); +trial (trialled fine — Star Form) | — |
+| 8 | 12 | ACE | 3.0 | 16.2 | trial +2 | trial +2 | **5.0** | **18.2** | 6.4 | C L Chau | Midfield | +trial (trackwork: strong dirt work — SCMP highlight); (awkward jump/lost plate — TIR, not scored) | — |
+| 9 | 9 | DAILY ACCLAIM | 0.5 | 4.3 | excuses +2 | excuses +2 | **2.5** | **6.3** | 4.7 | J Moreira | Midfield | +excuses (bumped 850M; no clear run final 150M — TIR) | — |
+| 10 | 1 | STAR MAC | 0.3 | 3.6 | -injury30d −3 | -injury30d −4 | **~0** | **~0** | 12 | J McDonald | Midfield | -injury30d (bled both nostrils 10/12/25; passed 27/03/26 — Vet) | — |
+| 11 | 11 | LUCKY BALERION | 0.0 | 0.4 | excuses +2 | excuses +2 | **2.0** | **2.4** | 19 | M F Poon | On-pace | +excuses (wide/no cover — TIR); vet blood trachea 22/02 passed 25/03 (>30d — no −injury30d) | — |
+| 12 | 6 | POET'S REIGN | 0.0 | 0.4 | 0 | 0 | **~0** | **~0** | 21 | O Murphy | — | (fractious/green — TIR) | — |
+| 13 | 2 | JOLTIN | 0.0 | 0.1 | 0 | 0 | **~0** | **~0** | 85 | E C W Wong | — | — | — |
+| 14 | 8 | GREEN ANGEL | 0.0 | 0.2 | 0 | 0 | **~0** | **~0** | 28 | R Kingscote | — | debut | — |
 
-**Banker (Strategy A):** **#3 ROBOT STAR** — Adj Win% 50.0% (capped). 6 form lines, ≥2 starts ✓. Recent winner (1st, 2nd, 2nd pattern). Severely checked 250M last run = strong bounce candidate.
+**Banker (Strategy A):** **#5 KING DANCE** — highest Adj Win% (38.1%). 6 form lines, ≥2 starts ✓.
 
-**2nd-ranked:** **#4 NYX GLUCK** — Adj Place% 50.8% < 63% → **no 雙膽拖**. Use 膽拖.
+**2nd-ranked:** **#3 ROBOT STAR** — Adj Place% **71.7%** ≥ 63% → **雙膽拖**.
 
-Pool (Adj Place% ≥ 25%): #3 (84.3%), #5 (51.4%), #4 (50.8%), #10 (34.5%), #7 (31.5%). That's 5 horses — fits Mode A perfectly.
+Reasoning: After SCMP, top Adj Win stays with **#5** (strong local progression + excuse narrative on prior dirt run) and **#3** (severe check last time). Pool is built from Adj Place% ≥ 25% (**#5, #3, #7, #4**) plus **#14** (24.1%) as the fifth slot to satisfy Mode A (5) tight pool — **#10** and **#13** sit just under the 25% inclusion line on Adj Place.
+
+**Key vet flags:** **#1 STAR MAC** (bleeding history; passed trial) — heavy SCMP penalty; excluded from pool.
 
 ───────────────────────────────────────────────────────────
 TRIO POOL (any order) — Strategy A
 ───────────────────────────────────────────────────────────
-POOL: #3, #5, #4, #10, #7
-MODE: A (Dominant — Adj Win% 50.0% ≥ 35%) | POOL SIZE: 5
+POOL: #5, #3, #7, #4, #14
+MODE: A (Dominant — top Adj Win% 38.1% ≥ 35%) | POOL SIZE: 5
 
-膽拖 STRUCTURE:
-膽 (Banker): #3 ROBOT STAR (Adj Place% 84.3%) ← locked in every combo
-腳 (Legs): #5, #4, #10, #7
-BET STRUCTURE: 膽拖 | 1膽 + 4腳 | COMBINATIONS: C(4,2) = 6
+雙膽拖 STRUCTURE:
+膽 1 (Banker): #5 KING DANCE (Adj Place% 76.4%) ← locked in every combo
+膽 2 (Banker): #3 ROBOT STAR (Adj Place% 71.7%) ← locked in every combo
+腳 (Legs): #7, #4, #14
+BET STRUCTURE: 雙膽拖 | 2膽 + 3腳 | COMBINATIONS: 3
 
 TOP TRIO COMBINATIONS (by combined Adj Place%):
-| Rank | Horses (any order) | Combined Place% | Est. Fair Odds |
-|------|-------------------|----------------|----------------|
-| 1 | #3, #5, #4 | 84×51×51 ≈ 21.9% | ~$46 |
-| 2 | #3, #5, #10 | 84×51×35 ≈ 15.0% | ~$67 |
-| 3 | #3, #4, #10 | 84×51×35 ≈ 15.0% | ~$67 |
-| 4 | #3, #5, #7 | 84×51×32 ≈ 13.7% | ~$73 |
-| 5 | #3, #4, #7 | 84×51×32 ≈ 13.7% | ~$73 |
+| Rank | Horses (any order)  | Combined Place%            | Est. Fair Odds |
+|------|---------------------|----------------------------|----------------|
+| 1    | #5, #3, #7         | 76.4×71.7×40.3 ≈ 22.1%    | ~$45           |
+| 2    | #5, #3, #4         | 76.4×71.7×26.1 ≈ 14.3%    | ~$70           |
+| 3    | #5, #3, #14        | 76.4×71.7×24.1 ≈ 13.2%    | ~$76           |
 
 ───────────────────────────────────────────────────────────
 TICKET SUMMARY — Strategy A
 ───────────────────────────────────────────────────────────
-COMBINATIONS: 6 (膽拖: C(4,2))
+COMBINATIONS: 3 (雙膽拖: 2膽 + 3腳)
 UNIT BET: $10 (fixed)
-TOTAL STAKE: $60
+TOTAL STAKE: $30
+
+TOP COMBINATIONS:
+  5-3-7, 5-3-4, 5-3-14
 
 PASS CONDITIONS:
-- If #3 ROBOT STAR (banker) is scratched → VOID ticket
+- If #5 KING DANCE or #3 ROBOT STAR (bankers) scratched → VOID ticket
+- If field drops below 3 → pool refunded
+- If going shifts Heavy → reassess on-pace map (#5, #4)
 
-CONFIDENCE: HIGH — MC dominant (48.2% Win), strong excuses last run, Bowman aboard. Market agrees (7.8 odds).
+CONFIDENCE: MEDIUM–HIGH — MC top two are clear but ordering vs market has rotated (favourite #5 vs #3). 雙膽拖 keeps cost at $30.
 
 CAVEATS:
-- #9 DAILY ACCLAIM (4.8 odds, Moreira, 2 form lines) and #12 ACE (5.9 odds) are market-backed but MC-priced low. Strategy B addresses this.
-- #10 PHOENIX LIGHT is 8 years old — -age penalty applied. Still in pool at 34.5% Adj Place.
+- **#9 DAILY ACCLAIM** and **#12 ACE** are market-supported at short win odds but sit outside Strategy A's 雙膽拖 on Adj Place — covered in Strategy B.
+- QP matrix (SCMP): **3-5** remains the central quinella anchor; check live QP movement late.
 
 ───────────────────────────────────────────────────────────
 STRATEGY B (MC-only)
 ───────────────────────────────────────────────────────────
-Banker: #3 ROBOT STAR (MC Win% 48.2%, MC Place% 82.3%) ← 1st by MC Win%
-Primary legs (MC Place% > 20%): #4 (50.8%), #5 (51.4%), #10 (36.5%), #7 (31.5%)
-Replaceable legs (MC Place% 20–30% AND Win odds > 10): #7 (31.5% — above 30%, NOT replaceable). **None replaceable.**
-Win-odds candidates (MC Place% ≤ 20% AND Win odds < 10): #9 DAILY ACCLAIM (4.8 odds, 4.8%), #12 ACE (5.9 odds, 8.9%)
-Action: No replaceable legs. **#9 added directly** (4.8 odds). **#12 added directly** (5.9 odds).
-Final legs: #4, #5, #10, #7, #9, #12
+Banker: #5 KING DANCE (MC Win% 36.1%, MC Place% 74.4%) ← 1st by MC Win%
+Primary legs (MC Place% > 20%): #3 (69.7%), #7 (40.3%), #4 (26.1%), #10 (23.6%), #14 (22.1%)
+Replaceable legs (MC Place% 20–30% AND Win odds > 10): #14 STAR FIGURE (MC Place% 22.1%, Win odds 46)
+Win-odds candidates (MC Place% ≤ 20% AND Win odds < 10):
+  - #9 DAILY ACCLAIM (Win odds 4.7, MC Place% 4.3%)
+  - #12 ACE (Win odds 6.4, MC Place% 16.2%)
+Action (process by Win odds ascending):
+  1. #9 (4.7 odds): replaced #14 (weakest replaceable)
+  2. #12 (6.4 odds): no remaining replaceable leg → added directly
+Final legs: #3, #7, #4, #10, #9, #12
 BET STRUCTURE: 膽拖 | 1膽 + 6腳 | COMBINATIONS: C(6,2) = 15
 UNIT BET: $10 (fixed)
 TOTAL STAKE: $150
 
 STRATEGY B TICKET:
-  3-4-5, 3-4-10, 3-4-7, 3-4-9, 3-4-12
-  3-5-10, 3-5-7, 3-5-9, 3-5-12
-  3-10-7, 3-10-9, 3-10-12
-  3-7-9, 3-7-12
-  3-9-12
+  5-3-7, 5-3-4, 5-3-10, 5-3-9, 5-3-12
+  5-7-4, 5-7-10, 5-7-9, 5-7-12
+  5-4-10, 5-4-9, 5-4-12
+  5-10-9, 5-10-12
+  5-9-12
 
-Strategy B vs A: B adds #9 DAILY ACCLAIM (4.8 odds, Moreira, 2 form) and #12 ACE (5.9 odds, C L Chau, recent winner). $150 vs $60. Key risk: #9 only has 2 form lines.
+Strategy B vs A: B spends $150 vs A's $30 to fold in **#9** (market favourite on thin form) and **#12** (trial/trackwork-positive) while dropping **#14** from the MC-primary set. A stays with the two structural MC leaders in a low-cost 雙膽拖.
 ═══════════════════════════════════════════════════════════

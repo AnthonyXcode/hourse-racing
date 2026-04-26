@@ -67,51 +67,51 @@
 
 ## By distance × venue × class
 
-| Segment | Hits | Races | Hit rate |
-|---------|------|-------|----------|
-| 1000m / Happy Valley / Class 3 | 1 | 2 | 50.0% |
-| 1000m / Happy Valley / Class 4 | 0 | 3 | 0.0% |
-| 1000m / Happy Valley / Class 5 | 1 | 1 | 100.0% |
-| 1000m / Sha Tin / Class 3 | 1 | 1 | 100.0% |
-| 1000m / Sha Tin / Class 4 | 1 | 3 | 33.3% |
-| 1000m / Sha Tin / Griffin | 1 | 1 | 100.0% |
-| 1200m / Happy Valley / Class 2 | 0 | 1 | 0.0% |
-| 1200m / Happy Valley / Class 3 | 2 | 6 | 33.3% |
-| 1200m / Happy Valley / Class 4 | 4 | 11 | 36.4% |
-| 1200m / Happy Valley / Class 5 | 0 | 2 | 0.0% |
-| 1200m / Sha Tin / Class 2 | 0 | 2 | 0.0% |
-| 1200m / Sha Tin / Class 3 | 4 | 8 | 50.0% |
-| 1200m / Sha Tin / Class 4 | 3 | 12 | 25.0% |
-| 1200m / Sha Tin / Class 5 | 1 | 3 | 33.3% |
-| 1200m / Sha Tin / Group 1 | 0 | 1 | 0.0% |
-| 1200m / Sha Tin / Group 2 | 1 | 1 | 100.0% |
-| 1400m / Sha Tin / Class 2 | 1 | 3 | 33.3% |
-| 1400m / Sha Tin / Class 3 | 1 | 6 | 16.7% |
-| 1400m / Sha Tin / Class 4 | 0 | 8 | 0.0% |
-| 1400m / Sha Tin / Class 5 | 0 | 2 | 0.0% |
-| 1600m / Sha Tin / Class 2 | 0 | 1 | 0.0% |
-| 1600m / Sha Tin / Class 3 | 2 | 3 | 66.7% |
-| 1600m / Sha Tin / Class 4 | 1 | 4 | 25.0% |
-| 1600m / Sha Tin / Class 5 | 0 | 1 | 0.0% |
-| 1600m / Sha Tin / Group 1 | 0 | 1 | 0.0% |
-| 1600m / Sha Tin / Group 2 | 0 | 1 | 0.0% |
-| 1650m / Happy Valley / Class 3 | 2 | 5 | 40.0% |
-| 1650m / Happy Valley / Class 4 | 0 | 7 | 0.0% |
-| 1650m / Happy Valley / Class 5 | 0 | 3 | 0.0% |
-| 1650m / Sha Tin / Class 3 | 0 | 1 | 0.0% |
-| 1650m / Sha Tin / Class 4 | 0 | 2 | 0.0% |
-| 1650m / Sha Tin / Class 5 | 0 | 1 | 0.0% |
-| 1800m / Happy Valley / Class 3 | 0 | 1 | 0.0% |
-| 1800m / Happy Valley / Class 4 | 1 | 2 | 50.0% |
-| 1800m / Sha Tin / Class 2 | 0 | 1 | 0.0% |
-| 1800m / Sha Tin / Class 3 | 0 | 1 | 0.0% |
-| 1800m / Sha Tin / Class 4 | 0 | 1 | 0.0% |
-| 1800m / Sha Tin / Class 5 | 0 | 1 | 0.0% |
-| 2000m / Sha Tin / 4 Year Olds | 1 | 1 | 100.0% |
-| 2000m / Sha Tin / Class 3 | 0 | 1 | 0.0% |
-| 2000m / Sha Tin / Class 4 | 0 | 1 | 0.0% |
-| 2000m / Sha Tin / Group 1 | 0 | 1 | 0.0% |
-| 2200m / Happy Valley / Class 5 | 1 | 1 | 100.0% |
+| Segment                        | Hits | Races | Hit rate |
+| ------------------------------ | ---- | ----- | -------- |
+| 1000m / Happy Valley / Class 3 | 1    | 2     | 50.0%    |
+| 1000m / Happy Valley / Class 4 | 0    | 3     | 0.0%     |
+| 1000m / Happy Valley / Class 5 | 1    | 1     | 100.0%   |
+| 1000m / Sha Tin / Class 3      | 1    | 1     | 100.0%   |
+| 1000m / Sha Tin / Class 4      | 1    | 3     | 33.3%    |
+| 1000m / Sha Tin / Griffin      | 1    | 1     | 100.0%   |
+| 1200m / Happy Valley / Class 2 | 0    | 1     | 0.0%     |
+| 1200m / Happy Valley / Class 3 | 2    | 6     | 33.3%    |
+| 1200m / Happy Valley / Class 4 | 4    | 11    | 36.4%    |
+| 1200m / Happy Valley / Class 5 | 0    | 2     | 0.0%     |
+| 1200m / Sha Tin / Class 2      | 0    | 2     | 0.0%     |
+| 1200m / Sha Tin / Class 3      | 4    | 8     | 50.0%    |
+| 1200m / Sha Tin / Class 4      | 3    | 12    | 25.0%    |
+| 1200m / Sha Tin / Class 5      | 1    | 3     | 33.3%    |
+| 1200m / Sha Tin / Group 1      | 0    | 1     | 0.0%     |
+| 1200m / Sha Tin / Group 2      | 1    | 1     | 100.0%   |
+| 1400m / Sha Tin / Class 2      | 1    | 3     | 33.3%    |
+| 1400m / Sha Tin / Class 3      | 1    | 6     | 16.7%    |
+| 1400m / Sha Tin / Class 4      | 0    | 8     | 0.0%     |
+| 1400m / Sha Tin / Class 5      | 0    | 2     | 0.0%     |
+| 1600m / Sha Tin / Class 2      | 0    | 1     | 0.0%     |
+| 1600m / Sha Tin / Class 3      | 2    | 3     | 66.7%    |
+| 1600m / Sha Tin / Class 4      | 1    | 4     | 25.0%    |
+| 1600m / Sha Tin / Class 5      | 0    | 1     | 0.0%     |
+| 1600m / Sha Tin / Group 1      | 0    | 1     | 0.0%     |
+| 1600m / Sha Tin / Group 2      | 0    | 1     | 0.0%     |
+| 1650m / Happy Valley / Class 3 | 2    | 5     | 40.0%    |
+| 1650m / Happy Valley / Class 4 | 0    | 7     | 0.0%     |
+| 1650m / Happy Valley / Class 5 | 0    | 3     | 0.0%     |
+| 1650m / Sha Tin / Class 3      | 0    | 1     | 0.0%     |
+| 1650m / Sha Tin / Class 4      | 0    | 2     | 0.0%     |
+| 1650m / Sha Tin / Class 5      | 0    | 1     | 0.0%     |
+| 1800m / Happy Valley / Class 3 | 0    | 1     | 0.0%     |
+| 1800m / Happy Valley / Class 4 | 1    | 2     | 50.0%    |
+| 1800m / Sha Tin / Class 2      | 0    | 1     | 0.0%     |
+| 1800m / Sha Tin / Class 3      | 0    | 1     | 0.0%     |
+| 1800m / Sha Tin / Class 4      | 0    | 1     | 0.0%     |
+| 1800m / Sha Tin / Class 5      | 0    | 1     | 0.0%     |
+| 2000m / Sha Tin / 4 Year Olds  | 1    | 1     | 100.0%   |
+| 2000m / Sha Tin / Class 3      | 0    | 1     | 0.0%     |
+| 2000m / Sha Tin / Class 4      | 0    | 1     | 0.0%     |
+| 2000m / Sha Tin / Group 1      | 0    | 1     | 0.0%     |
+| 2200m / Happy Valley / Class 5 | 1    | 1     | 100.0%   |
 
 ---
 

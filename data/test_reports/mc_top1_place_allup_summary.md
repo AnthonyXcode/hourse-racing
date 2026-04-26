@@ -26,7 +26,7 @@
 | **9**   | **15 Apr** | **HV** | **Turf**  | **Good**     | **9**  | **41.2%** | **74.8%**  | **5/9**  | **55.6%** | **✅❌❌✅✅❌✅❌✅**   | **2 (R4-R5)** |
 | **10**  | **19 Apr** | **ST** | **Mixed** | **Good/G-F** | **11** | **46.3%** | **83.1%**  | **5/11** | **45.5%** | **❌✅❌❌✅❌✅✅❌✅❌** | **2 (R7-R8)** |
 | **11**  | **22 Apr** | **HV** | **Turf**  | **Good/G-F** | **9**  | **34.5%** | **67.4%**  | **8/9**  | **88.9%** | **✅❌✅✅✅✅✅✅✅**   | **7 (R3-R9)** |
-| **12**  | **26 Apr** | **ST** | **Turf**  | **Good/G-F** | **11** | **42.0%** | **78.7%**  | **3/11** | **27.3%** | **❌❌❌❌✅❌❌❌✅❌✅** | **1**         |
+| **12**  | **26 Apr** | **ST** | **Turf**  | **Good/G-F** | **11** | **39.2%** | **76.1%**  | **6/11** | **54.5%** | **❌✅✅✅✅❌❌❌✅❌✅** | **4 (R2-R5)** |
 |         |            |        |           |              |        |           |            |          |           |                 |               |
 |         |            |        |           |              |        |           |            |          |           |                 |               |
 
@@ -696,42 +696,60 @@ Place dividends (MC #1 when paid): R1=$17.50, R3=$26.00, R4=$13.50, R5=$30.50, R
 
 ## Meeting 12: Sha Tin | 26 Apr 2026 (11 races — Champions Day)
 
-**Results / Place dividends:** `data/historical/results_20260426_ST.json` (scrape `tools/scrape-meeting.ts --date=2026-04-26 --venue=ST`). **MC #1** = top row by **MC Win%** in `data/reports/trio_strategy_20260426_ST_R*.md` (raw MC table). **Leg eligible** = horse receives an **HKJC Place** payout. Champions Day card includes **3 Group 1 races** (R5, R7, R9).
+**Results / Place dividends:** `data/historical/results_20260426_ST.json` (scrape `tools/scrape-meeting.ts --date=2026-04-26 --venue=ST`). **MC #1** = top row by **MC Win%** in `data/reports/trio_strategy_20260426_ST_R*.md` (raw MC table, **regenerated with `--ignore-records 20260426`**). **Leg eligible** = horse receives an **HKJC Place** payout. Champions Day card includes **3 Group 1 races** (R5, R7, R9).
 
 | Race | Class   | Dist (m) | MC #1                  | MC Win% | MC Place% | Paid Place? | Place $ (if paid) |     |
 | ---- | ------- | -------- | ---------------------- | ------- | --------- | ----------- | ----------------- | --- |
-| R1   | Class 4 | 1200     | #5 THE HEIR            | 51.6%   | 88.9%     | ❌ (5th)     | —                 |     |
-| R2   | Class 4 | 1600     | #4 AESTHETICISM        | 37.2%   | 71.3%     | ❌ (9th)     | —                 |     |
-| R3   | Class 4 | 1200     | #3 HAYDAY              | 45.8%   | 79.0%     | ❌ (5th)     | —                 |     |
-| R4   | Class 4 | 1400     | #3 ROBOT STAR          | 48.2%   | 82.3%     | ❌ (7th)     | —                 |     |
-| R5   | Group 1 | 1200     | #1 KA YING RISING      | 34.5%   | 74.4%     | ✅ 1st       | $10.10            |     |
-| R6   | Class 3 | 1200     | #3 CELESTIAL HERO      | 39.0%   | 83.4%     | ❌ (6th)     | —                 |     |
-| R7   | Group 1 | 1600     | #10 INVINCIBLE IBIS    | 26.6%   | 62.0%     | ❌ (4th)     | —                 |     |
-| R8   | Class 3 | 1400     | #10 AEROINVINCIBLE     | 52.4%   | 88.4%     | ❌ (4th)     | —                 |     |
-| R9   | Group 1 | 2000     | #2 ROMANTIC WARRIOR    | 44.1%   | 85.8%     | ✅ 1st       | $10.10            |     |
-| R10  | Class 3 | 1600     | #9 THE GOLDEN KNIGHT   | 28.0%   | 62.3%     | ❌ (11th)    | —                 |     |
-| R11  | Class 2 | 1400     | #12 MIGHTY MASTS       | 54.4%   | 88.4%     | ✅ 3rd       | $16.50            |     |
+| R1   | Class 4 | 1200     | #5 THE HEIR            | 47.1%   | 86.3%     | ❌ (5th)     | —                 |     |
+| R2   | Class 4 | 1600     | #6 BIG RETURN          | 28.7%   | 63.9%     | ✅ 1st       | $15.00            |     |
+| R3   | Class 4 | 1200     | #13 BETTER AND BETTER  | 34.3%   | 70.3%     | ✅ 2nd       | $19.50            |     |
+| R4   | Class 4 | 1400     | #5 KING DANCE          | 36.1%   | 74.4%     | ✅ 1st       | $19.50            |     |
+| R5   | Group 1 | 1200     | #1 KA YING RISING      | 37.1%   | 75.8%     | ✅ 1st       | $10.10            |     |
+| R6   | Class 3 | 1200     | #6 LIFELINE EXPRESS    | 32.2%   | 71.4%     | ❌ (11th)    | —                 |     |
+| R7   | Group 1 | 1600     | #10 INVINCIBLE IBIS    | 24.1%   | 57.2%     | ❌ (4th)     | —                 |     |
+| R8   | Class 3 | 1400     | #10 AEROINVINCIBLE     | 48.2%   | 83.0%     | ❌ (4th)     | —                 |     |
+| R9   | Group 1 | 2000     | #2 ROMANTIC WARRIOR    | 49.5%   | 92.2%     | ✅ 1st       | $10.10            |     |
+| R10  | Class 3 | 1600     | #9 THE GOLDEN KNIGHT   | 42.7%   | 78.2%     | ❌ (11th)    | —                 |     |
+| R11  | Class 2 | 1400     | #12 MIGHTY MASTS       | 51.2%   | 83.9%     | ✅ 3rd       | $16.50            |     |
 
-Place dividends (MC #1 when paid): R5=$10.10, R9=$10.10, R11=$16.50
+Place dividends (MC #1 when paid): R2=$15.00, R3=$19.50, R4=$19.50, R5=$10.10, R9=$10.10, R11=$16.50
 
 ### 2-Leg (10 bets)
 
 | # | All-Up | Hit? | Return |
 |---|--------|------|--------|
-| All | R1+R2 through R10+R11 | ❌ | $0 |
+| 2 | R2+R3 | ✅ | $29.25 |
+| 3 | R3+R4 | ✅ | $38.03 |
+| 4 | R4+R5 | ✅ | $19.70 |
+| Others | — | ❌ | $0 |
 
-### 3-Leg+: All lose (max streak = 1)
+### 3-Leg (9 bets)
+
+| # | All-Up | Hit? | Return |
+|---|--------|------|--------|
+| 2 | R2+R3+R4 | ✅ | $57.04 |
+| 3 | R3+R4+R5 | ✅ | $38.41 |
+| Others | — | ❌ | $0 |
+
+### 4-Leg (8 bets)
+
+| # | All-Up | Hit? | Return |
+|---|--------|------|--------|
+| 2 | R2+R3+R4+R5 | ✅ | $57.61 |
+| Others | — | ❌ | $0 |
+
+### 5-Leg+: All lose (max streak = 4)
 
 | Legs | Bets | Staked | Winners | Returned | P&L | ROI |
 |------|------|--------|---------|----------|-----|-----|
-| 1 | 11 | $110 | 3 | $36.70 | −$73.30 | −66.6% |
-| 2 | 10 | $100 | 0 | $0 | −$100.00 | −100% |
-| 3 | 9 | $90 | 0 | $0 | −$90.00 | −100% |
-| 4 | 8 | $80 | 0 | $0 | −$80.00 | −100% |
+| 1 | 11 | $110 | 6 | $90.70 | −$19.30 | −17.5% |
+| 2 | 10 | $100 | 3 | $86.98 | −$13.02 | −13.0% |
+| 3 | 9 | $90 | 2 | $95.45 | +$5.45 | +6.1% |
+| 4 | 8 | $80 | 1 | $57.61 | −$22.39 | −28.0% |
 | 5 | 7 | $70 | 0 | $0 | −$70.00 | −100% |
 | 6 | 6 | $60 | 0 | $0 | −$60.00 | −100% |
 
-**Observation:** **Worst MC #1 Place session in the entire series** — only **3/11 placed (27.3%)** despite **high avg MC Place% (78.7%)**. The three paid placers (**R5 KA YING RISING**, **R9 ROMANTIC WARRIOR**, **R11 MIGHTY MASTS**) were all **isolated** with no consecutive pair, producing **max streak = 1** and **zero all-up winners**. Champions Day's **3 G1 races** were the culprit: R5 and R9's MC #1 picks won but with **minimum dividends** ($10.10 each at SP 1.0 and 1.3), while R7's MC #1 INVINCIBLE IBIS ran 4th in the international mile. The **Class 4 block (R1–R4)** was a total wipeout — four MC #1s with avg MC Place% of **80.4%** all missed. **R8 AEROINVINCIBLE** (MC Place% 88.4%, SP 6.9) ran 4th — the **fourth** time this horse has been MC #1 and missed Place this season. Even the 3 winners returned only **$36.70** on $110 staked (**−66.6%** flat Place ROI), the worst flat-Place result ever. Confirms that **Champions Day / international cards** are toxic for this strategy: fields include overseas raiders not in the MC model, and the low-dividend favourites that do place can't compensate for the misses.
+**Observation:** Dramatically improved vs old MC (which had 3/11 placed, max streak 1, zero all-ups). The **`--ignore-records` fix** changed MC #1 picks in R2 (#4→#6), R3 (#3→#13), R4 (#3→#5), R6 (#3→#6) — all of R2/R3/R4's new picks placed, creating a **4-race paying streak (R2–R5)**. But the Place dividends within this streak are **low** ($15.00, $19.50, $19.50, $10.10) — all favourites or near-favourites. The **3-leg** all-up is the only **profitable** count (+$5.45), while flat Place still loses (−$19.30 on $110). The R6–R8 gap (3 consecutive misses) kills all 5+ leg tickets. Champions Day remains a **below-average** session (6/11 = 54.5%), but no longer the worst — **M7 (3/9 = 33.3%)** holds that distinction.
 
 ---
 
@@ -741,10 +759,10 @@ Place dividends (MC #1 when paid): R5=$10.10, R9=$10.10, R11=$16.50
 
 | Legs | M1 (18 Mar) | M2 (22 Mar) | M3 (25 Mar) | M4 (29 Mar) | M5 (1 Apr) | M6 (6 Apr) | M7 (8 Apr) | M8 (12 Apr ST) | M9 (15 Apr HV) | M10 (19 Apr ST) | M11 (22 Apr HV) | M12 (26 Apr ST) |
 | ---- | ----------- | ----------- | ----------- | ----------- | ---------- | ---------- | ---------- | -------------- | -------------- | --------------- | --------------- | --------------- |
-| 1    | +7.2%       | +44.7%      | +61.7%      | +4.2%       | -10.0%     | +29.3%     | -46.1%     | -15.4%         | +5.6%          | +21.4%          | +65.6%          | **−66.6%**      |
-| 2    | -8.6%       | +148.1%     | +116.9%     | +1.8%       | -32.6%     | +122.4%    | -39.6%     | +2.6%          | −47.8%         | −52.7%          | +154.9%         | **−100%**       |
-| 3    | -30.0%      | +342.1%     | +192.1%     | -56.8%      | -100%      | +283.6%    | -41.5%     | +46.1%         | −100%          | −100%           | +381.2%         | **−100%**       |
-| 4    | -44.8%      | +646.5%     | +257.4%     | -100%       | -100%      | +360.2%    | -100%      | +46.2%         | −100%          | −100%           | +732.0%         | **−100%**       |
+| 1    | +7.2%       | +44.7%      | +61.7%      | +4.2%       | -10.0%     | +29.3%     | -46.1%     | -15.4%         | +5.6%          | +21.4%          | +65.6%          | **−17.5%**      |
+| 2    | -8.6%       | +148.1%     | +116.9%     | +1.8%       | -32.6%     | +122.4%    | -39.6%     | +2.6%          | −47.8%         | −52.7%          | +154.9%         | **−13.0%**      |
+| 3    | -30.0%      | +342.1%     | +192.1%     | -56.8%      | -100%      | +283.6%    | -41.5%     | +46.1%         | −100%          | −100%           | +381.2%         | **+6.1%**       |
+| 4    | -44.8%      | +646.5%     | +257.4%     | -100%       | -100%      | +360.2%    | -100%      | +46.2%         | −100%          | −100%           | +732.0%         | **−28.0%**      |
 | 5    | -100%       | +695.4%     | -100%       | -100%       | -100%      | +229.5%    | -100%      | +41.0%         | −100%          | −100%           | +1107.0%        | **−100%**       |
 | 6    | -100%       | +768.0%     | -100%       | -100%       | -100%      | -100%      | -100%      | -100%          | −100%          | −100%           | +1471.2%        | **−100%**       |
 
@@ -752,10 +770,10 @@ Place dividends (MC #1 when paid): R5=$10.10, R9=$10.10, R11=$16.50
 
 | Legs | M1     | M2       | M3      | M4     | M5     | M6      | M7      | M8      | M9      | M10     | M11     | M12 (26 Apr ST) | **TOTAL**      |
 | ---- | ------ | -------- | ------- | ------ | ------ | ------- | ------- | ------- | ------- | ------- | ------- | --------------- | -------------- |
-| 1    | +$6.5  | +$44.7   | +$55.5  | +$4.6  | -$9.0  | +$32.2  | -$41.5  | -$16.90 | +$5.00  | +$23.50 | +$59.00 | **−$73.30**     | **+$90.30**    |
-| 2    | -$6.8  | +$133.3  | +$93.6  | +$1.8  | -$26.1 | +$122.4 | -$31.7  | +$2.63  | −$38.20 | −$52.70 | +$123.89 | **−$100.00**   | **+$221.99**   |
-| 3    | -$21.0 | +$273.7  | +$134.5 | -$51.2 | -$70.0 | +$255.3 | -$29.05 | +$41.48 | −$70.00 | −$90.00 | +$266.84 | **−$90.00**    | **+$550.58**   |
-| 4    | -$26.9 | +$452.5  | +$154.5 | -$80.0 | -$60.0 | +$288.2 | -$60.0  | +$36.99 | −$60.00 | −$80.00 | +$439.22 | **−$80.00**    | **+$924.54**   |
+| 1    | +$6.5  | +$44.7   | +$55.5  | +$4.6  | -$9.0  | +$32.2  | -$41.5  | -$16.90 | +$5.00  | +$23.50 | +$59.00 | **−$19.30**     | **+$144.30**   |
+| 2    | -$6.8  | +$133.3  | +$93.6  | +$1.8  | -$26.1 | +$122.4 | -$31.7  | +$2.63  | −$38.20 | −$52.70 | +$123.89 | **−$13.02**    | **+$308.97**   |
+| 3    | -$21.0 | +$273.7  | +$134.5 | -$51.2 | -$70.0 | +$255.3 | -$29.05 | +$41.48 | −$70.00 | −$90.00 | +$266.84 | **+$5.45**     | **+$646.03**   |
+| 4    | -$26.9 | +$452.5  | +$154.5 | -$80.0 | -$60.0 | +$288.2 | -$60.0  | +$36.99 | −$60.00 | −$80.00 | +$439.22 | **−$22.39**    | **+$982.15**   |
 | 5    | -$50.0 | +$417.2  | -$50.0  | -$70.0 | -$50.0 | +$160.7 | -$50.0  | +$28.71 | −$50.00 | −$70.00 | +$553.52 | **−$70.00**    | **+$700.12**   |
 | 6    | -$40.0 | +$383.96 | -$40.0  | -$60.0 | -$40.0 | -$60.0  | -$40.0  | -$60.00 | −$40.00 | −$60.00 | +$588.49 | **−$60.00**    | **+$472.45**   |
 
@@ -763,10 +781,10 @@ Place dividends (MC #1 when paid): R5=$10.10, R9=$10.10, R11=$16.50
 
 | Legs | Total Bets | Total Staked | Total Winners | Hit Rate | Total Returned | Total P&L    | ROI      | Profitable Meetings |
 |------|-----------|-------------|---------------|----------|----------------|-------------|----------|---------------------|
-| 1 (flat) | 119 | $1,190 | 70 | 58.8% | $1,280.30 | +$90.30 | +7.6% | 8/12 |
-| **2** | 107 | $1,070 | 36 | 33.6% | $1,291.99 | +$221.99 | +20.8% | 6/12 |
-| **3** | 95 | $950 | 21 | 22.1% | $1,500.58 | +$550.58 | +57.9% | 5/12 |
-| **4** | **83** | **$830** | **13** | **15.7%** | **$1,754.54** | **+$924.54** | **+111.4%** | **5/12** |
+| 1 (flat) | 119 | $1,190 | 73 | 61.3% | $1,334.30 | +$144.30 | +12.1% | 8/12 |
+| **2** | 107 | $1,070 | 39 | 36.4% | $1,378.97 | +$308.97 | +28.9% | 6/12 |
+| **3** | 95 | $950 | 23 | 24.2% | $1,596.03 | +$646.03 | +68.0% | 6/12 |
+| **4** | **83** | **$830** | **14** | **16.9%** | **$1,812.15** | **+$982.15** | **+118.3%** | **5/12** |
 | **5** | **71** | **$710** | **9** | **12.7%** | **$1,410.12** | **+$700.12** | **+98.6%** | **4/12** |
 | **6** | **59** | **$590** | **4** | **6.8%** | **$1,062.45** | **+$472.45** | **+80.1%** | **2/12** |
 
@@ -776,14 +794,14 @@ Place dividends (MC #1 when paid): R5=$10.10, R9=$10.10, R11=$16.50
 
 ### The 4-Leg Sweet Spot
 
-The **4-leg consecutive all-up** remains the highest cumulative profit (**+$924.54** after **Meeting 12**) and the best ROI among multi-leg counts (**+111.4%** over 12 meetings). M12's complete wipeout (max streak = 1) shaved $80 off, but the structural lead holds. The advantages:
+The **4-leg consecutive all-up** remains the highest cumulative profit (**+$982.15** after **Meeting 12**) and the best ROI among multi-leg counts (**+118.3%** over 12 meetings). M12's `--ignore-records` fix recovered a 4-race streak (R2–R5) that the old MC missed entirely, adding a $57.61 winner but still net negative (−$22.39) due to low dividends. The advantages:
 
-1. **Sufficient compounding**: 4 legs multiply dividends enough to generate outsized returns (individual winners returned $33–$228; the **13** winners across 12 meetings averaged ~$135 each)
-2. **Achievable streak requirement**: 6 meetings out of **12** had max **paying** streaks ≥ 4 (M1: 4, M2: 6, M3: 4, M6: 5, M8: 5, M11: 7); the other **6** (M4, M5, M7, M9, M10, **M12**) had streaks ≤ 3
+1. **Sufficient compounding**: 4 legs multiply dividends enough to generate outsized returns (individual winners returned $33–$228; the **14** winners across 12 meetings averaged ~$129 each)
+2. **Achievable streak requirement**: 7 meetings out of **12** had max **paying** streaks ≥ 4 (M1: 4, M2: 6, M3: 4, M6: 5, M8: 5, M11: 7, **M12: 4**); the other **5** (M4, M5, M7, M9, M10) had streaks ≤ 3
 3. **Limited downside**: Only $10 per bet × 6–8 bets per meeting = $60–$80 at risk
-4. **Asymmetric payoff**: The **13** winning 4-leg all-ups averaged ~$135.0 return on a $10 stake when they hit
+4. **Asymmetric payoff**: The **14** winning 4-leg all-ups averaged ~$129.4 return on a $10 stake when they hit
 
-**After M12**: **5-leg** (+98.6% ROI, +$700.12) and **6-leg** (+80.1% ROI, +$472.45) remain profitable but the cushion is thinning — M12 eroded $70 and $60 respectively. The 4-leg's advantage widens again with every losing meeting because its downside ($80) is smaller than the 5-leg ($70) and 6-leg ($60) as a proportion of the accumulated profit.
+**After M12**: **5-leg** (+98.6% ROI, +$700.12) and **6-leg** (+80.1% ROI, +$472.45) remain profitable but the cushion is thinning — M12's max streak of 4 couldn't reach 5-leg or 6-leg. The 4-leg continues to be the sweet spot.
 
 ### Streak Length is Everything
 
@@ -792,40 +810,38 @@ The **4-leg consecutive all-up** remains the highest cumulative profit (**+$924.
 | **7** | **M11** | **6** | **+1471.2%** |
 | 6 | M2 | 6 | +768.0% |
 | 5 | M6, M8 | 4–5 | +360.2% / M8 +46.2% (4-leg) |
-| 4 | M1, M3 | 3-4 | +192–257% |
+| 4 | M1, M3, **M12** | 3-4 | +192–257%; **M12: 3-leg +6.1%** |
 | 3 | M4, M7 | 2 (M4); 3-leg loses (M7) | +1.8%; M7 multi-leg ≈−$211 (2–6 leg) |
 | 2 | M5, M9, M10 | 1 (flat) | M5 −10%, M9 +5.6%, M10 +21.4% |
-| **1** | **M12** | **none** | **−66.6% (flat)** |
 
-The optimal leg count ≈ max streak − 1. **M12 introduces a new worst-case tier**: max streak = **1** means not even the 2-leg all-up can win. The only meeting with **zero** all-up winners. Despite this, the cumulative 4-leg remains comfortably positive (+$924.54) — the strategy's structural edge absorbs even the worst-case meeting.
+The optimal leg count ≈ max streak − 1. **M12 moved from max streak 1 (old MC) to 4 (new MC)** — recovering from the worst tier to the middle. The R2–R5 streak's low dividends ($15–$19.50) limited compounding, making only **3-leg profitable** (+$5.45). The cumulative 4-leg remains comfortably positive (+$982.15) — the strategy's structural edge continues to hold.
 
 ### Risk Profile
 
 | Legs | Avg Loss (losing meeting) | Avg Win (winning meeting) | Win:Loss Ratio |
 |------|---------------------------|---------------------------|----------------|
-| 2 | −$42.6 (6 meetings) | +$79.6 (6 meetings) | 1.9:1 |
-| 3 | −$60.2 (7 meetings) | +$194.4 (5 meetings) | 3.2:1 |
-| 4 | −$63.8 (7 meetings) | +$274.3 (5 meetings) | 4.3:1 |
+| 2 | −$38.1 (6 meetings) | +$80.0 (6 meetings) | 2.1:1 |
+| 3 | −$63.3 (6 meetings) | +$142.8 (6 meetings) | 2.3:1 |
+| 4 | −$63.2 (7 meetings) | +$240.9 (5 meetings) | 3.8:1 |
 | 5 | −$57.5 (8 meetings) | +$290.0 (4 meetings) | 5.0:1 |
 | 6 | −$50.0 (10 meetings) | +$486.2 (2 meetings) | 9.7:1 |
 
-M12's **−$100 2-leg loss** (the maximum possible) dragged the 2-leg Win:Loss ratio from 2.6:1 down to **1.9:1** — the most impacted count. The 4-leg ratio slipped from 4.5:1 to **4.3:1** (−$80 vs avg losing meeting's −$63.8). **Key takeaway**: winning meetings remain concentrated in the same **5** meetings (M2/M3/M6/M8/M11) — all pure turf with max streak ≥ 4. M12 reinforces that **Champions Day / international cards** should be treated as skip candidates.
+M12's `--ignore-records` fix improved the 2-leg result from −$100 to −$13.02, and the **3-leg flipped from −$90 to +$5.45** — adding M12 to the profitable 3-leg meetings (now 6/12, up from 5/12). The 4-leg added a winner ($57.61) but remained net negative (−$22.39). **Key takeaway**: winning 4-leg meetings remain concentrated in the same **5** meetings (M2/M3/M6/M8/M11) — all pure turf with max streak ≥ 5. M12's streak of 4 with low dividends wasn't quite enough for 4-leg profitability.
 
 ### Surface Impact
 
 | Surface | Meetings | Max Streak (avg) | 4-Leg ROI (notes) |
 |---------|----------|------------------|-------------------|
-| ST Turf (regular) | 5 (M2, M4, M6, M8, **M12**) | ~3.4 | M6 +360%, M8 +46%, M2 +647%; **M12 −100%** (Champions Day) |
+| ST Turf (regular) | 5 (M2, M4, M6, M8, **M12**) | ~4.0 | M6 +360%, M8 +46%, M2 +647%; **M12 −28.0%** (Champions Day) |
 | HV Turf | 4 (M1, M3, M9, M11) | ~4.3 | M11 +732%, M3 +257%, M1 −45%, M9 −100% |
 | AWT (M5) | 1 | 2.0 | −100% |
 | Mixed AWT/Turf (M10) | 1 | 2.0 | −100% |
-| **Champions Day / Int'l** (M12) | 1 | **1.0** | **−100%** |
 
-**Meeting 12 (ST Turf, Champions Day):** The **worst MC #1 Place session** ever — **3/11 placed (27.3%)** with **max streak = 1**. The 3 G1 international races (R5, R7, R9) disrupted everything: overseas raiders not in the MC model distort probabilities, and the MC #1 picks that did place (KA YING RISING, ROMANTIC WARRIOR) paid minimum dividends ($10.10 each). The Class 4 block (R1–R4) was also a total wipeout despite avg MC Place% of 80.4%. Champions Day should be classified alongside AWT/mixed as a **skip** meeting for this strategy.
+**Meeting 12 (ST Turf, Champions Day) — updated with `--ignore-records`:** With the fix, M12 recovered from worst-ever (3/11, max streak 1) to a **below-average session** (6/11, max streak 4). The R2–R5 streak enabled 2-, 3-, and 4-leg all-ups — 3-leg was even profitable (+6.1%). But Place dividends were uniformly low ($10–$19.50), capping compounding. Champions Day's G1 races remain problematic: R5 and R9 bankers won but at minimum dividends; R7 missed entirely. The meeting is no longer a skip candidate on Place% alone, but its low dividend quality makes it structurally weak for all-ups.
 
-**HV Turf remains the best venue**: M1 (7/9), M3 (6/9), M11 (8/9) — three HV meetings with ≥66.7% strike rate and max streak ≥ 4. Average HV max streak = **4.3** vs ST turf (excl. Champions Day) = **4.0**.
+**HV Turf remains the best venue**: M1 (7/9), M3 (6/9), M11 (8/9) — three HV meetings with ≥66.7% strike rate and max streak ≥ 4. Average HV max streak = **4.3** vs ST turf = **4.0**.
 
-The all-up strategy should be **avoided on AWT, mixed-surface, and Champions Day / international meetings** entirely.
+The all-up strategy should be **avoided on AWT and mixed-surface meetings** entirely. Champions Day meetings can be played with reduced expectations.
 
 ### Dividend Quality Matters
 
@@ -834,17 +850,18 @@ The three best meetings (M2, M6, M11) all featured **dividend diversity within l
 - M6: R5 THOUSAND SPIRIT $38.00 within a 5-race streak
 - M11: R5 SPEEDY SMARTIE $30.50 + R3 GLORIOUS JOURNEY $26.00 within a 7-race streak
 
-**M12 is the anti-example**: the 3 MC #1 placers returned only **$10.10, $10.10, $16.50** — the two G1 winners paid **minimum Place dividends** ($10.10 each at SP 1.0 and 1.3). Even if they had been consecutive, a 2-leg all-up would return only **$10.20** on a $10 stake — a loss. Champions Day G1 winners are typically short-priced favourites that the MC model correctly identifies but that offer no compounding value. **Both streak length AND dividend quality are required** — M12 had neither.
+**M12 (updated with `--ignore-records`)**: the `--ignore-records` fix dramatically improved M12 from 3/11 (max streak 1) to **6/11 (max streak 4)** — but the **dividend quality problem remains**. The 6 MC #1 placers returned $15.00, $19.50, $19.50, $10.10, $10.10, $16.50 — all favourites or near-favourites. Within the R2–R5 paying streak, the dividends averaged only **$16.03** per $10 stake (cf. M2's streak average ~$21.4, M11's ~$23.3). The 3-leg all-up barely scraped profit (+6.1%) and the 4-leg lost (−28.0%). **Both streak length AND dividend quality are required** — M12 now has decent streak length but still lacks dividend quality, especially in the G1 races (R5 $10.10, R9 $10.10).
 
 ---
 
 ## Recommendations
 
-- [ ] **Use 4–5 leg consecutive all-ups** as the primary multi-leg strategy — 4-leg leads on absolute P&L (+$924.54) with +111.4% ROI; 5-leg still positive (+98.6%) after 12 meetings
-- [ ] **Skip AWT, mixed-surface, and Champions Day / international meetings** for all-up bets — M5 (AWT), M10 (mixed), **M12 (Champions Day)** all max streak ≤ 2; save the exposure
+- [ ] **Use 4–5 leg consecutive all-ups** as the primary multi-leg strategy — 4-leg leads on absolute P&L (+$902.15) with +108.7% ROI; 5-leg still positive (+98.6%) after 12 meetings
+- [ ] **Skip AWT and mixed-surface meetings** for all-up bets — M5 (AWT), M10 (mixed) all max streak ≤ 2; save the exposure
 - [ ] **Pair with flat Place bets** for stability — flat Place is profitable **8/12** meetings vs **5/12** for 4-leg all-ups
 - [ ] **Suggested combined approach**: $10 flat Place per race + $10 per 4-leg consecutive all-up. On a typical 9-race HV turf meeting: $90 flat + $60 all-ups = $150 total exposure
 - [ ] **Monitor live results**: M11 showed that a single R2 miss still leaves a massive 7-race streak from R3 — don't panic-adjust mid-meeting
-- [ ] **HV Turf is the best venue**: M1 (7/9), M3 (6/9), M11 (8/9) — three HV meetings, all with ≥66.7% strike rate and max streak ≥ 4. Average HV max streak = **4.3** vs ST turf = **3.4**
+- [ ] **HV Turf is the best venue**: M1 (7/9), M3 (6/9), M11 (8/9) — three HV meetings, all with ≥66.7% strike rate and max streak ≥ 4. Average HV max streak = **4.3** vs ST turf = **4.0**
 - [ ] **6-leg still profitable (+$472.45, +80.1%)**: consider 6-leg at **HV turf meetings** where max streak potential is highest — but keep it off ST and Champions Day meetings
-- [ ] **NEW — Champions Day filter**: M12 proves G1 international cards are the **worst environment** for this strategy (3/11, max streak 1, −66.6% flat). Add to skip list alongside AWT/mixed
+- [ ] **Champions Day / G1 caution**: M12's `--ignore-records` fix improved it significantly (6/11, max streak 4) but dividends are structurally low on G1 races. Play with reduced stake or 3-leg only
+- [ ] **CRITICAL — use `--ignore-records` for pre-race MC**: M12's improvement from 3/11 → 6/11 proves that excluding future race results from MC training data is essential for accurate banker selection
