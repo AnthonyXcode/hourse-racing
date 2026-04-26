@@ -22,22 +22,22 @@ UNIT BET: $10 per combination (fixed)
 MC SIMULATION (raw)
 ───────────────────────────────────────────────────────────
 
-| # | Horse | MC Win% | MC Place% | Win Odds | Place%>20% | Win odds<10 | Form | Role (Strategy B) | Top Quinella (fair odds) |
-|---|-------|---------|-----------|----------|------------|-------------|------|-------------------|--------------------------|
-| 10 | INVINCIBLE IBIS | 26.6 | 62.0 | 5.9 | ✅ | ✅ | 8 | ★ 膽 (Banker) | 4-10: 12.1% (8.3) |
-| 12 | CHANCHENG GLORY | 19.7 | 50.5 | 101 | ✅ | ❌ | 6 | 腳 (Leg) | 10-12: 11.5% (8.7) |
-| 4 | LUCKY SWEYNESSE | 19.1 | 51.5 | 6.6 | ✅ | ✅ | 6 | 腳 (Leg) | 10-14: 9.2% (10.9) |
-| 14 | LITTLE PARADISE | 15.0 | 45.5 | 5.4 | ✅ | ✅ | 7 | 腳 (Leg) | 4-12: 7.7% (13.0) |
-| 5 | MY WISH | 8.1 | 30.8 | 5.0 | ✅ | ✅ | 7 | 腳 (Leg) | 4-14: 7.2% (13.9) |
-| 7 | GALAXY PATCH | 4.3 | 19.7 | 26 | ❌ | ❌ | 6 | — | — |
-| 11 | SUNLIGHT POWER | 2.9 | 13.9 | 37 | ❌ | ❌ | 7 | — | — |
-| 6 | RED LION | 1.8 | 8.7 | 22 | ❌ | ❌ | 6 | — | — |
-| 2 | VOYAGE BUBBLE | 1.7 | 10.6 | 15 | ❌ | ❌ | 6 | — | — |
-| 1 | JANTAR MANTAR | 0.2 | 1.9 | 4.8 | ❌ | ✅ | 0 | — (Step B cand.) | — |
-| 3 | DOCKLANDS | 0.2 | 1.5 | 48 | ❌ | ❌ | 1 | — | — |
-| 8 | STRAUSS | 0.2 | 1.7 | 20 | ❌ | ❌ | 0 | — | — |
-| 13 | COPARTNER PRANCE | 0.1 | 1.4 | 99 | ❌ | ❌ | 6 | — | — |
-| 9 | CAP FERRAT | 0.0 | 0.3 | 26 | ❌ | ❌ | 2 | — | — |
+| #   | Horse            | MC Win% | MC Place% | Win Odds | Place%>20% | Win odds<10 | Form | Role (Strategy B) | Top Quinella (fair odds) |
+| --- | ---------------- | ------- | --------- | -------- | ---------- | ----------- | ---- | ----------------- | ------------------------ |
+| 10  | INVINCIBLE IBIS  | 26.6    | 62.0      | 5.9      | ✅          | ✅           | 8    | ★ 膽 (Banker)      | 4-10: 12.1% (8.3)        |
+| 12  | CHANCHENG GLORY  | 19.7    | 50.5      | 101      | ✅          | ❌           | 6    | 腳 (Leg)           | 10-12: 11.5% (8.7)       |
+| 4   | LUCKY SWEYNESSE  | 19.1    | 51.5      | 6.6      | ✅          | ✅           | 6    | 腳 (Leg)           | 10-14: 9.2% (10.9)       |
+| 14  | LITTLE PARADISE  | 15.0    | 45.5      | 5.4      | ✅          | ✅           | 7    | 腳 (Leg)           | 4-12: 7.7% (13.0)        |
+| 5   | MY WISH          | 8.1     | 30.8      | 5.0      | ✅          | ✅           | 7    | 腳 (Leg)           | 4-14: 7.2% (13.9)        |
+| 7   | GALAXY PATCH     | 4.3     | 19.7      | 26       | ❌          | ❌           | 6    | —                 | —                        |
+| 11  | SUNLIGHT POWER   | 2.9     | 13.9      | 37       | ❌          | ❌           | 7    | —                 | —                        |
+| 6   | RED LION         | 1.8     | 8.7       | 22       | ❌          | ❌           | 6    | —                 | —                        |
+| 2   | VOYAGE BUBBLE    | 1.7     | 10.6      | 15       | ❌          | ❌           | 6    | —                 | —                        |
+| 1   | JANTAR MANTAR    | 0.2     | 1.9       | 4.8      | ❌          | ✅           | 0    | — (Step B cand.)  | —                        |
+| 3   | DOCKLANDS        | 0.2     | 1.5       | 48       | ❌          | ❌           | 1    | —                 | —                        |
+| 8   | STRAUSS          | 0.2     | 1.7       | 20       | ❌          | ❌           | 0    | —                 | —                        |
+| 13  | COPARTNER PRANCE | 0.1     | 1.4       | 99       | ❌          | ❌           | 6    | —                 | —                        |
+| 9   | CAP FERRAT       | 0.0     | 0.3       | 26       | ❌          | ❌           | 2    | —                 | —                        |
 
 Market: MC top 3 (#10 INVINCIBLE IBIS 26.6%, #12 CHANCHENG GLORY 19.7%, #4 LUCKY SWEYNESSE 19.1%) account for 65.4% of MC Win probability. However, the **market favourite #1 JANTAR MANTAR (4.8 odds)** has only 0.2% MC Win (0 HK form lines — Japanese international). This is the most extreme model-market gap on the card. #8 STRAUSS (20 odds, G1 Abu Dhabi winner, Moreira, 0 HK form) and #3 DOCKLANDS (48 odds, UK raider, 1 form line) are also MC blind spots. #12 CHANCHENG GLORY (19.7% MC vs 101 odds) is a massive model anomaly — likely a speed-rating artefact (carries heavy weight, produces high adjusted times despite mid-field finishes).
 

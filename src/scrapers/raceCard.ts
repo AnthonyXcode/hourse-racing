@@ -151,8 +151,97 @@ export class RaceCardScraper {
     await this.navigateTo(url);
     if (!this.page) throw new Error("Browser not initialized");
 
+    // Extract race metadata via Playwright before dumping to Cheerio.
+    // This targets specific header elements for the CURRENT race, avoiding
+    // the race-selector navigation that lists all races' class/distance.
+    const pwMeta = await this.extractRaceMetaViaPlaywright(raceNumber);
+
     const content = await this.page.content();
-    return this.parseRaceCard(content, date, venue, raceNumber);
+    return this.parseRaceCard(content, date, venue, raceNumber, pwMeta);
+  }
+
+  /**
+   * Use Playwright to extract race class, distance, surface, going from
+   * the currently-loaded race card page. This avoids Cheerio regex
+   * mismatches caused by the race-selector nav bar listing every race.
+   */
+  private async extractRaceMetaViaPlaywright(
+    raceNumber: number
+  ): Promise<{ class?: string; distance?: number; surface?: string; going?: string } | null> {
+    if (!this.page) return null;
+    try {
+      return await this.page.evaluate((raceNum: number) => {
+        const result: { class?: string; distance?: number; surface?: string; going?: string } = {};
+
+        // Strategy 1: look for the race detail/header section (common HKJC selectors)
+        const headerSelectors = [
+          ".race_detail",
+          ".raceDetail",
+          ".race-detail",
+          ".race_head_info",
+          ".racecard-header",
+          '[class*="raceInfo"]',
+          '[class*="race_info"]',
+          '[class*="raceDetail"]',
+        ];
+        let headerText = "";
+        for (const sel of headerSelectors) {
+          const el = document.querySelector(sel);
+          if (el && el.textContent && el.textContent.length > 10) {
+            headerText = el.textContent;
+            break;
+          }
+        }
+
+        // Strategy 2: look for a table row or div that contains RACE N header
+        if (!headerText) {
+          const allEls = document.querySelectorAll("td, div, span, p");
+          for (const el of allEls) {
+            const t = el.textContent ?? "";
+            const racePattern = new RegExp(`Race\\s*${raceNum}\\b`, "i");
+            if (racePattern.test(t) && /\d{3,4}\s*M/i.test(t) && t.length < 500) {
+              headerText = t;
+              break;
+            }
+          }
+        }
+
+        // Strategy 3: look for the selected/active race tab's detail section
+        if (!headerText) {
+          const activeTab = document.querySelector('.active [class*="race"], .selected [class*="race"], [class*="race"].active');
+          if (activeTab?.textContent && activeTab.textContent.length > 5) {
+            headerText = activeTab.textContent;
+          }
+        }
+
+        if (!headerText) return result;
+
+        // Parse class + distance from the header text
+        const classDistMatch = headerText.match(
+          /(4\s*(?:Year|Yr)\s*Olds?|Griffin|Group\s*(?:\d|One|Two|Three)|Class\s*\d)\s*(?:Race\s*)?[-–—]?\s*(\d{3,4})\s*M/i
+        );
+        if (classDistMatch) {
+          result.class = classDistMatch[1]!;
+          result.distance = parseInt(classDistMatch[2]!, 10);
+        } else {
+          const distOnly = headerText.match(/(\d{3,4})\s*M(?:etres?)?/i);
+          if (distOnly) {
+            const d = parseInt(distOnly[1]!, 10);
+            if (d >= 1000 && d <= 2400) result.distance = d;
+          }
+        }
+
+        if (/AWT|All Weather/i.test(headerText)) result.surface = "AWT";
+        else if (/Turf/i.test(headerText)) result.surface = "Turf";
+
+        const goingMatch = headerText.match(/Going\s*:\s*(\w+(?:\s+to\s+\w+)?)/i);
+        if (goingMatch) result.going = goingMatch[1]!;
+
+        return result;
+      }, raceNumber);
+    } catch {
+      return null;
+    }
   }
 
   /**
@@ -206,12 +295,25 @@ export class RaceCardScraper {
     html: string,
     date: Date,
     venue: Venue,
-    raceNumber: number
+    raceNumber: number,
+    pwMeta?: { class?: string; distance?: number; surface?: string; going?: string } | null,
   ): Race {
     const $ = cheerio.load(html);
 
-    // Parse race header info
-    const raceInfo = this.parseRaceInfo($);
+    // Parse race header info (Cheerio fallback), then overlay Playwright metadata
+    const raceInfo = this.parseRaceInfo($, raceNumber);
+
+    if (pwMeta) {
+      if (pwMeta.distance && pwMeta.distance >= 1000 && pwMeta.distance <= 2400) {
+        raceInfo.distance = pwMeta.distance;
+      }
+      if (pwMeta.class) {
+        raceInfo.class = this.parseClassString(pwMeta.class);
+      }
+      if (pwMeta.surface) {
+        raceInfo.surface = pwMeta.surface.includes("AWT") ? "AWT" : "Turf";
+      }
+    }
 
     // Parse entries table
     const entries = this.parseEntries($);
@@ -239,7 +341,7 @@ export class RaceCardScraper {
    * Parse race info from header section
    * HKJC format: "Class 4 - 1200M - (60-40)", "Going : GOOD", "Course : TURF"
    */
-  private parseRaceInfo($: cheerio.CheerioAPI): {
+  private parseRaceInfo($: cheerio.CheerioAPI, raceNumber?: number): {
     name?: string;
     class: RaceClass;
     distance: number;
@@ -252,6 +354,7 @@ export class RaceCardScraper {
     // HKJC race card pages put the race class/distance line in a compact header area.
     const raceHeaderCandidates = [
       $(".race_head, .raceHead, .race-head, .race-info, .raceInfo").text(),
+      $(".race_detail, .raceDetail, .race-detail, .race_head_info, .racecard-header").text(),
       $("table").first().text(),
       $("table td").map((_, el) => $(el).text()).get().join(" "),
     ];
@@ -261,21 +364,55 @@ export class RaceCardScraper {
     const pageText = $("body").text();
     const allText = raceHeaderText.length > 50 ? raceHeaderText : pageText;
 
-    // Parse class + distance together using the HKJC format:
-    //   "Class 4 - 1200M", "Group Two - 1200M", "Griffin Race - 1000M"
-    // A single anchored regex avoids false positives from stray "Group 1" etc.
-    // on the page (navigation, other race links, sidebar).
+    const CLASS_PAT = `(4\\s*(?:Year|Yr)\\s*Olds?|Griffin|Group\\s*(?:\\d|One|Two|Three)|Class\\s*\\d)`;
+    const DIST_PAT = `(\\d{3,4})\\s*M`;
+
     let raceClass: RaceClass = "Class 4";
     let distance = 1200;
-    const combinedMatch = allText.match(
-      /(4\s*(?:Year|Yr)\s*Olds?|Griffin|Group\s*(?:\d|One|Two|Three)|Class\s*\d)\s*(?:Race\s*)?-?\s*(\d{3,4})\s*M/i
-    );
-    if (combinedMatch) {
-      const classStr = combinedMatch[1]!;
-      distance = parseInt(combinedMatch[2]!, 10);
-      raceClass = this.parseClassString(classStr);
-    } else {
-      // Fallback: parse separately when the combined pattern doesn't match
+    let matched = false;
+
+    // Strategy 1: race-number-anchored match.
+    // Look for "Race N ... Class X - 1600M" so we grab the CURRENT race's
+    // info instead of the first race listed in the nav bar.
+    if (raceNumber) {
+      const anchoredRe = new RegExp(
+        `Race\\s*${raceNumber}\\b[^]*?${CLASS_PAT}\\s*(?:Race\\s*)?[-–—]?\\s*${DIST_PAT}\\s*M`,
+        "i"
+      );
+      const anchoredMatch = allText.match(anchoredRe);
+      if (anchoredMatch) {
+        raceClass = this.parseClassString(anchoredMatch[1]!);
+        distance = parseInt(anchoredMatch[2]!, 10);
+        matched = true;
+      } else {
+        // Try: "Race N" followed later by just a distance
+        const anchoredDistRe = new RegExp(
+          `Race\\s*${raceNumber}\\b[\\s\\S]{0,300}?${CLASS_PAT}[\\s\\S]{0,50}?${DIST_PAT}`,
+          "i"
+        );
+        const m2 = allText.match(anchoredDistRe);
+        if (m2) {
+          raceClass = this.parseClassString(m2[1]!);
+          distance = parseInt(m2[2]!, 10);
+          matched = true;
+        }
+      }
+    }
+
+    // Strategy 2: original combined regex (first match in text)
+    if (!matched) {
+      const combinedMatch = allText.match(
+        new RegExp(`${CLASS_PAT}\\s*(?:Race\\s*)?[-–—]?\\s*${DIST_PAT}\\s*M`, "i")
+      );
+      if (combinedMatch) {
+        raceClass = this.parseClassString(combinedMatch[1]!);
+        distance = parseInt(combinedMatch[2]!, 10);
+        matched = true;
+      }
+    }
+
+    // Strategy 3: parse class and distance separately
+    if (!matched) {
       const classMatch = allText.match(/Class\s*(\d)/i);
       const groupMatch = allText.match(/Group\s*(\d)/i) ||
                          allText.match(/Group\s*(One|Two|Three)/i);
@@ -297,6 +434,10 @@ export class RaceCardScraper {
           distance = d;
         }
       }
+    }
+
+    if (raceNumber) {
+      console.log(`[SCRAPER] R${raceNumber}: parsed class=${raceClass}, distance=${distance}m`);
     }
 
     // Parse surface

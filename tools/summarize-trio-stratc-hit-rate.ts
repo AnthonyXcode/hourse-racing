@@ -21,6 +21,7 @@ const REVIEW_FILES = [
   "trio_review_stratC_20260415_HV.md",
   "trio_review_stratC_20260419_ST.md",
   "trio_review_stratC_20260422_HV.md",
+  "trio_review_stratC_20260426_ST.md",
 ] as const;
 
 function reviewToResultsJson(reviewFile: string): string {
@@ -150,6 +151,7 @@ function main() {
   const bySurface = new Map<string, Bucket>();
   const byDistance = new Map<string, Bucket>();
   const byVenueClass = new Map<string, Bucket>();
+  const byDistVenueClass = new Map<string, Bucket>();
 
   for (const row of legs) {
     add(byClass, row.raceClass, row.hit);
@@ -157,6 +159,7 @@ function main() {
     add(bySurface, row.surface, row.hit);
     add(byDistance, String(row.distance), row.hit);
     add(byVenueClass, `${row.venue} / ${row.raceClass}`, row.hit);
+    add(byDistVenueClass, `${row.distance}m / ${row.venue} / ${row.raceClass}`, row.hit);
   }
 
   const pct = (b: Bucket) => (b.n === 0 ? 0 : (100 * b.hits) / b.n);
@@ -216,6 +219,10 @@ function main() {
     (k) => byDistance.get(k)!
   );
   mdTable(out, "By venue × class", sortKeys(byVenueClass), (k) => byVenueClass.get(k)!);
+  mdTable(out, "By distance × venue × class", sortKeys(byDistVenueClass, (a, b) => {
+    const da = parseInt(a), db = parseInt(b);
+    return da !== db ? da - db : a.localeCompare(b);
+  }), (k) => byDistVenueClass.get(k)!);
 
   out.push("---");
   out.push("");

@@ -17,20 +17,20 @@ UNIT BET: $10 per combination (fixed)
 MC SIMULATION (raw)
 ───────────────────────────────────────────────────────────
 
-| # | Horse | MC Win% | MC Place% | Win Odds | Place%>20% | Win odds<10 | Form |
-|---|-------|---------|-----------|----------|------------|-------------|------|
-| 9 | THE GOLDEN KNIGHT | 28.0 | 62.3 | 3.5 | ✅ | ✅ | 8 |
-| 5 | LOVERO | 23.0 | 56.7 | 14 | ✅ | ❌ | 7 |
-| 8 | BLAZING WUKONG | 11.5 | 37.4 | 15 | ✅ | ❌ | 8 |
-| 13 | MASTER TRILLION | 9.6 | 32.0 | 27 | ✅ | ❌ | 8 |
-| 4 | SHANWAH | 8.7 | 29.4 | 11 | ✅ | ❌ | 7 |
-| 6 | FAMILY JEWEL | 6.8 | 24.6 | 9.0 | ✅ | ✅ | 3 |
-| 1 | LUCKY SAM GOR | 5.9 | 24.3 | 10 | ✅ | ❌ | 10 |
-| 3 | ENDUED | 2.3 | 11.5 | 6.8 | ❌ | ✅ | 8 |
-| 7 | NATURAL NUMBERS | 2.1 | 9.9 | 14 | ❌ | ❌ | 6 |
-| 2 | WINDLORD | 1.7 | 8.4 | 28 | ❌ | ❌ | 5 |
-| 10 | SHAMUS STORM | 0.3 | 2.1 | 10 | ❌ | ❌ | 5 |
-| Others | — | ~0 | ~0 | — | — | — | — |
+| #      | Horse             | MC Win% | MC Place% | Win Odds | Place%>20% | Win odds<10 | Form |
+| ------ | ----------------- | ------- | --------- | -------- | ---------- | ----------- | ---- |
+| 9      | THE GOLDEN KNIGHT | 28.0    | 62.3      | 3.5      | ✅          | ✅           | 8    |
+| 5      | LOVERO            | 23.0    | 56.7      | 14       | ✅          | ❌           | 7    |
+| 8      | BLAZING WUKONG    | 11.5    | 37.4      | 15       | ✅          | ❌           | 8    |
+| 13     | MASTER TRILLION   | 9.6     | 32.0      | 27       | ✅          | ❌           | 8    |
+| 4      | SHANWAH           | 8.7     | 29.4      | 11       | ✅          | ❌           | 7    |
+| 6      | FAMILY JEWEL      | 6.8     | 24.6      | 9.0      | ✅          | ✅           | 3    |
+| 1      | LUCKY SAM GOR     | 5.9     | 24.3      | 10       | ✅          | ❌           | 10   |
+| 3      | ENDUED            | 2.3     | 11.5      | 6.8      | ❌          | ✅           | 8    |
+| 7      | NATURAL NUMBERS   | 2.1     | 9.9       | 14       | ❌          | ❌           | 6    |
+| 2      | WINDLORD          | 1.7     | 8.4       | 28       | ❌          | ❌           | 5    |
+| 10     | SHAMUS STORM      | 0.3     | 2.1       | 10       | ❌          | ❌           | 5    |
+| Others | —                 | ~0      | ~0        | —        | —          | —           | —    |
 
 Very competitive — no horse above 28%. 7 horses above 20% Place. This is a wide-open C3 race.
 
