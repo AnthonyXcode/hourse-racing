@@ -1,8 +1,8 @@
 /**
  * TrainerEnricher – enriches race entries with trainer season stats
  * so FormAnalyzer/MC can use real trainer form. Data from:
- * 1) Loaded files: data/trainers/trainer_stats_*.json (optional, for offline use)
- * 2) Live scrape: https://racing.hkjc.com/en-us/local/information/trainerprofile?trainerid={code}
+ * 1) Loaded files: the **latest** `trainer_stats_YYYYMMDD.json` in `data/trainers/`
+ * 2) Live scrape: HKJC trainer profile page: .../trainerprofile?trainerid={code}
  */
 
 import { readdir, readFile } from "fs/promises";
@@ -19,6 +19,12 @@ import type {
 } from "../types/index.js";
 import { DEFAULT_SCRAPER_CONFIG } from "../types/index.js";
 import { sleep } from "../utils/index.js";
+
+/** e.g. trainer_stats_20260425.json → 20260425 */
+function trainerStatsDateKey(filename: string): number {
+  const m = filename.match(/^trainer_stats_(\d{8})\.json$/i);
+  return m ? parseInt(m[1]!, 10) : 0;
+}
 
 interface TrainerData {
   code: string;
@@ -48,17 +54,20 @@ export class TrainerEnricher {
   }
 
   /**
-   * Load trainer data from data/trainers/*.json (optional, for offline/cached data)
+   * Load trainer data from `data/trainers/`: the **newest** `trainer_stats_YYYYMMDD.json`
+   * (by date in the filename). Only that single snapshot is loaded.
    */
   async loadFromDirectory(): Promise<void> {
     if (!existsSync(this.dataDir)) return;
 
     const files = await readdir(this.dataDir);
-    const jsonFiles = files.filter(
-      (f) => f.endsWith(".json") && f.startsWith("trainer")
-    );
+    const statsFiles = files
+      .filter((f) => /^trainer_stats_\d{8}\.json$/i.test(f))
+      .sort((a, b) => trainerStatsDateKey(b) - trainerStatsDateKey(a));
 
-    for (const file of jsonFiles) {
+    const toLoad = statsFiles[0] ? [statsFiles[0]!] : [];
+
+    for (const file of toLoad) {
       try {
         const raw = await readFile(join(this.dataDir, file), "utf-8");
         const data = JSON.parse(raw);

@@ -1,8 +1,9 @@
 /**
  * JockeyEnricher – enriches race entries with jockey season stats (and optional course stats)
  * so FormAnalyzer/MC can use real jockey edge. Data from:
- * 1) Loaded files: data/jockeys/jockey_stats_*.json or jockeys_all_*.json / jockeys_elite_*.json
- * 2) Live scrape: https://racing.hkjc.com/en-us/local/information/jockeyprofile?jockeyid={code}
+ * 1) Loaded files: the **latest** `jockey_stats_YYYYMMDD.json` and (if present) the **latest**
+ *    `jockeys_YYYYMMDD.json` in `data/jockeys/`. Second file overwrites overlapping codes.
+ * 2) Live scrape: HKJC jockey profile page: .../jockeyprofile?jockeyid={code}
  */
 
 import { readdir, readFile } from "fs/promises";
@@ -20,8 +21,17 @@ import type {
 import { DEFAULT_SCRAPER_CONFIG } from "../types/index.js";
 import { sleep } from "../utils/index.js";
 
-const JOCKEY_PROFILE_URL =
-  "https://racing.hkjc.com/en-us/local/information/jockeyprofile?jockeyid=";
+/** e.g. jockey_stats_20260425.json → 20260425 */
+function jockeyStatsDateKey(filename: string): number {
+  const m = filename.match(/^jockey_stats_(\d{8})\.json$/i);
+  return m ? parseInt(m[1]!, 10) : 0;
+}
+
+/** e.g. jockeys_20260426.json → 20260426 (excludes jockeys_all_ / jockeys_elite_) */
+function jockeysDatedFileKey(filename: string): number {
+  const m = filename.match(/^jockeys_(\d{8})\.json$/i);
+  return m ? parseInt(m[1]!, 10) : 0;
+}
 
 interface JockeyData {
   code: string;
@@ -52,22 +62,26 @@ export class JockeyEnricher {
   }
 
   /**
-   * Load jockey data from data/jockeys/*.json (jockey_stats_*.json or jockeys_all_*.json / jockeys_elite_*.json)
+   * Load jockey data from `data/jockeys/`: the **newest** `jockey_stats_YYYYMMDD.json`
+   * and, if any exist, the **newest** `jockeys_YYYYMMDD.json` (profile scrape).
+   * Second file overwrites overlapping jockey codes.
    */
   async loadFromDirectory(): Promise<void> {
     if (!existsSync(this.dataDir)) return;
 
     const files = await readdir(this.dataDir);
-    const jsonFiles = files.filter(
-      (f) =>
-        f.endsWith(".json") &&
-        (f.startsWith("jockey_stats_") ||
-          f.startsWith("jockeys_all_") ||
-          f.startsWith("jockeys_elite_") ||
-          f.startsWith("jockeys_"))
-    );
+    const statsFiles = files
+      .filter((f) => /^jockey_stats_\d{8}\.json$/i.test(f))
+      .sort((a, b) => jockeyStatsDateKey(b) - jockeyStatsDateKey(a));
+    const datedJockeyScrapeFiles = files
+      .filter((f) => /^jockeys_\d{8}\.json$/i.test(f))
+      .sort((a, b) => jockeysDatedFileKey(b) - jockeysDatedFileKey(a));
 
-    for (const file of jsonFiles) {
+    const toLoad: string[] = [];
+    if (statsFiles[0]) toLoad.push(statsFiles[0]!);
+    if (datedJockeyScrapeFiles[0]) toLoad.push(datedJockeyScrapeFiles[0]!);
+
+    for (const file of toLoad) {
       try {
         const raw = await readFile(join(this.dataDir, file), "utf-8");
         const data = JSON.parse(raw);
