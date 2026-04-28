@@ -4,21 +4,17 @@
     "type": "split",
     "children": [
       {
-        "id": "36329f24a8c738d5",
+        "id": "f652b1040929c588",
         "type": "tabs",
         "children": [
           {
-            "id": "e5c96460c580b5b7",
+            "id": "efc308a139a6ce69",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "static/mc_top1_place_hit_rate_by_segment_20260426.md",
-                "mode": "source",
-                "source": false
-              },
+              "type": "empty",
+              "state": {},
               "icon": "lucide-file",
-              "title": "mc_top1_place_hit_rate_by_segment_20260426"
+              "title": "New tab"
             }
           }
         ]
@@ -183,7 +179,7 @@
       "bases:Create new base": false
     }
   },
-  "active": "e5c96460c580b5b7",
+  "active": "40eb10b8fce07554",
   "lastOpenFiles": [
     "static/trio_stratC_hit_rate_by_segment_20260426.md",
     "static/mc_top1_place_hit_rate_by_segment_20260426.md",
