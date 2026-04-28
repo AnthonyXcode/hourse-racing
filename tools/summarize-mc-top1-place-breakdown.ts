@@ -3,7 +3,7 @@
  * One-off: join mc_top1_place_allup_summary.md race rows to historical results JSON
  * and print hit-rate breakdowns by class, venue, surface, class×venue, distance.
  */
-import { mkdirSync, readFileSync, writeFileSync } from "fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";
 
@@ -27,20 +27,36 @@ function outputDateStamp(): string {
   return `${y}${m}${day}`;
 }
 
-const MEETING_FILES: string[] = [
-  "results_20260318_HV.json",
-  "results_20260322_ST.json",
-  "results_20260325_HV.json",
-  "results_20260329_ST.json",
-  "results_20260401_ST.json",
-  "results_20260406_ST.json",
-  "results_20260408_HV.json",
-  "results_20260412_ST.json",
-  "results_20260415_HV.json",
-  "results_20260419_ST.json",
-  "results_20260422_HV.json",
-  "results_20260426_ST.json",
-];
+const MONTH_MAP: Record<string, string> = {
+  Jan: "01", Feb: "02", Mar: "03", Apr: "04", May: "05", Jun: "06",
+  Jul: "07", Aug: "08", Sep: "09", Oct: "10", Nov: "11", Dec: "12",
+};
+const VENUE_CODE: Record<string, string> = { "Sha Tin": "ST", "Happy Valley": "HV" };
+
+function discoverMeetingFiles(): string[] {
+  const md = readFileSync(MD_PATH, "utf-8");
+  const headerRe = /^## Meeting \d+:\s*(.+?)\s*\|\s*(\d{1,2})\s+(\w{3})\s+(\d{4})/gm;
+  const files: string[] = [];
+  let match: RegExpExecArray | null;
+  while ((match = headerRe.exec(md)) !== null) {
+    const venue = match[1]!.trim();
+    const day = match[2]!.padStart(2, "0");
+    const month = MONTH_MAP[match[3]!];
+    const year = match[4]!;
+    const code = VENUE_CODE[venue];
+    if (!month || !code) {
+      console.warn(`Skipping unrecognised meeting header: ${match[0]}`);
+      continue;
+    }
+    const filename = `results_${year}${month}${day}_${code}.json`;
+    if (existsSync(join(ROOT, "data/historical", filename))) {
+      files.push(filename);
+    } else {
+      console.warn(`Historical file not found, skipping: ${filename}`);
+    }
+  }
+  return files;
+}
 
 interface RaceRow {
   raceNumber: number;
@@ -105,6 +121,13 @@ function loadMeeting(path: string): ResultRace[] {
 }
 
 function main() {
+  const MEETING_FILES = discoverMeetingFiles();
+  if (MEETING_FILES.length === 0) {
+    console.error("No meeting files discovered from md headers. Check mc_top1_place_allup_summary.md.");
+    process.exit(1);
+  }
+  console.log(`Discovered ${MEETING_FILES.length} meeting(s): ${MEETING_FILES.join(", ")}`);
+
   const mdRows = parseMdRows();
   const meetings: ResultRace[][] = MEETING_FILES.map(loadMeeting);
 

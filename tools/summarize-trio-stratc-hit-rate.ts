@@ -3,26 +3,23 @@
  * Aggregate Strategy B (stratC) Trio hit rate from trio_review_stratC_*.md files,
  * joined to historical results JSON for venue / class / surface / distance.
  */
-import { mkdirSync, readFileSync, writeFileSync } from "fs";
-import { dirname, join } from "path";
+import { mkdirSync, readdirSync, readFileSync, writeFileSync } from "fs";
+import { basename, dirname, join } from "path";
 import { fileURLToPath } from "url";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 
-const REVIEW_FILES = [
-  "trio_review_stratC_20260318_HV.md",
-  "trio_review_stratC_20260322_ST.md",
-  "trio_review_stratC_20260325_HV.md",
-  "trio_review_stratC_20260329_ST.md",
-  "trio_review_stratC_20260401_ST.md",
-  "trio_review_stratC_20260406_ST.md",
-  "trio_review_stratC_20260408_HV.md",
-  "trio_review_stratC_20260412_ST.md",
-  "trio_review_stratC_20260415_HV.md",
-  "trio_review_stratC_20260419_ST.md",
-  "trio_review_stratC_20260422_HV.md",
-  "trio_review_stratC_20260426_ST.md",
-] as const;
+function discoverReviewFiles(): string[] {
+  const reviewDir = join(ROOT, "data/reviews");
+  const pattern = /^trio_review_stratC_\d{8}_(HV|ST)\.md$/;
+  return readdirSync(reviewDir)
+    .filter((f) => pattern.test(f))
+    .sort((a, b) => {
+      const da = a.match(/(\d{8})/)?.[1] ?? "";
+      const db = b.match(/(\d{8})/)?.[1] ?? "";
+      return da.localeCompare(db);
+    });
+}
 
 function reviewToResultsJson(reviewFile: string): string {
   const m = reviewFile.match(/stratC_(\d{8})_(HV|ST)\.md$/);
@@ -110,6 +107,13 @@ function loadMeeting(path: string): JsonRace[] {
 }
 
 function main() {
+  const REVIEW_FILES = discoverReviewFiles();
+  if (REVIEW_FILES.length === 0) {
+    console.error("No trio_review_stratC_*.md files found in data/reviews/.");
+    process.exit(1);
+  }
+  console.log(`Discovered ${REVIEW_FILES.length} review file(s): ${REVIEW_FILES.join(", ")}`);
+
   const legs: RaceLeg[] = [];
 
   for (const reviewFile of REVIEW_FILES) {

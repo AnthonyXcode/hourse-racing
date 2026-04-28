@@ -351,7 +351,70 @@ One-paragraph assessment:
 
 ---
 
-## Step 5: Cross-Reference with Previous Reviews
+## Step 5: Save Deliverables
+
+After generating the main review report (Step 4), produce three additional deliverables.
+
+### 5a. Save Trio Strategy B (stratC) Review
+
+Save a **standalone Strategy B review** to:
+
+```
+data/reviews/trio_review_stratC_YYYYMMDD_VENUE.md
+```
+
+This file focuses on Strategy B (MC-only) performance and includes:
+- **Rules** section (banker = MC #1, primary legs = Place% > 20%, Step B swap/add, unit $10, 膽拖)
+- **Summary** table (hits, staked, returned, P&L, ROI for both A and B)
+- **Race-by-Race Results** — two tables:
+  - **Strategy B**: Race | Class | Dist | Surf | Banker (MC#1) | Final legs | Combos | Stake | Result | Banker top 3? | Hit? | Trio $ | Return | P&L
+  - **Strategy A**: Race | Class | Mode | Banker(s) | Legs | Combos | Stake | Result | Hit? | Trio $ | Return | P&L | Miss Reason
+
+This is the primary input for `tools/summarize-trio-stratc-hit-rate.ts`.
+
+### 5b. Append MC #1 Place Review
+
+Append a new meeting block to:
+
+```
+data/test_reports/mc_top1_place_allup_summary.md
+```
+
+For each race in the meeting, record:
+- MC #1 horse (by raw MC Win%)
+- MC Win% and MC Place%
+- Whether the MC #1 horse **placed** (received an HKJC Place dividend)
+- Place dividend if placed
+
+Format:
+```markdown
+## Meeting N: [Venue] | DD Mon YYYY (N races)
+
+| Race | Class | Dist (m) | MC #1 | MC Win% | MC Place% | Placed? | Place $ (if placed) |
+```
+
+Also update the **Meeting Placing Patterns** summary table at the top with a new row for this meeting (date, venue, course, going, races, avg Win%, avg Place%, placed count, rate, pattern, max streak).
+
+This is the primary input for `tools/summarize-mc-top1-place-breakdown.ts`.
+
+### 5c. Generate Statistics
+
+Run the summarize tools to regenerate segment breakdowns in `data/static/`:
+
+```bash
+npx tsx tools/summarize-mc-top1-place-breakdown.ts
+npx tsx tools/summarize-trio-stratc-hit-rate.ts
+```
+
+Output files:
+- `data/static/mc_top1_place_hit_rate_by_segment_YYYYMMDD.md`
+- `data/static/trio_stratC_hit_rate_by_segment_YYYYMMDD.md`
+
+These aggregate all meetings and break down hit rates by venue, surface, class, distance, and cross-dimensions.
+
+---
+
+## Step 6: Cross-Reference with Previous Reviews
 
 Load the most recent review file to carry forward:
 - Season cumulative P&L table (Meeting-by-Meeting)
@@ -370,7 +433,12 @@ Previous reviews are in `data/reports/trio_review_*.md` and `data/reviews/trio_r
 |------|---------|
 | `tools/scrape-meeting.ts` | Fetch results from HKJC |
 | `tools/run-analyze-trio-report.ts` | Generate MC raw data for all races (Strategy B source) |
+| `tools/summarize-mc-top1-place-breakdown.ts` | Generate MC #1 place hit rate by segment → `data/static/` |
+| `tools/summarize-trio-stratc-hit-rate.ts` | Generate Strategy B Trio hit rate by segment → `data/static/` |
 | `data/historical/results_YYYYMMDD_VENUE.json` | Scraped race results |
 | `data/reports/trio_strategy_YYYYMMDD_VENUE_RN.md` | Pre-race strategy reports (Strategy A bet records) |
+| `data/test_reports/mc_top1_place_allup_summary.md` | MC #1 place running summary (append per meeting) |
 | `data/test_reports/trio_mc_top6_banker_YYYYMMDD_VENUE.md` | Strategy B test results |
 | `data/reviews/trio_review_YYYYMMDD_VENUE.md` | Saved reviews (output, includes A/B comparison) |
+| `data/reviews/trio_review_stratC_YYYYMMDD_VENUE.md` | Strategy B (stratC) standalone review |
+| `data/static/` | Generated segment statistics (hit rate by venue/class/surface/distance) |
