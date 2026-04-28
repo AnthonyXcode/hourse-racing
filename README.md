@@ -96,21 +96,6 @@ SELECTIONS IN WIN RANGE (2.0-7.0):
   R8 #3 INVINCIBLE IBIS @ 2.9
 ```
 
-### Fetch Jockey Stats
-
-Fetch current season jockey statistics from HKJC.
-
-```bash
-# Fetch all tracked jockeys
-npx tsx tools/fetch-jockey-stats.ts
-
-# Top 10 only
-npx tsx tools/fetch-jockey-stats.ts --top=10
-
-# JSON output
-npx tsx tools/fetch-jockey-stats.ts --json
-```
-
 **Output:**
 ```
 ELITE TIER (Win % > 15%):
@@ -158,13 +143,11 @@ hourse-racing/
 │   └── utils/              # Helper functions
 ├── tools/
 │   ├── fetch-odds.ts       # Live odds fetcher
-│   ├── fetch-jockey-stats.ts # Live jockey stats fetcher
 │   ├── analyze-race.ts     # Race analysis CLI
 │   ├── scrape-single-race.ts
 │   └── scrape-meeting.ts
 ├── data/
 │   ├── historical/         # Past race results
-│   ├── jockeys/            # Jockey stats (JOCKEY_STATS.md)
 │   └── odds/               # Saved odds snapshots
 ├── prompts/                # AI prompts for analysis
 ├── rules/                  # Cursor rules
@@ -235,35 +218,6 @@ Max per bet: 5% of bankroll
 Max per race: 10% of bankroll
 Max per meeting: 40% of bankroll
 ```
-
-### Elite Jockey Priority
-
-**Always fetch current stats before betting:**
-
-```bash
-npx tsx tools/fetch-jockey-stats.ts
-```
-
-| Win % Range | Rating Boost | Action |
-|-------------|--------------|--------|
-| > 20% | +10 | ⭐⭐⭐ BACK when in WIN range |
-| 15-20% | +7 | ⭐⭐ BACK when in WIN range |
-| 10-15% | +4 | ⭐ Support if form good |
-| < 10% | 0 | No jockey boost |
-
-## Jockey Codes Reference
-
-Fetch current stats: `npx tsx tools/fetch-jockey-stats.ts`
-
-| Jockey | Code | Stats URL |
-|--------|------|-----------|
-| Z Purton | `PZ` | [Link](https://racing.hkjc.com/en-us/local/information/jockeywinstat?JockeyId=PZ) |
-| J Moreira | `MOJ` | [Link](https://racing.hkjc.com/en-us/local/information/jockeywinstat?JockeyId=MOJ) |
-| J McDonald | `MCJ` | [Link](https://racing.hkjc.com/en-us/local/information/jockeywinstat?JockeyId=MCJ) |
-| H Bowman | `BH` | [Link](https://racing.hkjc.com/en-us/local/information/jockeywinstat?JockeyId=BH) |
-| M Guyon | `GM` | [Link](https://racing.hkjc.com/en-us/local/information/jockeywinstat?JockeyId=GM) |
-| K Teetan | `TEK` | [Link](https://racing.hkjc.com/en-us/local/information/jockeywinstat?JockeyId=TEK) |
-| A Badel | `BA` | [Link](https://racing.hkjc.com/en-us/local/information/jockeywinstat?JockeyId=BA) |
 
 ## Horse Code Format
 

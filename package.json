@@ -12,7 +12,6 @@
     "scrape:historical": "tsx src/scrapers/historical.ts",
     "analyze": "tsx tools/analyze-race.ts",
     "odds": "tsx tools/fetch-odds.ts",
-    "jockeys": "tsx tools/fetch-jockey-stats.ts",
     "backtest": "tsx tools/run-backtest.ts",
     "lint": "eslint src/**/*.ts",
     "test": "vitest"
