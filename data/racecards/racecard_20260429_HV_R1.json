@@ -199,11 +199,11 @@
           "nationality": "MAU",
           "weightClaim": 0,
           "seasonStats": {
-            "wins": 29,
-            "places": 68,
-            "rides": 456,
-            "winRate": 0.0636,
-            "placeRate": 0.21271929824561403,
+            "wins": 30,
+            "places": 70,
+            "rides": 465,
+            "winRate": 0.0645,
+            "placeRate": 0.21505376344086022,
             "roi": 1
           },
           "courseStats": []
@@ -560,9 +560,9 @@
           "seasonStats": {
             "wins": 11,
             "places": 48,
-            "rides": 325,
-            "winRate": 0.0338,
-            "placeRate": 0.18153846153846154,
+            "rides": 327,
+            "winRate": 0.0336,
+            "placeRate": 0.18042813455657492,
             "roi": 1
           },
           "courseStats": []
@@ -781,9 +781,9 @@
           "seasonStats": {
             "wins": 29,
             "places": 51,
-            "rides": 349,
-            "winRate": 0.08310000000000001,
-            "placeRate": 0.22922636103151864,
+            "rides": 355,
+            "winRate": 0.0817,
+            "placeRate": 0.22535211267605634,
             "roi": 1
           },
           "courseStats": []
@@ -1173,9 +1173,9 @@
           "seasonStats": {
             "wins": 35,
             "places": 59,
-            "rides": 368,
-            "winRate": 0.0951,
-            "placeRate": 0.2554347826086957,
+            "rides": 376,
+            "winRate": 0.0931,
+            "placeRate": 0.25,
             "roi": 1
           },
           "courseStats": []
@@ -1442,11 +1442,11 @@
           "nationality": "AUS",
           "weightClaim": 0,
           "seasonStats": {
-            "wins": 50,
-            "places": 91,
-            "rides": 424,
-            "winRate": 0.11789999999999999,
-            "placeRate": 0.33254716981132076,
+            "wins": 52,
+            "places": 92,
+            "rides": 434,
+            "winRate": 0.1198,
+            "placeRate": 0.3317972350230415,
             "roi": 1
           },
           "courseStats": []
@@ -1596,11 +1596,11 @@
           "nationality": "CHN",
           "weightClaim": 0,
           "seasonStats": {
-            "wins": 28,
-            "places": 53,
-            "rides": 328,
-            "winRate": 0.08539999999999999,
-            "placeRate": 0.24695121951219512,
+            "wins": 29,
+            "places": 54,
+            "rides": 332,
+            "winRate": 0.0873,
+            "placeRate": 0.25,
             "roi": 1
           },
           "courseStats": []
@@ -1786,9 +1786,9 @@
           "seasonStats": {
             "wins": 16,
             "places": 34,
-            "rides": 345,
-            "winRate": 0.0464,
-            "placeRate": 0.14492753623188406,
+            "rides": 348,
+            "winRate": 0.046,
+            "placeRate": 0.14367816091954022,
             "roi": 1
           },
           "courseStats": []
@@ -1975,9 +1975,9 @@
           "seasonStats": {
             "wins": 20,
             "places": 39,
-            "rides": 310,
-            "winRate": 0.0645,
-            "placeRate": 0.19032258064516128,
+            "rides": 315,
+            "winRate": 0.0635,
+            "placeRate": 0.1873015873015873,
             "roi": 1
           },
           "courseStats": []
@@ -2182,9 +2182,9 @@
           "seasonStats": {
             "wins": 19,
             "places": 26,
-            "rides": 301,
-            "winRate": 0.06309999999999999,
-            "placeRate": 0.14950166112956811,
+            "rides": 304,
+            "winRate": 0.0625,
+            "placeRate": 0.14802631578947367,
             "roi": 1
           },
           "courseStats": []
@@ -2459,16 +2459,16 @@
   },
   "winOdds": {
     "1": 10,
-    "2": 14,
-    "3": 7.6,
-    "4": 5.5,
-    "5": 6,
-    "6": 7.6,
-    "7": 5.4,
-    "8": 24,
-    "9": 27,
-    "10": 22,
-    "11": 56,
-    "12": 8.5
+    "2": 11,
+    "3": 7.3,
+    "4": 6.3,
+    "5": 6.8,
+    "6": 8.1,
+    "7": 5.3,
+    "8": 20,
+    "9": 22,
+    "10": 25,
+    "11": 62,
+    "12": 8
   }
 }
