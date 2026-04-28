@@ -160,27 +160,17 @@
         "jockey": {
           "code": "PZ",
           "name": "Z Purton",
-          "nationality": "Hong Kong",
+          "nationality": "AUS",
           "weightClaim": 0,
           "seasonStats": {
-            "wins": 71,
-            "places": 82,
-            "rides": 320,
-            "winRate": 0.221875,
-            "placeRate": 0.478125,
+            "wins": 105,
+            "places": 147,
+            "rides": 522,
+            "winRate": 0.2011,
+            "placeRate": 0.4827586206896552,
             "roi": 1
           },
-          "courseStats": [
-            {
-              "venue": "Sha Tin",
-              "wins": 964,
-              "places": 0,
-              "rides": 920,
-              "winRate": 1.0478260869565217,
-              "placeRate": 1.0478260869565217,
-              "roi": 1
-            }
-          ]
+          "courseStats": []
         },
         "trainer": {
           "code": "SJJ",
@@ -327,9 +317,9 @@
           "seasonStats": {
             "wins": 25,
             "places": 57,
-            "rides": 338,
-            "winRate": 0.07400000000000001,
-            "placeRate": 0.24260355029585798,
+            "rides": 342,
+            "winRate": 0.0731,
+            "placeRate": 0.23976608187134502,
             "roi": 1
           },
           "courseStats": []
@@ -513,11 +503,11 @@
           "nationality": "AUS",
           "weightClaim": 0,
           "seasonStats": {
-            "wins": 50,
-            "places": 91,
-            "rides": 424,
-            "winRate": 0.11789999999999999,
-            "placeRate": 0.33254716981132076,
+            "wins": 52,
+            "places": 92,
+            "rides": 434,
+            "winRate": 0.1198,
+            "placeRate": 0.3317972350230415,
             "roi": 1
           },
           "courseStats": []
@@ -739,9 +729,9 @@
           "seasonStats": {
             "wins": 35,
             "places": 59,
-            "rides": 368,
-            "winRate": 0.0951,
-            "placeRate": 0.2554347826086957,
+            "rides": 376,
+            "winRate": 0.0931,
+            "placeRate": 0.25,
             "roi": 1
           },
           "courseStats": []
@@ -944,9 +934,9 @@
           "seasonStats": {
             "wins": 29,
             "places": 49,
-            "rides": 341,
-            "winRate": 0.085,
-            "placeRate": 0.2287390029325513,
+            "rides": 343,
+            "winRate": 0.08449999999999999,
+            "placeRate": 0.22740524781341107,
             "roi": 1
           },
           "courseStats": []
@@ -1047,10 +1037,10 @@
           "weightClaim": 0,
           "seasonStats": {
             "wins": 1,
-            "places": 2,
-            "rides": 7,
-            "winRate": 0.1429,
-            "placeRate": 0.42857142857142855,
+            "places": 4,
+            "rides": 15,
+            "winRate": 0.0667,
+            "placeRate": 0.3333333333333333,
             "roi": 1
           },
           "courseStats": []
@@ -1255,9 +1245,9 @@
           "seasonStats": {
             "wins": 29,
             "places": 51,
-            "rides": 349,
-            "winRate": 0.08310000000000001,
-            "placeRate": 0.22922636103151864,
+            "rides": 355,
+            "winRate": 0.0817,
+            "placeRate": 0.22535211267605634,
             "roi": 1
           },
           "courseStats": []
@@ -1965,11 +1955,11 @@
           "nationality": "CHN",
           "weightClaim": 0,
           "seasonStats": {
-            "wins": 28,
-            "places": 53,
-            "rides": 328,
-            "winRate": 0.08539999999999999,
-            "placeRate": 0.24695121951219512,
+            "wins": 29,
+            "places": 54,
+            "rides": 332,
+            "winRate": 0.0873,
+            "placeRate": 0.25,
             "roi": 1
           },
           "courseStats": []
@@ -2134,11 +2124,11 @@
           "nationality": "MAU",
           "weightClaim": 0,
           "seasonStats": {
-            "wins": 29,
-            "places": 68,
-            "rides": 456,
-            "winRate": 0.0636,
-            "placeRate": 0.21271929824561403,
+            "wins": 30,
+            "places": 70,
+            "rides": 465,
+            "winRate": 0.0645,
+            "placeRate": 0.21505376344086022,
             "roi": 1
           },
           "courseStats": []
@@ -2303,11 +2293,11 @@
           "nationality": "FR",
           "weightClaim": 0,
           "seasonStats": {
-            "wins": 26,
-            "places": 65,
-            "rides": 351,
-            "winRate": 0.0741,
-            "placeRate": 0.25925925925925924,
+            "wins": 27,
+            "places": 68,
+            "rides": 357,
+            "winRate": 0.0756,
+            "placeRate": 0.2661064425770308,
             "roi": 1
           },
           "courseStats": []
@@ -2341,17 +2331,17 @@
     ]
   },
   "winOdds": {
-    "1": 2.6,
-    "2": 54,
-    "3": 6.9,
-    "4": 15,
-    "5": 4.3,
-    "6": 39,
-    "7": 40,
+    "1": 2.9,
+    "2": 55,
+    "3": 6.4,
+    "4": 16,
+    "5": 4.6,
+    "6": 44,
+    "7": 30,
     "8": 14,
-    "9": 22,
-    "10": 9.3,
-    "11": 18,
-    "12": 21
+    "9": 21,
+    "10": 8.8,
+    "11": 10,
+    "12": 20
   }
 }
