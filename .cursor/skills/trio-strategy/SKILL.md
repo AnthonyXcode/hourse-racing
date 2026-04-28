@@ -16,7 +16,7 @@ You are an experienced HKJC bettor focused on the Trio (單T) pool. You MUST fol
 ## Pipeline Overview
 
 ```
-STEP 1: QUERY DATA       → Sync historical data, fetch race card, odds, jockey stats, SCMP race card
+STEP 1: QUERY DATA       → Sync historical data, fetch race card, odds, SCMP race card
 STEP 2: VALIDATE DATA    → Check field size, going, scratchings, SCMP coverage
 STEP 3: RUN SIMULATION   → Monte Carlo 10,000 iterations; derive both Strategy A (with SCMP adjustments) and Strategy B (raw MC)
 STEP 4: COMPILE RESULTS  → Build Strategy A pool (modes A–D, 膽拖) and Strategy B pool (MC #1 banker, legs = Place%>20% or odds<10)
@@ -89,20 +89,13 @@ If the script reports "All historical data is up to date!" proceed immediately. 
 
 > **Critical**: Do NOT skip this step. Running MC simulation on stale historical data means horses’ latest form, speed ratings, and jockey stats may be missing — especially for horses that ran in recent meetings not yet scraped.
 
-### 1c. Fetch jockey stats
-```bash
-PLAYWRIGHT_BROWSERS_PATH=0 npx tsx tools/fetch-jockey-stats.ts --date=YYYY-MM-DD
-```
-- **--date=YYYY-MM-DD** (optional): Racing date used to find jockeys from race cards and for the output filename. Omit to use today.
-Output: `data/jockeys/jockey_stats_YYYYMMDD.json` + `data/jockeys/JOCKEY_STATS.md`
-
-### 1d. Fetch live odds
+### 1c. Fetch live odds
 ```bash
 PLAYWRIGHT_BROWSERS_PATH=0 npx tsx tools/fetch-odds.ts --date=YYYY-MM-DD --venue=HV --json --save
 ```
 Output: `data/odds/odds_YYYYMMDD_VENUE.json`
 
-### 1e. Fetch race card
+### 1d. Fetch race card
 For each target race, fetch the HKJC race card to extract:
 - Horse entries, jockey assignments, draw, weight, last 6 runs
 - Race conditions: class, distance, surface, going
@@ -112,7 +105,7 @@ For each target race, fetch the HKJC race card to extract:
 https://racing.hkjc.com/racing/information/English/Racing/RaceCard.aspx?RaceDate=YYYY/MM/DD&Racecourse=HV&RaceNo=N
 ```
 
-### 1f. Fetch SCMP Race Card Data
+### 1e. Fetch SCMP Race Card Data
 
 Fetch the South China Morning Post race card page for supplementary data:
 
@@ -121,7 +114,7 @@ Fetch the South China Morning Post race card page for supplementary data:
 
 Use `WebFetch` to retrieve each target race page. Extract the following data — **do NOT use tipster picks**:
 
-#### 1f-i. Win/Place Odds
+#### 1e-i. Win/Place Odds
 
 The SCMP race card table includes **Win** and **Place** odds columns for every horse. These are the actual HKJC pool odds and are often more complete than what the `fetch-odds.ts` scraper captures.
 
@@ -130,7 +123,7 @@ The SCMP race card table includes **Win** and **Place** odds columns for every h
 - Record all horses' Win and Place odds
 - Identify market favourites and longshots for edge calculations
 
-#### 1f-ii. Star Form Comments
+#### 1e-ii. Star Form Comments
 
 Each horse has a **Star Form** comment written by SCMP analysts. Extract key signals:
 - **Positive signals**: "winner", "made all", "rallied", "improved", "sharp", "does draw well"
@@ -138,7 +131,7 @@ Each horse has a **Star Form** comment written by SCMP analysts. Extract key sig
 - **Fitness flags**: "resumed", "first-timer", "off 126 days", "returns from injury"
 - **Draw comments**: "gate's a hurdle", "gate should help", "drawn to get his chance"
 
-#### 1f-iii. Trouble in Running (TIR)
+#### 1e-iii. Trouble in Running (TIR)
 
 Extract recent **stewards' reports** for each horse. Key flags:
 - **Recurring issues**: "bumped on jumping" (repeated = barrier problem)
@@ -146,21 +139,21 @@ Extract recent **stewards' reports** for each horse. Key flags:
 - **Unacceptable performance**: Horse under stewards' watch
 - **Crowded / steadied**: Bad luck last run = potential improver
 
-#### 1f-iv. Vet's Report
+#### 1e-iv. Vet's Report
 
 Check for **health flags**:
 - Recent injury / lameness → **reduce confidence** even if passed vet exam
 - "Passed on [date]" after injury → check how recent; if <30 days, flag as risk
 - "Eight years of age or above" → reduced reliability for form reversal
 
-#### 1f-v. Trackwork Highlights
+#### 1e-v. Trackwork Highlights
 
 Extract notable trial / gallop mentions:
 - "Travelled well for second in his latest trial" = **positive trial form**
 - "Looks ready to strike" = trainer confidence
 - Use to **break ties** between similarly ranked MC horses
 
-#### 1f-vi. Quinella Place & Quinella Odds Matrix
+#### 1e-vi. Quinella Place & Quinella Odds Matrix
 
 The SCMP publishes full **QP and Q odds matrices** for each race. These are the actual HKJC pool odds.
 
@@ -179,7 +172,7 @@ Before proceeding, verify ALL of the following. **Stop and report if any critica
 - [ ] Race date has confirmed racing (not cancelled)
 - [ ] Target race has **≥ 3 starters** (HKJC requires ≥3 for Trio pool)
 - [ ] Odds are populated for at least the top 3-5 horses
-- [ ] Jockey stats file is non-empty (has at least elite jockey data)
+- [ ] Jockey stats available (fetched automatically by MC simulation)
 
 ### Warning checks (note but continue)
 - [ ] Going condition parsed (default "Good" if missing — flag as caveat)
@@ -194,7 +187,6 @@ After validation, output a brief summary:
 Meeting: [Venue] [Date] | Going: [X] | Surface: [X]
 Target Race(s): R[N] ([Class] | [Distance] | [Field size])
 Scratchings: [list or "none"]
-Jockey stats: [N] jockeys loaded, [N] elite tier
 Odds coverage: [N] horses with odds
 SCMP data: [✅ loaded / ⚠️ partial / ❌ unavailable]
 ```
@@ -674,7 +666,6 @@ TOTAL TRIO STAKE: $[combos x 10]
 
 | Tool | Command / URL | Purpose |
 |------|--------------|---------|
-| Jockey Stats | `PLAYWRIGHT_BROWSERS_PATH=0 npx tsx tools/fetch-jockey-stats.ts --date=YYYY-MM-DD` | Season win rates |
 | Live Odds | `PLAYWRIGHT_BROWSERS_PATH=0 npx tsx tools/fetch-odds.ts --date=YYYY-MM-DD --venue=HV --json --save` | Current odds |
 | Race Analysis | `PLAYWRIGHT_BROWSERS_PATH=0 npx tsx tools/analyze-race.ts --date YYYY-MM-DD --venue "Happy Valley" --race N --form-data all --bankroll BANKROLL --kelly 0.35 --min-edge 5` | MC simulation (use `--form-data all` for all-venue form) |
 | Race Card | `https://racing.hkjc.com/racing/information/English/Racing/RaceCard.aspx?RaceDate=YYYY/MM/DD&Racecourse=HV&RaceNo=N` | Entries, jockeys |
@@ -760,16 +751,15 @@ Save to: `data/reports/trio_review_YYYYMMDD_VENUE.md`
 "Generate Trio strategy for Sha Tin Race 7, 14/02/2026."
 
 Expected agent behaviour:
-1. Fetch jockey stats → check elite tier
-2. Fetch odds for ST 2026-02-14 → save
-3. **Fetch SCMP race card for R7** → extract odds, Star Form, TIR, Vet, Trackwork, QP/Q odds (ignore tipster picks)
-4. Run `analyze-race.ts` for R7 with `--form-data all`
-5. Validate: ≥3 starters, odds populated, no critical scratchings, SCMP data loaded
-6. Apply SCMP form adjustments
-7. Classify race (Dominant / Semi-Dominant / Competitive / Wide open)
-8. Build **Strategy A** pool (modes A–D, 膽拖) and **Strategy B** pool (MC #1 banker, primary legs = Place% > 20%, Win-odds < 10 replacements)
-9. Apply exclusion rules for Strategy A (Rules 1-3) — no narrative demotion, no hard exclusion if odds <= 15
-10. Calculate permutations and cost for both strategies
-11. **Output both Strategy A and Strategy B** Trio tickets + summary in the same report
-12. Save to `data/reports/trio_strategy_20260214_ST_R7.md`
-13. **After the meeting**: Fetch results, cross-reference, save review
+1. Fetch odds for ST 2026-02-14 → save
+2. **Fetch SCMP race card for R7** → extract odds, Star Form, TIR, Vet, Trackwork, QP/Q odds (ignore tipster picks)
+3. Run `analyze-race.ts` for R7 with `--form-data all` (jockey stats fetched automatically by MC)
+4. Validate: ≥3 starters, odds populated, no critical scratchings, SCMP data loaded
+5. Apply SCMP form adjustments
+6. Classify race (Dominant / Semi-Dominant / Competitive / Wide open)
+7. Build **Strategy A** pool (modes A–D, 膽拖) and **Strategy B** pool (MC #1 banker, primary legs = Place% > 20%, Win-odds < 10 replacements)
+8. Apply exclusion rules for Strategy A (Rules 1-3) — no narrative demotion, no hard exclusion if odds <= 15
+9. Calculate permutations and cost for both strategies
+10. **Output both Strategy A and Strategy B** Trio tickets + summary in the same report
+11. Save to `data/reports/trio_strategy_20260214_ST_R7.md`
+12. **After the meeting**: Fetch results, cross-reference, save review
