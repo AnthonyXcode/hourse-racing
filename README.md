@@ -196,20 +196,11 @@ https://racing.hkjc.com/en-us/local/information/localresults?RaceDate={date}
 
 ## Betting Strategy
 
-Based on backtesting (13 meetings, 125 races, **+338% ROI**):
-
-### Odds Range Filter
-| Bet Type | Odds Range | Strike Rate | ROI |
-|----------|------------|-------------|-----|
-| WIN | 2.0 - 7.0 | 56% | +202% |
-| PLACE | 5.0 - 15.0 | 73% | +146% |
-| QUINELLA | Top 2 in range | 47% | +1,424% |
-
 ### Edge Detection
 ```
 Edge = Model Probability - Market Probability
 
-Required: Edge > 15% to place bet
+Required: Edge > 5% to place bet
 ```
 
 ### Kelly Staking Constraints
