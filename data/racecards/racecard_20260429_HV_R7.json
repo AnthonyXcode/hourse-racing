@@ -29,9 +29,7 @@
           "careerPlaces": 0,
           "totalPrizeMoney": 0,
           "gear": [
-            "B",
-            "P",
-            "E"
+            "B"
           ],
           "pastPerformances": [
             {
@@ -221,11 +219,9 @@
         },
         "horseNumber": 1,
         "draw": 9,
-        "weight": 105,
+        "weight": 135,
         "gearChanges": [
-          "B",
-          "P",
-          "E"
+          "B"
         ],
         "isScratched": false
       },
@@ -248,12 +244,8 @@
           "careerPlaces": 0,
           "totalPrizeMoney": 0,
           "gear": [
-            "B",
-            "H",
-            "P",
-            "TT",
             "CP",
-            "E"
+            "TT"
           ],
           "pastPerformances": [
             {
@@ -409,14 +401,10 @@
         },
         "horseNumber": 2,
         "draw": 5,
-        "weight": 100,
+        "weight": 130,
         "gearChanges": [
-          "B",
-          "H",
-          "P",
-          "TT",
           "CP",
-          "E"
+          "TT"
         ],
         "isScratched": false
       },
@@ -439,11 +427,7 @@
           "careerPlaces": 0,
           "totalPrizeMoney": 0,
           "gear": [
-            "B",
-            "H",
-            "P",
-            "TT",
-            "E"
+            "TT"
           ],
           "pastPerformances": [
             {
@@ -584,11 +568,7 @@
         "draw": 4,
         "weight": 125,
         "gearChanges": [
-          "B",
-          "H",
-          "P",
-          "TT",
-          "E"
+          "TT"
         ],
         "isScratched": false
       },
@@ -612,7 +592,6 @@
           "totalPrizeMoney": 0,
           "gear": [
             "B",
-            "P",
             "TT"
           ],
           "pastPerformances": [
@@ -840,7 +819,6 @@
         "weight": 119,
         "gearChanges": [
           "B",
-          "P",
           "TT"
         ],
         "isScratched": false
@@ -864,12 +842,7 @@
           "careerPlaces": 0,
           "totalPrizeMoney": 0,
           "gear": [
-            "B",
-            "H",
-            "P",
-            "V",
-            "XB",
-            "E"
+            "XB"
           ],
           "pastPerformances": [
             {
@@ -1024,15 +997,10 @@
           "specialties": []
         },
         "horseNumber": 5,
-        "draw": 2,
+        "draw": 3,
         "weight": 117,
         "gearChanges": [
-          "B",
-          "H",
-          "P",
-          "V",
-          "XB",
-          "E"
+          "XB"
         ],
         "isScratched": false
       },
@@ -1055,11 +1023,7 @@
           "careerPlaces": 0,
           "totalPrizeMoney": 0,
           "gear": [
-            "B",
-            "H",
-            "P",
-            "V",
-            "E"
+            "B"
           ],
           "pastPerformances": [
             {
@@ -1282,14 +1246,10 @@
           "specialties": []
         },
         "horseNumber": 6,
-        "draw": 1,
+        "draw": 7,
         "weight": 115,
         "gearChanges": [
-          "B",
-          "H",
-          "P",
-          "V",
-          "E"
+          "B"
         ],
         "isScratched": false
       },
@@ -1313,7 +1273,6 @@
           "totalPrizeMoney": 0,
           "gear": [
             "B",
-            "P",
             "TT"
           ],
           "pastPerformances": [
@@ -1439,7 +1398,6 @@
         "weight": 115,
         "gearChanges": [
           "B",
-          "P",
           "TT"
         ],
         "isScratched": false
@@ -1463,10 +1421,7 @@
           "careerPlaces": 0,
           "totalPrizeMoney": 0,
           "gear": [
-            "B",
-            "P",
-            "TT",
-            "E"
+            "TT"
           ],
           "pastPerformances": [
             {
@@ -1573,10 +1528,7 @@
         "draw": 8,
         "weight": 115,
         "gearChanges": [
-          "B",
-          "P",
-          "TT",
-          "E"
+          "TT"
         ],
         "isScratched": false
       },
@@ -1599,12 +1551,9 @@
           "careerPlaces": 0,
           "totalPrizeMoney": 0,
           "gear": [
-            "B",
-            "H",
-            "P",
-            "TT",
+            "SR",
             "V",
-            "SR"
+            "TT"
           ],
           "pastPerformances": [
             {
@@ -1813,12 +1762,9 @@
         "draw": 6,
         "weight": 115,
         "gearChanges": [
-          "B",
-          "H",
-          "P",
-          "TT",
+          "SR",
           "V",
-          "SR"
+          "TT"
         ],
         "isScratched": false
       },
@@ -1841,10 +1787,7 @@
           "careerPlaces": 0,
           "totalPrizeMoney": 0,
           "gear": [
-            "B",
-            "H",
-            "P",
-            "E"
+            "H"
           ],
           "pastPerformances": [
             {
@@ -2036,25 +1979,22 @@
         "draw": 2,
         "weight": 115,
         "gearChanges": [
-          "B",
-          "H",
-          "P",
-          "E"
+          "H"
         ],
         "isScratched": false
       }
     ]
   },
   "winOdds": {
-    "1": 9.6,
+    "1": 9.5,
     "2": 4.4,
     "3": 11,
-    "4": 14,
-    "5": 7.6,
-    "6": 14,
+    "4": 13,
+    "5": 8.1,
+    "6": 13,
     "7": 14,
     "8": 5,
-    "9": 7.1,
-    "10": 8.8
+    "9": 7.6,
+    "10": 8.3
   }
 }

@@ -29,10 +29,7 @@
           "careerPlaces": 0,
           "totalPrizeMoney": 0,
           "gear": [
-            "H",
-            "P",
-            "TT",
-            "E"
+            "TT"
           ],
           "pastPerformances": [
             {
@@ -182,9 +179,9 @@
           "seasonStats": {
             "wins": 19,
             "places": 26,
-            "rides": 301,
-            "winRate": 0.06309999999999999,
-            "placeRate": 0.14950166112956811,
+            "rides": 304,
+            "winRate": 0.0625,
+            "placeRate": 0.14802631578947367,
             "roi": 1
           },
           "courseStats": []
@@ -207,10 +204,7 @@
         "draw": 11,
         "weight": 135,
         "gearChanges": [
-          "H",
-          "P",
-          "TT",
-          "E"
+          "TT"
         ],
         "isScratched": false
       },
@@ -233,11 +227,8 @@
           "careerPlaces": 0,
           "totalPrizeMoney": 0,
           "gear": [
-            "H",
-            "P",
-            "TT",
             "V",
-            "E"
+            "TT"
           ],
           "pastPerformances": [
             {
@@ -319,9 +310,9 @@
           "seasonStats": {
             "wins": 20,
             "places": 39,
-            "rides": 310,
-            "winRate": 0.0645,
-            "placeRate": 0.19032258064516128,
+            "rides": 315,
+            "winRate": 0.0635,
+            "placeRate": 0.1873015873015873,
             "roi": 1
           },
           "courseStats": []
@@ -344,11 +335,8 @@
         "draw": 8,
         "weight": 134,
         "gearChanges": [
-          "H",
-          "P",
-          "TT",
           "V",
-          "E"
+          "TT"
         ],
         "isScratched": false
       },
@@ -371,11 +359,8 @@
           "careerPlaces": 0,
           "totalPrizeMoney": 0,
           "gear": [
-            "H",
             "P",
-            "V",
-            "CP",
-            "E"
+            "CP"
           ],
           "pastPerformances": [
             {
@@ -576,9 +561,9 @@
           "seasonStats": {
             "wins": 25,
             "places": 57,
-            "rides": 338,
-            "winRate": 0.07400000000000001,
-            "placeRate": 0.24260355029585798,
+            "rides": 342,
+            "winRate": 0.0731,
+            "placeRate": 0.23976608187134502,
             "roi": 1
           },
           "courseStats": []
@@ -601,11 +586,8 @@
         "draw": 9,
         "weight": 130,
         "gearChanges": [
-          "H",
           "P",
-          "V",
-          "CP",
-          "E"
+          "CP"
         ],
         "isScratched": false
       },
@@ -629,10 +611,7 @@
           "totalPrizeMoney": 0,
           "gear": [
             "B",
-            "H",
-            "P",
-            "TT",
-            "E"
+            "TT"
           ],
           "pastPerformances": [
             {
@@ -760,27 +739,17 @@
         "jockey": {
           "code": "PZ",
           "name": "Z Purton",
-          "nationality": "Hong Kong",
+          "nationality": "AUS",
           "weightClaim": 0,
           "seasonStats": {
-            "wins": 71,
-            "places": 82,
-            "rides": 320,
-            "winRate": 0.221875,
-            "placeRate": 0.478125,
+            "wins": 105,
+            "places": 147,
+            "rides": 522,
+            "winRate": 0.2011,
+            "placeRate": 0.4827586206896552,
             "roi": 1
           },
-          "courseStats": [
-            {
-              "venue": "Sha Tin",
-              "wins": 964,
-              "places": 0,
-              "rides": 920,
-              "winRate": 1.0478260869565217,
-              "placeRate": 1.0478260869565217,
-              "roi": 1
-            }
-          ]
+          "courseStats": []
         },
         "trainer": {
           "code": "HDA",
@@ -801,10 +770,7 @@
         "weight": 129,
         "gearChanges": [
           "B",
-          "H",
-          "P",
-          "TT",
-          "E"
+          "TT"
         ],
         "isScratched": false
       },
@@ -827,8 +793,6 @@
           "careerPlaces": 0,
           "totalPrizeMoney": 0,
           "gear": [
-            "H",
-            "P",
             "SR"
           ],
           "pastPerformances": []
@@ -866,8 +830,6 @@
         "draw": 12,
         "weight": 128,
         "gearChanges": [
-          "H",
-          "P",
           "SR"
         ],
         "isScratched": false
@@ -891,10 +853,7 @@
           "careerPlaces": 0,
           "totalPrizeMoney": 0,
           "gear": [
-            "H",
-            "P",
-            "TT",
-            "E"
+            "TT"
           ],
           "pastPerformances": [
             {
@@ -993,9 +952,9 @@
           "seasonStats": {
             "wins": 35,
             "places": 59,
-            "rides": 368,
-            "winRate": 0.0951,
-            "placeRate": 0.2554347826086957,
+            "rides": 376,
+            "winRate": 0.0931,
+            "placeRate": 0.25,
             "roi": 1
           },
           "courseStats": []
@@ -1018,10 +977,7 @@
         "draw": 7,
         "weight": 128,
         "gearChanges": [
-          "H",
-          "P",
-          "TT",
-          "E"
+          "TT"
         ],
         "isScratched": false
       },
@@ -1043,11 +999,7 @@
           "careerWins": 0,
           "careerPlaces": 0,
           "totalPrizeMoney": 0,
-          "gear": [
-            "B",
-            "P",
-            "E"
-          ],
+          "gear": [],
           "pastPerformances": [
             {
               "date": "2026-03-29T00:00:00.000Z",
@@ -1093,10 +1045,10 @@
           "weightClaim": 0,
           "seasonStats": {
             "wins": 15,
-            "places": 52,
-            "rides": 325,
-            "winRate": 0.0462,
-            "placeRate": 0.20615384615384616,
+            "places": 54,
+            "rides": 329,
+            "winRate": 0.045599999999999995,
+            "placeRate": 0.20972644376899696,
             "roi": 1
           },
           "courseStats": []
@@ -1118,11 +1070,6 @@
         "horseNumber": 7,
         "draw": 1,
         "weight": 126,
-        "gearChanges": [
-          "B",
-          "P",
-          "E"
-        ],
         "isScratched": false
       },
       {
@@ -1145,10 +1092,7 @@
           "totalPrizeMoney": 0,
           "gear": [
             "B",
-            "H",
-            "P",
-            "TT",
-            "E"
+            "TT"
           ],
           "pastPerformances": [
             {
@@ -1212,10 +1156,10 @@
           "weightClaim": 0,
           "seasonStats": {
             "wins": 1,
-            "places": 2,
-            "rides": 7,
-            "winRate": 0.1429,
-            "placeRate": 0.42857142857142855,
+            "places": 4,
+            "rides": 15,
+            "winRate": 0.0667,
+            "placeRate": 0.3333333333333333,
             "roi": 1
           },
           "courseStats": []
@@ -1239,10 +1183,7 @@
         "weight": 124,
         "gearChanges": [
           "B",
-          "H",
-          "P",
-          "TT",
-          "E"
+          "TT"
         ],
         "isScratched": false
       },
@@ -1265,10 +1206,8 @@
           "careerPlaces": 0,
           "totalPrizeMoney": 0,
           "gear": [
-            "H",
-            "P",
-            "TT",
-            "SR"
+            "SR",
+            "TT"
           ],
           "pastPerformances": [
             {
@@ -1382,11 +1321,11 @@
           "nationality": "CHN",
           "weightClaim": 0,
           "seasonStats": {
-            "wins": 28,
-            "places": 53,
-            "rides": 328,
-            "winRate": 0.08539999999999999,
-            "placeRate": 0.24695121951219512,
+            "wins": 29,
+            "places": 54,
+            "rides": 332,
+            "winRate": 0.0873,
+            "placeRate": 0.25,
             "roi": 1
           },
           "courseStats": []
@@ -1409,10 +1348,8 @@
         "draw": 3,
         "weight": 123,
         "gearChanges": [
-          "H",
-          "P",
-          "TT",
-          "SR"
+          "SR",
+          "TT"
         ],
         "isScratched": false
       },
@@ -1435,10 +1372,8 @@
           "careerPlaces": 0,
           "totalPrizeMoney": 0,
           "gear": [
-            "P",
-            "TT",
             "PC",
-            "E"
+            "TT"
           ],
           "pastPerformances": [
             {
@@ -1620,11 +1555,11 @@
           "nationality": "MAU",
           "weightClaim": 0,
           "seasonStats": {
-            "wins": 29,
-            "places": 68,
-            "rides": 456,
-            "winRate": 0.0636,
-            "placeRate": 0.21271929824561403,
+            "wins": 30,
+            "places": 70,
+            "rides": 465,
+            "winRate": 0.0645,
+            "placeRate": 0.21505376344086022,
             "roi": 1
           },
           "courseStats": []
@@ -1647,10 +1582,8 @@
         "draw": 5,
         "weight": 122,
         "gearChanges": [
-          "P",
-          "TT",
           "PC",
-          "E"
+          "TT"
         ],
         "isScratched": false
       },
@@ -1674,10 +1607,7 @@
           "totalPrizeMoney": 0,
           "gear": [
             "B",
-            "H",
-            "P",
-            "TT",
-            "E"
+            "TT"
           ],
           "pastPerformances": [
             {
@@ -1861,9 +1791,9 @@
           "seasonStats": {
             "wins": 29,
             "places": 51,
-            "rides": 349,
-            "winRate": 0.08310000000000001,
-            "placeRate": 0.22922636103151864,
+            "rides": 355,
+            "winRate": 0.0817,
+            "placeRate": 0.22535211267605634,
             "roi": 1
           },
           "courseStats": []
@@ -1887,10 +1817,7 @@
         "weight": 119,
         "gearChanges": [
           "B",
-          "H",
-          "P",
-          "TT",
-          "E"
+          "TT"
         ],
         "isScratched": false
       },
@@ -1914,10 +1841,7 @@
           "totalPrizeMoney": 0,
           "gear": [
             "B",
-            "H",
-            "P",
-            "TT",
-            "E"
+            "TT"
           ],
           "pastPerformances": [
             {
@@ -2110,27 +2034,24 @@
         "weight": 117,
         "gearChanges": [
           "B",
-          "H",
-          "P",
-          "TT",
-          "E"
+          "TT"
         ],
         "isScratched": false
       }
     ]
   },
   "winOdds": {
-    "1": 21,
+    "1": 19,
     "2": 14,
-    "3": 8.2,
+    "3": 13,
     "4": 3,
-    "5": 30,
-    "6": 7,
-    "7": 33,
-    "8": 9.8,
-    "9": 9.2,
-    "10": 11,
-    "11": 22,
-    "12": 9.7
+    "5": 29,
+    "6": 8.1,
+    "7": 20,
+    "8": 11,
+    "9": 6.7,
+    "10": 9.5,
+    "11": 19,
+    "12": 10
   }
 }

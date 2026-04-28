@@ -11,10 +11,14 @@
             "id": "efc308a139a6ce69",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {},
+              "type": "markdown",
+              "state": {
+                "file": "test_reports/mc_top1_place_allup_summary.md",
+                "mode": "source",
+                "source": false
+              },
               "icon": "lucide-file",
-              "title": "New tab"
+              "title": "mc_top1_place_allup_summary"
             }
           }
         ]
@@ -179,7 +183,7 @@
       "bases:Create new base": false
     }
   },
-  "active": "40eb10b8fce07554",
+  "active": "efc308a139a6ce69",
   "lastOpenFiles": [
     "static/trio_stratC_hit_rate_by_segment_20260426.md",
     "static/mc_top1_place_hit_rate_by_segment_20260426.md",

@@ -610,33 +610,37 @@ export class RaceCardScraper {
     // No jockey link = stand-by starter (no jockey assigned yet); skip silently
     if (!hasJockeyLink) return null;
 
-    // Parse numeric values from cells
-    for (let i = 0; i < cellTexts.length; i++) {
+    // Weight: the Wt. column is before the jockey/trainer columns.
+    // Take the FIRST 3-digit number in 100-140 to avoid later cells (rating, body weight, days) overwriting.
+    const weightSearchEnd = trainerCellIdx > 0 ? trainerCellIdx : cellTexts.length;
+    for (let i = 0; i < weightSearchEnd; i++) {
       const text = cellTexts[i]!;
       const weightMatch = text.match(/^(\d{3})$/);
       if (weightMatch) {
         const w = parseInt(weightMatch[1]!, 10);
-        if (w >= 100 && w <= 140) weight = w;
+        if (w >= 100 && w <= 140) {
+          weight = w;
+          break;
+        }
       }
     }
 
-    // Draw ("Dr.") — HKJC English cards put barrier after Wt./Jockey/Trainer/Rtg. blocks (often col >= 5).
-    // Scan from index 4 onward for the first standalone 1–14 (avoids mistaking early cells for barrier).
-    // Do not require d !== horseNumber: horse #9 can legitimately draw barrier 9.
+    // Draw ("Dr.") — the draw cell is immediately before the trainer cell in the HKJC table.
+    // Previous heuristic (scanning for first 1-14 from col 4) picked up jockey weight claims.
     let drawFound = false;
-    const minDrawCol = 4;
-    for (let i = minDrawCol; i < cellTexts.length; i++) {
-      const text = cellTexts[i]!.trim();
-      if (!/^\d{1,2}$/.test(text)) continue;
-      const d = parseInt(text, 10);
-      if (d >= 1 && d <= 14) {
-        draw = d;
-        drawFound = true;
-        break;
+    if (trainerCellIdx > 0) {
+      const drawText = cellTexts[trainerCellIdx - 1]?.trim();
+      if (drawText && /^\d{1,2}$/.test(drawText)) {
+        const d = parseInt(drawText, 10);
+        if (d >= 1 && d <= 14) {
+          draw = d;
+          drawFound = true;
+        }
       }
     }
     if (!drawFound) {
-      for (let i = 1; i < minDrawCol && i < cellTexts.length; i++) {
+      // Fallback: scan from index 4 onward (skip horse #, form, colour, name cells)
+      for (let i = 4; i < cellTexts.length; i++) {
         const text = cellTexts[i]!.trim();
         if (!/^\d{1,2}$/.test(text)) continue;
         const d = parseInt(text, 10);
@@ -649,7 +653,7 @@ export class RaceCardScraper {
     }
     if (!drawFound) {
       console.warn(
-        `Entry #${horseNumber} ${horseName || "?"}: barrier draw not parsed; using horse number as draw (often wrong)`
+        `Entry #${horseNumber} ${horseName || "?"}: barrier draw not parsed; using horse number as draw`
       );
     }
 
@@ -699,9 +703,24 @@ export class RaceCardScraper {
       }
     }
 
-    // Gear changes
-    const gearText = $row.text();
-    const gear = this.parseGear(gearText);
+    // Gear: find the specific gear cell rather than searching the entire row text.
+    // The gear cell is in the later columns (typically trainerCellIdx+13) and contains
+    // only valid gear codes separated by "/", optionally suffixed with "1"/"2"/"-".
+    let gearCellText = "";
+    if (trainerCellIdx >= 0) {
+      const GEAR_CODES = new Set(["B","BO","H","P","TT","V","VO","XB","PC","SR","CP","CO","CC","PS","SB","E"]);
+      const searchStart = trainerCellIdx + 8;
+      for (let i = searchStart; i < cellTexts.length; i++) {
+        const text = cellTexts[i]!.trim();
+        if (!text || text.length > 30) continue;
+        const parts = text.split("/").map(p => p.replace(/[12-]$/, "").trim());
+        if (parts.length > 0 && parts.every(p => GEAR_CODES.has(p))) {
+          gearCellText = text;
+          break;
+        }
+      }
+    }
+    const gear = this.parseGear(gearCellText);
 
     // Check if scratched
     const rowText = $row.text().toLowerCase();
@@ -806,29 +825,27 @@ export class RaceCardScraper {
   }
 
   /**
-   * Parse gear string into Gear array
+   * Parse gear cell text into Gear array.
+   * Expects the specific gear cell content (e.g. "B/TT", "CP1/SR", "BO").
+   * Splits by "/" and strips trailing "1"/"2"/"-" suffixes (first-time/replaced/removed markers).
    */
-  private parseGear(gearText: string): Gear[] {
-    const gear: Gear[] = [];
+  private parseGear(gearCellText: string): Gear[] {
+    if (!gearCellText.trim()) return [];
     const gearMap: Record<string, Gear> = {
-      B: "B",
-      H: "H",
-      P: "P",
-      TT: "TT",
-      V: "V",
-      XB: "XB",
-      PC: "PC",
-      SR: "SR",
-      CP: "CP",
-      E: "E",
+      B: "B", BO: "BO", H: "H", P: "P", TT: "TT", V: "V", VO: "VO",
+      XB: "XB", PC: "PC", SR: "SR", CP: "CP", CO: "CO", CC: "CC",
+      PS: "PS", SB: "SB", E: "E",
     };
-
-    for (const [key, value] of Object.entries(gearMap)) {
-      if (gearText.includes(key)) {
-        gear.push(value);
+    const gear: Gear[] = [];
+    const seen = new Set<string>();
+    for (const part of gearCellText.split("/")) {
+      const code = part.replace(/[12-]$/, "").trim();
+      const mapped = gearMap[code];
+      if (mapped && !seen.has(mapped)) {
+        gear.push(mapped);
+        seen.add(mapped);
       }
     }
-
     return gear;
   }
 
