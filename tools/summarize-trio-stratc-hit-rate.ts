@@ -163,7 +163,7 @@ function main() {
     add(bySurface, row.surface, row.hit);
     add(byDistance, String(row.distance), row.hit);
     add(byVenueClass, `${row.venue} / ${row.raceClass}`, row.hit);
-    add(byDistVenueClass, `${row.distance}m / ${row.venue} / ${row.raceClass}`, row.hit);
+    add(byDistVenueClass, `${row.venue} / ${row.distance}m / ${row.raceClass}`, row.hit);
   }
 
   const pct = (b: Bucket) => (b.n === 0 ? 0 : (100 * b.hits) / b.n);
@@ -223,10 +223,7 @@ function main() {
     (k) => byDistance.get(k)!
   );
   mdTable(out, "By venue × class", sortKeys(byVenueClass), (k) => byVenueClass.get(k)!);
-  mdTable(out, "By distance × venue × class", sortKeys(byDistVenueClass, (a, b) => {
-    const da = parseInt(a), db = parseInt(b);
-    return da !== db ? da - db : a.localeCompare(b);
-  }), (k) => byDistVenueClass.get(k)!);
+  mdTable(out, "By venue × distance × class", sortKeys(byDistVenueClass), (k) => byDistVenueClass.get(k)!);
 
   out.push("---");
   out.push("");

@@ -25,20 +25,20 @@ SCMP data: ✅ loaded
 MC SIMULATION (raw)
 ───────────────────────────────────────────────────────────
 
-| #  | Horse              | MC Win% | MC Place% | Win Odds | Place%>20% | Win odds<10 | Form | Role (Strategy B)           | Top Quinella (fair odds)     |
-|----|--------------------:|--------:|----------:|---------:|:----------:|:-----------:|-----:|:----------------------------|:-----------------------------|
-| 1  | CROSSBORDERDUDE      |  47.6%  |   82.5%   |    3.1   |     ✅      |     ✅       |   7  | ★ 膽 (Banker)               | 1-3: 22.8% (4.4)             |
-| 3  | FIND MY LOVE        |  18.5%  |   57.3%   |    6.8   |     ✅      |     ✅       |   7  | 腳 (Leg — primary)          | 1-2: 14.4% (6.9)             |
-| 2  | JOY CAPITAL         |  11.2%  |   41.9%   |   41.0   |     ✅      |     ❌       |   5  | 腳 (Leg — primary)          | 1-5: 11.9% (8.4)             |
-| 5  | ACE POWER           |   8.9%  |   37.8%   |    4.4   |     ✅      |     ✅       |   8  | 腳 (Leg — primary)          | 1-7: 7.5% (13.3)             |
-| 7  | STARRY SHOW         |   5.4%  |   25.9%   |   21.0   |     ✅      |     ❌       |   8  | 腳 (Leg — primary)          | 1-4: 7.2% (13.9)             |
-| 4  | BRIGHT DAY          |   5.2%  |   25.5%   |   12.0   |     ✅      |     ❌       |   9  | 腳 (Leg — primary)          | —                             |
-| 10 | BRAVE WIN           |   0.9%  |    7.7%   |   ~10    |     ❌      |     ❌       |   8  | —                           | —                             |
-| 6  | LIGHTNING ACE       |   0.7%  |    5.2%   |   52.0   |     ❌      |     ❌       |   2  | —                           | —                             |
-| 11 | WINNING NOW         |   0.6%  |    5.2%   |   ~10    |     ❌      |     ❌       |   6  | —                           | —                             |
-| 9  | FLASH STAR          |   0.5%  |    5.3%   |   ~25    |     ❌      |     ❌       |  10  | —                           | —                             |
-| 12 | HEROIC MASTER       |   0.4%  |    3.9%   |   ~20    |     ❌      |     ❌       |   6  | —                           | —                             |
-| 8  | AWESOME TREASURE    |   0.2%  |    1.8%   |   ~17    |     ❌      |     ❌       |  12  | —                           | —                             |
+| #   |            Horse | MC Win% | MC Place% | Win Odds | Place%>20% | Win odds<10 | Form | Role (Strategy B) | Top Quinella (fair odds) |
+| --- | ---------------: | ------: | --------: | -------: | :--------: | :---------: | ---: | :---------------- | :----------------------- |
+| 1   |  CROSSBORDERDUDE |   47.6% |     82.5% |      3.1 |     ✅      |      ✅      |    7 | ★ 膽 (Banker)      | 1-3: 22.8% (4.4)         |
+| 3   |     FIND MY LOVE |   18.5% |     57.3% |      6.8 |     ✅      |      ✅      |    7 | 腳 (Leg — primary) | 1-2: 14.4% (6.9)         |
+| 2   |      JOY CAPITAL |   11.2% |     41.9% |     41.0 |     ✅      |      ❌      |    5 | 腳 (Leg — primary) | 1-5: 11.9% (8.4)         |
+| 5   |        ACE POWER |    8.9% |     37.8% |      4.4 |     ✅      |      ✅      |    8 | 腳 (Leg — primary) | 1-7: 7.5% (13.3)         |
+| 7   |      STARRY SHOW |    5.4% |     25.9% |     21.0 |     ✅      |      ❌      |    8 | 腳 (Leg — primary) | 1-4: 7.2% (13.9)         |
+| 4   |       BRIGHT DAY |    5.2% |     25.5% |     12.0 |     ✅      |      ❌      |    9 | 腳 (Leg — primary) | —                        |
+| 10  |        BRAVE WIN |    0.9% |      7.7% |      ~10 |     ❌      |      ❌      |    8 | —                 | —                        |
+| 6   |    LIGHTNING ACE |    0.7% |      5.2% |     52.0 |     ❌      |      ❌      |    2 | —                 | —                        |
+| 11  |      WINNING NOW |    0.6% |      5.2% |      ~10 |     ❌      |      ❌      |    6 | —                 | —                        |
+| 9   |       FLASH STAR |    0.5% |      5.3% |      ~25 |     ❌      |      ❌      |   10 | —                 | —                        |
+| 12  |    HEROIC MASTER |    0.4% |      3.9% |      ~20 |     ❌      |      ❌      |    6 | —                 | —                        |
+| 8   | AWESOME TREASURE |    0.2% |      1.8% |      ~17 |     ❌      |      ❌      |   12 | —                 | —                        |
 
 Market: Extreme MC vs odds gap — **#2 JOY CAPITAL** (~41 odds in pool) retains **11.2% MC Win** feeding ranked coverage despite market doubt. Shortest QP cluster **1-5** dominates coupling board per notes.
 

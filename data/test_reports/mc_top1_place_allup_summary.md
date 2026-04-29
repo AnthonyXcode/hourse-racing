@@ -27,7 +27,7 @@
 | **10**  | **19 Apr** | **ST** | **Mixed** | **Good/G-F** | **11** | **46.3%** | **83.1%**  | **5/11** | **45.5%** | **❌✅❌❌✅❌✅✅❌✅❌** | **2 (R7-R8)** |
 | **11**  | **22 Apr** | **HV** | **Turf**  | **Good/G-F** | **9**  | **34.5%** | **67.4%**  | **8/9**  | **88.9%** | **✅❌✅✅✅✅✅✅✅**   | **7 (R3-R9)** |
 | **12**  | **26 Apr** | **ST** | **Turf**  | **Good/G-F** | **11** | **39.2%** | **76.1%**  | **6/11** | **54.5%** | **❌✅✅✅✅❌❌❌✅❌✅** | **4 (R2-R5)** |
-|         |            |        |           |              |        |           |            |          |           |                 |               |
+| **13**  | **29 Apr** | **HV** | **Turf**  | **G-Y→Good** | **9**  | **36.9%** | **72.4%**  | **7/9**  | **77.8%** | **✅✅❌✅✅❌✅✅✅**   | **3 (R7-R9)** |
 |         |            |        |           |              |        |           |            |          |           |                 |               |
 
 \*Meeting 8 **R1** (6 runners): MC #1 **#6** ran **3rd** but HKJC Place pool pays **two** places only → **$0** dividend; counts as **❌** for streaks and all-ups (same dividend logic as other meetings).
@@ -865,3 +865,57 @@ The three best meetings (M2, M6, M11) all featured **dividend diversity within l
 - [ ] **6-leg still profitable (+$472.45, +80.1%)**: consider 6-leg at **HV turf meetings** where max streak potential is highest — but keep it off ST and Champions Day meetings
 - [ ] **Champions Day / G1 caution**: M12's `--ignore-records` fix improved it significantly (6/11, max streak 4) but dividends are structurally low on G1 races. Play with reduced stake or 3-leg only
 - [ ] **CRITICAL — use `--ignore-records` for pre-race MC**: M12's improvement from 3/11 → 6/11 proves that excluding future race results from MC training data is essential for accurate banker selection
+
+---
+
+## Meeting 13: Happy Valley | 29 Apr 2026 (9 races)
+
+**MC #1** = raw MC Win% rank from strategy reports. **Results** from `data/historical/results_20260429_HV.json`.
+**Going:** Good to Yielding (R1–R4) → Good (R5–R9).
+
+| Race | Class   | Dist (m) | MC #1              | MC Win% | MC Place% | Placed? | Place $ (if placed) |
+| ---- | ------- | -------- | ------------------ | ------- | --------- | ------- | ------------------- |
+| R1   | Class 5 | 1800     | #5 FAMILY FORTUNE  | 30.6%   | 70.3%     | ✅ 3rd   | $30.50              |
+| R2   | Class 4 | 1200     | #6 THE PERFECT MATCH | 37.9% | 71.6%     | ✅ 3rd   | $30.50              |
+| R3   | Class 4 | 2200     | #2 NOBLE PURSUIT   | 31.5%   | 66.2%     | ❌       | —                   |
+| R4   | Class 4 | 1200     | #1 CROSSBORDERDUDE | 47.6%   | 82.5%     | ✅ 3rd   | $13.50              |
+| R5   | Class 4 | 1200     | #2 SUPERB KING     | 37.4%   | 69.3%     | ✅ 2nd   | $14.00              |
+| R6   | Class 4 | 1650     | #3 BEAUTY VIVA     | 27.7%   | 60.9%     | ❌       | —                   |
+| R7   | Class 2 | 1000     | #2 COLOURFUL KING  | 40.5%   | 78.3%     | ✅ 3rd   | $13.50              |
+| R8   | Class 3 | 1200     | #4 GIANT BALLON    | 44.8%   | 81.2%     | ✅ 1st   | $14.50              |
+| R9   | Class 3 | 1650     | #6 ARMOR GOLDEN EAGLE | 34.3% | 71.0%    | ✅ 1st   | $14.00              |
+
+Place dividends: R1=$30.50, R2=$30.50, R4=$13.50, R5=$14.00, R7=$13.50, R8=$14.50, R9=$14.00
+
+### 2-Leg (8 bets)
+
+| # | All-Up | Hit? | Return |
+|---|--------|------|--------|
+| 1 | R1+R2 | ✅ | $93.03 |
+| 2 | R2+R3 | ❌ | $0 |
+| 3 | R3+R4 | ❌ | $0 |
+| 4 | R4+R5 | ✅ | $18.90 |
+| 5 | R5+R6 | ❌ | $0 |
+| 6 | R6+R7 | ❌ | $0 |
+| 7 | R7+R8 | ✅ | $19.58 |
+| 8 | R8+R9 | ✅ | $20.30 |
+
+### 3-Leg (7 bets)
+
+| # | All-Up | Hit? | Return |
+|---|--------|------|--------|
+| 7 | R7+R8+R9 | ✅ | $27.41 |
+| Others | — | ❌ | $0 |
+
+### 4-Leg+: All lose (max streak = 3)
+
+| Legs | Bets | Staked | Winners | Returned | P&L | ROI |
+|------|------|--------|---------|----------|-----|-----|
+| 1 | 9 | $90 | 7 | $130.50 | +$40.50 | +45.0% |
+| 2 | 8 | $80 | 4 | $151.81 | +$71.81 | +89.8% |
+| 3 | 7 | $70 | 1 | $27.41 | −$42.59 | −60.8% |
+| 4 | 6 | $60 | 0 | $0 | −$60.00 | −100% |
+| 5 | 5 | $50 | 0 | $0 | −$50.00 | −100% |
+| 6 | 4 | $40 | 0 | $0 | −$40.00 | −100% |
+
+**Observation:** Strong 7/9 placing rate (77.8%) — second-best after M11 (8/9). The R1–R2 all-up ($93.03) is the meeting's best return, driven by both MC #1 horses paying $30.50 in Place. However, the two misses (R3, R6) break what would otherwise have been lucrative longer streaks. R3's miss (#2 NOBLE PURSUIT, 2200m distance unknown) was flagged pre-race. R6's miss (#3 BEAUTY VIVA) was the SCMP-boosted banker that failed. Max streak of 3 (R7–R9) is below the HV Turf average of 4.3, limiting 4-leg and above all-ups. The 2-leg all-up (+89.8%) was the clear sweet spot. **M13 confirms HV Turf as the best venue for MC #1 Place strategy** — now 4 of 5 HV meetings are at ≥ 66.7% placing rate.

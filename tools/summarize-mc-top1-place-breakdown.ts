@@ -181,7 +181,7 @@ function main() {
     add(bySurface, row.surface, row.hit);
     add(byVenueClass, `${row.venue} / ${row.raceClass}`, row.hit);
     add(byDistance, String(row.distance), row.hit);
-    add(byDistVenueClass, `${row.distance}m / ${row.venue} / ${row.raceClass}`, row.hit);
+    add(byDistVenueClass, `${row.venue} / ${row.distance}m / ${row.raceClass}`, row.hit);
   }
 
   const pct = (b: Bucket) => (b.n === 0 ? 0 : (100 * b.hits) / b.n);
@@ -206,10 +206,7 @@ function main() {
   printTable("By class", sortKeys(byClass, (a, b) => a.localeCompare(b, undefined, { numeric: true })), (k) => byClass.get(k)!);
   printTable("By distance (m)", sortKeys(byDistance, (a, b) => Number(a) - Number(b)), (k) => byDistance.get(k)!);
   printTable("By venue × class", sortKeys(byVenueClass), (k) => byVenueClass.get(k)!);
-  printTable("By distance × venue × class", sortKeys(byDistVenueClass, (a, b) => {
-    const da = parseInt(a), db = parseInt(b);
-    return da !== db ? da - db : a.localeCompare(b);
-  }), (k) => byDistVenueClass.get(k)!);
+  printTable("By venue × distance × class", sortKeys(byDistVenueClass), (k) => byDistVenueClass.get(k)!);
 
   const dateStamp = outputDateStamp();
   const dateLabel = `${dateStamp.slice(0, 4)}-${dateStamp.slice(4, 6)}-${dateStamp.slice(6, 8)}`;
@@ -240,10 +237,7 @@ function main() {
   mdTable("By class", sortKeys(byClass, (a, b) => a.localeCompare(b, undefined, { numeric: true })), (k) => byClass.get(k)!);
   mdTable("By distance (metres)", sortKeys(byDistance, (a, b) => Number(a) - Number(b)), (k) => byDistance.get(k)!);
   mdTable("By venue × class", sortKeys(byVenueClass), (k) => byVenueClass.get(k)!);
-  mdTable("By distance × venue × class", sortKeys(byDistVenueClass, (a, b) => {
-    const da = parseInt(a), db = parseInt(b);
-    return da !== db ? da - db : a.localeCompare(b);
-  }), (k) => byDistVenueClass.get(k)!);
+  mdTable("By venue × distance × class", sortKeys(byDistVenueClass), (k) => byDistVenueClass.get(k)!);
   out.push("---");
   out.push("");
   out.push("*Meetings included:* " + MEETING_FILES.map((f) => f.replace(/^results_/, "").replace(/\.json$/, "")).join(", ") + ".");
