@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "static/mc_top1_place_hit_rate_by_segment_20260429.md",
+                "file": "test_reports/mc_top1_place_allup_summary.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "mc_top1_place_hit_rate_by_segment_20260429"
+              "title": "mc_top1_place_allup_summary"
             }
           }
         ]
@@ -185,9 +185,12 @@
   },
   "active": "efc308a139a6ce69",
   "lastOpenFiles": [
-    "static/mc_top1_place_hit_rate_by_segment_20260428.md",
-    "static/trio_stratC_hit_rate_by_segment_20260429.md",
+    "test_reports/first4_stratB_invest_return.md",
+    "test_reports/mc_top1_quinella_summary.md",
+    "test_reports/mc_top3_place_bet_summary.md",
     "static/mc_top1_place_hit_rate_by_segment_20260429.md",
+    "static/trio_stratC_hit_rate_by_segment_20260429.md",
+    "static/mc_top1_place_hit_rate_by_segment_20260428.md",
     "reviews/trio_review_20260429_HV.md",
     "test_reports/mc_top1_place_allup_summary.md",
     "test_reports/mc_top1_place_bet_summary.md",
@@ -210,9 +213,6 @@
     "static/mc_top1_place_hit_rate_by_segment_20260426.md",
     "reviews/trio_review_stratC_20260422_HV.md",
     "reviews/trio_review_stratC_20260426_ST.md",
-    "reports/trio_strategy_20260426_ST_R11.md",
-    "reports/trio_strategy_20260426_ST_R10.md",
-    "reports/trio_strategy_20260426_ST_R9.md",
     "racecards/racecard_20260426_ST_R10.json",
     "racecards/racecard_20260426_ST_R8.json",
     "racecards/racecard_20260426_ST_R11.json",
