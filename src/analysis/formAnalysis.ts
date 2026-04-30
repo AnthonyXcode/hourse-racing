@@ -171,7 +171,7 @@ export class FormAnalyzer {
    * skill, form momentum, and class advantages matter more than raw speed.
    */
   calculateOverallRating(analysis: HorseAnalysis, venue?: Venue): number {
-    const weights = venue === "Sha Tin"
+    const weights = venue === "Happy Valley"
       ? {
           speedRating: 0.18,
           formScore: 0.14,
