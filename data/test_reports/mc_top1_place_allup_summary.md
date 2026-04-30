@@ -873,17 +873,17 @@ The three best meetings (M2, M6, M11) all featured **dividend diversity within l
 **MC #1** = raw MC Win% rank from strategy reports. **Results** from `data/historical/results_20260429_HV.json`.
 **Going:** Good to Yielding (R1–R4) → Good (R5–R9).
 
-| Race | Class   | Dist (m) | MC #1              | MC Win% | MC Place% | Placed? | Place $ (if placed) |
-| ---- | ------- | -------- | ------------------ | ------- | --------- | ------- | ------------------- |
-| R1   | Class 5 | 1800     | #5 FAMILY FORTUNE  | 30.6%   | 70.3%     | ✅ 3rd   | $30.50              |
-| R2   | Class 4 | 1200     | #6 THE PERFECT MATCH | 37.9% | 71.6%     | ✅ 3rd   | $30.50              |
-| R3   | Class 4 | 2200     | #2 NOBLE PURSUIT   | 31.5%   | 66.2%     | ❌       | —                   |
-| R4   | Class 4 | 1200     | #1 CROSSBORDERDUDE | 47.6%   | 82.5%     | ✅ 3rd   | $13.50              |
-| R5   | Class 4 | 1200     | #2 SUPERB KING     | 37.4%   | 69.3%     | ✅ 2nd   | $14.00              |
-| R6   | Class 4 | 1650     | #3 BEAUTY VIVA     | 27.7%   | 60.9%     | ❌       | —                   |
-| R7   | Class 2 | 1000     | #2 COLOURFUL KING  | 40.5%   | 78.3%     | ✅ 3rd   | $13.50              |
-| R8   | Class 3 | 1200     | #4 GIANT BALLON    | 44.8%   | 81.2%     | ✅ 1st   | $14.50              |
-| R9   | Class 3 | 1650     | #6 ARMOR GOLDEN EAGLE | 34.3% | 71.0%    | ✅ 1st   | $14.00              |
+| Race | Class   | Dist (m) | MC #1                 | MC Win% | MC Place% | Placed? | Place $ (if placed) |
+| ---- | ------- | -------- | --------------------- | ------- | --------- | ------- | ------------------- |
+| R1   | Class 5 | 1800     | #5 FAMILY FORTUNE     | 30.6%   | 70.3%     | ✅ 3rd   | $30.50              |
+| R2   | Class 4 | 1200     | #6 THE PERFECT MATCH  | 37.9%   | 71.6%     | ✅ 3rd   | $30.50              |
+| R3   | Class 4 | 2200     | #2 NOBLE PURSUIT      | 31.5%   | 66.2%     | ❌       | —                   |
+| R4   | Class 4 | 1200     | #1 CROSSBORDERDUDE    | 47.6%   | 82.5%     | ✅ 3rd   | $13.50              |
+| R5   | Class 4 | 1200     | #2 SUPERB KING        | 37.4%   | 69.3%     | ✅ 2nd   | $14.00              |
+| R6   | Class 4 | 1650     | #3 BEAUTY VIVA        | 27.7%   | 60.9%     | ❌       | —                   |
+| R7   | Class 2 | 1000     | #2 COLOURFUL KING     | 40.5%   | 78.3%     | ✅ 3rd   | $13.50              |
+| R8   | Class 3 | 1200     | #4 GIANT BALLON       | 44.8%   | 81.2%     | ✅ 1st   | $14.50              |
+| R9   | Class 3 | 1650     | #6 ARMOR GOLDEN EAGLE | 34.3%   | 71.0%     | ✅ 1st   | $14.00              |
 
 Place dividends: R1=$30.50, R2=$30.50, R4=$13.50, R5=$14.00, R7=$13.50, R8=$14.50, R9=$14.00
 
