@@ -384,16 +384,29 @@ async function analyzeRace(args: CliArgs): Promise<void> {
     console.log("─".repeat(60));
 
     const runs = simResults[0]?.simulationRuns ?? 10000;
+    const analysisMap = new Map(analyses.map(a => [a.horseCode, a]));
+    const topRating = analyses.length > 0 ? analyses[0]?.overallRating ?? 0 : 0;
+
     console.log(`\nWin Probability Rankings (all ${simResults.length} horses, ${runs.toLocaleString()} iterations):`);
+    const diffs: number[] = [];
     for (const result of simResults) {
+      const analysis = analysisMap.get(result.horseCode);
       const recStr = result.formRecordCount !== undefined ? ` [${result.formRecordCount} form]` : "";
+      const ratingStr = analysis ? ` rating: ${analysis.overallRating.toFixed(0)}` : "";
+      const diff = analysis ? Math.abs(topRating - analysis.overallRating) : 0;
+      diffs.push(diff);
+      const diffStr = analysis ? ` diff: ${diff.toFixed(0)}` : "";
       console.log(
         `  #${result.horseNumber.toString().padStart(2)} ${result.horseName.padEnd(15).substring(0, 15)}: ` +
           `${(result.winProbability * 100).toFixed(1).padStart(5)}% win, ` +
           `${(result.placeProbability * 100).toFixed(1).padStart(5)}% place` +
-          recStr
+          recStr + ratingStr + diffStr
       );
     }
+
+    const avgDiff = diffs.length > 0 ? diffs.reduce((s, d) => s + d, 0) / diffs.length : 0;
+    const closeDiffCount = diffs.filter(d => d < 8).length;
+    console.log(`\n  Avg differentiation: ${avgDiff.toFixed(0)} | Horses with diff < 0.08: ${closeDiffCount}`);
 
     console.log("\nTop Quinella Combinations:");
     const topQuinellas = simulator

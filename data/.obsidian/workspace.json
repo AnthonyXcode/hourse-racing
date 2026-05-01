@@ -4,11 +4,11 @@
     "type": "split",
     "children": [
       {
-        "id": "78ca77e91e58dfbf",
+        "id": "08c7b7aa0b5b9bb2",
         "type": "tabs",
         "children": [
           {
-            "id": "16ab3e7e388d33b1",
+            "id": "4d04daae73d26907",
             "type": "leaf",
             "state": {
               "type": "markdown",
@@ -183,12 +183,12 @@
       "bases:Create new base": false
     }
   },
-  "active": "16ab3e7e388d33b1",
+  "active": "4d04daae73d26907",
   "lastOpenFiles": [
+    "test_reports/mc_top1_place_allup_summary.md",
     "reviews/trio_review_stratC_20260429_HV.md",
     "reviews/trio_review_stratC_20260426_ST.md",
     "reviews/trio_review_20260429_HV.md",
-    "test_reports/mc_top1_place_allup_summary.md",
     "static/trio_stratC_hit_rate_by_segment_20260429.md",
     "test_reports/first4_stratB_invest_return.md",
     "test_reports/mc_top1_quinella_summary.md",
