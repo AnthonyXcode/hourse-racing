@@ -210,7 +210,7 @@ export class FormAnalyzer {
     // Rating momentum normalized (-1 to 1 -> 0 to 1)
     const normalizedMomentum = (analysis.ratingMomentum + 1) / 2;
 
-    let rating =
+    const rating =
       normalizedSpeed * weights.speedRating +
       analysis.formScore * weights.formScore +
       normalizedClass * weights.classIndicator +
@@ -222,14 +222,6 @@ export class FormAnalyzer {
       (analysis.surfacePreference + 1) / 2 * weights.surfacePreference +
       (analysis.goingPreference + 1) / 2 * weights.goingPreference +
       (analysis.distancePreference + 1) / 2 * weights.distancePreference;
-
-    // Discount for sparse form data — pull toward neutral (0.5) when <4 records
-    const MIN_CONFIDENT_RECORDS = 4;
-    if (analysis.formRecordCount < MIN_CONFIDENT_RECORDS) {
-      const confidence = analysis.formRecordCount / MIN_CONFIDENT_RECORDS;
-      const neutral = 0.5;
-      rating = neutral + (rating - neutral) * confidence;
-    }
 
     return Math.round(rating * 100);
   }

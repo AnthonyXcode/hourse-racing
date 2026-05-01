@@ -406,7 +406,7 @@ async function analyzeRace(args: CliArgs): Promise<void> {
 
     const avgDiff = diffs.length > 0 ? diffs.reduce((s, d) => s + d, 0) / diffs.length : 0;
     const closeDiffCount = diffs.filter(d => d < 8).length;
-    console.log(`\n  Avg differentiation: ${avgDiff.toFixed(0)} | Horses with diff < 0.08: ${closeDiffCount}`);
+    console.log(`\n  Avg differentiation: ${avgDiff.toFixed(0)} | Horses with diff < 8: ${closeDiffCount}`);
 
     console.log("\nTop Quinella Combinations:");
     const topQuinellas = simulator
