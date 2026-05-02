@@ -116,6 +116,7 @@ function parseArgs() {
   let sparseMax = 3;
   let closeMax = 4;
   let avgDiffMin = 14;
+  let gapMin = 0;
 
   for (const arg of args) {
     const m = arg.match(/^--(\w+)=(.+)$/);
@@ -123,14 +124,15 @@ function parseArgs() {
     if (m[1] === "sparse") sparseMax = parseInt(m[2], 10);
     else if (m[1] === "close") closeMax = parseInt(m[2], 10);
     else if (m[1] === "avgdiff") avgDiffMin = parseInt(m[2], 10);
+    else if (m[1] === "gap") gapMin = parseInt(m[2], 10);
   }
 
-  return { sparseMax, closeMax, avgDiffMin };
+  return { sparseMax, closeMax, avgDiffMin, gapMin };
 }
 
 async function main() {
-  const { sparseMax, closeMax, avgDiffMin } = parseArgs();
-  console.log(`Skip rules: sparse form > ${sparseMax}, close<8 > ${closeMax}, avgDiff < ${avgDiffMin}\n`);
+  const { sparseMax, closeMax, avgDiffMin, gapMin } = parseArgs();
+  console.log(`Skip rules: sparse>${sparseMax}, close<8>${closeMax}, avgDiff<${avgDiffMin}, 1st-2nd gap<${gapMin}\n`);
 
   const formAnalyzer = new FormAnalyzer();
   const raceCardDir = path.join(process.cwd(), "data", "racecards");
@@ -177,11 +179,18 @@ async function main() {
       !e.isScratched && (e.horse.pastPerformances?.length ?? 0) <= 1
     ).length;
 
+    const topGap = analyses.length >= 2
+      ? Math.abs(analyses[0].overallRating - analyses[1].overallRating)
+      : 999;
+
     let skipped = false;
     let skipReason = "";
     if (sparseFormCount > sparseMax) {
       skipped = true;
       skipReason = `${sparseFormCount} horses w/ 0-1 form`;
+    } else if (topGap < gapMin) {
+      skipped = true;
+      skipReason = `1st-2nd gap=${topGap}`;
     } else if (horsesWithDiffLt8 > closeMax || avgDiff < avgDiffMin) {
       skipped = true;
       skipReason = horsesWithDiffLt8 > closeMax ? `close<8=${horsesWithDiffLt8}` : `avgDiff=${avgDiff}`;
