@@ -31,6 +31,9 @@ interface RaceResult {
   overallRating: number;
   avgDiff: number;
   horsesWithDiffLt8: number;
+  sparseFormCount: number;
+  skipped: boolean;
+  skipReason: string;
   topRatedWon: boolean;
   topRatedPlaced: boolean;
   topSimWon: boolean;
@@ -108,7 +111,27 @@ function parseRaceCardFileName(name: string): { date: string; venue: string; rac
   };
 }
 
+function parseArgs() {
+  const args = process.argv.slice(2);
+  let sparseMax = 3;
+  let closeMax = 4;
+  let avgDiffMin = 14;
+
+  for (const arg of args) {
+    const m = arg.match(/^--(\w+)=(.+)$/);
+    if (!m) continue;
+    if (m[1] === "sparse") sparseMax = parseInt(m[2], 10);
+    else if (m[1] === "close") closeMax = parseInt(m[2], 10);
+    else if (m[1] === "avgdiff") avgDiffMin = parseInt(m[2], 10);
+  }
+
+  return { sparseMax, closeMax, avgDiffMin };
+}
+
 async function main() {
+  const { sparseMax, closeMax, avgDiffMin } = parseArgs();
+  console.log(`Skip rules: sparse form > ${sparseMax}, close<8 > ${closeMax}, avgDiff < ${avgDiffMin}\n`);
+
   const formAnalyzer = new FormAnalyzer();
   const raceCardDir = path.join(process.cwd(), "data", "racecards");
 
@@ -150,6 +173,20 @@ async function main() {
     const avgDiff = Math.round(diffs.reduce((s, d) => s + d, 0) / diffs.length);
     const horsesWithDiffLt8 = diffs.filter(d => d < 8).length;
 
+    const sparseFormCount = race.entries.filter(e =>
+      !e.isScratched && (e.horse.pastPerformances?.length ?? 0) <= 1
+    ).length;
+
+    let skipped = false;
+    let skipReason = "";
+    if (sparseFormCount > sparseMax) {
+      skipped = true;
+      skipReason = `${sparseFormCount} horses w/ 0-1 form`;
+    } else if (horsesWithDiffLt8 > closeMax || avgDiff < avgDiffMin) {
+      skipped = true;
+      skipReason = horsesWithDiffLt8 > closeMax ? `close<8=${horsesWithDiffLt8}` : `avgDiff=${avgDiff}`;
+    }
+
     const topRatedAnalysis = analyses[0];
     const topRatedEntry = race.entries.find(e => e.horse.code === topRatedAnalysis.horseCode);
 
@@ -179,6 +216,9 @@ async function main() {
       overallRating: topRating,
       avgDiff,
       horsesWithDiffLt8,
+      sparseFormCount,
+      skipped,
+      skipReason,
       topRatedWon: topRatedAnalysis.horseCode === winnerCode,
       topRatedPlaced: top3Codes.includes(topRatedAnalysis.horseCode),
       topSimWon: topSimResult.horseCode === winnerCode,
@@ -186,224 +226,71 @@ async function main() {
     });
   }
 
-  console.log(`Analyzed ${allResults.length} races with results\n`);
+  const betted = allResults.filter(r => !r.skipped);
+  const skippedRaces = allResults.filter(r => r.skipped);
+  console.log(`Analyzed ${allResults.length} races — betting ${betted.length}, skipping ${skippedRaces.length}\n`);
 
-  // --- Detailed table ---
-  console.log("═".repeat(90));
-  console.log("RACE-BY-RACE: TOP-RATED HORSE PLACE BET");
-  console.log("═".repeat(90));
+  // --- Race-by-race table with strategy ---
+  console.log("═".repeat(100));
+  console.log(`PLACE BET STRATEGY: Pick 1st in ranking, skip if sparse>${sparseMax} OR close<8>${closeMax} OR avgDiff<${avgDiffMin}`);
+  console.log("═".repeat(100));
   console.log(
-    `${"Race".padEnd(18)} ${"Horse".padEnd(16)} ${"#".padStart(2)} ${"Hit".padStart(4)} ${"AvgDiff".padStart(7)} ${"Close<8".padStart(7)} ${"Rating".padStart(6)} ${"Winner".padEnd(16)}`
+    `${"Race".padEnd(18)} ${"Horse".padEnd(16)} ${"#".padStart(2)} ${"Bet".padStart(4)} ${"Hit".padStart(4)} ${"AvgDiff".padStart(7)} ${"Close<8".padStart(7)} ${"Sparse".padStart(6)} ${"Rating".padStart(6)} ${"Winner".padEnd(16)}`
   );
-  console.log("─".repeat(90));
+  console.log("─".repeat(100));
   for (const r of allResults) {
-    const hit = r.topRatedPlaced ? "Y" : "-";
+    const bet = r.skipped ? "SKIP" : "BET";
+    const hit = r.skipped ? "-" : (r.topRatedPlaced ? "Y" : "N");
     console.log(
-      `${r.raceId.padEnd(18)} ${r.topRatedHorseName.substring(0, 15).padEnd(16)} ${r.topRatedHorseNumber.toString().padStart(2)} ${hit.padStart(4)} ${r.avgDiff.toString().padStart(7)} ${r.horsesWithDiffLt8.toString().padStart(7)} ${r.overallRating.toString().padStart(6)} ${r.actualWinnerName.substring(0, 15).padEnd(16)}`
+      `${r.raceId.padEnd(18)} ${r.topRatedHorseName.substring(0, 15).padEnd(16)} ${r.topRatedHorseNumber.toString().padStart(2)} ${bet.padStart(4)} ${hit.padStart(4)} ${r.avgDiff.toString().padStart(7)} ${r.horsesWithDiffLt8.toString().padStart(7)} ${r.sparseFormCount.toString().padStart(6)} ${r.overallRating.toString().padStart(6)} ${r.actualWinnerName.substring(0, 15).padEnd(16)}`
     );
   }
-  console.log("─".repeat(90));
-  const totalPlaces = allResults.filter(r => r.topRatedPlaced).length;
-  console.log(`Total: ${totalPlaces}/${allResults.length} placed (${(totalPlaces / allResults.length * 100).toFixed(1)}%)\n`);
+  console.log("─".repeat(100));
 
-  console.log("═".repeat(70));
-  console.log("DIFFERENTIATION vs HIT RATE ANALYSIS");
-  console.log("═".repeat(70));
+  const bettedHits = betted.filter(r => r.topRatedPlaced).length;
+  const bettedRate = betted.length > 0 ? (bettedHits / betted.length * 100).toFixed(1) : "0.0";
+  console.log(`\nBetted: ${bettedHits}/${betted.length} placed (${bettedRate}%)`);
+  console.log(`Skipped: ${skippedRaces.length} races`);
+  const allPlaces = allResults.filter(r => r.topRatedPlaced).length;
+  console.log(`Without filter: ${allPlaces}/${allResults.length} placed (${(allPlaces / allResults.length * 100).toFixed(1)}%)`);
 
-  // --- Summary by Avg Differentiation buckets ---
-  console.log("\n1. AVG DIFFERENTIATION vs HIT RATE (top-rated horse)");
-  console.log("─".repeat(70));
-  const diffBuckets = [
-    { label: "0-5  (very dominant)", min: 0, max: 5 },
-    { label: "6-10 (clear leader)", min: 6, max: 10 },
-    { label: "11-15 (moderate edge)", min: 11, max: 15 },
-    { label: "16-20 (tight field)", min: 16, max: 20 },
-    { label: "21+  (wide open)", min: 21, max: 999 },
-  ];
-
-  console.log(
-    `${"Avg Diff".padEnd(25)} ${"Races".padStart(5)} ${"Win".padStart(5)} ${"Win%".padStart(6)} ${"Place".padStart(6)} ${"Plc%".padStart(6)}`
-  );
-  for (const bucket of diffBuckets) {
-    const races = allResults.filter(r => r.avgDiff >= bucket.min && r.avgDiff <= bucket.max);
-    const wins = races.filter(r => r.topRatedWon).length;
-    const places = races.filter(r => r.topRatedPlaced).length;
-    const winRate = races.length > 0 ? ((wins / races.length) * 100).toFixed(1) : "N/A";
-    const placeRate = races.length > 0 ? ((places / races.length) * 100).toFixed(1) : "N/A";
-    console.log(
-      `${bucket.label.padEnd(25)} ${races.length.toString().padStart(5)} ${wins.toString().padStart(5)} ${winRate.padStart(6)} ${places.toString().padStart(6)} ${placeRate.padStart(6)}`
-    );
-  }
-
-  // --- Summary by Horses with diff < 8 ---
-  console.log("\n2. HORSES WITH DIFF < 8 vs HIT RATE (top-rated horse)");
-  console.log("─".repeat(70));
-  const closeBuckets = [
-    { label: "1 horse  (standout)", min: 1, max: 1 },
-    { label: "2 horses (dual threat)", min: 2, max: 2 },
-    { label: "3 horses (open top 3)", min: 3, max: 3 },
-    { label: "4+ horses (very open)", min: 4, max: 99 },
-  ];
-
-  console.log(
-    `${"Horses w/ diff<8".padEnd(25)} ${"Races".padStart(5)} ${"Win".padStart(5)} ${"Win%".padStart(6)} ${"Place".padStart(6)} ${"Plc%".padStart(6)}`
-  );
-  for (const bucket of closeBuckets) {
-    const races = allResults.filter(r => r.horsesWithDiffLt8 >= bucket.min && r.horsesWithDiffLt8 <= bucket.max);
-    const wins = races.filter(r => r.topRatedWon).length;
-    const places = races.filter(r => r.topRatedPlaced).length;
-    const winRate = races.length > 0 ? ((wins / races.length) * 100).toFixed(1) : "N/A";
-    const placeRate = races.length > 0 ? ((places / races.length) * 100).toFixed(1) : "N/A";
-    console.log(
-      `${bucket.label.padEnd(25)} ${races.length.toString().padStart(5)} ${wins.toString().padStart(5)} ${winRate.padStart(6)} ${places.toString().padStart(6)} ${placeRate.padStart(6)}`
-    );
-  }
-
-  // --- Combined: Avg Diff + Horses with diff < 8 ---
-  console.log("\n3. COMBINED: AVG DIFF + HORSES WITH DIFF < 8 vs HIT RATE");
-  console.log("─".repeat(70));
-  const comboBuckets = [
-    { label: "AvgDiff<=10 & Close<=2", diffMax: 10, closeMax: 2 },
-    { label: "AvgDiff<=10 & Close>=3", diffMax: 10, closeMin: 3 },
-    { label: "AvgDiff 11-15 & Close<=2", diffMin: 11, diffMax: 15, closeMax: 2 },
-    { label: "AvgDiff 11-15 & Close>=3", diffMin: 11, diffMax: 15, closeMin: 3 },
-    { label: "AvgDiff>=16 & Close<=2", diffMin: 16, closeMax: 2 },
-    { label: "AvgDiff>=16 & Close>=3", diffMin: 16, closeMin: 3 },
-  ];
-
-  console.log(
-    `${"Condition".padEnd(30)} ${"Races".padStart(5)} ${"Win".padStart(5)} ${"Win%".padStart(6)} ${"Place".padStart(6)} ${"Plc%".padStart(6)}`
-  );
-  for (const bucket of comboBuckets) {
-    const races = allResults.filter(r => {
-      const diffOk = (bucket.diffMin === undefined || r.avgDiff >= bucket.diffMin) &&
-                     (bucket.diffMax === undefined || r.avgDiff <= bucket.diffMax);
-      const closeOk = (bucket.closeMin === undefined || r.horsesWithDiffLt8 >= bucket.closeMin) &&
-                      (bucket.closeMax === undefined || r.horsesWithDiffLt8 <= bucket.closeMax);
-      return diffOk && closeOk;
-    });
-    const wins = races.filter(r => r.topRatedWon).length;
-    const places = races.filter(r => r.topRatedPlaced).length;
-    const winRate = races.length > 0 ? ((wins / races.length) * 100).toFixed(1) : "N/A";
-    const placeRate = races.length > 0 ? ((places / races.length) * 100).toFixed(1) : "N/A";
-    console.log(
-      `${bucket.label.padEnd(30)} ${races.length.toString().padStart(5)} ${wins.toString().padStart(5)} ${winRate.padStart(6)} ${places.toString().padStart(6)} ${placeRate.padStart(6)}`
-    );
-  }
-
-  // --- Sim top pick comparison ---
-  console.log("\n4. SIMULATION TOP PICK vs FORM TOP PICK");
-  console.log("─".repeat(70));
-  const sameTopPick = allResults.filter(r => r.topRatedHorseCode === r.topSimHorseCode);
-  const diffTopPick = allResults.filter(r => r.topRatedHorseCode !== r.topSimHorseCode);
-  console.log(
-    `${"".padEnd(25)} ${"Races".padStart(5)} ${"Win".padStart(5)} ${"Win%".padStart(6)} ${"Place".padStart(6)} ${"Plc%".padStart(6)}`
-  );
-  const sameWins = sameTopPick.filter(r => r.topRatedWon).length;
-  const samePlaces = sameTopPick.filter(r => r.topRatedPlaced).length;
-  console.log(
-    `${"Same top pick".padEnd(25)} ${sameTopPick.length.toString().padStart(5)} ${sameWins.toString().padStart(5)} ${(sameTopPick.length > 0 ? (sameWins / sameTopPick.length * 100).toFixed(1) : "N/A").padStart(6)} ${samePlaces.toString().padStart(6)} ${(sameTopPick.length > 0 ? (samePlaces / sameTopPick.length * 100).toFixed(1) : "N/A").padStart(6)}`
-  );
-  const diffWins = diffTopPick.filter(r => r.topSimWon).length;
-  const diffPlaces = diffTopPick.filter(r => r.topSimPlaced).length;
-  console.log(
-    `${"Sim top (when different)".padEnd(25)} ${diffTopPick.length.toString().padStart(5)} ${diffWins.toString().padStart(5)} ${(diffTopPick.length > 0 ? (diffWins / diffTopPick.length * 100).toFixed(1) : "N/A").padStart(6)} ${diffPlaces.toString().padStart(6)} ${(diffTopPick.length > 0 ? (diffPlaces / diffTopPick.length * 100).toFixed(1) : "N/A").padStart(6)}`
-  );
-  const diffFormWins = diffTopPick.filter(r => r.topRatedWon).length;
-  const diffFormPlaces = diffTopPick.filter(r => r.topRatedPlaced).length;
-  console.log(
-    `${"Form top (when different)".padEnd(25)} ${diffTopPick.length.toString().padStart(5)} ${diffFormWins.toString().padStart(5)} ${(diffTopPick.length > 0 ? (diffFormWins / diffTopPick.length * 100).toFixed(1) : "N/A").padStart(6)} ${diffFormPlaces.toString().padStart(6)} ${(diffTopPick.length > 0 ? (diffFormPlaces / diffTopPick.length * 100).toFixed(1) : "N/A").padStart(6)}`
-  );
-
-  // --- Overall summary ---
+  // --- Per racing day hit rate ---
   console.log("\n" + "═".repeat(70));
-  console.log("OVERALL SUMMARY");
+  console.log("HIT RATE PER RACING DAY");
   console.log("═".repeat(70));
-  const totalWins = allResults.filter(r => r.topRatedWon).length;
-  console.log(`Total races: ${allResults.length}`);
-  console.log(`Top-rated win rate: ${totalWins}/${allResults.length} (${(totalWins / allResults.length * 100).toFixed(1)}%)`);
-  console.log(`Top-rated place rate: ${totalPlaces}/${allResults.length} (${(totalPlaces / allResults.length * 100).toFixed(1)}%)`);
-
-  const simWins = allResults.filter(r => r.topSimWon).length;
-  const simPlaces = allResults.filter(r => r.topSimPlaced).length;
-  console.log(`Sim-top win rate: ${simWins}/${allResults.length} (${(simWins / allResults.length * 100).toFixed(1)}%)`);
-  console.log(`Sim-top place rate: ${simPlaces}/${allResults.length} (${(simPlaces / allResults.length * 100).toFixed(1)}%)`);
-
-  // --- Find >70% place hit rate ranges ---
-  console.log("\n" + "═".repeat(70));
-  console.log("FINDING >70% PLACE HIT RATE RANGES");
-  console.log("═".repeat(70));
-
-  console.log("\nBy AvgDiff (fine-grained):");
-  console.log(`${"Range".padEnd(20)} ${"Races".padStart(5)} ${"Hit".padStart(4)} ${"Plc%".padStart(6)}`);
-  for (let low = 16; low <= 40; low += 2) {
-    const high = low + 3;
-    const races = allResults.filter(r => r.avgDiff >= low && r.avgDiff <= high);
-    if (races.length < 3) continue;
-    const hits = races.filter(r => r.topRatedPlaced).length;
-    const rate = (hits / races.length * 100).toFixed(1);
-    const marker = hits / races.length >= 0.7 ? " <<<" : "";
-    console.log(`AvgDiff ${low}-${high}`.padEnd(20) + `${races.length.toString().padStart(5)} ${hits.toString().padStart(4)} ${rate.padStart(6)}${marker}`);
+  const dayMap = new Map<string, RaceResult[]>();
+  for (const r of allResults) {
+    const key = `${r.date}_${r.venue}`;
+    if (!dayMap.has(key)) dayMap.set(key, []);
+    dayMap.get(key)!.push(r);
   }
 
-  console.log("\nBy Horses with diff<8:");
-  console.log(`${"Close<8".padEnd(20)} ${"Races".padStart(5)} ${"Hit".padStart(4)} ${"Plc%".padStart(6)}`);
-  for (let c = 1; c <= 5; c++) {
-    const races = allResults.filter(r => r.horsesWithDiffLt8 === c);
-    if (races.length === 0) continue;
-    const hits = races.filter(r => r.topRatedPlaced).length;
-    const rate = (hits / races.length * 100).toFixed(1);
-    const marker = hits / races.length >= 0.7 ? " <<<" : "";
-    console.log(`${c} horse(s)`.padEnd(20) + `${races.length.toString().padStart(5)} ${hits.toString().padStart(4)} ${rate.padStart(6)}${marker}`);
-  }
+  console.log(
+    `${"Date".padEnd(12)} ${"Venue".padEnd(4)} ${"Total".padStart(5)} ${"Bet".padStart(4)} ${"Hit".padStart(4)} ${"Miss".padStart(4)} ${"Skip".padStart(4)} ${"HitRate".padStart(8)}`
+  );
+  console.log("─".repeat(70));
 
-  console.log("\nBy Rating of top horse:");
-  console.log(`${"Rating".padEnd(20)} ${"Races".padStart(5)} ${"Hit".padStart(4)} ${"Plc%".padStart(6)}`);
-  for (let low = 30; low <= 80; low += 5) {
-    const high = low + 4;
-    const races = allResults.filter(r => r.overallRating >= low && r.overallRating <= high);
-    if (races.length < 3) continue;
-    const hits = races.filter(r => r.topRatedPlaced).length;
-    const rate = (hits / races.length * 100).toFixed(1);
-    const marker = hits / races.length >= 0.7 ? " <<<" : "";
-    console.log(`Rating ${low}-${high}`.padEnd(20) + `${races.length.toString().padStart(5)} ${hits.toString().padStart(4)} ${rate.padStart(6)}${marker}`);
+  const sortedDays = [...dayMap.entries()].sort((a, b) => a[0].localeCompare(b[0]));
+  let totalBet = 0, totalHit = 0;
+  for (const [key, races] of sortedDays) {
+    const [dateStr, venue] = [races[0].date, races[0].venue];
+    const dayBetted = races.filter(r => !r.skipped);
+    const dayHits = dayBetted.filter(r => r.topRatedPlaced).length;
+    const dayMiss = dayBetted.length - dayHits;
+    const daySkip = races.length - dayBetted.length;
+    const dayRate = dayBetted.length > 0 ? (dayHits / dayBetted.length * 100).toFixed(1) : "N/A";
+    const formattedDate = `${dateStr.slice(0,4)}-${dateStr.slice(4,6)}-${dateStr.slice(6,8)}`;
+    console.log(
+      `${formattedDate.padEnd(12)} ${venue.padEnd(4)} ${races.length.toString().padStart(5)} ${dayBetted.length.toString().padStart(4)} ${dayHits.toString().padStart(4)} ${dayMiss.toString().padStart(4)} ${daySkip.toString().padStart(4)} ${(dayRate + "%").padStart(8)}`
+    );
+    totalBet += dayBetted.length;
+    totalHit += dayHits;
   }
-
-  console.log("\nCombined filters (>= 3 races, sorted by place rate):");
-  console.log(`${"Condition".padEnd(40)} ${"Races".padStart(5)} ${"Hit".padStart(4)} ${"Plc%".padStart(6)}`);
-  interface FilterResult { label: string; races: number; hits: number; rate: number }
-  const filters: FilterResult[] = [];
-
-  for (let diffMax = 20; diffMax <= 35; diffMax += 5) {
-    for (let close = 1; close <= 2; close++) {
-      const races = allResults.filter(r => r.avgDiff <= diffMax && r.horsesWithDiffLt8 <= close);
-      if (races.length < 3) continue;
-      const hits = races.filter(r => r.topRatedPlaced).length;
-      filters.push({ label: `AvgDiff<=${diffMax} & Close<8<=${close}`, races: races.length, hits, rate: hits / races.length });
-    }
-  }
-  for (let ratingMin = 40; ratingMin <= 65; ratingMin += 5) {
-    for (let close = 1; close <= 2; close++) {
-      const races = allResults.filter(r => r.overallRating >= ratingMin && r.horsesWithDiffLt8 <= close);
-      if (races.length < 3) continue;
-      const hits = races.filter(r => r.topRatedPlaced).length;
-      filters.push({ label: `Rating>=${ratingMin} & Close<8<=${close}`, races: races.length, hits, rate: hits / races.length });
-    }
-  }
-  for (let ratingMin = 40; ratingMin <= 65; ratingMin += 5) {
-    for (let diffMax = 20; diffMax <= 35; diffMax += 5) {
-      const races = allResults.filter(r => r.overallRating >= ratingMin && r.avgDiff <= diffMax);
-      if (races.length < 3) continue;
-      const hits = races.filter(r => r.topRatedPlaced).length;
-      filters.push({ label: `Rating>=${ratingMin} & AvgDiff<=${diffMax}`, races: races.length, hits, rate: hits / races.length });
-    }
-  }
-
-  filters.sort((a, b) => b.rate - a.rate);
-  for (const f of filters.slice(0, 20)) {
-    const marker = f.rate >= 0.7 ? " <<<" : "";
-    console.log(`${f.label.padEnd(40)} ${f.races.toString().padStart(5)} ${f.hits.toString().padStart(4)} ${(f.rate * 100).toFixed(1).padStart(6)}${marker}`);
-  }
+  console.log("─".repeat(70));
+  const overallRate = totalBet > 0 ? (totalHit / totalBet * 100).toFixed(1) : "0.0";
+  console.log(
+    `${"TOTAL".padEnd(12)} ${"".padEnd(4)} ${allResults.length.toString().padStart(5)} ${totalBet.toString().padStart(4)} ${totalHit.toString().padStart(4)} ${(totalBet - totalHit).toString().padStart(4)} ${(allResults.length - totalBet).toString().padStart(4)} ${(overallRate + "%").padStart(8)}`
+  );
 }
 
 main().catch(console.error);

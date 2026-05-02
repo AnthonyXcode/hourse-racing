@@ -185,6 +185,19 @@ export class FormAnalyzer {
           goingPreference: 0.03,
           distancePreference: 0.02,
         }
+    //   : {
+    //         speedRating: 0.18,
+    //         formScore: 0.14,
+    //         classIndicator: 0.10,
+    //         ratingMomentum: 0.13,
+    //         fitness: 0.10,
+    //         drawAdvantage: 0.07,
+    //         jockeyEdge: 0.13,
+    //         trainerForm: 0.07,
+    //         surfacePreference: 0.03,
+    //         goingPreference: 0.03,
+    //         distancePreference: 0.02,
+    //     }
       : {
           speedRating: 0.35,
           formScore: 0.13,

@@ -123,12 +123,18 @@ async function main() {
       const topEntry = race.entries.find(e => e.horse.code === top.horseCode);
       const topSim = simResults.find(s => s.horseCode === top.horseCode);
 
+      const sparseFormCount = race.entries.filter(e =>
+        !e.isScratched && (e.horse.pastPerformances?.length ?? 0) <= 1
+      ).length;
+
       let confidence = "LOW";
-      if (avgDiff >= 20) confidence = "HIGH";
-    //   else if (topRating >= 70 && topRating <= 79) confidence = "HIGH";
-      else if (close8 <= 2) confidence = "HIGH";
-      else if (avgDiff >= 16 && close8 <= 3) confidence = "MED-HIGH";
-      else if (close8 <= 3) confidence = "MEDIUM";
+      if (sparseFormCount > 3) confidence = "LOW (sparse form)";
+      else if (avgDiff >= 20 && close8 <= 2) confidence = "SUPPER HIGH (avgDiff and close8)";
+      else if (avgDiff >= 20) confidence = "HIGH (avgDiff)";
+      else if (close8 <= 2) confidence = "HIGH (close8)";
+      else if (topRating >= 70 && topRating <= 79) confidence = "MED-HIGH (topRating)";
+      else if (avgDiff >= 16 && close8 <= 3) confidence = "MED-HIGH (avgDiff and close8)";
+      else if (close8 <= 3) confidence = "MEDIUM (close8)";
 
       results.push({
         raceNumber: raceNum,
