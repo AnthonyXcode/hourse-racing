@@ -364,10 +364,11 @@ export class SpeedRatingCalculator {
   /**
    * Calculate speed figures for all of a horse's past performances
    */
-  calculateHorseSpeedFigures(horse: Horse): SpeedFigure[] {
+  calculateHorseSpeedFigures(horse: Horse, maxRaces: number = 6): SpeedFigure[] {
     const figures: SpeedFigure[] = [];
+    const perfs = horse.pastPerformances.slice(0, maxRaces);
 
-    for (const perf of horse.pastPerformances) {
+    for (const perf of perfs) {
       const figure = this.calculateSpeedFigure(
         perf,
         `${perf.date.toISOString().split("T")[0]}-${perf.venue === "Sha Tin" ? "ST" : "HV"}-${perf.raceNumber}`
