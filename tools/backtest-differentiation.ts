@@ -117,6 +117,7 @@ function parseArgs() {
   let closeMax = 4;
   let avgDiffMin = 14;
   let gapMin = 0;
+  let months: string[] = [];
 
   for (const arg of args) {
     const m = arg.match(/^--(\w+)=(.+)$/);
@@ -125,29 +126,32 @@ function parseArgs() {
     else if (m[1] === "close") closeMax = parseInt(m[2], 10);
     else if (m[1] === "avgdiff") avgDiffMin = parseInt(m[2], 10);
     else if (m[1] === "gap") gapMin = parseInt(m[2], 10);
+    else if (m[1] === "months") months = m[2].split(",").map(s => s.trim().padStart(2, "0"));
   }
 
-  return { sparseMax, closeMax, avgDiffMin, gapMin };
+  return { sparseMax, closeMax, avgDiffMin, gapMin, months };
 }
 
 async function main() {
-  const { sparseMax, closeMax, avgDiffMin, gapMin } = parseArgs();
-  console.log(`Skip rules: sparse>${sparseMax}, close<8>${closeMax}, avgDiff<${avgDiffMin}, 1st-2nd gap<${gapMin}\n`);
+  const { sparseMax, closeMax, avgDiffMin, gapMin, months } = parseArgs();
+  const monthLabel = months.length === 0 ? "all" : months.join(",");
+  console.log(`Skip rules: sparse>${sparseMax}, close<8>${closeMax}, avgDiff<${avgDiffMin}, 1st-2nd gap<${gapMin} | months=${monthLabel}\n`);
 
   const formAnalyzer = new FormAnalyzer();
   const raceCardDir = path.join(process.cwd(), "data", "racecards");
 
   const files = await readdir(raceCardDir);
-  const aprilFiles = files
-    .filter(f => f.match(/racecard_202604\d{2}_(ST|HV)_R\d+\.json/))
-    .sort();
+  const monthPattern = months.length === 0
+    ? /racecard_\d{8}_(ST|HV)_R\d+\.json/
+    : new RegExp(`racecard_2026(${months.join("|")})\\d{2}_(ST|HV)_R\\d+\\.json`);
+  const matchedFiles = files.filter(f => monthPattern.test(f)).sort();
 
-  console.log(`Found ${aprilFiles.length} April 2026 racecards\n`);
+  console.log(`Found ${matchedFiles.length} racecards (months=${monthLabel})\n`);
 
   const resultsCache = new Map<string, Map<number, FinishEntry[]>>();
   const allResults: RaceResult[] = [];
 
-  for (const file of aprilFiles) {
+  for (const file of matchedFiles) {
     const parsed = parseRaceCardFileName(file);
     if (!parsed) continue;
 

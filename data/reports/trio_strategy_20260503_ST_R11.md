@@ -20,22 +20,22 @@ UNIT BET: $10 per combination (fixed)
 MC SIMULATION (raw)
 ───────────────────────────────────────────────────────────
 
-| # | Horse | MC Win% | MC Place% | Win Odds | Place%>20% | Win odds<10 | Form | Role (Strategy B) | Top Quinella (fair odds) |
-|---|--------|---------|-----------|----------|------------|-------------|------|-------------------|--------------------------|
-| 1 | CROSSBORDERPEGASUS | 13.9% | 48.6% | 7.1 | ✅ | ✅ | 2 | 腳 | 3-14: 15.5% (6.5) |
-| 2 | SMART GOLF | 14.7% | 47.9% | 8.9 | ✅ | ✅ | 5 | 腳 | — |
-| 3 | YOUNG EMPEROR | 14.7% | 48.5% | 13.0 | ✅ | ❌ | 8 | 腳 | — |
-| 4 | TURQUOISE VELOCITY | 1.2% | 7.4% | 4.5 | ❌ | ✅ | 5 | 腳 (swap-in) | — |
-| 5 | DO YOU JUST | 0.8% | 6.4% | 14.0 | ❌ | ❌ | 5 | — | — |
-| 6 | MY MARS | 1.4% | 9.6% | 7.4 | ❌ | ✅ | 1 | 腳 (swap-in) | — |
-| 7 | MAJESTIC VALOUR | 4.9% | 24.3% | 18.0 | ✅ | ❌ | 3 | *(replaced in B)* | — |
-| 8 | THOUSAND SPIRIT | 6.5% | 28.4% | 13.0 | ✅ | ❌ | 10 | 腳 | — |
-| 9 | MAGNEMITE | 0.0% | 0.0% | 27.0 | ❌ | ❌ | 1 | — | — |
-|10 | SCORCHING LEGEND | 0.1% | 1.1% | 14.0 | ❌ | ❌ | 0 | — | — |
-|11 | TACTICAL HORIZONS | 0.0% | 0.3% | 56.0 | ❌ | ❌ | 1 | — | — |
-|12 | WINNING BUDDIES | 0.0% | 0.0% | 38.0 | ❌ | ❌ | 1 | — | — |
-|13 | LADY'S LOVE | 0.0% | 0.1% | 33.0 | ❌ | ❌ | 2 | — | — |
-|14 | ALMIGHTY LIGHTNING | 41.8% | 77.4% | 6.6 | ✅ | ✅ | 2 | ★ 膽 (Banker) | — |
+| #   | Horse              | MC Win% | MC Place% | Win Odds | Place%>20% | Win odds<10 | Form | Role (Strategy B) | Top Quinella (fair odds) |
+| --- | ------------------ | ------- | --------- | -------- | ---------- | ----------- | ---- | ----------------- | ------------------------ |
+| 1   | CROSSBORDERPEGASUS | 13.9%   | 48.6%     | 7.1      | ✅          | ✅           | 2    | 腳                 | 3-14: 15.5% (6.5)        |
+| 2   | SMART GOLF         | 14.7%   | 47.9%     | 8.9      | ✅          | ✅           | 5    | 腳                 | —                        |
+| 3   | YOUNG EMPEROR      | 14.7%   | 48.5%     | 13.0     | ✅          | ❌           | 8    | 腳                 | —                        |
+| 4   | TURQUOISE VELOCITY | 1.2%    | 7.4%      | 4.5      | ❌          | ✅           | 5    | 腳 (swap-in)       | —                        |
+| 5   | DO YOU JUST        | 0.8%    | 6.4%      | 14.0     | ❌          | ❌           | 5    | —                 | —                        |
+| 6   | MY MARS            | 1.4%    | 9.6%      | 7.4      | ❌          | ✅           | 1    | 腳 (swap-in)       | —                        |
+| 7   | MAJESTIC VALOUR    | 4.9%    | 24.3%     | 18.0     | ✅          | ❌           | 3    | *(replaced in B)* | —                        |
+| 8   | THOUSAND SPIRIT    | 6.5%    | 28.4%     | 13.0     | ✅          | ❌           | 10   | 腳                 | —                        |
+| 9   | MAGNEMITE          | 0.0%    | 0.0%      | 27.0     | ❌          | ❌           | 1    | —                 | —                        |
+| 10  | SCORCHING LEGEND   | 0.1%    | 1.1%      | 14.0     | ❌          | ❌           | 0    | —                 | —                        |
+| 11  | TACTICAL HORIZONS  | 0.0%    | 0.3%      | 56.0     | ❌          | ❌           | 1    | —                 | —                        |
+| 12  | WINNING BUDDIES    | 0.0%    | 0.0%      | 38.0     | ❌          | ❌           | 1    | —                 | —                        |
+| 13  | LADY'S LOVE        | 0.0%    | 0.1%      | 33.0     | ❌          | ❌           | 2    | —                 | —                        |
+| 14  | ALMIGHTY LIGHTNING | 41.8%   | 77.4%     | 6.6      | ✅          | ✅           | 2    | ★ 膽 (Banker)      | —                        |
 
 Market: MC clusters #1–#3 tightly under #14; quinella fair lines ~6.5 on favourite pairs with #14.
 

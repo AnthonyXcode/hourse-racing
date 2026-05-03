@@ -5,6 +5,8 @@
  */
 
 import { format, parse } from "date-fns";
+import { writeFile, mkdir } from "fs/promises";
+import path from "path";
 import type { Race, Venue } from "../src/types/index.js";
 import { RaceCardScraper } from "../src/scrapers/raceCard.js";
 import { RaceCardHistoryScraper } from "../src/scrapers/raceCardHistory.js";
@@ -24,6 +26,25 @@ interface RaceSummary {
   winProb: number;
   placeProb: number;
   confidence: string;
+}
+
+interface RaceSimDetail {
+  raceNumber: number;
+  raceClass: string;
+  distance: string;
+  surface: string;
+  fieldSize: number;
+  avgDiff: number;
+  close8: number;
+  horses: {
+    number: number;
+    name: string;
+    winProb: number;
+    placeProb: number;
+    formCount: number;
+    rating: number;
+    diff: number;
+  }[];
 }
 
 function parseCliArgs() {
@@ -55,6 +76,7 @@ async function main() {
   const historyScraper = new RaceCardHistoryScraper();
   const hvStdDev = venue === "Happy Valley" ? 11 : 8;
   const results: RaceSummary[] = [];
+  const simDetails: RaceSimDetail[] = [];
 
   console.log(`\nBatch Analysis: ${format(date, "yyyy-MM-dd")} ${venue} R${races[0]}-R${races[races.length - 1]}`);
   console.log(`Form data: ${formData === "all" ? "all venues" : venue}\n`);
@@ -148,6 +170,36 @@ async function main() {
         confidence,
       });
 
+      const raceClass = (race as any).class ?? race.raceClass ?? race.raceName ?? "Unknown";
+      const distance = race.distance ? `${race.distance}m` : "?m";
+      const surface = race.surface ?? "Turf";
+      const activeEntries = race.entries.filter(e => !e.isScratched);
+
+      const detailHorses = simResults.map(sim => {
+        const entry = race.entries.find(e => e.horse.code === sim.horseCode);
+        const analysis = analyses.find(a => a.horseCode === sim.horseCode);
+        return {
+          number: sim.horseNumber,
+          name: sim.horseName,
+          winProb: sim.winProbability * 100,
+          placeProb: sim.placeProbability * 100,
+          formCount: entry?.horse.pastPerformances?.length ?? 0,
+          rating: analysis?.overallRating ?? 0,
+          diff: analysis ? Math.abs(topRating - analysis.overallRating) : 999,
+        };
+      });
+
+      simDetails.push({
+        raceNumber: raceNum,
+        raceClass,
+        distance,
+        surface,
+        fieldSize: activeEntries.length,
+        avgDiff,
+        close8,
+        horses: detailHorses,
+      });
+
       console.log(`  R${raceNum}: ${top.horseName.substring(0, 15)} (#${topEntry?.horseNumber}) rating=${topRating} avgDiff=${avgDiff} close<8=${close8} → ${confidence}`);
     }
 
@@ -187,6 +239,58 @@ async function main() {
     }
     if (highConf.length === 0 && medHighConf.length === 0) {
       console.log("  No races meet the >=70% confidence threshold today.");
+    }
+
+    // Write simulation summaries to data/temp/
+    if (simDetails.length > 0) {
+      const dateStr = format(date, "yyyyMMdd");
+      const venueSuffix = venue === "Happy Valley" ? "HV" : "ST";
+      const venueLabel = venue;
+      const tempDir = path.join(process.cwd(), "data", "temp");
+      await mkdir(tempDir, { recursive: true });
+      const outPath = path.join(tempDir, `simulation_summaries_${dateStr}_${venueSuffix}.md`);
+
+      const lines: string[] = [];
+      lines.push(`# Simulation Summaries — ${venueLabel} ${format(date, "yyyy-MM-dd")} (R${simDetails[0].raceNumber}–R${simDetails[simDetails.length - 1].raceNumber})`);
+      lines.push(`# MC: 5,000 iterations | Form data: all venues (HV + ST)`);
+      lines.push("");
+
+      for (const detail of simDetails) {
+        lines.push("═".repeat(55));
+        lines.push(`RACE ${detail.raceNumber} - ${venueLabel} | ${detail.raceClass} | ${detail.distance} ${detail.surface} | ${detail.fieldSize} runners`);
+        lines.push("═".repeat(55));
+        lines.push("");
+        lines.push(`Win Probability Rankings (all ${detail.fieldSize} horses, 5,000 iterations):`);
+
+        for (const h of detail.horses) {
+          const numStr = `#${h.number.toString().padStart(2)}`;
+          const nameStr = h.name.substring(0, 15).padEnd(15);
+          const winStr = `${h.winProb.toFixed(1)}% win`.padStart(10);
+          const plcStr = `${h.placeProb.toFixed(1)}% place`.padStart(12);
+          const formStr = `[${h.formCount} form]`;
+          lines.push(`  ${numStr} ${nameStr}: ${winStr}, ${plcStr} ${formStr} rating: ${h.rating} diff: ${h.diff}`);
+        }
+
+        lines.push("");
+        lines.push(`  Avg differentiation: ${detail.avgDiff} | Horses with diff < 8: ${detail.close8}`);
+        lines.push("");
+      }
+
+      // Meeting overview table
+      lines.push("═".repeat(55));
+      lines.push("MEETING OVERVIEW");
+      lines.push("═".repeat(55));
+      lines.push("");
+      lines.push("| Race | Class | Dist | Field | Top Horse | Win% | Place% | AvgDiff | Diff<8 |");
+      lines.push("|------|-------|------|-------|-----------|------|--------|---------|--------|");
+
+      for (const detail of simDetails) {
+        const topH = detail.horses[0];
+        lines.push(`| R${detail.raceNumber} | ${detail.raceClass} | ${detail.distance} | ${detail.fieldSize} | #${topH.number} ${topH.name} | ${topH.winProb.toFixed(1)}% | ${topH.placeProb.toFixed(1)}% | ${detail.avgDiff} | ${detail.close8} |`);
+      }
+
+      await writeFile(outPath, lines.join("\n") + "\n", "utf-8");
+      console.log(`\n📄 Saved: ${outPath}`);
     }
 
   } finally {
