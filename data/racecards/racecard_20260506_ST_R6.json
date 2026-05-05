@@ -4,7 +4,7 @@
     "date": "2026-05-05T16:00:00.000Z",
     "venue": "Sha Tin",
     "raceNumber": 6,
-    "name": "DAILY TROPHY",
+    "name": "CHAMOMILE HANDICAP",
     "class": "Class 4",
     "distance": 1650,
     "surface": "AWT",
@@ -2769,5 +2769,19 @@
       }
     ]
   },
-  "winOdds": {}
+  "winOdds": {
+    "1": 15,
+    "2": 11,
+    "3": 22,
+    "4": 20,
+    "5": 7.3,
+    "6": 6.3,
+    "7": 13,
+    "8": 13,
+    "9": 8.8,
+    "10": 59,
+    "11": 4.5,
+    "12": 9.4,
+    "13": 15
+  }
 }

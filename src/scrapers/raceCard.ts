@@ -286,6 +286,24 @@ export class RaceCardScraper {
           if (classAfterDistMatch) result.class = classAfterDistMatch[1]!;
         }
 
+        // Strategy 6: find class from the HKJC prize money line.
+        // Format: "Prize Money: $875,000, Rating: 40-0, Class 5"
+        // This is a separate element from the distance/going line, so earlier
+        // strategies that search by distance often miss it.
+        if (!result.class) {
+          const allEls3 = document.querySelectorAll("td, div, span, p");
+          for (const el of allEls3) {
+            const t = (el.textContent ?? "").trim();
+            // Match "Rating: NN-N, Class N" which is unique to the race header section
+            const ratingClassRe = /Rating\s*:\s*\d+[-–]\d+[,\s]+(Class\s*\d|Group\s*(?:\d|One|Two|Three)|4\s*Year\s*Olds?|Griffin)/i;
+            const m = t.match(ratingClassRe);
+            if (m && t.length < 300) {
+              result.class = m[1]!;
+              break;
+            }
+          }
+        }
+
         return result;
       }, raceNumber);
     } catch {
@@ -419,6 +437,13 @@ export class RaceCardScraper {
     const CLASS_PAT = `(4\\s*(?:Year|Yr)\\s*Olds?|Griffin|Group\\s*(?:\\d|One|Two|Three)|Class\\s*\\d)`;
     const DIST_PAT = `(\\d{3,4})\\s*M`;
 
+    // Pre-compute the HKJC compact info line match from pageText so all
+    // strategies below can use its distance (group 2) and going (group 3).
+    // Format: "All Weather Track, 1650M, Wet Slow"
+    const hkjcInfoLineRe =
+      /(All\s+Weather(?:\s+Track)?|AWT|Turf)[,\s]+(\d{3,4})\s*M[,\s]+(Wet\s+(?:Fast|Slow)|Good(?:\s+to\s+(?:Firm|Yielding))?|Firm|Yielding|Soft|Heavy)/i;
+    const hkjcInfoMatch = pageText.match(hkjcInfoLineRe);
+
     let raceClass: RaceClass = "Class 4";
     let distance = 1200;
     let matched = false;
@@ -463,7 +488,7 @@ export class RaceCardScraper {
       }
     }
 
-    // Strategy 3: parse class and distance separately
+    // Strategy 3: parse class and distance separately from allText
     if (!matched) {
       const classMatch = allText.match(/Class\s*(\d)/i);
       const groupMatch = allText.match(/Group\s*(\d)/i) ||
@@ -488,16 +513,29 @@ export class RaceCardScraper {
       }
     }
 
+    // Strategy 4: use pageText with HKJC-specific non-table patterns.
+    // The race info lives outside table cells, so allText (table-centric) misses it.
+    //   • Distance: extracted from the info line "All Weather Track, 1650M, Wet Slow"
+    //   • Class:    extracted from the prize line "Prize Money: …, Rating: 40-0, Class 5"
+    if (!matched || raceClass === "Class 4") {
+      // Distance from info line (already matched above as hkjcInfoMatch)
+      if (hkjcInfoMatch) {
+        const d = parseInt(hkjcInfoMatch[2]!, 10);
+        if (d >= 1000 && d <= 2400) distance = d;
+      }
+      // Class from "Rating: NN-N, Class N" format on the prize money line
+      const ratingLineMatch = pageText.match(
+        /Rating\s*:\s*\d+[-–]\d+[,\s]+(Class\s*\d|Group\s*(?:\d|One|Two|Three)|4\s*Year\s*Olds?|Griffin)/i
+      );
+      if (ratingLineMatch) {
+        raceClass = this.parseClassString(ratingLineMatch[1]!);
+        matched = true;
+      }
+    }
+
     if (raceNumber) {
       console.log(`[SCRAPER] R${raceNumber}: parsed class=${raceClass}, distance=${distance}m`);
     }
-
-    // HKJC compact info line: "All Weather Track, 1650M, Wet Slow"
-    // This line lives in a non-table div/p and is often absent from allText
-    // (which is table-centric). Search pageText with a specific pattern first.
-    const hkjcInfoLineRe =
-      /(All\s+Weather(?:\s+Track)?|AWT|Turf)[,\s]+(\d{3,4})\s*M[,\s]+(Wet\s+(?:Fast|Slow)|Good(?:\s+to\s+(?:Firm|Yielding))?|Firm|Yielding|Soft|Heavy)/i;
-    const hkjcInfoMatch = pageText.match(hkjcInfoLineRe);
 
     // Parse surface
     let surface: TrackSurface | null = null;
@@ -536,17 +574,22 @@ export class RaceCardScraper {
       going = "Good"; // Playwright overlay will correct if needed
     }
 
-    // Parse prize money — support "Prize Money: $875,000" and legacy "HK$X,XXX,XXX" formats
+    // Parse prize money — support "Prize Money: $875,000" and legacy "HK$X,XXX,XXX" formats.
+    // The prize money line lives outside table cells so search pageText first.
     let prizeMoney = 0;
-    const prizeMatch = allText.match(/Prize\s*Money[^:]*:\s*(?:HK)?\$\s*([\d,]+)/i) ||
-                       allText.match(/HK\$\s*([\d,]+)/i);
+    const prizeMatch =
+      pageText.match(/Prize\s*Money[^:]*:\s*(?:HK)?\$\s*([\d,]+)/i) ||
+      allText.match(/Prize\s*Money[^:]*:\s*(?:HK)?\$\s*([\d,]+)/i) ||
+      allText.match(/HK\$\s*([\d,]+)/i);
     if (prizeMatch) {
       prizeMoney = parseInt(prizeMatch[1]!.replace(/,/g, ""), 10);
     }
 
-    // Parse race name
+    // Parse race name — also check pageText for the race title line
     let name: string | undefined;
-    const nameMatch = allText.match(/(?:RACE\s*\d+[^\n]*\n)?\s*([A-Z][A-Z\s]+HANDICAP|[A-Z][A-Z\s]+CUP|[A-Z][A-Z\s]+TROPHY)/i);
+    const nameMatch =
+      pageText.match(/Race\s*\d+\s*[-–—]\s*([A-Z][A-Z\s]+(?:HANDICAP|CUP|TROPHY|PLATE|STAKES|CHALLENGE))/i) ||
+      allText.match(/(?:RACE\s*\d+[^\n]*\n)?\s*([A-Z][A-Z\s]+HANDICAP|[A-Z][A-Z\s]+CUP|[A-Z][A-Z\s]+TROPHY)/i);
     if (nameMatch) {
       name = nameMatch[1]?.trim();
     }

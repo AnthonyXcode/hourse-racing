@@ -23,6 +23,7 @@ interface RaceSummary {
   rating: number;
   avgDiff: number;
   close8: number;
+  sparse: number;
   winProb: number;
   placeProb: number;
   confidence: string;
@@ -36,6 +37,7 @@ interface RaceSimDetail {
   fieldSize: number;
   avgDiff: number;
   close8: number;
+  sparse: number;
   horses: {
     number: number;
     name: string;
@@ -165,6 +167,7 @@ async function main() {
         rating: topRating,
         avgDiff,
         close8,
+        sparse: sparseFormCount,
         winProb: topSim ? topSim.winProbability * 100 : 0,
         placeProb: topSim ? topSim.placeProbability * 100 : 0,
         confidence,
@@ -197,30 +200,31 @@ async function main() {
         fieldSize: activeEntries.length,
         avgDiff,
         close8,
+        sparse: sparseFormCount,
         horses: detailHorses,
       });
 
-      console.log(`  R${raceNum}: ${top.horseName.substring(0, 15)} (#${topEntry?.horseNumber}) rating=${topRating} avgDiff=${avgDiff} close<8=${close8} → ${confidence}`);
+      console.log(`  R${raceNum}: ${top.horseName.substring(0, 15)} (#${topEntry?.horseNumber}) rating=${topRating} avgDiff=${avgDiff} close<8=${close8} sparse=${sparseFormCount} → ${confidence}`);
     }
 
     if (jockeyEnricher) await jockeyEnricher.closeBrowser();
     if (trainerEnricher) await trainerEnricher.closeBrowser();
 
     // Output table
-    console.log("\n" + "═".repeat(90));
+    console.log("\n" + "═".repeat(97));
     console.log("PLACE BET SUMMARY — Top-rated horse per race");
-    console.log("═".repeat(90));
+    console.log("═".repeat(97));
     console.log(
-      `${"Race".padEnd(5)} ${"Horse".padEnd(16)} ${"#".padStart(2)} ${"Rating".padStart(6)} ${"AvgDiff".padStart(7)} ${"Close<8".padStart(7)} ${"Win%".padStart(6)} ${"Plc%".padStart(6)} ${"Confidence".padStart(10)}`
+      `${"Race".padEnd(5)} ${"Horse".padEnd(16)} ${"#".padStart(2)} ${"Rating".padStart(6)} ${"AvgDiff".padStart(7)} ${"Close<8".padStart(7)} ${"Sparse".padStart(6)} ${"Win%".padStart(6)} ${"Plc%".padStart(6)} ${"Confidence".padStart(10)}`
     );
-    console.log("─".repeat(90));
+    console.log("─".repeat(97));
 
     for (const r of results) {
       console.log(
-        `R${r.raceNumber.toString().padEnd(4)} ${r.topHorse.padEnd(16)} ${r.horseNumber.toString().padStart(2)} ${r.rating.toString().padStart(6)} ${r.avgDiff.toString().padStart(7)} ${r.close8.toString().padStart(7)} ${r.winProb.toFixed(1).padStart(6)} ${r.placeProb.toFixed(1).padStart(6)} ${r.confidence.padStart(10)}`
+        `R${r.raceNumber.toString().padEnd(4)} ${r.topHorse.padEnd(16)} ${r.horseNumber.toString().padStart(2)} ${r.rating.toString().padStart(6)} ${r.avgDiff.toString().padStart(7)} ${r.close8.toString().padStart(7)} ${r.sparse.toString().padStart(6)} ${r.winProb.toFixed(1).padStart(6)} ${r.placeProb.toFixed(1).padStart(6)} ${r.confidence.padStart(10)}`
       );
     }
-    console.log("─".repeat(90));
+    console.log("─".repeat(97));
 
     const highConf = results.filter(r => r.confidence === "HIGH");
     const medHighConf = results.filter(r => r.confidence === "MED-HIGH");
@@ -272,7 +276,7 @@ async function main() {
         }
 
         lines.push("");
-        lines.push(`  Avg differentiation: ${detail.avgDiff} | Horses with diff < 8: ${detail.close8}`);
+        lines.push(`  Avg differentiation: ${detail.avgDiff} | Horses with diff < 8: ${detail.close8} | Sparse form (0-1 runs): ${detail.sparse}`);
         lines.push("");
       }
 
@@ -281,12 +285,12 @@ async function main() {
       lines.push("MEETING OVERVIEW");
       lines.push("═".repeat(55));
       lines.push("");
-      lines.push("| Race | Class | Dist | Field | Top Horse | Win% | Place% | AvgDiff | Diff<8 |");
-      lines.push("|------|-------|------|-------|-----------|------|--------|---------|--------|");
+      lines.push("| Race | Class | Dist | Field | Sparse | Top Horse | Win% | Place% | AvgDiff | Diff<8 |");
+      lines.push("|------|-------|------|-------|--------|-----------|------|--------|---------|--------|");
 
       for (const detail of simDetails) {
         const topH = detail.horses[0];
-        lines.push(`| R${detail.raceNumber} | ${detail.raceClass} | ${detail.distance} | ${detail.fieldSize} | #${topH.number} ${topH.name} | ${topH.winProb.toFixed(1)}% | ${topH.placeProb.toFixed(1)}% | ${detail.avgDiff} | ${detail.close8} |`);
+        lines.push(`| R${detail.raceNumber} | ${detail.raceClass} | ${detail.distance} | ${detail.fieldSize} | ${detail.sparse} | #${topH.number} ${topH.name} | ${topH.winProb.toFixed(1)}% | ${topH.placeProb.toFixed(1)}% | ${detail.avgDiff} | ${detail.close8} |`);
       }
 
       await writeFile(outPath, lines.join("\n") + "\n", "utf-8");
