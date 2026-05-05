@@ -260,14 +260,14 @@ export class HorseProfileScraper {
     return {
       code: horseCode,
       name,
-      nameChinese,
+      ...(nameChinese !== undefined ? { nameChinese } : {}),
       age,
       sex,
       color,
       origin,
       sire,
       dam,
-      damSire,
+      ...(damSire !== undefined ? { damSire } : {}),
       currentRating,
       seasonStarts,
       seasonWins,
@@ -322,8 +322,20 @@ export class HorseProfileScraper {
       const cellTexts = cells.map((_, cell) => $(cell).text().trim()).get();
       const rowText = cellTexts.join(" ");
 
-      // Parse date
-      const dateText = cellTexts[0] || "";
+      // Horse form table column layout (0-indexed):
+      //   0: RaceIndex (link to results, e.g. "663")
+      //   1: Pla. / Position (e.g. "07")
+      //   2: Date (e.g. "03/05/26")
+      //   3: RC/Track/Course
+      //   4: Distance (e.g. "1400")
+      //   5: Going
+      //   6: Class (e.g. "3")
+      //   7: Draw
+      //   8: Rtg. / Rating (e.g. "76")
+      //   9: Trainer, 10: Jockey, ...
+      //
+      // Parse date from column 2
+      const dateText = cellTexts[2] || "";
       const dateMatch = dateText.match(/(\d{2})\/(\d{2})\/(\d{2,4})/);
       if (!dateMatch) return;
 
@@ -494,6 +506,14 @@ export class HorseProfileScraper {
         }
       }
 
+      // Parse rating from column 8 (Rtg.)
+      let speedRating: number | undefined;
+      const ratingText = cellTexts[8] || "";
+      const ratingNum = parseInt(ratingText, 10);
+      if (!isNaN(ratingNum) && ratingNum >= 20 && ratingNum <= 140) {
+        speedRating = ratingNum;
+      }
+
       performances.push({
         date,
         venue,
@@ -510,6 +530,7 @@ export class HorseProfileScraper {
         winningMargin,
         finishTime,
         odds,
+        ...(speedRating !== undefined ? { speedRating } : {}),
       });
     });
 

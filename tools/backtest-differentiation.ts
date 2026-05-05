@@ -34,6 +34,9 @@ interface RaceResult {
   sparseFormCount: number;
   skipped: boolean;
   skipReason: string;
+  surface: string;
+  raceClass: string;
+  distance: number;
   topRatedWon: boolean;
   topRatedPlaced: boolean;
   topSimWon: boolean;
@@ -118,6 +121,8 @@ function parseArgs() {
   let avgDiffMin = 14;
   let gapMin = 0;
   let months: string[] = [];
+  let venue: "ST" | "HV" | null = null;
+  let surface: "Turf" | "AWT" | null = null;
 
   for (const arg of args) {
     const m = arg.match(/^--(\w+)=(.+)$/);
@@ -127,26 +132,31 @@ function parseArgs() {
     else if (m[1] === "avgdiff") avgDiffMin = parseInt(m[2], 10);
     else if (m[1] === "gap") gapMin = parseInt(m[2], 10);
     else if (m[1] === "months") months = m[2].split(",").map(s => s.trim().padStart(2, "0"));
+    else if (m[1] === "venue") venue = (m[2] ?? "").toUpperCase() === "HV" ? "HV" : "ST";
+    else if (m[1] === "surface") surface = (m[2] ?? "").toUpperCase() === "AWT" ? "AWT" : "Turf";
   }
 
-  return { sparseMax, closeMax, avgDiffMin, gapMin, months };
+  return { sparseMax, closeMax, avgDiffMin, gapMin, months, venue, surface };
 }
 
 async function main() {
-  const { sparseMax, closeMax, avgDiffMin, gapMin, months } = parseArgs();
+  const { sparseMax, closeMax, avgDiffMin, gapMin, months, venue, surface } = parseArgs();
   const monthLabel = months.length === 0 ? "all" : months.join(",");
-  console.log(`Skip rules: sparse>${sparseMax}, close<8>${closeMax}, avgDiff<${avgDiffMin}, 1st-2nd gap<${gapMin} | months=${monthLabel}\n`);
+  const venueLabel = venue ?? "all";
+  const surfaceLabel = surface ?? "all";
+  console.log(`Skip rules: sparse>${sparseMax}, close<8>${closeMax}, avgDiff<${avgDiffMin}, 1st-2nd gap<${gapMin} | months=${monthLabel} | venue=${venueLabel} | surface=${surfaceLabel}\n`);
 
   const formAnalyzer = new FormAnalyzer();
   const raceCardDir = path.join(process.cwd(), "data", "racecards");
 
   const files = await readdir(raceCardDir);
+  const venueSegment = venue ?? "ST|HV";
   const monthPattern = months.length === 0
-    ? /racecard_\d{8}_(ST|HV)_R\d+\.json/
-    : new RegExp(`racecard_2026(${months.join("|")})\\d{2}_(ST|HV)_R\\d+\\.json`);
+    ? new RegExp(`racecard_\\d{8}_(${venueSegment})_R\\d+\\.json`)
+    : new RegExp(`racecard_2026(${months.join("|")})\\d{2}_(${venueSegment})_R\\d+\\.json`);
   const matchedFiles = files.filter(f => monthPattern.test(f)).sort();
 
-  console.log(`Found ${matchedFiles.length} racecards (months=${monthLabel})\n`);
+  console.log(`Found ${matchedFiles.length} racecards (months=${monthLabel}, venue=${venueLabel})\n`);
 
   const resultsCache = new Map<string, Map<number, FinishEntry[]>>();
   const allResults: RaceResult[] = [];
@@ -161,6 +171,7 @@ async function main() {
 
     const { race } = loaded;
     if (race.entries.length < 4) continue;
+    if (surface && race.surface !== surface) continue;
 
     const cacheKey = `${parsed.date}_${parsed.venue}`;
     if (!resultsCache.has(cacheKey)) {
@@ -232,6 +243,9 @@ async function main() {
       sparseFormCount,
       skipped,
       skipReason,
+      surface: race.surface,
+      raceClass: race.class,
+      distance: race.distance,
       topRatedWon: topRatedAnalysis.horseCode === winnerCode,
       topRatedPlaced: top3Codes.includes(topRatedAnalysis.horseCode),
       topSimWon: topSimResult.horseCode === winnerCode,
@@ -304,6 +318,80 @@ async function main() {
   console.log(
     `${"TOTAL".padEnd(12)} ${"".padEnd(4)} ${allResults.length.toString().padStart(5)} ${totalBet.toString().padStart(4)} ${totalHit.toString().padStart(4)} ${(totalBet - totalHit).toString().padStart(4)} ${(allResults.length - totalBet).toString().padStart(4)} ${(overallRate + "%").padStart(8)}`
   );
+
+  // --- Helper: print a breakdown table ---
+  function printBreakdown(label: string, groups: Map<string, RaceResult[]>) {
+    console.log("\n" + "═".repeat(60));
+    console.log(`HIT RATE BY ${label}`);
+    console.log("═".repeat(60));
+    console.log(
+      `${"Group".padEnd(12)} ${"Total".padStart(5)} ${"Bet".padStart(4)} ${"Hit".padStart(4)} ${"Miss".padStart(4)} ${"Skip".padStart(4)} ${"HitRate".padStart(8)}`
+    );
+    console.log("─".repeat(60));
+    let gTotalRaces = 0, gTotalBet = 0, gTotalHit = 0;
+    for (const [key, races] of [...groups.entries()].sort((a, b) => a[0].localeCompare(b[0]))) {
+      const gb = races.filter(r => !r.skipped);
+      const gh = gb.filter(r => r.topRatedPlaced).length;
+      const rate = gb.length > 0 ? (gh / gb.length * 100).toFixed(1) + "%" : "N/A";
+      console.log(
+        `${key.padEnd(12)} ${races.length.toString().padStart(5)} ${gb.length.toString().padStart(4)} ${gh.toString().padStart(4)} ${(gb.length - gh).toString().padStart(4)} ${(races.length - gb.length).toString().padStart(4)} ${rate.padStart(8)}`
+      );
+      gTotalRaces += races.length;
+      gTotalBet += gb.length;
+      gTotalHit += gh;
+    }
+    console.log("─".repeat(60));
+    const totalRate = gTotalBet > 0 ? (gTotalHit / gTotalBet * 100).toFixed(1) + "%" : "0.0%";
+    console.log(
+      `${"TOTAL".padEnd(12)} ${gTotalRaces.toString().padStart(5)} ${gTotalBet.toString().padStart(4)} ${gTotalHit.toString().padStart(4)} ${(gTotalBet - gTotalHit).toString().padStart(4)} ${(gTotalRaces - gTotalBet).toString().padStart(4)} ${totalRate.padStart(8)}`
+    );
+  }
+
+  // --- By venue ---
+  const byVenue = new Map<string, RaceResult[]>();
+  for (const r of allResults) {
+    if (!byVenue.has(r.venue)) byVenue.set(r.venue, []);
+    byVenue.get(r.venue)!.push(r);
+  }
+  printBreakdown("VENUE", byVenue);
+
+  // --- By surface ---
+  const bySurface = new Map<string, RaceResult[]>();
+  for (const r of allResults) {
+    if (!bySurface.has(r.surface)) bySurface.set(r.surface, []);
+    bySurface.get(r.surface)!.push(r);
+  }
+  printBreakdown("SURFACE", bySurface);
+
+  // --- By class ---
+  const byClass = new Map<string, RaceResult[]>();
+  for (const r of allResults) {
+    if (!byClass.has(r.raceClass)) byClass.set(r.raceClass, []);
+    byClass.get(r.raceClass)!.push(r);
+  }
+  printBreakdown("CLASS", byClass);
+
+  // --- By distance (bucketed to nearest 200m) ---
+  const byDistance = new Map<string, RaceResult[]>();
+  for (const r of allResults) {
+    const bucket = `${r.distance}m`;
+    if (!byDistance.has(bucket)) byDistance.set(bucket, []);
+    byDistance.get(bucket)!.push(r);
+  }
+  // Sort numerically by distance
+  const byDistanceSorted = new Map(
+    [...byDistance.entries()].sort((a, b) => parseInt(a[0]) - parseInt(b[0]))
+  );
+  printBreakdown("DISTANCE", byDistanceSorted);
+
+  // --- By class × venue ---
+  const byClassVenue = new Map<string, RaceResult[]>();
+  for (const r of allResults) {
+    const key = `${r.raceClass} ${r.venue}`;
+    if (!byClassVenue.has(key)) byClassVenue.set(key, []);
+    byClassVenue.get(key)!.push(r);
+  }
+  printBreakdown("CLASS × VENUE", byClassVenue);
 }
 
 main().catch(console.error);
