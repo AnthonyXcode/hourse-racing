@@ -61,23 +61,70 @@ export async function scrapeScmpRacecard(
   }
 
   return page.evaluate(() => {
-    // --- Race metadata from header ---
-    const headerEl = document.querySelector("h2");
-    const headerText = headerEl?.textContent ?? "";
+    // --- Race metadata ---
+    // SCMP structure: h2 = date/venue only ("Wednesday, 6 May 2026, 6:45pm, Sha Tin")
+    // Race info (surface, distance, going, class) is in the paragraph AFTER the h2.
+    const h2 = document.querySelector("h2");
+    let raceInfoText = "";
+
+    // Walk h2's next siblings looking for the race info paragraph
+    if (h2) {
+      let el: Element | null = h2.nextElementSibling;
+      for (let i = 0; i < 6 && el; i++) {
+        const t = (el.textContent ?? "").trim();
+        if (
+          /\d{3,4}M/i.test(t) &&
+          (/class\s*\d/i.test(t) || /all\s*weather/i.test(t) ||
+           /going/i.test(t) || /prize\s*money/i.test(t))
+        ) {
+          raceInfoText = t;
+          break;
+        }
+        el = el.nextElementSibling;
+      }
+
+      // Fallback: search all <p> tags in the h2's parent container
+      if (!raceInfoText && h2.parentElement) {
+        const paras = h2.parentElement.querySelectorAll("p");
+        for (const p of paras) {
+          const t = (p.textContent ?? "").trim();
+          if (/\d{3,4}M/i.test(t) && /class\s*\d/i.test(t)) {
+            raceInfoText = t;
+            break;
+          }
+        }
+      }
+    }
+
+    // Final fallback: scan the whole body for a short text block that looks like race info
+    if (!raceInfoText) {
+      const allEls = document.querySelectorAll("p, div");
+      for (const el of allEls) {
+        const t = (el.textContent ?? "").trim();
+        if (t.length < 600 && /\d{3,4}M/i.test(t) && /class\s*\d/i.test(t) &&
+            (/all\s*weather/i.test(t) || /going/i.test(t))) {
+          raceInfoText = t;
+          break;
+        }
+      }
+    }
+
+    const infoText = raceInfoText;
 
     let surface = "Turf";
-    if (/all weather/i.test(headerText) || /AWT/i.test(headerText)) surface = "AWT";
+    if (/all\s*weather/i.test(infoText) || /\bAWT\b/.test(infoText)) surface = "AWT";
 
-    const distMatch = headerText.match(/(\d{3,4})M/);
+    const distMatch = infoText.match(/(\d{3,4})M/i);
     const distance = distMatch ? parseInt(distMatch[1]!, 10) : 0;
 
+    // "Expected Going: Good" — capture the value only
     const goingMatch =
-      headerText.match(/Expected Going:\s*(\w+)/i) ??
-      headerText.match(/Going:\s*(\w+)/i);
+      infoText.match(/Expected\s+Going:\s*(\w+(?:\s+\w+)?)/i) ??
+      infoText.match(/Going:\s*(\w+(?:\s+\w+)?)/i);
     const going = goingMatch ? goingMatch[1]! : "";
 
-    const classMatch = headerText.match(/Class\s*(\d)/i);
-    const ratingBandMatch = headerText.match(/Rating:\s*([\d]+-[\d]+)/);
+    const classMatch = infoText.match(/Class\s*(\d)/i);
+    const ratingBandMatch = infoText.match(/Rating:\s*([\d]+-[\d]+)/);
     let raceClass = "";
     if (classMatch) {
       raceClass = `Class ${classMatch[1]}`;

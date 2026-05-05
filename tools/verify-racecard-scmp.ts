@@ -160,7 +160,11 @@ function namesMatch(hkjc: string, scmp: string): boolean {
   return false;
 }
 
-function compareRace(hkjc: SavedRace["race"], scmp: ScmpRaceMeta): Mismatch[] {
+function compareRace(
+  hkjc: SavedRace["race"],
+  scmp: ScmpRaceMeta,
+  infoLines: string[],
+): Mismatch[] {
   const mm: Mismatch[] = [];
 
   if (scmp.class && normName(hkjc.class) !== normName(scmp.class)) {
@@ -172,8 +176,13 @@ function compareRace(hkjc: SavedRace["race"], scmp: ScmpRaceMeta): Mismatch[] {
   if (scmp.surface && hkjc.surface.toLowerCase() !== scmp.surface.toLowerCase()) {
     mm.push({ field: "surface", hkjc: hkjc.surface, scmp: scmp.surface });
   }
+  // Going: SCMP shows "Expected Going" (pre-race forecast); HKJC shows actual race-day going.
+  // These legitimately differ (e.g. SCMP="Good", HKJC="Wet Slow" after overnight rain).
+  // Log as informational only — do NOT count toward the mismatch total.
   if (scmp.going && hkjc.going.toLowerCase() !== scmp.going.toLowerCase()) {
-    mm.push({ field: "going", hkjc: hkjc.going, scmp: scmp.going });
+    infoLines.push(
+      `  ℹ️  going differs (expected vs actual): SCMP="${scmp.going}"  HKJC="${hkjc.going}"`,
+    );
   }
 
   return mm;
@@ -415,9 +424,13 @@ async function main() {
     console.log(`R${rn}: ${saved.race.class} | ${saved.race.distance}m | ${saved.race.surface} | ${saved.race.going}`);
 
     // Race-level comparison
-    const raceMM = compareRace(saved.race, meta);
+    const raceInfoLines: string[] = [];
+    const raceMM = compareRace(saved.race, meta, raceInfoLines);
     for (const m of raceMM) {
       console.log(`  🔴 RACE MISMATCH: ${m.field}  HKJC="${m.hkjc}"  SCMP="${m.scmp}"`);
+    }
+    for (const line of raceInfoLines) {
+      console.log(line);
     }
     totalRaceMM += raceMM.length;
 

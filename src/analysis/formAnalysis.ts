@@ -253,8 +253,20 @@ export class FormAnalyzer {
   }
 
   /**
+   * Returns true for Group 1/2/3 races.
+   * Group races use weight-for-age / penalty systems, not the Class 1-5 rating bands.
+   */
+  private isGroupClass(cls: RaceClass): boolean {
+    return cls === "Group 1" || cls === "Group 2" || cls === "Group 3";
+  }
+
+  /**
    * Calculate class indicator (positive = dropping, negative = rising).
-   * Uses the actual HKJC handicap rating when available for intra-class differentiation.
+   * Uses the actual HKJC handicap rating when available for intra-class
+   * differentiation — except for Group races, where the rating band concept
+   * does not apply (weight-for-age / penalties system).
+   * Return value is clamped to [-5, +5] so calculateOverallRating normalises
+   * correctly regardless of the size of the class jump.
    */
   private calculateClassIndicator(horse: Horse, targetClass: RaceClass): number {
     const targetClassRating = CLASS_RATINGS[targetClass];
@@ -266,16 +278,21 @@ export class FormAnalyzer {
         recentPerfs.reduce((sum, p) => sum + CLASS_RATINGS[p.raceClass], 0) /
         recentPerfs.length;
 
-      // Blend: class-level drop/rise + intra-class position
-      // A high-rated horse in a class (e.g., Rtg 59 in C4 60-40) is at the top — disadvantaged by weight
-      // A low-rated horse (e.g., Rtg 40 in C4 60-40) carries less weight — advantaged
       const classComponent = (avgRecentClass - targetClassRating) / 10;
 
-      // Intra-class: lower rating relative to class midpoint = advantage (less weight)
+      // Intra-class rating advantage only applies to Class 1-5 (rating band races).
+      // Group 1/2/3 races use weight-for-age — skip the rating-band component.
+      if (this.isGroupClass(targetClass)) {
+        return Math.max(-5, Math.min(5, classComponent));
+      }
+
+      // Class 1-5: blend class-level drop/rise with intra-class weight position.
+      // A high-rated horse (e.g., Rtg 59 in C4 60-40) carries more weight → disadvantaged.
+      // A low-rated horse (e.g., Rtg 40 in C4 60-40) carries less weight → advantaged.
       const classMid = targetClassRating - 5; // e.g., C4(70) → midpoint ~65, mapped to Rtg ~50
       const ratingAdvantage = (classMid - horse.currentRating) / 20;
 
-      return classComponent * 0.6 + ratingAdvantage * 0.4;
+      return Math.max(-5, Math.min(5, classComponent * 0.6 + ratingAdvantage * 0.4));
     }
 
     if (horse.pastPerformances.length === 0) return 0;
@@ -285,7 +302,7 @@ export class FormAnalyzer {
       recentPerfs.reduce((sum, p) => sum + CLASS_RATINGS[p.raceClass], 0) /
       recentPerfs.length;
 
-    return (avgRecentClass - targetClassRating) / 10;
+    return Math.max(-5, Math.min(5, (avgRecentClass - targetClassRating) / 10));
   }
 
   /**
@@ -454,21 +471,30 @@ export class FormAnalyzer {
   }
 
   /**
-   * Calculate going preference (-1 to 1)
+   * Calculate going preference (-1 to 1).
+   *
+   * Three tiers reflect meaningfully different racing conditions:
+   *   "firm" — Firm, Good to Firm, Good  (fast ground, suits speedier types)
+   *   "soft" — Good to Yielding, Yielding, Soft, Heavy  (wet Turf)
+   *   "wet"  — Wet Fast, Wet Slow  (AWT-specific; very different from Turf soft)
+   *
+   * Separating "wet" from "soft" matters for Group races (which often run on
+   * variable Turf going) and AWT races where surface behaviour differs entirely.
    */
   private calculateGoingPreference(horse: Horse, targetGoing: Going): number {
     const perfs = horse.pastPerformances;
     if (perfs.length < 3) return 0;
 
-    // Group going conditions
-    const isFirmGoing = (g: Going) =>
-      ["Firm", "Good to Firm", "Good"].includes(g);
-    const targetIsFirm = isFirmGoing(targetGoing);
+    const goingTier = (g: Going): "firm" | "soft" | "wet" => {
+      if (["Firm", "Good to Firm", "Good"].includes(g)) return "firm";
+      if (["Wet Fast", "Wet Slow"].includes(g)) return "wet";
+      return "soft"; // Good to Yielding, Yielding, Soft, Heavy
+    };
 
-    const matchingPerfs = perfs.filter(
-      (p) => isFirmGoing(p.going) === targetIsFirm
-    );
-    const otherPerfs = perfs.filter((p) => isFirmGoing(p.going) !== targetIsFirm);
+    const targetTier = goingTier(targetGoing);
+
+    const matchingPerfs = perfs.filter((p) => goingTier(p.going) === targetTier);
+    const otherPerfs = perfs.filter((p) => goingTier(p.going) !== targetTier);
 
     if (matchingPerfs.length === 0) return -0.2;
     if (otherPerfs.length === 0) return 0.1;

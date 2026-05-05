@@ -214,7 +214,43 @@ export class RaceCardScraper {
           }
         }
 
-        if (!headerText) return result;
+        // Strategy 4: find the HKJC compact race-info line directly.
+        // Format: "All Weather Track, 1650M, Wet Slow" or "Turf, 1200M, Good"
+        // This element does NOT necessarily contain "Race N", so the earlier
+        // strategies miss it when the title and the info line are in separate nodes.
+        if (!headerText) {
+          const infoLineRe = /(All\s+Weather(?:\s+Track)?|AWT|Turf)[,\s]+\d{3,4}\s*M[,\s]+(Wet\s+(?:Fast|Slow)|Good(?:\s+to\s+(?:Firm|Yielding))?|Firm|Yielding|Soft|Heavy)/i;
+          const allEls = document.querySelectorAll("td, div, span, p");
+          for (const el of allEls) {
+            const t = (el.textContent ?? "").trim();
+            if (infoLineRe.test(t) && t.length < 400) {
+              headerText = t;
+              break;
+            }
+          }
+        }
+
+        // Strategy 5: even without finding a dedicated header block, try to
+        // extract surface + going directly from any element that carries them.
+        if (!result.surface || !result.going) {
+          const infoLineRe2 = /(All\s+Weather(?:\s+Track)?|AWT|Turf)[,\s]+\d{3,4}\s*M[,\s]+(Wet\s+(?:Fast|Slow)|Good(?:\s+to\s+(?:Firm|Yielding))?|Firm|Yielding|Soft|Heavy)/i;
+          const allEls2 = document.querySelectorAll("td, div, span, p");
+          for (const el of allEls2) {
+            const t = (el.textContent ?? "").trim();
+            const m = t.match(infoLineRe2);
+            if (m) {
+              if (!result.surface) {
+                result.surface = /AWT|All\s*Weather/i.test(m[1]!) ? "AWT" : "Turf";
+              }
+              if (!result.going) {
+                result.going = m[2]!;
+              }
+              break;
+            }
+          }
+        }
+
+        if (!headerText && !result.surface && !result.going) return result;
 
         // Parse class + distance from the header text
         const classDistMatch = headerText.match(
@@ -234,8 +270,21 @@ export class RaceCardScraper {
         if (/AWT|All Weather/i.test(headerText)) result.surface = "AWT";
         else if (/Turf/i.test(headerText)) result.surface = "Turf";
 
-        const goingMatch = headerText.match(/Going\s*:\s*(\w+(?:\s+to\s+\w+)?)/i);
-        if (goingMatch) result.going = goingMatch[1]!;
+        // Try "Going : XXX" prefix format first, then HKJC compact format "NNNNm, Wet Slow"
+        const goingPrefixMatch = headerText.match(/Going\s*:\s*(\w+(?:\s+\w+)?)/i);
+        const goingAfterDistMatch = headerText.match(
+          /\d{3,4}\s*M[,\s]+(Wet\s+(?:Fast|Slow)|Good(?:\s+to\s+(?:Firm|Yielding))?|Firm|Yielding|Soft|Heavy)/i
+        );
+        const goingRaw = goingPrefixMatch?.[1] ?? goingAfterDistMatch?.[1] ?? null;
+        if (goingRaw) result.going = goingRaw;
+
+        // Also detect class that appears AFTER the distance (HKJC format: "1650M, Wet Slow ... Class 5")
+        if (!result.class) {
+          const classAfterDistMatch = headerText.match(
+            /\d{3,4}\s*M[\s\S]{0,300}?(Class\s*\d|Group\s*(?:\d|One|Two|Three)|4\s*Year\s*Olds?|Griffin)/i
+          );
+          if (classAfterDistMatch) result.class = classAfterDistMatch[1]!;
+        }
 
         return result;
       }, raceNumber);
@@ -312,6 +361,9 @@ export class RaceCardScraper {
       }
       if (pwMeta.surface) {
         raceInfo.surface = pwMeta.surface.includes("AWT") ? "AWT" : "Turf";
+      }
+      if (pwMeta.going) {
+        raceInfo.going = this.parseGoingString(pwMeta.going);
       }
     }
 
@@ -440,41 +492,54 @@ export class RaceCardScraper {
       console.log(`[SCRAPER] R${raceNumber}: parsed class=${raceClass}, distance=${distance}m`);
     }
 
+    // HKJC compact info line: "All Weather Track, 1650M, Wet Slow"
+    // This line lives in a non-table div/p and is often absent from allText
+    // (which is table-centric). Search pageText with a specific pattern first.
+    const hkjcInfoLineRe =
+      /(All\s+Weather(?:\s+Track)?|AWT|Turf)[,\s]+(\d{3,4})\s*M[,\s]+(Wet\s+(?:Fast|Slow)|Good(?:\s+to\s+(?:Firm|Yielding))?|Firm|Yielding|Soft|Heavy)/i;
+    const hkjcInfoMatch = pageText.match(hkjcInfoLineRe);
+
     // Parse surface
     let surface: TrackSurface | null = null;
-    if (/AWT|All Weather/i.test(allText)) {
+    if (hkjcInfoMatch) {
+      surface = /AWT|All\s*Weather/i.test(hkjcInfoMatch[1]!) ? "AWT" : "Turf";
+    } else if (/AWT|All Weather/i.test(allText)) {
       surface = "AWT";
     } else if (/TURF|Turf/i.test(allText)) {
       surface = "Turf";
     }
     if (!surface) {
-      console.warn(`[WARNING] Could not parse surface from race info, defaulting to Turf`);
-      surface = "Turf"; // Turf is more common, but we log the warning
+      surface = "Turf"; // Turf is the more common default; Playwright overlay will correct if needed
     }
 
-    // Parse going - look for "Going : GOOD" pattern
+    // Parse going — use hkjcInfoMatch result first, then "Going : XXX" prefix, then compact format
     let going: Going | null = null;
-    const goingMatch = allText.match(/Going\s*:\s*(\w+(?:\s+to\s+\w+)?)/i);
-    if (goingMatch) {
-      const goingText = goingMatch[1]!.toLowerCase();
-      if (goingText.includes("firm") && goingText.includes("good")) going = "Good to Firm";
-      else if (goingText.includes("yielding") && goingText.includes("good")) going = "Good to Yielding";
-      else if (goingText.includes("yielding")) going = "Yielding";
-      else if (goingText.includes("heavy")) going = "Heavy";
-      else if (goingText.includes("soft")) going = "Soft";
-      else if (goingText.includes("firm")) going = "Firm";
-      else if (goingText.includes("good")) going = "Good";
-      else if (goingText.includes("wet fast")) going = "Wet Fast";
-      else if (goingText.includes("wet slow")) going = "Wet Slow";
+    let goingRaw: string | null = null;
+    if (hkjcInfoMatch) {
+      goingRaw = hkjcInfoMatch[3]!;
+    } else {
+      const goingPrefixMatch = allText.match(/Going\s*:\s*(\w+(?:\s+\w+)?)/i);
+      if (goingPrefixMatch) {
+        goingRaw = goingPrefixMatch[1]!;
+      } else {
+        // HKJC compact format: "1650M, Wet Slow" — going appears after the distance
+        const goingAfterDistMatch = allText.match(
+          /\d{3,4}\s*M[,\s]+(Wet\s+(?:Fast|Slow)|Good(?:\s+to\s+(?:Firm|Yielding))?|Firm|Yielding|Soft|Heavy)/i
+        );
+        if (goingAfterDistMatch) goingRaw = goingAfterDistMatch[1]!;
+      }
+    }
+    if (goingRaw) {
+      going = this.parseGoingString(goingRaw);
     }
     if (!going) {
-      console.warn("[WARNING] Could not parse going from race card, defaulting to Good");
-      going = "Good";
+      going = "Good"; // Playwright overlay will correct if needed
     }
 
-    // Parse prize money - look for "HK$ X,XXX,XXX" pattern
+    // Parse prize money — support "Prize Money: $875,000" and legacy "HK$X,XXX,XXX" formats
     let prizeMoney = 0;
-    const prizeMatch = allText.match(/HK\$\s*([\d,]+)/i);
+    const prizeMatch = allText.match(/Prize\s*Money[^:]*:\s*(?:HK)?\$\s*([\d,]+)/i) ||
+                       allText.match(/HK\$\s*([\d,]+)/i);
     if (prizeMatch) {
       prizeMoney = parseInt(prizeMatch[1]!.replace(/,/g, ""), 10);
     }
@@ -810,6 +875,21 @@ export class RaceCardScraper {
   private groupWordToNumber(value: string): string {
     const map: Record<string, string> = { one: "1", two: "2", three: "3" };
     return map[value.toLowerCase()] ?? value;
+  }
+
+  /** Convert a raw going string (e.g. "Wet Slow", "Good to Firm") into the Going type. */
+  private parseGoingString(raw: string): Going {
+    const t = raw.toLowerCase().trim();
+    if (t.includes("wet fast")) return "Wet Fast";
+    if (t.includes("wet slow")) return "Wet Slow";
+    if (t.includes("good") && t.includes("firm")) return "Good to Firm";
+    if (t.includes("good") && (t.includes("yield") || t.includes("yielding"))) return "Good to Yielding";
+    if (t.includes("yielding")) return "Yielding";
+    if (t.includes("heavy")) return "Heavy";
+    if (t.includes("soft")) return "Soft";
+    if (t.includes("firm")) return "Firm";
+    if (t.includes("good")) return "Good";
+    return "Good";
   }
 
   /** Parse a class descriptor string like "Class 4", "Group Two", "Griffin", "4 Year Olds" into RaceClass. */
