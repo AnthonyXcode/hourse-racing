@@ -167,12 +167,16 @@ export class FormAnalyzer {
 
   /**
    * Calculate composite overall rating.
-   * Uses venue/surface-specific weights:
+   * Uses venue/surface/class-specific weights:
    * - HV: tight tactical track — jockey skill, form momentum, class matter more than raw speed
    * - AWT: par times less calibrated, going preference useless (all "wet"), surface specialist matters
-   * - ST Turf: speed rating is the dominant predictor
+   * - ST Turf C3: transition class — raw speed less predictive (mixed C2/C4 context), class
+   *   movement direction and rating trajectory are the key differentiators
+   * - ST Turf default: speed rating is the dominant predictor
    */
-  calculateOverallRating(analysis: HorseAnalysis, venue?: Venue, surface?: TrackSurface): number {
+  calculateOverallRating(analysis: HorseAnalysis, venue?: Venue, surface?: TrackSurface, raceClass?: RaceClass): number {
+    const isC3 = raceClass === "Class 3";
+
     const weights = venue === "Happy Valley"
       ? {
           speedRating: 0.18,
@@ -203,6 +207,26 @@ export class FormAnalyzer {
           surfacePreference: 0.07,
           goingPreference: 0.00,
           distancePreference: 0.02,
+        }
+      : isC3
+      ? {
+          // C3 ST Turf: highly competitive transition class. Speed figures from
+          // mixed C2/C4 contexts are unreliable. classIndicator and ratingMomentum
+          // also tend to overstate false confidence (backed by data: avgDiff 14-16
+          // C3 Turf bets hit only 25%). Jockey booking is the primary real-world
+          // signal — top jockeys at HKJC are carefully allocated and their bookings
+          // directly reflect trainer confidence and horse fitness.
+          speedRating: 0.30,
+          formScore: 0.16,
+          classIndicator: 0.06,
+          ratingMomentum: 0.08,
+          fitness: 0.10,
+          drawAdvantage: 0.07,
+          jockeyEdge: 0.14,
+          trainerForm: 0.05,
+          surfacePreference: 0.02,
+          goingPreference: 0.02,
+          distancePreference: 0.00,
         }
       : {
           speedRating: 0.35,
@@ -273,6 +297,11 @@ export class FormAnalyzer {
    * does not apply (weight-for-age / penalties system).
    * Return value is clamped to [-5, +5] so calculateOverallRating normalises
    * correctly regardless of the size of the class jump.
+   *
+   * Distressed dropper check: a horse that recently raced at a higher class but
+   * consistently finished in the bottom 40% of those fields is an involuntary
+   * dropper (handicapper demoted them). The naive "dropping in class = good"
+   * bonus is heavily discounted for these horses.
    */
   private calculateClassIndicator(horse: Horse, targetClass: RaceClass): number {
     const targetClassRating = CLASS_RATINGS[targetClass];
@@ -284,13 +313,17 @@ export class FormAnalyzer {
         recentPerfs.reduce((sum, p) => sum + CLASS_RATINGS[p.raceClass], 0) /
         recentPerfs.length;
 
-      const classComponent = (avgRecentClass - targetClassRating) / 10;
+      let classComponent = (avgRecentClass - targetClassRating) / 10;
 
       // Intra-class rating advantage only applies to Class 1-5 (rating band races).
       // Group 1/2/3 races use weight-for-age — skip the rating-band component.
       if (this.isGroupClass(targetClass)) {
         return Math.max(-5, Math.min(5, classComponent));
       }
+
+      // Distressed dropper adjustment: discount the class-drop bonus when the
+      // horse was performing poorly in the higher class it just came from.
+      classComponent = this.adjustForDistressedDropper(classComponent, recentPerfs, targetClassRating);
 
       // Class 1-5: blend class-level drop/rise with intra-class weight position.
       // A high-rated horse (e.g., Rtg 59 in C4 60-40) carries more weight → disadvantaged.
@@ -308,7 +341,46 @@ export class FormAnalyzer {
       recentPerfs.reduce((sum, p) => sum + CLASS_RATINGS[p.raceClass], 0) /
       recentPerfs.length;
 
-    return Math.max(-5, Math.min(5, (avgRecentClass - targetClassRating) / 10));
+    let classComponent = (avgRecentClass - targetClassRating) / 10;
+    classComponent = this.adjustForDistressedDropper(classComponent, recentPerfs, targetClassRating);
+
+    return Math.max(-5, Math.min(5, classComponent));
+  }
+
+  /**
+   * Discount the class-drop bonus for "distressed droppers" — horses that were
+   * recently racing at a higher class level but consistently finishing in the
+   * bottom 40% of those fields. This indicates an involuntary demotion by the
+   * handicapper rather than a strategic placement, and the horse is unlikely
+   * to dominate simply by virtue of the lower class level.
+   *
+   * Only applies when classComponent > 0 (horse is dropping in class) and at
+   * least 2 of the recent runs were at the higher class level.
+   */
+  private adjustForDistressedDropper(
+    classComponent: number,
+    recentPerfs: PastPerformance[],
+    targetClassRating: number
+  ): number {
+    if (classComponent <= 0) return classComponent;
+
+    const higherClassPerfs = recentPerfs.filter(
+      p => CLASS_RATINGS[p.raceClass] > targetClassRating
+    );
+    if (higherClassPerfs.length < 2) return classComponent;
+
+    const avgRelPos =
+      higherClassPerfs.reduce(
+        (sum, p) => sum + (p.finishPosition / Math.max(1, p.fieldSize)),
+        0
+      ) / higherClassPerfs.length;
+
+    // Finished in bottom 40% on average in the higher class → distressed dropper
+    if (avgRelPos > 0.60) {
+      return classComponent * 0.25;
+    }
+
+    return classComponent;
   }
 
   /**
@@ -579,7 +651,7 @@ export class FormAnalyzer {
       if (entry.isScratched) continue;
 
       const analysis = this.analyzeHorse(entry.horse, race, entry);
-      const overallRating = this.calculateOverallRating(analysis, race.venue, race.surface);
+      const overallRating = this.calculateOverallRating(analysis, race.venue, race.surface, race.class);
 
       analyses.push({
         ...analysis,

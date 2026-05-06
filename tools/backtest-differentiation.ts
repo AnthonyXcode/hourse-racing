@@ -123,28 +123,36 @@ function parseArgs() {
   let months: string[] = [];
   let venue: "ST" | "HV" | null = null;
   let surface: "Turf" | "AWT" | null = null;
+  let ignoreClasses: string[] = [];
+  let ignoreDistances: number[] = [];
 
   for (const arg of args) {
-    const m = arg.match(/^--(\w+)=(.+)$/);
+    const m = arg.match(/^--([a-zA-Z-]+)=(.+)$/);
     if (!m) continue;
-    if (m[1] === "sparse") sparseMax = parseInt(m[2], 10);
-    else if (m[1] === "close") closeMax = parseInt(m[2], 10);
-    else if (m[1] === "avgdiff") avgDiffMin = parseInt(m[2], 10);
-    else if (m[1] === "gap") gapMin = parseInt(m[2], 10);
-    else if (m[1] === "months") months = m[2].split(",").map(s => s.trim().padStart(2, "0"));
-    else if (m[1] === "venue") venue = (m[2] ?? "").toUpperCase() === "HV" ? "HV" : "ST";
-    else if (m[1] === "surface") surface = (m[2] ?? "").toUpperCase() === "AWT" ? "AWT" : "Turf";
+    const key = m[1];
+    const val = m[2];
+    if (key === "sparse") sparseMax = parseInt(val, 10);
+    else if (key === "close") closeMax = parseInt(val, 10);
+    else if (key === "avgdiff") avgDiffMin = parseInt(val, 10);
+    else if (key === "gap") gapMin = parseInt(val, 10);
+    else if (key === "months") months = val.split(",").map(s => s.trim().padStart(2, "0"));
+    else if (key === "venue") venue = val.toUpperCase() === "HV" ? "HV" : "ST";
+    else if (key === "surface") surface = val.toUpperCase() === "AWT" ? "AWT" : "Turf";
+    else if (key === "ignore-class") ignoreClasses = val.split(",").map(s => s.trim().toUpperCase());
+    else if (key === "ignore-distance") ignoreDistances = val.split(",").map(s => parseInt(s.trim(), 10));
   }
 
-  return { sparseMax, closeMax, avgDiffMin, gapMin, months, venue, surface };
+  return { sparseMax, closeMax, avgDiffMin, gapMin, months, venue, surface, ignoreClasses, ignoreDistances };
 }
 
 async function main() {
-  const { sparseMax, closeMax, avgDiffMin, gapMin, months, venue, surface } = parseArgs();
+  const { sparseMax, closeMax, avgDiffMin, gapMin, months, venue, surface, ignoreClasses, ignoreDistances } = parseArgs();
   const monthLabel = months.length === 0 ? "all" : months.join(",");
   const venueLabel = venue ?? "all";
   const surfaceLabel = surface ?? "all";
-  console.log(`Skip rules: sparse>${sparseMax}, close<8>${closeMax}, avgDiff<${avgDiffMin}, 1st-2nd gap<${gapMin} | months=${monthLabel} | venue=${venueLabel} | surface=${surfaceLabel}\n`);
+  const ignoreClassLabel = ignoreClasses.length === 0 ? "none" : ignoreClasses.join(",");
+  const ignoreDistLabel = ignoreDistances.length === 0 ? "none" : ignoreDistances.map(d => `${d}m`).join(",");
+  console.log(`Skip rules: sparse>${sparseMax}, close<8>${closeMax}, avgDiff<${avgDiffMin}, 1st-2nd gap<${gapMin} | months=${monthLabel} | venue=${venueLabel} | surface=${surfaceLabel} | ignore-class=${ignoreClassLabel} | ignore-distance=${ignoreDistLabel}\n`);
 
   const formAnalyzer = new FormAnalyzer();
   const raceCardDir = path.join(process.cwd(), "data", "racecards");
@@ -172,6 +180,8 @@ async function main() {
     const { race } = loaded;
     if (race.entries.length < 4) continue;
     if (surface && race.surface !== surface) continue;
+    if (ignoreClasses.length > 0 && ignoreClasses.includes((race.class ?? "").toUpperCase())) continue;
+    if (ignoreDistances.length > 0 && ignoreDistances.includes(race.distance)) continue;
 
     const cacheKey = `${parsed.date}_${parsed.venue}`;
     if (!resultsCache.has(cacheKey)) {
@@ -198,6 +208,16 @@ async function main() {
       ? Math.abs(analyses[0].overallRating - analyses[1].overallRating)
       : 999;
 
+    // C3 Turf at ST requires a higher confidence margin before betting.
+    // At avgDiff 14-16, C3 Turf produces only ~25% hit rate vs 55%+ at 17+.
+    // Jockey bookings are the real differentiator in contested C3 Turf races,
+    // and the model's classIndicator/momentum signals are less reliable there.
+    const c3TurfAvgDiffMin = 17;
+    const effectiveAvgDiffMin =
+      race.surface === "Turf" && race.class === "Class 3"
+        ? Math.max(avgDiffMin, c3TurfAvgDiffMin)
+        : avgDiffMin;
+
     let skipped = false;
     let skipReason = "";
     if (sparseFormCount > sparseMax) {
@@ -206,7 +226,7 @@ async function main() {
     } else if (topGap < gapMin) {
       skipped = true;
       skipReason = `1st-2nd gap=${topGap}`;
-    } else if (horsesWithDiffLt8 > closeMax || avgDiff < avgDiffMin) {
+    } else if (horsesWithDiffLt8 > closeMax || avgDiff < effectiveAvgDiffMin) {
       skipped = true;
       skipReason = horsesWithDiffLt8 > closeMax ? `close<8=${horsesWithDiffLt8}` : `avgDiff=${avgDiff}`;
     }
