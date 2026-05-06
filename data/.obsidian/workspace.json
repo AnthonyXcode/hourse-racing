@@ -4,21 +4,17 @@
     "type": "split",
     "children": [
       {
-        "id": "767b2362cca19221",
+        "id": "be567b927485081c",
         "type": "tabs",
         "children": [
           {
-            "id": "02a64babd7d9f4c2",
+            "id": "5829465d65bc6831",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "temp/simulation_summaries_20260401_ST.md",
-                "mode": "source",
-                "source": false
-              },
+              "type": "empty",
+              "state": {},
               "icon": "lucide-file",
-              "title": "simulation_summaries_20260401_ST"
+              "title": "New tab"
             }
           }
         ]
@@ -183,8 +179,9 @@
       "bases:Create new base": false
     }
   },
-  "active": "02a64babd7d9f4c2",
+  "active": "5829465d65bc6831",
   "lastOpenFiles": [
+    "temp/simulation_summaries_20260401_ST.md",
     "temp/simulation_summaries_20260121_ST.md",
     "racecards/racecard_20260121_ST_R9.json",
     "racecards/racecard_20260121_ST_R8.json",
@@ -200,7 +197,6 @@
     "racecards/racecard_20260219_ST_R11.json",
     "temp/simulation_summaries_20260219_ST.md",
     "temp/simulation_summaries_20260419_ST.md",
-    "temp/simulation_summaries_20260401_ST.md",
     "temp/simulation_summaries_20260506_ST.md",
     "temp/simulation_summaries_20260506_ST-2.md",
     "temp/simulation_summaries_20260503_ST.md",

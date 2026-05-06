@@ -167,10 +167,12 @@ export class FormAnalyzer {
 
   /**
    * Calculate composite overall rating.
-   * Uses venue-specific weights: HV is a tight, tactical track where jockey
-   * skill, form momentum, and class advantages matter more than raw speed.
+   * Uses venue/surface-specific weights:
+   * - HV: tight tactical track — jockey skill, form momentum, class matter more than raw speed
+   * - AWT: par times less calibrated, going preference useless (all "wet"), surface specialist matters
+   * - ST Turf: speed rating is the dominant predictor
    */
-  calculateOverallRating(analysis: HorseAnalysis, venue?: Venue): number {
+  calculateOverallRating(analysis: HorseAnalysis, venue?: Venue, surface?: TrackSurface): number {
     const weights = venue === "Happy Valley"
       ? {
           speedRating: 0.18,
@@ -185,19 +187,23 @@ export class FormAnalyzer {
           goingPreference: 0.03,
           distancePreference: 0.02,
         }
-    //   : {
-    //         speedRating: 0.18,
-    //         formScore: 0.14,
-    //         classIndicator: 0.10,
-    //         ratingMomentum: 0.13,
-    //         fitness: 0.10,
-    //         drawAdvantage: 0.07,
-    //         jockeyEdge: 0.13,
-    //         trainerForm: 0.07,
-    //         surfacePreference: 0.03,
-    //         goingPreference: 0.03,
-    //         distancePreference: 0.02,
-    //     }
+      : surface === "AWT"
+      ? {
+          // AWT-specific: speed rating less reliable (only 2 hardcoded par distances),
+          // going preference is always -0.2 (no wet history) so zeroed out,
+          // surface specialist history matters much more than on Turf.
+          speedRating: 0.25,
+          formScore: 0.18,
+          classIndicator: 0.08,
+          ratingMomentum: 0.08,
+          fitness: 0.10,
+          drawAdvantage: 0.06,
+          jockeyEdge: 0.10,
+          trainerForm: 0.06,
+          surfacePreference: 0.07,
+          goingPreference: 0.00,
+          distancePreference: 0.02,
+        }
       : {
           speedRating: 0.35,
           formScore: 0.13,
@@ -454,7 +460,14 @@ export class FormAnalyzer {
     const surfacePerfs = perfs.filter((p) => p.surface === targetSurface);
     const otherPerfs = perfs.filter((p) => p.surface !== targetSurface);
 
-    if (surfacePerfs.length === 0) return -0.3; // Unknown surface
+    if (surfacePerfs.length === 0) {
+      // Unknown AWT history: many entrants are first-timers on AWT, so a flat
+      // -0.3 penalty applies to most of the field equally and adds noise.
+      // For Turf unknowns, a mild penalty is appropriate (AWT-to-Turf switches
+      // often do struggle), but not for AWT (no strong prior of failure).
+      if (targetSurface === "AWT") return 0;
+      return -0.3;
+    }
     if (otherPerfs.length === 0) return 0.2; // Only run on this surface
 
     // Compare average positions
@@ -478,8 +491,9 @@ export class FormAnalyzer {
    *   "soft" — Good to Yielding, Yielding, Soft, Heavy  (wet Turf)
    *   "wet"  — Wet Fast, Wet Slow  (AWT-specific; very different from Turf soft)
    *
-   * Separating "wet" from "soft" matters for Group races (which often run on
-   * variable Turf going) and AWT races where surface behaviour differs entirely.
+   * AWT going ("Wet Fast"/"Wet Slow") is zeroed out when the horse has no wet
+   * history: almost every horse in an AWT field would return the same -0.2,
+   * which provides zero differentiation signal and only adds noise.
    */
   private calculateGoingPreference(horse: Horse, targetGoing: Going): number {
     const perfs = horse.pastPerformances;
@@ -496,7 +510,12 @@ export class FormAnalyzer {
     const matchingPerfs = perfs.filter((p) => goingTier(p.going) === targetTier);
     const otherPerfs = perfs.filter((p) => goingTier(p.going) !== targetTier);
 
-    if (matchingPerfs.length === 0) return -0.2;
+    if (matchingPerfs.length === 0) {
+      // For AWT going, nearly all horses lack wet history → applying a uniform
+      // -0.2 flattens the field with no signal. Return neutral instead.
+      if (targetTier === "wet") return 0;
+      return -0.2;
+    }
     if (otherPerfs.length === 0) return 0.1;
 
     const matchAvgPos =
@@ -560,7 +579,7 @@ export class FormAnalyzer {
       if (entry.isScratched) continue;
 
       const analysis = this.analyzeHorse(entry.horse, race, entry);
-      const overallRating = this.calculateOverallRating(analysis, race.venue);
+      const overallRating = this.calculateOverallRating(analysis, race.venue, race.surface);
 
       analyses.push({
         ...analysis,
