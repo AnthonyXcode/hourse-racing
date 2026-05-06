@@ -29,6 +29,7 @@
 | **12**  | **26 Apr** | **ST** | **Turf**  | **Good/G-F** | **11** | **39.2%** | **76.1%**  | **6/11** | **54.5%** | **❌✅✅✅✅❌❌❌✅❌✅** | **4 (R2-R5)**  |
 | **13**  | **29 Apr** | **HV** | **Turf**  | **G-Y→Good** | **9**  | **36.9%** | **72.4%**  | **7/9**  | **77.8%** | **✅✅❌✅✅❌✅✅✅**   | **3 (R7-R9)**  |
 | **14**  | **03 May** | **ST** | **Turf**  | **Good**     | **11** | **42.7%** | **76.2%**  | **6/11** | **54.5%** | **❌❌❌❌✅✅✅✅✅✅❌** | **6 (R5-R10)** |
+| **15**  | **06 May** | **ST** | **AWT**   | **Good**     | **9**  | **43.2%** | **78.8%**  | **3/9**  | **33.3%** | **❌❌✅❌✅❌❌❌✅**   | **1**          |
 |         |            |        |           |              |        |           |            |          |           |                 |                |
 
 \*Meeting 8 **R1** (6 runners): MC #1 **#6** ran **3rd** but HKJC Place pool pays **two** places only → **$0** dividend; counts as **❌** for streaks and all-ups (same dividend logic as other meetings).
@@ -1026,3 +1027,58 @@ Place dividends: R1=$30.50, R2=$30.50, R4=$13.50, R5=$14.00, R7=$13.50, R8=$14.5
 | 6 | 6 | $60 | 1 | $92.49 | +$32.49 | +54.2% |
 
 **Observation:** Despite only 54.5% placing rate (below the 60%+ needed for consistent 1-leg profit), the 6-race consecutive streak from R5–R10 made ALL multi-leg all-ups profitable. The max streak of 6 is the joint-longest this season (matching M2's 6-streak at ST). Critically, the first 4 races were all misses — every MC #1 with Win% below 42% failed to place. Once the higher-confidence MC calls appeared (R5 onward: 26%–82% Win), the model ran perfectly. The 4-leg and 5-leg sweet spots delivered +51% and +79% ROI respectively. **Key lesson: filtering MC #1 Place bets to only races where MC Win% ≥ 45% (or Place% ≥ 75%) would have produced a 6/7 hit rate (85.7%) this meeting — only R7 (MC 33.8%) would have squeaked through as a miss that actually hit.**
+
+---
+
+## Meeting 15: Sha Tin | 6 May 2026 (9 races, all AWT)
+
+| Race | Class   | Dist (m) | MC #1                    | MC Win% | MC Place% | Placed? | Place $ (if placed) |
+| ---- | ------- | -------- | ------------------------ | ------- | --------- | ------- | ------------------- |
+| R1   | Class 5 | 1650     | #1 HAILTOTHEVICTORS      | 43.6%   | 81.2%     | ❌ (4th)  | —                   |
+| R2   | Class 5 | 1200     | #1 NOBLE DELUXE          | 37.9%   | 74.1%     | ❌ (>4th) | —                   |
+| R3   | Class 4 | 1200     | #7 JUICY DRAGON          | 44.2%   | 83.0%     | ✅ 1st    | $13.50              |
+| R4   | Class 4 | 1800     | #1 HAPPY UNIVERSE        | 38.0%   | 72.4%     | ❌ (>4th) | —                   |
+| R5   | Class 4 | 1200     | #2 LIGHT YEARS GLORY     | 51.2%   | 90.0%     | ✅ 3rd    | $16.00              |
+| R6   | Class 4 | 1650     | #6 NEVER PETER OUT       | 50.4%   | 81.9%     | ❌ (>4th) | —                   |
+| R7   | Class 4 | 1200     | #2 NATURAL HIGH          | 27.1%   | 61.0%     | ❌ (>4th) | —                   |
+| R8   | Class 3 | 1650     | #1 TALENTS AMBITION      | 46.7%   | 80.3%     | ❌ (>4th) | —                   |
+| R9   | Class 3 | 1200     | #2 VICTORY SKY           | 49.4%   | 85.2%     | ✅ 2nd    | $16.50              |
+
+**Placing rate: 3/9 = 33.3%** — the worst meeting of the season. Six consecutive high-confidence MC #1 favourites (Win% 38–51%) failed to place between R4–R8 on AWT. The three that placed (R3, R5, R9) all had MC Win% ≥ 44% and Place% ≥ 83%. Pattern: ❌❌✅❌✅❌❌❌✅ — no consecutive streak possible.
+
+### AWT Impact Note
+
+All 9 races today were on the All-Weather Track (AWT). The 33.3% place rate is the joint-worst of the season alongside M7 (HV Turf, 33.3%). However, M7's failures came from lower Win% races (avg 37.7%); today's failures came despite avg MC Win% of 43.2% — the highest average confidence of any poor-placing meeting. This strongly suggests AWT systematically reduces MC favourite reliability versus turf.
+
+### 2-Leg (8 bets)
+
+| # | All-Up | Hit? | Return |
+|---|--------|------|--------|
+| 1 | R3+R5 | ✅ | $13.50 × $16.00 / 10 = $21.60 |
+| Others | — | ❌ | $0 |
+
+| Legs | Bets | Staked | Winners | Returned | P&L | ROI |
+|------|------|--------|---------|----------|-----|-----|
+| 2 | 8 | $80 | 1 | $21.60 | −$58.40 | −73.0% |
+
+### 3-Leg (7 bets)
+
+| # | All-Up | Hit? | Return |
+|---|--------|------|--------|
+| All | — | ❌ (R3,R5,R9 non-consecutive — R6,R7,R8 break streak) | $0 |
+
+| Legs | Bets | Staked | Winners | Returned | P&L | ROI |
+|------|------|--------|---------|----------|-----|-----|
+| 3 | 7 | $70 | 0 | $0 | −$70 | −100% |
+
+### 4-Leg through 6-Leg
+
+All miss — no consecutive streak of 4+ places existed.
+
+| Legs | Bets | Staked | Winners | Returned | P&L | ROI |
+|------|------|--------|---------|----------|-----|-----|
+| 4 | 6 | $60 | 0 | $0 | −$60 | −100% |
+| 5 | 5 | $50 | 0 | $0 | −$50 | −100% |
+| 6 | 4 | $40 | 0 | $0 | −$40 | −100% |
+
+**Observation:** The worst all-up result of the season. Only one 2-leg all-up paid out (R3+R5 = $21.60 return on $10 stake). The isolated pattern ❌❌✅❌✅❌❌❌✅ makes longer-leg all-ups impossible. AWT meetings now have an average MC #1 placing rate of (44.4% + 33.3%) / 2 = 38.9% vs turf meetings at approximately 65–78%. The case for a dedicated **AWT placing rate filter** on Place all-up strategies is now very strong.
