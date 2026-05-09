@@ -369,6 +369,9 @@ This file focuses on Strategy B (MC-only) performance and includes:
 - **Race-by-Race Results** — two tables:
   - **Strategy B**: Race | Class | Dist | Surf | Banker (MC#1) | Final legs | Combos | Stake | Result | Banker top 3? | Hit? | Trio $ | Return | P&L
   - **Strategy A**: Race | Class | Mode | Banker(s) | Legs | Combos | Stake | Result | Hit? | Trio $ | Return | P&L | Miss Reason
+- **B Miss Pattern Summary** — Pattern A/B/C counts with race references and noteworthy miss analysis
+- **Full MC Place% Table — Per Race** — one block per race listing **every horse** sorted by MC Win% descending with columns: Seq (★/L1-L5/—) | # | Horse | Win% | Place% | SP | Pool (✅/❌) | Role | Finished. Each block includes a **Pattern analysis** paragraph explaining why the miss occurred and which market signals MC missed. This section is **mandatory** — do not skip it.
+- **B Banker Performance** — table with B banker, MC Win%, SP, placed status, and position for each race
 
 This is the primary input for `tools/summarize-trio-stratc-hit-rate.ts`.
 

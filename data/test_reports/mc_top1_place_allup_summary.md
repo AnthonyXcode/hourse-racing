@@ -30,6 +30,7 @@
 | **13**  | **29 Apr** | **HV** | **Turf**  | **G-Y→Good** | **9**  | **36.9%** | **72.4%**  | **7/9**  | **77.8%** | **✅✅❌✅✅❌✅✅✅**   | **3 (R7-R9)**  |
 | **14**  | **03 May** | **ST** | **Turf**  | **Good**     | **11** | **42.7%** | **76.2%**  | **6/11** | **54.5%** | **❌❌❌❌✅✅✅✅✅✅❌** | **6 (R5-R10)** |
 | **15**  | **06 May** | **ST** | **AWT**   | **Good**     | **9**  | **43.2%** | **78.8%**  | **3/9**  | **33.3%** | **❌❌✅❌✅❌❌❌✅**   | **1**          |
+| **16**  | **09 May** | **ST** | **Turf**  | **G-Y**      | **11** | **39.0%** | **73.9%**  | **3/11** | **27.3%** | **❌✅❌❌❌❌❌✅❌❌✅** | **1**          |
 |         |            |        |           |              |        |           |            |          |           |                 |                |
 
 \*Meeting 8 **R1** (6 runners): MC #1 **#6** ran **3rd** but HKJC Place pool pays **two** places only → **$0** dividend; counts as **❌** for streaks and all-ups (same dividend logic as other meetings).
@@ -1082,3 +1083,56 @@ All miss — no consecutive streak of 4+ places existed.
 | 6 | 4 | $40 | 0 | $0 | −$40 | −100% |
 
 **Observation:** The worst all-up result of the season. Only one 2-leg all-up paid out (R3+R5 = $21.60 return on $10 stake). The isolated pattern ❌❌✅❌✅❌❌❌✅ makes longer-leg all-ups impossible. AWT meetings now have an average MC #1 placing rate of (44.4% + 33.3%) / 2 = 38.9% vs turf meetings at approximately 65–78%. The case for a dedicated **AWT placing rate filter** on Place all-up strategies is now very strong.
+
+---
+
+## Meeting 16: Sha Tin | 09 May 2026 (11 races)
+
+**MC #1** = raw MC Win% rank from `data/temp/simulation_summaries_20260509_ST.md`. **Results** from `data/historical/results_20260509_ST.json`.
+**Going:** Good to Yielding (all races). **Surface:** Turf (all races).
+
+| Race | Class   | Dist (m) | MC #1                 | MC Win% | MC Place% | Placed? | Place $ (if placed) |
+| ---- | ------- | -------- | --------------------- | ------- | --------- | ------- | ------------------- |
+| R1   | Griffin | 1000     | #4 SILVERY KNIGHT     | 26.7%   | 57.5%     | ❌ (8th)  | —                   |
+| R2   | Class 4 | 1200     | #1 NORTHERN FIRE BALL | 30.8%   | 67.7%     | ✅ 1st    | $14.50              |
+| R3   | Class 5 | 1400     | #6 GENERAL SMART      | 49.5%   | 80.3%     | ❌ (12th) | —                   |
+| R4   | Class 4 | 1000     | #1 ALSONSO            | 27.4%   | 67.3%     | ❌ (9th)  | —                   |
+| R5   | Class 4 | 1200     | #1 CONRAD PATCH       | 66.0%   | 91.3%     | ❌ (6th)  | —                   |
+| R6   | Class 4 | 1400     | #13 THE CONCENTRATION | 28.5%   | 61.1%     | ❌ (7th)  | —                   |
+| R7   | Class 4 | 1600     | #1 GALLANT EPOCH      | 26.6%   | 62.8%     | ❌ (14th) | —                   |
+| R8   | Class 3 | 1200     | #3 GOLD PATCH         | 62.5%   | 97.2%     | ✅ 3rd    | $14.50              |
+| R9   | Class 3 | 1000     | #2 MICKLEY            | 37.7%   | 79.5%     | ❌ (7th)  | —                   |
+| R10  | Class 3 | 1600     | #1 MISTER DAPPER      | 43.2%   | 80.7%     | ❌ (10th) | —                   |
+| R11  | Class 2 | 1200     | #4 PATCH OF STARS     | 29.7%   | 67.6%     | ✅ 1st    | $17.00              |
+
+Place dividends (MC #1 when paid): R2=$14.50, R8=$14.50, R11=$17.00
+
+**Placing rate: 3/11 = 27.3%** — the **worst** MC #1 Place session of the entire season, surpassing M15 (AWT, 33.3%) and M7 (HV Turf, 33.3%). Pattern: ❌✅❌❌❌❌❌✅❌❌✅ — **no consecutive streak possible** (max streak = 1). All three placers were isolated.
+
+### Notable Misses
+
+- **R5 CONRAD PATCH** (MC 66.0%, Place 91.3%, SP 7.6) — the **highest MC Win% miss of the season**. Ran 6th. BROWNNEEDSFURTHER (#9, SP 3.6) and FLASHING FIGHTER (#3, SP 2.8) were both below him in MC ranking but ran 5th and 9th respectively — the entire MC top 6 was bypassed by longshots REAL GENTLEMAN (#4, SP 158) and GROUPER (#6, SP 13).
+- **R8 GOLD PATCH** (MC 62.5%, Place 97.2%) — scraped through to 3rd despite being heavily backed (SP 3.3). The only "dominant MC" pick that survived this meeting.
+- **R3 GENERAL SMART** (MC 49.5%, Place 80.3%, SP 5.7) — collapsed to **12th**. One of the worst absolute finishes for a top MC pick.
+- **R10 MISTER DAPPER** (MC 43.2%, Place 80.7%, SP 11) — finished 10th, a complete implosion.
+
+### 2-Leg (10 bets)
+
+| # | All-Up | Hit? | Return |
+|---|--------|------|--------|
+| All | — | ❌ (no consecutive placed MC #1s) | $0 |
+
+### 3-Leg through 6-Leg
+
+All miss — no consecutive streak of 2+ places existed.
+
+| Legs | Bets | Staked | Winners | Returned | P&L | ROI |
+|------|------|--------|---------|----------|-----|-----|
+| 1 | 11 | $110 | 3 | $46.00 | −$64.00 | −58.2% |
+| 2 | 10 | $100 | 0 | $0 | −$100 | −100% |
+| 3 | 9 | $90 | 0 | $0 | −$90 | −100% |
+| 4 | 8 | $80 | 0 | $0 | −$80 | −100% |
+| 5 | 7 | $70 | 0 | $0 | −$70 | −100% |
+| 6 | 6 | $60 | 0 | $0 | −$60 | −100% |
+
+**Observation:** The worst MC #1 Place session of the 16-meeting series by every measure: **lowest placing rate (27.3%)**, **lowest flat return ($46 on $110)**, **zero all-up winners at any leg count**, and **max streak of just 1**. This session is especially alarming because it occurred on **ST Turf** — historically the second-best surface — rather than on AWT where failures are expected. The **Going to Yielding** track may be a factor: this is the first G-Y session in the series, and it produced catastrophic results for favourites across the board. Multiple high-confidence MC picks (R5 66.0%, R3 49.5%, R10 43.2%) collapsed to double-digit finishing positions. Even R8 GOLD PATCH (97.2% Place) barely survived in 3rd. **Soft going should be treated as a significant MC reliability risk factor**, similar to AWT.
