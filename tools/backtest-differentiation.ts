@@ -41,6 +41,7 @@ interface RaceResult {
   topRatedPlaced: boolean;
   topSimWon: boolean;
   topSimPlaced: boolean;
+  numRunners: number;
 }
 
 interface FinishEntry {
@@ -270,6 +271,7 @@ async function main() {
       topRatedPlaced: top3Codes.includes(topRatedAnalysis.horseCode),
       topSimWon: topSimResult.horseCode === winnerCode,
       topSimPlaced: top3Codes.includes(topSimResult.horseCode),
+      numRunners: race.entries.filter(e => !e.isScratched).length,
     });
   }
 
@@ -412,6 +414,18 @@ async function main() {
     byClassVenue.get(key)!.push(r);
   }
   printBreakdown("CLASS × VENUE", byClassVenue);
+
+  // --- By number of runners ---
+  const byRunners = new Map<string, RaceResult[]>();
+  for (const r of allResults) {
+    const key = `${r.numRunners}`;
+    if (!byRunners.has(key)) byRunners.set(key, []);
+    byRunners.get(key)!.push(r);
+  }
+  const byRunnersSorted = new Map(
+    [...byRunners.entries()].sort((a, b) => parseInt(a[0]) - parseInt(b[0]))
+  );
+  printBreakdown("NUMBER OF RUNNERS", byRunnersSorted);
 }
 
 main().catch(console.error);
