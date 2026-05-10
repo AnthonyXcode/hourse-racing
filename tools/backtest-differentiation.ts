@@ -13,6 +13,9 @@ import type { Race, RaceEntry } from "../src/types/index.js";
 import { FormAnalyzer } from "../src/analysis/formAnalysis.js";
 import { MonteCarloSimulator } from "../src/simulation/monteCarlo.js";
 
+/** Min avg rating gap (1st vs field) for Class 3 Turf; stacked with --avgdiff via max(). */
+const C3_TURF_AVG_DIFF_MIN = 17;
+
 interface RaceResult {
   raceId: string;
   date: string;
@@ -213,10 +216,9 @@ async function main() {
     // At avgDiff 14-16, C3 Turf produces only ~25% hit rate vs 55%+ at 17+.
     // Jockey bookings are the real differentiator in contested C3 Turf races,
     // and the model's classIndicator/momentum signals are less reliable there.
-    const c3TurfAvgDiffMin = 17;
     const effectiveAvgDiffMin =
       race.surface === "Turf" && race.class === "Class 3"
-        ? Math.max(avgDiffMin, c3TurfAvgDiffMin)
+        ? Math.max(avgDiffMin, C3_TURF_AVG_DIFF_MIN)
         : avgDiffMin;
 
     let skipped = false;
@@ -426,6 +428,36 @@ async function main() {
     [...byRunners.entries()].sort((a, b) => parseInt(a[0]) - parseInt(b[0]))
   );
   printBreakdown("NUMBER OF RUNNERS", byRunnersSorted);
+
+  // --- Skip logic summary (rules + this run) ---
+  console.log("\n" + "═".repeat(70));
+  console.log("SKIP LOGIC SUMMARY");
+  console.log("═".repeat(70));
+  console.log("Bet = pick top overall-rated runner. Skip if ANY rule fails (first match wins):");
+  console.log(`  1. Sparse form: count of runners with ≤1 past performance > ${sparseMax} → skip`);
+  console.log(`  2. Top-two gap: |rating #1 − rating #2| < ${gapMin} → skip`);
+  console.log(`  3. Clustered field: horses within <8 pts of top-rated count > ${closeMax} → skip`);
+  console.log(
+    `  4. Low differentiation: mean |topRating − each rating| < effective min → skip`
+  );
+  console.log(`     • Default min avgDiff: ${avgDiffMin} (--avgdiff)`);
+  console.log(
+    `     • Class 3 Turf: effective min = max(${avgDiffMin}, ${C3_TURF_AVG_DIFF_MIN}) — stricter due to historic weak edge at 14–16`
+  );
+  console.log("\nSkipped races this run (by reason):");
+  const skipReasonCounts = new Map<string, number>();
+  for (const r of skippedRaces) {
+    skipReasonCounts.set(r.skipReason, (skipReasonCounts.get(r.skipReason) ?? 0) + 1);
+  }
+  const sortedReasons = [...skipReasonCounts.entries()].sort((a, b) => b[1] - a[1]);
+  if (sortedReasons.length === 0) {
+    console.log("  (none)");
+  } else {
+    for (const [reason, n] of sortedReasons) {
+      console.log(`  ${n.toString().padStart(3)}  ${reason}`);
+    }
+  }
+  console.log("─".repeat(70));
 }
 
 main().catch(console.error);
