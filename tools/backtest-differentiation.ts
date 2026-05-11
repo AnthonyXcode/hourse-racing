@@ -5,16 +5,19 @@
  * Runs form analysis on all saved April 2026 racecards, compares the
  * top-rated horse against actual results, and groups races by differentiation
  * metrics to find patterns.
+ *
+ * Form history scope (same idea as analyze-race --form-data / enrichRace formVenue):
+ *   --form=all       use Sha Tin + Happy Valley past runs (default)
+ *   --form=ST       only Sha Tin lines
+ *   --form=HV       only Happy Valley lines
+ *   (--form-data=… is accepted as an alias for --form)
  */
 
 import { readFile, readdir } from "fs/promises";
 import path from "path";
-import type { Race, RaceEntry } from "../src/types/index.js";
+import type { Race, RaceEntry, Venue } from "../src/types/index.js";
 import { FormAnalyzer } from "../src/analysis/formAnalysis.js";
 import { MonteCarloSimulator } from "../src/simulation/monteCarlo.js";
-
-/** Min avg rating gap (1st vs field) for Class 3 Turf; stacked with --avgdiff via max(). */
-const C3_TURF_AVG_DIFF_MIN = 17;
 
 interface RaceResult {
   raceId: string;
@@ -108,6 +111,26 @@ async function loadRaceCard(filePath: string): Promise<{ race: Race; winOddsMap:
   }
 }
 
+type FormSource = "all" | "ST" | "HV";
+
+/** Restrict past performances to one venue or keep both (matches HorseDataEnricher formVenue). */
+function applyFormSourceFilter(race: Race, form: FormSource): Race {
+  if (form === "all") return race;
+  const venue: Venue = form === "ST" ? "Sha Tin" : "Happy Valley";
+  return {
+    ...race,
+    entries: race.entries.map((e) => ({
+      ...e,
+      horse: {
+        ...e.horse,
+        pastPerformances: (e.horse.pastPerformances ?? []).filter(
+          (p) => p.venue === venue
+        ),
+      },
+    })),
+  };
+}
+
 function parseRaceCardFileName(name: string): { date: string; venue: string; raceNumber: number } | null {
   const match = name.match(/racecard_(\d{8})_(ST|HV)_R(\d+)\.json/);
   if (!match) return null;
@@ -129,6 +152,7 @@ function parseArgs() {
   let surface: "Turf" | "AWT" | null = null;
   let ignoreClasses: string[] = [];
   let ignoreDistances: number[] = [];
+  let form: FormSource = "all";
 
   for (const arg of args) {
     const m = arg.match(/^--([a-zA-Z-]+)=(.+)$/);
@@ -144,19 +168,26 @@ function parseArgs() {
     else if (key === "surface") surface = val.toUpperCase() === "AWT" ? "AWT" : "Turf";
     else if (key === "ignore-class") ignoreClasses = val.split(",").map(s => s.trim().toUpperCase());
     else if (key === "ignore-distance") ignoreDistances = val.split(",").map(s => parseInt(s.trim(), 10));
+    else if (key === "form" || key === "form-data") {
+      const u = val.trim().toUpperCase();
+      if (u === "ALL") form = "all";
+      else if (u === "ST") form = "ST";
+      else if (u === "HV") form = "HV";
+    }
   }
 
-  return { sparseMax, closeMax, avgDiffMin, gapMin, months, venue, surface, ignoreClasses, ignoreDistances };
+  return { sparseMax, closeMax, avgDiffMin, gapMin, months, venue, surface, ignoreClasses, ignoreDistances, form };
 }
 
 async function main() {
-  const { sparseMax, closeMax, avgDiffMin, gapMin, months, venue, surface, ignoreClasses, ignoreDistances } = parseArgs();
+  const { sparseMax, closeMax, avgDiffMin, gapMin, months, venue, surface, ignoreClasses, ignoreDistances, form } = parseArgs();
   const monthLabel = months.length === 0 ? "all" : months.join(",");
   const venueLabel = venue ?? "all";
   const surfaceLabel = surface ?? "all";
+  const formLabel = form === "all" ? "all (ST+HV)" : form === "ST" ? "ST only" : "HV only";
   const ignoreClassLabel = ignoreClasses.length === 0 ? "none" : ignoreClasses.join(",");
   const ignoreDistLabel = ignoreDistances.length === 0 ? "none" : ignoreDistances.map(d => `${d}m`).join(",");
-  console.log(`Skip rules: sparse>${sparseMax}, close<8>${closeMax}, avgDiff<${avgDiffMin}, 1st-2nd gap<${gapMin} | months=${monthLabel} | venue=${venueLabel} | surface=${surfaceLabel} | ignore-class=${ignoreClassLabel} | ignore-distance=${ignoreDistLabel}\n`);
+  console.log(`Skip rules: sparse>${sparseMax}, close<8>${closeMax}, avgDiff<${avgDiffMin}, 1st-2nd gap<${gapMin} | months=${monthLabel} | venue=${venueLabel} | surface=${surfaceLabel} | form=${formLabel} | ignore-class=${ignoreClassLabel} | ignore-distance=${ignoreDistLabel}\n`);
 
   const formAnalyzer = new FormAnalyzer();
   const raceCardDir = path.join(process.cwd(), "data", "racecards");
@@ -181,7 +212,8 @@ async function main() {
     const loaded = await loadRaceCard(filePath);
     if (!loaded) continue;
 
-    const { race } = loaded;
+    const { race: rawRace } = loaded;
+    const race = applyFormSourceFilter(rawRace, form);
     if (race.entries.length < 4) continue;
     if (surface && race.surface !== surface) continue;
     if (ignoreClasses.length > 0 && ignoreClasses.includes((race.class ?? "").toUpperCase())) continue;
@@ -212,15 +244,6 @@ async function main() {
       ? Math.abs(analyses[0].overallRating - analyses[1].overallRating)
       : 999;
 
-    // C3 Turf at ST requires a higher confidence margin before betting.
-    // At avgDiff 14-16, C3 Turf produces only ~25% hit rate vs 55%+ at 17+.
-    // Jockey bookings are the real differentiator in contested C3 Turf races,
-    // and the model's classIndicator/momentum signals are less reliable there.
-    const effectiveAvgDiffMin =
-      race.surface === "Turf" && race.class === "Class 3"
-        ? Math.max(avgDiffMin, C3_TURF_AVG_DIFF_MIN)
-        : avgDiffMin;
-
     let skipped = false;
     let skipReason = "";
     if (sparseFormCount > sparseMax) {
@@ -229,7 +252,7 @@ async function main() {
     } else if (topGap < gapMin) {
       skipped = true;
       skipReason = `1st-2nd gap=${topGap}`;
-    } else if (horsesWithDiffLt8 > closeMax || avgDiff < effectiveAvgDiffMin) {
+    } else if (horsesWithDiffLt8 > closeMax || avgDiff < avgDiffMin) {
       skipped = true;
       skipReason = horsesWithDiffLt8 > closeMax ? `close<8=${horsesWithDiffLt8}` : `avgDiff=${avgDiff}`;
     }
@@ -438,11 +461,7 @@ async function main() {
   console.log(`  2. Top-two gap: |rating #1 − rating #2| < ${gapMin} → skip`);
   console.log(`  3. Clustered field: horses within <8 pts of top-rated count > ${closeMax} → skip`);
   console.log(
-    `  4. Low differentiation: mean |topRating − each rating| < effective min → skip`
-  );
-  console.log(`     • Default min avgDiff: ${avgDiffMin} (--avgdiff)`);
-  console.log(
-    `     • Class 3 Turf: effective min = max(${avgDiffMin}, ${C3_TURF_AVG_DIFF_MIN}) — stricter due to historic weak edge at 14–16`
+    `  4. Low differentiation: mean |topRating − each rating| < ${avgDiffMin} (--avgdiff) → skip`
   );
   console.log("\nSkipped races this run (by reason):");
   const skipReasonCounts = new Map<string, number>();
