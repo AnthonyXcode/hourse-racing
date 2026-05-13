@@ -1138,15 +1138,15 @@
       },
       {
         "horse": {
-          "code": "HK_2025_L208",
-          "name": "RELENTLESS PURSUIT",
-          "age": 3,
+          "code": "HK_2024_K543",
+          "name": "KING CANNON",
+          "age": 4,
           "sex": "G",
           "color": "Bay",
           "origin": "AUS",
           "sire": "",
           "dam": "",
-          "currentRating": 51,
+          "currentRating": 48,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1155,70 +1155,88 @@
           "careerPlaces": 0,
           "totalPrizeMoney": 0,
           "gear": [
-            "B"
+            "CP",
+            "XB"
           ],
           "pastPerformances": [
             {
-              "date": "2026-03-29T00:00:00.000Z",
-              "venue": "Sha Tin",
-              "raceNumber": 7,
-              "raceClass": "Class 4",
-              "distance": 1200,
-              "surface": "Turf",
-              "going": "Good to Firm",
-              "draw": 11,
-              "weight": 130,
-              "jockeyCode": "FEL",
-              "finishPosition": 6,
-              "fieldSize": 14,
-              "winningMargin": 6,
-              "finishTime": 69.45,
-              "odds": 8.6
-            },
-            {
-              "date": "2026-03-01T00:00:00.000Z",
-              "venue": "Sha Tin",
+              "date": "2026-04-29T00:00:00.000Z",
+              "venue": "Happy Valley",
               "raceNumber": 5,
               "raceClass": "Class 4",
               "distance": 1200,
               "surface": "Turf",
               "going": "Good",
-              "draw": 14,
-              "weight": 128,
-              "jockeyCode": "FEL",
-              "finishPosition": 6,
-              "fieldSize": 14,
-              "winningMargin": 6,
-              "finishTime": 70.03999999999999,
-              "odds": 15
+              "draw": 4,
+              "weight": 126,
+              "jockeyCode": "KRW",
+              "finishPosition": 10,
+              "fieldSize": 12,
+              "winningMargin": 10,
+              "finishTime": 71.72,
+              "odds": 65
+            },
+            {
+              "date": "2026-04-06T00:00:00.000Z",
+              "venue": "Sha Tin",
+              "raceNumber": 4,
+              "raceClass": "Class 4",
+              "distance": 1400,
+              "surface": "Turf",
+              "going": "Good",
+              "draw": 10,
+              "weight": 127,
+              "jockeyCode": "KRW",
+              "finishPosition": 9,
+              "fieldSize": 13,
+              "winningMargin": 9,
+              "finishTime": 82.99,
+              "odds": 122
+            },
+            {
+              "date": "2026-03-11T00:00:00.000Z",
+              "venue": "Happy Valley",
+              "raceNumber": 6,
+              "raceClass": "Class 4",
+              "distance": 1200,
+              "surface": "Turf",
+              "going": "Good to Firm",
+              "draw": 12,
+              "weight": 127,
+              "jockeyCode": "KRW",
+              "finishPosition": 8,
+              "fieldSize": 12,
+              "winningMargin": 8,
+              "finishTime": 70.51,
+              "odds": 82
             }
           ],
-          "ratingChange": -1
+          "ratingChange": -2
         },
         "jockey": {
-          "code": "FEL",
-          "name": "L Ferraris",
-          "nationality": "SAF",
+          "code": "KRW",
+          "name": "R Kingscote",
+          "nationality": "GB",
           "weightClaim": 0,
           "seasonStats": {
-            "wins": 31,
-            "places": 49,
-            "rides": 358,
-            "winRate": 0.0866,
-            "placeRate": 0.22346368715083798,
+            "wins": 13,
+            "places": 52,
+            "rides": 366,
+            "winRate": 0.0355,
+            "placeRate": 0.17759562841530055,
             "roi": 1
           },
           "courseStats": []
         },
         "trainer": {
-          "code": "NM",
-          "name": "M Newnham",
+          "code": "EDJ",
+          "name": "D Eustace",
           "seasonStats": {
-            "wins": 52,
-            "places": 86,
-            "rides": 459,
-            "winRate": 0.1133,
-            "placeRate": 0.3006535947712418,
+            "wins": 26,
+            "places": 54,
+            "rides": 378,
+            "winRate": 0.0688,
+            "placeRate": 0.21164021164021163,
             "roi": 1
           },
           "courseStats": [],
@@ -1226,9 +1244,10 @@
         },
         "horseNumber": 6,
         "draw": 11,
-        "weight": 127,
+        "weight": 124,
         "gearChanges": [
-          "B"
+          "CP",
+          "XB"
         ],
         "isScratched": false
       },
@@ -2432,5 +2451,18 @@
       }
     ]
   },
-  "winOdds": {}
+  "winOdds": {
+    "1": 16,
+    "2": 3.9,
+    "3": 25,
+    "4": 9.6,
+    "5": 29,
+    "6": 23,
+    "7": 6.3,
+    "8": 6.9,
+    "9": 17,
+    "10": 19,
+    "11": 10,
+    "12": 5.8
+  }
 }
