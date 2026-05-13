@@ -11,12 +11,14 @@
  *   --form=ST       only Sha Tin lines
  *   --form=HV       only Happy Valley lines
  *   (--form-data=… is accepted as an alias for --form)
+ *
+ * Leak-free pool: `--ignore-after=YYYY-MM-DD` drops saved races on or after that day
+ * (same calendar as racecard filenames). batch-analyze passes the meeting date.
  */
-
-import type { DifferentiationBacktestRow } from "../src/backtest/differentiationBacktest.js";
 import {
   printBreakdown,
   runDifferentiationBacktest,
+  type DifferentiationBacktestRow,
   type FormSource,
 } from "../src/backtest/differentiationBacktest.js";
 
@@ -33,6 +35,8 @@ function parseArgs() {
   let ignoreDistances: number[] = [];
   let form: FormSource = "all";
 
+  let ignoreAfter: string | undefined;
+
   for (const arg of args) {
     const m = arg.match(/^--([a-zA-Z-]+)=(.+)$/);
     if (!m) continue;
@@ -47,6 +51,7 @@ function parseArgs() {
     else if (key === "surface") surface = val.toUpperCase() === "AWT" ? "AWT" : "Turf";
     else if (key === "ignore-class") ignoreClasses = val.split(",").map((s) => s.trim().toUpperCase());
     else if (key === "ignore-distance") ignoreDistances = val.split(",").map((s) => parseInt(s.trim(), 10));
+    else if (key === "ignore-after") ignoreAfter = val.trim();
     else if (key === "form" || key === "form-data") {
       const u = val.trim().toUpperCase();
       if (u === "ALL") form = "all";
@@ -55,11 +60,11 @@ function parseArgs() {
     }
   }
 
-  return { sparseMax, closeMax, avgDiffMin, gapMin, months, venue, surface, ignoreClasses, ignoreDistances, form };
+  return { sparseMax, closeMax, avgDiffMin, gapMin, months, venue, surface, ignoreClasses, ignoreDistances, form, ignoreAfter };
 }
 
 async function main() {
-  const { sparseMax, closeMax, avgDiffMin, gapMin, months, venue, surface, ignoreClasses, ignoreDistances, form } =
+  const { sparseMax, closeMax, avgDiffMin, gapMin, months, venue, surface, ignoreClasses, ignoreDistances, form, ignoreAfter } =
     parseArgs();
   const monthLabel = months.length === 0 ? "all" : months.join(",");
   const venueLabel = venue ?? "all";
@@ -67,8 +72,9 @@ async function main() {
   const formLabel = form === "all" ? "all (ST+HV)" : form === "ST" ? "ST only" : "HV only";
   const ignoreClassLabel = ignoreClasses.length === 0 ? "none" : ignoreClasses.join(",");
   const ignoreDistLabel = ignoreDistances.length === 0 ? "none" : ignoreDistances.map((d) => `${d}m`).join(",");
+  const ignoreAfterLabel = ignoreAfter ?? "none";
   console.log(
-    `Skip rules: sparse>${sparseMax}, close<8>${closeMax}, avgDiff<${avgDiffMin}, 1st-2nd gap<${gapMin} | months=${monthLabel} | venue=${venueLabel} | surface=${surfaceLabel} | form=${formLabel} | ignore-class=${ignoreClassLabel} | ignore-distance=${ignoreDistLabel}\n`
+    `Skip rules: sparse>${sparseMax}, close<8>${closeMax}, avgDiff<${avgDiffMin}, 1st-2nd gap<${gapMin} | months=${monthLabel} | venue=${venueLabel} | surface=${surfaceLabel} | form=${formLabel} | ignore-class=${ignoreClassLabel} | ignore-distance=${ignoreDistLabel} | ignore-after=${ignoreAfterLabel}\n`
   );
 
   const allResults = await runDifferentiationBacktest({
@@ -82,6 +88,7 @@ async function main() {
     ignoreClasses,
     ignoreDistances,
     form,
+    ...(ignoreAfter ? { ignoreAfter } : {}),
   });
 
   console.log(`Found ${allResults.length} saved racecards with results (after venue/surface/month filters)\n`);

@@ -8,7 +8,7 @@
     "class": "Class 2",
     "distance": 1650,
     "surface": "Turf",
-    "going": "Good",
+    "going": "Good to Firm",
     "prizeMoney": 3120000,
     "entries": [
       {
@@ -1216,16 +1216,16 @@
           "ratingChange": -1
         },
         "jockey": {
-          "code": "HEL",
-          "name": "L Hewitson",
-          "nationality": "SAF",
+          "code": "BA",
+          "name": "A Badel",
+          "nationality": "FR",
           "weightClaim": 0,
           "seasonStats": {
-            "wins": 24,
-            "places": 57,
-            "rides": 374,
-            "winRate": 0.0642,
-            "placeRate": 0.21657754010695188,
+            "wins": 27,
+            "places": 70,
+            "rides": 379,
+            "winRate": 0.0712,
+            "placeRate": 0.2559366754617414,
             "roi": 1
           },
           "courseStats": []
@@ -2140,5 +2140,17 @@
       }
     ]
   },
-  "winOdds": {}
+  "winOdds": {
+    "1": 13,
+    "2": 6.5,
+    "3": 24,
+    "4": 5.1,
+    "5": 14,
+    "6": 20,
+    "7": 23,
+    "8": 8.4,
+    "9": 8.9,
+    "10": 5.1,
+    "11": 5.9
+  }
 }

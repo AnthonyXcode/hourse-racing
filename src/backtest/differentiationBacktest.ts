@@ -68,6 +68,11 @@ export interface DifferentiationBacktestOptions {
   ignoreClasses: string[];
   ignoreDistances: number[];
   form: FormSource;
+  /**
+   * If set (`YYYY-MM-DD` or `YYYYMMDD`), drop races on or after that calendar day
+   * (racecard `date` is compared as YYYYMMDD). Use the meeting day so the pool has no lookahead.
+   */
+  ignoreAfter?: string;
   /** Override racecard directory (default: cwd/data/racecards) */
   raceCardDir?: string;
 }
@@ -224,6 +229,18 @@ export function venueToCode(venue: string): "HV" | "ST" {
   return venue === "Happy Valley" || venue === "HV" ? "HV" : "ST";
 }
 
+/** Normalize CLI/date-fns values to YYYYMMDD, or null if unset/invalid */
+export function parseIgnoreAfterDate(val: string | undefined | null): string | null {
+  if (val === undefined || val === null) return null;
+  const s = String(val).trim();
+  if (!s) return null;
+  const iso = s.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (iso?.[1] && iso[2] && iso[3]) return `${iso[1]}${iso[2]}${iso[3]}`;
+  const compact = s.match(/^(\d{8})$/);
+  if (compact?.[1]) return compact[1];
+  return null;
+}
+
 export async function runDifferentiationBacktest(
   opts: DifferentiationBacktestOptions
 ): Promise<DifferentiationBacktestRow[]> {
@@ -239,6 +256,7 @@ export async function runDifferentiationBacktest(
     ignoreDistances,
     form,
   } = opts;
+  const ignoreAfterYmd = parseIgnoreAfterDate(opts.ignoreAfter ?? null);
   const raceCardDir = opts.raceCardDir ?? path.join(process.cwd(), "data", "racecards");
 
   const formAnalyzer = new FormAnalyzer();
@@ -256,6 +274,7 @@ export async function runDifferentiationBacktest(
   for (const file of matchedFiles) {
     const parsed = parseRaceCardFileName(file);
     if (!parsed) continue;
+    if (ignoreAfterYmd && parsed.date >= ignoreAfterYmd) continue;
 
     const filePath = path.join(raceCardDir, file);
     const loaded = await loadRaceCard(filePath);

@@ -11,7 +11,8 @@
  *
  * Hit-rate lines use **this race's** differentiation stats as thresholds (same as running
  * backtest-differentiation with --sparse=<sparse> --close=<close8> --avgdiff=<avgDiff> --gap=<topGap>
- * plus meeting venue and race surface).
+ * plus meeting venue and race surface). Historical pool excludes races on or after `-d`
+ * via \`--ignore-after\` (same as standalone backtest).
  */
 
 import { format, parse } from "date-fns";
@@ -207,10 +208,12 @@ async function main() {
   const vCode = venueToCode(venue);
   const formSource: FormSource = formData === "all" ? "all" : venue === "Happy Valley" ? "HV" : "ST";
 
+  const meetingIgnoreAfter = format(date, "yyyy-MM-dd");
+
   console.log(`\nBatch Analysis: ${format(date, "yyyy-MM-dd")} ${venue} R${races[0]}-R${races[races.length - 1]}`);
   console.log(`Form data: ${formData === "all" ? "all venues" : venue}`);
   console.log(
-    `Hist hit rates: per race use that race's sparse / close<8 / avgDiff / 1st–2nd gap as backtest thresholds (see each race block). Historical pool: months=${btMonths.length ? btMonths.join(",") : "all"} | venue=${vCode} | form=${formSource} (preload never skips so rows carry raw metrics).\n`
+    `Hist hit rates: per race use that race's sparse / close<8 / avgDiff / 1st–2nd gap as backtest thresholds (see each race block). Historical pool: months=${btMonths.length ? btMonths.join(",") : "all"} | venue=${vCode} | form=${formSource} | ignore-after=${meetingIgnoreAfter} (preload never skips so rows carry raw metrics).\n`
   );
 
   let diffRows: DifferentiationBacktestRow[] = [];
@@ -226,6 +229,7 @@ async function main() {
       ignoreClasses: [],
       ignoreDistances: [],
       form: formSource,
+      ignoreAfter: meetingIgnoreAfter,
     });
     console.log(`Loaded ${diffRows.length} historical races with results for contextual hit rates.\n`);
   } catch (err) {
@@ -396,7 +400,7 @@ async function main() {
         `  R${raceNum}: ${top.horseName.substring(0, 15)} (#${topEntry?.horseNumber}) rating=${topRating} avgDiff=${avgDiff} close<8=${close8} sparse=${sparseFormCount} gap=${topGap} betting=${bettingSignal} (diff scan: ${diffBet}) → ${confidence}`
       );
       console.log(
-        `         hist (equiv: npx tsx tools/backtest-differentiation.ts --sparse=${sparseFormCount} --close=${close8} --avgdiff=${avgDiff} --gap=${topGap} --venue=${vCode} --surface=${surf === "AWT" ? "AWT" : "Turf"} --form=${formSource}):`
+        `         hist (equiv: npx tsx tools/backtest-differentiation.ts --sparse=${sparseFormCount} --close=${close8} --avgdiff=${avgDiff} --gap=${topGap} --venue=${vCode} --surface=${surf === "AWT" ? "AWT" : "Turf"} --form=${formSource} --ignore-after=${meetingIgnoreAfter}):`
       );
       console.log(
         `           all ${surf} ${vCode}: ${histOverall} ${eAll} | same class (${cls}): ${histSameClass} ${eClass} | same dist (${distM}m): ${histSameDist} ${eDist}`
@@ -477,7 +481,7 @@ async function main() {
       lines.push(`# Simulation Summaries — ${venueLabel} ${format(date, "yyyy-MM-dd")} (R${rFirst}–R${rLast})`);
       lines.push(`# MC: 5,000 iterations | Form data: all venues (HV + ST)`);
       lines.push(
-        `# Hist hit rates: each race uses its own sparse / close<8 / avgDiff / gap as \`backtest-differentiation\` thresholds (see race block). Pool: months=${btMonths.length ? btMonths.join(",") : "all"} | venue=${vCode} | form=${formSource}`
+        `# Hist hit rates: each race uses its own sparse / close<8 / avgDiff / gap as \`backtest-differentiation\` thresholds (see race block). Pool: months=${btMonths.length ? btMonths.join(",") : "all"} | venue=${vCode} | form=${formSource} | ignore-after=${meetingIgnoreAfter}`
       );
       lines.push(`# Equiv batch: \`${equivBatch}\``);
       lines.push("");
@@ -500,7 +504,7 @@ async function main() {
 
         lines.push("");
         lines.push(
-          `  Differentiation (equiv hist thresholds): avgDiff ${detail.avgDiff} | diff<8: ${detail.close8} | sparse: ${detail.sparse} | gap: ${detail.topGap} | diff scan (info): **${detail.diffBet}**`
+          `  Differentiation (equiv hist thresholds): avgDiff ${detail.avgDiff} | diff<8: ${detail.close8} | sparse: ${detail.sparse} | gap: ${detail.topGap}`
         );
         const mdAll = emojiForHistPct(parseHistPercent(detail.histOverall));
         const mdCls = emojiForHistPct(parseHistPercent(detail.histSameClass));
@@ -509,7 +513,7 @@ async function main() {
           `  **Betting (hist place %):** ${detail.bettingSignal} — all ${detail.surface} ${vCode}: ${detail.histOverall} ${mdAll} | same class (${detail.raceClass}): ${detail.histSameClass} ${mdCls} | same dist (${detail.distance}): ${detail.histSameDist} ${mdDst}`
         );
         lines.push(
-          `  Equiv CLI: \`npx tsx tools/backtest-differentiation.ts --sparse=${detail.sparse} --close=${detail.close8} --avgdiff=${detail.avgDiff} --gap=${detail.topGap} --venue=${vCode} --surface=${detail.surface === "AWT" ? "AWT" : "Turf"} --form=${formSource}\` (+ optional \`--months=\`)`
+          `  Equiv CLI: \`npx tsx tools/backtest-differentiation.ts --sparse=${detail.sparse} --close=${detail.close8} --avgdiff=${detail.avgDiff} --gap=${detail.topGap} --venue=${vCode} --surface=${detail.surface === "AWT" ? "AWT" : "Turf"} --form=${formSource} --ignore-after=${meetingIgnoreAfter}\` (+ optional \`--months=\`)`
         );
         lines.push("");
       }
