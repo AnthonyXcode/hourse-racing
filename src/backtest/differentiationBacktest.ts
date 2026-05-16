@@ -40,6 +40,8 @@ export interface DifferentiationBacktestRow {
   topSimWon: boolean;
   topSimPlaced: boolean;
   numRunners: number;
+  /** MC Place% of the top-rated horse (0–1 scale) */
+  topRatedMcPlacePct: number;
 }
 
 interface FinishEntry {
@@ -326,6 +328,9 @@ export async function runDifferentiationBacktest(
     const { results: simResults } = simulator.simulateRace(race);
     const topSimResult = simResults[0];
 
+    const topRatedMcResult = simResults.find((s) => s.horseCode === topRatedAnalysis.horseCode);
+    const topRatedMcPlacePct = topRatedMcResult?.placeProbability ?? 0;
+
     const winnerCode = finishOrder[0]?.horseCode ?? "";
     const top3Codes = finishOrder.slice(0, 3).map((f) => f.horseCode);
 
@@ -359,6 +364,7 @@ export async function runDifferentiationBacktest(
       topSimWon: topSimResult.horseCode === winnerCode,
       topSimPlaced: top3Codes.includes(topSimResult.horseCode),
       numRunners: race.entries.filter((e) => !e.isScratched).length,
+      topRatedMcPlacePct,
     });
   }
 

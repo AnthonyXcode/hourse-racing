@@ -218,6 +218,20 @@ async function main() {
   const byRunnersSorted = new Map([...byRunners.entries()].sort((a, b) => parseInt(a[0]) - parseInt(b[0])));
   printBreakdown("NUMBER OF RUNNERS", byRunnersSorted);
 
+  // --- By MC Place% slot (5% buckets) ---
+  const byMcPlace = new Map<string, DifferentiationBacktestRow[]>();
+  for (const r of allResults) {
+    const pct = r.topRatedMcPlacePct * 100;
+    const lower = Math.floor(pct / 5) * 5;
+    const key = `${lower}-${lower + 5}%`;
+    if (!byMcPlace.has(key)) byMcPlace.set(key, []);
+    byMcPlace.get(key)!.push(r);
+  }
+  const byMcPlaceSorted = new Map(
+    [...byMcPlace.entries()].sort((a, b) => parseInt(a[0]) - parseInt(b[0]))
+  );
+  printBreakdown("MC PLACE% SLOT (5%)", byMcPlaceSorted);
+
   // --- Skip logic summary ---
   console.log("\n" + "═".repeat(70));
   console.log("SKIP LOGIC SUMMARY");
