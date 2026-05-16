@@ -22,14 +22,14 @@
           "sire": "Deep Field\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Secretly Discreet\n                        \n                        \n                            Dam's Sire",
           "damSire": "Lonhro\n                        \n                        \n                            Same Sire",
-          "currentRating": 72,
+          "currentRating": 83,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
           "careerStarts": 0,
           "careerWins": 0,
           "careerPlaces": 0,
-          "totalPrizeMoney": 2738400,
+          "totalPrizeMoney": 3780000,
           "gear": [
             "B",
             "H",
@@ -100,11 +100,11 @@
           "nationality": "AUS",
           "weightClaim": 0,
           "seasonStats": {
-            "wins": 109,
-            "places": 152,
-            "rides": 537,
-            "winRate": 0.203,
-            "placeRate": 0.4860335195530726,
+            "wins": 114,
+            "places": 156,
+            "rides": 559,
+            "winRate": 0.2039,
+            "placeRate": 0.48300536672629696,
             "roi": 1
           },
           "courseStats": []
@@ -113,11 +113,11 @@
           "code": "SCS",
           "name": "C S Shum",
           "seasonStats": {
-            "wins": 50,
-            "places": 59,
-            "rides": 399,
-            "winRate": 0.1253,
-            "placeRate": 0.2731829573934837,
+            "wins": 54,
+            "places": 62,
+            "rides": 417,
+            "winRate": 0.1295,
+            "placeRate": 0.27817745803357313,
             "roi": 1
           },
           "courseStats": [],
@@ -235,10 +235,10 @@
           "weightClaim": 0,
           "seasonStats": {
             "wins": 13,
-            "places": 51,
-            "rides": 357,
-            "winRate": 0.0364,
-            "placeRate": 0.1792717086834734,
+            "places": 53,
+            "rides": 371,
+            "winRate": 0.035,
+            "placeRate": 0.1778975741239892,
             "roi": 1
           },
           "courseStats": []
@@ -247,11 +247,11 @@
           "code": "CCW",
           "name": "C W Chang",
           "seasonStats": {
-            "wins": 14,
-            "places": 35,
-            "rides": 298,
-            "winRate": 0.047,
-            "placeRate": 0.1644295302013423,
+            "wins": 15,
+            "places": 37,
+            "rides": 309,
+            "winRate": 0.048499999999999995,
+            "placeRate": 0.16828478964401294,
             "roi": 1
           },
           "courseStats": [],
@@ -402,11 +402,11 @@
           "nationality": "MAU",
           "weightClaim": 0,
           "seasonStats": {
-            "wins": 31,
-            "places": 74,
-            "rides": 484,
-            "winRate": 0.064,
-            "placeRate": 0.21694214876033058,
+            "wins": 35,
+            "places": 80,
+            "rides": 507,
+            "winRate": 0.069,
+            "placeRate": 0.22682445759368836,
             "roi": 1
           },
           "courseStats": []
@@ -415,11 +415,11 @@
           "code": "NM",
           "name": "M Newnham",
           "seasonStats": {
-            "wins": 51,
-            "places": 85,
-            "rides": 445,
-            "winRate": 0.11460000000000001,
-            "placeRate": 0.3056179775280899,
+            "wins": 52,
+            "places": 88,
+            "rides": 465,
+            "winRate": 0.1118,
+            "placeRate": 0.3010752688172043,
             "roi": 1
           },
           "courseStats": [],
@@ -448,7 +448,7 @@
           "careerStarts": 0,
           "careerWins": 0,
           "careerPlaces": 0,
-          "totalPrizeMoney": 1395000,
+          "totalPrizeMoney": 1432200,
           "gear": [
             "B",
             "H",
@@ -570,11 +570,11 @@
           "nationality": "ITY",
           "weightClaim": 0,
           "seasonStats": {
-            "wins": 52,
-            "places": 73,
-            "rides": 462,
-            "winRate": 0.11259999999999999,
-            "placeRate": 0.27056277056277056,
+            "wins": 54,
+            "places": 77,
+            "rides": 485,
+            "winRate": 0.11130000000000001,
+            "placeRate": 0.27010309278350514,
             "roi": 1
           },
           "courseStats": []
@@ -583,11 +583,11 @@
           "code": "SJJ",
           "name": "J Size",
           "seasonStats": {
-            "wins": 43,
-            "places": 99,
-            "rides": 478,
-            "winRate": 0.09,
-            "placeRate": 0.29707112970711297,
+            "wins": 45,
+            "places": 103,
+            "rides": 494,
+            "winRate": 0.0911,
+            "placeRate": 0.29959514170040485,
             "roi": 1
           },
           "courseStats": [],
@@ -635,11 +635,11 @@
           "nationality": "AUS",
           "weightClaim": 0,
           "seasonStats": {
-            "wins": 26,
-            "places": 59,
-            "rides": 353,
-            "winRate": 0.0737,
-            "placeRate": 0.24079320113314448,
+            "wins": 27,
+            "places": 62,
+            "rides": 371,
+            "winRate": 0.0728,
+            "placeRate": 0.2398921832884097,
             "roi": 1
           },
           "courseStats": []
@@ -648,11 +648,11 @@
           "code": "HAD",
           "name": "D J Hall",
           "seasonStats": {
-            "wins": 24,
-            "places": 61,
-            "rides": 327,
-            "winRate": 0.07339999999999999,
-            "placeRate": 0.2599388379204893,
+            "wins": 25,
+            "places": 64,
+            "rides": 341,
+            "winRate": 0.0733,
+            "placeRate": 0.26099706744868034,
             "roi": 1
           },
           "courseStats": [],
@@ -803,11 +803,11 @@
           "nationality": "SAF",
           "weightClaim": 0,
           "seasonStats": {
-            "wins": 23,
-            "places": 56,
-            "rides": 364,
-            "winRate": 0.0632,
-            "placeRate": 0.21703296703296704,
+            "wins": 25,
+            "places": 57,
+            "rides": 376,
+            "winRate": 0.0665,
+            "placeRate": 0.21808510638297873,
             "roi": 1
           },
           "courseStats": []
@@ -816,11 +816,11 @@
           "code": "TYS",
           "name": "Y S Tsui",
           "seasonStats": {
-            "wins": 17,
-            "places": 34,
-            "rides": 287,
-            "winRate": 0.0592,
-            "placeRate": 0.17770034843205576,
+            "wins": 18,
+            "places": 35,
+            "rides": 300,
+            "winRate": 0.06,
+            "placeRate": 0.17666666666666667,
             "roi": 1
           },
           "courseStats": [],
@@ -842,7 +842,7 @@
           "sire": "Pride Of Dubai\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Dubawi's Image\n                        \n                        \n                            Dam's Sire",
           "damSire": "Dubawi\n                        \n                        \n                            Same Sire",
-          "currentRating": 58,
+          "currentRating": 56,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -968,10 +968,10 @@
           "name": "P F Yiu",
           "seasonStats": {
             "wins": 32,
-            "places": 73,
-            "rides": 360,
-            "winRate": 0.0889,
-            "placeRate": 0.2916666666666667,
+            "places": 77,
+            "rides": 380,
+            "winRate": 0.0842,
+            "placeRate": 0.2868421052631579,
             "roi": 1
           },
           "courseStats": [],
@@ -1187,11 +1187,11 @@
           "code": "TYS",
           "name": "Y S Tsui",
           "seasonStats": {
-            "wins": 17,
-            "places": 34,
-            "rides": 287,
-            "winRate": 0.0592,
-            "placeRate": 0.17770034843205576,
+            "wins": 18,
+            "places": 35,
+            "rides": 300,
+            "winRate": 0.06,
+            "placeRate": 0.17666666666666667,
             "roi": 1
           },
           "courseStats": [],
@@ -1213,14 +1213,14 @@
           "sire": "Deep Impact\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Amanee\n                        \n                        \n                            Dam's Sire",
           "damSire": "Pivotal\n                        \n                        \n                            Same Sire",
-          "currentRating": 56,
+          "currentRating": 54,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
           "careerStarts": 0,
           "careerWins": 0,
           "careerPlaces": 0,
-          "totalPrizeMoney": 40950,
+          "totalPrizeMoney": 64350,
           "gear": [
             "B",
             "H",
@@ -1258,10 +1258,10 @@
           "weightClaim": 0,
           "seasonStats": {
             "wins": 27,
-            "places": 69,
-            "rides": 369,
-            "winRate": 0.0732,
-            "placeRate": 0.2601626016260163,
+            "places": 72,
+            "rides": 387,
+            "winRate": 0.0698,
+            "placeRate": 0.2558139534883721,
             "roi": 1
           },
           "courseStats": []
@@ -1270,11 +1270,11 @@
           "code": "FC",
           "name": "C Fownes",
           "seasonStats": {
-            "wins": 50,
-            "places": 71,
-            "rides": 429,
-            "winRate": 0.1166,
-            "placeRate": 0.28205128205128205,
+            "wins": 51,
+            "places": 72,
+            "rides": 452,
+            "winRate": 0.1128,
+            "placeRate": 0.2721238938053097,
             "roi": 1
           },
           "courseStats": [],
@@ -1341,10 +1341,10 @@
           "weightClaim": 0,
           "seasonStats": {
             "wins": 29,
-            "places": 55,
-            "rides": 338,
-            "winRate": 0.0858,
-            "placeRate": 0.2485207100591716,
+            "places": 57,
+            "rides": 348,
+            "winRate": 0.0833,
+            "placeRate": 0.2471264367816092,
             "roi": 1
           },
           "courseStats": []
@@ -1353,11 +1353,11 @@
           "code": "FC",
           "name": "C Fownes",
           "seasonStats": {
-            "wins": 50,
-            "places": 71,
-            "rides": 429,
-            "winRate": 0.1166,
-            "placeRate": 0.28205128205128205,
+            "wins": 51,
+            "places": 72,
+            "rides": 452,
+            "winRate": 0.1128,
+            "placeRate": 0.2721238938053097,
             "roi": 1
           },
           "courseStats": [],
@@ -1386,7 +1386,7 @@
           "careerStarts": 0,
           "careerWins": 0,
           "careerPlaces": 0,
-          "totalPrizeMoney": 1482150,
+          "totalPrizeMoney": 1547250,
           "gear": [
             "B",
             "H",
@@ -1509,10 +1509,10 @@
           "weightClaim": 0,
           "seasonStats": {
             "wins": 12,
-            "places": 50,
-            "rides": 335,
-            "winRate": 0.0358,
-            "placeRate": 0.18507462686567164,
+            "places": 51,
+            "rides": 344,
+            "winRate": 0.0349,
+            "placeRate": 0.18313953488372092,
             "roi": 1
           },
           "courseStats": []
@@ -1521,11 +1521,11 @@
           "code": "CAS",
           "name": "A S Cruz",
           "seasonStats": {
-            "wins": 36,
-            "places": 63,
-            "rides": 469,
-            "winRate": 0.0768,
-            "placeRate": 0.21108742004264391,
+            "wins": 38,
+            "places": 66,
+            "rides": 488,
+            "winRate": 0.0779,
+            "placeRate": 0.21311475409836064,
             "roi": 1
           },
           "courseStats": [],
@@ -1547,7 +1547,7 @@
           "sire": "Starspangledbanner\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Margarita\n                        \n                        \n                            Dam's Sire",
           "damSire": "Marju\n                        \n                        \n                            Same Sire",
-          "currentRating": 47,
+          "currentRating": 44,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1591,11 +1591,11 @@
           "nationality": "GB",
           "weightClaim": 0,
           "seasonStats": {
-            "wins": 31,
-            "places": 52,
-            "rides": 371,
-            "winRate": 0.0836,
-            "placeRate": 0.22371967654986524,
+            "wins": 32,
+            "places": 59,
+            "rides": 389,
+            "winRate": 0.0823,
+            "placeRate": 0.23393316195372751,
             "roi": 1
           },
           "courseStats": []
@@ -1605,10 +1605,10 @@
           "name": "D A Hayes",
           "seasonStats": {
             "wins": 48,
-            "places": 69,
-            "rides": 527,
-            "winRate": 0.0911,
-            "placeRate": 0.222011385199241,
+            "places": 78,
+            "rides": 554,
+            "winRate": 0.0866,
+            "placeRate": 0.22743682310469315,
             "roi": 1
           },
           "courseStats": [],

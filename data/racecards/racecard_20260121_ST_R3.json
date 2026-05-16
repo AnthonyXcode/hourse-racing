@@ -134,11 +134,11 @@
           "nationality": "MAU",
           "weightClaim": 0,
           "seasonStats": {
-            "wins": 31,
-            "places": 74,
-            "rides": 484,
-            "winRate": 0.064,
-            "placeRate": 0.21694214876033058,
+            "wins": 35,
+            "places": 80,
+            "rides": 507,
+            "winRate": 0.069,
+            "placeRate": 0.22682445759368836,
             "roi": 1
           },
           "courseStats": []
@@ -148,10 +148,10 @@
           "name": "B Crawford",
           "seasonStats": {
             "wins": 20,
-            "places": 48,
-            "rides": 254,
-            "winRate": 0.0787,
-            "placeRate": 0.2677165354330709,
+            "places": 50,
+            "rides": 264,
+            "winRate": 0.0758,
+            "placeRate": 0.26515151515151514,
             "roi": 1
           },
           "courseStats": [],
@@ -251,11 +251,11 @@
           "nationality": "AUS",
           "weightClaim": 0,
           "seasonStats": {
-            "wins": 26,
-            "places": 59,
-            "rides": 353,
-            "winRate": 0.0737,
-            "placeRate": 0.24079320113314448,
+            "wins": 27,
+            "places": 62,
+            "rides": 371,
+            "winRate": 0.0728,
+            "placeRate": 0.2398921832884097,
             "roi": 1
           },
           "courseStats": []
@@ -264,11 +264,11 @@
           "code": "TYS",
           "name": "Y S Tsui",
           "seasonStats": {
-            "wins": 17,
-            "places": 34,
-            "rides": 287,
-            "winRate": 0.0592,
-            "placeRate": 0.17770034843205576,
+            "wins": 18,
+            "places": 35,
+            "rides": 300,
+            "winRate": 0.06,
+            "placeRate": 0.17666666666666667,
             "roi": 1
           },
           "courseStats": [],
@@ -388,9 +388,9 @@
           "seasonStats": {
             "wins": 20,
             "places": 35,
-            "rides": 252,
-            "winRate": 0.0794,
-            "placeRate": 0.21825396825396826,
+            "rides": 258,
+            "winRate": 0.0775,
+            "placeRate": 0.2131782945736434,
             "roi": 1
           },
           "courseStats": []
@@ -400,10 +400,10 @@
           "name": "K H Ting",
           "seasonStats": {
             "wins": 13,
-            "places": 35,
-            "rides": 228,
-            "winRate": 0.057,
-            "placeRate": 0.21052631578947367,
+            "places": 37,
+            "rides": 238,
+            "winRate": 0.0546,
+            "placeRate": 0.21008403361344538,
             "roi": 1
           },
           "courseStats": [],
@@ -487,10 +487,10 @@
           "weightClaim": 0,
           "seasonStats": {
             "wins": 15,
-            "places": 59,
-            "rides": 339,
-            "winRate": 0.044199999999999996,
-            "placeRate": 0.2182890855457227,
+            "places": 60,
+            "rides": 347,
+            "winRate": 0.0432,
+            "placeRate": 0.21613832853025935,
             "roi": 1
           },
           "courseStats": []
@@ -500,10 +500,10 @@
           "name": "J Richards",
           "seasonStats": {
             "wins": 21,
-            "places": 48,
-            "rides": 291,
-            "winRate": 0.0722,
-            "placeRate": 0.23711340206185566,
+            "places": 49,
+            "rides": 304,
+            "winRate": 0.0691,
+            "placeRate": 0.23026315789473684,
             "roi": 1
           },
           "courseStats": [],
@@ -525,14 +525,14 @@
           "sire": "Territories\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Escobar\n                        \n                        \n                            Dam's Sire",
           "damSire": "Not A Single Doubt\n                        \n                        \n                            Same Sire",
-          "currentRating": 51,
+          "currentRating": 60,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
           "careerStarts": 0,
           "careerWins": 0,
           "careerPlaces": 0,
-          "totalPrizeMoney": 1228500,
+          "totalPrizeMoney": 1883700,
           "gear": [
             "B",
             "H",
@@ -621,10 +621,10 @@
           "weightClaim": 0,
           "seasonStats": {
             "wins": 29,
-            "places": 55,
-            "rides": 338,
-            "winRate": 0.0858,
-            "placeRate": 0.2485207100591716,
+            "places": 57,
+            "rides": 348,
+            "winRate": 0.0833,
+            "placeRate": 0.2471264367816092,
             "roi": 1
           },
           "courseStats": []
@@ -633,11 +633,11 @@
           "code": "MKL",
           "name": "K L Man",
           "seasonStats": {
-            "wins": 31,
-            "places": 55,
-            "rides": 374,
-            "winRate": 0.08289999999999999,
-            "placeRate": 0.22994652406417113,
+            "wins": 35,
+            "places": 57,
+            "rides": 391,
+            "winRate": 0.0895,
+            "placeRate": 0.23529411764705882,
             "roi": 1
           },
           "courseStats": [],
@@ -720,11 +720,11 @@
           "nationality": "ITY",
           "weightClaim": 0,
           "seasonStats": {
-            "wins": 52,
-            "places": 73,
-            "rides": 462,
-            "winRate": 0.11259999999999999,
-            "placeRate": 0.27056277056277056,
+            "wins": 54,
+            "places": 77,
+            "rides": 485,
+            "winRate": 0.11130000000000001,
+            "placeRate": 0.27010309278350514,
             "roi": 1
           },
           "courseStats": []
@@ -733,11 +733,11 @@
           "code": "LKW",
           "name": "K W Lui",
           "seasonStats": {
-            "wins": 45,
-            "places": 87,
-            "rides": 405,
-            "winRate": 0.11109999999999999,
-            "placeRate": 0.32592592592592595,
+            "wins": 47,
+            "places": 91,
+            "rides": 425,
+            "winRate": 0.1106,
+            "placeRate": 0.3247058823529412,
             "roi": 1
           },
           "courseStats": [],
@@ -889,10 +889,10 @@
           "weightClaim": 0,
           "seasonStats": {
             "wins": 12,
-            "places": 50,
-            "rides": 335,
-            "winRate": 0.0358,
-            "placeRate": 0.18507462686567164,
+            "places": 51,
+            "rides": 344,
+            "winRate": 0.0349,
+            "placeRate": 0.18313953488372092,
             "roi": 1
           },
           "courseStats": []
@@ -901,11 +901,11 @@
           "code": "NM",
           "name": "M Newnham",
           "seasonStats": {
-            "wins": 51,
-            "places": 85,
-            "rides": 445,
-            "winRate": 0.11460000000000001,
-            "placeRate": 0.3056179775280899,
+            "wins": 52,
+            "places": 88,
+            "rides": 465,
+            "winRate": 0.1118,
+            "placeRate": 0.3010752688172043,
             "roi": 1
           },
           "courseStats": [],
@@ -1040,10 +1040,10 @@
           "weightClaim": 0,
           "seasonStats": {
             "wins": 27,
-            "places": 69,
-            "rides": 369,
-            "winRate": 0.0732,
-            "placeRate": 0.2601626016260163,
+            "places": 72,
+            "rides": 387,
+            "winRate": 0.0698,
+            "placeRate": 0.2558139534883721,
             "roi": 1
           },
           "courseStats": []
@@ -1052,11 +1052,11 @@
           "code": "CCW",
           "name": "C W Chang",
           "seasonStats": {
-            "wins": 14,
-            "places": 35,
-            "rides": 298,
-            "winRate": 0.047,
-            "placeRate": 0.1644295302013423,
+            "wins": 15,
+            "places": 37,
+            "rides": 309,
+            "winRate": 0.048499999999999995,
+            "placeRate": 0.16828478964401294,
             "roi": 1
           },
           "courseStats": [],
@@ -1157,10 +1157,10 @@
           "weightClaim": 0,
           "seasonStats": {
             "wins": 17,
-            "places": 34,
-            "rides": 359,
-            "winRate": 0.047400000000000005,
-            "placeRate": 0.14206128133704735,
+            "places": 35,
+            "rides": 373,
+            "winRate": 0.045599999999999995,
+            "placeRate": 0.13941018766756033,
             "roi": 1
           },
           "courseStats": []
@@ -1169,11 +1169,11 @@
           "code": "SCS",
           "name": "C S Shum",
           "seasonStats": {
-            "wins": 50,
-            "places": 59,
-            "rides": 399,
-            "winRate": 0.1253,
-            "placeRate": 0.2731829573934837,
+            "wins": 54,
+            "places": 62,
+            "rides": 417,
+            "winRate": 0.1295,
+            "placeRate": 0.27817745803357313,
             "roi": 1
           },
           "courseStats": [],
@@ -1256,11 +1256,11 @@
           "nationality": "SAF",
           "weightClaim": 0,
           "seasonStats": {
-            "wins": 30,
-            "places": 49,
-            "rides": 353,
-            "winRate": 0.085,
-            "placeRate": 0.2237960339943343,
+            "wins": 31,
+            "places": 51,
+            "rides": 362,
+            "winRate": 0.08560000000000001,
+            "placeRate": 0.2265193370165746,
             "roi": 1
           },
           "courseStats": []
@@ -1269,11 +1269,11 @@
           "code": "CAS",
           "name": "A S Cruz",
           "seasonStats": {
-            "wins": 36,
-            "places": 63,
-            "rides": 469,
-            "winRate": 0.0768,
-            "placeRate": 0.21108742004264391,
+            "wins": 38,
+            "places": 66,
+            "rides": 488,
+            "winRate": 0.0779,
+            "placeRate": 0.21311475409836064,
             "roi": 1
           },
           "courseStats": [],
@@ -1437,11 +1437,11 @@
           "code": "NPC",
           "name": "P C Ng",
           "seasonStats": {
-            "wins": 20,
+            "wins": 21,
             "places": 57,
-            "rides": 414,
-            "winRate": 0.0483,
-            "placeRate": 0.1859903381642512,
+            "rides": 428,
+            "winRate": 0.049100000000000005,
+            "placeRate": 0.1822429906542056,
             "roi": 1
           },
           "courseStats": [],
@@ -1507,11 +1507,11 @@
           "nationality": "AUS",
           "weightClaim": 0,
           "seasonStats": {
-            "wins": 109,
-            "places": 152,
-            "rides": 537,
-            "winRate": 0.203,
-            "placeRate": 0.4860335195530726,
+            "wins": 114,
+            "places": 156,
+            "rides": 559,
+            "winRate": 0.2039,
+            "placeRate": 0.48300536672629696,
             "roi": 1
           },
           "courseStats": []
@@ -1521,10 +1521,10 @@
           "name": "D A Hayes",
           "seasonStats": {
             "wins": 48,
-            "places": 69,
-            "rides": 527,
-            "winRate": 0.0911,
-            "placeRate": 0.222011385199241,
+            "places": 78,
+            "rides": 554,
+            "winRate": 0.0866,
+            "placeRate": 0.22743682310469315,
             "roi": 1
           },
           "courseStats": [],

@@ -60,6 +60,8 @@ interface ResultsFile {
   id: string;
   raceNumber: number;
   finishOrder: FinishEntry[];
+  winDividend?: number;
+  placeDividends?: number[];
 }
 
 export type FormSource = "all" | "ST" | "HV";
@@ -134,22 +136,42 @@ export async function loadPlaceOdds(
   }
 }
 
+export interface MeetingResults {
+  finishOrders: Map<number, FinishEntry[]>;
+  /** raceNumber → horseNumber → place dividend as multiplier (e.g. 1.2 = $12 per $10) */
+  placeDividendMap: Map<number, Map<number, number>>;
+}
+
 export async function loadResults(dateStr: string, venue: string): Promise<Map<number, FinishEntry[]>> {
+  return (await loadMeetingResults(dateStr, venue)).finishOrders;
+}
+
+export async function loadMeetingResults(dateStr: string, venue: string): Promise<MeetingResults> {
   const venueSuffix = venue === "Happy Valley" ? "HV" : "ST";
   const fileName = `results_${dateStr}_${venueSuffix}.json`;
   const filePath = path.join(process.cwd(), "data", "historical", fileName);
 
+  const finishOrders = new Map<number, FinishEntry[]>();
+  const placeDividendMap = new Map<number, Map<number, number>>();
   try {
     const raw = await readFile(filePath, "utf-8");
     const races = JSON.parse(raw) as ResultsFile[];
-    const map = new Map<number, FinishEntry[]>();
     for (const race of races) {
-      map.set(race.raceNumber, race.finishOrder ?? []);
+      const order = race.finishOrder ?? [];
+      finishOrders.set(race.raceNumber, order);
+
+      if (race.placeDividends && race.placeDividends.length >= 3) {
+        const horseMap = new Map<number, number>();
+        for (let i = 0; i < 3 && i < order.length; i++) {
+          horseMap.set(order[i].horseNumber, race.placeDividends[i] / 10);
+        }
+        placeDividendMap.set(race.raceNumber, horseMap);
+      }
     }
-    return map;
   } catch {
-    return new Map();
+    // file not found – both maps empty
   }
+  return { finishOrders, placeDividendMap };
 }
 
 export async function loadRaceCard(filePath: string): Promise<{ race: Race; winOddsMap: Map<number, number> } | null> {
@@ -324,8 +346,7 @@ export async function runDifferentiationBacktest(
       : new RegExp(`racecard_2026(${months.join("|")})\\d{2}_(${venueSegment})_R\\d+\\.json`);
   const matchedFiles = files.filter((f) => monthPattern.test(f)).sort();
 
-  const resultsCache = new Map<string, Map<number, FinishEntry[]>>();
-  const placeOddsCache = new Map<string, Map<number, Map<number, number>>>();
+  const resultsCache = new Map<string, MeetingResults>();
   const allResults: DifferentiationBacktestRow[] = [];
 
   for (const file of matchedFiles) {
@@ -346,14 +367,10 @@ export async function runDifferentiationBacktest(
 
     const cacheKey = `${parsed.date}_${parsed.venue}`;
     if (!resultsCache.has(cacheKey)) {
-      resultsCache.set(cacheKey, await loadResults(parsed.date, parsed.venue));
+      resultsCache.set(cacheKey, await loadMeetingResults(parsed.date, parsed.venue));
     }
-    if (!placeOddsCache.has(cacheKey)) {
-      placeOddsCache.set(cacheKey, await loadPlaceOdds(parsed.date, parsed.venue));
-    }
-    const meetingResults = resultsCache.get(cacheKey)!;
-    const meetingPlaceOdds = placeOddsCache.get(cacheKey)!;
-    const finishOrder = meetingResults.get(parsed.raceNumber);
+    const meeting = resultsCache.get(cacheKey)!;
+    const finishOrder = meeting.finishOrders.get(parsed.raceNumber);
     if (!finishOrder || finishOrder.length === 0) continue;
 
     const analyses = formAnalyzer.analyzeRace(race);
@@ -376,8 +393,8 @@ export async function runDifferentiationBacktest(
     const topRatedHorseNum = topRatedEntry?.horseNumber ?? 0;
     const topRatedFinish = finishOrder.find((f) => f.horseNumber === topRatedHorseNum);
     const topRatedWinOdds = topRatedFinish?.winOdds ?? winOddsMap.get(topRatedHorseNum) ?? 0;
-    const racePlaceOdds = meetingPlaceOdds.get(parsed.raceNumber);
-    const topRatedPlaceOdds = racePlaceOdds?.get(topRatedHorseNum) ?? 0;
+    const resultPlaceOdds = meeting.placeDividendMap.get(parsed.raceNumber);
+    const topRatedPlaceOdds = resultPlaceOdds?.get(topRatedHorseNum) ?? 0;
 
     const { skipped, skipReason } = computeSkipDecision(
       sparseFormCount,

@@ -134,7 +134,7 @@ async function main() {
   );
 
   // --- Per racing day hit rate ---
-  const dayTableWidth = 96;
+  const dayTableWidth = 112;
   console.log("\n" + "═".repeat(dayTableWidth));
   console.log("HIT RATE PER RACING DAY  ($10 per bet on 1st-ranked horse)");
   console.log("═".repeat(dayTableWidth));
@@ -146,7 +146,7 @@ async function main() {
   }
 
   console.log(
-    `${"Date".padEnd(12)} ${"Venue".padEnd(4)} ${"Total".padStart(5)} ${"Bet".padStart(4)} ${"Hit".padStart(4)} ${"Won".padStart(4)} ${"Skip".padStart(4)} ${"HitRate".padStart(8)} ${"ROI(Win)".padStart(10)} ${"ROI(Pla)".padStart(10)}`
+    `${"Date".padEnd(12)} ${"Venue".padEnd(4)} ${"Total".padStart(5)} ${"Bet".padStart(4)} ${"Hit".padStart(4)} ${"Won".padStart(4)} ${"Skip".padStart(4)} ${"HitRate".padStart(8)} ${"ROI(Win)".padStart(10)} ${"ROI(Pla)".padStart(10)} ${"AllUpPla".padStart(12)}`
   );
   console.log("─".repeat(dayTableWidth));
 
@@ -159,6 +159,8 @@ async function main() {
   let totalWinReturn = 0;
   let totalPlaCost = 0;
   let totalPlaReturn = 0;
+  let totalAllUpDays = 0;
+  let totalAllUpRet = 0;
   for (const [, races] of sortedDays) {
     const [dateStr, v] = [races[0].date, races[0].venue];
     const dayBetted = races.filter((r) => !r.skipped);
@@ -175,9 +177,27 @@ async function main() {
       .reduce((sum, r) => sum + (r.topRatedPlaceOdds > 0 ? r.topRatedPlaceOdds * BET_UNIT : BET_UNIT), 0);
     const dayWinRoi = dayCost > 0 ? (((dayWinReturn - dayCost) / dayCost) * 100).toFixed(1) : "N/A";
     const dayPlaRoi = dayCost > 0 ? (((dayPlaReturn - dayCost) / dayCost) * 100).toFixed(1) : "N/A";
+
+    // All-up place: $10 compounds through all legs; $0 if any leg misses
+    let allUpLabel = "-";
+    if (dayBetted.length > 0) {
+      totalAllUpDays++;
+      const allPlaced = dayBetted.every((r) => r.topRatedPlaced);
+      if (allPlaced) {
+        let payout = BET_UNIT;
+        for (const r of dayBetted) {
+          payout *= r.topRatedPlaceOdds > 0 ? r.topRatedPlaceOdds : 1;
+        }
+        totalAllUpRet += payout;
+        allUpLabel = "$" + payout.toFixed(0);
+      } else {
+        allUpLabel = "$0";
+      }
+    }
+
     const formattedDate = `${dateStr.slice(0, 4)}-${dateStr.slice(4, 6)}-${dateStr.slice(6, 8)}`;
     console.log(
-      `${formattedDate.padEnd(12)} ${v.padEnd(4)} ${races.length.toString().padStart(5)} ${dayBetted.length.toString().padStart(4)} ${dayHits.toString().padStart(4)} ${dayWins.toString().padStart(4)} ${daySkip.toString().padStart(4)} ${(dayRate + "%").padStart(8)} ${(dayWinRoi + "%").padStart(10)} ${(dayPlaRoi + "%").padStart(10)}`
+      `${formattedDate.padEnd(12)} ${v.padEnd(4)} ${races.length.toString().padStart(5)} ${dayBetted.length.toString().padStart(4)} ${dayHits.toString().padStart(4)} ${dayWins.toString().padStart(4)} ${daySkip.toString().padStart(4)} ${(dayRate + "%").padStart(8)} ${(dayWinRoi + "%").padStart(10)} ${(dayPlaRoi + "%").padStart(10)} ${allUpLabel.padStart(12)}`
     );
     totalBet += dayBetted.length;
     totalHit += dayHits;
@@ -191,17 +211,20 @@ async function main() {
   const overallRate = totalBet > 0 ? ((totalHit / totalBet) * 100).toFixed(1) : "0.0";
   const overallWinRoi = totalWinCost > 0 ? (((totalWinReturn - totalWinCost) / totalWinCost) * 100).toFixed(1) : "0.0";
   const overallPlaRoi = totalPlaCost > 0 ? (((totalPlaReturn - totalPlaCost) / totalPlaCost) * 100).toFixed(1) : "0.0";
+  const totalAllUpCost = totalAllUpDays * BET_UNIT;
+  const overallAllUpDayRoi = totalAllUpCost > 0 ? (((totalAllUpRet - totalAllUpCost) / totalAllUpCost) * 100).toFixed(1) : "0.0";
   console.log(
-    `${"TOTAL".padEnd(12)} ${"".padEnd(4)} ${allResults.length.toString().padStart(5)} ${totalBet.toString().padStart(4)} ${totalHit.toString().padStart(4)} ${totalWon.toString().padStart(4)} ${(allResults.length - totalBet).toString().padStart(4)} ${(overallRate + "%").padStart(8)} ${(overallWinRoi + "%").padStart(10)} ${(overallPlaRoi + "%").padStart(10)}`
+    `${"TOTAL".padEnd(12)} ${"".padEnd(4)} ${allResults.length.toString().padStart(5)} ${totalBet.toString().padStart(4)} ${totalHit.toString().padStart(4)} ${totalWon.toString().padStart(4)} ${(allResults.length - totalBet).toString().padStart(4)} ${(overallRate + "%").padStart(8)} ${(overallWinRoi + "%").padStart(10)} ${(overallPlaRoi + "%").padStart(10)} ${(overallAllUpDayRoi + "%").padStart(12)}`
   );
+  console.log(`  All-Up Place: ${totalAllUpDays} days × $${BET_UNIT} = $${totalAllUpCost} cost, $${totalAllUpRet.toFixed(0)} return`);
 
   // --- ROI by month ---
-  const monthTableWidth = 86;
+  const monthTableWidth = 108;
   console.log("\n" + "═".repeat(monthTableWidth));
-  console.log("ROI BY MONTH  ($10 per bet on 1st-ranked horse)");
+  console.log("ROI BY MONTH  ($10 per bet on 1st-ranked horse | All-Up = $10/day, compound all legs)");
   console.log("═".repeat(monthTableWidth));
   console.log(
-    `${"Month".padEnd(10)} ${"Bet".padStart(4)} ${"Hit".padStart(4)} ${"Won".padStart(4)} ${"HitRate".padStart(8)} ${"WinRate".padStart(8)} ${"Cost".padStart(7)} ${"WinRet".padStart(7)} ${"PlaRet".padStart(7)} ${"ROI(Win)".padStart(10)} ${"ROI(Pla)".padStart(10)}`
+    `${"Month".padEnd(10)} ${"Days".padStart(5)} ${"Bet".padStart(4)} ${"Hit".padStart(4)} ${"Won".padStart(4)} ${"HitRate".padStart(8)} ${"WinRate".padStart(8)} ${"Cost".padStart(7)} ${"WinRet".padStart(7)} ${"PlaRet".padStart(7)} ${"ROI(Win)".padStart(10)} ${"ROI(Pla)".padStart(10)} ${"ROI(AllUpPla)".padStart(14)}`
   );
   console.log("─".repeat(monthTableWidth));
   const monthMap = new Map<string, DifferentiationBacktestRow[]>();
@@ -210,8 +233,21 @@ async function main() {
     if (!monthMap.has(key)) monthMap.set(key, []);
     monthMap.get(key)!.push(r);
   }
+
+  // Build month -> day -> races for all-up place calculation
+  const monthDayMap = new Map<string, Map<string, DifferentiationBacktestRow[]>>();
+  for (const r of allResults) {
+    const mKey = `${r.date.slice(0, 4)}-${r.date.slice(4, 6)}`;
+    const dKey = `${r.date}_${r.venue}`;
+    if (!monthDayMap.has(mKey)) monthDayMap.set(mKey, new Map());
+    const days = monthDayMap.get(mKey)!;
+    if (!days.has(dKey)) days.set(dKey, []);
+    days.get(dKey)!.push(r);
+  }
+
   const sortedMonths = [...monthMap.entries()].sort((a, b) => a[0].localeCompare(b[0]));
   let mTotalBet = 0, mTotalHit = 0, mTotalWon = 0, mTotalCost = 0, mTotalWinRet = 0, mTotalPlaRet = 0;
+  let mTotalAllUpDays = 0, mTotalAllUpRet = 0;
   for (const [month, races] of sortedMonths) {
     const mBetted = races.filter((r) => !r.skipped);
     const mHits = mBetted.filter((r) => r.topRatedPlaced).length;
@@ -227,8 +263,28 @@ async function main() {
     const mWinRate = mBetted.length > 0 ? ((mWins / mBetted.length) * 100).toFixed(1) : "N/A";
     const mWinRoi = mCost > 0 ? (((mWinRet - mCost) / mCost) * 100).toFixed(1) : "N/A";
     const mPlaRoi = mCost > 0 ? (((mPlaRet - mCost) / mCost) * 100).toFixed(1) : "N/A";
+
+    // All-up place: $10 per racing day, compound across all betted legs
+    let allUpDays = 0, allUpRet = 0;
+    const days = monthDayMap.get(month)!;
+    for (const [, dayRaces] of days) {
+      const dayBetted = dayRaces.filter((r) => !r.skipped);
+      if (dayBetted.length === 0) continue;
+      allUpDays++;
+      const allPlaced = dayBetted.every((r) => r.topRatedPlaced);
+      if (allPlaced) {
+        let payout = BET_UNIT;
+        for (const r of dayBetted) {
+          payout *= r.topRatedPlaceOdds > 0 ? r.topRatedPlaceOdds : 1;
+        }
+        allUpRet += payout;
+      }
+    }
+    const allUpCost = allUpDays * BET_UNIT;
+    const allUpRoi = allUpCost > 0 ? (((allUpRet - allUpCost) / allUpCost) * 100).toFixed(1) : "N/A";
+
     console.log(
-      `${month.padEnd(10)} ${mBetted.length.toString().padStart(4)} ${mHits.toString().padStart(4)} ${mWins.toString().padStart(4)} ${(mHitRate + "%").padStart(8)} ${(mWinRate + "%").padStart(8)} ${("$" + mCost).padStart(7)} ${("$" + mWinRet.toFixed(0)).padStart(7)} ${("$" + mPlaRet.toFixed(0)).padStart(7)} ${(mWinRoi + "%").padStart(10)} ${(mPlaRoi + "%").padStart(10)}`
+      `${month.padEnd(10)} ${allUpDays.toString().padStart(5)} ${mBetted.length.toString().padStart(4)} ${mHits.toString().padStart(4)} ${mWins.toString().padStart(4)} ${(mHitRate + "%").padStart(8)} ${(mWinRate + "%").padStart(8)} ${("$" + mCost).padStart(7)} ${("$" + mWinRet.toFixed(0)).padStart(7)} ${("$" + mPlaRet.toFixed(0)).padStart(7)} ${(mWinRoi + "%").padStart(10)} ${(mPlaRoi + "%").padStart(10)} ${(allUpRoi + "%").padStart(14)}`
     );
     mTotalBet += mBetted.length;
     mTotalHit += mHits;
@@ -236,14 +292,18 @@ async function main() {
     mTotalCost += mCost;
     mTotalWinRet += mWinRet;
     mTotalPlaRet += mPlaRet;
+    mTotalAllUpDays += allUpDays;
+    mTotalAllUpRet += allUpRet;
   }
   console.log("─".repeat(monthTableWidth));
   const mOverallHitRate = mTotalBet > 0 ? ((mTotalHit / mTotalBet) * 100).toFixed(1) : "0.0";
   const mOverallWinRate = mTotalBet > 0 ? ((mTotalWon / mTotalBet) * 100).toFixed(1) : "0.0";
   const mOverallWinRoi = mTotalCost > 0 ? (((mTotalWinRet - mTotalCost) / mTotalCost) * 100).toFixed(1) : "0.0";
   const mOverallPlaRoi = mTotalCost > 0 ? (((mTotalPlaRet - mTotalCost) / mTotalCost) * 100).toFixed(1) : "0.0";
+  const mTotalAllUpCost = mTotalAllUpDays * BET_UNIT;
+  const mOverallAllUpRoi = mTotalAllUpCost > 0 ? (((mTotalAllUpRet - mTotalAllUpCost) / mTotalAllUpCost) * 100).toFixed(1) : "0.0";
   console.log(
-    `${"TOTAL".padEnd(10)} ${mTotalBet.toString().padStart(4)} ${mTotalHit.toString().padStart(4)} ${mTotalWon.toString().padStart(4)} ${(mOverallHitRate + "%").padStart(8)} ${(mOverallWinRate + "%").padStart(8)} ${("$" + mTotalCost).padStart(7)} ${("$" + mTotalWinRet.toFixed(0)).padStart(7)} ${("$" + mTotalPlaRet.toFixed(0)).padStart(7)} ${(mOverallWinRoi + "%").padStart(10)} ${(mOverallPlaRoi + "%").padStart(10)}`
+    `${"TOTAL".padEnd(10)} ${mTotalAllUpDays.toString().padStart(5)} ${mTotalBet.toString().padStart(4)} ${mTotalHit.toString().padStart(4)} ${mTotalWon.toString().padStart(4)} ${(mOverallHitRate + "%").padStart(8)} ${(mOverallWinRate + "%").padStart(8)} ${("$" + mTotalCost).padStart(7)} ${("$" + mTotalWinRet.toFixed(0)).padStart(7)} ${("$" + mTotalPlaRet.toFixed(0)).padStart(7)} ${(mOverallWinRoi + "%").padStart(10)} ${(mOverallPlaRoi + "%").padStart(10)} ${(mOverallAllUpRoi + "%").padStart(14)}`
   );
 
   // --- By venue / surface (redundant when CLI already filters by both) ---
