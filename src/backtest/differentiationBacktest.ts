@@ -53,6 +53,7 @@ interface FinishEntry {
   finishPosition: number;
   horseName: string;
   horseCode: string;
+  winOdds?: number;
 }
 
 interface ResultsFile {
@@ -373,7 +374,8 @@ export async function runDifferentiationBacktest(
     const topRatedAnalysis = analyses[0];
     const topRatedEntry = race.entries.find((e) => e.horse.code === topRatedAnalysis.horseCode);
     const topRatedHorseNum = topRatedEntry?.horseNumber ?? 0;
-    const topRatedWinOdds = winOddsMap.get(topRatedHorseNum) ?? 0;
+    const topRatedFinish = finishOrder.find((f) => f.horseNumber === topRatedHorseNum);
+    const topRatedWinOdds = topRatedFinish?.winOdds ?? winOddsMap.get(topRatedHorseNum) ?? 0;
     const racePlaceOdds = meetingPlaceOdds.get(parsed.raceNumber);
     const topRatedPlaceOdds = racePlaceOdds?.get(topRatedHorseNum) ?? 0;
 

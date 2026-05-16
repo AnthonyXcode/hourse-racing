@@ -195,6 +195,57 @@ async function main() {
     `${"TOTAL".padEnd(12)} ${"".padEnd(4)} ${allResults.length.toString().padStart(5)} ${totalBet.toString().padStart(4)} ${totalHit.toString().padStart(4)} ${totalWon.toString().padStart(4)} ${(allResults.length - totalBet).toString().padStart(4)} ${(overallRate + "%").padStart(8)} ${(overallWinRoi + "%").padStart(10)} ${(overallPlaRoi + "%").padStart(10)}`
   );
 
+  // --- ROI by month ---
+  const monthTableWidth = 86;
+  console.log("\n" + "═".repeat(monthTableWidth));
+  console.log("ROI BY MONTH  ($10 per bet on 1st-ranked horse)");
+  console.log("═".repeat(monthTableWidth));
+  console.log(
+    `${"Month".padEnd(10)} ${"Bet".padStart(4)} ${"Hit".padStart(4)} ${"Won".padStart(4)} ${"HitRate".padStart(8)} ${"WinRate".padStart(8)} ${"Cost".padStart(7)} ${"WinRet".padStart(7)} ${"PlaRet".padStart(7)} ${"ROI(Win)".padStart(10)} ${"ROI(Pla)".padStart(10)}`
+  );
+  console.log("─".repeat(monthTableWidth));
+  const monthMap = new Map<string, DifferentiationBacktestRow[]>();
+  for (const r of allResults) {
+    const key = `${r.date.slice(0, 4)}-${r.date.slice(4, 6)}`;
+    if (!monthMap.has(key)) monthMap.set(key, []);
+    monthMap.get(key)!.push(r);
+  }
+  const sortedMonths = [...monthMap.entries()].sort((a, b) => a[0].localeCompare(b[0]));
+  let mTotalBet = 0, mTotalHit = 0, mTotalWon = 0, mTotalCost = 0, mTotalWinRet = 0, mTotalPlaRet = 0;
+  for (const [month, races] of sortedMonths) {
+    const mBetted = races.filter((r) => !r.skipped);
+    const mHits = mBetted.filter((r) => r.topRatedPlaced).length;
+    const mWins = mBetted.filter((r) => r.topRatedWon).length;
+    const mCost = mBetted.length * BET_UNIT;
+    const mWinRet = mBetted
+      .filter((r) => r.topRatedWon)
+      .reduce((sum, r) => sum + (r.topRatedWinOdds > 0 ? r.topRatedWinOdds * BET_UNIT : BET_UNIT), 0);
+    const mPlaRet = mBetted
+      .filter((r) => r.topRatedPlaced)
+      .reduce((sum, r) => sum + (r.topRatedPlaceOdds > 0 ? r.topRatedPlaceOdds * BET_UNIT : BET_UNIT), 0);
+    const mHitRate = mBetted.length > 0 ? ((mHits / mBetted.length) * 100).toFixed(1) : "N/A";
+    const mWinRate = mBetted.length > 0 ? ((mWins / mBetted.length) * 100).toFixed(1) : "N/A";
+    const mWinRoi = mCost > 0 ? (((mWinRet - mCost) / mCost) * 100).toFixed(1) : "N/A";
+    const mPlaRoi = mCost > 0 ? (((mPlaRet - mCost) / mCost) * 100).toFixed(1) : "N/A";
+    console.log(
+      `${month.padEnd(10)} ${mBetted.length.toString().padStart(4)} ${mHits.toString().padStart(4)} ${mWins.toString().padStart(4)} ${(mHitRate + "%").padStart(8)} ${(mWinRate + "%").padStart(8)} ${("$" + mCost).padStart(7)} ${("$" + mWinRet.toFixed(0)).padStart(7)} ${("$" + mPlaRet.toFixed(0)).padStart(7)} ${(mWinRoi + "%").padStart(10)} ${(mPlaRoi + "%").padStart(10)}`
+    );
+    mTotalBet += mBetted.length;
+    mTotalHit += mHits;
+    mTotalWon += mWins;
+    mTotalCost += mCost;
+    mTotalWinRet += mWinRet;
+    mTotalPlaRet += mPlaRet;
+  }
+  console.log("─".repeat(monthTableWidth));
+  const mOverallHitRate = mTotalBet > 0 ? ((mTotalHit / mTotalBet) * 100).toFixed(1) : "0.0";
+  const mOverallWinRate = mTotalBet > 0 ? ((mTotalWon / mTotalBet) * 100).toFixed(1) : "0.0";
+  const mOverallWinRoi = mTotalCost > 0 ? (((mTotalWinRet - mTotalCost) / mTotalCost) * 100).toFixed(1) : "0.0";
+  const mOverallPlaRoi = mTotalCost > 0 ? (((mTotalPlaRet - mTotalCost) / mTotalCost) * 100).toFixed(1) : "0.0";
+  console.log(
+    `${"TOTAL".padEnd(10)} ${mTotalBet.toString().padStart(4)} ${mTotalHit.toString().padStart(4)} ${mTotalWon.toString().padStart(4)} ${(mOverallHitRate + "%").padStart(8)} ${(mOverallWinRate + "%").padStart(8)} ${("$" + mTotalCost).padStart(7)} ${("$" + mTotalWinRet.toFixed(0)).padStart(7)} ${("$" + mTotalPlaRet.toFixed(0)).padStart(7)} ${(mOverallWinRoi + "%").padStart(10)} ${(mOverallPlaRoi + "%").padStart(10)}`
+  );
+
   // --- By venue / surface (redundant when CLI already filters by both) ---
   if (!(venue && surface)) {
     const byVenue = new Map<string, DifferentiationBacktestRow[]>();
