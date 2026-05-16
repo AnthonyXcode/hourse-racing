@@ -42,6 +42,10 @@ export interface DifferentiationBacktestRow {
   numRunners: number;
   /** MC Place% of the top-rated horse (0–1 scale) */
   topRatedMcPlacePct: number;
+  /** Win odds of the top-rated horse at race time (0 if unavailable) */
+  topRatedWinOdds: number;
+  /** Place odds of the top-rated horse at race time (0 if unavailable) */
+  topRatedPlaceOdds: number;
 }
 
 interface FinishEntry {
@@ -64,6 +68,8 @@ export interface DifferentiationBacktestOptions {
   closeMax: number;
   avgDiffMin: number;
   gapMin: number;
+  /** Skip if the top-rated horse's win odds > this value (0 = disabled) */
+  oddsMax: number;
   months: string[];
   venue: "ST" | "HV" | null;
   surface: "Turf" | "AWT" | null;
@@ -85,6 +91,46 @@ export interface HitRateSummary {
   bets: number;
   hits: number;
   ratePct: string;
+}
+
+interface OddsFileHorse {
+  horseNumber: number;
+  winOdds: number;
+  placeOdds: number;
+}
+
+interface OddsFileRace {
+  raceNumber: number;
+  horses: OddsFileHorse[];
+}
+
+interface OddsFile {
+  races: OddsFileRace[];
+}
+
+/** Load place odds from data/odds/odds_{date}_{venue}.json, keyed by raceNumber → horseNumber → placeOdds */
+export async function loadPlaceOdds(
+  dateStr: string,
+  venue: string
+): Promise<Map<number, Map<number, number>>> {
+  const venueSuffix = venue === "Happy Valley" ? "HV" : "ST";
+  const fileName = `odds_${dateStr}_${venueSuffix}.json`;
+  const filePath = path.join(process.cwd(), "data", "odds", fileName);
+  try {
+    const raw = await readFile(filePath, "utf-8");
+    const data = JSON.parse(raw) as OddsFile;
+    const result = new Map<number, Map<number, number>>();
+    for (const race of data.races) {
+      const horseMap = new Map<number, number>();
+      for (const h of race.horses) {
+        horseMap.set(h.horseNumber, h.placeOdds);
+      }
+      result.set(race.raceNumber, horseMap);
+    }
+    return result;
+  } catch {
+    return new Map();
+  }
 }
 
 export async function loadResults(dateStr: string, venue: string): Promise<Map<number, FinishEntry[]>> {
@@ -169,7 +215,8 @@ export function computeSkipDecision(
   horsesWithDiffLt8: number,
   avgDiff: number,
   topGap: number,
-  opts: Pick<DifferentiationBacktestOptions, "sparseMax" | "closeMax" | "avgDiffMin" | "gapMin">
+  opts: Pick<DifferentiationBacktestOptions, "sparseMax" | "closeMax" | "avgDiffMin" | "gapMin"> & { oddsMax?: number },
+  topRatedWinOdds?: number
 ): { skipped: boolean; skipReason: string } {
   if (sparseFormCount > opts.sparseMax) {
     return { skipped: true, skipReason: `${sparseFormCount} horses w/ 0-1 form` };
@@ -182,6 +229,10 @@ export function computeSkipDecision(
       skipped: true,
       skipReason: horsesWithDiffLt8 > opts.closeMax ? `close<8=${horsesWithDiffLt8}` : `avgDiff=${avgDiff}`,
     };
+  }
+  const oddsMax = opts.oddsMax ?? 0;
+  if (oddsMax > 0 && topRatedWinOdds !== undefined && topRatedWinOdds > oddsMax) {
+    return { skipped: true, skipReason: `odds=${topRatedWinOdds}>${oddsMax}` };
   }
   return { skipped: false, skipReason: "" };
 }
@@ -205,7 +256,7 @@ export function summarizeHitRate(
 export function summarizeHitRateWithThresholds(
   rows: DifferentiationBacktestRow[],
   filter: (r: DifferentiationBacktestRow) => boolean,
-  opts: Pick<DifferentiationBacktestOptions, "sparseMax" | "closeMax" | "avgDiffMin" | "gapMin">
+  opts: Pick<DifferentiationBacktestOptions, "sparseMax" | "closeMax" | "avgDiffMin" | "gapMin"> & { oddsMax?: number }
 ): HitRateSummary {
   const bucket = rows.filter(filter);
   let bets = 0;
@@ -216,7 +267,8 @@ export function summarizeHitRateWithThresholds(
       r.horsesWithDiffLt8,
       r.avgDiff,
       r.topGap,
-      opts
+      opts,
+      r.topRatedWinOdds
     );
     if (skipped) continue;
     bets++;
@@ -251,6 +303,7 @@ export async function runDifferentiationBacktest(
     closeMax,
     avgDiffMin,
     gapMin,
+    oddsMax,
     months,
     venue,
     surface,
@@ -271,6 +324,7 @@ export async function runDifferentiationBacktest(
   const matchedFiles = files.filter((f) => monthPattern.test(f)).sort();
 
   const resultsCache = new Map<string, Map<number, FinishEntry[]>>();
+  const placeOddsCache = new Map<string, Map<number, Map<number, number>>>();
   const allResults: DifferentiationBacktestRow[] = [];
 
   for (const file of matchedFiles) {
@@ -282,7 +336,7 @@ export async function runDifferentiationBacktest(
     const loaded = await loadRaceCard(filePath);
     if (!loaded) continue;
 
-    const { race: rawRace } = loaded;
+    const { race: rawRace, winOddsMap } = loaded;
     const race = applyFormSourceFilter(rawRace, form);
     if (race.entries.length < 4) continue;
     if (surface && race.surface !== surface) continue;
@@ -293,7 +347,11 @@ export async function runDifferentiationBacktest(
     if (!resultsCache.has(cacheKey)) {
       resultsCache.set(cacheKey, await loadResults(parsed.date, parsed.venue));
     }
+    if (!placeOddsCache.has(cacheKey)) {
+      placeOddsCache.set(cacheKey, await loadPlaceOdds(parsed.date, parsed.venue));
+    }
     const meetingResults = resultsCache.get(cacheKey)!;
+    const meetingPlaceOdds = placeOddsCache.get(cacheKey)!;
     const finishOrder = meetingResults.get(parsed.raceNumber);
     if (!finishOrder || finishOrder.length === 0) continue;
 
@@ -312,16 +370,21 @@ export async function runDifferentiationBacktest(
     const topGap =
       analyses.length >= 2 ? Math.abs(analyses[0].overallRating - analyses[1].overallRating) : 999;
 
+    const topRatedAnalysis = analyses[0];
+    const topRatedEntry = race.entries.find((e) => e.horse.code === topRatedAnalysis.horseCode);
+    const topRatedHorseNum = topRatedEntry?.horseNumber ?? 0;
+    const topRatedWinOdds = winOddsMap.get(topRatedHorseNum) ?? 0;
+    const racePlaceOdds = meetingPlaceOdds.get(parsed.raceNumber);
+    const topRatedPlaceOdds = racePlaceOdds?.get(topRatedHorseNum) ?? 0;
+
     const { skipped, skipReason } = computeSkipDecision(
       sparseFormCount,
       horsesWithDiffLt8,
       avgDiff,
       topGap,
-      { sparseMax, closeMax, avgDiffMin, gapMin }
+      { sparseMax, closeMax, avgDiffMin, gapMin, oddsMax },
+      topRatedWinOdds
     );
-
-    const topRatedAnalysis = analyses[0];
-    const topRatedEntry = race.entries.find((e) => e.horse.code === topRatedAnalysis.horseCode);
 
     const hvStdDev = parsed.venue === "Happy Valley" ? 11 : 8;
     const simulator = new MonteCarloSimulator({ runs: 5000, performanceStdDev: hvStdDev });
@@ -365,6 +428,8 @@ export async function runDifferentiationBacktest(
       topSimPlaced: top3Codes.includes(topSimResult.horseCode),
       numRunners: race.entries.filter((e) => !e.isScratched).length,
       topRatedMcPlacePct,
+      topRatedWinOdds,
+      topRatedPlaceOdds,
     });
   }
 

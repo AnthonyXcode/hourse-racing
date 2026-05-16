@@ -223,6 +223,7 @@ async function main() {
       closeMax: 99,
       avgDiffMin: 0,
       gapMin: 0,
+      oddsMax: 0,
       months: btMonths,
       venue: vCode,
       surface: null,
