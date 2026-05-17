@@ -379,10 +379,10 @@ async function main() {
   const oddsBuckets = [
     { label: "1-3", min: 1, max: 3 },
     { label: "3-5", min: 3, max: 5 },
-    { label: "5-10", min: 5, max: 10 },
-    { label: "10-20", min: 10, max: 20 },
-    { label: "20-50", min: 20, max: 50 },
-    { label: "50+", min: 50, max: Infinity },
+    { label: "5-7", min: 5, max: 7 },
+    { label: "7-9", min: 7, max: 10 },
+    { label: "10-15", min: 10, max: 15 },
+    { label: "15+", min: 15, max: Infinity },
   ];
   for (const r of allResults) {
     if (r.topRatedWinOdds <= 0) {
