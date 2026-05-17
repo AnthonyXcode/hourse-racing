@@ -191,13 +191,7 @@ Table: Race | Horse | +Excuses For | Finished | Verdict (✅/❌)
 
 Report: **+Excuses hit rate (top 3): X/N (XX%)**
 
-#### 7e. Purton Performance (or leading jockey)
-
-Table: Race | Horse | Role | Odds | Finished | Verdict
-
-Report: Purton banker hit rate, Purton as leg hit rate, key observations.
-
-#### 7f. Divergence Override Assessment (if applicable)
+#### 7e. Divergence Override Assessment (if applicable)
 
 If any divergence override was applied during the meeting, document:
 - What was overridden and why

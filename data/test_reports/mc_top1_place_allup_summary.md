@@ -32,6 +32,7 @@
 | **15**  | **06 May** | **ST** | **AWT**   | **Good**     | **9**  | **43.2%** | **78.8%**  | **3/9**  | **33.3%** | **❌❌✅❌✅❌❌❌✅**   | **1**          |
 | **16**  | **09 May** | **ST** | **Turf**  | **G-Y**      | **11** | **39.0%** | **73.9%**  | **3/11** | **27.3%** | **❌✅❌❌❌❌❌✅❌❌✅** | **1**          |
 | **17**  | **13 May** | **HV** | **HV Turf C** | **Good to Firm** | **9**  | **35.9%** | **68.8%**  | **4/9**  | **44.4%** | **❌✅✅❌✅❌❌✅❌** | **2 (R2-R3)**  |
+| **18**  | **17 May** | **ST** | **AWT+Turf** | **G-Y→Yielding** | **11** | **39.6%** | **75.1%**  | **2/11** | **18.2%** | **❌❌❌❌✅✅❌❌❌❌❌** | **2 (R5-R6)** |
 
 \*Meeting 8 **R1** (6 runners): MC #1 **#6** ran **3rd** but HKJC Place pool pays **two** places only → **$0** dividend; counts as **❌** for streaks and all-ups (same dividend logic as other meetings).
 
@@ -1199,3 +1200,72 @@ Place dividends (MC #1 when placed): R2=$13.50, R3=$14.00, R5=$12.50, R8=$12.00
 | 6 | 4 | $40 | 0 | $0 | −$40.00 | −100% |
 
 **Observation:** Same structural shape as **short-streak meetings** (e.g. M5, M9, M10): **high-ish avg MC Place% (68.8%)** but **isolated placers** capped at **two in a row** (R2–R3). Only **one** 2-leg all-up pays; seven lose. **SILVERY BREEZE** stopping **one slot short** of a dividend illustrates how **field-position variance** destroys longer tickets even when MC ranks look strong. **Low MC Win% opener** (**DRAGON SUNRISE** 18.7%) failing badly matches prior meetings where **weak MC #1 banks** correlated with outsized misses — paired here with **two MC #1s finishing 12th**. HV Turf **Good to Firm** did not rescue strike rate this card (**44.4%** vs stronger HV nights like M11/M13).
+
+---
+
+## Meeting 18: Sha Tin | 17 May 2026 (11 races)
+
+**MC #1** = raw MC Win% rank from strategy reports. **Results / Place dividends:** `data/historical/results_20260517_ST.json`. **Going:** Good to Yielding (R1–R5) → Yielding (R6–R11). **Surface:** AWT (R1), Turf (R2–R11).
+
+| Race | Class   | Dist (m) | MC #1                    | MC Win% | MC Place% | Placed? | Place $ (if placed) |
+| ---- | ------- | -------- | ------------------------ | ------- | --------- | ------- | ------------------- |
+| R1   | Class 5 | 1800     | #5 FAMILY FORTUNE        | 40.4%   | 77.6%     | ❌ (4th)  | —                   |
+| R2   | Class 4 | 1000     | #1 RUN RUN SUNRISE       | 37.9%   | 76.6%     | ❌ (10th) | —                   |
+| R3   | Class 5 | 1200     | #4 MAJESTIC DELIGHT      | 32.3%   | 66.3%     | ❌ (5th)  | —                   |
+| R4   | Class 4 | 1200     | #1 PAPAYA BROSE          | 46.1%   | 84.9%     | ❌ (4th)  | —                   |
+| R5   | Class 4 | 1200     | #7 SUPERB SPIRIT         | 42.4%   | 79.6%     | ✅ 1st    | $12.50              |
+| R6   | Class 3 | 1200     | #2 CELESTIAL HERO        | 40.0%   | 78.2%     | ✅ 3rd    | $19.50              |
+| R7   | Class 4 | 1400     | #2 FORZA TORO            | 43.3%   | 79.3%     | ❌ (5th)  | —                   |
+| R8   | Class 4 | 1800     | #4 VERMILION TEMPEST     | 60.7%   | 87.9%     | ❌ (11th) | —                   |
+| R9   | Class 4 | 1400     | #10 VOYAGE BOSS          | 24.5%   | 58.9%     | ❌ (8th)  | —                   |
+| R10  | Class 3 | 1400     | #2 WINDLORD              | 23.4%   | 52.2%     | ❌ (7th)  | —                   |
+| R11  | Class 3 | 1400     | #8 HAPPY BOSS            | 44.2%   | 84.3%     | ❌ (9th)  | —                   |
+
+Place dividends (MC #1 when placed): R5=$12.50, R6=$19.50
+
+**Placing rate: 2/11 = 18.2%** — the **new worst** MC #1 Place session of the entire season, surpassing M16 (ST Turf G-Y, 27.3%). This is the first session where MC #1 placed in fewer than 3 races.
+**Avg MC Win%:** 39.6% | **Avg MC Place%:** 75.1%
+**Pattern:** ❌❌❌❌✅✅❌❌❌❌❌ — **max streak: 2 (R5–R6)**
+
+### Notable observations
+
+- **Only 2/11 placed (18.2%)** — a catastrophic collapse that eclipses M16 (27.3%) as the season's worst. The **Yielding going** is the primary culprit: R6–R11 ran on Yielding track and only R6's MC #1 placed (1/6 = 16.7%).
+- **R8 VERMILION TEMPEST** (MC **60.7%**, Place **87.9%**, SP 6.7) — the meeting's flagship MC pick — finished **11th of 14**. The **second-highest MC Win% miss of the season** after M16 R5 CONRAD PATCH (66.0%). Both occurred on deteriorating going.
+- **R4 PAPAYA BROSE** (MC 46.1%, Place 84.9%, SP 2.7) — shortest-priced MC #1 of the meeting — missed placing by **one position** (4th). A narrow miss that underscores the variance on soft ground.
+- **R2 RUN RUN SUNRISE** (MC 37.9%, Place 76.6%, SP 8.3) — collapsed to **10th** in a Class 4 sprint. Market clearly disagreed with MC ranking.
+- **R5 SUPERB SPIRIT** and **R6 CELESTIAL HERO** were the only survivors, forming a **brief 2-race streak** in the middle of a wasteland. Both ran on **Good to Yielding** (R5) and the freshly-declared **Yielding** (R6) — suggesting the model had a narrow window before the track fully deteriorated.
+- **Zero R7–R11 placers** — the back half of the card on full Yielding produced 0/5 MC #1 placers, continuing the pattern from M16 where soft going systematically destroys MC reliability.
+
+**Total flat return:** $32.00 on **$110** staked (2 × $10 Place legs) → **−$78.00** (−70.9% ROI).
+
+### 2-Leg (10 bets)
+
+| # | All-Up | Hit? | Return |
+|---|--------|------|--------|
+| 1 | R1+R2 | ❌ | $0 |
+| 2 | R2+R3 | ❌ | $0 |
+| 3 | R3+R4 | ❌ | $0 |
+| 4 | R4+R5 | ❌ | $0 |
+| 5 | R5+R6 | ✅ | $24.38 |
+| 6 | R6+R7 | ❌ | $0 |
+| 7 | R7+R8 | ❌ | $0 |
+| 8 | R8+R9 | ❌ | $0 |
+| 9 | R9+R10 | ❌ | $0 |
+| 10 | R10+R11 | ❌ | $0 |
+
+**Summary:** 1 winner from 10 bets ($12.50×$19.50÷10 = $24.38 on R5+R6).
+
+### 3-Leg through 6-Leg
+
+**Max paying streak = 2** → no window of **3+** consecutive MC #1 placers. All 3-leg through 6-leg consecutive all-ups **miss**.
+
+| Legs | Bets | Staked | Winners | Returned | P&L | ROI |
+|------|------|--------|---------|----------|-----|-----|
+| 1 | 11 | $110 | 2 | $32.00 | −$78.00 | −70.9% |
+| 2 | 10 | $100 | 1 | $24.38 | −$75.63 | −75.6% |
+| 3 | 9 | $90 | 0 | $0 | −$90.00 | −100% |
+| 4 | 8 | $80 | 0 | $0 | −$80.00 | −100% |
+| 5 | 7 | $70 | 0 | $0 | −$70.00 | −100% |
+| 6 | 6 | $60 | 0 | $0 | −$60.00 | −100% |
+
+**Observation:** The **new season-worst** MC #1 Place session by placing rate (**18.2%**), overtaking M16's 27.3%. The pattern matches M16 almost exactly — same venue (ST), same going transition (Good to Yielding → Yielding), same result: high-MC-Win% picks collapsing en masse on soft ground. **Two consecutive wet-track ST meetings (M16 + M18) now average 2.5/11 = 22.7% MC #1 placing rate**, compared to **~60%+ on Good/Good to Firm ST Turf**. The sole bright spot — the R5–R6 streak — barely salvaged a single 2-leg all-up ($24.38), but the surrounding **9-race desert** of misses (R1–R4, R7–R11) destroyed any multi-leg viability. **Yielding going is now confirmed as the single biggest MC reliability risk factor**, more damaging than AWT (M5: 44.4%, M15: 33.3%). A hard filter excluding MC #1 Place all-ups on **Yielding** or **Good to Yielding** going would have saved significant capital across M16 and M18.
