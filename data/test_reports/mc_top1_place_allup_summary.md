@@ -33,6 +33,7 @@
 | **16**  | **09 May** | **ST** | **Turf**  | **G-Y**      | **11** | **39.0%** | **73.9%**  | **3/11** | **27.3%** | **❌✅❌❌❌❌❌✅❌❌✅** | **1**          |
 | **17**  | **13 May** | **HV** | **HV Turf C** | **Good to Firm** | **9**  | **35.9%** | **68.8%**  | **4/9**  | **44.4%** | **❌✅✅❌✅❌❌✅❌** | **2 (R2-R3)**  |
 | **18**  | **17 May** | **ST** | **AWT+Turf** | **G-Y→Yielding** | **11** | **39.6%** | **75.1%**  | **2/11** | **18.2%** | **❌❌❌❌✅✅❌❌❌❌❌** | **2 (R5-R6)** |
+| **19**  | **20 May** | **HV** | **Turf**     | **Good**         | **9**  | **29.6%** | **62.1%**  | **2/9**  | **22.2%** | **❌❌❌❌❌✅❌✅❌**   | **1**          |
 
 \*Meeting 8 **R1** (6 runners): MC #1 **#6** ran **3rd** but HKJC Place pool pays **two** places only → **$0** dividend; counts as **❌** for streaks and all-ups (same dividend logic as other meetings).
 
@@ -1269,3 +1270,63 @@ Place dividends (MC #1 when placed): R5=$12.50, R6=$19.50
 | 6 | 6 | $60 | 0 | $0 | −$60.00 | −100% |
 
 **Observation:** The **new season-worst** MC #1 Place session by placing rate (**18.2%**), overtaking M16's 27.3%. The pattern matches M16 almost exactly — same venue (ST), same going transition (Good to Yielding → Yielding), same result: high-MC-Win% picks collapsing en masse on soft ground. **Two consecutive wet-track ST meetings (M16 + M18) now average 2.5/11 = 22.7% MC #1 placing rate**, compared to **~60%+ on Good/Good to Firm ST Turf**. The sole bright spot — the R5–R6 streak — barely salvaged a single 2-leg all-up ($24.38), but the surrounding **9-race desert** of misses (R1–R4, R7–R11) destroyed any multi-leg viability. **Yielding going is now confirmed as the single biggest MC reliability risk factor**, more damaging than AWT (M5: 44.4%, M15: 33.3%). A hard filter excluding MC #1 Place all-ups on **Yielding** or **Good to Yielding** going would have saved significant capital across M16 and M18.
+
+---
+
+## Meeting 19: Happy Valley | 20 May 2026 (9 races)
+
+**MC #1** = raw MC Win% rank from strategy reports. **Results / Place dividends:** `data/historical/results_20260520_HV.json`. **Going:** Good (all races). **Surface:** Turf.
+
+| Race | Class   | Dist (m) | MC #1              | MC Win% | MC Place% | Placed? | Place $ (if placed) |
+| ---- | ------- | -------- | ------------------ | ------- | --------- | ------- | ------------------- |
+| R1   | Class 5 | 1000     | #3 MAJESTIC DELIGHT | 25.8%   | 58.7%     | ❌ (4th)  | —                   |
+| R2   | Class 4 | 1650     | #3 NEVER TOO SOON   | 25.9%   | 58.6%     | ❌ (9th)  | —                   |
+| R3   | Class 4 | 1200     | #10 CAPTAIN LINK    | 24.3%   | 54.3%     | ❌ (6th)  | —                   |
+| R4   | Class 4 | 1650     | #6 FORTUNE STAR     | 32.5%   | 64.4%     | ❌ (5th)  | —                   |
+| R5   | Class 4 | 1000     | #4 BEAUTY SHOW      | 24.1%   | 55.8%     | ❌ (7th)  | —                   |
+| R6   | Class 4 | 1200     | #3 SUPERB KING      | 29.6%   | 62.7%     | ✅ 2nd    | $15.50              |
+| R7   | Class 3 | 1650     | #3 LOVERO           | 35.6%   | 70.4%     | ❌ (9th)  | —                   |
+| R8   | Class 3 | 1200     | #3 GIANT BALLON     | 45.0%   | 80.0%     | ✅ 2nd    | $15.00              |
+| R9   | Class 2 | 1200     | #10 GENEVA          | 23.5%   | 53.7%     | ❌ (4th)  | —                   |
+
+Place dividends (MC #1 when placed): R6=$15.50, R8=$15.00
+
+**Placing rate: 2/9 = 22.2%**
+**Avg MC Win%:** 29.6% | **Avg MC Place%:** 62.1%
+**Pattern:** ❌❌❌❌❌✅❌✅❌ — **max streak: 1** (isolated placers only)
+
+### Notable observations
+
+- **Low placing rate (22.2%)** on **Good** HV Turf — well below typical HV meetings (M11 88.9%, M13 77.8%). Seven of nine MC #1 horses finished **outside the top 3**.
+- **R8 GIANT BALLON** (45.0% MC Win, 80.0% Place) placed **2nd** — the only dominant MC profile that delivered.
+- **R7 LOVERO** (35.6% Win, Purton) finished **9th** despite being the card's top MC Win% in Class 3 — HV upset pattern.
+- **R5 BEAUTY SHOW** (Purton, 24.1%) **7th** while 1.6 SP favourite #2 won — market/MC split on 1000m sprint.
+- **No consecutive MC #1 placers** → all multi-leg Place all-ups (2+ legs) **miss**.
+
+**Total flat return:** $30.50 on **$90** staked (2 Place legs) → **−$59.50** (−66.1% ROI).
+
+### 2-Leg (8 bets)
+
+| # | All-Up | Hit? | Return |
+|---|--------|------|--------|
+| 1–5 | R1+R2 … R4+R5 | ❌ | $0 |
+| 6 | R5+R6 | ❌ | $0 |
+| 7 | R6+R7 | ❌ | $0 |
+| 8 | R7+R8 | ❌ | $0 |
+
+**Summary:** 0 winners from 8 consecutive 2-leg bets (R6 and R8 placers not adjacent).
+
+### 3-Leg through 6-Leg
+
+**Max paying streak = 1** → no 2-leg+ consecutive all-up hits.
+
+| Legs | Bets | Staked | Winners | Returned | P&L | ROI |
+|------|------|--------|---------|----------|-----|-----|
+| 1 | 9 | $90 | 2 | $30.50 | −$59.50 | −66.1% |
+| 2 | 8 | $80 | 0 | $0 | −$80.00 | −100% |
+| 3 | 7 | $70 | 0 | $0 | −$70.00 | −100% |
+| 4 | 6 | $60 | 0 | $0 | −$60.00 | −100% |
+| 5 | 5 | $50 | 0 | $0 | −$50.00 | −100% |
+| 6 | 4 | $40 | 0 | $0 | −$40.00 | −100% |
+
+**Observation:** MC #1 Place was **unusable for all-ups** this card — placers were **non-consecutive** (R6, R8 only). Trio pipeline hits (R6, R8) came from **leg pools**, not MC #1 winning/placing as banker. Aligns with **Pattern A** trio misses on R1/R5 where MC #1 failed but all three trio horses were in the B pool.

@@ -79,6 +79,8 @@ interface RaceSimDetail {
     formCount: number;
     rating: number;
     diff: number;
+    winOdds: number;
+    expectedPosition: number;
   }[];
 }
 
@@ -357,6 +359,8 @@ async function main() {
           formCount: entry?.horse.pastPerformances?.length ?? 0,
           rating: analysis?.overallRating ?? 0,
           diff: analysis ? Math.abs(topRating - analysis.overallRating) : 999,
+          winOdds: winOddsMap.get(sim.horseNumber) ?? 0,
+          expectedPosition: sim.expectedPosition,
         };
       });
 
@@ -500,7 +504,9 @@ async function main() {
           const winStr = `${h.winProb.toFixed(1)}% win`.padStart(10);
           const plcStr = `${h.placeProb.toFixed(1)}% place`.padStart(12);
           const formStr = `[${h.formCount} form]`;
-          lines.push(`  ${numStr} ${nameStr}: ${winStr}, ${plcStr} ${formStr} rating: ${h.rating} diff: ${h.diff}`);
+          const oddsStr = h.winOdds > 0 ? `odds: ${h.winOdds.toFixed(1)}` : `odds: -`;
+          const ePosStr = `ePos: ${h.expectedPosition.toFixed(1)}`;
+          lines.push(`  ${numStr} ${nameStr}: ${winStr}, ${plcStr} ${formStr} rating: ${h.rating} diff: ${h.diff} ${oddsStr} ${ePosStr}`);
         }
 
         lines.push("");

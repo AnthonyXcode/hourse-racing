@@ -406,6 +406,38 @@ async function main() {
   }
   printBreakdown("WIN ODDS (top-rated)", byOddsSorted);
 
+  // --- By expected position bucket ---
+  const byEPos = new Map<string, DifferentiationBacktestRow[]>();
+  const ePosBuckets = [
+    { label: "1.0-2.0", min: 1.0, max: 2.0 },
+    { label: "2.0-3.0", min: 2.0, max: 3.0 },
+    { label: "3.0-4.0", min: 3.0, max: 4.0 },
+    { label: "4.0-5.0", min: 4.0, max: 5.0 },
+    { label: "5.0-6.0", min: 5.0, max: 6.0 },
+    { label: "6.0+", min: 6.0, max: Infinity },
+  ];
+  for (const r of allResults) {
+    if (r.topRatedExpectedPosition <= 0) {
+      const key = "N/A";
+      if (!byEPos.has(key)) byEPos.set(key, []);
+      byEPos.get(key)!.push(r);
+      continue;
+    }
+    for (const b of ePosBuckets) {
+      if (r.topRatedExpectedPosition >= b.min && r.topRatedExpectedPosition < b.max) {
+        if (!byEPos.has(b.label)) byEPos.set(b.label, []);
+        byEPos.get(b.label)!.push(r);
+        break;
+      }
+    }
+  }
+  const ePosOrder = [...ePosBuckets.map((b) => b.label), "N/A"];
+  const byEPosSorted = new Map<string, DifferentiationBacktestRow[]>();
+  for (const key of ePosOrder) {
+    if (byEPos.has(key)) byEPosSorted.set(key, byEPos.get(key)!);
+  }
+  printBreakdown("EXPECTED POSITION (top-rated)", byEPosSorted);
+
   // --- Skip logic summary ---
   console.log("\n" + "═".repeat(70));
   console.log("SKIP LOGIC SUMMARY");

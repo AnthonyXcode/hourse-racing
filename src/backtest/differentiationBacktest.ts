@@ -46,6 +46,8 @@ export interface DifferentiationBacktestRow {
   topRatedWinOdds: number;
   /** Place odds of the top-rated horse at race time (0 if unavailable) */
   topRatedPlaceOdds: number;
+  /** MC expected finishing position of the top-rated horse (e.g. 3.2 = avg 3rd) */
+  topRatedExpectedPosition: number;
 }
 
 interface FinishEntry {
@@ -412,6 +414,7 @@ export async function runDifferentiationBacktest(
 
     const topRatedMcResult = simResults.find((s) => s.horseCode === topRatedAnalysis.horseCode);
     const topRatedMcPlacePct = topRatedMcResult?.placeProbability ?? 0;
+    const topRatedExpectedPosition = topRatedMcResult?.expectedPosition ?? 0;
 
     const winnerCode = finishOrder[0]?.horseCode ?? "";
     const top3Codes = finishOrder.slice(0, 3).map((f) => f.horseCode);
@@ -449,6 +452,7 @@ export async function runDifferentiationBacktest(
       topRatedMcPlacePct,
       topRatedWinOdds,
       topRatedPlaceOdds,
+      topRatedExpectedPosition,
     });
   }
 

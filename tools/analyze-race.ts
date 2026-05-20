@@ -396,11 +396,12 @@ async function analyzeRace(args: CliArgs): Promise<void> {
       const diff = analysis ? Math.abs(topRating - analysis.overallRating) : 0;
       diffs.push(diff);
       const diffStr = analysis ? ` diff: ${diff.toFixed(0)}` : "";
+      const ePosStr = ` ePos: ${result.expectedPosition.toFixed(1)}`;
       console.log(
         `  #${result.horseNumber.toString().padStart(2)} ${result.horseName.padEnd(15).substring(0, 15)}: ` +
           `${(result.winProbability * 100).toFixed(1).padStart(5)}% win, ` +
           `${(result.placeProbability * 100).toFixed(1).padStart(5)}% place` +
-          recStr + ratingStr + diffStr
+          recStr + ratingStr + diffStr + ePosStr
       );
     }
 
