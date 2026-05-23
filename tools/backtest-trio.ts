@@ -4,15 +4,15 @@
  *
  * Strategy:
  *   - MC rank #1 is the BANKER (must finish top-3).
- *   - MC ranks #2–#6 are LEGS.
- *   - Bet = banker × C(5, 2) = 10 combos @ $10 each = $100/race.
- *   - If banker's win odds > --odds threshold, no banker is used:
- *     top 6 MC horses are all legs → C(6, 3) = 20 combos @ $10 = $200/race.
+ *   - Remaining pool horses are LEGS (count set by --picks).
+ *   - Default --picks=6: banker + 5 legs → C(5,2)=10 combos @ $10 = $100/race.
+ *   - --picks=half: pool = ceil(runners/2) MC horses per race (min 3).
+ *   - If banker's win odds > --odds threshold, no banker: all picks as legs → C(picks,3).
  *   - Hit = actual top-3 are all within the picked pool AND
  *     (banker mode) banker is in top-3.
  *
  * Parameters mirror backtest-differentiation.ts:
- *   --sparse, --close, --avgdiff, --gap, --odds, --months, --venue, --surface,
+ *   --sparse, --close, --avgdiff, --gap, --odds, --picks, --months, --venue, --surface,
  *   --ignore-class, --ignore-distance, --form/--form-data, --ignore-after
  *
  * trioDividend from results files is used for ROI calculation.
@@ -30,6 +30,13 @@ import { MonteCarloSimulator } from "../src/simulation/monteCarlo.js";
 import { readFile, readdir } from "fs/promises";
 import path from "path";
 import { FormAnalyzer } from "../src/analysis/formAnalysis.js";
+import {
+  printUpcomingTrioSuggestions,
+  runUpcomingTrioSuggestions,
+  resolveTrioPickCount,
+  DEFAULT_TRIO_PICKS,
+  type TrioPicksArg,
+} from "../src/backtest/upcomingBetSuggestions.js";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -76,6 +83,7 @@ interface TrioRaceResult {
   topRatedWinOdds: number;
   topRatedExpectedPosition: number;
   topRatedMcPlacePct: number;
+  pickCount: number;
 }
 
 interface FullResultsFile {
@@ -136,6 +144,7 @@ function parseArgs() {
   let ignoreDistances: number[] = [];
   let form: FormSource = "all";
   let ignoreAfter: string | undefined;
+  let picks: TrioPicksArg = DEFAULT_TRIO_PICKS;
 
   for (const arg of args) {
     const m = arg.match(/^--([a-zA-Z-]+)=(.+)$/);
@@ -147,6 +156,13 @@ function parseArgs() {
     else if (key === "avgdiff") avgDiffMin = parseInt(val, 10);
     else if (key === "gap") gapMin = parseInt(val, 10);
     else if (key === "odds") oddsMax = parseFloat(val);
+    else if (key === "picks") {
+      if (val.toLowerCase() === "half") picks = "half";
+      else {
+        const n = parseInt(val, 10);
+        if (!Number.isNaN(n) && n >= 3) picks = n;
+      }
+    }
     else if (key === "months") months = val.split(",").map((s) => s.trim().padStart(2, "0"));
     else if (key === "venue") venue = val.toUpperCase() === "HV" ? "HV" : "ST";
     else if (key === "surface") surface = val.toUpperCase() === "AWT" ? "AWT" : "Turf";
@@ -161,7 +177,7 @@ function parseArgs() {
     }
   }
 
-  return { sparseMax, closeMax, avgDiffMin, gapMin, oddsMax, months, venue, surface, ignoreClasses, ignoreDistances, form, ignoreAfter };
+  return { sparseMax, closeMax, avgDiffMin, gapMin, oddsMax, picks, months, venue, surface, ignoreClasses, ignoreDistances, form, ignoreAfter };
 }
 
 // ---------------------------------------------------------------------------
@@ -207,7 +223,7 @@ function printTrioBreakdown(label: string, groups: Map<string, TrioRaceResult[]>
 // ---------------------------------------------------------------------------
 
 async function main() {
-  const { sparseMax, closeMax, avgDiffMin, gapMin, oddsMax, months, venue, surface, ignoreClasses, ignoreDistances, form, ignoreAfter } =
+  const { sparseMax, closeMax, avgDiffMin, gapMin, oddsMax, picks, months, venue, surface, ignoreClasses, ignoreDistances, form, ignoreAfter } =
     parseArgs();
   const monthLabel = months.length === 0 ? "all" : months.join(",");
   const venueLabel = venue ?? "all";
@@ -217,17 +233,21 @@ async function main() {
   const ignoreDistLabel = ignoreDistances.length === 0 ? "none" : ignoreDistances.map((d) => `${d}m`).join(",");
   const ignoreAfterLabel = ignoreAfter ?? "none";
   const oddsLabel = oddsMax > 0 ? `>${oddsMax}` : "off";
+  const picksLabel = picks === "half" ? "half (ceil(runners/2), min 3)" : String(picks);
   console.log(
     `Trio Backtest (MC Banker/Legs) — banker odds threshold: ${oddsLabel}`
   );
   console.log(
-    `  Banker mode: MC#1 banker + MC#2-#6 legs → C(5,2)=10 combos @ $10 = $100/race`
+    `  Pool: top MC horses per race (--picks=${picksLabel}, capped at field size, min 3)`
   );
   console.log(
-    `  No-banker mode (odds>${oddsMax || "∞"}): MC#1-#6 all legs → C(6,3)=20 combos @ $10 = $200/race`
+    `  Banker mode: MC#1 banker + remaining legs → C(picks-1,2) combos @ $10`
   );
   console.log(
-    `Skip rules: sparse>${sparseMax}, close<8>${closeMax}, avgDiff<${avgDiffMin}, 1st-2nd gap<${gapMin}, odds ${oddsLabel} | months=${monthLabel} | venue=${venueLabel} | surface=${surfaceLabel} | form=${formLabel} | ignore-class=${ignoreClassLabel} | ignore-distance=${ignoreDistLabel} | ignore-after=${ignoreAfterLabel}\n`
+    `  No-banker mode (odds>${oddsMax || "∞"}): all picks as legs → C(picks,3) combos @ $10`
+  );
+  console.log(
+    `Skip rules: sparse>${sparseMax}, close<8>${closeMax}, avgDiff<${avgDiffMin}, 1st-2nd gap<${gapMin}, odds ${oddsLabel} | picks=${picksLabel} | months=${monthLabel} | venue=${venueLabel} | surface=${surfaceLabel} | form=${formLabel} | ignore-class=${ignoreClassLabel} | ignore-distance=${ignoreDistLabel} | ignore-after=${ignoreAfterLabel}\n`
   );
 
   const formAnalyzer = new FormAnalyzer();
@@ -309,9 +329,10 @@ async function main() {
     const simulator = new MonteCarloSimulator({ runs: 5000, performanceStdDev: hvStdDev });
     const { results: simResults } = simulator.simulateRace(race);
 
-    const mcTop6 = simResults.slice(0, 6);
-    if (mcTop6.length === 0) continue;
-    const mcRank1 = mcTop6[0]!;
+    const pickCount = resolveTrioPickCount(picks, numRunners);
+    const mcPicked = simResults.slice(0, pickCount);
+    if (mcPicked.length < 3) continue;
+    const mcRank1 = mcPicked[0]!;
 
     // Banker's win odds (from finish results or racecard)
     const bankerFinish = finishOrder.find((f) => f.horseNumber === mcRank1.horseNumber);
@@ -335,22 +356,22 @@ async function main() {
       bankerCode = mcRank1.horseCode;
       bankerNumber = mcRank1.horseNumber;
       bankerName = mcRank1.horseName;
-      const legs = mcTop6.slice(1);
+      const legs = mcPicked.slice(1);
       legCodes = legs.map((r) => r.horseCode);
       legNumbers = legs.map((r) => r.horseNumber);
-      pickedHorseCodes = mcTop6.map((r) => r.horseCode);
-      pickedHorseNumbers = mcTop6.map((r) => r.horseNumber);
-      combinations = comb(5, 2); // C(5,2) = 10
+      pickedHorseCodes = mcPicked.map((r) => r.horseCode);
+      pickedHorseNumbers = mcPicked.map((r) => r.horseNumber);
+      combinations = comb(pickCount - 1, 2);
     } else {
       hasBanker = false;
       bankerCode = mcRank1.horseCode;
       bankerNumber = mcRank1.horseNumber;
       bankerName = mcRank1.horseName;
-      legCodes = mcTop6.map((r) => r.horseCode);
-      legNumbers = mcTop6.map((r) => r.horseNumber);
-      pickedHorseCodes = mcTop6.map((r) => r.horseCode);
-      pickedHorseNumbers = mcTop6.map((r) => r.horseNumber);
-      combinations = comb(6, 3); // C(6,3) = 20
+      legCodes = mcPicked.map((r) => r.horseCode);
+      legNumbers = mcPicked.map((r) => r.horseNumber);
+      pickedHorseCodes = mcPicked.map((r) => r.horseCode);
+      pickedHorseNumbers = mcPicked.map((r) => r.horseNumber);
+      combinations = comb(pickCount, 3);
     }
 
     const staked = combinations * 10;
@@ -422,6 +443,7 @@ async function main() {
       topRatedWinOdds,
       topRatedExpectedPosition,
       topRatedMcPlacePct,
+      pickCount,
     });
   }
 
@@ -436,10 +458,10 @@ async function main() {
   // ═══════════════════════════════════════════════════════════════════════════
   const tableWidth = 140;
   console.log("═".repeat(tableWidth));
-  console.log("TRIO BACKTEST — MC Banker/Legs (banker=MC#1, legs=MC#2-#6)");
+  console.log("TRIO BACKTEST — MC Banker/Legs (pool size from --picks)");
   console.log("═".repeat(tableWidth));
   console.log(
-    `${"Race".padEnd(20)} ${"Mode".padEnd(5)} ${"Bnkr".padStart(4)} ${"BnkO".padStart(5)} ${"Legs (#s)".padEnd(18)} ${"Top3(#s)".padEnd(12)} ${"BnkH".padStart(4)} ${"Hit".padStart(4)} ${"Combos".padStart(6)} ${"Staked".padStart(7)} ${"TrioDiv".padStart(8)} ${"P&L".padStart(8)} ${"AvgDiff".padStart(7)} ${"Rnrs".padStart(4)} ${"Skip"}`
+    `${"Race".padEnd(20)} ${"Mode".padEnd(5)} ${"Pk".padStart(3)} ${"Bnkr".padStart(4)} ${"BnkO".padStart(5)} ${"Legs (#s)".padEnd(22)} ${"Top3(#s)".padEnd(12)} ${"BnkH".padStart(4)} ${"Hit".padStart(4)} ${"Combos".padStart(6)} ${"Staked".padStart(7)} ${"TrioDiv".padStart(8)} ${"P&L".padStart(8)} ${"AvgDiff".padStart(7)} ${"Rnrs".padStart(4)} ${"Skip"}`
   );
   console.log("─".repeat(tableWidth));
 
@@ -454,7 +476,7 @@ async function main() {
     const pnl = r.skipped ? "-" : `${r.payout - r.staked >= 0 ? "+" : ""}$${r.payout - r.staked}`;
     const skipStr = r.skipped ? r.skipReason : "";
     console.log(
-      `${r.raceId.padEnd(20)} ${mode.padEnd(5)} ${r.bankerNumber.toString().padStart(4)} ${bnkOdds.padStart(5)} ${legsStr.padEnd(18)} ${top3Str.padEnd(12)} ${bnkHit.padStart(4)} ${hit.padStart(4)} ${r.combinations.toString().padStart(6)} ${("$" + r.staked).padStart(7)} ${divStr.padStart(8)} ${pnl.padStart(8)} ${r.avgDiff.toString().padStart(7)} ${r.numRunners.toString().padStart(4)} ${skipStr}`
+      `${r.raceId.padEnd(20)} ${mode.padEnd(5)} ${r.pickCount.toString().padStart(3)} ${r.bankerNumber.toString().padStart(4)} ${bnkOdds.padStart(5)} ${legsStr.padEnd(22)} ${top3Str.padEnd(12)} ${bnkHit.padStart(4)} ${hit.padStart(4)} ${r.combinations.toString().padStart(6)} ${("$" + r.staked).padStart(7)} ${divStr.padStart(8)} ${pnl.padStart(8)} ${r.avgDiff.toString().padStart(7)} ${r.numRunners.toString().padStart(4)} ${skipStr}`
     );
   }
   console.log("─".repeat(tableWidth));
@@ -787,6 +809,25 @@ async function main() {
     }
   }
   console.log("─".repeat(70));
+
+  const upcoming = await runUpcomingTrioSuggestions(
+    {
+      sparseMax,
+      closeMax,
+      avgDiffMin,
+      gapMin,
+      oddsMax,
+      months,
+      venue,
+      surface,
+      ignoreClasses,
+      ignoreDistances,
+      form,
+      ...(ignoreAfter ? { ignoreAfter } : {}),
+    },
+    picks
+  );
+  printUpcomingTrioSuggestions(upcoming);
 }
 
 main().catch(console.error);

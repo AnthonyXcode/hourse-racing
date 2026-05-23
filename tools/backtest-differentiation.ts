@@ -21,6 +21,10 @@ import {
   type DifferentiationBacktestRow,
   type FormSource,
 } from "../src/backtest/differentiationBacktest.js";
+import {
+  printUpcomingPlaceSuggestions,
+  runUpcomingPlaceSuggestions,
+} from "../src/backtest/upcomingBetSuggestions.js";
 
 function parseArgs() {
   const args = process.argv.slice(2);
@@ -462,6 +466,22 @@ async function main() {
     }
   }
   console.log("─".repeat(70));
+
+  const upcoming = await runUpcomingPlaceSuggestions({
+    sparseMax,
+    closeMax,
+    avgDiffMin,
+    gapMin,
+    oddsMax,
+    months,
+    venue,
+    surface,
+    ignoreClasses,
+    ignoreDistances,
+    form,
+    ...(ignoreAfter ? { ignoreAfter } : {}),
+  });
+  printUpcomingPlaceSuggestions(upcoming);
 }
 
 main().catch(console.error);
