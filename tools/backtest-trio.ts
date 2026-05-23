@@ -473,12 +473,40 @@ async function main() {
 
   console.log(`\nTrio hits:     ${hits}/${betted.length} (${hitRate}%)`);
   console.log(`Banker hits:   ${bankerHits}/${betted.length} (${betted.length > 0 ? ((bankerHits / betted.length) * 100).toFixed(1) : "0.0"}%)`);
-  console.log(`Banker mode:   ${bankerModeRaces.length} races (${bankerModeRaces.filter((r) => r.trioHit).length} hits)`);
-  console.log(`No-banker mode:${noBankerModeRaces.length} races (${noBankerModeRaces.filter((r) => r.trioHit).length} hits)`);
   console.log(`Skipped:       ${skippedRaces.length} races`);
   console.log(`Staked:        $${totalStaked}`);
   console.log(`Return:        $${totalReturn}`);
   console.log(`P&L:           ${totalReturn - totalStaked >= 0 ? "+" : ""}$${totalReturn - totalStaked} (ROI: ${roi}%)`);
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // Hit rate by betting mode (BKR vs LEGS)
+  // ═══════════════════════════════════════════════════════════════════════════
+  const byBettingMode = new Map<string, TrioRaceResult[]>();
+  for (const r of allResults) {
+    const mode = r.hasBanker ? "BKR" : "LEGS";
+    if (!byBettingMode.has(mode)) byBettingMode.set(mode, []);
+    byBettingMode.get(mode)!.push(r);
+  }
+  const byBettingModeSorted = new Map<string, TrioRaceResult[]>();
+  for (const mode of ["BKR", "LEGS"]) {
+    if (byBettingMode.has(mode)) byBettingModeSorted.set(mode, byBettingMode.get(mode)!);
+  }
+  console.log("\n  BKR  = MC#1 banker + MC#2–#6 legs → C(5,2)=10 combos @ $10 = $100/race");
+  console.log("  LEGS = MC#1–#6 all legs (banker odds > threshold) → C(6,3)=20 combos @ $10 = $200/race");
+  printTrioBreakdown("BETTING MODE", byBettingModeSorted);
+
+  const bkrBetted = bankerModeRaces;
+  const legsBetted = noBankerModeRaces;
+  const bkrBankerHits = bkrBetted.filter((r) => r.bankerHit).length;
+  const legsMc1InTop3 = legsBetted.filter((r) => r.bankerHit).length;
+  console.log(
+    `  BKR banker top-3: ${bkrBankerHits}/${bkrBetted.length}` +
+      (bkrBetted.length > 0 ? ` (${((bkrBankerHits / bkrBetted.length) * 100).toFixed(1)}%)` : "")
+  );
+  console.log(
+    `  LEGS MC#1 in top-3: ${legsMc1InTop3}/${legsBetted.length}` +
+      (legsBetted.length > 0 ? ` (${((legsMc1InTop3 / legsBetted.length) * 100).toFixed(1)}%)` : "")
+  );
 
   // ═══════════════════════════════════════════════════════════════════════════
   // Per racing day hit rate
