@@ -270,40 +270,34 @@ export async function runUpcomingTrioSuggestions(
         opts
       );
 
+      const numRunners = race.entries.filter((e) => !e.isScratched).length;
+      const pickCount = resolveTrioPickCount(picks, numRunners);
+      const hvStdDev = parsed.venue === "Happy Valley" ? 11 : 8;
+      const simulator = new MonteCarloSimulator({ runs: 5000, performanceStdDev: hvStdDev });
+      const { results: simResults } = simulator.simulateRace(race);
+      const mcPicked = simResults.slice(0, pickCount);
+      if (mcPicked.length < 3) continue;
+
+      const mcRank1 = mcPicked[0]!;
+      const bankerWinOdds = loaded.winOddsMap.get(mcRank1.horseNumber) ?? 0;
+      const useBanker = opts.oddsMax <= 0 || bankerWinOdds <= opts.oddsMax;
+
       let hasBanker = false;
-      let bankerNumber = 0;
-      let bankerName = "";
-      let bankerWinOdds = 0;
       let legNumbers: number[] = [];
       let combinations = 0;
 
-      if (!skipped) {
-        const numRunners = race.entries.filter((e) => !e.isScratched).length;
-        const pickCount = resolveTrioPickCount(picks, numRunners);
-        const hvStdDev = parsed.venue === "Happy Valley" ? 11 : 8;
-        const simulator = new MonteCarloSimulator({ runs: 5000, performanceStdDev: hvStdDev });
-        const { results: simResults } = simulator.simulateRace(race);
-        const mcPicked = simResults.slice(0, pickCount);
-        if (mcPicked.length < 3) continue;
-
-        const mcRank1 = mcPicked[0]!;
-        bankerWinOdds = loaded.winOddsMap.get(mcRank1.horseNumber) ?? 0;
-        const useBanker = opts.oddsMax <= 0 || bankerWinOdds <= opts.oddsMax;
-
-        if (useBanker) {
-          hasBanker = true;
-          bankerNumber = mcRank1.horseNumber;
-          bankerName = mcRank1.horseName;
-          legNumbers = mcPicked.slice(1).map((r) => r.horseNumber);
-          combinations = comb(pickCount - 1, 2);
-        } else {
-          hasBanker = false;
-          bankerNumber = mcRank1.horseNumber;
-          bankerName = mcRank1.horseName;
-          legNumbers = mcPicked.map((r) => r.horseNumber);
-          combinations = comb(pickCount, 3);
-        }
+      if (useBanker) {
+        hasBanker = true;
+        legNumbers = mcPicked.slice(1).map((r) => r.horseNumber);
+        combinations = comb(pickCount - 1, 2);
+      } else {
+        hasBanker = false;
+        legNumbers = mcPicked.map((r) => r.horseNumber);
+        combinations = comb(pickCount, 3);
       }
+
+      const bankerNumber = mcRank1.horseNumber;
+      const bankerName = mcRank1.horseName;
 
       rows.push({
         raceId: `${parsed.date}_${parsed.venue === "Happy Valley" ? "HV" : "ST"}_R${parsed.raceNumber}`,
@@ -322,7 +316,7 @@ export async function runUpcomingTrioSuggestions(
         bankerWinOdds,
         legNumbers,
         combinations,
-        staked: combinations * BET_UNIT,
+        staked: skipped ? 0 : combinations * BET_UNIT,
         avgDiff: metrics.avgDiff,
       });
     }
@@ -372,9 +366,9 @@ export function printUpcomingPlaceSuggestions(byMeeting: Map<string, UpcomingPla
 }
 
 export function printUpcomingTrioSuggestions(byMeeting: Map<string, UpcomingTrioRace[]>) {
-  console.log("\n" + "═".repeat(90));
+  console.log("\n" + "═".repeat(98));
   console.log("UPCOMING TRIO BETTING SUGGESTIONS  (racecards without results file)");
-  console.log("═".repeat(90));
+  console.log("═".repeat(98));
 
   if (byMeeting.size === 0) {
     console.log("  (none — all matching meetings already have results files)\n");
@@ -389,18 +383,19 @@ export function printUpcomingTrioSuggestions(byMeeting: Map<string, UpcomingTrio
     const flatStake = betted.length * BET_UNIT;
 
     console.log(`\n${fmtDate} ${first.venue}  —  ${betted.length}/${races.length} races to bet  |  full box stake $${stake}  |  flat $${BET_UNIT}/race = $${flatStake}`);
-    console.log("─".repeat(90));
+    console.log("─".repeat(98));
     console.log(
-      `${"Race".padEnd(8)} ${"Act".padEnd(5)} ${"Mode".padEnd(5)} ${"Bnkr".padStart(4)} ${"BnkO".padStart(5)} ${"Legs (#s)".padEnd(20)} ${"Combos".padStart(6)} ${"Stake".padStart(7)} ${"Skip reason"}`
+      `${"Race".padEnd(8)} ${"Act".padEnd(5)} ${"Horse".padEnd(16)} ${"#".padStart(2)} ${"Mode".padEnd(5)} ${"BnkO".padStart(5)} ${"Legs (#s)".padEnd(20)} ${"Combos".padStart(6)} ${"Stake".padStart(7)} ${"Skip reason"}`
     );
-    console.log("─".repeat(90));
+    console.log("─".repeat(98));
 
     for (const r of races) {
       const act = r.skipped ? "SKIP" : "BET";
-      const mode = r.skipped ? "-" : r.hasBanker ? "BKR" : "LEGS";
-      const bnk = r.skipped ? "-" : r.bankerNumber.toString();
-      const bnkO = r.skipped || r.bankerWinOdds <= 0 ? "-" : r.bankerWinOdds.toFixed(1);
-      const legs = r.skipped ? "-" : r.legNumbers.join(",");
+      const horse = r.bankerName ? r.bankerName.substring(0, 15) : "-";
+      const num = r.bankerNumber > 0 ? r.bankerNumber.toString() : "-";
+      const mode = r.hasBanker ? "BKR" : "LEGS";
+      const bnkO = r.bankerWinOdds > 0 ? r.bankerWinOdds.toFixed(1) : "-";
+      const legs = r.legNumbers.length > 0 ? r.legNumbers.join(",") : "-";
       const combos = r.skipped ? "-" : r.combinations.toString();
       const st = r.skipped ? "-" : `$${r.staked}`;
       const note = r.skipped
@@ -409,7 +404,7 @@ export function printUpcomingTrioSuggestions(byMeeting: Map<string, UpcomingTrio
           ? `Trio: #${r.bankerNumber} banker + legs ${legs}`
           : `Trio box legs ${legs}`;
       console.log(
-        `${(`R${r.raceNumber}`).padEnd(8)} ${act.padEnd(5)} ${mode.padEnd(5)} ${bnk.padStart(4)} ${bnkO.padStart(5)} ${legs.padEnd(20)} ${combos.padStart(6)} ${st.padStart(7)} ${note}`
+        `${(`R${r.raceNumber}`).padEnd(8)} ${act.padEnd(5)} ${horse.padEnd(16)} ${num.padStart(2)} ${mode.padEnd(5)} ${bnkO.padStart(5)} ${legs.padEnd(20)} ${combos.padStart(6)} ${st.padStart(7)} ${note}`
       );
     }
 
@@ -428,5 +423,5 @@ export function printUpcomingTrioSuggestions(byMeeting: Map<string, UpcomingTrio
       }
     }
   }
-  console.log("─".repeat(90));
+  console.log("─".repeat(98));
 }
