@@ -285,7 +285,7 @@ export class SpeedRatingCalculator {
     const classPars = surfacePars[closestDistance];
     if (!classPars) return null;
 
-    return classPars[raceClass] ?? classPars["Class 4"] ?? null;
+    return classPars[raceClass];
   }
 
   /**
@@ -324,6 +324,7 @@ export class SpeedRatingCalculator {
     );
 
     if (!parTime) {
+      console.error(`No par time found for race ${raceId}`);
       return null;
     }
 

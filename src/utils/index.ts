@@ -68,7 +68,7 @@ export function calculateFormScore(
 
   for (let i = 0; i < Math.min(positions.length, 6); i++) {
     const position = positions[i]!;
-    const fieldSize = fieldSizes[i] ?? 14; // Default field size
+    const fieldSize = fieldSizes[i]!; // Default field size
     const weight = weights[i]!;
 
     // Score: (fieldSize - position + 1) / fieldSize
