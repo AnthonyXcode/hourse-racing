@@ -34,6 +34,7 @@
 | **17**  | **13 May** | **HV** | **HV Turf C** | **Good to Firm** | **9**  | **35.9%** | **68.8%**  | **4/9**  | **44.4%** | **❌✅✅❌✅❌❌✅❌** | **2 (R2-R3)**  |
 | **18**  | **17 May** | **ST** | **AWT+Turf** | **G-Y→Yielding** | **11** | **39.6%** | **75.1%**  | **2/11** | **18.2%** | **❌❌❌❌✅✅❌❌❌❌❌** | **2 (R5-R6)** |
 | **19**  | **20 May** | **HV** | **Turf**     | **Good**         | **9**  | **29.6%** | **62.1%**  | **2/9**  | **22.2%** | **❌❌❌❌❌✅❌✅❌**   | **1**          |
+| **20**  | **24 May** | **ST** | **Turf**     | **Good to Firm** | **11** | **38.4%** | **74.8%**  | **3/11** | **27.3%** | **✅❌❌✅❌❌❌❌❌✅❌** | **1**          |
 
 \*Meeting 8 **R1** (6 runners): MC #1 **#6** ran **3rd** but HKJC Place pool pays **two** places only → **$0** dividend; counts as **❌** for streaks and all-ups (same dividend logic as other meetings).
 
@@ -1330,3 +1331,63 @@ Place dividends (MC #1 when placed): R6=$15.50, R8=$15.00
 | 6 | 4 | $40 | 0 | $0 | −$40.00 | −100% |
 
 **Observation:** MC #1 Place was **unusable for all-ups** this card — placers were **non-consecutive** (R6, R8 only). Trio pipeline hits (R6, R8) came from **leg pools**, not MC #1 winning/placing as banker. Aligns with **Pattern A** trio misses on R1/R5 where MC #1 failed but all three trio horses were in the B pool.
+
+---
+
+## Meeting 20: Sha Tin | 24 May 2026 (11 races)
+
+**MC #1** = raw MC Win% rank from strategy reports. **Results / Place dividends:** `data/historical/results_20260524_ST.json`. **Going:** Good to Firm (all races). **Surface:** Turf. **Feature:** Standard Chartered Champions & Chater Cup (R8 G1).
+
+| Race | Class   | Dist (m) | MC #1              | MC Win% | MC Place% | Placed? | Place $ (if placed) |
+| ---- | ------- | -------- | ------------------ | ------- | --------- | ------- | ------------------- |
+| R1   | Class 5 | 1600     | #6 SOARING BRONCO  | 30.2%   | 68.5%     | ✅ 3rd  | $14.00              |
+| R2   | Class 4 | 1400     | #5 SUPER LOVE      | 28.1%   | 60.5%     | ❌ 11th | —                   |
+| R3   | Class 4 | 1200     | #4 GROUPER         | 26.2%   | 60.8%     | ❌ 8th  | —                   |
+| R4   | Class 4 | 1200     | #3 PACKING KING    | 24.2%   | 57.3%     | ✅ 1st  | $12.50              |
+| R5   | Class 4 | 1600     | #9 BEST WORLD      | 31.2%   | 64.6%     | ❌ 7th  | —                   |
+| R6   | Class 4 | 1400     | #14 VIEW ALL THINGS| 59.0%   | 88.2%     | ❌ 9th  | —                   |
+| R7   | Class 3 | 1800     | #2 AERODYNAMICS    | 74.9%   | 96.3%     | ❌ 14th | —                   |
+| R8   | Group 1 | 2400     | #8 GENTLEMEN LEGACY| 50.5%   | 90.1%     | ❌ 8th  | —                   |
+| R9   | Class 2 | 1400     | #7 MIGHTY MASTS    | 40.0%   | 74.3%     | ✅ 3rd  | $16.50              |
+| R10  | Class 3 | 1200     | #2 MICKLEY         | 44.0%   | 79.0%     | ❌ 10th | —                   |
+| R11  | Class 3 | 1400     | #7 BABY SAKURA     | 51.1%   | 90.5%     | ❌ 4th  | —                   |
+
+Place dividends (MC #1 when placed): R1=$14.00, R4=$12.50, R9=$16.50
+
+**Placing rate: 3/11 = 27.3%**
+**Avg MC Win%:** 38.4% | **Avg MC Place%:** 74.8%
+**Pattern:** ✅❌❌✅❌❌❌❌❌✅❌ — **max streak: 1** (isolated placers only)
+
+### Notable observations
+
+- **HIGH MC Win% collapses:** R6 #14 (59.0%), R7 #2 (74.9%), R8 #8 (50.5%), R11 #7 (51.1%) all missed top 3 despite strong Place% profiles — same pattern as M16/M18 wet-track meetings but on **Good to Firm**.
+- **R7 upset:** #12 MIGHTY STRENGTH (0.0% MC Win) won at 17 SP; AERODYNAMICS last of 14.
+- **R8 Chater Cup:** ROMANTIC WARRIOR (16.1% MC, 1.1 SP fav) won; MC#1 #8 GENTLEMEN LEGACY (162 SP) 8th.
+- **Trio B hits R1+R9** where MC#1 placed 3rd with wider leg pools; Strategy A missed both.
+
+**Total flat return:** $43.00 on **$110** staked (3 Place legs) → **−$67.00** (−60.9% ROI).
+
+### 2-Leg (10 bets)
+
+| # | All-Up | Hit? | Return |
+|---|--------|------|--------|
+| 1–3 | R1+R2, R2+R3, R3+R4 | ❌ | $0 |
+| 4 | R4+R5 | ❌ | $0 |
+| 5–10 | R5+R6 … R10+R11 | ❌ | $0 |
+
+**Summary:** 0 winners from 10 consecutive 2-leg bets (placers at R1, R4, R9 not adjacent).
+
+### 3-Leg through 6-Leg
+
+**Max paying streak = 1** → all multi-leg all-ups miss.
+
+| Legs | Bets | Staked | Winners | Returned | P&L | ROI |
+|------|------|--------|---------|----------|-----|-----|
+| 1 | 11 | $110 | 3 | $43.00 | −$67.00 | −60.9% |
+| 2 | 10 | $100 | 0 | $0 | −$100.00 | −100% |
+| 3 | 9 | $90 | 0 | $0 | −$90.00 | −100% |
+| 4 | 8 | $80 | 0 | $0 | −$80.00 | −100% |
+| 5 | 7 | $70 | 0 | $0 | −$70.00 | −100% |
+| 6 | 6 | $60 | 0 | $0 | −$60.00 | −100% |
+
+**Observation:** Good to Firm ST Champions Day produced **isolated MC#1 placers** (R1, R4, R9) — unusable for consecutive all-ups. The afternoon HIGH-confidence trio tickets (R6–R11) went **0/6** despite 74.8% average MC Place% on MC#1 picks, because the highest-Win% horses (R6–R8) failed while lower-tier legs won races.
