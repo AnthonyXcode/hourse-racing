@@ -13,6 +13,7 @@ export * from "./scrapers/historical.js";
 
 // Analysis
 export * from "./analysis/speedRating.js";
+export * from "./analysis/formAnalysisConfig.js";
 export * from "./analysis/formAnalysis.js";
 
 // Simulation

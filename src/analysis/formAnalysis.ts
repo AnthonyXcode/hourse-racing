@@ -30,94 +30,57 @@ import {
   parseFormString,
 } from "../utils/index.js";
 import { SpeedRatingCalculator } from "./speedRating.js";
+import {
+  CLASS_RATINGS,
+  DRAW_BIAS,
+  getOverallRatingWeights,
+  type OverallRatingWeights,
+} from "./formAnalysisConfig.js";
 
-// ============================================================================
-// DRAW BIAS DATA
-// Based on historical analysis of HKJC races
-// Positive = advantage, Negative = disadvantage
-// ============================================================================
+export type { OverallRatingWeights } from "./formAnalysisConfig.js";
+export {
+  CLASS_RATINGS,
+  DRAW_BIAS,
+  getOverallRatingWeights,
+  WEIGHT_BIAS,
+  WEIGHT_BIAS_FALLBACK,
+} from "./formAnalysisConfig.js";
 
-type DrawBiasData = Record<number, Record<number, number>>;
+function fitnessScoreFromDays(days: number): number {
+  if (days >= 14 && days <= 35) return 1.0;
+  if (days >= 7 && days < 14) return 0.85;
+  if (days > 35 && days <= 60) return 0.8;
+  if (days > 60 && days <= 90) return 0.65;
+  if (days > 90 && days <= 180) return 0.5;
+  if (days > 180) return 0.35;
+  if (days < 7) return 0.7;
+  return 0.5;
+}
 
-const DRAW_BIAS: Record<Venue, Record<TrackSurface, DrawBiasData>> = {
-  "Sha Tin": {
-    Turf: {
-      // Distance -> Draw -> Bias adjustment
-      1000: {
-        1: 0.08, 2: 0.06, 3: 0.05, 4: 0.04, 5: 0.02,
-        6: 0.01, 7: 0, 8: -0.01, 9: -0.02, 10: -0.03,
-        11: -0.04, 12: -0.05, 13: -0.06, 14: -0.07,
-      },
-      1200: {
-        1: 0.06, 2: 0.05, 3: 0.04, 4: 0.03, 5: 0.02,
-        6: 0.01, 7: 0, 8: -0.01, 9: -0.01, 10: -0.02,
-        11: -0.03, 12: -0.03, 13: -0.04, 14: -0.05,
-      },
-      1400: {
-        1: 0.04, 2: 0.03, 3: 0.02, 4: 0.02, 5: 0.01,
-        6: 0, 7: 0, 8: 0, 9: -0.01, 10: -0.01,
-        11: -0.02, 12: -0.02, 13: -0.03, 14: -0.03,
-      },
-      1600: {
-        1: 0.02, 2: 0.02, 3: 0.01, 4: 0.01, 5: 0,
-        6: 0, 7: 0, 8: 0, 9: 0, 10: 0,
-        11: -0.01, 12: -0.01, 13: -0.02, 14: -0.02,
-      },
-      // Longer distances - minimal bias
-      1800: Object.fromEntries(Array.from({ length: 14 }, (_, i) => [i + 1, 0])),
-      2000: Object.fromEntries(Array.from({ length: 14 }, (_, i) => [i + 1, 0])),
-      2400: Object.fromEntries(Array.from({ length: 14 }, (_, i) => [i + 1, 0])),
-    },
-    AWT: {
-      // AWT at Sha Tin - more balanced
-      1200: Object.fromEntries(
-        Array.from({ length: 14 }, (_, i) => [i + 1, i < 7 ? 0.02 : -0.02])
-      ),
-      1650: Object.fromEntries(Array.from({ length: 14 }, (_, i) => [i + 1, 0])),
-    },
-  },
-  "Happy Valley": {
-    Turf: {
-      // Happy Valley - tight track, outside draws can be better
-      1000: {
-        1: -0.02, 2: -0.01, 3: 0, 4: 0.01, 5: 0.02,
-        6: 0.03, 7: 0.03, 8: 0.02, 9: 0.01, 10: 0,
-        11: -0.01, 12: -0.02,
-      },
-      1200: {
-        1: -0.01, 2: 0, 3: 0.01, 4: 0.02, 5: 0.02,
-        6: 0.02, 7: 0.02, 8: 0.01, 9: 0, 10: -0.01,
-        11: -0.02, 12: -0.03,
-      },
-      1650: {
-        1: 0, 2: 0.01, 3: 0.01, 4: 0.01, 5: 0.01,
-        6: 0, 7: 0, 8: 0, 9: -0.01, 10: -0.01,
-        11: -0.01, 12: -0.02,
-      },
-      1800: Object.fromEntries(Array.from({ length: 12 }, (_, i) => [i + 1, 0])),
-      2200: Object.fromEntries(Array.from({ length: 12 }, (_, i) => [i + 1, 0])),
-    },
-    AWT: {},
-  },
-};
+export function computeOverallRatingWithWeights(
+  analysis: HorseAnalysis,
+  weights: OverallRatingWeights
+): number {
+  const normalizedSpeed = Math.max(0, Math.min(1, (analysis.averageSpeedRating - 60) / 60));
+  const normalizedClass = (analysis.classIndicator + 5) / 10;
+  const normalizedMomentum = (analysis.ratingMomentum + 1) / 2;
+  const fitnessScore = fitnessScoreFromDays(analysis.daysSinceLastRace);
 
-// ============================================================================
-// CLASS RATING MAPPING
-// ============================================================================
+  const rating =
+    normalizedSpeed * weights.speedRating +
+    analysis.formScore * weights.formScore +
+    normalizedClass * weights.classIndicator +
+    normalizedMomentum * weights.ratingMomentum +
+    fitnessScore * weights.fitness +
+    (analysis.drawAdvantage + 0.1) * 5 * weights.drawAdvantage +
+    (analysis.jockeyEdge + 0.1) * 5 * weights.jockeyEdge +
+    analysis.trainerForm * weights.trainerForm +
+    ((analysis.surfacePreference + 1) / 2) * weights.surfacePreference +
+    ((analysis.goingPreference + 1) / 2) * weights.goingPreference +
+    ((analysis.distancePreference + 1) / 2) * weights.distancePreference;
 
-const CLASS_RATINGS: Record<RaceClass, number> = {
-  "Group 1": 120,
-  "Group 2": 115,
-  "Group 3": 110,
-  "4 Year Olds": 110,
-  "Class 1": 100,
-  "Class 2": 90,
-  "Class 3": 80,
-  "Class 4": 70,
-  "Class 5": 60,
-  Griffin: 55,
-  Handicap: 85,
-};
+  return Math.round(rating * 100);
+}
 
 // ============================================================================
 // FORM ANALYZER CLASS
@@ -166,85 +129,23 @@ export class FormAnalyzer {
   }
 
   /**
-   * Calculate composite overall rating.
-   * Uses venue/surface/class-specific weights:
-   * - HV: tight tactical track — jockey skill, form momentum, class matter more than raw speed
-   * - AWT: par times less calibrated, going preference useless (all "wet"), surface specialist matters
-   * - ST Turf C3: transition class — raw speed less predictive (mixed C2/C4 context), class
-   *   movement direction and rating trajectory are the key differentiators
-   * - ST Turf default: speed rating is the dominant predictor
+   * Composite overall rating — weights from venue × surface × distance;
+   * draw gate bias is in DRAW_BIAS only.
    */
-  calculateOverallRating(analysis: HorseAnalysis, venue?: Venue, surface?: TrackSurface, raceClass?: RaceClass): number {
-    const weights = venue === "Happy Valley"
-      ? {
-          speedRating: 0.19,
-          formScore: 0.15,
-          classIndicator: 0.10,
-          ratingMomentum: 0.14,
-          fitness: 0.10,
-          drawAdvantage: 0.07,
-          jockeyEdge: 0.14,
-          trainerForm: 0.03,
-          surfacePreference: 0.03,
-          goingPreference: 0.03,
-          distancePreference: 0.02,
-        }
-      : surface === "AWT"
-      ? {
-          // AWT-specific: speed rating less reliable (only 2 hardcoded par distances),
-          // going preference is always -0.2 (no wet history) so zeroed out,
-          // surface specialist history matters much more than on Turf.
-          speedRating: 0.27,
-          formScore: 0.20,
-          classIndicator: 0.08,
-          ratingMomentum: 0.08,
-          fitness: 0.10,
-          drawAdvantage: 0.06,
-          jockeyEdge: 0.10,
-          trainerForm: 0.02,
-          surfacePreference: 0.07,
-          goingPreference: 0.00,
-          distancePreference: 0.02,
-        }
-      : {
-          speedRating: 0.36,
-          formScore: 0.13,
-          classIndicator: 0.06,
-          ratingMomentum: 0.06,
-          fitness: 0.10,
-          drawAdvantage: 0.08,
-          jockeyEdge: 0.08,
-          trainerForm: 0.02,
-          surfacePreference: 0.03,
-          goingPreference: 0.03,
-          distancePreference: 0.03,
-        };
-
-    const normalizedSpeed = Math.max(0, Math.min(1, (analysis.averageSpeedRating - 60) / 60));
-
-    // Fitness score based on days since last race
-    const fitnessScore = this.calculateFitnessScore(analysis.daysSinceLastRace);
-
-    // Class indicator normalized (-5 to +5 -> 0 to 1)
-    const normalizedClass = (analysis.classIndicator + 5) / 10;
-
-    // Rating momentum normalized (-1 to 1 -> 0 to 1)
-    const normalizedMomentum = (analysis.ratingMomentum + 1) / 2;
-
-    const rating =
-      normalizedSpeed * weights.speedRating +
-      analysis.formScore * weights.formScore +
-      normalizedClass * weights.classIndicator +
-      normalizedMomentum * weights.ratingMomentum +
-      fitnessScore * weights.fitness +
-      (analysis.drawAdvantage + 0.1) * 5 * weights.drawAdvantage +
-      (analysis.jockeyEdge + 0.1) * 5 * weights.jockeyEdge +
-      analysis.trainerForm * weights.trainerForm +
-      (analysis.surfacePreference + 1) / 2 * weights.surfacePreference +
-      (analysis.goingPreference + 1) / 2 * weights.goingPreference +
-      (analysis.distancePreference + 1) / 2 * weights.distancePreference;
-
-    return Math.round(rating * 100);
+  calculateOverallRating(
+    analysis: HorseAnalysis,
+    venue?: Venue,
+    surface?: TrackSurface,
+    _raceClass?: RaceClass,
+    distance?: number
+  ): number {
+    const weights = getOverallRatingWeights(
+      venue ?? "Sha Tin",
+      surface ?? "Turf",
+      distance,
+      _raceClass
+    );
+    return computeOverallRatingWithWeights(analysis, weights);
   }
 
   /**
@@ -410,14 +311,7 @@ export class FormAnalyzer {
    * Optimal: 14-35 days
    */
   private calculateFitnessScore(days: number): number {
-    if (days >= 14 && days <= 35) return 1.0;
-    if (days >= 7 && days < 14) return 0.85;
-    if (days > 35 && days <= 60) return 0.80;
-    if (days > 60 && days <= 90) return 0.65;
-    if (days > 90 && days <= 180) return 0.50;
-    if (days > 180) return 0.35;
-    if (days < 7) return 0.70; // Backing up quickly
-    return 0.5;
+    return fitnessScoreFromDays(days);
   }
 
   /**
@@ -632,7 +526,13 @@ export class FormAnalyzer {
       if (entry.isScratched) continue;
 
       const analysis = this.analyzeHorse(entry.horse, race, entry);
-      const overallRating = this.calculateOverallRating(analysis, race.venue, race.surface, race.class);
+      const overallRating = this.calculateOverallRating(
+        analysis,
+        race.venue,
+        race.surface,
+        race.class,
+        race.distance
+      );
 
       analyses.push({
         ...analysis,
