@@ -175,18 +175,16 @@ export class FormAnalyzer {
    * - ST Turf default: speed rating is the dominant predictor
    */
   calculateOverallRating(analysis: HorseAnalysis, venue?: Venue, surface?: TrackSurface, raceClass?: RaceClass): number {
-    const isC3 = raceClass === "Class 3";
-
     const weights = venue === "Happy Valley"
       ? {
-          speedRating: 0.18,
-          formScore: 0.14,
+          speedRating: 0.19,
+          formScore: 0.15,
           classIndicator: 0.10,
-          ratingMomentum: 0.13,
+          ratingMomentum: 0.14,
           fitness: 0.10,
           drawAdvantage: 0.07,
-          jockeyEdge: 0.13,
-          trainerForm: 0.07,
+          jockeyEdge: 0.14,
+          trainerForm: 0.03,
           surfacePreference: 0.03,
           goingPreference: 0.03,
           distancePreference: 0.02,
@@ -196,47 +194,27 @@ export class FormAnalyzer {
           // AWT-specific: speed rating less reliable (only 2 hardcoded par distances),
           // going preference is always -0.2 (no wet history) so zeroed out,
           // surface specialist history matters much more than on Turf.
-          speedRating: 0.25,
-          formScore: 0.18,
+          speedRating: 0.27,
+          formScore: 0.20,
           classIndicator: 0.08,
           ratingMomentum: 0.08,
           fitness: 0.10,
           drawAdvantage: 0.06,
           jockeyEdge: 0.10,
-          trainerForm: 0.06,
+          trainerForm: 0.02,
           surfacePreference: 0.07,
           goingPreference: 0.00,
           distancePreference: 0.02,
         }
-      : isC3
-      ? {
-          // C3 ST Turf: highly competitive transition class. Speed figures from
-          // mixed C2/C4 contexts are unreliable. classIndicator and ratingMomentum
-          // also tend to overstate false confidence (backed by data: avgDiff 14-16
-          // C3 Turf bets hit only 25%). Jockey booking is the primary real-world
-          // signal — top jockeys at HKJC are carefully allocated and their bookings
-          // directly reflect trainer confidence and horse fitness.
-          speedRating: 0.30,
-          formScore: 0.16,
-          classIndicator: 0.06,
-          ratingMomentum: 0.08,
-          fitness: 0.10,
-          drawAdvantage: 0.07,
-          jockeyEdge: 0.14,
-          trainerForm: 0.05,
-          surfacePreference: 0.02,
-          goingPreference: 0.02,
-          distancePreference: 0.00,
-        }
       : {
-          speedRating: 0.35,
+          speedRating: 0.36,
           formScore: 0.13,
           classIndicator: 0.06,
           ratingMomentum: 0.06,
           fitness: 0.10,
           drawAdvantage: 0.08,
           jockeyEdge: 0.08,
-          trainerForm: 0.05,
+          trainerForm: 0.02,
           surfacePreference: 0.03,
           goingPreference: 0.03,
           distancePreference: 0.03,
