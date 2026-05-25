@@ -459,31 +459,173 @@ export async function runDifferentiationBacktest(
   return allResults;
 }
 
-export function printBreakdown(label: string, groups: Map<string, DifferentiationBacktestRow[]>) {
-  console.log("\n" + "═".repeat(60));
+function raceClassSortKey(raceClass: string): number {
+  const g = raceClass.match(/^Group (\d+)$/);
+  if (g) return parseInt(g[1], 10);
+  const c = raceClass.match(/^Class (\d+)$/);
+  if (c) return 10 + parseInt(c[1], 10);
+  if (raceClass === "Griffin") return 90;
+  if (raceClass === "Handicap") return 85;
+  if (raceClass === "4 Year Olds") return 16;
+  return 50;
+}
+
+/** Group key: venue + class + distance (sorted HV/ST → class → distance). */
+export function groupByClassDistanceVenue(
+  rows: DifferentiationBacktestRow[]
+): Map<string, DifferentiationBacktestRow[]> {
+  const map = new Map<string, DifferentiationBacktestRow[]>();
+  for (const r of rows) {
+    const key = `${r.venue}  ${r.raceClass}  ${r.distance}m`;
+    if (!map.has(key)) map.set(key, []);
+    map.get(key)!.push(r);
+  }
+
+  const sorted = [...map.entries()].sort((a, b) => {
+    const [venueA, classA, distA] = parseClassDistanceVenueKey(a[0]);
+    const [venueB, classB, distB] = parseClassDistanceVenueKey(b[0]);
+    if (venueA !== venueB) return venueA.localeCompare(venueB);
+    const classCmp = raceClassSortKey(classA) - raceClassSortKey(classB);
+    if (classCmp !== 0) return classCmp;
+    const nameCmp = classA.localeCompare(classB, undefined, { numeric: true });
+    if (nameCmp !== 0) return nameCmp;
+    return distA - distB;
+  });
+
+  return new Map(sorted);
+}
+
+function parseClassDistanceVenueKey(key: string): [string, string, number] {
+  const m = key.match(/^(HV|ST)\s{2}(.+?)\s{2}(\d+)m$/);
+  if (m) return [m[1], m[2], parseInt(m[3], 10)];
+  return [key, "", 0];
+}
+
+export function printBreakdown(
+  label: string,
+  groups: Map<string, DifferentiationBacktestRow[]>,
+  options?: { groupWidth?: number; preserveOrder?: boolean }
+) {
+  const groupWidth = options?.groupWidth ?? 12;
+  const width = groupWidth + 38;
+  console.log("\n" + "═".repeat(width));
   console.log(`HIT RATE BY ${label}`);
-  console.log("═".repeat(60));
+  console.log("═".repeat(width));
   console.log(
-    `${"Group".padEnd(12)} ${"Total".padStart(5)} ${"Bet".padStart(4)} ${"Hit".padStart(4)} ${"Miss".padStart(4)} ${"Skip".padStart(4)} ${"HitRate".padStart(8)}`
+    `${"Group".padEnd(groupWidth)} ${"Total".padStart(5)} ${"Bet".padStart(4)} ${"Hit".padStart(4)} ${"Miss".padStart(4)} ${"Skip".padStart(4)} ${"HitRate".padStart(8)}`
   );
-  console.log("─".repeat(60));
+  console.log("─".repeat(width));
   let gTotalRaces = 0;
   let gTotalBet = 0;
   let gTotalHit = 0;
-  for (const [key, races] of [...groups.entries()].sort((a, b) => a[0].localeCompare(b[0]))) {
+  const entries = options?.preserveOrder
+    ? [...groups.entries()]
+    : [...groups.entries()].sort((a, b) => a[0].localeCompare(b[0]));
+  for (const [key, races] of entries) {
     const gb = races.filter((r) => !r.skipped);
     const gh = gb.filter((r) => r.topRatedPlaced).length;
     const rate = gb.length > 0 ? ((gh / gb.length) * 100).toFixed(1) + "%" : "N/A";
     console.log(
-      `${key.padEnd(12)} ${races.length.toString().padStart(5)} ${gb.length.toString().padStart(4)} ${gh.toString().padStart(4)} ${(gb.length - gh).toString().padStart(4)} ${(races.length - gb.length).toString().padStart(4)} ${rate.padStart(8)}`
+      `${key.padEnd(groupWidth)} ${races.length.toString().padStart(5)} ${gb.length.toString().padStart(4)} ${gh.toString().padStart(4)} ${(gb.length - gh).toString().padStart(4)} ${(races.length - gb.length).toString().padStart(4)} ${rate.padStart(8)}`
     );
     gTotalRaces += races.length;
     gTotalBet += gb.length;
     gTotalHit += gh;
   }
-  console.log("─".repeat(60));
+  console.log("─".repeat(width));
   const totalRate = gTotalBet > 0 ? ((gTotalHit / gTotalBet) * 100).toFixed(1) + "%" : "0.0%";
   console.log(
-    `${"TOTAL".padEnd(12)} ${gTotalRaces.toString().padStart(5)} ${gTotalBet.toString().padStart(4)} ${gTotalHit.toString().padStart(4)} ${(gTotalBet - gTotalHit).toString().padStart(4)} ${(gTotalRaces - gTotalBet).toString().padStart(4)} ${totalRate.padStart(8)}`
+    `${"TOTAL".padEnd(groupWidth)} ${gTotalRaces.toString().padStart(5)} ${gTotalBet.toString().padStart(4)} ${gTotalHit.toString().padStart(4)} ${(gTotalBet - gTotalHit).toString().padStart(4)} ${(gTotalRaces - gTotalBet).toString().padStart(4)} ${totalRate.padStart(8)}`
+  );
+}
+
+function bucketStats(races: DifferentiationBacktestRow[]) {
+  const betted = races.filter((r) => !r.skipped);
+  const hits = betted.filter((r) => r.topRatedPlaced).length;
+  return {
+    total: races.length,
+    bet: betted.length,
+    hits,
+    miss: betted.length - hits,
+    skip: races.length - betted.length,
+    ratePct:
+      betted.length > 0 ? ((hits / betted.length) * 100).toFixed(1) + "%" : "N/A",
+  };
+}
+
+function printBreakdownRow(
+  label: string,
+  stats: ReturnType<typeof bucketStats>,
+  groupWidth: number
+) {
+  console.log(
+    `${label.padEnd(groupWidth)} ${stats.total.toString().padStart(5)} ${stats.bet.toString().padStart(4)} ${stats.hits.toString().padStart(4)} ${stats.miss.toString().padStart(4)} ${stats.skip.toString().padStart(4)} ${stats.ratePct.padStart(8)}`
+  );
+}
+
+/**
+ * Class × distance × venue table grouped by venue and class.
+ * Inserts summary header rows for each venue and each venue+class before distance lines.
+ */
+export function printClassDistanceVenueBreakdown(rows: DifferentiationBacktestRow[]) {
+  const groups = groupByClassDistanceVenue(rows);
+  const groupWidth = 28;
+  const width = groupWidth + 38;
+
+  const byVenue = new Map<string, DifferentiationBacktestRow[]>();
+  const byVenueClass = new Map<string, DifferentiationBacktestRow[]>();
+  for (const r of rows) {
+    if (!byVenue.has(r.venue)) byVenue.set(r.venue, []);
+    byVenue.get(r.venue)!.push(r);
+    const vc = `${r.venue}\t${r.raceClass}`;
+    if (!byVenueClass.has(vc)) byVenueClass.set(vc, []);
+    byVenueClass.get(vc)!.push(r);
+  }
+
+  console.log("\n" + "═".repeat(width));
+  console.log("HIT RATE BY CLASS × DISTANCE × VENUE");
+  console.log("═".repeat(width));
+  console.log(
+    `${"Group".padEnd(groupWidth)} ${"Total".padStart(5)} ${"Bet".padStart(4)} ${"Hit".padStart(4)} ${"Miss".padStart(4)} ${"Skip".padStart(4)} ${"HitRate".padStart(8)}`
+  );
+  console.log("─".repeat(width));
+
+  const printedVenue = new Set<string>();
+  const printedVenueClass = new Set<string>();
+  let gTotal = 0;
+  let gBet = 0;
+  let gHit = 0;
+
+  for (const [key, distanceRaces] of groups) {
+    const [venue, raceClass, distance] = parseClassDistanceVenueKey(key);
+    const vcKey = `${venue}\t${raceClass}`;
+
+    if (!printedVenue.has(venue)) {
+      if (printedVenue.size > 0) console.log("─".repeat(width));
+      printedVenue.add(venue);
+      const venueRows = byVenue.get(venue) ?? [];
+      const venueLabel =
+        venue === "HV" ? "▶ HV  (Happy Valley)" : "▶ ST  (Sha Tin)";
+      printBreakdownRow(venueLabel, bucketStats(venueRows), groupWidth);
+    }
+
+    if (!printedVenueClass.has(vcKey)) {
+      printedVenueClass.add(vcKey);
+      const classRows = byVenueClass.get(vcKey) ?? [];
+      printBreakdownRow(`  ▶ ${venue}  ${raceClass}`, bucketStats(classRows), groupWidth);
+    }
+
+    printBreakdownRow(`      ${distance}m`, bucketStats(distanceRaces), groupWidth);
+
+    gTotal += distanceRaces.length;
+    const distStats = bucketStats(distanceRaces);
+    gBet += distStats.bet;
+    gHit += distStats.hits;
+  }
+
+  console.log("─".repeat(width));
+  const totalRate = gBet > 0 ? ((gHit / gBet) * 100).toFixed(1) + "%" : "0.0%";
+  console.log(
+    `${"TOTAL".padEnd(groupWidth)} ${gTotal.toString().padStart(5)} ${gBet.toString().padStart(4)} ${gHit.toString().padStart(4)} ${(gBet - gHit).toString().padStart(4)} ${(gTotal - gBet).toString().padStart(4)} ${totalRate.padStart(8)}`
   );
 }

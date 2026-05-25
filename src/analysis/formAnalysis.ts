@@ -437,7 +437,10 @@ export class FormAnalyzer {
 
     // Find closest distance
     const distances = Object.keys(surfaceBias).map(Number);
-    if (distances.length === 0) return 0;
+    if (distances.length === 0) {
+        console.error(`No distances found for venue ${venue} and surface ${surface}`);
+        return 0;
+    }
     const closestDistance = distances.reduce((prev, curr) =>
       Math.abs(curr - distance) < Math.abs(prev - distance) ? curr : prev
     );

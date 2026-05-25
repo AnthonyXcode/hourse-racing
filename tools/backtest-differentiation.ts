@@ -17,6 +17,7 @@
  */
 import {
   printBreakdown,
+  printClassDistanceVenueBreakdown,
   runDifferentiationBacktest,
   type DifferentiationBacktestRow,
   type FormSource,
@@ -327,32 +328,7 @@ async function main() {
     printBreakdown("SURFACE", bySurface);
   }
 
-  // --- By class ---
-  const byClass = new Map<string, DifferentiationBacktestRow[]>();
-  for (const r of allResults) {
-    if (!byClass.has(r.raceClass)) byClass.set(r.raceClass, []);
-    byClass.get(r.raceClass)!.push(r);
-  }
-  printBreakdown("CLASS", byClass);
-
-  // --- By distance ---
-  const byDistance = new Map<string, DifferentiationBacktestRow[]>();
-  for (const r of allResults) {
-    const bucket = `${r.distance}m`;
-    if (!byDistance.has(bucket)) byDistance.set(bucket, []);
-    byDistance.get(bucket)!.push(r);
-  }
-  const byDistanceSorted = new Map([...byDistance.entries()].sort((a, b) => parseInt(a[0]) - parseInt(b[0])));
-  printBreakdown("DISTANCE", byDistanceSorted);
-
-  // --- By class × venue ---
-  const byClassVenue = new Map<string, DifferentiationBacktestRow[]>();
-  for (const r of allResults) {
-    const key = `${r.raceClass} ${r.venue}`;
-    if (!byClassVenue.has(key)) byClassVenue.set(key, []);
-    byClassVenue.get(key)!.push(r);
-  }
-  printBreakdown("CLASS × VENUE", byClassVenue);
+  printClassDistanceVenueBreakdown(allResults);
 
   // --- By number of runners ---
   const byRunners = new Map<string, DifferentiationBacktestRow[]>();
