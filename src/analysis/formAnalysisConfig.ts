@@ -213,10 +213,82 @@ const HV_TURF_DEFAULT_MAP: WeightBiasData = mergeDistanceWeights(
   { 1650: HV_TURF_1650 }
 );
 
+/** ST Turf Class 3: competitive handicaps — official ratings bunch, jockey + momentum > raw speed. */
+const ST_TURF_CLASS3_DEFAULT: OverallRatingWeights = {
+  speedRating: 0.22,
+  formScore: 0.16,
+  classIndicator: 0.07,
+  ratingMomentum: 0.12,
+  fitness: 0.10,
+  drawAdvantage: 0.08,
+  jockeyEdge: 0.12,
+  trainerForm: 0.03,
+  surfacePreference: 0.04,
+  goingPreference: 0.03,
+  distancePreference: 0.03,
+};
+
+/** ST Turf Class 3 at 1400m: bend + positioning — draw, distance record, jockey over raw speed. */
+const ST_TURF_CLASS3_1400: OverallRatingWeights = {
+  speedRating: 0.16,
+  formScore: 0.17,
+  classIndicator: 0.07,
+  ratingMomentum: 0.11,
+  fitness: 0.10,
+  drawAdvantage: 0.12,
+  jockeyEdge: 0.13,
+  trainerForm: 0.03,
+  surfacePreference: 0.04,
+  goingPreference: 0.03,
+  distancePreference: 0.04,
+};
+
+/** ST Turf Class 3 at 1600m: draw lane + jockey routing decisive on the mile. */
+const ST_TURF_CLASS3_1600: OverallRatingWeights = {
+  speedRating: 0.18,
+  formScore: 0.15,
+  classIndicator: 0.07,
+  ratingMomentum: 0.12,
+  fitness: 0.10,
+  drawAdvantage: 0.13,
+  jockeyEdge: 0.14,
+  trainerForm: 0.03,
+  surfacePreference: 0.04,
+  goingPreference: 0.03,
+  distancePreference: 0.01,
+};
+
+const ST_TURF_CLASS3_MAP: WeightBiasData = mergeDistanceWeights(
+  uniformDistanceWeights(ST_TURF_DISTANCES, ST_TURF_CLASS3_DEFAULT),
+  { 1400: ST_TURF_CLASS3_1400, 1600: ST_TURF_CLASS3_1600 }
+);
+
+/** ST Turf Class 4 at 1400m: tactical bend race — form + distance record over raw speed. */
+const ST_TURF_CLASS4_1400: OverallRatingWeights = {
+  speedRating: 0.20,
+  formScore: 0.18,
+  classIndicator: 0.07,
+  ratingMomentum: 0.10,
+  fitness: 0.11,
+  drawAdvantage: 0.11,
+  jockeyEdge: 0.11,
+  trainerForm: 0.03,
+  surfacePreference: 0.04,
+  goingPreference: 0.02,
+  distancePreference: 0.03,
+};
+
+const ST_TURF_CLASS4_MAP: WeightBiasData = mergeDistanceWeights(
+  uniformDistanceWeights(ST_TURF_DISTANCES, ST_TURF_DEFAULT),
+  { 1400: ST_TURF_CLASS4_1400 }
+);
+
 export const WEIGHT_BIAS: Record<Venue, WeightBiasBySurface> = {
   "Sha Tin": {
     Turf: {
       default: uniformDistanceWeights(ST_TURF_DISTANCES, ST_TURF_DEFAULT),
+      "Class 3": ST_TURF_CLASS3_MAP,
+      "Class 4": ST_TURF_CLASS4_MAP,
     },
     AWT: {
       default: uniformDistanceWeights(ST_AWT_DISTANCES, ST_AWT_DEFAULT),

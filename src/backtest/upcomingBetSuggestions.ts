@@ -11,6 +11,7 @@ import { MonteCarloSimulator } from "../simulation/monteCarlo.js";
 import {
   applyFormSourceFilter,
   computeSkipDecision,
+  isSparseFormEntry,
   loadRaceCard,
   parseRaceCardFileName,
   type DifferentiationBacktestOptions,
@@ -163,9 +164,7 @@ function formMetrics(race: ReturnType<typeof applyFormSourceFilter>, formAnalyze
   const diffs = analyses.map((a) => Math.abs(topRating - a.overallRating));
   const avgDiff = Math.round(diffs.reduce((s, d) => s + d, 0) / diffs.length);
   const horsesWithDiffLt8 = diffs.filter((d) => d < 8).length;
-  const sparseFormCount = race.entries.filter(
-    (e) => !e.isScratched && (e.horse.pastPerformances?.length ?? 0) <= 1
-  ).length;
+  const sparseFormCount = race.entries.filter(isSparseFormEntry).length;
   const topGap = analyses.length >= 2 ? Math.abs(analyses[0]!.overallRating - analyses[1]!.overallRating) : 999;
 
   return { analyses, topRating, avgDiff, horsesWithDiffLt8, sparseFormCount, topGap };

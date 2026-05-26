@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx tsx *)",
+      "Skill(plan-eng-review)",
+      "Skill(plan-eng-review:*)",
+      "Bash(./node_modules/.bin/tsx tools/backtest-differentiation.ts --sparse=4 --close=4 --avgdiff=11 --gap=1 --surface=Turf --form=all)",
+      "Bash(./node_modules/.bin/tsx tools/backtest-differentiation.ts --sparse=4 --close=4 --avgdiff=15 --gap=3 --surface=Turf --form=all)",
+      "Bash(./node_modules/.bin/tsx tools/backtest-differentiation.ts --sparse=4 --close=3 --avgdiff=13 --gap=2 --surface=Turf --form=all)",
+      "Bash(./node_modules/.bin/tsx tools/backtest-differentiation.ts --sparse=4 --close=2 --avgdiff=13 --gap=2 --surface=Turf --form=all)",
+      "Bash(./node_modules/.bin/tsx tools/backtest-differentiation.ts --sparse=4 --close=2 --avgdiff=11 --gap=2 --surface=Turf --form=all)",
+      "Bash(./node_modules/.bin/tsx tools/backtest-differentiation.ts --sparse=4 --close=2 --avgdiff=15 --gap=2 --surface=Turf --form=all)",
+      "Bash(./node_modules/.bin/tsx tools/backtest-differentiation.ts --sparse=4 --close=2 --avgdiff=13 --gap=3 --surface=Turf --form=all)",
+      "Bash(./node_modules/.bin/tsx tools/backtest-differentiation.ts --sparse=4 --close=2 --avgdiff=15 --gap=3 --surface=Turf --form=all)",
+      "Bash(./node_modules/.bin/tsx tools/backtest-differentiation.ts --sparse=4 --close=1 --avgdiff=13 --gap=2 --surface=Turf --form=all)",
+      "Bash(./node_modules/.bin/tsx tools/backtest-differentiation.ts --sparse=3 --close=2 --avgdiff=13 --gap=2 --surface=Turf --form=all)",
+      "Bash(./node_modules/.bin/tsx tools/backtest-differentiation.ts --sparse=3 --close=2 --avgdiff=11 --gap=2 --surface=Turf --form=all)",
+      "Bash(./node_modules/.bin/tsx tools/backtest-differentiation.ts --sparse=3 --close=2 --avgdiff=15 --gap=2 --surface=Turf --form=all)",
+      "Bash(./node_modules/.bin/tsx tools/backtest-differentiation.ts --sparse=3 --close=2 --avgdiff=13 --gap=3 --surface=Turf --form=all)",
+      "Bash(./node_modules/.bin/tsx tools/backtest-differentiation.ts --sparse=3 --close=3 --avgdiff=13 --gap=2 --surface=Turf --form=all)",
+      "Bash(./node_modules/.bin/tsx tools/backtest-differentiation.ts --sparse=3 --close=2 --avgdiff=13 --gap=1 --surface=Turf --form=all)"
+    ]
+  }
+}

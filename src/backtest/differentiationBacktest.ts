@@ -9,6 +9,14 @@ import type { Race, RaceEntry, Venue } from "../types/index.js";
 import { FormAnalyzer } from "../analysis/formAnalysis.js";
 import { MonteCarloSimulator } from "../simulation/monteCarlo.js";
 
+/** Runners with fewer than this many past performances count toward sparseFormCount. */
+export const SPARSE_FORM_MIN_RECORDS = 3;
+
+export function isSparseFormEntry(entry: Pick<RaceEntry, "isScratched" | "horse">): boolean {
+  if (entry.isScratched) return false;
+  return (entry.horse.pastPerformances?.length ?? 0) < SPARSE_FORM_MIN_RECORDS;
+}
+
 export interface DifferentiationBacktestRow {
   raceId: string;
   date: string;
@@ -244,7 +252,7 @@ export function computeSkipDecision(
   topRatedWinOdds?: number
 ): { skipped: boolean; skipReason: string } {
   if (sparseFormCount > opts.sparseMax) {
-    return { skipped: true, skipReason: `${sparseFormCount} horses w/ 0-1 form` };
+    return { skipped: true, skipReason: `${sparseFormCount} horses w/ <${SPARSE_FORM_MIN_RECORDS} form` };
   }
   if (topGap < opts.gapMin) {
     return { skipped: true, skipReason: `1st-2nd gap=${topGap}` };
@@ -383,9 +391,7 @@ export async function runDifferentiationBacktest(
     const avgDiff = Math.round(diffs.reduce((s, d) => s + d, 0) / diffs.length);
     const horsesWithDiffLt8 = diffs.filter((d) => d < 8).length;
 
-    const sparseFormCount = race.entries.filter(
-      (e) => !e.isScratched && (e.horse.pastPerformances?.length ?? 0) <= 1
-    ).length;
+    const sparseFormCount = race.entries.filter(isSparseFormEntry).length;
 
     const topGap =
       analyses.length >= 2 ? Math.abs(analyses[0].overallRating - analyses[1].overallRating) : 999;

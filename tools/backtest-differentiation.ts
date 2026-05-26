@@ -418,12 +418,75 @@ async function main() {
   }
   printBreakdown("EXPECTED POSITION (top-rated)", byEPosSorted);
 
+  // --- By avgDiff bucket ---
+  const byAvgDiff = new Map<string, DifferentiationBacktestRow[]>();
+  const avgDiffBuckets = [
+    { label: "11-13", min: 11, max: 13 },
+    { label: "13-15", min: 13, max: 15 },
+    { label: "15-18", min: 15, max: 18 },
+    { label: "18-22", min: 18, max: 22 },
+    { label: "22-27", min: 22, max: 27 },
+    { label: "27+",   min: 27, max: Infinity },
+  ];
+  for (const r of allResults) {
+    for (const b of avgDiffBuckets) {
+      if (r.avgDiff >= b.min && r.avgDiff < b.max) {
+        if (!byAvgDiff.has(b.label)) byAvgDiff.set(b.label, []);
+        byAvgDiff.get(b.label)!.push(r);
+        break;
+      }
+    }
+  }
+  const avgDiffOrder = avgDiffBuckets.map((b) => b.label);
+  const byAvgDiffSorted = new Map<string, DifferentiationBacktestRow[]>();
+  for (const key of avgDiffOrder) {
+    if (byAvgDiff.has(key)) byAvgDiffSorted.set(key, byAvgDiff.get(key)!);
+  }
+  printBreakdown("AVG DIFF (field spread)", byAvgDiffSorted);
+
+  // --- By top-two gap bucket ---
+  const byTopGap = new Map<string, DifferentiationBacktestRow[]>();
+  const topGapBuckets = [
+    { label: "1",   min: 1, max: 2 },
+    { label: "2-3", min: 2, max: 4 },
+    { label: "4-6", min: 4, max: 7 },
+    { label: "7-10",min: 7, max: 11 },
+    { label: "11+", min: 11, max: Infinity },
+  ];
+  for (const r of allResults) {
+    for (const b of topGapBuckets) {
+      if (r.topGap >= b.min && r.topGap < b.max) {
+        if (!byTopGap.has(b.label)) byTopGap.set(b.label, []);
+        byTopGap.get(b.label)!.push(r);
+        break;
+      }
+    }
+  }
+  const topGapOrder = topGapBuckets.map((b) => b.label);
+  const byTopGapSorted = new Map<string, DifferentiationBacktestRow[]>();
+  for (const key of topGapOrder) {
+    if (byTopGap.has(key)) byTopGapSorted.set(key, byTopGap.get(key)!);
+  }
+  printBreakdown("TOP-TWO GAP (#1 vs #2 rating)", byTopGapSorted);
+
+  // --- By close<8 count bucket ---
+  const byClose8 = new Map<string, DifferentiationBacktestRow[]>();
+  for (const r of allResults) {
+    const key = `${r.horsesWithDiffLt8}`;
+    if (!byClose8.has(key)) byClose8.set(key, []);
+    byClose8.get(key)!.push(r);
+  }
+  const byClose8Sorted = new Map(
+    [...byClose8.entries()].sort((a, b) => parseInt(a[0]) - parseInt(b[0]))
+  );
+  printBreakdown("CLOSE<8 COUNT (field cluster)", byClose8Sorted);
+
   // --- Skip logic summary ---
   console.log("\n" + "═".repeat(70));
   console.log("SKIP LOGIC SUMMARY");
   console.log("═".repeat(70));
   console.log("Bet = pick top overall-rated runner. Skip if ANY rule fails (first match wins):");
-  console.log(`  1. Sparse form: count of runners with ≤1 past performance > ${sparseMax} → skip`);
+  console.log(`  1. Sparse form: count of runners with <3 past performances > ${sparseMax} → skip`);
   console.log(`  2. Top-two gap: |rating #1 − rating #2| < ${gapMin} → skip`);
   console.log(`  3. Clustered field: horses within <8 pts of top-rated count > ${closeMax} → skip`);
   console.log(`  4. Low differentiation: mean |topRating − each rating| < ${avgDiffMin} (--avgdiff) → skip`);
