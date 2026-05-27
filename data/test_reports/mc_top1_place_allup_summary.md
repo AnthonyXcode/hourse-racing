@@ -34,7 +34,8 @@
 | **17**  | **13 May** | **HV** | **HV Turf C** | **Good to Firm** | **9**  | **35.9%** | **68.8%**  | **4/9**  | **44.4%** | **❌✅✅❌✅❌❌✅❌** | **2 (R2-R3)**  |
 | **18**  | **17 May** | **ST** | **AWT+Turf** | **G-Y→Yielding** | **11** | **39.6%** | **75.1%**  | **2/11** | **18.2%** | **❌❌❌❌✅✅❌❌❌❌❌** | **2 (R5-R6)** |
 | **19**  | **20 May** | **HV** | **Turf**     | **Good**         | **9**  | **29.6%** | **62.1%**  | **2/9**  | **22.2%** | **❌❌❌❌❌✅❌✅❌**   | **1**          |
-| **20**  | **24 May** | **ST** | **Turf**     | **Good to Firm** | **11** | **38.4%** | **74.8%**  | **3/11** | **27.3%** | **✅❌❌✅❌❌❌❌❌✅❌** | **1**          |
+| **20**  | **24 May** | **ST** | **Turf**     | **Good to Firm** | **11** | **38.4%** | **74.8%**  | **3/11** | **27.3%** | **✅❌❌✅❌❌❌❌❌❌✅❌** | **1**          |
+| **21**  | **27 May** | **HV** | **Turf**     | **Good to Firm** | **9**  | **37.9%** | **69.8%**  | **4/9**  | **44.4%** | **✅❌✅❌✅❌❌✅❌**   | **1**          |
 
 \*Meeting 8 **R1** (6 runners): MC #1 **#6** ran **3rd** but HKJC Place pool pays **two** places only → **$0** dividend; counts as **❌** for streaks and all-ups (same dividend logic as other meetings).
 
@@ -1391,3 +1392,59 @@ Place dividends (MC #1 when placed): R1=$14.00, R4=$12.50, R9=$16.50
 | 6 | 6 | $60 | 0 | $0 | −$60.00 | −100% |
 
 **Observation:** Good to Firm ST Champions Day produced **isolated MC#1 placers** (R1, R4, R9) — unusable for consecutive all-ups. The afternoon HIGH-confidence trio tickets (R6–R11) went **0/6** despite 74.8% average MC Place% on MC#1 picks, because the highest-Win% horses (R6–R8) failed while lower-tier legs won races.
+
+---
+
+## Meeting 21: Happy Valley | 27 May 2026 (9 races)
+
+**MC #1** = raw MC Win% rank from strategy reports. **Results / Place dividends:** `data/historical/results_20260527_HV.json`. **Going:** Good to Firm (all races). **Surface:** Turf.
+
+| Race | Class   | Dist (m) | MC #1              | MC Win% | MC Place% | Placed? | Place $ (if placed) |
+| ---- | ------- | -------- | ------------------ | ------- | --------- | ------- | ------------------- |
+| R1   | Class 5 | 1200     | #10 EXCEED THE WISH| 28.5%   | 61.8%     | ✅ 3rd  | $14.50              |
+| R2   | Class 5 | 2200     | #4 KASA PAPA         | 27.9%   | 62.2%     | ❌ 6th  | —                   |
+| R3   | Class 4 | 1650     | #1 WITHALLMYFAITH  | 26.4%   | 58.4%     | ✅ 2nd  | $12.00              |
+| R4   | Class 4 | 1200     | #1 FIND MY LOVE    | 36.4%   | 69.4%     | ❌ 9th  | —                   |
+| R5   | Class 3 | 1650     | #2 ARMOR GOLDEN EAGLE | 49.8% | 83.4%  | ✅ 1st  | $10.50              |
+| R6   | Class 4 | 1200     | #1 CROSSBORDERDUDE | 49.1%   | 80.8%     | ❌ 5th  | —                   |
+| R7   | Class 4 | 1200     | #2 HAPPY SHOOTER   | 18.6%   | 46.2%     | ❌ 6th  | —                   |
+| R8   | Class 3 | 1000     | #1 HORSEPOWER      | 54.0%   | 84.3%     | ✅ 2nd  | $18.00              |
+| R9   | Class 3 | 1200     | #9 HONEST WITNESS  | 49.2%   | 81.4%     | ❌ 12th | —                   |
+
+Place dividends (MC #1 when placed): R1=$14.50, R3=$12.00, R5=$10.50, R8=$18.00
+
+**Placing rate: 4/9 = 44.4%**
+**Avg MC Win%:** 37.9% | **Avg MC Place%:** 69.8%
+**Pattern:** ✅❌✅❌✅❌❌✅❌ — **max streak: 1** (isolated placers only)
+
+### Notable observations
+
+- **MC #1 placed 4/9** but **0/6** on the recommended Trio card — placers did not convert to 膽拖 hits (pool gaps R5/R8, Pattern A R6, R9 collapse).
+- **R9 HONEST WITNESS** (49.2% MC Win, 3.3 SP) finished **12th** despite 81.4% MC Place — worst banker miss of the card; trio paid **$9,328**.
+- **R6 CROSSBORDERDUDE** (49.1% Win) **5th** while **#9, #8, #7** filled the trio — all three were in Strategy B legs (Pattern A).
+- **R3** Trio hit on MC-top-6 benchmark ($303) but was **PASS** on Strategy A (wide-open classification).
+
+**Total flat return:** $55.00 on **$90** staked (4 Place legs) → **−$35.00** (−38.9% ROI).
+
+### 2-Leg (8 bets)
+
+| # | All-Up | Hit? | Return |
+|---|--------|------|--------|
+| 1–8 | R1+R2 … R8+R9 | ❌ | $0 |
+
+**Summary:** 0 winners from 8 consecutive 2-leg bets (placers at R1, R3, R5, R8 not adjacent).
+
+### 3-Leg through 6-Leg
+
+**Max paying streak = 1** → all multi-leg all-ups miss.
+
+| Legs | Bets | Staked | Winners | Returned | P&L | ROI |
+|------|------|--------|---------|----------|-----|-----|
+| 1 | 9 | $90 | 4 | $55.00 | −$35.00 | −38.9% |
+| 2 | 8 | $80 | 0 | $0 | −$80.00 | −100% |
+| 3 | 7 | $70 | 0 | $0 | −$70.00 | −100% |
+| 4 | 6 | $60 | 0 | $0 | −$60.00 | −100% |
+| 5 | 5 | $50 | 0 | $0 | −$50.00 | −100% |
+| 6 | 4 | $40 | 0 | $0 | −$40.00 | −100% |
+
+**Observation:** Above-average MC#1 placing rate (44.4%) did not help Trio — **膽拖 structure** and **5-horse Mode A pools** missed **$2,068** in fixable trio dividends on R5/R6/R8/R1 while the card went **0/6** on played suggestions.
