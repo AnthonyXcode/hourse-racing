@@ -19,6 +19,9 @@ import type {
   RaceClass,
 } from "../types/index.js";
 
+/** Max past performances stored on a racecard per horse (most recent first). */
+export const MAX_PAST_PERFORMANCES = 10;
+
 // ============================================================================
 // TYPES
 // ============================================================================
@@ -174,9 +177,21 @@ export class HorseDataEnricher {
 
   /**
    * @param formVenue - If "all", use HV + ST records. If a venue, use only that venue's records.
+   * @param beforeDate - If set, exclude races on or after this date (for historical racecards).
+   * @param maxPastPerformances - Cap per horse after sorting; defaults to MAX_PAST_PERFORMANCES.
    */
-  enrichRace(race: Race, options?: { formVenue?: Venue | "all" }): Race {
+  enrichRace(
+    race: Race,
+    options?: {
+      formVenue?: Venue | "all";
+      beforeDate?: Date;
+      maxPastPerformances?: number;
+    }
+  ): Race {
     const formVenue = options?.formVenue ?? "all";
+    const maxPastPerformances =
+      options?.maxPastPerformances ?? MAX_PAST_PERFORMANCES;
+    const beforeCutoff = options?.beforeDate?.getTime();
 
     const enrichedEntries: RaceEntry[] = race.entries.map((entry) => {
       const key = this.normalizeHorseKey(entry.horse.name);
@@ -208,10 +223,18 @@ export class HorseDataEnricher {
         (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
       );
 
-      const pastPerformances =
+      let pastPerformances =
         formVenue === "all"
           ? allPerfs
           : allPerfs.filter((p) => p.venue === formVenue);
+
+      if (beforeCutoff !== undefined) {
+        pastPerformances = pastPerformances.filter(
+          (p) => new Date(p.date).getTime() < beforeCutoff
+        );
+      }
+
+      pastPerformances = pastPerformances.slice(0, maxPastPerformances);
 
       const enrichedHorse: Horse = {
         ...entry.horse,

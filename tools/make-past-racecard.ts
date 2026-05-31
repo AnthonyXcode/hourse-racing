@@ -144,26 +144,6 @@ function emptySeasonStats(): SeasonStats {
 }
 
 // ============================================================================
-// HELPER — filter past performances to strictly before a date
-// ============================================================================
-
-function filterPastPerformances(race: Race, beforeDate: Date): Race {
-  const cutoff = beforeDate.getTime();
-  return {
-    ...race,
-    entries: race.entries.map((entry) => ({
-      ...entry,
-      horse: {
-        ...entry.horse,
-        pastPerformances: entry.horse.pastPerformances.filter(
-          (pp) => new Date(pp.date).getTime() < cutoff
-        ),
-      },
-    })),
-  } as Race;
-}
-
-// ============================================================================
 // BUILD ONE RACE
 // ============================================================================
 
@@ -322,12 +302,9 @@ async function buildRace(
     console.warn(`  [WARNING] Trainer enrichment failed: ${err}`);
   }
 
-  // Enrich with past performances from historical data
+  // Enrich with past performances from historical data (max 10 before race date)
   console.log(`  → [${label}] Loading historical past performances...`);
-  race = horseEnricher.enrichRace(race);
-
-  // Filter past performances to strictly before the race date
-  race = filterPastPerformances(race, date);
+  race = horseEnricher.enrichRace(race, { beforeDate: date });
 
   // Count past performances to give feedback
   const totalPPs = race.entries.reduce(

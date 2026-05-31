@@ -339,6 +339,8 @@ export class HistoricalScraper {
         { pattern: /\bGOOD\b/i, value: "Good" },
         { pattern: /WET FAST/i, value: "Wet Fast" },
         { pattern: /WET SLOW/i, value: "Wet Slow" },
+        { pattern: /\bSEALED\b/i, value: "Good" },
+        { pattern: /\bWET\b/i, value: "Yielding" },
       ];
       for (const { pattern, value } of goingPatterns) {
         if (pattern.test(allText)) {
@@ -858,6 +860,8 @@ export class HistoricalScraper {
     if (normalized.includes("firm")) return "Firm";
     if (normalized.includes("wet fast")) return "Wet Fast";
     if (normalized.includes("wet slow")) return "Wet Slow";
+    if (normalized === "wet") return "Yielding";
+    if (normalized === "sealed") return "Good";
     if (normalized === "good" || normalized.includes("good")) return "Good";
 
     throw new Error(`Failed to normalize going condition: "${goingText}"`);
@@ -876,6 +880,8 @@ export class HistoricalScraper {
       { pattern: /Firm/i, value: "Firm" },
       { pattern: /Wet Fast/i, value: "Wet Fast" },
       { pattern: /Wet Slow/i, value: "Wet Slow" },
+      { pattern: /\bSealed\b/i, value: "Good" },
+      { pattern: /\bWet\b/i, value: "Yielding" },
     ];
 
     for (const { pattern, value } of goingPatterns) {
