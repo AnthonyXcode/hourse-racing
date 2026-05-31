@@ -13,10 +13,22 @@
  *   npx tsx tools/make-past-racecard.ts -d 2026-02-08 -v ST -r 10
  *   npx tsx tools/make-past-racecard.ts -d 2026-02-08 -v ST -r 1-11
  *   npx tsx tools/make-past-racecard.ts -d 2026-02-08 -v ST        # all races
+ *   npx tsx tools/make-past-racecard.ts -d 2026-02...2026-05      # all fixtures in range
+ *   npx tsx tools/make-past-racecard.ts -d 2026-02-01...2026-05-31 -r 1-11
  *   npx tsx tools/make-past-racecard.ts --help
+ *
+ * Date ranges use data/historical/fixtures.json for meeting dates and venues (-v not required).
  */
 
-import { format } from "date-fns";
+import { readFile } from "fs/promises";
+import path from "path";
+import {
+  format,
+  parse as parseDate,
+  startOfMonth,
+  endOfMonth,
+  isWithinInterval,
+} from "date-fns";
 import type {
   Race,
   RaceEntry,
@@ -37,13 +49,42 @@ import { TrainerEnricher } from "../src/data/trainerEnricher.js";
 // CLI ARGUMENT PARSING
 // ============================================================================
 
-interface CliArgs {
-  date: Date;
-  venue: Venue;
-  /** Specific race numbers to build. Empty = auto-detect from meeting. */
-  raceNumbers: number[];
-  help?: boolean;
+const FIXTURES_FILE = path.join(
+  process.cwd(),
+  "data",
+  "historical",
+  "fixtures.json"
+);
+
+interface FixtureMeeting {
+  date: string;
+  venue: "ST" | "HV";
 }
+
+interface FixtureStore {
+  meetings: FixtureMeeting[];
+}
+
+interface MeetingTarget {
+  date: Date;
+  dateStr: string;
+  venue: Venue;
+  venueCode: "ST" | "HV";
+}
+
+type CliArgs =
+  | {
+      mode: "single";
+      meeting: MeetingTarget;
+      raceNumbers: number[];
+      help?: boolean;
+    }
+  | {
+      mode: "range";
+      meetings: MeetingTarget[];
+      raceNumbers: number[];
+      help?: boolean;
+    };
 
 function printHelp(): void {
   console.log(`
@@ -53,19 +94,141 @@ Usage:
   npx tsx tools/make-past-racecard.ts [options]
 
 Options:
-  -d, --date <YYYY-MM-DD>    Race date (required)
-  -v, --venue <ST|HV>        Venue: ST = Sha Tin, HV = Happy Valley (required)
+  -d, --date <spec>          Single date (YYYY-MM-DD) or range (see below)
+  -v, --venue <ST|HV>        Venue for a single date (required unless using a range)
   -r, --race <N|N-M>         Race number or range (e.g. 10 or 1-11). Omit for all.
   -h, --help                 Show this help
+
+Date spec:
+  YYYY-MM-DD                 One meeting (requires -v)
+  YYYY-MM...YYYY-MM          Month range from fixtures (e.g. 2026-02...2026-05)
+  YYYY-MM-DD...YYYY-MM-DD    Day range from fixtures
 
 Examples:
   npx tsx tools/make-past-racecard.ts -d 2026-02-08 -v ST -r 10
   npx tsx tools/make-past-racecard.ts -d 2026-02-08 -v ST -r 1-11
   npx tsx tools/make-past-racecard.ts -d 2026-02-08 -v ST
+  npx tsx tools/make-past-racecard.ts -d 2026-02...2026-05
+  npx tsx tools/make-past-racecard.ts -d 2026-02-01...2026-05-31 -r 1-11
 `);
 }
 
-function parseArgs(): CliArgs {
+function venueFromCode(code: "ST" | "HV"): Venue {
+  return code === "HV" ? "Happy Valley" : "Sha Tin";
+}
+
+function parseVenueArg(venueStr: string): Venue {
+  const venueUpper = venueStr.toUpperCase();
+  return venueUpper === "HV" || venueStr.toLowerCase().includes("happy")
+    ? "Happy Valley"
+    : "Sha Tin";
+}
+
+function parseRaceNumbers(raceStr: string): number[] {
+  if (!raceStr) return [];
+  if (raceStr.includes("-")) {
+    const [from, to] = raceStr.split("-").map(Number);
+    if (!isNaN(from!) && !isNaN(to!)) {
+      const nums: number[] = [];
+      for (let n = from!; n <= to!; n++) nums.push(n);
+      return nums;
+    }
+    return [];
+  }
+  const n = parseInt(raceStr, 10);
+  return isNaN(n) ? [] : [n];
+}
+
+async function loadFixtureMeetings(): Promise<FixtureMeeting[]> {
+  const raw = await readFile(FIXTURES_FILE, "utf-8");
+  const store = JSON.parse(raw) as FixtureStore;
+  return store.meetings ?? [];
+}
+
+function meetingTarget(m: FixtureMeeting): MeetingTarget {
+  const date = parseDate(m.date, "yyyy-MM-dd", new Date());
+  return {
+    date,
+    dateStr: m.date,
+    venue: venueFromCode(m.venue),
+    venueCode: m.venue,
+  };
+}
+
+/** Parse YYYY-MM or YYYY-MM-DD into interval bounds (inclusive). */
+function parseRangeBounds(
+  startStr: string,
+  endStr: string
+): { start: Date; end: Date } {
+  const monthRe = /^\d{4}-\d{2}$/;
+  const dayRe = /^\d{4}-\d{2}-\d{2}$/;
+
+  if (monthRe.test(startStr) && monthRe.test(endStr)) {
+    const start = startOfMonth(
+      parseDate(`${startStr}-01`, "yyyy-MM-dd", new Date())
+    );
+    const end = endOfMonth(
+      parseDate(`${endStr}-01`, "yyyy-MM-dd", new Date())
+    );
+    return { start, end };
+  }
+
+  if (dayRe.test(startStr) && dayRe.test(endStr)) {
+    const start = parseDate(startStr, "yyyy-MM-dd", new Date());
+    const end = parseDate(endStr, "yyyy-MM-dd", new Date());
+    if (isNaN(start.getTime()) || isNaN(end.getTime())) {
+      console.error(`Error: invalid date range "${startStr}...${endStr}"`);
+      process.exit(1);
+    }
+    return { start, end };
+  }
+
+  console.error(
+    `Error: invalid range "${startStr}...${endStr}". Use YYYY-MM...YYYY-MM or YYYY-MM-DD...YYYY-MM-DD`
+  );
+  process.exit(1);
+}
+
+async function meetingsInRange(
+  startStr: string,
+  endStr: string
+): Promise<MeetingTarget[]> {
+  const { start, end } = parseRangeBounds(startStr, endStr);
+  if (start > end) {
+    console.error(
+      `Error: range start ${format(start, "yyyy-MM-dd")} is after end ${format(end, "yyyy-MM-dd")}`
+    );
+    process.exit(1);
+  }
+
+  const fixtures = await loadFixtureMeetings();
+  const filtered = fixtures
+    .filter((m) => {
+      const d = parseDate(m.date, "yyyy-MM-dd", new Date());
+      return isWithinInterval(d, { start, end });
+    })
+    .sort((a, b) => a.date.localeCompare(b.date));
+
+  if (filtered.length === 0) {
+    console.error(
+      `Error: no meetings in fixtures.json between ${startStr} and ${endStr}`
+    );
+    process.exit(1);
+  }
+
+  return filtered.map(meetingTarget);
+}
+
+function parseSingleDate(dateStr: string): Date {
+  const date = parseDate(dateStr, "yyyy-MM-dd", new Date());
+  if (isNaN(date.getTime())) {
+    console.error(`Error: invalid date "${dateStr}", expected YYYY-MM-DD`);
+    process.exit(1);
+  }
+  return date;
+}
+
+async function parseArgs(): Promise<CliArgs> {
   const argv = process.argv.slice(2);
 
   if (argv.includes("--help") || argv.includes("-h")) {
@@ -88,51 +251,40 @@ function parseArgs(): CliArgs {
     }
   }
 
+  const raceNumbers = parseRaceNumbers(raceStr);
+
   if (!dateStr) {
     console.error("Error: --date is required");
     printHelp();
     process.exit(1);
   }
+
+  if (dateStr.includes("...")) {
+    const parts = dateStr.split("...");
+    if (parts.length !== 2 || !parts[0] || !parts[1]) {
+      console.error(`Error: invalid range "${dateStr}"`);
+      process.exit(1);
+    }
+    const meetings = await meetingsInRange(parts[0], parts[1]);
+    return { mode: "range", meetings, raceNumbers };
+  }
+
   if (!venueStr) {
-    console.error("Error: --venue is required");
+    console.error("Error: --venue is required for a single date");
     printHelp();
     process.exit(1);
   }
 
-  // Parse date
-  const dateParts = dateStr.split("-").map(Number);
-  if (dateParts.length !== 3) {
-    console.error(`Error: invalid date "${dateStr}", expected YYYY-MM-DD`);
-    process.exit(1);
-  }
-  const date = new Date(dateParts[0]!, dateParts[1]! - 1, dateParts[2]!);
-  if (isNaN(date.getTime())) {
-    console.error(`Error: invalid date "${dateStr}"`);
-    process.exit(1);
-  }
+  const date = parseSingleDate(dateStr);
+  const meeting: MeetingTarget = {
+    date,
+    dateStr: format(date, "yyyy-MM-dd"),
+    venue: parseVenueArg(venueStr),
+    venueCode:
+      parseVenueArg(venueStr) === "Happy Valley" ? "HV" : "ST",
+  };
 
-  // Parse venue
-  const venueUpper = venueStr.toUpperCase();
-  const venue: Venue =
-    venueUpper === "HV" || venueStr.toLowerCase().includes("happy")
-      ? "Happy Valley"
-      : "Sha Tin";
-
-  // Parse race numbers
-  let raceNumbers: number[] = [];
-  if (raceStr) {
-    if (raceStr.includes("-")) {
-      const [from, to] = raceStr.split("-").map(Number);
-      if (!isNaN(from!) && !isNaN(to!)) {
-        for (let n = from!; n <= to!; n++) raceNumbers.push(n);
-      }
-    } else {
-      const n = parseInt(raceStr, 10);
-      if (!isNaN(n)) raceNumbers = [n];
-    }
-  }
-
-  return { date, venue, raceNumbers };
+  return { mode: "single", meeting, raceNumbers };
 }
 
 // ============================================================================
@@ -331,38 +483,117 @@ async function buildRace(
 }
 
 // ============================================================================
+// PROCESS ONE MEETING
+// ============================================================================
+
+interface ScraperBundle {
+  pastScraper: PastRaceResultsScraper;
+  horseScraper: HorseProfileScraper;
+  horseEnricher: HorseDataEnricher;
+  jockeyEnricher: JockeyEnricher;
+  trainerEnricher: TrainerEnricher;
+  raceCardHistory: RaceCardHistoryScraper;
+}
+
+async function processMeeting(
+  meeting: MeetingTarget,
+  raceNumbersArg: number[],
+  scrapers: ScraperBundle
+): Promise<{ built: number; skipped: number }> {
+  const { date, venue } = meeting;
+  const label = `${meeting.dateStr} ${meeting.venueCode}`;
+
+  console.log("\n" + "-".repeat(60));
+  console.log(`Meeting: ${label}`);
+  console.log("-".repeat(60));
+
+  let raceNumbers = raceNumbersArg;
+  if (raceNumbers.length === 0) {
+    console.log("Auto-detecting race numbers for this meeting...");
+    try {
+      raceNumbers = await scrapers.pastScraper.scrapeRaceNumbers(date, venue);
+      console.log(`  Detected races: ${raceNumbers.join(", ")}`);
+    } catch {
+      console.warn("  Could not auto-detect race numbers, defaulting to 1-11");
+      raceNumbers = Array.from({ length: 11 }, (_, i) => i + 1);
+    }
+  }
+
+  let built = 0;
+  let skipped = 0;
+
+  for (const raceNo of raceNumbers) {
+    try {
+      const ok = await buildRace(
+        date,
+        venue,
+        raceNo,
+        scrapers.pastScraper,
+        scrapers.horseScraper,
+        scrapers.horseEnricher,
+        scrapers.jockeyEnricher,
+        scrapers.trainerEnricher,
+        scrapers.raceCardHistory
+      );
+      if (ok) built++;
+      else skipped++;
+    } catch (err) {
+      console.error(`[ERROR] ${label} R${raceNo}: ${err}`);
+      skipped++;
+    }
+  }
+
+  return { built, skipped };
+}
+
+// ============================================================================
 // MAIN
 // ============================================================================
 
 async function main(): Promise<void> {
-  const args = parseArgs();
-  const { date, venue } = args;
+  const args = await parseArgs();
+  const meetings =
+    args.mode === "range" ? args.meetings : [args.meeting];
 
   console.log("\n" + "=".repeat(60));
   console.log(`make-past-racecard`);
-  console.log(`  Date  : ${format(date, "yyyy-MM-dd")}`);
-  console.log(`  Venue : ${venue}`);
+  if (args.mode === "range") {
+    console.log(
+      `  Range : ${meetings[0]!.dateStr} → ${meetings[meetings.length - 1]!.dateStr}`
+    );
+    console.log(`  Meetings: ${meetings.length} (from fixtures.json)`);
+  } else {
+    console.log(`  Date  : ${meetings[0]!.dateStr}`);
+    console.log(`  Venue : ${meetings[0]!.venue}`);
+  }
+  if (args.raceNumbers.length > 0) {
+    console.log(`  Races : ${args.raceNumbers.join(", ")}`);
+  }
   console.log("=".repeat(60));
 
-  // Initialize scrapers
   const pastScraper = new PastRaceResultsScraper();
   const horseScraper = new HorseProfileScraper();
   const horseEnricher = new HorseDataEnricher();
   const jockeyEnricher = new JockeyEnricher({ fetchFromHKJC: true });
   const trainerEnricher = new TrainerEnricher({ fetchFromHKJC: true });
   const raceCardHistory = new RaceCardHistoryScraper();
+  const scrapers: ScraperBundle = {
+    pastScraper,
+    horseScraper,
+    horseEnricher,
+    jockeyEnricher,
+    trainerEnricher,
+    raceCardHistory,
+  };
 
   try {
-    // Initialize browsers
     console.log("\nInitializing browsers...");
     await pastScraper.init();
     await horseScraper.init();
 
-    // Load local jockey/trainer stats (if any cached files exist)
     await jockeyEnricher.loadFromDirectory();
     await trainerEnricher.loadFromDirectory();
 
-    // Load all historical race data once
     console.log("Loading historical data from data/historical/...");
     await horseEnricher.loadHistoricalData();
     const summary = horseEnricher.getDataSummary();
@@ -370,51 +601,38 @@ async function main(): Promise<void> {
       `  Loaded ${summary.totalRaces} races, ${summary.totalHorses} horses from historical data`
     );
 
-    // Determine race numbers to process
-    let raceNumbers = args.raceNumbers;
-    if (raceNumbers.length === 0) {
-      console.log("\nAuto-detecting race numbers for this meeting...");
-      try {
-        raceNumbers = await pastScraper.scrapeRaceNumbers(date, venue);
-        console.log(`  Detected races: ${raceNumbers.join(", ")}`);
-      } catch {
-        console.warn("  Could not auto-detect race numbers, defaulting to 1-11");
-        raceNumbers = Array.from({ length: 11 }, (_, i) => i + 1);
-      }
-    }
+    let totalBuilt = 0;
+    let totalSkipped = 0;
 
-    // Process each race
-    let built = 0;
-    let skipped = 0;
-
-    for (const raceNo of raceNumbers) {
-      try {
-        const ok = await buildRace(
-          date,
-          venue,
-          raceNo,
-          pastScraper,
-          horseScraper,
-          horseEnricher,
-          jockeyEnricher,
-          trainerEnricher,
-          raceCardHistory
-        );
-        if (ok) built++;
-        else skipped++;
-      } catch (err) {
-        console.error(`[ERROR] Race ${raceNo}: ${err}`);
-        skipped++;
+    for (let i = 0; i < meetings.length; i++) {
+      const meeting = meetings[i]!;
+      if (args.mode === "range") {
+        console.log(`\n[${i + 1}/${meetings.length}] ${meeting.dateStr} @ ${meeting.venueCode}`);
       }
+      const { built, skipped } = await processMeeting(
+        meeting,
+        args.raceNumbers,
+        scrapers
+      );
+      totalBuilt += built;
+      totalSkipped += skipped;
     }
 
     console.log("\n" + "=".repeat(60));
-    console.log(`Done: ${built} racecard(s) saved, ${skipped} skipped.`);
-    console.log("\nYou can now analyze saved racecards with:");
-    console.log(`  npx tsx tools/analyze-race.ts -d ${format(date, "yyyy-MM-dd")} -v ${venue === "Happy Valley" ? "HV" : "ST"} -r N --use-saved`);
-    console.log(`  npx tsx tools/batch-analyze.ts -d ${format(date, "yyyy-MM-dd")} -v ${venue === "Happy Valley" ? "HV" : "ST"} --use-saved`);
+    console.log(
+      `Done: ${totalBuilt} racecard(s) saved, ${totalSkipped} skipped across ${meetings.length} meeting(s).`
+    );
+    if (meetings.length === 1) {
+      const m = meetings[0]!;
+      console.log("\nYou can now analyze saved racecards with:");
+      console.log(
+        `  npx tsx tools/analyze-race.ts -d ${m.dateStr} -v ${m.venueCode} -r N --use-saved`
+      );
+      console.log(
+        `  npx tsx tools/batch-analyze.ts -d ${m.dateStr} -v ${m.venueCode} --use-saved`
+      );
+    }
     console.log("=".repeat(60));
-
   } finally {
     await pastScraper.close();
     await horseScraper.close();

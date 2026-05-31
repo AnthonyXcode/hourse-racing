@@ -56,6 +56,8 @@ export interface DifferentiationBacktestRow {
   topRatedPlaceOdds: number;
   /** MC expected finishing position of the top-rated horse (e.g. 3.2 = avg 3rd) */
   topRatedExpectedPosition: number;
+  /** Handicapper rating change for the top-rated horse (Rtg.+/-), if on racecard */
+  topRatedRatingChange?: number;
 }
 
 interface FinishEntry {
@@ -459,6 +461,9 @@ export async function runDifferentiationBacktest(
       topRatedWinOdds,
       topRatedPlaceOdds,
       topRatedExpectedPosition,
+      ...(topRatedEntry?.horse.ratingChange !== undefined
+        ? { topRatedRatingChange: topRatedEntry.horse.ratingChange }
+        : {}),
     });
   }
 

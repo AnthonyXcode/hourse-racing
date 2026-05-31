@@ -481,6 +481,43 @@ async function main() {
   );
   printBreakdown("CLOSE<8 COUNT (field cluster)", byClose8Sorted);
 
+  // --- By rating change (top-rated horse Rtg.+/-) ---
+  const byRatingChange = new Map<string, DifferentiationBacktestRow[]>();
+  const ratingChangeBuckets = [
+    { label: "≤-3", min: -Infinity, max: -2.5 },
+    { label: "-2", min: -2.5, max: -1.5 },
+    { label: "-1", min: -1.5, max: -0.5 },
+    { label: "0", min: -0.5, max: 0.5 },
+    { label: "+1", min: 0.5, max: 1.5 },
+    { label: "+2", min: 1.5, max: 2.5 },
+    { label: "+3", min: 2.5, max: 3.5 },
+    { label: "+4", min: 3.5, max: 4.5 },
+    { label: "+5", min: 4.5, max: 5.5 },
+    { label: "+6+", min: 5.5, max: Infinity },
+  ];
+  for (const r of allResults) {
+    const change = r.topRatedRatingChange;
+    if (change === undefined) {
+      const key = "N/A";
+      if (!byRatingChange.has(key)) byRatingChange.set(key, []);
+      byRatingChange.get(key)!.push(r);
+      continue;
+    }
+    for (const b of ratingChangeBuckets) {
+      if (change >= b.min && change < b.max) {
+        if (!byRatingChange.has(b.label)) byRatingChange.set(b.label, []);
+        byRatingChange.get(b.label)!.push(r);
+        break;
+      }
+    }
+  }
+  const ratingChangeOrder = [...ratingChangeBuckets.map((b) => b.label), "N/A"];
+  const byRatingChangeSorted = new Map<string, DifferentiationBacktestRow[]>();
+  for (const key of ratingChangeOrder) {
+    if (byRatingChange.has(key)) byRatingChangeSorted.set(key, byRatingChange.get(key)!);
+  }
+  printBreakdown("RATING CHANGE (top-rated Rtg.+/-)", byRatingChangeSorted, { preserveOrder: true });
+
   // --- Skip logic summary ---
   console.log("\n" + "═".repeat(70));
   console.log("SKIP LOGIC SUMMARY");
