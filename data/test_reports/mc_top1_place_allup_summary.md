@@ -36,6 +36,7 @@
 | **19**  | **20 May** | **HV** | **Turf**     | **Good**         | **9**  | **29.6%** | **62.1%**  | **2/9**  | **22.2%** | **❌❌❌❌❌✅❌✅❌**   | **1**          |
 | **20**  | **24 May** | **ST** | **Turf**     | **Good to Firm** | **11** | **38.4%** | **74.8%**  | **3/11** | **27.3%** | **✅❌❌✅❌❌❌❌❌❌✅❌** | **1**          |
 | **21**  | **27 May** | **HV** | **Turf**     | **Good to Firm** | **9**  | **37.9%** | **69.8%**  | **4/9**  | **44.4%** | **✅❌✅❌✅❌❌✅❌**   | **1**          |
+| **22** | **31 May** | **ST** | **Turf** | **Good** | **11** | **36.7%** | **—** | **6/11** | **54.5%** | **❌❌✅✅❌✅❌❌✅✅✅** | **1** |
 
 \*Meeting 8 **R1** (6 runners): MC #1 **#6** ran **3rd** but HKJC Place pool pays **two** places only → **$0** dividend; counts as **❌** for streaks and all-ups (same dividend logic as other meetings).
 
@@ -1448,3 +1449,19 @@ Place dividends (MC #1 when placed): R1=$14.50, R3=$12.00, R5=$10.50, R8=$18.00
 | 6 | 4 | $40 | 0 | $0 | −$40.00 | −100% |
 
 **Observation:** Above-average MC#1 placing rate (44.4%) did not help Trio — **膽拖 structure** and **5-horse Mode A pools** missed **$2,068** in fixable trio dividends on R5/R6/R8/R1 while the card went **0/6** on played suggestions.
+
+## Meeting 22: Sha Tin | 31 May 2026 (11 races)
+
+| Race | Class | Dist (m) | MC #1 | MC Win% | MC Place% | Placed? | Place $ |
+|------|-------|----------|-------|---------|-----------|---------|---------|
+| R1 | Griffin | 1200 | #6 SHARP PLANET | 31.6% | 66.8% | ❌ (14th) | — |
+| R2 | Class 4 | 1000 | #5 GRAND NOVA | 24.9% | 59% | ❌ (7th) | — |
+| R3 | Class 4 | 1200 | #1 PAPAYA BROSE | 52% | 88.7% | ✅ 1st | 14 |
+| R4 | Class 4 | 1200 | #1 SPEEDY SMARTIE | 26.2% | 63.5% | ✅ 2nd | 27.5 |
+| R5 | Class 3 | 1400 | #13 KING DANCE | 26.5% | 60.8% | ❌ (14th) | — |
+| R6 | Class 4 | 2000 | #4 DOUBLE WIN | 35.4% | 71.1% | ✅ 1st | 25.5 |
+| R7 | Group 3 | 1600 | #7 SKY JEWELLERY | 62.7% | 92.4% | ❌ (4th) | — |
+| R8 | Class 4 | 1400 | #2 INVICTUS DRAGO | 52.8% | 86.7% | ❌ (9th) | — |
+| R9 | Group 3 | 1200 | #7 PATCH OF STARS | 29% | 63% | ✅ 1st | 13 |
+| R10 | Class 3 | 1600 | #3 ENDUED | 38.6% | 72.7% | ✅ 2nd | 16.5 |
+| R11 | Class 3 | 1200 | #4 KA YING ATTACK | 23.6% | 58.5% | ✅ 1st | 16 |
