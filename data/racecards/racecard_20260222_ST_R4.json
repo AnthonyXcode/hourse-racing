@@ -22,7 +22,7 @@
           "sire": "Zoustar\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Darinja\n                        \n                        \n                            Dam's Sire",
           "damSire": "Shamardal\n                        \n                        \n                            Same Sire",
-          "currentRating": 104,
+          "currentRating": 99,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -143,7 +143,8 @@
               "finishTime": 58.29,
               "odds": 21
             }
-          ]
+          ],
+          "ratingChange": 14
         },
         "jockey": {
           "code": "AA",
@@ -277,7 +278,8 @@
               "finishTime": 56.43,
               "odds": 2.7
             }
-          ]
+          ],
+          "ratingChange": 1
         },
         "jockey": {
           "code": "PZ",
@@ -324,7 +326,7 @@
           "sire": "Thronum\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Thorsborne\n                        \n                        \n                            Dam's Sire",
           "damSire": "Hinchinbrook\n                        \n                        \n                            Same Sire",
-          "currentRating": 97,
+          "currentRating": 100,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -428,7 +430,8 @@
               "finishTime": 56.06,
               "odds": 13
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "OJM",
@@ -493,7 +496,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": 1,
           "pastPerformances": [
             {
               "date": "2026-02-01T00:00:00.000Z",
@@ -563,7 +565,8 @@
               "finishTime": 82.18,
               "odds": 7.1
             }
-          ]
+          ],
+          "ratingChange": 1
         },
         "jockey": {
           "code": "LDE",
@@ -610,7 +613,7 @@
           "sire": "Sioux Nation\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Jackpot Queen\n                        \n                        \n                            Dam's Sire",
           "damSire": "Not A Single Doubt\n                        \n                        \n                            Same Sire",
-          "currentRating": 87,
+          "currentRating": 95,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -765,7 +768,8 @@
               "finishTime": 68.73,
               "odds": 96
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "AVB",
@@ -812,7 +816,7 @@
           "sire": "Shamus Award\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Rocket Baby\n                        \n                        \n                            Dam's Sire",
           "damSire": "Danzero\n                        \n                        \n                            Same Sire",
-          "currentRating": 77,
+          "currentRating": 83,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -950,7 +954,8 @@
               "finishTime": 56.72,
               "odds": 11
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "CCY",
@@ -997,7 +1002,7 @@
           "sire": "Capitalist\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Shamana\n                        \n                        \n                            Dam's Sire",
           "damSire": "Shamardal\n                        \n                        \n                            Same Sire",
-          "currentRating": 80,
+          "currentRating": 84,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1101,7 +1106,8 @@
               "finishTime": 56.41,
               "odds": 4.4
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "CML",

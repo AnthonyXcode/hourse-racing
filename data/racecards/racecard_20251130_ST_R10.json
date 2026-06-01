@@ -22,7 +22,7 @@
           "sire": "Ribchester\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Sapphire Lass\n                        \n                        \n                            Dam's Sire",
           "damSire": "Charge Forward\n                        \n                        \n                            Same Sire",
-          "currentRating": 80,
+          "currentRating": 69,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -143,7 +143,8 @@
               "finishTime": 69.44,
               "odds": 6.9
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "MCJ",
@@ -190,7 +191,7 @@
           "sire": "Night Of Thunder\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Song Maker\n                        \n                        \n                            Dam's Sire",
           "damSire": "Oasis Dream\n                        \n                        \n                            Same Sire",
-          "currentRating": 87,
+          "currentRating": 80,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -294,7 +295,8 @@
               "finishTime": 81.95,
               "odds": 5.8
             }
-          ]
+          ],
+          "ratingChange": 6
         },
         "jockey": {
           "code": "PZ",
@@ -479,7 +481,8 @@
               "finishTime": 82.85,
               "odds": 96
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "YML",
@@ -526,7 +529,7 @@
           "sire": "Brazen Beau\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Lerina Gold\n                        \n                        \n                            Dam's Sire",
           "damSire": "Medaglia d'Oro\n                        \n                        \n                            Same Sire",
-          "currentRating": 67,
+          "currentRating": 71,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -579,7 +582,8 @@
               "finishTime": 81.74,
               "odds": 3.3
             }
-          ]
+          ],
+          "ratingChange": 6
         },
         "jockey": {
           "code": "GM",
@@ -626,7 +630,7 @@
           "sire": "Toronado\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Lotta Sugar\n                        \n                        \n                            Dam's Sire",
           "damSire": "Fastnet Rock\n                        \n                        \n                            Same Sire",
-          "currentRating": 75,
+          "currentRating": 60,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -730,7 +734,8 @@
               "finishTime": 69.01,
               "odds": 5
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "AA",
@@ -777,7 +782,7 @@
           "sire": "Rubick\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Keep de Rose\n                        \n                        \n                            Dam's Sire",
           "damSire": "Keeper\n                        \n                        \n                            Same Sire",
-          "currentRating": 94,
+          "currentRating": 77,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -864,7 +869,8 @@
               "finishTime": 69.64,
               "odds": 29
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "BH",
@@ -911,7 +917,7 @@
           "sire": "Showtime\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Smurf Cody\n                        \n                        \n                            Dam's Sire",
           "damSire": "Animal Kingdom\n                        \n                        \n                            Same Sire",
-          "currentRating": 73,
+          "currentRating": 77,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1083,7 +1089,8 @@
               "finishTime": 82.7,
               "odds": 31
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "OJM",
@@ -1130,7 +1137,7 @@
           "sire": "Pierata\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Magic Obsession\n                        \n                        \n                            Dam's Sire",
           "damSire": "Magic Albert\n                        \n                        \n                            Same Sire",
-          "currentRating": 59,
+          "currentRating": 68,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1195,7 +1202,7 @@
           "sire": "Vino Rosso\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Sombre Sea\n                        \n                        \n                            Dam's Sire",
           "damSire": "Dash For Cash\n                        \n                        \n                            Same Sire",
-          "currentRating": 80,
+          "currentRating": 66,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1384,7 +1391,8 @@
               "finishTime": 101.22999999999999,
               "odds": 4.9
             }
-          ]
+          ],
+          "ratingChange": 1
         },
         "jockey": {
           "code": "HCY",
@@ -1449,7 +1457,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": -2,
           "pastPerformances": [
             {
               "date": "2025-11-15T00:00:00.000Z",
@@ -1621,7 +1628,8 @@
               "finishTime": 106.61,
               "odds": 66
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "CML",
@@ -1668,7 +1676,7 @@
           "sire": "Pins\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Zaburn\n                        \n                        \n                            Dam's Sire",
           "damSire": "Zabeel\n                        \n                        \n                            Same Sire",
-          "currentRating": 53,
+          "currentRating": 67,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1857,7 +1865,8 @@
               "finishTime": 100.69,
               "odds": 15
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "AVB",
@@ -1904,7 +1913,7 @@
           "sire": "Grunt\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Tuscadero\n                        \n                        \n                            Dam's Sire",
           "damSire": "Sebring\n                        \n                        \n                            Same Sire",
-          "currentRating": 73,
+          "currentRating": 75,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2093,7 +2102,8 @@
               "finishTime": 82.49,
               "odds": 2.9
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "DHA",
@@ -2140,7 +2150,7 @@
           "sire": "Rommel\n                        \n                        \n                            Dam",
           "dam": "Colleges\n                        \n                        \n                            Dam's Sire",
           "damSire": "Elusive Quality\n                        \n                        \n                            Same Sire",
-          "currentRating": 66,
+          "currentRating": 78,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2329,7 +2339,8 @@
               "finishTime": 96.08,
               "odds": 55
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "HEL",
@@ -2376,7 +2387,7 @@
           "sire": "Mendelssohn\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Kitty Leroy\n                        \n                        \n                            Dam's Sire",
           "damSire": "I Am Invincible\n                        \n                        \n                            Same Sire",
-          "currentRating": 58,
+          "currentRating": 66,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2565,7 +2576,8 @@
               "finishTime": 69.76,
               "odds": 10
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "LDE",

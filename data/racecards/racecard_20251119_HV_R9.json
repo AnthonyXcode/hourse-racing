@@ -211,7 +211,8 @@
               "finishTime": 110.03,
               "odds": 4.6
             }
-          ]
+          ],
+          "ratingChange": 6
         },
         "jockey": {
           "code": "AA",
@@ -258,7 +259,7 @@
           "sire": "Shamexpress\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Starguru\n                        \n                        \n                            Dam's Sire",
           "damSire": "Ishiguru\n                        \n                        \n                            Same Sire",
-          "currentRating": 71,
+          "currentRating": 75,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -447,7 +448,8 @@
               "finishTime": 69.73,
               "odds": 44
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "BHW",
@@ -494,7 +496,7 @@
           "sire": "The Autumn Sun\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Miss Marielle\n                        \n                        \n                            Dam's Sire",
           "damSire": "Encosta de Lago\n                        \n                        \n                            Same Sire",
-          "currentRating": 60,
+          "currentRating": 69,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -683,7 +685,8 @@
               "finishTime": 81.73,
               "odds": 33
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "OJM",
@@ -730,7 +733,7 @@
           "sire": "Iffraaj\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Khaseeb\n                        \n                        \n                            Dam's Sire",
           "damSire": "New Approach\n                        \n                        \n                            Same Sire",
-          "currentRating": 65,
+          "currentRating": 78,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -919,7 +922,8 @@
               "finishTime": 100.13,
               "odds": 9.1
             }
-          ]
+          ],
+          "ratingChange": 6
         },
         "jockey": {
           "code": "FEL",
@@ -966,7 +970,7 @@
           "sire": "Justify\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Tails Wins\n                        \n                        \n                            Dam's Sire",
           "damSire": "Tale Of The Cat\n                        \n                        \n                            Same Sire",
-          "currentRating": 66,
+          "currentRating": 63,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1155,7 +1159,8 @@
               "finishTime": 83.97,
               "odds": 9.4
             }
-          ]
+          ],
+          "ratingChange": 6
         },
         "jockey": {
           "code": "CML",
@@ -1202,7 +1207,7 @@
           "sire": "Starspangledbanner\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Casino Card\n                        \n                        \n                            Dam's Sire",
           "damSire": "Casino Prince\n                        \n                        \n                            Same Sire",
-          "currentRating": 76,
+          "currentRating": 64,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1391,7 +1396,8 @@
               "finishTime": 94.68,
               "odds": 3.9
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "CJE",
@@ -1610,7 +1616,8 @@
               "finishTime": 82.73,
               "odds": 17
             }
-          ]
+          ],
+          "ratingChange": 8
         },
         "jockey": {
           "code": "PZ",
@@ -1657,7 +1664,7 @@
           "sire": "War Decree\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Fascinate Me\n                        \n                        \n                            Dam's Sire",
           "damSire": "Rip Van Winkle\n                        \n                        \n                            Same Sire",
-          "currentRating": 73,
+          "currentRating": 75,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1846,7 +1853,8 @@
               "finishTime": 82.43,
               "odds": 124
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "TEK",
@@ -1911,7 +1919,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": -1,
           "pastPerformances": [
             {
               "date": "2025-11-05T00:00:00.000Z",
@@ -2083,7 +2090,8 @@
               "finishTime": 82.21000000000001,
               "odds": 15
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "HEL",
@@ -2130,7 +2138,7 @@
           "sire": "Outstrip\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Penny Drops\n                        \n                        \n                            Dam's Sire",
           "damSire": "Invincible Spirit\n                        \n                        \n                            Same Sire",
-          "currentRating": 64,
+          "currentRating": 65,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2319,7 +2327,8 @@
               "finishTime": 108.97,
               "odds": 35
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "CCY",
@@ -2366,7 +2375,7 @@
           "sire": "Hard Spun\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Patti O'Rahy\n                        \n                        \n                            Dam's Sire",
           "damSire": "Rahy\n                        \n                        \n                            Same Sire",
-          "currentRating": 70,
+          "currentRating": 77,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2555,7 +2564,8 @@
               "finishTime": 99.75,
               "odds": 5.9
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "BH",
@@ -2602,7 +2612,7 @@
           "sire": "Star Turn\n                        \n                        \n                            Dam",
           "dam": "Vittoria\n                        \n                        \n                            Dam's Sire",
           "damSire": "Postponed\n                        \n                        \n                            Same Sire",
-          "currentRating": 67,
+          "currentRating": 71,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2791,7 +2801,8 @@
               "finishTime": 109.50999999999999,
               "odds": 24
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "WEC",

@@ -22,7 +22,7 @@
           "sire": "U S Navy Flag\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "No Tricks\n                        \n                        \n                            Dam's Sire",
           "damSire": "Savabeel\n                        \n                        \n                            Same Sire",
-          "currentRating": 85,
+          "currentRating": 62,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -211,7 +211,8 @@
               "finishTime": 81.08,
               "odds": 8.9
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "DHA",
@@ -258,7 +259,7 @@
           "sire": "Showtime\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Miss Fascinator\n                        \n                        \n                            Dam's Sire",
           "damSire": "Fasliyev\n                        \n                        \n                            Same Sire",
-          "currentRating": 80,
+          "currentRating": 63,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -447,7 +448,8 @@
               "finishTime": 70.31,
               "odds": 40
             }
-          ]
+          ],
+          "ratingChange": 2
         },
         "jockey": {
           "code": "CML",
@@ -494,7 +496,7 @@
           "sire": "What's The Story\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Citycenta\n                        \n                        \n                            Dam's Sire",
           "damSire": "Elusive City\n                        \n                        \n                            Same Sire",
-          "currentRating": 64,
+          "currentRating": 70,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -683,7 +685,8 @@
               "finishTime": 69.93,
               "odds": 15
             }
-          ]
+          ],
+          "ratingChange": 7
         },
         "jockey": {
           "code": "BA",
@@ -730,7 +733,7 @@
           "sire": "Deep Field\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Secretly Discreet\n                        \n                        \n                            Dam's Sire",
           "damSire": "Lonhro\n                        \n                        \n                            Same Sire",
-          "currentRating": 83,
+          "currentRating": 65,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -919,7 +922,8 @@
               "finishTime": 69.42,
               "odds": 2.7
             }
-          ]
+          ],
+          "ratingChange": 1
         },
         "jockey": {
           "code": "MCJ",
@@ -966,7 +970,7 @@
           "sire": "All Too Hard\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Madame Moustache\n                        \n                        \n                            Dam's Sire",
           "damSire": "Hinchinbrook\n                        \n                        \n                            Same Sire",
-          "currentRating": 70,
+          "currentRating": 75,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1155,7 +1159,8 @@
               "finishTime": 68.88,
               "odds": 3.8
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "AVB",
@@ -1220,7 +1225,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": -2,
           "pastPerformances": [
             {
               "date": "2025-11-09T00:00:00.000Z",
@@ -1290,7 +1294,8 @@
               "finishTime": 70.03999999999999,
               "odds": 7.9
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "KRW",
@@ -1337,7 +1342,7 @@
           "sire": "Deep Field\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Twist Tops\n                        \n                        \n                            Dam's Sire",
           "damSire": "Beneteau\n                        \n                        \n                            Same Sire",
-          "currentRating": 67,
+          "currentRating": 64,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1526,7 +1531,8 @@
               "finishTime": 57.39,
               "odds": 6
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "PZ",
@@ -1573,7 +1579,7 @@
           "sire": "Charm Spirit\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Musigny\n                        \n                        \n                            Dam's Sire",
           "damSire": "Reset\n                        \n                        \n                            Same Sire",
-          "currentRating": 55,
+          "currentRating": 64,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1762,7 +1768,8 @@
               "finishTime": 69.78,
               "odds": 6.1
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "WEC",
@@ -1809,7 +1816,7 @@
           "sire": "Justify\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Srikandi\n                        \n                        \n                            Dam's Sire",
           "damSire": "Dubawi\n                        \n                        \n                            Same Sire",
-          "currentRating": 62,
+          "currentRating": 64,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1874,7 +1881,7 @@
           "sire": "Deep Field\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Pane In The Glass\n                        \n                        \n                            Dam's Sire",
           "damSire": "Testa Rossa\n                        \n                        \n                            Same Sire",
-          "currentRating": 48,
+          "currentRating": 66,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1910,7 +1917,8 @@
               "finishTime": 57.27,
               "odds": 42
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "PDF",
@@ -1957,7 +1965,7 @@
           "sire": "Swiss Ace\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Jolie Blonde\n                        \n                        \n                            Dam's Sire",
           "damSire": "Testa Rossa\n                        \n                        \n                            Same Sire",
-          "currentRating": 71,
+          "currentRating": 76,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2146,7 +2154,8 @@
               "finishTime": 69.51,
               "odds": 5
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "PMF",
@@ -2193,7 +2202,7 @@
           "sire": "Overshare\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Vegeta\n                        \n                        \n                            Dam's Sire",
           "damSire": "Super Saver\n                        \n                        \n                            Same Sire",
-          "currentRating": 71,
+          "currentRating": 73,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2314,7 +2323,8 @@
               "finishTime": 57.73,
               "odds": 12
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "HEL",

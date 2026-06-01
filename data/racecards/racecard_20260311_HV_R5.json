@@ -22,7 +22,7 @@
           "sire": "Headwater\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Rose Queen\n                        \n                        \n                            Dam's Sire",
           "damSire": "Holy Roman Emperor\n                        \n                        \n                            Same Sire",
-          "currentRating": 82,
+          "currentRating": 68,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -177,7 +177,8 @@
               "finishTime": 57.17,
               "odds": 48
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "MDB",
@@ -294,7 +295,8 @@
               "finishTime": 70.28999999999999,
               "odds": 6.2
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "TEK",
@@ -341,7 +343,7 @@
           "sire": "Written Tycoon\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Secret Liaison\n                        \n                        \n                            Dam's Sire",
           "damSire": "Artie Schiller\n                        \n                        \n                            Same Sire",
-          "currentRating": 71,
+          "currentRating": 74,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -445,7 +447,8 @@
               "finishTime": 69.73,
               "odds": 7.5
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "LDE",
@@ -492,7 +495,7 @@
           "sire": "No Nay Never\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Hermosa\n                        \n                        \n                            Dam's Sire",
           "damSire": "Galileo\n                        \n                        \n                            Same Sire",
-          "currentRating": 66,
+          "currentRating": 62,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -647,7 +650,8 @@
               "finishTime": 82.35,
               "odds": 21
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "CCY",
@@ -712,7 +716,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": -1,
           "pastPerformances": [
             {
               "date": "2026-02-04T00:00:00.000Z",
@@ -816,7 +819,8 @@
               "finishTime": 69.44,
               "odds": 3
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "CJE",
@@ -863,7 +867,7 @@
           "sire": "Star Turn\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Zagara\n                        \n                        \n                            Dam's Sire",
           "damSire": "More Than Ready\n                        \n                        \n                            Same Sire",
-          "currentRating": 68,
+          "currentRating": 69,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -967,7 +971,8 @@
               "finishTime": 70.02,
               "odds": 5.6
             }
-          ]
+          ],
+          "ratingChange": 1
         },
         "jockey": {
           "code": "PZ",
@@ -1014,7 +1019,7 @@
           "sire": "Star Turn\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "In The Moment\n                        \n                        \n                            Dam's Sire",
           "damSire": "Keeper\n                        \n                        \n                            Same Sire",
-          "currentRating": 63,
+          "currentRating": 66,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1152,7 +1157,8 @@
               "finishTime": 56.23,
               "odds": 48
             }
-          ]
+          ],
+          "ratingChange": 1
         },
         "jockey": {
           "code": "AVB",
@@ -1199,7 +1205,7 @@
           "sire": "Starspangledbanner\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Rely On Me\n                        \n                        \n                            Dam's Sire",
           "damSire": "Kyllachy\n                        \n                        \n                            Same Sire",
-          "currentRating": 60,
+          "currentRating": 64,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1320,7 +1326,8 @@
               "finishTime": 69.23,
               "odds": 20
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "BHW",
@@ -1367,7 +1374,7 @@
           "sire": "Microphone\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "South Of France\n                        \n                        \n                            Dam's Sire",
           "damSire": "Quality Road\n                        \n                        \n                            Same Sire",
-          "currentRating": 57,
+          "currentRating": 62,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1385,7 +1392,8 @@
             "PC",
             "SR"
           ],
-          "pastPerformances": []
+          "pastPerformances": [],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "YML",
@@ -1432,7 +1440,7 @@
           "sire": "Lean Mean Machine\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Fair Choice\n                        \n                        \n                            Dam's Sire",
           "damSire": "Redoute's Choice\n                        \n                        \n                            Same Sire",
-          "currentRating": 59,
+          "currentRating": 66,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1621,7 +1629,8 @@
               "finishTime": 70.17,
               "odds": 4.1
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "BH",

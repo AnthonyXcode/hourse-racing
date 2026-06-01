@@ -22,7 +22,7 @@
           "sire": "So You Think\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Humble\n                        \n                        \n                            Dam's Sire",
           "damSire": "Exceed And Excel\n                        \n                        \n                            Same Sire",
-          "currentRating": 97,
+          "currentRating": 82,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -211,7 +211,8 @@
               "finishTime": 107.34,
               "odds": 18
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "GM",
@@ -258,7 +259,7 @@
           "sire": "Sioux Nation\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Jackpot Queen\n                        \n                        \n                            Dam's Sire",
           "damSire": "Not A Single Doubt\n                        \n                        \n                            Same Sire",
-          "currentRating": 87,
+          "currentRating": 99,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -447,7 +448,8 @@
               "finishTime": 56.4,
               "odds": 3.9
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "CJE",
@@ -494,7 +496,7 @@
           "sire": "I Am Invincible\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Pierro Moss\n                        \n                        \n                            Dam's Sire",
           "damSire": "Pierro\n                        \n                        \n                            Same Sire",
-          "currentRating": 101,
+          "currentRating": 96,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -666,7 +668,8 @@
               "finishTime": 70.57,
               "odds": 6.6
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "HCY",
@@ -713,7 +716,7 @@
           "sire": "All Too Hard\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Tuscany Lady\n                        \n                        \n                            Dam's Sire",
           "damSire": "Mossman\n                        \n                        \n                            Same Sire",
-          "currentRating": 101,
+          "currentRating": 92,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -902,7 +905,8 @@
               "finishTime": 81.91,
               "odds": 30
             }
-          ]
+          ],
+          "ratingChange": 6
         },
         "jockey": {
           "code": "PZ",
@@ -949,7 +953,7 @@
           "sire": "Showtime\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Damselle\n                        \n                        \n                            Dam's Sire",
           "damSire": "Domesday\n                        \n                        \n                            Same Sire",
-          "currentRating": 100,
+          "currentRating": 85,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1104,7 +1108,8 @@
               "finishTime": 57.69,
               "odds": 7.9
             }
-          ]
+          ],
+          "ratingChange": 1
         },
         "jockey": {
           "code": "AA",
@@ -1151,7 +1156,7 @@
           "sire": "Havana Gold\n                        \n                        \n                            Dam",
           "dam": "Gladiatrix\n                        \n                        \n                            Dam's Sire",
           "damSire": "Compton Place\n                        \n                        \n                            Same Sire",
-          "currentRating": 75,
+          "currentRating": 84,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1340,7 +1345,8 @@
               "finishTime": 69.11,
               "odds": 1.6
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "DHA",
@@ -1387,7 +1393,7 @@
           "sire": "Shamus Award\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Miss Ethics\n                        \n                        \n                            Dam's Sire",
           "damSire": "Count Dubois\n                        \n                        \n                            Same Sire",
-          "currentRating": 100,
+          "currentRating": 97,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1576,7 +1582,8 @@
               "finishTime": 56.43,
               "odds": 1.7
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "MCJ",
@@ -1623,7 +1630,7 @@
           "sire": "Fighting Sun\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Lady Zhao Jun\n                        \n                        \n                            Dam's Sire",
           "damSire": "Fastnet Rock\n                        \n                        \n                            Same Sire",
-          "currentRating": 85,
+          "currentRating": 90,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1812,7 +1819,8 @@
               "finishTime": 82.97,
               "odds": 55
             }
-          ]
+          ],
+          "ratingChange": -3
         },
         "jockey": {
           "code": "CML",
@@ -1877,7 +1885,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": -1,
           "pastPerformances": [
             {
               "date": "2025-11-30T00:00:00.000Z",
@@ -2049,7 +2056,8 @@
               "finishTime": 71.94,
               "odds": 7.9
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "LDE",
@@ -2096,7 +2104,7 @@
           "sire": "Deep Field\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Little Favours\n                        \n                        \n                            Dam's Sire",
           "damSire": "Falvelon\n                        \n                        \n                            Same Sire",
-          "currentRating": 94,
+          "currentRating": 96,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2285,7 +2293,8 @@
               "finishTime": 68.42,
               "odds": 7
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "TEK",
@@ -2332,7 +2341,7 @@
           "sire": "Press Statement\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Hollywell\n                        \n                        \n                            Dam's Sire",
           "damSire": "Refuse To Bend\n                        \n                        \n                            Same Sire",
-          "currentRating": 89,
+          "currentRating": 96,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2521,7 +2530,8 @@
               "finishTime": 68.99,
               "odds": 50
             }
-          ]
+          ],
+          "ratingChange": 7
         },
         "jockey": {
           "code": "BH",
@@ -2757,7 +2767,8 @@
               "finishTime": 81.67,
               "odds": 11
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "YML",

@@ -22,7 +22,7 @@
           "sire": "Mehmas\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Heavenly River\n                        \n                        \n                            Dam's Sire",
           "damSire": "Stormy River\n                        \n                        \n                            Same Sire",
-          "currentRating": 76,
+          "currentRating": 59,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -177,7 +177,8 @@
               "finishTime": 57.08,
               "odds": 72
             }
-          ]
+          ],
+          "ratingChange": 9
         },
         "jockey": {
           "code": "PZ",
@@ -345,7 +346,8 @@
               "finishTime": 70.41,
               "odds": 5.2
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "OJM",
@@ -392,7 +394,7 @@
           "sire": "Zoustar\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Volcada\n                        \n                        \n                            Dam's Sire",
           "damSire": "Stravinsky\n                        \n                        \n                            Same Sire",
-          "currentRating": 43,
+          "currentRating": 46,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -547,7 +549,8 @@
               "finishTime": 70.12,
               "odds": 11
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "CJE",
@@ -800,7 +803,8 @@
               "finishTime": 70.52,
               "odds": 13
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "LDE",
@@ -847,7 +851,7 @@
           "sire": "Exceed And Excel\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Vicennalia\n                        \n                        \n                            Dam's Sire",
           "damSire": "More Than Ready\n                        \n                        \n                            Same Sire",
-          "currentRating": 38,
+          "currentRating": 42,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -951,7 +955,8 @@
               "finishTime": 58.65,
               "odds": 36
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "BA",
@@ -998,7 +1003,7 @@
           "sire": "Toronado\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Enchanted Dawn\n                        \n                        \n                            Dam's Sire",
           "damSire": "War Front\n                        \n                        \n                            Same Sire",
-          "currentRating": 46,
+          "currentRating": 50,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1051,7 +1056,8 @@
               "finishTime": 59.06,
               "odds": 41
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "YML",
@@ -1116,7 +1122,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": -1,
           "pastPerformances": [
             {
               "date": "2026-03-15T00:00:00.000Z",
@@ -1169,7 +1174,8 @@
               "finishTime": 69.81,
               "odds": 29
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "MDB",
@@ -1216,7 +1222,7 @@
           "sire": "Brave Smash\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Voodoo Lady\n                        \n                        \n                            Dam's Sire",
           "damSire": "Pins\n                        \n                        \n                            Same Sire",
-          "currentRating": 48,
+          "currentRating": 54,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1337,7 +1343,8 @@
               "finishTime": 58.08,
               "odds": 27
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "FEL",
@@ -1384,7 +1391,7 @@
           "sire": "Complacent\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Thunderchine\n                        \n                        \n                            Dam's Sire",
           "damSire": "Thunder Gulch\n                        \n                        \n                            Same Sire",
-          "currentRating": 51,
+          "currentRating": 54,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1471,7 +1478,8 @@
               "finishTime": 70.06,
               "odds": 6.1
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "BH",
@@ -1518,7 +1526,7 @@
           "sire": "Tassort\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Wild Soiree\n                        \n                        \n                            Dam's Sire",
           "damSire": "Fusaichi Pegasus\n                        \n                        \n                            Same Sire",
-          "currentRating": 39,
+          "currentRating": 41,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1605,7 +1613,8 @@
               "finishTime": 69.78999999999999,
               "odds": 291
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "CCY",
@@ -1652,7 +1661,7 @@
           "sire": "Deep Field\n                        \n                        \n                            Dam",
           "dam": "Murtle Turtle\n                        \n                        \n                            Dam's Sire",
           "damSire": "Murtajill\n                        \n                        \n                            Same Sire",
-          "currentRating": 40,
+          "currentRating": 44,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1807,7 +1816,8 @@
               "finishTime": 69.84,
               "odds": 11
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "CML",
@@ -1854,7 +1864,7 @@
           "sire": "Capitalist\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Malakiya\n                        \n                        \n                            Dam's Sire",
           "damSire": "Redoute's Choice\n                        \n                        \n                            Same Sire",
-          "currentRating": 56,
+          "currentRating": 57,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2026,7 +2036,8 @@
               "finishTime": 71.22,
               "odds": 27
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "AA",

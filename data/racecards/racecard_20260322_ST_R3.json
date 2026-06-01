@@ -22,7 +22,7 @@
           "sire": "Starspangledbanner\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Wowcha\n                        \n                        \n                            Dam's Sire",
           "damSire": "Zoffany\n                        \n                        \n                            Same Sire",
-          "currentRating": 71,
+          "currentRating": 63,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -75,7 +75,8 @@
               "finishTime": 69.28999999999999,
               "odds": 33
             }
-          ]
+          ],
+          "ratingChange": 9
         },
         "jockey": {
           "code": "YML",
@@ -122,7 +123,7 @@
           "sire": "Too Darn Hot\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Refreshing\n                        \n                        \n                            Dam's Sire",
           "damSire": "Stratum\n                        \n                        \n                            Same Sire",
-          "currentRating": 74,
+          "currentRating": 75,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -243,7 +244,8 @@
               "finishTime": 81.67,
               "odds": 8.5
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "PMF",
@@ -308,7 +310,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": 0,
           "pastPerformances": [
             {
               "date": "2026-02-22T00:00:00.000Z",
@@ -412,7 +413,8 @@
               "finishTime": 69.96000000000001,
               "odds": 27
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "FEL",
@@ -546,7 +548,8 @@
               "finishTime": 81.58,
               "odds": 2.5
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "CJE",
@@ -593,7 +596,7 @@
           "sire": "Churchill\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Irish Fling\n                        \n                        \n                            Dam's Sire",
           "damSire": "Darci Brahma\n                        \n                        \n                            Same Sire",
-          "currentRating": 60,
+          "currentRating": 63,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -748,7 +751,8 @@
               "finishTime": 83.26,
               "odds": 68
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "AA",
@@ -795,7 +799,7 @@
           "sire": "Shooting To Win\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "La Comedienne\n                        \n                        \n                            Dam's Sire",
           "damSire": "Commands\n                        \n                        \n                            Same Sire",
-          "currentRating": 71,
+          "currentRating": 73,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -916,7 +920,8 @@
               "finishTime": 70.81,
               "odds": 7.4
             }
-          ]
+          ],
+          "ratingChange": 1
         },
         "jockey": {
           "code": "MDB",
@@ -1016,7 +1021,8 @@
               "finishTime": 56.83,
               "odds": 3.6
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "PZ",
@@ -1063,7 +1069,7 @@
           "sire": "Flying Artie\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Cavalry Rock\n                        \n                        \n                            Dam's Sire",
           "damSire": "Fastnet Rock\n                        \n                        \n                            Same Sire",
-          "currentRating": 64,
+          "currentRating": 65,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1128,7 +1134,7 @@
           "sire": "U S Navy Flag\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Ireland's Teardrop\n                        \n                        \n                            Dam's Sire",
           "damSire": "Fastnet Rock\n                        \n                        \n                            Same Sire",
-          "currentRating": 69,
+          "currentRating": 73,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1193,7 +1199,7 @@
           "sire": "Rageese\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Meir\n                        \n                        \n                            Dam's Sire",
           "damSire": "Volksraad\n                        \n                        \n                            Same Sire",
-          "currentRating": 60,
+          "currentRating": 64,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1229,7 +1235,8 @@
               "finishTime": 69.84,
               "odds": 22
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "HEL",

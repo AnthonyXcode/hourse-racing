@@ -22,7 +22,7 @@
           "sire": "Almanzor\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Sacred Rhythm\n                        \n                        \n                            Dam's Sire",
           "damSire": "Pentire\n                        \n                        \n                            Same Sire",
-          "currentRating": 57,
+          "currentRating": 42,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -211,7 +211,8 @@
               "finishTime": 69.97,
               "odds": 6.4
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "AA",
@@ -258,7 +259,7 @@
           "sire": "Deep Field\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Sarong\n                        \n                        \n                            Dam's Sire",
           "damSire": "Exceed And Excel\n                        \n                        \n                            Same Sire",
-          "currentRating": 42,
+          "currentRating": 51,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -447,7 +448,8 @@
               "finishTime": 98.42,
               "odds": 9.9
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "FEL",
@@ -494,7 +496,7 @@
           "sire": "Good Journey\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Unbridled Ambiance\n                        \n                        \n                            Dam's Sire",
           "damSire": "Unbridled Time\n                        \n                        \n                            Same Sire",
-          "currentRating": 52,
+          "currentRating": 45,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -672,7 +674,7 @@
               "raceNumber": 3,
               "raceClass": "Class 4",
               "distance": 1800,
-              "surface": "AWT",
+              "surface": "Turf",
               "going": "Good to Firm",
               "draw": 5,
               "weight": 124,
@@ -683,7 +685,8 @@
               "finishTime": 111.09,
               "odds": 5.6
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "GM",
@@ -730,7 +733,7 @@
           "sire": "Tavistock\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Tempting Delight\n                        \n                        \n                            Dam's Sire",
           "damSire": "Northern Meteor\n                        \n                        \n                            Same Sire",
-          "currentRating": 56,
+          "currentRating": 51,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -919,7 +922,8 @@
               "finishTime": 99.2,
               "odds": 5.6
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "TEK",
@@ -966,7 +970,7 @@
           "sire": "Starspangledbanner\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Marechale\n                        \n                        \n                            Dam's Sire",
           "damSire": "Anabaa\n                        \n                        \n                            Same Sire",
-          "currentRating": 53,
+          "currentRating": 49,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1155,7 +1159,8 @@
               "finishTime": 84.63,
               "odds": 45
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "CML",
@@ -1202,7 +1207,7 @@
           "sire": "Night Of Thunder\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Braided\n                        \n                        \n                            Dam's Sire",
           "damSire": "Elusive Quality\n                        \n                        \n                            Same Sire",
-          "currentRating": 48,
+          "currentRating": 44,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1391,7 +1396,8 @@
               "finishTime": 71.38,
               "odds": 123
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "BHW",
@@ -1456,7 +1462,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": 0,
           "pastPerformances": [
             {
               "date": "2025-11-12T00:00:00.000Z",
@@ -1628,7 +1633,8 @@
               "finishTime": 82.84,
               "odds": 14
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "PMF",
@@ -1675,7 +1681,7 @@
           "sire": "Deep Field\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Centafaith\n                        \n                        \n                            Dam's Sire",
           "damSire": "Keep The Faith\n                        \n                        \n                            Same Sire",
-          "currentRating": 46,
+          "currentRating": 52,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1779,7 +1785,8 @@
               "finishTime": 70.8,
               "odds": 4
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "PZ",
@@ -1826,7 +1833,7 @@
           "sire": "Headwater\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Ay Jay Charli\n                        \n                        \n                            Dam's Sire",
           "damSire": "Pride Of Dubai\n                        \n                        \n                            Same Sire",
-          "currentRating": 41,
+          "currentRating": 52,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1891,7 +1898,7 @@
           "sire": "Shamus Award\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Tahlio\n                        \n                        \n                            Dam's Sire",
           "damSire": "More Than Ready\n                        \n                        \n                            Same Sire",
-          "currentRating": 36,
+          "currentRating": 43,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2046,7 +2053,8 @@
               "finishTime": 70.3,
               "odds": 52
             }
-          ]
+          ],
+          "ratingChange": 2
         },
         "jockey": {
           "code": "YML",
@@ -2093,7 +2101,7 @@
           "sire": "Wyndspelle\n                        \n                        \n                            Dam",
           "dam": "Thegreatpickpocket\n                        \n                        \n                            Dam's Sire",
           "damSire": "Brilliance\n                        \n                        \n                            Same Sire",
-          "currentRating": 56,
+          "currentRating": 59,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2163,7 +2171,8 @@
               "finishTime": 70.62,
               "odds": 50
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "OJM",
@@ -2210,7 +2219,7 @@
           "sire": "Nyquist\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Do The Dance\n                        \n                        \n                            Dam's Sire",
           "damSire": "Discreet Cat\n                        \n                        \n                            Same Sire",
-          "currentRating": 61,
+          "currentRating": 45,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2297,7 +2306,8 @@
               "finishTime": 70.96000000000001,
               "odds": 9.6
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "HCY",
@@ -2344,7 +2354,7 @@
           "sire": "Deep Field\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "The Soloist\n                        \n                        \n                            Dam's Sire",
           "damSire": "Smart Missile\n                        \n                        \n                            Same Sire",
-          "currentRating": 38,
+          "currentRating": 50,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2414,7 +2424,8 @@
               "finishTime": 71.69,
               "odds": 37
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "KRW",
@@ -2461,7 +2472,7 @@
           "sire": "Deep Field\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Syrahbeel\n                        \n                        \n                            Dam's Sire",
           "damSire": "Savabeel\n                        \n                        \n                            Same Sire",
-          "currentRating": 37,
+          "currentRating": 54,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2582,7 +2593,8 @@
               "finishTime": 72,
               "odds": 16
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "PDF",

@@ -22,7 +22,7 @@
           "sire": "Wrote\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "O'Sabrina\n                        \n                        \n                            Dam's Sire",
           "damSire": "Snitzel\n                        \n                        \n                            Same Sire",
-          "currentRating": 68,
+          "currentRating": 58,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -126,7 +126,8 @@
               "finishTime": 70.28,
               "odds": 3.5
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "CJE",
@@ -173,7 +174,7 @@
           "sire": "Showtime\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Avanti Rose\n                        \n                        \n                            Dam's Sire",
           "damSire": "Ambidexter\n                        \n                        \n                            Same Sire",
-          "currentRating": 58,
+          "currentRating": 60,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -277,7 +278,8 @@
               "finishTime": 69.86,
               "odds": 14
             }
-          ]
+          ],
+          "ratingChange": 1
         },
         "jockey": {
           "code": "BH",
@@ -462,7 +464,8 @@
               "finishTime": 81.4,
               "odds": 4.4
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "OJM",
@@ -509,7 +512,7 @@
           "sire": "Satono Aladdin\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Fairfield Flame\n                        \n                        \n                            Dam's Sire",
           "damSire": "Oasis Dream\n                        \n                        \n                            Same Sire",
-          "currentRating": 45,
+          "currentRating": 50,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -596,7 +599,8 @@
               "finishTime": 69.55,
               "odds": 90
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "AVB",
@@ -643,7 +647,7 @@
           "sire": "War Decree\n                        \n                        \n                            Dam",
           "dam": "Colonel's Daughter\n                        \n                        \n                            Dam's Sire",
           "damSire": "Hinchinbrook\n                        \n                        \n                            Same Sire",
-          "currentRating": 48,
+          "currentRating": 50,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -713,7 +717,8 @@
               "finishTime": 70.42,
               "odds": 103
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "MHT",
@@ -760,7 +765,7 @@
           "sire": "Territories\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Flattery\n                        \n                        \n                            Dam's Sire",
           "damSire": "Shamardal\n                        \n                        \n                            Same Sire",
-          "currentRating": 35,
+          "currentRating": 43,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -830,7 +835,8 @@
               "finishTime": 83.65,
               "odds": 22
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "GM",
@@ -960,7 +966,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": -2,
           "pastPerformances": [
             {
               "date": "2026-01-18T00:00:00.000Z",
@@ -1081,7 +1086,8 @@
               "finishTime": 71.22,
               "odds": 27
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "AA",
@@ -1128,7 +1134,7 @@
           "sire": "Reward For Effort\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Cannubi\n                        \n                        \n                            Dam's Sire",
           "damSire": "Savabeel\n                        \n                        \n                            Same Sire",
-          "currentRating": 42,
+          "currentRating": 45,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1215,7 +1221,8 @@
               "finishTime": 82.49,
               "odds": 24
             }
-          ]
+          ],
+          "ratingChange": 7
         },
         "jockey": {
           "code": "KRW",
@@ -1262,7 +1269,7 @@
           "sire": "Ten Sovereigns\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Twice Smitten\n                        \n                        \n                            Dam's Sire",
           "damSire": "Bernardini\n                        \n                        \n                            Same Sire",
-          "currentRating": 51,
+          "currentRating": 56,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1315,7 +1322,8 @@
               "finishTime": 57.17,
               "odds": 4.2
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "FEL",
@@ -1362,7 +1370,7 @@
           "sire": "Hellbent\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Balady\n                        \n                        \n                            Dam's Sire",
           "damSire": "Zamindar\n                        \n                        \n                            Same Sire",
-          "currentRating": 42,
+          "currentRating": 52,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1398,7 +1406,8 @@
               "finishTime": 71.33,
               "odds": 58
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "CCY",
@@ -1445,7 +1454,7 @@
           "sire": "Headwater\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Syncopated\n                        \n                        \n                            Dam's Sire",
           "damSire": "Lonhro\n                        \n                        \n                            Same Sire",
-          "currentRating": 46,
+          "currentRating": 51,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1515,7 +1524,8 @@
               "finishTime": 57.07,
               "odds": 24
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "HEL",

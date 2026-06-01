@@ -22,7 +22,7 @@
           "sire": "Night Of Thunder\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Stage Play\n                        \n                        \n                            Dam's Sire",
           "damSire": "Oasis Dream\n                        \n                        \n                            Same Sire",
-          "currentRating": 74,
+          "currentRating": 68,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -75,7 +75,8 @@
               "finishTime": 68.74,
               "odds": 42
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "PMF",
@@ -122,7 +123,7 @@
           "sire": "Justify\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Wedding Vow\n                        \n                        \n                            Dam's Sire",
           "damSire": "Galileo\n                        \n                        \n                            Same Sire",
-          "currentRating": 82,
+          "currentRating": 68,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -243,7 +244,8 @@
               "finishTime": 120.53,
               "odds": 31
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "PZ",
@@ -394,7 +396,8 @@
               "finishTime": 100.25,
               "odds": 34
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "MDB",
@@ -441,7 +444,7 @@
           "sire": "Into Mischief\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Spirit Of Ecstasy\n                        \n                        \n                            Dam's Sire",
           "damSire": "Congrats\n                        \n                        \n                            Same Sire",
-          "currentRating": 85,
+          "currentRating": 84,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -545,7 +548,8 @@
               "finishTime": 93.43,
               "odds": 46
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "AA",
@@ -592,7 +596,7 @@
           "sire": "U S Navy Flag\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Blossom Deary\n                        \n                        \n                            Dam's Sire",
           "damSire": "Duke Of Marmalade\n                        \n                        \n                            Same Sire",
-          "currentRating": 61,
+          "currentRating": 64,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -747,7 +751,8 @@
               "finishTime": 70.3,
               "odds": 10
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "CML",
@@ -794,7 +799,7 @@
           "sire": "Vino Rosso\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Sombre Sea\n                        \n                        \n                            Dam's Sire",
           "damSire": "Dash For Cash\n                        \n                        \n                            Same Sire",
-          "currentRating": 74,
+          "currentRating": 72,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -949,7 +954,8 @@
               "finishTime": 81.42,
               "odds": 9.5
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "AVB",
@@ -996,7 +1002,7 @@
           "sire": "The Brothers War\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Moorings Capital\n                        \n                        \n                            Dam's Sire",
           "damSire": "Song Of Tara\n                        \n                        \n                            Same Sire",
-          "currentRating": 68,
+          "currentRating": 74,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1168,7 +1174,8 @@
               "finishTime": 100.67,
               "odds": 37
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "CCY",
@@ -1233,7 +1240,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": -1,
           "pastPerformances": [
             {
               "date": "2026-02-04T00:00:00.000Z",
@@ -1320,7 +1326,8 @@
               "finishTime": 100.45,
               "odds": 26
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "HEL",
@@ -1367,7 +1374,7 @@
           "sire": "Street Boss\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Chan Yam Man",
           "damSire": "Redoute's Choice\n                        \n                        \n                            Same Sire",
-          "currentRating": 58,
+          "currentRating": 62,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1505,7 +1512,8 @@
               "finishTime": 101.25,
               "odds": 8.7
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "YML",
@@ -1552,7 +1560,7 @@
           "sire": "What's The Story\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Citycenta\n                        \n                        \n                            Dam's Sire",
           "damSire": "Elusive City\n                        \n                        \n                            Same Sire",
-          "currentRating": 66,
+          "currentRating": 69,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1673,7 +1681,8 @@
               "finishTime": 69.68,
               "odds": 23
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "CJE",
@@ -1841,7 +1850,8 @@
               "finishTime": 69.06,
               "odds": 12
             }
-          ]
+          ],
+          "ratingChange": 1
         },
         "jockey": {
           "code": "BH",
@@ -1888,7 +1898,7 @@
           "sire": "Written Tycoon\n                        \n                        \n                            Dam",
           "dam": "Bandol\n                        \n                        \n                            Dam's Sire",
           "damSire": "Snitzel\n                        \n                        \n                            Same Sire",
-          "currentRating": 54,
+          "currentRating": 61,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1924,7 +1934,8 @@
               "finishTime": 98.12,
               "odds": 98
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "TEK",

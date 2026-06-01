@@ -22,7 +22,7 @@
           "sire": "Shamexpress\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Missy Moo\n                        \n                        \n                            Dam's Sire",
           "damSire": "Per Incanto\n                        \n                        \n                            Same Sire",
-          "currentRating": 52,
+          "currentRating": 138,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -92,7 +92,8 @@
               "finishTime": 67.63,
               "odds": 1
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "PZ",
@@ -209,7 +210,8 @@
               "finishTime": 68.05,
               "odds": 8.2
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "BH",
@@ -256,7 +258,7 @@
           "sire": "Wrote\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Alberta\n                        \n                        \n                            Dam's Sire",
           "damSire": "Magic Albert\n                        \n                        \n                            Same Sire",
-          "currentRating": 121,
+          "currentRating": 115,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -360,7 +362,8 @@
               "finishTime": 81.32,
               "odds": 2.9
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "MCJ",
@@ -407,7 +410,7 @@
           "sire": "Per Incanto\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Perfect Beat\n                        \n                        \n                            Dam's Sire",
           "damSire": "Magnus\n                        \n                        \n                            Same Sire",
-          "currentRating": 115,
+          "currentRating": 113,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -511,7 +514,8 @@
               "finishTime": 68.33,
               "odds": 48
             }
-          ]
+          ],
+          "ratingChange": 3
         },
         "jockey": {
           "code": "AVB",
@@ -558,7 +562,7 @@
           "sire": "Written Tycoon\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Rainbeam\n                        \n                        \n                            Dam's Sire",
           "damSire": "Fastnet Rock\n                        \n                        \n                            Same Sire",
-          "currentRating": 106,
+          "currentRating": 110,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -679,7 +683,8 @@
               "finishTime": 67.76,
               "odds": 5.4
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "BHW",
@@ -744,7 +749,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": -2,
           "pastPerformances": [
             {
               "date": "2025-12-14T00:00:00.000Z",
@@ -814,7 +818,8 @@
               "finishTime": 68.55,
               "odds": 58
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "FEL",
@@ -861,7 +866,7 @@
           "sire": "Starspangledbanner\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Little Sweetheart\n                        \n                        \n                            Dam's Sire",
           "damSire": "Lawman\n                        \n                        \n                            Same Sire",
-          "currentRating": 109,
+          "currentRating": 107,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -982,7 +987,8 @@
               "finishTime": 68.36,
               "odds": 9.1
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "CML",

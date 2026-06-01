@@ -22,7 +22,7 @@
           "sire": "Capitalist\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Madame Cactus\n                        \n                        \n                            Dam's Sire",
           "damSire": "Cactus Ridge\n                        \n                        \n                            Same Sire",
-          "currentRating": 78,
+          "currentRating": 58,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -211,7 +211,8 @@
               "finishTime": 82.3,
               "odds": 34
             }
-          ]
+          ],
+          "ratingChange": 2
         },
         "jockey": {
           "code": "OJM",
@@ -276,7 +277,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": 0,
           "pastPerformances": [
             {
               "date": "2025-12-07T00:00:00.000Z",
@@ -346,7 +346,8 @@
               "finishTime": 56.85,
               "odds": 55
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "CJE",
@@ -393,7 +394,7 @@
           "sire": "Pierata\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Tris\n                        \n                        \n                            Dam's Sire",
           "damSire": "Street Boss\n                        \n                        \n                            Same Sire",
-          "currentRating": 47,
+          "currentRating": 50,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -480,7 +481,8 @@
               "finishTime": 69.55,
               "odds": 87
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "LDE",
@@ -527,7 +529,7 @@
           "sire": "Time Test\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Night Nurse\n                        \n                        \n                            Dam's Sire",
           "damSire": "Tavistock\n                        \n                        \n                            Same Sire",
-          "currentRating": 56,
+          "currentRating": 52,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -563,7 +565,8 @@
               "finishTime": 70.2,
               "odds": 3.7
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "AVB",
@@ -610,7 +613,7 @@
           "sire": "Hellbent\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Geneteau\n                        \n                        \n                            Dam's Sire",
           "damSire": "Beneteau\n                        \n                        \n                            Same Sire",
-          "currentRating": 46,
+          "currentRating": 42,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -765,7 +768,8 @@
               "finishTime": 56.82,
               "odds": 6.1
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "CML",
@@ -812,7 +816,7 @@
           "sire": "Turn Me Loose\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Junoesque\n                        \n                        \n                            Dam's Sire",
           "damSire": "Spinning World\n                        \n                        \n                            Same Sire",
-          "currentRating": 40,
+          "currentRating": 52,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -877,7 +881,7 @@
           "sire": "El Roca\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Orange Shore\n                        \n                        \n                            Dam's Sire",
           "damSire": "Swiss Ace\n                        \n                        \n                            Same Sire",
-          "currentRating": 42,
+          "currentRating": 52,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -913,7 +917,8 @@
               "finishTime": 69.43,
               "odds": 71
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "BH",
@@ -960,7 +965,7 @@
           "sire": "D'Argento\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "You're Dreamin\n                        \n                        \n                            Dam's Sire",
           "damSire": "Commands\n                        \n                        \n                            Same Sire",
-          "currentRating": 57,
+          "currentRating": 60,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1064,7 +1069,8 @@
               "finishTime": 69.5,
               "odds": 47
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "TEK",
@@ -1111,7 +1117,7 @@
           "sire": "Super Seth\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Savodara\n                        \n                        \n                            Dam's Sire",
           "damSire": "Savabeel\n                        \n                        \n                            Same Sire",
-          "currentRating": 60,
+          "currentRating": 54,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1198,7 +1204,8 @@
               "finishTime": 70.1,
               "odds": 24
             }
-          ]
+          ],
+          "ratingChange": 7
         },
         "jockey": {
           "code": "YML",
@@ -1245,7 +1252,7 @@
           "sire": "Redwood\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Ceebeel\n                        \n                        \n                            Dam's Sire",
           "damSire": "Savabeel\n                        \n                        \n                            Same Sire",
-          "currentRating": 60,
+          "currentRating": 52,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1310,7 +1317,7 @@
           "sire": "Wrote\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "My Rose Maree\n                        \n                        \n                            Dam's Sire",
           "damSire": "Rock Of Gibraltar\n                        \n                        \n                            Same Sire",
-          "currentRating": 45,
+          "currentRating": 49,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1363,7 +1370,8 @@
               "finishTime": 82.39,
               "odds": 84
             }
-          ]
+          ],
+          "ratingChange": -3
         },
         "jockey": {
           "code": "PMF",
@@ -1410,7 +1418,7 @@
           "sire": "Cable Bay\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Cooper's Girl\n                        \n                        \n                            Dam's Sire",
           "damSire": "Choisir\n                        \n                        \n                            Same Sire",
-          "currentRating": 40,
+          "currentRating": 46,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1599,7 +1607,8 @@
               "finishTime": 70.28999999999999,
               "odds": 14
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "HEL",
@@ -1646,7 +1655,7 @@
           "sire": "Street Boss\n                        \n                        \n                            Dam",
           "dam": "Uranie\n                        \n                        \n                            Dam's Sire",
           "damSire": "More Than Ready\n                        \n                        \n                            Same Sire",
-          "currentRating": 44,
+          "currentRating": 48,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1801,7 +1810,8 @@
               "finishTime": 70.11,
               "odds": 32
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "GM",
@@ -1848,7 +1858,7 @@
           "sire": "Santos\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Excelamour\n                        \n                        \n                            Dam's Sire",
           "damSire": "Excelebration\n                        \n                        \n                            Same Sire",
-          "currentRating": 50,
+          "currentRating": 52,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,

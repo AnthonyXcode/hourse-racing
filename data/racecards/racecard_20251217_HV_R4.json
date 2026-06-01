@@ -22,7 +22,7 @@
           "sire": "Mehmas\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Obama Rule\n                        \n                        \n                            Dam's Sire",
           "damSire": "Danehill Dancer\n                        \n                        \n                            Same Sire",
-          "currentRating": 61,
+          "currentRating": 50,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -211,7 +211,8 @@
               "finishTime": 107.2,
               "odds": 10
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "BH",
@@ -258,7 +259,7 @@
           "sire": "Sacred Falls\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "La Praline\n                        \n                        \n                            Dam's Sire",
           "damSire": "Anabaa\n                        \n                        \n                            Same Sire",
-          "currentRating": 59,
+          "currentRating": 56,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -447,7 +448,8 @@
               "finishTime": 100.95,
               "odds": 5.8
             }
-          ]
+          ],
+          "ratingChange": 7
         },
         "jockey": {
           "code": "HCY",
@@ -494,7 +496,7 @@
           "sire": "Magna Grecia\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Cat's Wish\n                        \n                        \n                            Dam's Sire",
           "damSire": "Rock Of Gibraltar\n                        \n                        \n                            Same Sire",
-          "currentRating": 34,
+          "currentRating": 46,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -615,7 +617,8 @@
               "finishTime": 58.11,
               "odds": 54
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "CJE",
@@ -680,7 +683,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": -2,
           "pastPerformances": [
             {
               "date": "2025-11-09T00:00:00.000Z",
@@ -852,7 +854,8 @@
               "finishTime": 99.15,
               "odds": 3.1
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "GM",
@@ -1088,7 +1091,8 @@
               "finishTime": 70.07,
               "odds": 49
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "PZ",
@@ -1135,7 +1139,7 @@
           "sire": "Needs Further\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Pleats\n                        \n                        \n                            Dam's Sire",
           "damSire": "Green Desert\n                        \n                        \n                            Same Sire",
-          "currentRating": 38,
+          "currentRating": 47,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1324,7 +1328,8 @@
               "finishTime": 70.63,
               "odds": 28
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "AA",
@@ -1371,7 +1376,7 @@
           "sire": "Pierata\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Nova Rocha\n                        \n                        \n                            Dam's Sire",
           "damSire": "New Approach\n                        \n                        \n                            Same Sire",
-          "currentRating": 40,
+          "currentRating": 52,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1407,7 +1412,8 @@
               "finishTime": 69.47,
               "odds": 2.3
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "AVB",
@@ -1454,7 +1460,7 @@
           "sire": "Dubious\n                        \n                        \n                            Dam",
           "dam": "Aysgarth\n                        \n                        \n                            Dam's Sire",
           "damSire": "Street Cry\n                        \n                        \n                            Same Sire",
-          "currentRating": 38,
+          "currentRating": 40,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1609,7 +1615,8 @@
               "finishTime": 70.25,
               "odds": 74
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "PMF",
@@ -1656,7 +1663,7 @@
           "sire": "Charm Spirit\n                        \n                        \n                            Dam",
           "dam": "Ataahua Daydream\n                        \n                        \n                            Dam's Sire",
           "damSire": "High Chaparral\n                        \n                        \n                            Same Sire",
-          "currentRating": 40,
+          "currentRating": 49,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1794,7 +1801,8 @@
               "finishTime": 70.44,
               "odds": 72
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "LDE",
@@ -1841,7 +1849,7 @@
           "sire": "Lonhro\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Words Are Weapons\n                        \n                        \n                            Dam's Sire",
           "damSire": "Dubawi\n                        \n                        \n                            Same Sire",
-          "currentRating": 37,
+          "currentRating": 48,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2030,7 +2038,8 @@
               "finishTime": 100.66,
               "odds": 18
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "DHA",
@@ -2077,7 +2086,7 @@
           "sire": "Deep Field\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Anyaas\n                        \n                        \n                            Dam's Sire",
           "damSire": "Commands\n                        \n                        \n                            Same Sire",
-          "currentRating": 37,
+          "currentRating": 43,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2198,7 +2207,8 @@
               "finishTime": 57.1,
               "odds": 82
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "YML",
@@ -2263,7 +2273,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": -3,
           "pastPerformances": [
             {
               "date": "2025-11-19T00:00:00.000Z",
@@ -2350,7 +2359,8 @@
               "finishTime": 57.73,
               "odds": 101
             }
-          ]
+          ],
+          "ratingChange": -3
         },
         "jockey": {
           "code": "CCY",

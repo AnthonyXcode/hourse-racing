@@ -22,7 +22,7 @@
           "sire": "Zoustar\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Calming Influence\n                        \n                        \n                            Dam's Sire",
           "damSire": "Commands\n                        \n                        \n                            Same Sire",
-          "currentRating": 81,
+          "currentRating": 52,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -87,7 +87,7 @@
           "sire": "Rich Enuff\n                        \n                        \n                            Dam",
           "dam": "Redzig\n                        \n                        \n                            Dam's Sire",
           "damSire": "Shinzig\n                        \n                        \n                            Same Sire",
-          "currentRating": 51,
+          "currentRating": 52,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -152,7 +152,7 @@
           "sire": "Daiwa Major\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Get Closer\n                        \n                        \n                            Dam's Sire",
           "damSire": "Wild Rush\n                        \n                        \n                            Same Sire",
-          "currentRating": 36,
+          "currentRating": 46,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -307,7 +307,8 @@
               "finishTime": 71.38,
               "odds": 8.7
             }
-          ]
+          ],
+          "ratingChange": -3
         },
         "jockey": {
           "code": "HEL",
@@ -372,7 +373,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": -2,
           "pastPerformances": [
             {
               "date": "2025-11-30T00:00:00.000Z",
@@ -544,7 +544,8 @@
               "finishTime": 69.34,
               "odds": 57
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "CCY",
@@ -627,7 +628,8 @@
               "finishTime": 57.28,
               "odds": 6.4
             }
-          ]
+          ],
+          "ratingChange": 8
         },
         "jockey": {
           "code": "PZ",
@@ -674,7 +676,7 @@
           "sire": "War Decree\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Sweet Revenge\n                        \n                        \n                            Dam's Sire",
           "damSire": "Falkirk\n                        \n                        \n                            Same Sire",
-          "currentRating": 40,
+          "currentRating": 52,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -739,7 +741,7 @@
           "sire": "Toronado\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "She's Furline\n                        \n                        \n                            Dam's Sire",
           "damSire": "I Am Invincible\n                        \n                        \n                            Same Sire",
-          "currentRating": 43,
+          "currentRating": 52,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -775,7 +777,8 @@
               "finishTime": 57.64,
               "odds": 14
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "CJE",
@@ -822,7 +825,7 @@
           "sire": "Sooboog\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Misasio\n                        \n                        \n                            Dam's Sire",
           "damSire": "Strategic\n                        \n                        \n                            Same Sire",
-          "currentRating": 40,
+          "currentRating": 52,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -858,7 +861,8 @@
               "finishTime": 57.81,
               "odds": 23
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "GM",
@@ -905,7 +909,7 @@
           "sire": "Headwater\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Beechal\n                        \n                        \n                            Dam's Sire",
           "damSire": "Lonhro\n                        \n                        \n                            Same Sire",
-          "currentRating": 33,
+          "currentRating": 42,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1094,7 +1098,8 @@
               "finishTime": 70.83,
               "odds": 4.9
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "LDE",
@@ -1141,7 +1146,7 @@
           "sire": "Spirit Of Boom\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Biseau\n                        \n                        \n                            Dam's Sire",
           "damSire": "Lonhro\n                        \n                        \n                            Same Sire",
-          "currentRating": 39,
+          "currentRating": 52,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1177,7 +1182,8 @@
               "finishTime": 58.92,
               "odds": 48
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "OJM",
@@ -1224,7 +1230,7 @@
           "sire": "Wrote\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Madrekay\n                        \n                        \n                            Dam's Sire",
           "damSire": "Towkay\n                        \n                        \n                            Same Sire",
-          "currentRating": 53,
+          "currentRating": 41,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1345,7 +1351,8 @@
               "finishTime": 57.11,
               "odds": 16
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "DHA",
@@ -1410,7 +1417,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": 0,
           "pastPerformances": [
             {
               "date": "2025-11-09T00:00:00.000Z",
@@ -1429,7 +1435,8 @@
               "finishTime": 58.52,
               "odds": 44
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "TEK",
@@ -1559,7 +1566,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": -2,
           "pastPerformances": [
             {
               "date": "2025-11-19T00:00:00.000Z",
@@ -1731,7 +1737,8 @@
               "finishTime": 69.25,
               "odds": 18
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "MCJ",

@@ -22,7 +22,7 @@
           "sire": "Starspangledbanner\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Little Sweetheart\n                        \n                        \n                            Dam's Sire",
           "damSire": "Lawman\n                        \n                        \n                            Same Sire",
-          "currentRating": 109,
+          "currentRating": 104,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -160,7 +160,8 @@
               "finishTime": 68.36,
               "odds": 9.1
             }
-          ]
+          ],
+          "ratingChange": -3
         },
         "jockey": {
           "code": "PZ",
@@ -207,7 +208,7 @@
           "sire": "Zoustar\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Sharliyna\n                        \n                        \n                            Dam's Sire",
           "damSire": "Pivotal\n                        \n                        \n                            Same Sire",
-          "currentRating": 92,
+          "currentRating": 83,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -379,7 +380,8 @@
               "finishTime": 81.72,
               "odds": 8
             }
-          ]
+          ],
+          "ratingChange": 2
         },
         "jockey": {
           "code": "TEK",
@@ -426,7 +428,7 @@
           "sire": "Myboycharlie\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Isador Amore\n                        \n                        \n                            Dam's Sire",
           "damSire": "Hidden Dragon\n                        \n                        \n                            Same Sire",
-          "currentRating": 87,
+          "currentRating": 86,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -530,7 +532,8 @@
               "finishTime": 69.08,
               "odds": 124
             }
-          ]
+          ],
+          "ratingChange": 1
         },
         "jockey": {
           "code": "HCY",
@@ -681,7 +684,8 @@
               "finishTime": 70.25,
               "odds": 12
             }
-          ]
+          ],
+          "ratingChange": 2
         },
         "jockey": {
           "code": "LDE",
@@ -728,7 +732,7 @@
           "sire": "Sioux Nation\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Jackpot Queen\n                        \n                        \n                            Dam's Sire",
           "damSire": "Not A Single Doubt\n                        \n                        \n                            Same Sire",
-          "currentRating": 87,
+          "currentRating": 97,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -866,7 +870,8 @@
               "finishTime": 68.73,
               "odds": 96
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "CJE",
@@ -913,7 +918,7 @@
           "sire": "Fighting Sun\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Lady Zhao Jun\n                        \n                        \n                            Dam's Sire",
           "damSire": "Fastnet Rock\n                        \n                        \n                            Same Sire",
-          "currentRating": 80,
+          "currentRating": 86,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -966,7 +971,8 @@
               "finishTime": 70.09,
               "odds": 43
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "CML",
@@ -1013,7 +1019,7 @@
           "sire": "Shamus Award\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Rocket Baby\n                        \n                        \n                            Dam's Sire",
           "damSire": "Danzero\n                        \n                        \n                            Same Sire",
-          "currentRating": 77,
+          "currentRating": 85,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1134,7 +1140,8 @@
               "finishTime": 56.72,
               "odds": 11
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "CCY",
@@ -1181,7 +1188,7 @@
           "sire": "Dracarys\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Zeffiretta\n                        \n                        \n                            Dam's Sire",
           "damSire": "Husson\n                        \n                        \n                            Same Sire",
-          "currentRating": 100,
+          "currentRating": 104,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1302,7 +1309,8 @@
               "finishTime": 69.31,
               "odds": 18
             }
-          ]
+          ],
+          "ratingChange": 8
         },
         "jockey": {
           "code": "BH",
@@ -1367,7 +1375,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": -1,
           "pastPerformances": [
             {
               "date": "2026-01-04T00:00:00.000Z",
@@ -1437,7 +1444,8 @@
               "finishTime": 56.06,
               "odds": 13
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "OJM",
@@ -1484,7 +1492,7 @@
           "sire": "Capitalist\n                        \n                        \n                            Dam",
           "dam": "Eiffel Tower\n                        \n                        \n                            Dam's Sire",
           "damSire": "Stratum\n                        \n                        \n                            Same Sire",
-          "currentRating": 80,
+          "currentRating": 87,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1554,7 +1562,8 @@
               "finishTime": 68.78999999999999,
               "odds": 17
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "BA",
@@ -1601,7 +1610,7 @@
           "sire": "Per Incanto\n                        \n                        \n                            Dam",
           "dam": "Makkura\n                        \n                        \n                            Dam's Sire",
           "damSire": "Falkirk\n                        \n                        \n                            Same Sire",
-          "currentRating": 82,
+          "currentRating": 84,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1688,7 +1697,8 @@
               "finishTime": 57.12,
               "odds": 28
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "BHW",
@@ -1735,7 +1745,7 @@
           "sire": "One World\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Howl\n                        \n                        \n                            Dam's Sire",
           "damSire": "Trippi\n                        \n                        \n                            Same Sire",
-          "currentRating": 78,
+          "currentRating": 80,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,

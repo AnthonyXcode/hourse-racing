@@ -22,7 +22,7 @@
           "sire": "Satono Aladdin\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Lemonade\n                        \n                        \n                            Dam's Sire",
           "damSire": "Bertolini\n                        \n                        \n                            Same Sire",
-          "currentRating": 59,
+          "currentRating": 40,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -211,7 +211,8 @@
               "finishTime": 70.45,
               "odds": 13
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "CJE",
@@ -276,7 +277,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": -2,
           "pastPerformances": [
             {
               "date": "2025-10-30T00:00:00.000Z",
@@ -448,7 +448,8 @@
               "finishTime": 85.41,
               "odds": 25
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "HEL",
@@ -495,7 +496,7 @@
           "sire": "Zoustar\n                        \n                        \n                            Dam",
           "dam": "Kiss In The Rain\n                        \n                        \n                            Dam's Sire",
           "damSire": "Manhattan Rain\n                        \n                        \n                            Same Sire",
-          "currentRating": 30,
+          "currentRating": 34,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -684,7 +685,8 @@
               "finishTime": 57.84,
               "odds": 9.7
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "WPN",
@@ -920,7 +922,8 @@
               "finishTime": 57.81,
               "odds": 104
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "TEK",
@@ -967,7 +970,7 @@
           "sire": "Good Journey\n                        \n                        \n                            Dam",
           "dam": "Syncopated\n                        \n                        \n                            Dam's Sire",
           "damSire": "Lonhro\n                        \n                        \n                            Same Sire",
-          "currentRating": 52,
+          "currentRating": 23,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1043,7 +1046,7 @@
               "raceNumber": 1,
               "raceClass": "Class 5",
               "distance": 1000,
-              "surface": "AWT",
+              "surface": "Turf",
               "going": "Good to Firm",
               "draw": 7,
               "weight": 124,
@@ -1156,7 +1159,8 @@
               "finishTime": 70.22,
               "odds": 15
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "BHW",
@@ -1203,7 +1207,7 @@
           "sire": "Slade Power\n                        \n                        \n                            Dam",
           "dam": "Princess Kyka\n                        \n                        \n                            Dam's Sire",
           "damSire": "Namid\n                        \n                        \n                            Same Sire",
-          "currentRating": 20,
+          "currentRating": 26,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1262,7 +1266,7 @@
               "raceNumber": 1,
               "raceClass": "Class 5",
               "distance": 1000,
-              "surface": "AWT",
+              "surface": "Turf",
               "going": "Good to Firm",
               "draw": 9,
               "weight": 125,
@@ -1392,7 +1396,8 @@
               "finishTime": 71.37,
               "odds": 10
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "CML",
@@ -1439,7 +1444,7 @@
           "sire": "Merchant Navy\n                        \n                        \n                            Dam",
           "dam": "Crazyonyou\n                        \n                        \n                            Dam's Sire",
           "damSire": "Encosta de Lago\n                        \n                        \n                            Same Sire",
-          "currentRating": 52,
+          "currentRating": 21,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1628,7 +1633,8 @@
               "finishTime": 84.26,
               "odds": 6.6
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "DHA",
@@ -1675,7 +1681,7 @@
           "sire": "Kodiac\n                        \n                        \n                            Dam",
           "dam": "Folegandros Island\n                        \n                        \n                            Dam's Sire",
           "damSire": "Red Rocks\n                        \n                        \n                            Same Sire",
-          "currentRating": 32,
+          "currentRating": 34,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1864,7 +1870,8 @@
               "finishTime": 70.86,
               "odds": 3
             }
-          ]
+          ],
+          "ratingChange": -5
         },
         "jockey": {
           "code": "YML",
@@ -1911,7 +1918,7 @@
           "sire": "Per Incanto\n                        \n                        \n                            Dam",
           "dam": "Bellerama\n                        \n                        \n                            Dam's Sire",
           "damSire": "Fusaichi Pegasus\n                        \n                        \n                            Same Sire",
-          "currentRating": 52,
+          "currentRating": 27,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2100,7 +2107,8 @@
               "finishTime": 71.47,
               "odds": 66
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "FEL",
@@ -2147,7 +2155,7 @@
           "sire": "Frosted\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "My Rachel\n                        \n                        \n                            Dam's Sire",
           "damSire": "Horse Chestnut\n                        \n                        \n                            Same Sire",
-          "currentRating": 22,
+          "currentRating": 33,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2336,7 +2344,8 @@
               "finishTime": 83.03999999999999,
               "odds": 54
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "DMK",
@@ -2383,7 +2392,7 @@
           "sire": "Eavesdropper\n                        \n                        \n                            Dam",
           "dam": "Red Dawn\n                        \n                        \n                            Dam's Sire",
           "damSire": "Western Red\n                        \n                        \n                            Same Sire",
-          "currentRating": 20,
+          "currentRating": 25,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2442,7 +2451,7 @@
               "raceNumber": 1,
               "raceClass": "Class 5",
               "distance": 1000,
-              "surface": "AWT",
+              "surface": "Turf",
               "going": "Good to Firm",
               "draw": 6,
               "weight": 124,
@@ -2572,7 +2581,8 @@
               "finishTime": 58.13,
               "odds": 29
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "CCY",
@@ -2619,7 +2629,7 @@
           "sire": "Vadamos\n                        \n                        \n                            Dam",
           "dam": "Kayleen\n                        \n                        \n                            Dam's Sire",
           "damSire": "Towkay\n                        \n                        \n                            Same Sire",
-          "currentRating": 34,
+          "currentRating": 37,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2740,7 +2750,8 @@
               "finishTime": 70.59,
               "odds": 18
             }
-          ]
+          ],
+          "ratingChange": -5
         },
         "jockey": {
           "code": "WEC",

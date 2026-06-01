@@ -22,7 +22,7 @@
           "sire": "Dundeel\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Whispering Brook\n                        \n                        \n                            Dam's Sire",
           "damSire": "Hinchinbrook\n                        \n                        \n                            Same Sire",
-          "currentRating": 74,
+          "currentRating": 51,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -126,7 +126,8 @@
               "finishTime": 81.98,
               "odds": 29
             }
-          ]
+          ],
+          "ratingChange": -3
         },
         "jockey": {
           "code": "BH",
@@ -173,7 +174,7 @@
           "sire": "Cappella Sansevero\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Passified Lady\n                        \n                        \n                            Dam's Sire",
           "damSire": "Speightstown\n                        \n                        \n                            Same Sire",
-          "currentRating": 61,
+          "currentRating": 44,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -362,7 +363,8 @@
               "finishTime": 96.24000000000001,
               "odds": 153
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "CJE",
@@ -479,7 +481,8 @@
               "finishTime": 70.41,
               "odds": 17
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "BA",
@@ -544,7 +547,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": -2,
           "pastPerformances": [
             {
               "date": "2025-09-28T00:00:00.000Z",
@@ -597,7 +599,8 @@
               "finishTime": 83.02,
               "odds": 70
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "AVB",
@@ -644,7 +647,7 @@
           "sire": "All Too Hard\n                        \n                        \n                            Dam",
           "dam": "Tahnee Tiara\n                        \n                        \n                            Dam's Sire",
           "damSire": "Commands\n                        \n                        \n                            Same Sire",
-          "currentRating": 30,
+          "currentRating": 47,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -765,7 +768,8 @@
               "finishTime": 82.13,
               "odds": 48
             }
-          ]
+          ],
+          "ratingChange": 1
         },
         "jockey": {
           "code": "FEL",
@@ -812,7 +816,7 @@
           "sire": "Sooboog\n                        \n                        \n                            Dam",
           "dam": "Light Missile\n                        \n                        \n                            Dam's Sire",
           "damSire": "Smart Missile\n                        \n                        \n                            Same Sire",
-          "currentRating": 53,
+          "currentRating": 55,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1001,7 +1005,8 @@
               "finishTime": 82.08,
               "odds": 35
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "LDE",
@@ -1048,7 +1053,7 @@
           "sire": "Lonhro\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Words Are Weapons\n                        \n                        \n                            Dam's Sire",
           "damSire": "Dubawi\n                        \n                        \n                            Same Sire",
-          "currentRating": 37,
+          "currentRating": 51,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1237,7 +1242,8 @@
               "finishTime": 101.11,
               "odds": 9.5
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "PZ",
@@ -1456,7 +1462,8 @@
               "finishTime": 69.76,
               "odds": 37
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "AA",
@@ -1503,7 +1510,7 @@
           "sire": "Starspangledbanner\n                        \n                        \n                            Dam",
           "dam": "Tip It On The Top\n                        \n                        \n                            Dam's Sire",
           "damSire": "War Chant\n                        \n                        \n                            Same Sire",
-          "currentRating": 47,
+          "currentRating": 49,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1556,7 +1563,8 @@
               "finishTime": 70.45,
               "odds": 47
             }
-          ]
+          ],
+          "ratingChange": -3
         },
         "jockey": {
           "code": "DHA",
@@ -1603,7 +1611,7 @@
           "sire": "Ardrossan\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Venetian Raider\n                        \n                        \n                            Dam's Sire",
           "damSire": "Rusty Spur\n                        \n                        \n                            Same Sire",
-          "currentRating": 32,
+          "currentRating": 42,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1707,7 +1715,8 @@
               "finishTime": 70.56,
               "odds": 58
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "BHW",
@@ -1754,7 +1763,7 @@
           "sire": "Invincible Spirit\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Purple Sage\n                        \n                        \n                            Dam's Sire",
           "damSire": "Danehill Dancer\n                        \n                        \n                            Same Sire",
-          "currentRating": 37,
+          "currentRating": 56,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1892,7 +1901,8 @@
               "finishTime": 108.99000000000001,
               "odds": 103
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "OJM",
@@ -1957,7 +1967,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": -2,
           "pastPerformances": [
             {
               "date": "2025-10-22T00:00:00.000Z",
@@ -1993,7 +2002,8 @@
               "finishTime": 69.76,
               "odds": 84
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "TEK",

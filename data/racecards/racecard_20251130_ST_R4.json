@@ -22,7 +22,7 @@
           "sire": "Toronado\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Margiela\n                        \n                        \n                            Dam's Sire",
           "damSire": "Redoute's Choice\n                        \n                        \n                            Same Sire",
-          "currentRating": 68,
+          "currentRating": 52,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -87,7 +87,7 @@
           "sire": "Capitalist\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Mining Tycoon\n                        \n                        \n                            Dam's Sire",
           "damSire": "Redoute's Choice\n                        \n                        \n                            Same Sire",
-          "currentRating": 67,
+          "currentRating": 60,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -123,7 +123,8 @@
               "finishTime": 68.84,
               "odds": 2.8
             }
-          ]
+          ],
+          "ratingChange": 8
         },
         "jockey": {
           "code": "OJM",
@@ -170,7 +171,7 @@
           "sire": "D'Argento\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Sarawak\n                        \n                        \n                            Dam's Sire",
           "damSire": "Hussonet\n                        \n                        \n                            Same Sire",
-          "currentRating": 55,
+          "currentRating": 52,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -300,7 +301,7 @@
           "sire": "Smart Missile\n                        \n                        \n                            Dam",
           "dam": "Lycra Lass\n                        \n                        \n                            Dam's Sire",
           "damSire": "Shamardal\n                        \n                        \n                            Same Sire",
-          "currentRating": 36,
+          "currentRating": 43,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -489,7 +490,8 @@
               "finishTime": 69.36,
               "odds": 190
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "PMF",
@@ -536,7 +538,7 @@
           "sire": "Smart Missile\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Bright Planet\n                        \n                        \n                            Dam's Sire",
           "damSire": "Manhattan Rain\n                        \n                        \n                            Same Sire",
-          "currentRating": 48,
+          "currentRating": 52,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -572,7 +574,8 @@
               "finishTime": 70.56,
               "odds": 22
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "YML",
@@ -619,7 +622,7 @@
           "sire": "Hellbent\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Witless\n                        \n                        \n                            Dam's Sire",
           "damSire": "Stratum\n                        \n                        \n                            Same Sire",
-          "currentRating": 70,
+          "currentRating": 51,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -757,7 +760,8 @@
               "finishTime": 57.06,
               "odds": 22
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "LDE",
@@ -869,7 +873,7 @@
           "sire": "El Roca\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Eileithyia\n                        \n                        \n                            Dam's Sire",
           "damSire": "Tavistock\n                        \n                        \n                            Same Sire",
-          "currentRating": 59,
+          "currentRating": 52,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -934,7 +938,7 @@
           "sire": "Pariah\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Fire Gully\n                        \n                        \n                            Dam's Sire",
           "damSire": "Pierro\n                        \n                        \n                            Same Sire",
-          "currentRating": 45,
+          "currentRating": 49,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1123,7 +1127,8 @@
               "finishTime": 57.43,
               "odds": 4.7
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "BHW",
@@ -1170,7 +1175,7 @@
           "sire": "Vespa\n                        \n                        \n                            Dam",
           "dam": "Crocea\n                        \n                        \n                            Dam's Sire",
           "damSire": "Lonhro\n                        \n                        \n                            Same Sire",
-          "currentRating": 54,
+          "currentRating": 52,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1253,7 +1258,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": -2,
           "pastPerformances": [
             {
               "date": "2025-10-22T00:00:00.000Z",
@@ -1289,7 +1293,8 @@
               "finishTime": 71.13,
               "odds": 15
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "HEL",

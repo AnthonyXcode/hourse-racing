@@ -22,7 +22,7 @@
           "sire": "Per Incanto\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Starossa\n                        \n                        \n                            Dam's Sire",
           "damSire": "Testa Rossa\n                        \n                        \n                            Same Sire",
-          "currentRating": 54,
+          "currentRating": 45,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -126,7 +126,8 @@
               "finishTime": 82.41,
               "odds": 19
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "GM",
@@ -173,7 +174,7 @@
           "sire": "D'Argento\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Ocean Spray\n                        \n                        \n                            Dam's Sire",
           "damSire": "Fastnet Rock\n                        \n                        \n                            Same Sire",
-          "currentRating": 60,
+          "currentRating": 59,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -260,7 +261,8 @@
               "finishTime": 69.39,
               "odds": 6
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "BH",
@@ -307,7 +309,7 @@
           "sire": "The Autumn Sun\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Griante\n                        \n                        \n                            Dam's Sire",
           "damSire": "Good Journey\n                        \n                        \n                            Same Sire",
-          "currentRating": 38,
+          "currentRating": 41,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -428,7 +430,8 @@
               "finishTime": 69.09,
               "odds": 4.7
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "CML",
@@ -475,7 +478,7 @@
           "sire": "All Too Hard\n                        \n                        \n                            Dam",
           "dam": "Dubleanny\n                        \n                        \n                            Dam's Sire",
           "damSire": "Dubleo\n                        \n                        \n                            Same Sire",
-          "currentRating": 58,
+          "currentRating": 60,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -681,7 +684,8 @@
               "finishTime": 69.05,
               "odds": 25
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "MDB",
@@ -728,7 +732,7 @@
           "sire": "Starspangledbanner\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Dolly Fabulous\n                        \n                        \n                            Dam's Sire",
           "damSire": "Toorak Toff\n                        \n                        \n                            Same Sire",
-          "currentRating": 50,
+          "currentRating": 52,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -764,7 +768,8 @@
               "finishTime": 57.75,
               "odds": 1.5
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "PZ",
@@ -829,7 +834,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": -2,
           "pastPerformances": [
             {
               "date": "2026-02-04T00:00:00.000Z",
@@ -950,7 +954,8 @@
               "finishTime": 57.22,
               "odds": 185
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "BHW",
@@ -997,7 +1002,7 @@
           "sire": "American Pharoah\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Hermosa Beach\n                        \n                        \n                            Dam's Sire",
           "damSire": "Magnus\n                        \n                        \n                            Same Sire",
-          "currentRating": 46,
+          "currentRating": 50,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1118,7 +1123,8 @@
               "finishTime": 70.7,
               "odds": 14
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "AA",
@@ -1165,7 +1171,7 @@
           "sire": "Written Tycoon\n                        \n                        \n                            Dam",
           "dam": "Dawaa\n                        \n                        \n                            Dam's Sire",
           "damSire": "Lonhro\n                        \n                        \n                            Same Sire",
-          "currentRating": 41,
+          "currentRating": 43,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1252,7 +1258,8 @@
               "finishTime": 58.55,
               "odds": 5
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "YML",
@@ -1299,7 +1306,7 @@
           "sire": "Toronado\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Brittany\n                        \n                        \n                            Dam's Sire",
           "damSire": "Street Cry\n                        \n                        \n                            Same Sire",
-          "currentRating": 41,
+          "currentRating": 46,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1420,7 +1427,8 @@
               "finishTime": 57.16,
               "odds": 7.8
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "HCY",
@@ -1467,7 +1475,7 @@
           "sire": "Russian Revolution\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "River Vixen\n                        \n                        \n                            Dam's Sire",
           "damSire": "Hard Spun\n                        \n                        \n                            Same Sire",
-          "currentRating": 51,
+          "currentRating": 54,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1571,7 +1579,8 @@
               "finishTime": 70.4,
               "odds": 4.6
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "CJE",
@@ -1618,7 +1627,7 @@
           "sire": "Charm Spirit\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "The Pearler\n                        \n                        \n                            Dam's Sire",
           "damSire": "Volksraad\n                        \n                        \n                            Same Sire",
-          "currentRating": 47,
+          "currentRating": 52,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1739,7 +1748,8 @@
               "finishTime": 57.08,
               "odds": 4.1
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "WEC",
@@ -1786,7 +1796,7 @@
           "sire": "El Roca\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Daly River\n                        \n                        \n                            Dam's Sire",
           "damSire": "General Nediym\n                        \n                        \n                            Same Sire",
-          "currentRating": 35,
+          "currentRating": 40,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1907,7 +1917,8 @@
               "finishTime": 70.61,
               "odds": 59
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "PMF",

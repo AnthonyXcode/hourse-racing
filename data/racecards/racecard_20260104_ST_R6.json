@@ -22,7 +22,7 @@
           "sire": "Per Incanto\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Eva Godiva\n                        \n                        \n                            Dam's Sire",
           "damSire": "Redoute's Choice\n                        \n                        \n                            Same Sire",
-          "currentRating": 60,
+          "currentRating": 48,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -109,7 +109,8 @@
               "finishTime": 81.4,
               "odds": 15
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "YML",
@@ -156,7 +157,7 @@
           "sire": "Proisir\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Mavorna\n                        \n                        \n                            Dam's Sire",
           "damSire": "Iffraaj\n                        \n                        \n                            Same Sire",
-          "currentRating": 70,
+          "currentRating": 56,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -209,7 +210,8 @@
               "finishTime": 69.9,
               "odds": 26
             }
-          ]
+          ],
+          "ratingChange": 2
         },
         "jockey": {
           "code": "BH",
@@ -256,7 +258,7 @@
           "sire": "Maurice\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Niello\n                        \n                        \n                            Dam's Sire",
           "damSire": "Stay Gold\n                        \n                        \n                            Same Sire",
-          "currentRating": 56,
+          "currentRating": 57,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -326,7 +328,8 @@
               "finishTime": 82.88,
               "odds": 4.9
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "PZ",
@@ -373,7 +376,7 @@
           "sire": "Nicconi\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Rhandara\n                        \n                        \n                            Dam's Sire",
           "damSire": "Redoute's Choice\n                        \n                        \n                            Same Sire",
-          "currentRating": 36,
+          "currentRating": 44,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -460,7 +463,8 @@
               "finishTime": 81.4,
               "odds": 7.2
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "TEK",
@@ -507,7 +511,7 @@
           "sire": "Territories\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Flattery\n                        \n                        \n                            Dam's Sire",
           "damSire": "Shamardal\n                        \n                        \n                            Same Sire",
-          "currentRating": 35,
+          "currentRating": 45,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -560,7 +564,8 @@
               "finishTime": 83.65,
               "odds": 22
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "GM",
@@ -625,7 +630,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": -2,
           "pastPerformances": [
             {
               "date": "2025-12-17T00:00:00.000Z",
@@ -661,7 +665,8 @@
               "finishTime": 70.64,
               "odds": 23
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "LDE",
@@ -708,7 +713,7 @@
           "sire": "Sooboog\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Misasio\n                        \n                        \n                            Dam's Sire",
           "damSire": "Strategic\n                        \n                        \n                            Same Sire",
-          "currentRating": 40,
+          "currentRating": 50,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -761,7 +766,8 @@
               "finishTime": 57.81,
               "odds": 23
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "AA",
@@ -808,7 +814,7 @@
           "sire": "Maurice\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Stella Street\n                        \n                        \n                            Dam's Sire",
           "damSire": "Street Sense\n                        \n                        \n                            Same Sire",
-          "currentRating": 47,
+          "currentRating": 46,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -878,7 +884,8 @@
               "finishTime": 70.58,
               "odds": 43
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "KRW",
@@ -925,7 +932,7 @@
           "sire": "Blue Point\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Madeleine\n                        \n                        \n                            Dam's Sire",
           "damSire": "Shooting To Win\n                        \n                        \n                            Same Sire",
-          "currentRating": 58,
+          "currentRating": 49,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -978,7 +985,8 @@
               "finishTime": 69.45,
               "odds": 73
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "HCY",
@@ -1025,7 +1033,7 @@
           "sire": "Pierata\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Nova Rocha\n                        \n                        \n                            Dam's Sire",
           "damSire": "New Approach\n                        \n                        \n                            Same Sire",
-          "currentRating": 40,
+          "currentRating": 50,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1078,7 +1086,8 @@
               "finishTime": 69.47,
               "odds": 2.3
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "AVB",
@@ -1125,7 +1134,7 @@
           "sire": "Ferrando\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Paxos\n                        \n                        \n                            Dam's Sire",
           "damSire": "Savabeel\n                        \n                        \n                            Same Sire",
-          "currentRating": 43,
+          "currentRating": 50,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1178,7 +1187,8 @@
               "finishTime": 71.23,
               "odds": 88
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "WEC",
@@ -1225,7 +1235,7 @@
           "sire": "Tarzino\n                        \n                        \n                            Dam",
           "dam": "Pele\n                        \n                        \n                            Dam's Sire",
           "damSire": "Redoute's Choice\n                        \n                        \n                            Same Sire",
-          "currentRating": 45,
+          "currentRating": 50,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1278,7 +1288,8 @@
               "finishTime": 71.02,
               "odds": 39
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "OJM",
@@ -1325,7 +1336,7 @@
           "sire": "Derryn\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Bluzero\n                        \n                        \n                            Dam's Sire",
           "damSire": "Danzero\n                        \n                        \n                            Same Sire",
-          "currentRating": 42,
+          "currentRating": 52,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1361,7 +1372,8 @@
               "finishTime": 58.53,
               "odds": 37
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "FEL",
@@ -1408,7 +1420,7 @@
           "sire": "Capitalist\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Miss Gai Flyer\n                        \n                        \n                            Dam's Sire",
           "damSire": "Flying Spur\n                        \n                        \n                            Same Sire",
-          "currentRating": 48,
+          "currentRating": 60,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1495,7 +1507,8 @@
               "finishTime": 70.59,
               "odds": 52
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "PMF",

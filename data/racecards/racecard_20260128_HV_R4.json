@@ -22,7 +22,7 @@
           "sire": "Nicconi\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Bedizened\n                        \n                        \n                            Dam's Sire",
           "damSire": "Commands\n                        \n                        \n                            Same Sire",
-          "currentRating": 60,
+          "currentRating": 55,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -126,7 +126,8 @@
               "finishTime": 81.97,
               "odds": 18
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "BH",
@@ -173,7 +174,7 @@
           "sire": "Night Of Thunder\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Tawayna\n                        \n                        \n                            Dam's Sire",
           "damSire": "Invincible Spirit\n                        \n                        \n                            Same Sire",
-          "currentRating": 55,
+          "currentRating": 53,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -294,7 +295,8 @@
               "finishTime": 56.65,
               "odds": 21
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "PZ",
@@ -341,7 +343,7 @@
           "sire": "Cable Bay\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Ahhhh\n                        \n                        \n                            Dam's Sire",
           "damSire": "Lonhro\n                        \n                        \n                            Same Sire",
-          "currentRating": 69,
+          "currentRating": 54,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -428,7 +430,8 @@
               "finishTime": 69.46000000000001,
               "odds": 15
             }
-          ]
+          ],
+          "ratingChange": 6
         },
         "jockey": {
           "code": "HCY",
@@ -493,7 +496,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": -1,
           "pastPerformances": [
             {
               "date": "2025-12-10T00:00:00.000Z",
@@ -597,7 +599,8 @@
               "finishTime": 57.48,
               "odds": 114
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "BA",
@@ -644,7 +647,7 @@
           "sire": "Brazen Beau\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Intendment\n                        \n                        \n                            Dam's Sire",
           "damSire": "Strategic\n                        \n                        \n                            Same Sire",
-          "currentRating": 48,
+          "currentRating": 57,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -697,7 +700,8 @@
               "finishTime": 69.68,
               "odds": 8.7
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "LDE",
@@ -744,7 +748,7 @@
           "sire": "Sweynesse\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Light Mozart\n                        \n                        \n                            Dam's Sire",
           "damSire": "Mozart\n                        \n                        \n                            Same Sire",
-          "currentRating": 41,
+          "currentRating": 50,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -780,7 +784,8 @@
               "finishTime": 58.9,
               "odds": 10
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "CCY",
@@ -880,7 +885,8 @@
               "finishTime": 58.21,
               "odds": 31
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "PMF",
@@ -927,7 +933,7 @@
           "sire": "Written By\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Tina Melina\n                        \n                        \n                            Dam's Sire",
           "damSire": "Jet Spur\n                        \n                        \n                            Same Sire",
-          "currentRating": 52,
+          "currentRating": 56,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1014,7 +1020,8 @@
               "finishTime": 57.77,
               "odds": 11
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "WEC",
@@ -1061,7 +1068,7 @@
           "sire": "Toronado\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Brittany\n                        \n                        \n                            Dam's Sire",
           "damSire": "Street Cry\n                        \n                        \n                            Same Sire",
-          "currentRating": 41,
+          "currentRating": 46,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1165,7 +1172,8 @@
               "finishTime": 57.16,
               "odds": 7.8
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "BHW",
@@ -1212,7 +1220,7 @@
           "sire": "Havana Grey\n                        \n                        \n                            Dam",
           "dam": "Foxcatcher\n                        \n                        \n                            Dam's Sire",
           "damSire": "Foxwedge\n                        \n                        \n                            Same Sire",
-          "currentRating": 50,
+          "currentRating": 53,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1265,7 +1273,8 @@
               "finishTime": 70.71000000000001,
               "odds": 7.8
             }
-          ]
+          ],
+          "ratingChange": -3
         },
         "jockey": {
           "code": "YML",
@@ -1312,7 +1321,7 @@
           "sire": "Brazen Beau\n                        \n                        \n                            Dam",
           "dam": "Tiersamo\n                        \n                        \n                            Dam's Sire",
           "damSire": "Stratum\n                        \n                        \n                            Same Sire",
-          "currentRating": 48,
+          "currentRating": 56,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1399,7 +1408,8 @@
               "finishTime": 57.55,
               "odds": 32
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "MDB",
@@ -1464,7 +1474,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": -2,
           "pastPerformances": [
             {
               "date": "2026-01-04T00:00:00.000Z",
@@ -1500,7 +1509,8 @@
               "finishTime": 58.29,
               "odds": 21
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "HEL",

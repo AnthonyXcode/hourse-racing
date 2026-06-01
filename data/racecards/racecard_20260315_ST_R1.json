@@ -224,7 +224,7 @@
           "sire": "Not A Single Doubt\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Gallant Tess\n                        \n                        \n                            Dam's Sire",
           "damSire": "Galileo\n                        \n                        \n                            Same Sire",
-          "currentRating": 33,
+          "currentRating": 30,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -396,7 +396,8 @@
               "finishTime": 70.11,
               "odds": 16
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "BH",
@@ -611,7 +612,7 @@
           "sire": "Belardo\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Eastern Eclipse\n                        \n                        \n                            Dam's Sire",
           "damSire": "Keeper\n                        \n                        \n                            Same Sire",
-          "currentRating": 24,
+          "currentRating": 26,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -715,7 +716,8 @@
               "finishTime": 82.55,
               "odds": 50
             }
-          ]
+          ],
+          "ratingChange": 1
         },
         "jockey": {
           "code": "KRW",
@@ -762,7 +764,7 @@
           "sire": "Derryn\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Waiana Gold\n                        \n                        \n                            Dam's Sire",
           "damSire": "Gold Centre\n                        \n                        \n                            Same Sire",
-          "currentRating": 37,
+          "currentRating": 33,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -883,7 +885,8 @@
               "finishTime": 94.97,
               "odds": 6.4
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "MDB",
@@ -930,7 +933,7 @@
           "sire": "Lope de Vega\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Happy Odyssey\n                        \n                        \n                            Dam's Sire",
           "damSire": "Camacho\n                        \n                        \n                            Same Sire",
-          "currentRating": 37,
+          "currentRating": 38,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1068,7 +1071,8 @@
               "finishTime": 101.07,
               "odds": 9.3
             }
-          ]
+          ],
+          "ratingChange": 6
         },
         "jockey": {
           "code": "HEL",
@@ -1115,7 +1119,7 @@
           "sire": "Savabeel\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Karla Bruni\n                        \n                        \n                            Dam's Sire",
           "damSire": "Pins\n                        \n                        \n                            Same Sire",
-          "currentRating": 33,
+          "currentRating": 37,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1219,7 +1223,8 @@
               "finishTime": 100.33,
               "odds": 2
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "CJE",
@@ -1266,7 +1271,7 @@
           "sire": "Dark Angel\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Layla Jamil\n                        \n                        \n                            Dam's Sire",
           "damSire": "Exceed And Excel\n                        \n                        \n                            Same Sire",
-          "currentRating": 26,
+          "currentRating": 28,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1387,7 +1392,8 @@
               "finishTime": 95.59,
               "odds": 12
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "CCY",
@@ -1434,7 +1440,7 @@
           "sire": "Prized Icon\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Miss Cacciatore\n                        \n                        \n                            Dam's Sire",
           "damSire": "Snitzel\n                        \n                        \n                            Same Sire",
-          "currentRating": 29,
+          "currentRating": 35,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1572,7 +1578,8 @@
               "finishTime": 70.13,
               "odds": 40
             }
-          ]
+          ],
+          "ratingChange": -3
         },
         "jockey": {
           "code": "OJM",
@@ -1619,7 +1626,7 @@
           "sire": "Sebring\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Fashion\n                        \n                        \n                            Dam's Sire",
           "damSire": "Anabaa\n                        \n                        \n                            Same Sire",
-          "currentRating": 30,
+          "currentRating": 34,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1706,7 +1713,8 @@
               "finishTime": 94.85,
               "odds": 6.8
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "PZ",
@@ -1753,7 +1761,7 @@
           "sire": "Wootton Bassett\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Loyale\n                        \n                        \n                            Dam's Sire",
           "damSire": "Turtle Bowl\n                        \n                        \n                            Same Sire",
-          "currentRating": 27,
+          "currentRating": 32,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1874,7 +1882,8 @@
               "finishTime": 110.00999999999999,
               "odds": 5.9
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "AA",
@@ -1921,7 +1930,7 @@
           "sire": "Toronado\n                        \n                        \n                            Dam",
           "dam": "Inca Flame\n                        \n                        \n                            Dam's Sire",
           "damSire": "Hussonet\n                        \n                        \n                            Same Sire",
-          "currentRating": 32,
+          "currentRating": 36,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2008,7 +2017,8 @@
               "finishTime": 59.3,
               "odds": 134
             }
-          ]
+          ],
+          "ratingChange": -4
         },
         "jockey": {
           "code": "LDE",
@@ -2055,7 +2065,7 @@
           "sire": "Justify\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "So You Merge\n                        \n                        \n                            Dam's Sire",
           "damSire": "So You Think\n                        \n                        \n                            Same Sire",
-          "currentRating": 21,
+          "currentRating": 26,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2159,7 +2169,8 @@
               "finishTime": 69.49,
               "odds": 38
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "BHW",
@@ -2206,7 +2217,7 @@
           "sire": "Ardrossan\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Venetian Raider\n                        \n                        \n                            Dam's Sire",
           "damSire": "Rusty Spur\n                        \n                        \n                            Same Sire",
-          "currentRating": 32,
+          "currentRating": 34,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2310,7 +2321,8 @@
               "finishTime": 101.52000000000001,
               "odds": 54
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "AVB",

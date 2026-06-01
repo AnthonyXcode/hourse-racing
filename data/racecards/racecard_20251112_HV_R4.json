@@ -22,7 +22,7 @@
           "sire": "Not A Single Doubt\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Siwa\n                        \n                        \n                            Dam's Sire",
           "damSire": "Green Desert\n                        \n                        \n                            Same Sire",
-          "currentRating": 48,
+          "currentRating": 49,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -211,7 +211,8 @@
               "finishTime": 100.07,
               "odds": 12
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "HCY",
@@ -258,7 +259,7 @@
           "sire": "Per Incanto\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "O'Really Baheeya\n                        \n                        \n                            Dam's Sire",
           "damSire": "O'Reilly\n                        \n                        \n                            Same Sire",
-          "currentRating": 44,
+          "currentRating": 50,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -402,7 +403,7 @@
               "raceNumber": 3,
               "raceClass": "Class 4",
               "distance": 1800,
-              "surface": "AWT",
+              "surface": "Turf",
               "going": "Good to Firm",
               "draw": 4,
               "weight": 132,
@@ -447,7 +448,8 @@
               "finishTime": 107.68,
               "odds": 47
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "PMF",
@@ -494,7 +496,7 @@
           "sire": "Kingman\n                        \n                        \n                            Dam",
           "dam": "Nimble Thimble\n                        \n                        \n                            Dam's Sire",
           "damSire": "Mizzen Mast\n                        \n                        \n                            Same Sire",
-          "currentRating": 59,
+          "currentRating": 58,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -683,7 +685,8 @@
               "finishTime": 109.24000000000001,
               "odds": 13
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "OJM",
@@ -748,7 +751,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": -1,
           "pastPerformances": [
             {
               "date": "2025-10-22T00:00:00.000Z",
@@ -920,7 +922,8 @@
               "finishTime": 82.12,
               "odds": 10
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "PZ",
@@ -967,7 +970,7 @@
           "sire": "Gleneagles\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Naruko\n                        \n                        \n                            Dam's Sire",
           "damSire": "Street Cry\n                        \n                        \n                            Same Sire",
-          "currentRating": 64,
+          "currentRating": 59,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1156,7 +1159,8 @@
               "finishTime": 109.77000000000001,
               "odds": 4.7
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "MCJ",
@@ -1203,7 +1207,7 @@
           "sire": "Better Than Ready\n                        \n                        \n                            Dam",
           "dam": "Secret Indulgence\n                        \n                        \n                            Dam's Sire",
           "damSire": "Fastnet Rock\n                        \n                        \n                            Same Sire",
-          "currentRating": 38,
+          "currentRating": 41,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1392,7 +1396,8 @@
               "finishTime": 70.28,
               "odds": 133
             }
-          ]
+          ],
+          "ratingChange": -3
         },
         "jockey": {
           "code": "YML",
@@ -1439,7 +1444,7 @@
           "sire": "Fastnet Rock\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Legally Bay\n                        \n                        \n                            Dam's Sire",
           "damSire": "Snippets\n                        \n                        \n                            Same Sire",
-          "currentRating": 38,
+          "currentRating": 46,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1628,7 +1633,8 @@
               "finishTime": 100.9,
               "odds": 31
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "FEL",
@@ -1675,7 +1681,7 @@
           "sire": "Kentuckian\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Over Cat\n                        \n                        \n                            Dam's Sire",
           "damSire": "Discreet Cat\n                        \n                        \n                            Same Sire",
-          "currentRating": 55,
+          "currentRating": 47,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1864,7 +1870,8 @@
               "finishTime": 69.59,
               "odds": 36
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "DHA",
@@ -1911,7 +1918,7 @@
           "sire": "Animal Kingdom\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Alexandra Rose\n                        \n                        \n                            Dam's Sire",
           "damSire": "Caesour\n                        \n                        \n                            Same Sire",
-          "currentRating": 35,
+          "currentRating": 49,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2100,7 +2107,8 @@
               "finishTime": 100.2,
               "odds": 6.5
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "BH",
@@ -2147,7 +2155,7 @@
           "sire": "Justify\n                        \n                        \n                            Dam",
           "dam": "Crystal Flute\n                        \n                        \n                            Dam's Sire",
           "damSire": "Encosta de Lago\n                        \n                        \n                            Same Sire",
-          "currentRating": 45,
+          "currentRating": 52,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2212,7 +2220,7 @@
           "sire": "Charm Spirit\n                        \n                        \n                            Dam",
           "dam": "Militante\n                        \n                        \n                            Dam's Sire",
           "damSire": "Johannesburg\n                        \n                        \n                            Same Sire",
-          "currentRating": 52,
+          "currentRating": 54,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2322,7 +2330,7 @@
               "raceNumber": 3,
               "raceClass": "Class 4",
               "distance": 1800,
-              "surface": "AWT",
+              "surface": "Turf",
               "going": "Good to Firm",
               "draw": 7,
               "weight": 124,
@@ -2401,7 +2409,8 @@
               "finishTime": 99.89,
               "odds": 20
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "DMK",
@@ -2466,7 +2475,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": 0,
           "pastPerformances": [
             {
               "date": "2025-10-15T00:00:00.000Z",
@@ -2536,7 +2544,8 @@
               "finishTime": 70.9,
               "odds": 138
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "HEL",

@@ -40,7 +40,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": 0,
           "pastPerformances": [
             {
               "date": "2026-01-28T00:00:00.000Z",
@@ -93,7 +92,8 @@
               "finishTime": 83.36,
               "odds": 170
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "TEK",
@@ -140,7 +140,7 @@
           "sire": "Royal Meeting\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Around The Clock\n                        \n                        \n                            Dam's Sire",
           "damSire": "Galileo\n                        \n                        \n                            Same Sire",
-          "currentRating": 53,
+          "currentRating": 44,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -278,7 +278,8 @@
               "finishTime": 69.4,
               "odds": 10
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "KRW",
@@ -325,7 +326,7 @@
           "sire": "Charm Spirit\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Shama de Oro\n                        \n                        \n                            Dam's Sire",
           "damSire": "Shamardal\n                        \n                        \n                            Same Sire",
-          "currentRating": 50,
+          "currentRating": 40,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -463,7 +464,8 @@
               "finishTime": 71.07,
               "odds": 77
             }
-          ]
+          ],
+          "ratingChange": 6
         },
         "jockey": {
           "code": "AA",
@@ -563,7 +565,8 @@
               "finishTime": 57.31,
               "odds": 4.6
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "PZ",
@@ -610,7 +613,7 @@
           "sire": "Alabama Express\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Superbellaa\n                        \n                        \n                            Dam's Sire",
           "damSire": "Super One\n                        \n                        \n                            Same Sire",
-          "currentRating": 41,
+          "currentRating": 46,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -731,7 +734,8 @@
               "finishTime": 70.28999999999999,
               "odds": 5.8
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "BHW",
@@ -778,7 +782,7 @@
           "sire": "Swiss Ace\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Funhouse\n                        \n                        \n                            Dam's Sire",
           "damSire": "Mossman\n                        \n                        \n                            Same Sire",
-          "currentRating": 52,
+          "currentRating": 58,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -899,7 +903,8 @@
               "finishTime": 69.63,
               "odds": 57
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "FEL",
@@ -946,7 +951,7 @@
           "sire": "Fastnet Rock\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Orangey Red\n                        \n                        \n                            Dam's Sire",
           "damSire": "Lawman\n                        \n                        \n                            Same Sire",
-          "currentRating": 60,
+          "currentRating": 59,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1033,7 +1038,8 @@
               "finishTime": 70.06,
               "odds": 3.5
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "LDE",
@@ -1080,7 +1086,7 @@
           "sire": "Love Conquers All\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Courtship\n                        \n                        \n                            Dam's Sire",
           "damSire": "Danzero\n                        \n                        \n                            Same Sire",
-          "currentRating": 49,
+          "currentRating": 58,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1098,7 +1104,8 @@
             "PC",
             "SR"
           ],
-          "pastPerformances": []
+          "pastPerformances": [],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "PMF",
@@ -1145,7 +1152,7 @@
           "sire": "Time Test\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Night Nurse\n                        \n                        \n                            Dam's Sire",
           "damSire": "Tavistock\n                        \n                        \n                            Same Sire",
-          "currentRating": 56,
+          "currentRating": 51,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1215,7 +1222,8 @@
               "finishTime": 70.2,
               "odds": 3.7
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "AVB",
@@ -1262,7 +1270,7 @@
           "sire": "Starspangledbanner\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Mutate\n                        \n                        \n                            Dam's Sire",
           "damSire": "Octagonal\n                        \n                        \n                            Same Sire",
-          "currentRating": 39,
+          "currentRating": 45,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1366,7 +1374,8 @@
               "finishTime": 56.82,
               "odds": 14
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "WEC",
@@ -1413,7 +1422,7 @@
           "sire": "All Too Hard\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Tenderly\n                        \n                        \n                            Dam's Sire",
           "damSire": "Stratum\n                        \n                        \n                            Same Sire",
-          "currentRating": 34,
+          "currentRating": 44,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1483,7 +1492,8 @@
               "finishTime": 69.68,
               "odds": 12
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "YML",
@@ -1600,7 +1610,8 @@
               "finishTime": 71.12,
               "odds": 91
             }
-          ]
+          ],
+          "ratingChange": -3
         },
         "jockey": {
           "code": "CCY",

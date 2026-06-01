@@ -22,7 +22,7 @@
           "sire": "Preferment\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Stand Firm\n                        \n                        \n                            Dam's Sire",
           "damSire": "Perfectly Ready\n                        \n                        \n                            Same Sire",
-          "currentRating": 96,
+          "currentRating": 85,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -126,7 +126,8 @@
               "finishTime": 94.5,
               "odds": 9.4
             }
-          ]
+          ],
+          "ratingChange": 2
         },
         "jockey": {
           "code": "MHT",
@@ -173,7 +174,7 @@
           "sire": "Sacred Falls\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Lamplighter\n                        \n                        \n                            Dam's Sire",
           "damSire": "Fastnet Rock\n                        \n                        \n                            Same Sire",
-          "currentRating": 74,
+          "currentRating": 76,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -277,7 +278,8 @@
               "finishTime": 99.5,
               "odds": 6.4
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "KRW",
@@ -342,7 +344,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": 1,
           "pastPerformances": [
             {
               "date": "2025-12-27T00:00:00.000Z",
@@ -429,7 +430,8 @@
               "finishTime": 107.41,
               "odds": 2.5
             }
-          ]
+          ],
+          "ratingChange": 1
         },
         "jockey": {
           "code": "CML",
@@ -476,7 +478,7 @@
           "sire": "Turn Me Loose\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Lovingthelimelight\n                        \n                        \n                            Dam's Sire",
           "damSire": "Lemon Drop Kid\n                        \n                        \n                            Same Sire",
-          "currentRating": 75,
+          "currentRating": 79,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -546,7 +548,8 @@
               "finishTime": 100.27000000000001,
               "odds": 14
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "HCY",
@@ -593,7 +596,7 @@
           "sire": "Cityscape\n                        \n                        \n                            Dam",
           "dam": "O K Angie\n                        \n                        \n                            Dam's Sire",
           "damSire": "Orpen\n                        \n                        \n                            Same Sire",
-          "currentRating": 71,
+          "currentRating": 77,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -714,7 +717,8 @@
               "finishTime": 99.34,
               "odds": 12
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "AA",
@@ -761,7 +765,7 @@
           "sire": "Beckford\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Young Daisy Miller\n                        \n                        \n                            Dam's Sire",
           "damSire": "Azamour\n                        \n                        \n                            Same Sire",
-          "currentRating": 68,
+          "currentRating": 75,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -826,7 +830,7 @@
           "sire": "Churchill\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "War Goddess\n                        \n                        \n                            Dam's Sire",
           "damSire": "Champs Elysees\n                        \n                        \n                            Same Sire",
-          "currentRating": 83,
+          "currentRating": 85,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -896,7 +900,8 @@
               "finishTime": 124.21,
               "odds": 57
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "GM",
@@ -943,7 +948,7 @@
           "sire": "Cityscape\n                        \n                        \n                            Dam",
           "dam": "Etoile Blanc\n                        \n                        \n                            Dam's Sire",
           "damSire": "Nedawi\n                        \n                        \n                            Same Sire",
-          "currentRating": 72,
+          "currentRating": 82,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1030,7 +1035,8 @@
               "finishTime": 100.71000000000001,
               "odds": 85
             }
-          ]
+          ],
+          "ratingChange": -3
         },
         "jockey": {
           "code": "BH",
@@ -1077,7 +1083,7 @@
           "sire": "Real Steel\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Northern Model\n                        \n                        \n                            Dam's Sire",
           "damSire": "Northern Meteor\n                        \n                        \n                            Same Sire",
-          "currentRating": 64,
+          "currentRating": 78,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1147,7 +1153,8 @@
               "finishTime": 100.3,
               "odds": 20
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "CJE",
@@ -1194,7 +1201,7 @@
           "sire": "Fastnet Rock\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Wedding Veil\n                        \n                        \n                            Dam's Sire",
           "damSire": "Dubawi\n                        \n                        \n                            Same Sire",
-          "currentRating": 62,
+          "currentRating": 74,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1298,7 +1305,8 @@
               "finishTime": 100.27000000000001,
               "odds": 3.8
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "BA",

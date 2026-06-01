@@ -22,7 +22,7 @@
           "sire": "Cable Bay\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Ahhhh\n                        \n                        \n                            Dam's Sire",
           "damSire": "Lonhro\n                        \n                        \n                            Same Sire",
-          "currentRating": 69,
+          "currentRating": 55,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -126,7 +126,8 @@
               "finishTime": 69.46000000000001,
               "odds": 15
             }
-          ]
+          ],
+          "ratingChange": 1
         },
         "jockey": {
           "code": "CJE",
@@ -173,7 +174,7 @@
           "sire": "Night Of Thunder\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Tawayna\n                        \n                        \n                            Dam's Sire",
           "damSire": "Invincible Spirit\n                        \n                        \n                            Same Sire",
-          "currentRating": 56,
+          "currentRating": 55,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -311,7 +312,8 @@
               "finishTime": 56.65,
               "odds": 21
             }
-          ]
+          ],
+          "ratingChange": 2
         },
         "jockey": {
           "code": "PZ",
@@ -358,7 +360,7 @@
           "sire": "Brazen Beau\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Ms Mazetti\n                        \n                        \n                            Dam's Sire",
           "damSire": "Lonhro\n                        \n                        \n                            Same Sire",
-          "currentRating": 52,
+          "currentRating": 54,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -462,7 +464,8 @@
               "finishTime": 57.58,
               "odds": 10
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "MDB",
@@ -613,7 +616,8 @@
               "finishTime": 57.38,
               "odds": 8.5
             }
-          ]
+          ],
+          "ratingChange": 6
         },
         "jockey": {
           "code": "PMF",
@@ -678,7 +682,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": -2,
           "pastPerformances": [
             {
               "date": "2026-01-28T00:00:00.000Z",
@@ -714,7 +717,8 @@
               "finishTime": 58.9,
               "odds": 10
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "GM",
@@ -761,7 +765,7 @@
           "sire": "What A Winter\n                        \n                        \n                            Dam",
           "dam": "Esterel\n                        \n                        \n                            Dam's Sire",
           "damSire": "Var\n                        \n                        \n                            Same Sire",
-          "currentRating": 47,
+          "currentRating": 49,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -899,7 +903,8 @@
               "finishTime": 57.48,
               "odds": 114
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "BA",
@@ -946,7 +951,7 @@
           "sire": "Zousain\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Beethog\n                        \n                        \n                            Dam's Sire",
           "damSire": "Shovhog\n                        \n                        \n                            Same Sire",
-          "currentRating": 50,
+          "currentRating": 48,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1033,7 +1038,8 @@
               "finishTime": 58.21,
               "odds": 31
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "TEK",
@@ -1080,7 +1086,7 @@
           "sire": "Havana Grey\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Fair Maiden\n                        \n                        \n                            Dam's Sire",
           "damSire": "Carnegie\n                        \n                        \n                            Same Sire",
-          "currentRating": 41,
+          "currentRating": 47,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1235,7 +1241,8 @@
               "finishTime": 57.36,
               "odds": 15
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "BHW",
@@ -1347,7 +1354,7 @@
           "sire": "Zousain\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Assertive Eagle\n                        \n                        \n                            Dam's Sire",
           "damSire": "Danewin\n                        \n                        \n                            Same Sire",
-          "currentRating": 37,
+          "currentRating": 43,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1417,7 +1424,8 @@
               "finishTime": 70.6,
               "odds": 131
             }
-          ]
+          ],
+          "ratingChange": -3
         },
         "jockey": {
           "code": "YML",
@@ -1464,7 +1472,7 @@
           "sire": "Written By\n                        \n                        \n                            Dam",
           "dam": "Call Me Tilly\n                        \n                        \n                            Dam's Sire",
           "damSire": "I Am Invincible\n                        \n                        \n                            Same Sire",
-          "currentRating": 43,
+          "currentRating": 48,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1534,7 +1542,8 @@
               "finishTime": 58.29,
               "odds": 21
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "HEL",
@@ -1581,7 +1590,7 @@
           "sire": "Frosted\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Gina Lola\n                        \n                        \n                            Dam's Sire",
           "damSire": "Not A Single Doubt\n                        \n                        \n                            Same Sire",
-          "currentRating": 50,
+          "currentRating": 52,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,

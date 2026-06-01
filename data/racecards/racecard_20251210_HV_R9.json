@@ -22,7 +22,7 @@
           "sire": "Sioux Nation\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Cynthia Calhoun\n                        \n                        \n                            Dam's Sire",
           "damSire": "Exceed And Excel\n                        \n                        \n                            Same Sire",
-          "currentRating": 98,
+          "currentRating": 92,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -211,7 +211,8 @@
               "finishTime": 109.19,
               "odds": 4.9
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "BH",
@@ -258,7 +259,7 @@
           "sire": "Awesome Rock\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Jayquin Star\n                        \n                        \n                            Dam's Sire",
           "damSire": "O'Reilly\n                        \n                        \n                            Same Sire",
-          "currentRating": 90,
+          "currentRating": 83,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -447,7 +448,8 @@
               "finishTime": 121.65,
               "odds": 9.4
             }
-          ]
+          ],
+          "ratingChange": 5
         },
         "jockey": {
           "code": "AA",
@@ -494,7 +496,7 @@
           "sire": "Tivaci\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Sheezababe\n                        \n                        \n                            Dam's Sire",
           "damSire": "Zabeel\n                        \n                        \n                            Same Sire",
-          "currentRating": 108,
+          "currentRating": 82,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -559,7 +561,7 @@
           "sire": "Darci Brahma\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Keenly\n                        \n                        \n                            Dam's Sire",
           "damSire": "Keeninsky\n                        \n                        \n                            Same Sire",
-          "currentRating": 100,
+          "currentRating": 93,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -748,7 +750,8 @@
               "finishTime": 94.88,
               "odds": 22
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "BAM",
@@ -795,7 +798,7 @@
           "sire": "Ardrossan\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Luroel\n                        \n                        \n                            Dam's Sire",
           "damSire": "Per Incanto\n                        \n                        \n                            Same Sire",
-          "currentRating": 81,
+          "currentRating": 84,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -984,7 +987,8 @@
               "finishTime": 94.31,
               "odds": 22
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "RU",
@@ -1031,7 +1035,7 @@
           "sire": "Hinchinbrook\n                        \n                        \n                            Dam",
           "dam": "Morinda\n                        \n                        \n                            Dam's Sire",
           "damSire": "Desert King\n                        \n                        \n                            Same Sire",
-          "currentRating": 74,
+          "currentRating": 84,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1220,7 +1224,8 @@
               "finishTime": 99.31,
               "odds": 12
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "MOJ",
@@ -1267,7 +1272,7 @@
           "sire": "All Too Hard\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Urban Rocker\n                        \n                        \n                            Dam's Sire",
           "damSire": "Fastnet Rock\n                        \n                        \n                            Same Sire",
-          "currentRating": 72,
+          "currentRating": 82,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1456,7 +1461,8 @@
               "finishTime": 110.72999999999999,
               "odds": 39
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "PMF",
@@ -1503,7 +1509,7 @@
           "sire": "Vadamos\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Stanica\n                        \n                        \n                            Dam's Sire",
           "damSire": "Zabeel\n                        \n                        \n                            Same Sire",
-          "currentRating": 95,
+          "currentRating": 88,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1692,7 +1698,8 @@
               "finishTime": 81.82,
               "odds": 5
             }
-          ]
+          ],
+          "ratingChange": 6
         },
         "jockey": {
           "code": "GM",
@@ -1757,7 +1764,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": 0,
           "pastPerformances": [
             {
               "date": "2025-11-23T00:00:00.000Z",
@@ -1929,7 +1935,8 @@
               "finishTime": 121.52,
               "odds": 8.2
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "CML",
@@ -1976,7 +1983,7 @@
           "sire": "Spirit Of Boom\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Token Of Love\n                        \n                        \n                            Dam's Sire",
           "damSire": "Al Maher\n                        \n                        \n                            Same Sire",
-          "currentRating": 70,
+          "currentRating": 82,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2148,7 +2155,8 @@
               "finishTime": 69.63,
               "odds": 5
             }
-          ]
+          ],
+          "ratingChange": 7
         },
         "jockey": {
           "code": "HCY",
@@ -2195,7 +2203,7 @@
           "sire": "Siyouni\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Illaunmore\n                        \n                        \n                            Dam's Sire",
           "damSire": "Shamardal\n                        \n                        \n                            Same Sire",
-          "currentRating": 90,
+          "currentRating": 94,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2384,7 +2392,8 @@
               "finishTime": 81.83,
               "odds": 5.3
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "MCJ",
@@ -2431,7 +2440,7 @@
           "sire": "Cityscape\n                        \n                        \n                            Dam",
           "dam": "Etoile Blanc\n                        \n                        \n                            Dam's Sire",
           "damSire": "Nedawi\n                        \n                        \n                            Same Sire",
-          "currentRating": 72,
+          "currentRating": 85,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2620,7 +2629,8 @@
               "finishTime": 109.28999999999999,
               "odds": 24
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "DHA",

@@ -22,7 +22,7 @@
           "sire": "Written Tycoon\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Shaaheq\n                        \n                        \n                            Dam's Sire",
           "damSire": "Redoute's Choice\n                        \n                        \n                            Same Sire",
-          "currentRating": 55,
+          "currentRating": 41,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -160,7 +160,8 @@
               "finishTime": 70.2,
               "odds": 6.8
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "BHW",
@@ -379,7 +380,8 @@
               "finishTime": 58.53,
               "odds": 24
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "PZ",
@@ -426,7 +428,7 @@
           "sire": "Dundeel\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Madeenaty\n                        \n                        \n                            Dam's Sire",
           "damSire": "Exceed And Excel\n                        \n                        \n                            Same Sire",
-          "currentRating": 52,
+          "currentRating": 53,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -564,7 +566,8 @@
               "finishTime": 69.8,
               "odds": 53
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "OJM",
@@ -629,7 +632,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": -2,
           "pastPerformances": [
             {
               "date": "2026-02-22T00:00:00.000Z",
@@ -733,7 +735,8 @@
               "finishTime": 57.27,
               "odds": 42
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "BH",
@@ -780,7 +783,7 @@
           "sire": "Love Conquers All\n                        \n                        \n                            Dam",
           "dam": "Mingo Rose\n                        \n                        \n                            Dam's Sire",
           "damSire": "Waterford Road\n                        \n                        \n                            Same Sire",
-          "currentRating": 51,
+          "currentRating": 53,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -884,7 +887,8 @@
               "finishTime": 70.45,
               "odds": 39
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "AVB",
@@ -931,7 +935,7 @@
           "sire": "Swiss Ace\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Princess Carolina\n                        \n                        \n                            Dam's Sire",
           "damSire": "More Than Ready\n                        \n                        \n                            Same Sire",
-          "currentRating": 48,
+          "currentRating": 52,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1018,7 +1022,8 @@
               "finishTime": 72.03,
               "odds": 47
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "TEK",
@@ -1220,7 +1225,8 @@
               "finishTime": 69.53999999999999,
               "odds": 43
             }
-          ]
+          ],
+          "ratingChange": 7
         },
         "jockey": {
           "code": "CCY",
@@ -1267,7 +1273,7 @@
           "sire": "Star Turn\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Lots Of Dosh\n                        \n                        \n                            Dam's Sire",
           "damSire": "Ocean Park\n                        \n                        \n                            Same Sire",
-          "currentRating": 50,
+          "currentRating": 52,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1332,7 +1338,7 @@
           "sire": "Capitalist\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Gibraltar Girl\n                        \n                        \n                            Dam's Sire",
           "damSire": "Manhattan Rain\n                        \n                        \n                            Same Sire",
-          "currentRating": 44,
+          "currentRating": 46,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1419,7 +1425,8 @@
               "finishTime": 71.22,
               "odds": 57
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "HEL",
@@ -1466,7 +1473,7 @@
           "sire": "Ace High\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Smokin' Valentina\n                        \n                        \n                            Dam's Sire",
           "damSire": "Encosta de Lago\n                        \n                        \n                            Same Sire",
-          "currentRating": 56,
+          "currentRating": 60,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1536,7 +1543,8 @@
               "finishTime": 70.11,
               "odds": 41
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "CJE",
@@ -1670,7 +1678,8 @@
               "finishTime": 58.92,
               "odds": 48
             }
-          ]
+          ],
+          "ratingChange": -3
         },
         "jockey": {
           "code": "YML",
@@ -1735,7 +1744,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": -2,
           "pastPerformances": [
             {
               "date": "2026-02-25T00:00:00.000Z",
@@ -1822,7 +1830,8 @@
               "finishTime": 83.18,
               "odds": 61
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "KRW",

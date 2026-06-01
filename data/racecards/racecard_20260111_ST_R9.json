@@ -22,7 +22,7 @@
           "sire": "Ferlax\n                        \n                        \n                            Dam",
           "dam": "Warren's Sister\n                        \n                        \n                            Dam's Sire",
           "damSire": "Savabeel\n                        \n                        \n                            Same Sire",
-          "currentRating": 68,
+          "currentRating": 62,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -126,7 +126,8 @@
               "finishTime": 107.59,
               "odds": 8.8
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "LDE",
@@ -173,7 +174,7 @@
           "sire": "Wootton Bassett\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "A Mist Opportunity\n                        \n                        \n                            Dam's Sire",
           "damSire": "Foxwedge\n                        \n                        \n                            Same Sire",
-          "currentRating": 95,
+          "currentRating": 82,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -226,7 +227,8 @@
               "finishTime": 93.2,
               "odds": 18
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "BH",
@@ -273,7 +275,7 @@
           "sire": "Almanzor\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Holly Holy\n                        \n                        \n                            Dam's Sire",
           "damSire": "Dylan Thomas\n                        \n                        \n                            Same Sire",
-          "currentRating": 71,
+          "currentRating": 67,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -411,7 +413,8 @@
               "finishTime": 100.61,
               "odds": 6.9
             }
-          ]
+          ],
+          "ratingChange": 6
         },
         "jockey": {
           "code": "GM",
@@ -458,7 +461,7 @@
           "sire": "Tamayuz\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "My Brunette\n                        \n                        \n                            Dam's Sire",
           "damSire": "Arcano\n                        \n                        \n                            Same Sire",
-          "currentRating": 59,
+          "currentRating": 66,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -523,7 +526,7 @@
           "sire": "Sacred Falls\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Lamplighter\n                        \n                        \n                            Dam's Sire",
           "damSire": "Fastnet Rock\n                        \n                        \n                            Same Sire",
-          "currentRating": 74,
+          "currentRating": 76,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -610,7 +613,8 @@
               "finishTime": 99.5,
               "odds": 6.4
             }
-          ]
+          ],
+          "ratingChange": 5
         },
         "jockey": {
           "code": "CJE",
@@ -657,7 +661,7 @@
           "sire": "Contributer\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Gin Dartre\n                        \n                        \n                            Dam's Sire",
           "damSire": "Volksraad\n                        \n                        \n                            Same Sire",
-          "currentRating": 70,
+          "currentRating": 69,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -744,7 +748,8 @@
               "finishTime": 94.33,
               "odds": 11
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "PZ",
@@ -791,7 +796,7 @@
           "sire": "American Pharoah\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Amuser\n                        \n                        \n                            Dam's Sire",
           "damSire": "Galileo\n                        \n                        \n                            Same Sire",
-          "currentRating": 56,
+          "currentRating": 66,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -895,7 +900,8 @@
               "finishTime": 107.75,
               "odds": 16
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "AA",
@@ -942,7 +948,7 @@
           "sire": "Fastnet Rock\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Wedding Veil\n                        \n                        \n                            Dam's Sire",
           "damSire": "Dubawi\n                        \n                        \n                            Same Sire",
-          "currentRating": 62,
+          "currentRating": 75,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1029,7 +1035,8 @@
               "finishTime": 100.27000000000001,
               "odds": 3.8
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "BA",
@@ -1094,7 +1101,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": -2,
           "pastPerformances": [
             {
               "date": "2025-12-23T00:00:00.000Z",
@@ -1147,7 +1153,8 @@
               "finishTime": 120.53,
               "odds": 31
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "FEL",
@@ -1194,7 +1201,7 @@
           "sire": "Muhaarar\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Bahjtee\n                        \n                        \n                            Dam's Sire",
           "damSire": "Pivotal\n                        \n                        \n                            Same Sire",
-          "currentRating": 82,
+          "currentRating": 73,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1281,7 +1288,8 @@
               "finishTime": 108.57,
               "odds": 6.4
             }
-          ]
+          ],
+          "ratingChange": 2
         },
         "jockey": {
           "code": "CML",
@@ -1328,7 +1336,7 @@
           "sire": "Tivaci\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Posavina\n                        \n                        \n                            Dam's Sire",
           "damSire": "Tiger Hill\n                        \n                        \n                            Same Sire",
-          "currentRating": 78,
+          "currentRating": 72,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1398,7 +1406,8 @@
               "finishTime": 94.03999999999999,
               "odds": 10
             }
-          ]
+          ],
+          "ratingChange": 2
         },
         "jockey": {
           "code": "AVB",
@@ -1445,7 +1454,7 @@
           "sire": "Mendelssohn\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Kitty Leroy\n                        \n                        \n                            Dam's Sire",
           "damSire": "I Am Invincible\n                        \n                        \n                            Same Sire",
-          "currentRating": 58,
+          "currentRating": 62,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1532,7 +1541,8 @@
               "finishTime": 94.11,
               "odds": 86
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "TEK",
@@ -1666,7 +1676,8 @@
               "finishTime": 82.08,
               "odds": 4.4
             }
-          ]
+          ],
+          "ratingChange": 6
         },
         "jockey": {
           "code": "WEC",
@@ -1713,7 +1724,7 @@
           "sire": "Flower Alley\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Amur Affair\n                        \n                        \n                            Dam's Sire",
           "damSire": "Tiger Ridge\n                        \n                        \n                            Same Sire",
-          "currentRating": 71,
+          "currentRating": 73,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1749,7 +1760,8 @@
               "finishTime": 109.47,
               "odds": 38
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "OJM",

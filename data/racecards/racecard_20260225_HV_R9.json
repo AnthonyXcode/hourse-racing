@@ -22,7 +22,7 @@
           "sire": "Outstrip\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Penny Drops\n                        \n                        \n                            Dam's Sire",
           "damSire": "Invincible Spirit\n                        \n                        \n                            Same Sire",
-          "currentRating": 64,
+          "currentRating": 61,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -143,7 +143,8 @@
               "finishTime": 99.85,
               "odds": 7.6
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "CCY",
@@ -277,7 +278,8 @@
               "finishTime": 70.02,
               "odds": 5.6
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "PZ",
@@ -479,7 +481,8 @@
               "finishTime": 69.87,
               "odds": 5.7
             }
-          ]
+          ],
+          "ratingChange": 2
         },
         "jockey": {
           "code": "CML",
@@ -526,7 +529,7 @@
           "sire": "Written Tycoon\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Best Yet To Come\n                        \n                        \n                            Dam's Sire",
           "damSire": "Econsul\n                        \n                        \n                            Same Sire",
-          "currentRating": 56,
+          "currentRating": 62,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -613,7 +616,8 @@
               "finishTime": 69.34,
               "odds": 11
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "PMF",
@@ -660,7 +664,7 @@
           "sire": "Sooboog\n                        \n                        \n                            Dam",
           "dam": "Ginali\n                        \n                        \n                            Dam's Sire",
           "damSire": "Duporth\n                        \n                        \n                            Same Sire",
-          "currentRating": 70,
+          "currentRating": 74,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -815,7 +819,8 @@
               "finishTime": 81.78999999999999,
               "odds": 69
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "HEL",
@@ -862,7 +867,7 @@
           "sire": "Star Turn\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Sessantesimo\n                        \n                        \n                            Dam's Sire",
           "damSire": "Flying Spur\n                        \n                        \n                            Same Sire",
-          "currentRating": 67,
+          "currentRating": 63,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1051,7 +1056,8 @@
               "finishTime": 69.89,
               "odds": 5.8
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "BA",
@@ -1098,7 +1104,7 @@
           "sire": "Sergei Prokofiev\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "True Potential\n                        \n                        \n                            Dam's Sire",
           "damSire": "Kodiac\n                        \n                        \n                            Same Sire",
-          "currentRating": 63,
+          "currentRating": 64,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1202,7 +1208,8 @@
               "finishTime": 57.16,
               "odds": 5.5
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "CJE",
@@ -1249,7 +1256,7 @@
           "sire": "Capitalist\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Maroon Bay\n                        \n                        \n                            Dam's Sire",
           "damSire": "Exceed And Excel\n                        \n                        \n                            Same Sire",
-          "currentRating": 73,
+          "currentRating": 76,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1353,7 +1360,8 @@
               "finishTime": 57.21,
               "odds": 17
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "WEC",
@@ -1418,7 +1426,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": 0,
           "pastPerformances": [
             {
               "date": "2026-02-11T00:00:00.000Z",
@@ -1539,7 +1546,8 @@
               "finishTime": 83.26,
               "odds": 68
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "AA",
@@ -1586,7 +1594,7 @@
           "sire": "Toronado\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Esteemed Elegance\n                        \n                        \n                            Dam's Sire",
           "damSire": "Sir Percy\n                        \n                        \n                            Same Sire",
-          "currentRating": 71,
+          "currentRating": 77,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1707,7 +1715,8 @@
               "finishTime": 57.36,
               "odds": 22
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "FEL",
@@ -1754,7 +1763,7 @@
           "sire": "Star Turn\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Ready To Reign\n                        \n                        \n                            Dam's Sire",
           "damSire": "More Than Ready\n                        \n                        \n                            Same Sire",
-          "currentRating": 77,
+          "currentRating": 78,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1892,7 +1901,8 @@
               "finishTime": 69.86,
               "odds": 94
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "BH",
@@ -1939,7 +1949,7 @@
           "sire": "Dark Angel\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Frankel Light\n                        \n                        \n                            Dam's Sire",
           "damSire": "Frankel\n                        \n                        \n                            Same Sire",
-          "currentRating": 70,
+          "currentRating": 62,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2094,7 +2104,8 @@
               "finishTime": 82.53999999999999,
               "odds": 13
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "GM",

@@ -22,7 +22,7 @@
           "sire": "Kentuckian\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Over Cat\n                        \n                        \n                            Dam's Sire",
           "damSire": "Discreet Cat\n                        \n                        \n                            Same Sire",
-          "currentRating": 55,
+          "currentRating": 41,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -143,7 +143,8 @@
               "finishTime": 70.11,
               "odds": 12
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "BHW",
@@ -190,7 +191,7 @@
           "sire": "Too Darn Hot\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Planet Rock\n                        \n                        \n                            Dam's Sire",
           "damSire": "Fastnet Rock\n                        \n                        \n                            Same Sire",
-          "currentRating": 53,
+          "currentRating": 54,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -328,7 +329,8 @@
               "finishTime": 70.64,
               "odds": 9
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "HEL",
@@ -375,7 +377,7 @@
           "sire": "Capitalist\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Miss Amajardan\n                        \n                        \n                            Dam's Sire",
           "damSire": "Hinchinbrook\n                        \n                        \n                            Same Sire",
-          "currentRating": 65,
+          "currentRating": 52,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -479,7 +481,8 @@
               "finishTime": 70.93,
               "odds": 5.9
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "MDB",
@@ -544,7 +547,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": -2,
           "pastPerformances": [
             {
               "date": "2026-02-11T00:00:00.000Z",
@@ -665,7 +667,8 @@
               "finishTime": 69.9,
               "odds": 86
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "BH",
@@ -712,7 +715,7 @@
           "sire": "Charm Spirit\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Minnaloushka\n                        \n                        \n                            Dam's Sire",
           "damSire": "Black Minnaloushe\n                        \n                        \n                            Same Sire",
-          "currentRating": 43,
+          "currentRating": 48,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -850,7 +853,8 @@
               "finishTime": 58.52,
               "odds": 143
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "KRW",
@@ -915,7 +919,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": -2,
           "pastPerformances": [
             {
               "date": "2026-01-21T00:00:00.000Z",
@@ -951,7 +954,8 @@
               "finishTime": 72.25,
               "odds": 26
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "FEL",
@@ -998,7 +1002,7 @@
           "sire": "Contributer\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Polaset\n                        \n                        \n                            Dam's Sire",
           "damSire": "Reset\n                        \n                        \n                            Same Sire",
-          "currentRating": 44,
+          "currentRating": 50,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1051,7 +1055,8 @@
               "finishTime": 57.92,
               "odds": 120
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "LDE",
@@ -1098,7 +1103,7 @@
           "sire": "Fiorente\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Socarada\n                        \n                        \n                            Dam's Sire",
           "damSire": "Strada\n                        \n                        \n                            Same Sire",
-          "currentRating": 36,
+          "currentRating": 43,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1219,7 +1224,8 @@
               "finishTime": 69.78,
               "odds": 11
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "YML",
@@ -1266,7 +1272,7 @@
           "sire": "All Too Hard\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Givem Hell\n                        \n                        \n                            Dam's Sire",
           "damSire": "Commands\n                        \n                        \n                            Same Sire",
-          "currentRating": 34,
+          "currentRating": 44,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1370,7 +1376,8 @@
               "finishTime": 70.95,
               "odds": 86
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "AA",
@@ -1572,7 +1579,8 @@
               "finishTime": 57.48,
               "odds": 114
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "BA",
@@ -1619,7 +1627,7 @@
           "sire": "Shooting To Win\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Magic Raelene\n                        \n                        \n                            Dam's Sire",
           "damSire": "Magic Albert\n                        \n                        \n                            Same Sire",
-          "currentRating": 53,
+          "currentRating": 56,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1723,7 +1731,8 @@
               "finishTime": 72.07,
               "odds": 16
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "CJE",
@@ -1770,7 +1779,7 @@
           "sire": "Your Song\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Brooklyn Rain\n                        \n                        \n                            Dam's Sire",
           "damSire": "Manhattan Rain\n                        \n                        \n                            Same Sire",
-          "currentRating": 53,
+          "currentRating": 59,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1874,7 +1883,8 @@
               "finishTime": 58.71,
               "odds": 57
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "OJM",

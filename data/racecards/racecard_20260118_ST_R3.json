@@ -22,7 +22,7 @@
           "sire": "Starspangledbanner\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Red Pixie\n                        \n                        \n                            Dam's Sire",
           "damSire": "Lonhro\n                        \n                        \n                            Same Sire",
-          "currentRating": 72,
+          "currentRating": 64,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -170,7 +170,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": -2,
           "pastPerformances": [
             {
               "date": "2026-01-07T00:00:00.000Z",
@@ -308,7 +307,8 @@
               "finishTime": 69.05,
               "odds": 25
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "BA",
@@ -355,7 +355,7 @@
           "sire": "Headwater\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Rose Queen\n                        \n                        \n                            Dam's Sire",
           "damSire": "Holy Roman Emperor\n                        \n                        \n                            Same Sire",
-          "currentRating": 82,
+          "currentRating": 68,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -442,7 +442,8 @@
               "finishTime": 57.17,
               "odds": 48
             }
-          ]
+          ],
+          "ratingChange": 8
         },
         "jockey": {
           "code": "AVB",
@@ -489,7 +490,7 @@
           "sire": "Ten Sovereigns\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Ballyalla\n                        \n                        \n                            Dam's Sire",
           "damSire": "Mind Games\n                        \n                        \n                            Same Sire",
-          "currentRating": 77,
+          "currentRating": 73,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -610,7 +611,8 @@
               "finishTime": 55.78,
               "odds": 11
             }
-          ]
+          ],
+          "ratingChange": 1
         },
         "jockey": {
           "code": "AA",
@@ -657,7 +659,7 @@
           "sire": "I Am Invincible\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Tilia Rose\n                        \n                        \n                            Dam's Sire",
           "damSire": "Written Tycoon\n                        \n                        \n                            Same Sire",
-          "currentRating": 55,
+          "currentRating": 63,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -710,7 +712,8 @@
               "finishTime": 57.8,
               "odds": 99
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "HCY",
@@ -757,7 +760,7 @@
           "sire": "Charm Spirit\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Musigny\n                        \n                        \n                            Dam's Sire",
           "damSire": "Reset\n                        \n                        \n                            Same Sire",
-          "currentRating": 55,
+          "currentRating": 63,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -844,7 +847,8 @@
               "finishTime": 69.33,
               "odds": 2.2
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "LDE",
@@ -891,7 +895,7 @@
           "sire": "Shalaa\n                        \n                        \n                            Dam",
           "dam": "Santa Rocks\n                        \n                        \n                            Dam's Sire",
           "damSire": "Fastnet Rock\n                        \n                        \n                            Same Sire",
-          "currentRating": 72,
+          "currentRating": 80,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -995,7 +999,8 @@
               "finishTime": 57.53,
               "odds": 14
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "BHW",
@@ -1042,7 +1047,7 @@
           "sire": "Trapeze Artist\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Miss Strikepower\n                        \n                        \n                            Dam's Sire",
           "damSire": "Nicconi\n                        \n                        \n                            Same Sire",
-          "currentRating": 45,
+          "currentRating": 62,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1095,7 +1100,8 @@
               "finishTime": 70.82,
               "odds": 57
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "KRW",
@@ -1229,7 +1235,8 @@
               "finishTime": 56.83,
               "odds": 37
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "PMF",
@@ -1276,7 +1283,7 @@
           "sire": "Your Song\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Brooklyn Rain\n                        \n                        \n                            Dam's Sire",
           "damSire": "Manhattan Rain\n                        \n                        \n                            Same Sire",
-          "currentRating": 49,
+          "currentRating": 65,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1329,7 +1336,8 @@
               "finishTime": 58.71,
               "odds": 57
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "YML",

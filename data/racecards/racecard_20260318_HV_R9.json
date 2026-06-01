@@ -22,7 +22,7 @@
           "sire": "Pierata\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Awake The Stars\n                        \n                        \n                            Dam's Sire",
           "damSire": "Redoute's Choice\n                        \n                        \n                            Same Sire",
-          "currentRating": 66,
+          "currentRating": 61,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -92,7 +92,8 @@
               "finishTime": 94.8,
               "odds": 22
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "AA",
@@ -139,7 +140,7 @@
           "sire": "Coats Choice\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Blue Blond\n                        \n                        \n                            Dam's Sire",
           "damSire": "Stravinsky\n                        \n                        \n                            Same Sire",
-          "currentRating": 70,
+          "currentRating": 68,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -277,7 +278,8 @@
               "finishTime": 81.6,
               "odds": 3.3
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "FEL",
@@ -324,7 +326,7 @@
           "sire": "Akeed Mofeed\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "New Sensation\n                        \n                        \n                            Dam's Sire",
           "damSire": "Dolphin Street\n                        \n                        \n                            Same Sire",
-          "currentRating": 86,
+          "currentRating": 79,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -462,7 +464,8 @@
               "finishTime": 81.1,
               "odds": 2.9
             }
-          ]
+          ],
+          "ratingChange": 2
         },
         "jockey": {
           "code": "PZ",
@@ -509,7 +512,7 @@
           "sire": "So You Think\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Respin\n                        \n                        \n                            Dam's Sire",
           "damSire": "Power\n                        \n                        \n                            Same Sire",
-          "currentRating": 64,
+          "currentRating": 65,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -579,7 +582,8 @@
               "finishTime": 82.59,
               "odds": 67
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "BA",
@@ -626,7 +630,7 @@
           "sire": "Sioux Nation\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Sea Goddess\n                        \n                        \n                            Dam's Sire",
           "damSire": "Galileo\n                        \n                        \n                            Same Sire",
-          "currentRating": 62,
+          "currentRating": 65,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -696,7 +700,8 @@
               "finishTime": 94.72,
               "odds": 67
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "BHW",
@@ -743,7 +748,7 @@
           "sire": "Cappella Sansevero\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Passified Lady\n                        \n                        \n                            Dam's Sire",
           "damSire": "Speightstown\n                        \n                        \n                            Same Sire",
-          "currentRating": 63,
+          "currentRating": 64,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -864,7 +869,8 @@
               "finishTime": 100.41,
               "odds": 8.4
             }
-          ]
+          ],
+          "ratingChange": 7
         },
         "jockey": {
           "code": "CJE",
@@ -911,7 +917,7 @@
           "sire": "Mongolian Khan\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Shezhardtocatch\n                        \n                        \n                            Dam's Sire",
           "damSire": "Elusive City\n                        \n                        \n                            Same Sire",
-          "currentRating": 60,
+          "currentRating": 62,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1083,7 +1089,8 @@
               "finishTime": 82.03,
               "odds": 48
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "YML",
@@ -1130,7 +1137,7 @@
           "sire": "Shamus Award\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Recoinage\n                        \n                        \n                            Dam's Sire",
           "damSire": "Flying Spur\n                        \n                        \n                            Same Sire",
-          "currentRating": 58,
+          "currentRating": 62,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1183,7 +1190,8 @@
               "finishTime": 82.72,
               "odds": 82
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "KRW",
@@ -1248,7 +1256,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": 0,
           "pastPerformances": [
             {
               "date": "2026-03-04T00:00:00.000Z",
@@ -1369,7 +1376,8 @@
               "finishTime": 100.9,
               "odds": 7.1
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "CML",
@@ -1416,7 +1424,7 @@
           "sire": "U S Navy Flag\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Pinstripe\n                        \n                        \n                            Dam's Sire",
           "damSire": "Pins\n                        \n                        \n                            Same Sire",
-          "currentRating": 65,
+          "currentRating": 67,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1571,7 +1579,8 @@
               "finishTime": 100.97999999999999,
               "odds": 11
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "PMF",
@@ -1618,7 +1627,7 @@
           "sire": "Real Steel\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Northern Model\n                        \n                        \n                            Dam's Sire",
           "damSire": "Northern Meteor\n                        \n                        \n                            Same Sire",
-          "currentRating": 68,
+          "currentRating": 72,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1739,7 +1748,8 @@
               "finishTime": 100.3,
               "odds": 20
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "TEK",
@@ -1786,7 +1796,7 @@
           "sire": "Rommel\n                        \n                        \n                            Dam",
           "dam": "Colleges\n                        \n                        \n                            Dam's Sire",
           "damSire": "Elusive Quality\n                        \n                        \n                            Same Sire",
-          "currentRating": 66,
+          "currentRating": 68,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1941,7 +1951,8 @@
               "finishTime": 81.59,
               "odds": 31
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "OJM",

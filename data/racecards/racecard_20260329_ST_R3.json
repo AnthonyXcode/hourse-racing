@@ -22,7 +22,7 @@
           "sire": "Mohaather\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Alaata\n                        \n                        \n                            Dam's Sire",
           "damSire": "Smart Strike\n                        \n                        \n                            Same Sire",
-          "currentRating": 57,
+          "currentRating": 51,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -126,7 +126,8 @@
               "finishTime": 107.25,
               "odds": 122
             }
-          ]
+          ],
+          "ratingChange": 1
         },
         "jockey": {
           "code": "CJE",
@@ -173,7 +174,7 @@
           "sire": "Wrote\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Peggy Hookham\n                        \n                        \n                            Dam's Sire",
           "damSire": "Joyeux Danseur\n                        \n                        \n                            Same Sire",
-          "currentRating": 52,
+          "currentRating": 45,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -294,7 +295,8 @@
               "finishTime": 81.75,
               "odds": 15
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "PMF",
@@ -359,7 +361,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": 0,
           "pastPerformances": [
             {
               "date": "2026-03-04T00:00:00.000Z",
@@ -531,7 +532,8 @@
               "finishTime": 98.50999999999999,
               "odds": 4.6
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "YML",
@@ -578,7 +580,7 @@
           "sire": "Galileo\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Different League\n                        \n                        \n                            Dam's Sire",
           "damSire": "Dabirsim\n                        \n                        \n                            Same Sire",
-          "currentRating": 55,
+          "currentRating": 59,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -682,7 +684,8 @@
               "finishTime": 120.83,
               "odds": 21
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "PZ",
@@ -884,7 +887,8 @@
               "finishTime": 106.78999999999999,
               "odds": 3.4
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "HCY",
@@ -931,7 +935,7 @@
           "sire": "Ilovethiscity\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Maraudamiss\n                        \n                        \n                            Dam's Sire",
           "damSire": "Clangalang\n                        \n                        \n                            Same Sire",
-          "currentRating": 53,
+          "currentRating": 54,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1069,7 +1073,8 @@
               "finishTime": 94.36,
               "odds": 34
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "BH",
@@ -1116,7 +1121,7 @@
           "sire": "Akeed Mofeed\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Annenberg\n                        \n                        \n                            Dam's Sire",
           "damSire": "Artie Schiller\n                        \n                        \n                            Same Sire",
-          "currentRating": 38,
+          "currentRating": 40,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1220,7 +1225,8 @@
               "finishTime": 108.94,
               "odds": 36
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "BA",
@@ -1267,7 +1273,7 @@
           "sire": "Wrote\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Alberta\n                        \n                        \n                            Dam's Sire",
           "damSire": "Magic Albert\n                        \n                        \n                            Same Sire",
-          "currentRating": 38,
+          "currentRating": 43,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1371,7 +1377,8 @@
               "finishTime": 95.5,
               "odds": 66
             }
-          ]
+          ],
+          "ratingChange": -3
         },
         "jockey": {
           "code": "CML",
@@ -1418,7 +1425,7 @@
           "sire": "The Autumn Sun\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Sultry Dreamer\n                        \n                        \n                            Dam's Sire",
           "damSire": "Dream Ahead\n                        \n                        \n                            Same Sire",
-          "currentRating": 54,
+          "currentRating": 56,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1607,7 +1614,8 @@
               "finishTime": 82.56,
               "odds": 82
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "FEL",
@@ -1654,7 +1662,7 @@
           "sire": "Caravaggio\n                        \n                        \n                            Dam",
           "dam": "Isabella\n                        \n                        \n                            Dam's Sire",
           "damSire": "Galileo\n                        \n                        \n                            Same Sire",
-          "currentRating": 52,
+          "currentRating": 55,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1775,7 +1783,8 @@
               "finishTime": 100.57,
               "odds": 142
             }
-          ]
+          ],
+          "ratingChange": -3
         },
         "jockey": {
           "code": "KRW",
@@ -1822,7 +1831,7 @@
           "sire": "Deep Field\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "The Soloist\n                        \n                        \n                            Dam's Sire",
           "damSire": "Smart Missile\n                        \n                        \n                            Same Sire",
-          "currentRating": 40,
+          "currentRating": 42,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1960,7 +1969,8 @@
               "finishTime": 71.69,
               "odds": 37
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "MHT",
@@ -2162,7 +2172,8 @@
               "finishTime": 110.53,
               "odds": 4
             }
-          ]
+          ],
+          "ratingChange": 7
         },
         "jockey": {
           "code": "AA",

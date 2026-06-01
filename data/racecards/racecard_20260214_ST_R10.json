@@ -22,7 +22,7 @@
           "sire": "Toronado\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Seagrove\n                        \n                        \n                            Dam's Sire",
           "damSire": "Exceed And Excel\n                        \n                        \n                            Same Sire",
-          "currentRating": 103,
+          "currentRating": 68,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -109,7 +109,8 @@
               "finishTime": 56.65,
               "odds": 34
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "BHW",
@@ -156,7 +157,7 @@
           "sire": "Brutal\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Command More\n                        \n                        \n                            Dam's Sire",
           "damSire": "More Than Ready\n                        \n                        \n                            Same Sire",
-          "currentRating": 73,
+          "currentRating": 65,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -209,7 +210,8 @@
               "finishTime": 82.64,
               "odds": 82
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "HEL",
@@ -256,7 +258,7 @@
           "sire": "Deep Field\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Waruna\n                        \n                        \n                            Dam's Sire",
           "damSire": "All Too Hard\n                        \n                        \n                            Same Sire",
-          "currentRating": 75,
+          "currentRating": 66,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -343,7 +345,8 @@
               "finishTime": 82.61,
               "odds": 5.3
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "AA",
@@ -390,7 +393,7 @@
           "sire": "Press Statement\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Giovanna Bella\n                        \n                        \n                            Dam's Sire",
           "damSire": "Iffraaj\n                        \n                        \n                            Same Sire",
-          "currentRating": 75,
+          "currentRating": 76,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -528,7 +531,8 @@
               "finishTime": 70.28999999999999,
               "odds": 3.4
             }
-          ]
+          ],
+          "ratingChange": 8
         },
         "jockey": {
           "code": "OJM",
@@ -575,7 +579,7 @@
           "sire": "Alabama Express\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Written Era\n                        \n                        \n                            Dam's Sire",
           "damSire": "Written Tycoon\n                        \n                        \n                            Same Sire",
-          "currentRating": 67,
+          "currentRating": 74,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -645,7 +649,8 @@
               "finishTime": 83.08,
               "odds": 98
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "PMF",
@@ -692,7 +697,7 @@
           "sire": "Merchant Navy\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "That's How I Roll\n                        \n                        \n                            Dam's Sire",
           "damSire": "Speightstown\n                        \n                        \n                            Same Sire",
-          "currentRating": 84,
+          "currentRating": 73,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -745,7 +750,8 @@
               "finishTime": 69.53,
               "odds": 26
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "PZ",
@@ -792,7 +798,7 @@
           "sire": "Dubawi\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Desert Flyer\n                        \n                        \n                            Dam's Sire",
           "damSire": "Shamardal\n                        \n                        \n                            Same Sire",
-          "currentRating": 74,
+          "currentRating": 70,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -857,7 +863,7 @@
           "sire": "Night Of Thunder\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Timepiece\n                        \n                        \n                            Dam's Sire",
           "damSire": "Zamindar\n                        \n                        \n                            Same Sire",
-          "currentRating": 68,
+          "currentRating": 70,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -910,7 +916,8 @@
               "finishTime": 82.03,
               "odds": 23
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "HCY",
@@ -957,7 +964,7 @@
           "sire": "Swiss Ace\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Snowfall\n                        \n                        \n                            Dam's Sire",
           "damSire": "Postponed\n                        \n                        \n                            Same Sire",
-          "currentRating": 56,
+          "currentRating": 62,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1010,7 +1017,8 @@
               "finishTime": 57.84,
               "odds": 42
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "TEK",
@@ -1075,7 +1083,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": 0,
           "pastPerformances": [
             {
               "date": "2026-01-18T00:00:00.000Z",
@@ -1094,7 +1101,8 @@
               "finishTime": 82.17,
               "odds": 11
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "BH",
@@ -1141,7 +1149,7 @@
           "sire": "Too Darn Hot\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Lady Sayyida\n                        \n                        \n                            Dam's Sire",
           "damSire": "Iffraaj\n                        \n                        \n                            Same Sire",
-          "currentRating": 71,
+          "currentRating": 78,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1228,7 +1236,8 @@
               "finishTime": 82.97,
               "odds": 57
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "AVB",
@@ -1275,7 +1284,7 @@
           "sire": "Pierata\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Magic Obsession\n                        \n                        \n                            Dam's Sire",
           "damSire": "Magic Albert\n                        \n                        \n                            Same Sire",
-          "currentRating": 61,
+          "currentRating": 67,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1345,7 +1354,8 @@
               "finishTime": 95.33,
               "odds": 54
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "FEL",
@@ -1392,7 +1402,7 @@
           "sire": "Sooboog\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Hidden Numbers\n                        \n                        \n                            Dam's Sire",
           "damSire": "Uncle Mo\n                        \n                        \n                            Same Sire",
-          "currentRating": 56,
+          "currentRating": 62,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1462,7 +1472,8 @@
               "finishTime": 70.2,
               "odds": 33
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "CCY",
@@ -1509,7 +1520,7 @@
           "sire": "Prince Of Brooklyn\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Perfect Jazz\n                        \n                        \n                            Dam's Sire",
           "damSire": "Perfectly Ready\n                        \n                        \n                            Same Sire",
-          "currentRating": 60,
+          "currentRating": 63,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1562,7 +1573,8 @@
               "finishTime": 70.07,
               "odds": 29
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "LDE",

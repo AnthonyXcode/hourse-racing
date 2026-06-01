@@ -22,7 +22,7 @@
           "sire": "City Light\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Adana\n                        \n                        \n                            Dam's Sire",
           "damSire": "Le Havre\n                        \n                        \n                            Same Sire",
-          "currentRating": 79,
+          "currentRating": 72,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -105,7 +105,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": -1,
           "pastPerformances": [
             {
               "date": "2025-11-05T00:00:00.000Z",
@@ -277,7 +276,8 @@
               "finishTime": 69.66,
               "odds": 20
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "BHW",
@@ -360,7 +360,8 @@
               "finishTime": 70.06,
               "odds": 52
             }
-          ]
+          ],
+          "ratingChange": 7
         },
         "jockey": {
           "code": "SC",
@@ -407,7 +408,7 @@
           "sire": "Capitalist\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Sebrina\n                        \n                        \n                            Dam's Sire",
           "damSire": "Sebring\n                        \n                        \n                            Same Sire",
-          "currentRating": 81,
+          "currentRating": 74,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -596,7 +597,8 @@
               "finishTime": 69.03,
               "odds": 1.5
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "BH",
@@ -643,7 +645,7 @@
           "sire": "Sooboog\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Hidden Numbers\n                        \n                        \n                            Dam's Sire",
           "damSire": "Uncle Mo\n                        \n                        \n                            Same Sire",
-          "currentRating": 54,
+          "currentRating": 65,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -708,7 +710,7 @@
           "sire": "War Decree\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Enthusabelle\n                        \n                        \n                            Dam's Sire",
           "damSire": "Savabeel\n                        \n                        \n                            Same Sire",
-          "currentRating": 60,
+          "currentRating": 65,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -897,7 +899,8 @@
               "finishTime": 81.7,
               "odds": 10
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "AA",
@@ -944,7 +947,7 @@
           "sire": "Toronado\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Liberty Made\n                        \n                        \n                            Dam's Sire",
           "damSire": "Statue Of Liberty\n                        \n                        \n                            Same Sire",
-          "currentRating": 72,
+          "currentRating": 75,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1116,7 +1119,8 @@
               "finishTime": 56.46,
               "odds": 8.1
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "DHA",
@@ -1352,7 +1356,8 @@
               "finishTime": 69.83,
               "odds": 12
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "PDF",
@@ -1399,7 +1404,7 @@
           "sire": "Capitalist\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Malakiya\n                        \n                        \n                            Dam's Sire",
           "damSire": "Redoute's Choice\n                        \n                        \n                            Same Sire",
-          "currentRating": 54,
+          "currentRating": 65,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1588,7 +1593,8 @@
               "finishTime": 70.03,
               "odds": 17
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "KRW",
@@ -1635,7 +1641,7 @@
           "sire": "Churchill\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Irish Fling\n                        \n                        \n                            Dam's Sire",
           "damSire": "Darci Brahma\n                        \n                        \n                            Same Sire",
-          "currentRating": 60,
+          "currentRating": 66,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1705,7 +1711,8 @@
               "finishTime": 83.26,
               "odds": 68
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "GM",
@@ -1752,7 +1759,7 @@
           "sire": "Trapeze Artist\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Miss Strikepower\n                        \n                        \n                            Dam's Sire",
           "damSire": "Nicconi\n                        \n                        \n                            Same Sire",
-          "currentRating": 45,
+          "currentRating": 64,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1817,7 +1824,7 @@
           "sire": "I Am Invincible\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Faint Perfume\n                        \n                        \n                            Dam's Sire",
           "damSire": "Shamardal\n                        \n                        \n                            Same Sire",
-          "currentRating": 48,
+          "currentRating": 64,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1882,7 +1889,7 @@
           "sire": "Capitalist\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Mossbeat\n                        \n                        \n                            Dam's Sire",
           "damSire": "Mossman\n                        \n                        \n                            Same Sire",
-          "currentRating": 73,
+          "currentRating": 69,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2071,7 +2078,8 @@
               "finishTime": 69.93,
               "odds": 13
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "RU",
@@ -2118,7 +2126,7 @@
           "sire": "Capitalist\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Menagerie\n                        \n                        \n                            Dam's Sire",
           "damSire": "Zoustar\n                        \n                        \n                            Same Sire",
-          "currentRating": 48,
+          "currentRating": 63,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2205,7 +2213,8 @@
               "finishTime": 57.32,
               "odds": 30
             }
-          ]
+          ],
+          "ratingChange": -3
         },
         "jockey": {
           "code": "CCY",

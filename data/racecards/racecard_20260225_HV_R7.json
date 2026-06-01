@@ -22,7 +22,7 @@
           "sire": "Starspangledbanner\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Casino Card\n                        \n                        \n                            Dam's Sire",
           "damSire": "Casino Prince\n                        \n                        \n                            Same Sire",
-          "currentRating": 77,
+          "currentRating": 69,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -143,7 +143,8 @@
               "finishTime": 82.35,
               "odds": 5.9
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "MDB",
@@ -190,7 +191,7 @@
           "sire": "So You Think\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Respin\n                        \n                        \n                            Dam's Sire",
           "damSire": "Power\n                        \n                        \n                            Same Sire",
-          "currentRating": 64,
+          "currentRating": 65,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -243,7 +244,8 @@
               "finishTime": 82.59,
               "odds": 67
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "BA",
@@ -290,7 +292,7 @@
           "sire": "The Brothers War\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Moorings Capital\n                        \n                        \n                            Dam's Sire",
           "damSire": "Song Of Tara\n                        \n                        \n                            Same Sire",
-          "currentRating": 68,
+          "currentRating": 75,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -445,7 +447,8 @@
               "finishTime": 100.67,
               "odds": 37
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "WEC",
@@ -492,7 +495,7 @@
           "sire": "All Too Hard\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Urban Rocker\n                        \n                        \n                            Dam's Sire",
           "damSire": "Fastnet Rock\n                        \n                        \n                            Same Sire",
-          "currentRating": 74,
+          "currentRating": 76,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -596,7 +599,8 @@
               "finishTime": 99.05,
               "odds": 10
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "PMF",
@@ -643,7 +647,7 @@
           "sire": "Justify\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Tails Wins\n                        \n                        \n                            Dam's Sire",
           "damSire": "Tale Of The Cat\n                        \n                        \n                            Same Sire",
-          "currentRating": 66,
+          "currentRating": 60,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -798,7 +802,8 @@
               "finishTime": 70,
               "odds": 12
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "HEL",
@@ -845,7 +850,7 @@
           "sire": "Reliable Man\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Abbey Tralae\n                        \n                        \n                            Dam's Sire",
           "damSire": "Traditionally\n                        \n                        \n                            Same Sire",
-          "currentRating": 70,
+          "currentRating": 75,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -949,7 +954,8 @@
               "finishTime": 99.82,
               "odds": 12
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "CJE",
@@ -1014,7 +1020,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": -2,
           "pastPerformances": [
             {
               "date": "2026-02-04T00:00:00.000Z",
@@ -1050,7 +1055,8 @@
               "finishTime": 94.8,
               "odds": 22
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "GM",
@@ -1097,7 +1103,7 @@
           "sire": "Brazen Beau\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Lerina Gold\n                        \n                        \n                            Dam's Sire",
           "damSire": "Medaglia d'Oro\n                        \n                        \n                            Same Sire",
-          "currentRating": 69,
+          "currentRating": 70,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1218,7 +1224,8 @@
               "finishTime": 81.74,
               "odds": 3.3
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "PZ",
@@ -1265,7 +1272,7 @@
           "sire": "Snitzel\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Response\n                        \n                        \n                            Dam's Sire",
           "damSire": "Charge Forward\n                        \n                        \n                            Same Sire",
-          "currentRating": 61,
+          "currentRating": 65,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1386,7 +1393,8 @@
               "finishTime": 82.09,
               "odds": 25
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "TEK",
@@ -1433,7 +1441,7 @@
           "sire": "Rommel\n                        \n                        \n                            Dam",
           "dam": "Colleges\n                        \n                        \n                            Dam's Sire",
           "damSire": "Elusive Quality\n                        \n                        \n                            Same Sire",
-          "currentRating": 66,
+          "currentRating": 70,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1571,7 +1579,8 @@
               "finishTime": 81.59,
               "odds": 31
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "KRW",
@@ -1618,7 +1627,7 @@
           "sire": "So You Think\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Estijmaam\n                        \n                        \n                            Dam's Sire",
           "damSire": "Exceed And Excel\n                        \n                        \n                            Same Sire",
-          "currentRating": 72,
+          "currentRating": 71,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1654,7 +1663,8 @@
               "finishTime": 94.86,
               "odds": 57
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "CCY",
@@ -1701,7 +1711,7 @@
           "sire": "National Defense\n                        \n                        \n                            Dam",
           "dam": "Choice Words\n                        \n                        \n                            Dam's Sire",
           "damSire": "Choisir\n                        \n                        \n                            Same Sire",
-          "currentRating": 64,
+          "currentRating": 66,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1771,7 +1781,8 @@
               "finishTime": 69.64,
               "odds": 8.9
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "AA",

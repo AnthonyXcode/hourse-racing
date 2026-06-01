@@ -40,7 +40,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": 0,
           "pastPerformances": [
             {
               "date": "2026-02-22T00:00:00.000Z",
@@ -76,7 +75,8 @@
               "finishTime": 58.83,
               "odds": 18
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "LDE",
@@ -123,7 +123,7 @@
           "sire": "Tassort\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Pentangili\n                        \n                        \n                            Dam's Sire",
           "damSire": "Star Witness\n                        \n                        \n                            Same Sire",
-          "currentRating": 50,
+          "currentRating": 49,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -193,7 +193,8 @@
               "finishTime": 57.32,
               "odds": 24
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "CCY",
@@ -240,7 +241,7 @@
           "sire": "Not A Single Doubt\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Jacquetta\n                        \n                        \n                            Dam's Sire",
           "damSire": "Encosta de Lago\n                        \n                        \n                            Same Sire",
-          "currentRating": 40,
+          "currentRating": 45,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -310,7 +311,8 @@
               "finishTime": 57.5,
               "odds": 12
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "BA",
@@ -357,7 +359,7 @@
           "sire": "Anders\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Sorcha Rose\n                        \n                        \n                            Dam's Sire",
           "damSire": "Stravinsky\n                        \n                        \n                            Same Sire",
-          "currentRating": 50,
+          "currentRating": 52,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -422,7 +424,7 @@
           "sire": "Harry Angel\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Florabella\n                        \n                        \n                            Dam's Sire",
           "damSire": "Exceed And Excel\n                        \n                        \n                            Same Sire",
-          "currentRating": 50,
+          "currentRating": 52,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -552,7 +554,7 @@
           "sire": "Sooboog\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Rhythm Beat\n                        \n                        \n                            Dam's Sire",
           "damSire": "Pentire\n                        \n                        \n                            Same Sire",
-          "currentRating": 53,
+          "currentRating": 58,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -622,7 +624,8 @@
               "finishTime": 57.77,
               "odds": 12
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "FEL",
@@ -669,7 +672,7 @@
           "sire": "Zoustar\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Volcada\n                        \n                        \n                            Dam's Sire",
           "damSire": "Stravinsky\n                        \n                        \n                            Same Sire",
-          "currentRating": 43,
+          "currentRating": 48,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -807,7 +810,8 @@
               "finishTime": 70.12,
               "odds": 11
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "CJE",
@@ -854,7 +858,7 @@
           "sire": "Charm Spirit\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Bizz\n                        \n                        \n                            Dam's Sire",
           "damSire": "Volksraad\n                        \n                        \n                            Same Sire",
-          "currentRating": 44,
+          "currentRating": 51,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1026,7 +1030,8 @@
               "finishTime": 69.62,
               "odds": 9.3
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "WEC",
@@ -1073,7 +1078,7 @@
           "sire": "Shamexpress\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Carnival\n                        \n                        \n                            Dam's Sire",
           "damSire": "Showcasing\n                        \n                        \n                            Same Sire",
-          "currentRating": 46,
+          "currentRating": 52,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1109,7 +1114,8 @@
               "finishTime": 56.6,
               "odds": 54
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "OJM",
@@ -1156,7 +1162,7 @@
           "sire": "No Nay Never\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Al Joza\n                        \n                        \n                            Dam's Sire",
           "damSire": "Dubawi\n                        \n                        \n                            Same Sire",
-          "currentRating": 50,
+          "currentRating": 52,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1192,7 +1198,8 @@
               "finishTime": 57.75,
               "odds": 102
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "HCY",
@@ -1239,7 +1246,7 @@
           "sire": "Zousain\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Soho Secret\n                        \n                        \n                            Dam's Sire",
           "damSire": "Lucky Owners\n                        \n                        \n                            Same Sire",
-          "currentRating": 43,
+          "currentRating": 50,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1292,7 +1299,8 @@
               "finishTime": 58.49,
               "odds": 70
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "YML",
@@ -1339,7 +1347,7 @@
           "sire": "Daiwa Major\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Get Closer\n                        \n                        \n                            Dam's Sire",
           "damSire": "Wild Rush\n                        \n                        \n                            Same Sire",
-          "currentRating": 38,
+          "currentRating": 42,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1460,7 +1468,8 @@
               "finishTime": 71.8,
               "odds": 155
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "HEL",
@@ -1507,7 +1516,7 @@
           "sire": "Written By\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Rocknavar\n                        \n                        \n                            Dam's Sire",
           "damSire": "Fastnet Rock\n                        \n                        \n                            Same Sire",
-          "currentRating": 50,
+          "currentRating": 52,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,

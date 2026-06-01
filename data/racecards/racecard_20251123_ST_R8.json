@@ -22,7 +22,7 @@
           "sire": "Acclamation\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Folk Melody\n                        \n                        \n                            Dam's Sire",
           "damSire": "Street Cry\n                        \n                        \n                            Same Sire",
-          "currentRating": 139,
+          "currentRating": 134,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -109,7 +109,8 @@
               "finishTime": 120.31,
               "odds": 1.6
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "MCJ",
@@ -156,7 +157,7 @@
           "sire": "Deep Field\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Raheights\n                        \n                        \n                            Dam's Sire",
           "damSire": "Rahy\n                        \n                        \n                            Same Sire",
-          "currentRating": 128,
+          "currentRating": 134,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -345,7 +346,8 @@
               "finishTime": 120.36,
               "odds": 4
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "PZ",
@@ -392,7 +394,7 @@
           "sire": "Churchill\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "War Goddess\n                        \n                        \n                            Dam's Sire",
           "damSire": "Champs Elysees\n                        \n                        \n                            Same Sire",
-          "currentRating": 83,
+          "currentRating": 82,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -581,7 +583,8 @@
               "finishTime": 123.05,
               "odds": 31
             }
-          ]
+          ],
+          "ratingChange": -4
         },
         "jockey": {
           "code": "FEL",
@@ -628,7 +631,7 @@
           "sire": "Fastnet Rock\n                        \n                        \n                            Dam",
           "dam": "Imperial Lass\n                        \n                        \n                            Dam's Sire",
           "damSire": "Tavistock\n                        \n                        \n                            Same Sire",
-          "currentRating": 107,
+          "currentRating": 116,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -817,7 +820,8 @@
               "finishTime": 147.9,
               "odds": 13
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "HCY",
@@ -1053,7 +1057,8 @@
               "finishTime": 94.13,
               "odds": 3.4
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "AA",
@@ -1100,7 +1105,7 @@
           "sire": "Lemon Drop Kid\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Alluvial Gold\n                        \n                        \n                            Dam's Sire",
           "damSire": "Danehill Dancer\n                        \n                        \n                            Same Sire",
-          "currentRating": 100,
+          "currentRating": 104,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1289,7 +1294,8 @@
               "finishTime": 120.43,
               "odds": 11
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "AVB",
@@ -1336,7 +1342,7 @@
           "sire": "Sebring\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Impressive Jeuney\n                        \n                        \n                            Dam's Sire",
           "damSire": "Jeune\n                        \n                        \n                            Same Sire",
-          "currentRating": 101,
+          "currentRating": 115,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1525,7 +1531,8 @@
               "finishTime": 81.75,
               "odds": 13
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "LDE",
@@ -1590,7 +1597,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": -2,
           "pastPerformances": [
             {
               "date": "2025-11-09T00:00:00.000Z",
@@ -1762,7 +1768,8 @@
               "finishTime": 95.06,
               "odds": 27
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "PDF",
@@ -1809,7 +1816,7 @@
           "sire": "Cityscape\n                        \n                        \n                            Dam",
           "dam": "Etoile Blanc\n                        \n                        \n                            Dam's Sire",
           "damSire": "Nedawi\n                        \n                        \n                            Same Sire",
-          "currentRating": 72,
+          "currentRating": 86,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1998,7 +2005,8 @@
               "finishTime": 149.48,
               "odds": 54
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "CML",

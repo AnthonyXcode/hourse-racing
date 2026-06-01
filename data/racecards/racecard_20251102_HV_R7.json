@@ -22,7 +22,7 @@
           "sire": "Magnus\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Fly To Win\n                        \n                        \n                            Dam's Sire",
           "damSire": "Danewin\n                        \n                        \n                            Same Sire",
-          "currentRating": 72,
+          "currentRating": 80,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -211,7 +211,8 @@
               "finishTime": 69.28,
               "odds": 18
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "PZ",
@@ -258,7 +259,7 @@
           "sire": "Oasis Dream\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Clematis\n                        \n                        \n                            Dam's Sire",
           "damSire": "First Defence\n                        \n                        \n                            Same Sire",
-          "currentRating": 73,
+          "currentRating": 72,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -447,7 +448,8 @@
               "finishTime": 56.83,
               "odds": 7
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "BH",
@@ -494,7 +496,7 @@
           "sire": "Deep Field\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Pane In The Glass\n                        \n                        \n                            Dam's Sire",
           "damSire": "Testa Rossa\n                        \n                        \n                            Same Sire",
-          "currentRating": 48,
+          "currentRating": 66,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -559,7 +561,7 @@
           "sire": "Capitalist\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Miss Gai Flyer\n                        \n                        \n                            Dam's Sire",
           "damSire": "Flying Spur\n                        \n                        \n                            Same Sire",
-          "currentRating": 48,
+          "currentRating": 64,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -595,7 +597,8 @@
               "finishTime": 70.59,
               "odds": 52
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "TEK",
@@ -642,7 +645,7 @@
           "sire": "Russian Revolution\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "I Am Gypsy\n                        \n                        \n                            Dam's Sire",
           "damSire": "I Am Invincible\n                        \n                        \n                            Same Sire",
-          "currentRating": 77,
+          "currentRating": 65,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -831,7 +834,8 @@
               "finishTime": 58.25,
               "odds": 40
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "YML",
@@ -878,7 +882,7 @@
           "sire": "Blue Point\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Alucinari\n                        \n                        \n                            Dam's Sire",
           "damSire": "Street Cry\n                        \n                        \n                            Same Sire",
-          "currentRating": 62,
+          "currentRating": 64,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -961,7 +965,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": -2,
           "pastPerformances": [
             {
               "date": "2025-10-04T00:00:00.000Z",
@@ -1048,7 +1051,8 @@
               "finishTime": 58.2,
               "odds": 31
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "MHT",
@@ -1095,7 +1099,7 @@
           "sire": "Deep Field\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "National Anthem\n                        \n                        \n                            Dam's Sire",
           "damSire": "Rock Of Gibraltar\n                        \n                        \n                            Same Sire",
-          "currentRating": 63,
+          "currentRating": 68,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1284,7 +1288,8 @@
               "finishTime": 57.36,
               "odds": 8.6
             }
-          ]
+          ],
+          "ratingChange": 8
         },
         "jockey": {
           "code": "CCY",
@@ -1331,7 +1336,7 @@
           "sire": "I Am Invincible\n                        \n                        \n                            Dam",
           "dam": "True Excelsior\n                        \n                        \n                            Dam's Sire",
           "damSire": "Exceed And Excel\n                        \n                        \n                            Same Sire",
-          "currentRating": 63,
+          "currentRating": 67,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1396,7 +1401,7 @@
           "sire": "Charm Spirit\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Nomisma\n                        \n                        \n                            Dam's Sire",
           "damSire": "Thorn Park\n                        \n                        \n                            Same Sire",
-          "currentRating": 48,
+          "currentRating": 61,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1585,7 +1590,8 @@
               "finishTime": 69.85,
               "odds": 29
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "BHW",
@@ -1632,7 +1638,7 @@
           "sire": "Estidhkaar\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Nimbus Star\n                        \n                        \n                            Dam's Sire",
           "damSire": "Nayef\n                        \n                        \n                            Same Sire",
-          "currentRating": 59,
+          "currentRating": 63,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1821,7 +1827,8 @@
               "finishTime": 70.37,
               "odds": 37
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "WEC",
@@ -1868,7 +1875,7 @@
           "sire": "Zousain\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Jolie Joy\n                        \n                        \n                            Dam's Sire",
           "damSire": "Kendargent\n                        \n                        \n                            Same Sire",
-          "currentRating": 60,
+          "currentRating": 62,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1938,7 +1945,8 @@
               "finishTime": 57.64,
               "odds": 3.3
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "BA",

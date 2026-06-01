@@ -22,7 +22,7 @@
           "sire": "Russian Revolution\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "I Am Gypsy\n                        \n                        \n                            Dam's Sire",
           "damSire": "I Am Invincible\n                        \n                        \n                            Same Sire",
-          "currentRating": 77,
+          "currentRating": 64,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -211,7 +211,8 @@
               "finishTime": 58.24,
               "odds": 22
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "GM",
@@ -258,7 +259,7 @@
           "sire": "Per Incanto\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Spritz\n                        \n                        \n                            Dam's Sire",
           "damSire": "Thorn Park\n                        \n                        \n                            Same Sire",
-          "currentRating": 56,
+          "currentRating": 60,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -447,7 +448,8 @@
               "finishTime": 56.76,
               "odds": 11
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "BHW",
@@ -494,7 +496,7 @@
           "sire": "Overshare\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Vegeta\n                        \n                        \n                            Dam's Sire",
           "damSire": "Super Saver\n                        \n                        \n                            Same Sire",
-          "currentRating": 71,
+          "currentRating": 72,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -632,7 +634,8 @@
               "finishTime": 57.73,
               "odds": 12
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "HEL",
@@ -679,7 +682,7 @@
           "sire": "Written Tycoon\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Appian Way\n                        \n                        \n                            Dam's Sire",
           "damSire": "Exceed And Excel\n                        \n                        \n                            Same Sire",
-          "currentRating": 58,
+          "currentRating": 60,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -766,7 +769,8 @@
               "finishTime": 58.53,
               "odds": 24
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "DHA",
@@ -813,7 +817,7 @@
           "sire": "Oasis Dream\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Clematis\n                        \n                        \n                            Dam's Sire",
           "damSire": "First Defence\n                        \n                        \n                            Same Sire",
-          "currentRating": 73,
+          "currentRating": 75,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1002,7 +1006,8 @@
               "finishTime": 69.76,
               "odds": 3.3
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "BH",
@@ -1049,7 +1054,7 @@
           "sire": "Capitalist\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Maroon Bay\n                        \n                        \n                            Dam's Sire",
           "damSire": "Exceed And Excel\n                        \n                        \n                            Same Sire",
-          "currentRating": 73,
+          "currentRating": 69,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1102,7 +1107,8 @@
               "finishTime": 57.21,
               "odds": 17
             }
-          ]
+          ],
+          "ratingChange": 1
         },
         "jockey": {
           "code": "HCY",
@@ -1149,7 +1155,7 @@
           "sire": "Mikki Isle\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Rose Campion\n                        \n                        \n                            Dam's Sire",
           "damSire": "Starcraft\n                        \n                        \n                            Same Sire",
-          "currentRating": 67,
+          "currentRating": 69,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1253,7 +1259,8 @@
               "finishTime": 56.79,
               "odds": 16
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "PMF",
@@ -1318,7 +1325,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": -2,
           "pastPerformances": [
             {
               "date": "2025-12-03T00:00:00.000Z",
@@ -1490,7 +1496,8 @@
               "finishTime": 100.03999999999999,
               "odds": 35
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "CML",
@@ -1537,7 +1544,7 @@
           "sire": "Deep Field\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Waitomo Toka\n                        \n                        \n                            Dam's Sire",
           "damSire": "Fastnet Rock\n                        \n                        \n                            Same Sire",
-          "currentRating": 54,
+          "currentRating": 64,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1726,7 +1733,8 @@
               "finishTime": 70.03,
               "odds": 15
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "AA",
@@ -1773,7 +1781,7 @@
           "sire": "Shooting To Win\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "My Thousand\n                        \n                        \n                            Dam's Sire",
           "damSire": "Foreplay\n                        \n                        \n                            Same Sire",
-          "currentRating": 71,
+          "currentRating": 78,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1962,7 +1970,8 @@
               "finishTime": 69.85,
               "odds": 10
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "CJE",
@@ -2009,7 +2018,7 @@
           "sire": "I Am Invincible\n                        \n                        \n                            Dam",
           "dam": "True Excelsior\n                        \n                        \n                            Dam's Sire",
           "damSire": "Exceed And Excel\n                        \n                        \n                            Same Sire",
-          "currentRating": 63,
+          "currentRating": 65,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2062,7 +2071,8 @@
               "finishTime": 57.55,
               "odds": 78
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "TEK",
@@ -2109,7 +2119,7 @@
           "sire": "Blue Point\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Alucinari\n                        \n                        \n                            Dam's Sire",
           "damSire": "Street Cry\n                        \n                        \n                            Same Sire",
-          "currentRating": 62,
+          "currentRating": 69,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2179,7 +2189,8 @@
               "finishTime": 57.35,
               "odds": 39
             }
-          ]
+          ],
+          "ratingChange": 7
         },
         "jockey": {
           "code": "KRW",

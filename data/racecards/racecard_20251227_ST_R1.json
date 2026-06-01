@@ -40,7 +40,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": 7,
           "pastPerformances": [
             {
               "date": "2025-11-15T00:00:00.000Z",
@@ -59,7 +58,8 @@
               "finishTime": 69.34,
               "odds": 11
             }
-          ]
+          ],
+          "ratingChange": 7
         },
         "jockey": {
           "code": "PMF",
@@ -106,7 +106,7 @@
           "sire": "Harry Angel\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Psychedelic\n                        \n                        \n                            Dam's Sire",
           "damSire": "Domesday\n                        \n                        \n                            Same Sire",
-          "currentRating": 60,
+          "currentRating": 53,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -159,7 +159,8 @@
               "finishTime": 70.19,
               "odds": 29
             }
-          ]
+          ],
+          "ratingChange": 1
         },
         "jockey": {
           "code": "BH",
@@ -206,7 +207,7 @@
           "sire": "El Roca\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Eileithyia\n                        \n                        \n                            Dam's Sire",
           "damSire": "Tavistock\n                        \n                        \n                            Same Sire",
-          "currentRating": 59,
+          "currentRating": 52,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -242,7 +243,8 @@
               "finishTime": 69.85,
               "odds": 45
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "AVB",
@@ -289,7 +291,7 @@
           "sire": "Star Turn\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Volcanic Eruption\n                        \n                        \n                            Dam's Sire",
           "damSire": "Bernardini\n                        \n                        \n                            Same Sire",
-          "currentRating": 46,
+          "currentRating": 47,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -376,7 +378,8 @@
               "finishTime": 69.9,
               "odds": 32
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "TEK",
@@ -423,7 +426,7 @@
           "sire": "Hellbent\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Bold Runner\n                        \n                        \n                            Dam's Sire",
           "damSire": "Choisir\n                        \n                        \n                            Same Sire",
-          "currentRating": 58,
+          "currentRating": 52,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -488,7 +491,7 @@
           "sire": "Exceed And Excel\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Allez Bien\n                        \n                        \n                            Dam's Sire",
           "damSire": "O'Reilly\n                        \n                        \n                            Same Sire",
-          "currentRating": 47,
+          "currentRating": 51,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -541,7 +544,8 @@
               "finishTime": 70.13,
               "odds": 3.3
             }
-          ]
+          ],
+          "ratingChange": 1
         },
         "jockey": {
           "code": "PZ",
@@ -588,7 +592,7 @@
           "sire": "U S Navy Flag\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Evana Rahma\n                        \n                        \n                            Dam's Sire",
           "damSire": "Darci Brahma\n                        \n                        \n                            Same Sire",
-          "currentRating": 42,
+          "currentRating": 50,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -641,7 +645,8 @@
               "finishTime": 71.15,
               "odds": 36
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "CJE",
@@ -688,7 +693,7 @@
           "sire": "Ocean Park\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Shopaholic\n                        \n                        \n                            Dam's Sire",
           "damSire": "Pins\n                        \n                        \n                            Same Sire",
-          "currentRating": 53,
+          "currentRating": 52,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -724,7 +729,8 @@
               "finishTime": 70.67,
               "odds": 24
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "CML",
@@ -771,7 +777,7 @@
           "sire": "Written Tycoon\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Choux Diva\n                        \n                        \n                            Dam's Sire",
           "damSire": "Thorn Park\n                        \n                        \n                            Same Sire",
-          "currentRating": 48,
+          "currentRating": 52,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -836,7 +842,7 @@
           "sire": "Starspangledbanner\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Sunbird\n                        \n                        \n                            Dam's Sire",
           "damSire": "Echo Of Light\n                        \n                        \n                            Same Sire",
-          "currentRating": 34,
+          "currentRating": 48,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -906,7 +912,8 @@
               "finishTime": 72.1,
               "odds": 116
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "KRW",
@@ -953,7 +960,7 @@
           "sire": "Fastnet Rock\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Orangey Red\n                        \n                        \n                            Dam's Sire",
           "damSire": "Lawman\n                        \n                        \n                            Same Sire",
-          "currentRating": 67,
+          "currentRating": 60,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1108,7 +1115,8 @@
               "finishTime": 58.35,
               "odds": 29
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "LDE",
@@ -1173,7 +1181,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": -2,
           "pastPerformances": [
             {
               "date": "2025-12-07T00:00:00.000Z",
@@ -1209,7 +1216,8 @@
               "finishTime": 70.6,
               "odds": 50
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "OJM",
@@ -1256,7 +1264,7 @@
           "sire": "Lucky Vega\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Soul Purpose\n                        \n                        \n                            Dam's Sire",
           "damSire": "Pierro\n                        \n                        \n                            Same Sire",
-          "currentRating": 45,
+          "currentRating": 52,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1321,7 +1329,7 @@
           "sire": "Starspangledbanner\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Nancy Hart\n                        \n                        \n                            Dam's Sire",
           "damSire": "Sepoy\n                        \n                        \n                            Same Sire",
-          "currentRating": 46,
+          "currentRating": 50,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1374,7 +1382,8 @@
               "finishTime": 69.61,
               "odds": 75
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "PDF",

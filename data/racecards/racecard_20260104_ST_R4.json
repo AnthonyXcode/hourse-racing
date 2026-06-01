@@ -22,7 +22,7 @@
           "sire": "Sebring Sun\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Tough Baby\n                        \n                        \n                            Dam's Sire",
           "damSire": "Helmet\n                        \n                        \n                            Same Sire",
-          "currentRating": 62,
+          "currentRating": 52,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -87,7 +87,7 @@
           "sire": "Capitalist\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Ma Can Do It\n                        \n                        \n                            Dam's Sire",
           "damSire": "Majesticperfection\n                        \n                        \n                            Same Sire",
-          "currentRating": 48,
+          "currentRating": 50,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -123,7 +123,8 @@
               "finishTime": 70.71000000000001,
               "odds": 70
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "CCY",
@@ -170,7 +171,7 @@
           "sire": "Territories\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Escobar\n                        \n                        \n                            Dam's Sire",
           "damSire": "Not A Single Doubt\n                        \n                        \n                            Same Sire",
-          "currentRating": 60,
+          "currentRating": 44,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -240,7 +241,8 @@
               "finishTime": 82.61,
               "odds": 91
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "HCY",
@@ -305,7 +307,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": 0,
           "pastPerformances": [
             {
               "date": "2025-12-17T00:00:00.000Z",
@@ -392,7 +393,8 @@
               "finishTime": 70.69,
               "odds": 13
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "BH",
@@ -439,7 +441,7 @@
           "sire": "Deep Field\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Onemorezeta\n                        \n                        \n                            Dam's Sire",
           "damSire": "Onemorenomore\n                        \n                        \n                            Same Sire",
-          "currentRating": 52,
+          "currentRating": 59,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -526,7 +528,8 @@
               "finishTime": 57.14,
               "odds": 13
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "BA",
@@ -573,7 +576,7 @@
           "sire": "Night Of Thunder\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Tawayna\n                        \n                        \n                            Dam's Sire",
           "damSire": "Invincible Spirit\n                        \n                        \n                            Same Sire",
-          "currentRating": 55,
+          "currentRating": 53,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -677,7 +680,8 @@
               "finishTime": 56.65,
               "odds": 21
             }
-          ]
+          ],
+          "ratingChange": 2
         },
         "jockey": {
           "code": "PZ",
@@ -724,7 +728,7 @@
           "sire": "Frosted\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Infra Dig\n                        \n                        \n                            Dam's Sire",
           "damSire": "Exceed And Excel\n                        \n                        \n                            Same Sire",
-          "currentRating": 44,
+          "currentRating": 48,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -828,7 +832,8 @@
               "finishTime": 69.11,
               "odds": 11
             }
-          ]
+          ],
+          "ratingChange": 6
         },
         "jockey": {
           "code": "GM",
@@ -875,7 +880,7 @@
           "sire": "Tarzino\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Gin Swing\n                        \n                        \n                            Dam's Sire",
           "damSire": "Keeper\n                        \n                        \n                            Same Sire",
-          "currentRating": 45,
+          "currentRating": 58,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -962,7 +967,8 @@
               "finishTime": 69.53,
               "odds": 6.6
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "WEC",
@@ -1009,7 +1015,7 @@
           "sire": "Proisir\n                        \n                        \n                            Dam",
           "dam": "Stolen Dance\n                        \n                        \n                            Dam's Sire",
           "damSire": "Denman\n                        \n                        \n                            Same Sire",
-          "currentRating": 44,
+          "currentRating": 51,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1027,7 +1033,8 @@
             "PC",
             "SR"
           ],
-          "pastPerformances": []
+          "pastPerformances": [],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "KRW",
@@ -1074,7 +1081,7 @@
           "sire": "Deep Field\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Little Zeta\n                        \n                        \n                            Dam's Sire",
           "damSire": "Commands\n                        \n                        \n                            Same Sire",
-          "currentRating": 50,
+          "currentRating": 53,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1144,7 +1151,8 @@
               "finishTime": 69.82,
               "odds": 11
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "CML",
@@ -1191,7 +1199,7 @@
           "sire": "Calyx\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Elite Circle\n                        \n                        \n                            Dam's Sire",
           "damSire": "Encosta de Lago\n                        \n                        \n                            Same Sire",
-          "currentRating": 34,
+          "currentRating": 48,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1261,7 +1269,8 @@
               "finishTime": 70.59,
               "odds": 47
             }
-          ]
+          ],
+          "ratingChange": -3
         },
         "jockey": {
           "code": "MHT",
@@ -1326,7 +1335,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": -2,
           "pastPerformances": [
             {
               "date": "2025-12-10T00:00:00.000Z",
@@ -1396,7 +1404,8 @@
               "finishTime": 82.53999999999999,
               "odds": 151
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "PDF",

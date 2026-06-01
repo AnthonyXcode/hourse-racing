@@ -276,7 +276,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": -1,
           "pastPerformances": [
             {
               "date": "2025-12-03T00:00:00.000Z",
@@ -448,7 +447,8 @@
               "finishTime": 70.02,
               "odds": 7.6
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "FEL",
@@ -495,7 +495,7 @@
           "sire": "Mikki Isle\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Palatine Hill\n                        \n                        \n                            Dam's Sire",
           "damSire": "Palace Music\n                        \n                        \n                            Same Sire",
-          "currentRating": 23,
+          "currentRating": 33,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -684,7 +684,8 @@
               "finishTime": 100.92,
               "odds": 115
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "MCJ",
@@ -731,7 +732,7 @@
           "sire": "No Nay Never\n                        \n                        \n                            Dam",
           "dam": "Highly Valued\n                        \n                        \n                            Dam's Sire",
           "damSire": "High Chaparral\n                        \n                        \n                            Same Sire",
-          "currentRating": 32,
+          "currentRating": 36,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -920,7 +921,8 @@
               "finishTime": 70.59,
               "odds": 6.1
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "BH",
@@ -967,7 +969,7 @@
           "sire": "Toronado\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Big Spirit\n                        \n                        \n                            Dam's Sire",
           "damSire": "Invincible Spirit\n                        \n                        \n                            Same Sire",
-          "currentRating": 40,
+          "currentRating": 31,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1156,7 +1158,8 @@
               "finishTime": 56.03,
               "odds": 26
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "AA",
@@ -1203,7 +1206,7 @@
           "sire": "Slade Power\n                        \n                        \n                            Dam",
           "dam": "Princess Kyka\n                        \n                        \n                            Dam's Sire",
           "damSire": "Namid\n                        \n                        \n                            Same Sire",
-          "currentRating": 20,
+          "currentRating": 24,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1296,7 +1299,7 @@
               "raceNumber": 1,
               "raceClass": "Class 5",
               "distance": 1000,
-              "surface": "AWT",
+              "surface": "Turf",
               "going": "Good to Firm",
               "draw": 9,
               "weight": 125,
@@ -1392,7 +1395,8 @@
               "finishTime": 70.17,
               "odds": 21
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "PZ",
@@ -1439,7 +1443,7 @@
           "sire": "Zoustar\n                        \n                        \n                            Dam",
           "dam": "Kiss In The Rain\n                        \n                        \n                            Dam's Sire",
           "damSire": "Manhattan Rain\n                        \n                        \n                            Same Sire",
-          "currentRating": 30,
+          "currentRating": 32,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1628,7 +1632,8 @@
               "finishTime": 58.37,
               "odds": 14
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "DHA",
@@ -1675,7 +1680,7 @@
           "sire": "Good Journey\n                        \n                        \n                            Dam",
           "dam": "Syncopated\n                        \n                        \n                            Dam's Sire",
           "damSire": "Lonhro\n                        \n                        \n                            Same Sire",
-          "currentRating": 52,
+          "currentRating": 20,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1785,7 +1790,7 @@
               "raceNumber": 1,
               "raceClass": "Class 5",
               "distance": 1000,
-              "surface": "AWT",
+              "surface": "Turf",
               "going": "Good to Firm",
               "draw": 7,
               "weight": 124,
@@ -1864,7 +1869,8 @@
               "finishTime": 70.58,
               "odds": 41
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "BHW",
@@ -1911,7 +1917,7 @@
           "sire": "Deep Field\n                        \n                        \n                            Dam",
           "dam": "Petit Cheval\n                        \n                        \n                            Dam's Sire",
           "damSire": "Denman\n                        \n                        \n                            Same Sire",
-          "currentRating": 52,
+          "currentRating": 21,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2004,7 +2010,7 @@
               "raceNumber": 1,
               "raceClass": "Class 5",
               "distance": 1000,
-              "surface": "AWT",
+              "surface": "Turf",
               "going": "Good to Firm",
               "draw": 12,
               "weight": 126,
@@ -2100,7 +2106,8 @@
               "finishTime": 70.71000000000001,
               "odds": 3.9
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "HEL",
@@ -2147,7 +2154,7 @@
           "sire": "Capitalist\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Consolari\n                        \n                        \n                            Dam's Sire",
           "damSire": "Haradasun\n                        \n                        \n                            Same Sire",
-          "currentRating": 52,
+          "currentRating": 28,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2302,7 +2309,8 @@
               "finishTime": 70.61,
               "odds": 79
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "MHT",
@@ -2349,7 +2357,7 @@
           "sire": "Per Incanto\n                        \n                        \n                            Dam",
           "dam": "Bellerama\n                        \n                        \n                            Dam's Sire",
           "damSire": "Fusaichi Pegasus\n                        \n                        \n                            Same Sire",
-          "currentRating": 52,
+          "currentRating": 23,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2538,7 +2546,8 @@
               "finishTime": 70.59,
               "odds": 49
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "PDF",
@@ -2585,7 +2594,7 @@
           "sire": "Ferlax\n                        \n                        \n                            Dam",
           "dam": "Outrageous Fortune\n                        \n                        \n                            Dam's Sire",
           "damSire": "Volksraad\n                        \n                        \n                            Same Sire",
-          "currentRating": 23,
+          "currentRating": 26,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2712,7 +2721,7 @@
               "raceNumber": 1,
               "raceClass": "Class 5",
               "distance": 1000,
-              "surface": "AWT",
+              "surface": "Turf",
               "going": "Good to Firm",
               "draw": 11,
               "weight": 128,
@@ -2774,7 +2783,8 @@
               "finishTime": 70.73,
               "odds": 44
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "PMF",

@@ -22,7 +22,7 @@
           "sire": "Per Incanto\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Saoirse\n                        \n                        \n                            Dam's Sire",
           "damSire": "Iffraaj\n                        \n                        \n                            Same Sire",
-          "currentRating": 73,
+          "currentRating": 66,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -92,7 +92,8 @@
               "finishTime": 69.8,
               "odds": 50
             }
-          ]
+          ],
+          "ratingChange": 7
         },
         "jockey": {
           "code": "PZ",
@@ -139,7 +140,7 @@
           "sire": "Shooting To Win\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "La Comedienne\n                        \n                        \n                            Dam's Sire",
           "damSire": "Commands\n                        \n                        \n                            Same Sire",
-          "currentRating": 71,
+          "currentRating": 72,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -243,7 +244,8 @@
               "finishTime": 70.81,
               "odds": 7.4
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "MDB",
@@ -290,7 +292,7 @@
           "sire": "Harry Angel\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Monrecour\n                        \n                        \n                            Dam's Sire",
           "damSire": "Zacinto\n                        \n                        \n                            Same Sire",
-          "currentRating": 60,
+          "currentRating": 62,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -360,7 +362,8 @@
               "finishTime": 57.28,
               "odds": 6.4
             }
-          ]
+          ],
+          "ratingChange": 2
         },
         "jockey": {
           "code": "CML",
@@ -407,7 +410,7 @@
           "sire": "Holy Roman Emperor\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Emirate Jewel\n                        \n                        \n                            Dam's Sire",
           "damSire": "Pivotal\n                        \n                        \n                            Same Sire",
-          "currentRating": 74,
+          "currentRating": 75,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -511,7 +514,8 @@
               "finishTime": 69.96000000000001,
               "odds": 27
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "FEL",
@@ -558,7 +562,7 @@
           "sire": "Pariah\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Vergisson\n                        \n                        \n                            Dam's Sire",
           "damSire": "Nom du Jeu\n                        \n                        \n                            Same Sire",
-          "currentRating": 60,
+          "currentRating": 64,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -623,7 +627,7 @@
           "sire": "Charm Spirit\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Musigny\n                        \n                        \n                            Dam's Sire",
           "damSire": "Reset\n                        \n                        \n                            Same Sire",
-          "currentRating": 57,
+          "currentRating": 61,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -727,7 +731,8 @@
               "finishTime": 69.33,
               "odds": 2.2
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "PMF",
@@ -774,7 +779,7 @@
           "sire": "Capitalist\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Mining Tycoon\n                        \n                        \n                            Dam's Sire",
           "damSire": "Redoute's Choice\n                        \n                        \n                            Same Sire",
-          "currentRating": 67,
+          "currentRating": 60,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -844,7 +849,8 @@
               "finishTime": 68.84,
               "odds": 2.8
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "BA",
@@ -891,7 +897,7 @@
           "sire": "Nicconi\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Bedizened\n                        \n                        \n                            Dam's Sire",
           "damSire": "Commands\n                        \n                        \n                            Same Sire",
-          "currentRating": 60,
+          "currentRating": 61,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1012,7 +1018,8 @@
               "finishTime": 81.97,
               "odds": 18
             }
-          ]
+          ],
+          "ratingChange": 6
         },
         "jockey": {
           "code": "AA",
@@ -1077,7 +1084,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": 1,
           "pastPerformances": [
             {
               "date": "2026-02-04T00:00:00.000Z",
@@ -1164,7 +1170,8 @@
               "finishTime": 56.69,
               "odds": 4.1
             }
-          ]
+          ],
+          "ratingChange": 1
         },
         "jockey": {
           "code": "WEC",
@@ -1211,7 +1218,7 @@
           "sire": "Rageese\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Meir\n                        \n                        \n                            Dam's Sire",
           "damSire": "Volksraad\n                        \n                        \n                            Same Sire",
-          "currentRating": 60,
+          "currentRating": 64,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,

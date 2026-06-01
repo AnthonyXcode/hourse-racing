@@ -40,7 +40,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": -2,
           "pastPerformances": [
             {
               "date": "2025-12-27T00:00:00.000Z",
@@ -144,7 +143,8 @@
               "finishTime": 70.56,
               "odds": 13
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "PZ",
@@ -191,7 +191,7 @@
           "sire": "Charm Spirit\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Shama de Oro\n                        \n                        \n                            Dam's Sire",
           "damSire": "Shamardal\n                        \n                        \n                            Same Sire",
-          "currentRating": 50,
+          "currentRating": 34,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -295,7 +295,8 @@
               "finishTime": 71.07,
               "odds": 77
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "PMF",
@@ -342,7 +343,7 @@
           "sire": "Unite And Conquer\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Sukhar\n                        \n                        \n                            Dam's Sire",
           "damSire": "Zabeel\n                        \n                        \n                            Same Sire",
-          "currentRating": 38,
+          "currentRating": 35,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -446,7 +447,8 @@
               "finishTime": 70.31,
               "odds": 6.8
             }
-          ]
+          ],
+          "ratingChange": 1
         },
         "jockey": {
           "code": "CJE",
@@ -493,7 +495,7 @@
           "sire": "Smart Missile\n                        \n                        \n                            Dam",
           "dam": "Lycra Lass\n                        \n                        \n                            Dam's Sire",
           "damSire": "Shamardal\n                        \n                        \n                            Same Sire",
-          "currentRating": 36,
+          "currentRating": 38,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -614,7 +616,8 @@
               "finishTime": 70.26,
               "odds": 144
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "OJM",
@@ -661,7 +664,7 @@
           "sire": "Zoustar\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Summer Girlfriend\n                        \n                        \n                            Dam's Sire",
           "damSire": "Forest Camp\n                        \n                        \n                            Same Sire",
-          "currentRating": 30,
+          "currentRating": 35,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -765,7 +768,8 @@
               "finishTime": 81.43,
               "odds": 8.8
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "BA",
@@ -812,7 +816,7 @@
           "sire": "Cosmic Force\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Cappella Magna\n                        \n                        \n                            Dam's Sire",
           "damSire": "Stratum\n                        \n                        \n                            Same Sire",
-          "currentRating": 33,
+          "currentRating": 38,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -899,7 +903,8 @@
               "finishTime": 69.23,
               "odds": 22
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "KRW",
@@ -946,7 +951,7 @@
           "sire": "Darci Brahma\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Mi Shari\n                        \n                        \n                            Dam's Sire",
           "damSire": "Shinko King\n                        \n                        \n                            Same Sire",
-          "currentRating": 32,
+          "currentRating": 36,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1016,7 +1021,8 @@
               "finishTime": 70.21000000000001,
               "odds": 15
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "CML",
@@ -1063,7 +1069,7 @@
           "sire": "Charm Spirit\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "The Mighty Lions\n                        \n                        \n                            Dam's Sire",
           "damSire": "Grosvenor\n                        \n                        \n                            Same Sire",
-          "currentRating": 52,
+          "currentRating": 22,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1167,7 +1173,8 @@
               "finishTime": 82.18,
               "odds": 38
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "YML",
@@ -1214,7 +1221,7 @@
           "sire": "Deep Field\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Alberton Park\n                        \n                        \n                            Dam's Sire",
           "damSire": "Thorn Park\n                        \n                        \n                            Same Sire",
-          "currentRating": 27,
+          "currentRating": 32,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1335,7 +1342,8 @@
               "finishTime": 82.03,
               "odds": 5.5
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "GM",
@@ -1701,7 +1709,7 @@
           "sire": "Holy Roman Emperor\n                        \n                        \n                            Dam",
           "dam": "Guilia\n                        \n                        \n                            Dam's Sire",
           "damSire": "Galileo\n                        \n                        \n                            Same Sire",
-          "currentRating": 28,
+          "currentRating": 32,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1788,7 +1796,8 @@
               "finishTime": 69.18,
               "odds": 6.5
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "MHT",

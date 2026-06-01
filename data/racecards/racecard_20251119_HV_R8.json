@@ -22,7 +22,7 @@
           "sire": "Smart Missile\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Remlaps Jewel\n                        \n                        \n                            Dam's Sire",
           "damSire": "Choisir\n                        \n                        \n                            Same Sire",
-          "currentRating": 85,
+          "currentRating": 64,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -211,7 +211,8 @@
               "finishTime": 69.5,
               "odds": 6.9
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "BHW",
@@ -258,7 +259,7 @@
           "sire": "All Too Hard\n                        \n                        \n                            Dam",
           "dam": "Dubleanny\n                        \n                        \n                            Dam's Sire",
           "damSire": "Dubleo\n                        \n                        \n                            Same Sire",
-          "currentRating": 58,
+          "currentRating": 69,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -447,7 +448,8 @@
               "finishTime": 68.33,
               "odds": 20
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "BH",
@@ -494,7 +496,7 @@
           "sire": "National Defense\n                        \n                        \n                            Dam",
           "dam": "Choice Words\n                        \n                        \n                            Dam's Sire",
           "damSire": "Choisir\n                        \n                        \n                            Same Sire",
-          "currentRating": 64,
+          "currentRating": 69,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -666,7 +668,8 @@
               "finishTime": 69.72,
               "odds": 5.5
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "MCJ",
@@ -713,7 +716,7 @@
           "sire": "Churchill\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Irish Fling\n                        \n                        \n                            Dam's Sire",
           "damSire": "Darci Brahma\n                        \n                        \n                            Same Sire",
-          "currentRating": 60,
+          "currentRating": 67,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -766,7 +769,8 @@
               "finishTime": 83.26,
               "odds": 68
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "AA",
@@ -813,7 +817,7 @@
           "sire": "Better Than Ready\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Mostly Lucky\n                        \n                        \n                            Dam's Sire",
           "damSire": "Freeze\n                        \n                        \n                            Same Sire",
-          "currentRating": 76,
+          "currentRating": 68,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -878,7 +882,7 @@
           "sire": "Capitalist\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Mossbeat\n                        \n                        \n                            Dam's Sire",
           "damSire": "Mossman\n                        \n                        \n                            Same Sire",
-          "currentRating": 73,
+          "currentRating": 71,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1067,7 +1071,8 @@
               "finishTime": 102.27000000000001,
               "odds": 70
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "HEL",
@@ -1114,7 +1119,7 @@
           "sire": "Love Conquers All\n                        \n                        \n                            Dam",
           "dam": "Mingo Rose\n                        \n                        \n                            Dam's Sire",
           "damSire": "Waterford Road\n                        \n                        \n                            Same Sire",
-          "currentRating": 51,
+          "currentRating": 61,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1303,7 +1308,8 @@
               "finishTime": 70.49,
               "odds": 21
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "DMK",
@@ -1368,7 +1374,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": 6,
           "pastPerformances": [
             {
               "date": "2025-06-24T16:00:00.000Z",
@@ -1489,7 +1494,8 @@
               "finishTime": 71.03,
               "odds": 28
             }
-          ]
+          ],
+          "ratingChange": 6
         },
         "jockey": {
           "code": "PMF",
@@ -1536,7 +1542,7 @@
           "sire": "Alabama Express\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Sorrentina\n                        \n                        \n                            Dam's Sire",
           "damSire": "Savabeel\n                        \n                        \n                            Same Sire",
-          "currentRating": 57,
+          "currentRating": 72,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1572,7 +1578,8 @@
               "finishTime": 69.59,
               "odds": 53
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "PZ",
@@ -1619,7 +1626,7 @@
           "sire": "Zoustar\n                        \n                        \n                            Dam",
           "dam": "Soriano\n                        \n                        \n                            Dam's Sire",
           "damSire": "Savabeel\n                        \n                        \n                            Same Sire",
-          "currentRating": 55,
+          "currentRating": 62,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1808,7 +1815,8 @@
               "finishTime": 69.76,
               "odds": 38
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "BA",
@@ -1855,7 +1863,7 @@
           "sire": "Capitalist\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Malakiya\n                        \n                        \n                            Dam's Sire",
           "damSire": "Redoute's Choice\n                        \n                        \n                            Same Sire",
-          "currentRating": 54,
+          "currentRating": 67,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2044,7 +2052,8 @@
               "finishTime": 69.34,
               "odds": 10
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "WEC",
@@ -2091,7 +2100,7 @@
           "sire": "Merchant Navy\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Stormy Publisher\n                        \n                        \n                            Dam's Sire",
           "damSire": "Bernstein\n                        \n                        \n                            Same Sire",
-          "currentRating": 56,
+          "currentRating": 64,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,

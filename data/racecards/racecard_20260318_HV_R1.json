@@ -40,7 +40,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": -2,
           "pastPerformances": [
             {
               "date": "2026-02-19T00:00:00.000Z",
@@ -144,7 +143,8 @@
               "finishTime": 101.07,
               "odds": 169
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "FEL",
@@ -346,7 +346,8 @@
               "finishTime": 82.89,
               "odds": 40
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "PZ",
@@ -393,7 +394,7 @@
           "sire": "Sweynesse\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Coterie\n                        \n                        \n                            Dam's Sire",
           "damSire": "Keeper\n                        \n                        \n                            Same Sire",
-          "currentRating": 21,
+          "currentRating": 23,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -497,7 +498,8 @@
               "finishTime": 100.44,
               "odds": 24
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "YML",
@@ -682,7 +684,8 @@
               "finishTime": 99.22,
               "odds": 6.1
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "MDB",
@@ -729,7 +732,7 @@
           "sire": "Rubick\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Dream Genie\n                        \n                        \n                            Dam's Sire",
           "damSire": "Rip Van Winkle\n                        \n                        \n                            Same Sire",
-          "currentRating": 34,
+          "currentRating": 38,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -884,7 +887,8 @@
               "finishTime": 70.01,
               "odds": 44
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "CCY",
@@ -931,7 +935,7 @@
           "sire": "Hawkbill\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Flora Medici\n                        \n                        \n                            Dam's Sire",
           "damSire": "Sir Percy\n                        \n                        \n                            Same Sire",
-          "currentRating": 21,
+          "currentRating": 23,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1103,7 +1107,8 @@
               "finishTime": 100.75,
               "odds": 5.1
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "BA",
@@ -1168,7 +1173,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": -2,
           "pastPerformances": [
             {
               "date": "2026-01-28T00:00:00.000Z",
@@ -1306,7 +1310,8 @@
               "finishTime": 101.88,
               "odds": 11
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "OJM",
@@ -1353,7 +1358,7 @@
           "sire": "War Decree\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Back Date\n                        \n                        \n                            Dam's Sire",
           "damSire": "Zacinto\n                        \n                        \n                            Same Sire",
-          "currentRating": 34,
+          "currentRating": 36,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1474,7 +1479,8 @@
               "finishTime": 82.76,
               "odds": 15
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "CML",
@@ -1521,7 +1527,7 @@
           "sire": "Snitzel\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Street Secret\n                        \n                        \n                            Dam's Sire",
           "damSire": "Street Cry\n                        \n                        \n                            Same Sire",
-          "currentRating": 21,
+          "currentRating": 26,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1676,7 +1682,8 @@
               "finishTime": 69.74,
               "odds": 187
             }
-          ]
+          ],
+          "ratingChange": -3
         },
         "jockey": {
           "code": "KRW",
@@ -1723,7 +1730,7 @@
           "sire": "Churchill\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Jira\n                        \n                        \n                            Dam's Sire",
           "damSire": "Medicean\n                        \n                        \n                            Same Sire",
-          "currentRating": 23,
+          "currentRating": 27,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1878,7 +1885,8 @@
               "finishTime": 100.65,
               "odds": 3.4
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "AVB",
@@ -1925,7 +1933,7 @@
           "sire": "El Roca\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Daly River\n                        \n                        \n                            Dam's Sire",
           "damSire": "General Nediym\n                        \n                        \n                            Same Sire",
-          "currentRating": 34,
+          "currentRating": 37,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2046,7 +2054,8 @@
               "finishTime": 70.95,
               "odds": 60
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "CJE",
@@ -2093,7 +2102,7 @@
           "sire": "Microphone\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Embellished\n                        \n                        \n                            Dam's Sire",
           "damSire": "Bellamy Road\n                        \n                        \n                            Same Sire",
-          "currentRating": 35,
+          "currentRating": 39,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2248,7 +2257,8 @@
               "finishTime": 70.32,
               "odds": 4.3
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "PMF",

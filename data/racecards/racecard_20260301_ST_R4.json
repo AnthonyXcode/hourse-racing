@@ -22,7 +22,7 @@
           "sire": "Oasis Dream\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Mujadil Lachy\n                        \n                        \n                            Dam's Sire",
           "damSire": "Kyllachy\n                        \n                        \n                            Same Sire",
-          "currentRating": 53,
+          "currentRating": 47,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -126,7 +126,8 @@
               "finishTime": 69.78999999999999,
               "odds": 123
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "HEL",
@@ -173,7 +174,7 @@
           "sire": "Zoustar\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Soriano\n                        \n                        \n                            Dam's Sire",
           "damSire": "Savabeel\n                        \n                        \n                            Same Sire",
-          "currentRating": 57,
+          "currentRating": 58,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -294,7 +295,8 @@
               "finishTime": 55.89,
               "odds": 9.4
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "FEL",
@@ -341,7 +343,7 @@
           "sire": "Ardrossan\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "La Donna\n                        \n                        \n                            Dam's Sire",
           "damSire": "Per Incanto\n                        \n                        \n                            Same Sire",
-          "currentRating": 73,
+          "currentRating": 58,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -377,7 +379,8 @@
               "finishTime": 56.73,
               "odds": 1.5
             }
-          ]
+          ],
+          "ratingChange": 6
         },
         "jockey": {
           "code": "MCJ",
@@ -489,7 +492,7 @@
           "sire": "Vespa\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Tania\n                        \n                        \n                            Dam's Sire",
           "damSire": "Cape Cross\n                        \n                        \n                            Same Sire",
-          "currentRating": 45,
+          "currentRating": 49,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -559,7 +562,8 @@
               "finishTime": 69.8,
               "odds": 33
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "AVB",
@@ -659,7 +663,8 @@
               "finishTime": 69.47,
               "odds": 25
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "BHW",
@@ -706,7 +711,7 @@
           "sire": "Exosphere\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Oratry\n                        \n                        \n                            Dam's Sire",
           "damSire": "Oratorio\n                        \n                        \n                            Same Sire",
-          "currentRating": 48,
+          "currentRating": 52,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -742,7 +747,8 @@
               "finishTime": 57.76,
               "odds": 127
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "CJE",
@@ -789,7 +795,7 @@
           "sire": "Frankel\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Spring In The Air\n                        \n                        \n                            Dam's Sire",
           "damSire": "Spring At Last\n                        \n                        \n                            Same Sire",
-          "currentRating": 59,
+          "currentRating": 58,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -893,7 +899,8 @@
               "finishTime": 69.41,
               "odds": 5.9
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "MDB",
@@ -1061,7 +1068,8 @@
               "finishTime": 69.55,
               "odds": 87
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "LDE",
@@ -1108,7 +1116,7 @@
           "sire": "Fastnet Rock\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Deokyhe\n                        \n                        \n                            Dam's Sire",
           "damSire": "More Than Ready\n                        \n                        \n                            Same Sire",
-          "currentRating": 40,
+          "currentRating": 46,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1195,7 +1203,8 @@
               "finishTime": 70.05,
               "odds": 58
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "CML",
@@ -1242,7 +1251,7 @@
           "sire": "Fastnet Rock\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Orangey Red\n                        \n                        \n                            Dam's Sire",
           "damSire": "Lawman\n                        \n                        \n                            Same Sire",
-          "currentRating": 60,
+          "currentRating": 57,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1346,7 +1355,8 @@
               "finishTime": 70.06,
               "odds": 3.5
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "BH",
@@ -1411,7 +1421,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": 1,
           "pastPerformances": [
             {
               "date": "2026-02-08T00:00:00.000Z",
@@ -1549,7 +1558,8 @@
               "finishTime": 69.11,
               "odds": 11
             }
-          ]
+          ],
+          "ratingChange": 1
         },
         "jockey": {
           "code": "HCY",
@@ -1614,7 +1624,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": -2,
           "pastPerformances": [
             {
               "date": "2026-02-08T00:00:00.000Z",
@@ -1650,7 +1659,8 @@
               "finishTime": 70.09,
               "odds": 47
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "AA",

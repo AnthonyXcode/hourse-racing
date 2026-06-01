@@ -22,7 +22,7 @@
           "sire": "Massaat\n                        \n                        \n                            Dam",
           "dam": "Kalia Asha\n                        \n                        \n                            Dam's Sire",
           "damSire": "Dark Angel\n                        \n                        \n                            Same Sire",
-          "currentRating": 53,
+          "currentRating": 44,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -211,7 +211,8 @@
               "finishTime": 137.05,
               "odds": 3.2
             }
-          ]
+          ],
+          "ratingChange": 6
         },
         "jockey": {
           "code": "PZ",
@@ -258,7 +259,7 @@
           "sire": "Shooting To Win\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "High Class\n                        \n                        \n                            Dam's Sire",
           "damSire": "Shocking\n                        \n                        \n                            Same Sire",
-          "currentRating": 40,
+          "currentRating": 45,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -419,7 +420,7 @@
               "raceNumber": 3,
               "raceClass": "Class 4",
               "distance": 1800,
-              "surface": "AWT",
+              "surface": "Turf",
               "going": "Good to Firm",
               "draw": 2,
               "weight": 127,
@@ -447,7 +448,8 @@
               "finishTime": 122.63,
               "odds": 50
             }
-          ]
+          ],
+          "ratingChange": 2
         },
         "jockey": {
           "code": "BHW",
@@ -649,7 +651,8 @@
               "finishTime": 82.58,
               "odds": 8.7
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "CJE",
@@ -696,7 +699,7 @@
           "sire": "Mastercraftsman\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Excellent Mariner\n                        \n                        \n                            Dam's Sire",
           "damSire": "Henrythenavigator\n                        \n                        \n                            Same Sire",
-          "currentRating": 36,
+          "currentRating": 47,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -885,7 +888,8 @@
               "finishTime": 136.43,
               "odds": 5.3
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "TEK",
@@ -932,7 +936,7 @@
           "sire": "Dundeel\n                        \n                        \n                            Dam",
           "dam": "Slippery When Wet\n                        \n                        \n                            Dam's Sire",
           "damSire": "Sebring\n                        \n                        \n                            Same Sire",
-          "currentRating": 42,
+          "currentRating": 46,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1087,7 +1091,8 @@
               "finishTime": 83.02,
               "odds": 18
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "FEL",
@@ -1152,7 +1157,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": -2,
           "pastPerformances": [
             {
               "date": "2025-10-08T00:00:00.000Z",
@@ -1273,7 +1277,8 @@
               "finishTime": 83.27,
               "odds": 49
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "AA",
@@ -1320,7 +1325,7 @@
           "sire": "Oasis Dream\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Brom Felinity\n                        \n                        \n                            Dam's Sire",
           "damSire": "Encosta de Lago\n                        \n                        \n                            Same Sire",
-          "currentRating": 40,
+          "currentRating": 50,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1509,7 +1514,8 @@
               "finishTime": 109.96000000000001,
               "odds": 11
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "YML",
@@ -1556,7 +1562,7 @@
           "sire": "Per Incanto\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "O'Really Baheeya\n                        \n                        \n                            Dam's Sire",
           "damSire": "O'Reilly\n                        \n                        \n                            Same Sire",
-          "currentRating": 44,
+          "currentRating": 52,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1683,7 +1689,7 @@
               "raceNumber": 3,
               "raceClass": "Class 4",
               "distance": 1800,
-              "surface": "AWT",
+              "surface": "Turf",
               "going": "Good to Firm",
               "draw": 4,
               "weight": 132,
@@ -1745,7 +1751,8 @@
               "finishTime": 110.18,
               "odds": 10
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "CML",
@@ -1792,7 +1799,7 @@
           "sire": "Snitzel\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Street Secret\n                        \n                        \n                            Dam's Sire",
           "damSire": "Street Cry\n                        \n                        \n                            Same Sire",
-          "currentRating": 21,
+          "currentRating": 41,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1981,7 +1988,8 @@
               "finishTime": 83.53999999999999,
               "odds": 153
             }
-          ]
+          ],
+          "ratingChange": -3
         },
         "jockey": {
           "code": "LDE",
@@ -2028,7 +2036,7 @@
           "sire": "Pierro\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Aonair\n                        \n                        \n                            Dam's Sire",
           "damSire": "Fastnet Rock\n                        \n                        \n                            Same Sire",
-          "currentRating": 29,
+          "currentRating": 46,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2217,7 +2225,8 @@
               "finishTime": 99.07,
               "odds": 32
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "AVB",
@@ -2264,7 +2273,7 @@
           "sire": "Archipenko\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Aksaya\n                        \n                        \n                            Dam's Sire",
           "damSire": "Sea The Stars\n                        \n                        \n                            Same Sire",
-          "currentRating": 39,
+          "currentRating": 53,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2453,7 +2462,8 @@
               "finishTime": 110.47,
               "odds": 7.9
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "DMK",
@@ -2500,7 +2510,7 @@
           "sire": "Frankel\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Janey Muddles\n                        \n                        \n                            Dam's Sire",
           "damSire": "Lawman\n                        \n                        \n                            Same Sire",
-          "currentRating": 36,
+          "currentRating": 54,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2689,7 +2699,8 @@
               "finishTime": 99.3,
               "odds": 12
             }
-          ]
+          ],
+          "ratingChange": -4
         },
         "jockey": {
           "code": "WPN",

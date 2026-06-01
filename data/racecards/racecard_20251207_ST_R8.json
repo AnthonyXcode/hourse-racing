@@ -211,7 +211,8 @@
               "finishTime": 68.69,
               "odds": 5.9
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "BH",
@@ -258,7 +259,7 @@
           "sire": "Written Tycoon\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Secret Doubt\n                        \n                        \n                            Dam's Sire",
           "damSire": "Not A Single Doubt\n                        \n                        \n                            Same Sire",
-          "currentRating": 90,
+          "currentRating": 89,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -447,7 +448,8 @@
               "finishTime": 68.37,
               "odds": 3.6
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "TEK",
@@ -683,7 +685,8 @@
               "finishTime": 69.71000000000001,
               "odds": 3.3
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "BHW",
@@ -730,7 +733,7 @@
           "sire": "I Am Invincible\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Pierro Moss\n                        \n                        \n                            Dam's Sire",
           "damSire": "Pierro\n                        \n                        \n                            Same Sire",
-          "currentRating": 101,
+          "currentRating": 96,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -885,7 +888,8 @@
               "finishTime": 70.57,
               "odds": 6.6
             }
-          ]
+          ],
+          "ratingChange": 2
         },
         "jockey": {
           "code": "HCY",
@@ -932,7 +936,7 @@
           "sire": "Into Mischief\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Spirit Of Ecstasy\n                        \n                        \n                            Dam's Sire",
           "damSire": "Congrats\n                        \n                        \n                            Same Sire",
-          "currentRating": 85,
+          "currentRating": 88,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1121,7 +1125,8 @@
               "finishTime": 98.24000000000001,
               "odds": 3.7
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "HEL",
@@ -1168,7 +1173,7 @@
           "sire": "Shamus Award\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Miss Ethics\n                        \n                        \n                            Dam's Sire",
           "damSire": "Count Dubois\n                        \n                        \n                            Same Sire",
-          "currentRating": 100,
+          "currentRating": 99,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1357,7 +1362,8 @@
               "finishTime": 69.07,
               "odds": 3.3
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "PZ",
@@ -1404,7 +1410,7 @@
           "sire": "Capitalist\n                        \n                        \n                            Dam",
           "dam": "Eiffel Tower\n                        \n                        \n                            Dam's Sire",
           "damSire": "Stratum\n                        \n                        \n                            Same Sire",
-          "currentRating": 80,
+          "currentRating": 93,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1593,7 +1599,8 @@
               "finishTime": 68.78,
               "odds": 6.5
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "AVB",
@@ -1658,7 +1665,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": 0,
           "pastPerformances": [
             {
               "date": "2025-11-02T00:00:00.000Z",
@@ -1830,7 +1836,8 @@
               "finishTime": 68.12,
               "odds": 4.2
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "CJE",
@@ -1877,7 +1884,7 @@
           "sire": "Toronado\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Esteemed Elegance\n                        \n                        \n                            Dam's Sire",
           "damSire": "Sir Percy\n                        \n                        \n                            Same Sire",
-          "currentRating": 69,
+          "currentRating": 83,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2066,7 +2073,8 @@
               "finishTime": 57.11,
               "odds": 4
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "CML",
@@ -2113,7 +2121,7 @@
           "sire": "Magnus\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Fly To Win\n                        \n                        \n                            Dam's Sire",
           "damSire": "Danewin\n                        \n                        \n                            Same Sire",
-          "currentRating": 72,
+          "currentRating": 86,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2302,7 +2310,8 @@
               "finishTime": 69.9,
               "odds": 17
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "GM",
@@ -2349,7 +2358,7 @@
           "sire": "No Nay Never\n                        \n                        \n                            Dam",
           "dam": "Boomex\n                        \n                        \n                            Dam's Sire",
           "damSire": "Exceed And Excel\n                        \n                        \n                            Same Sire",
-          "currentRating": 80,
+          "currentRating": 81,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2538,7 +2547,8 @@
               "finishTime": 98.89,
               "odds": 5.6
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "YML",
@@ -2585,7 +2595,7 @@
           "sire": "The Brothers War\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Moorings Capital\n                        \n                        \n                            Dam's Sire",
           "damSire": "Song Of Tara\n                        \n                        \n                            Same Sire",
-          "currentRating": 64,
+          "currentRating": 82,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2774,7 +2784,8 @@
               "finishTime": 99.81,
               "odds": 13
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "MHT",

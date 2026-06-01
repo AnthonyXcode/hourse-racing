@@ -22,7 +22,7 @@
           "sire": "El Roca\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Eileithyia\n                        \n                        \n                            Dam's Sire",
           "damSire": "Tavistock\n                        \n                        \n                            Same Sire",
-          "currentRating": 60,
+          "currentRating": 52,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -92,7 +92,8 @@
               "finishTime": 69.85,
               "odds": 45
             }
-          ]
+          ],
+          "ratingChange": 1
         },
         "jockey": {
           "code": "PZ",
@@ -139,7 +140,7 @@
           "sire": "Hellbent\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Bold Runner\n                        \n                        \n                            Dam's Sire",
           "damSire": "Choisir\n                        \n                        \n                            Same Sire",
-          "currentRating": 58,
+          "currentRating": 50,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -192,7 +193,8 @@
               "finishTime": 82.03999999999999,
               "odds": 25
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "CJE",
@@ -326,7 +328,8 @@
               "finishTime": 70.41,
               "odds": 5.2
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "OJM",
@@ -391,7 +394,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": -2,
           "pastPerformances": [
             {
               "date": "2026-01-18T00:00:00.000Z",
@@ -461,7 +463,8 @@
               "finishTime": 57.81,
               "odds": 23
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "CML",
@@ -508,7 +511,7 @@
           "sire": "I Am Invincible\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Subsequent\n                        \n                        \n                            Dam's Sire",
           "damSire": "Encosta de Lago\n                        \n                        \n                            Same Sire",
-          "currentRating": 49,
+          "currentRating": 52,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -544,7 +547,8 @@
               "finishTime": 70,
               "odds": 28
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "AA",
@@ -591,7 +595,7 @@
           "sire": "Oasis Dream\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Mujadil Lachy\n                        \n                        \n                            Dam's Sire",
           "damSire": "Kyllachy\n                        \n                        \n                            Same Sire",
-          "currentRating": 53,
+          "currentRating": 49,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -678,7 +682,8 @@
               "finishTime": 69.78999999999999,
               "odds": 123
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "TEK",
@@ -725,7 +730,7 @@
           "sire": "D'Argento\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Profits Rock\n                        \n                        \n                            Dam's Sire",
           "damSire": "Zabeel\n                        \n                        \n                            Same Sire",
-          "currentRating": 47,
+          "currentRating": 52,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -761,7 +766,8 @@
               "finishTime": 58.21,
               "odds": 27
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "FEL",
@@ -844,7 +850,8 @@
               "finishTime": 69.15,
               "odds": 29
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "HCY",
@@ -891,7 +898,7 @@
           "sire": "Dandy Man\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Lauren's Girl\n                        \n                        \n                            Dam's Sire",
           "damSire": "Bushranger\n                        \n                        \n                            Same Sire",
-          "currentRating": 60,
+          "currentRating": 55,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1029,7 +1036,8 @@
               "finishTime": 70.52,
               "odds": 42
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "WEC",
@@ -1076,7 +1084,7 @@
           "sire": "The Autumn Sun\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Griante\n                        \n                        \n                            Dam's Sire",
           "damSire": "Good Journey\n                        \n                        \n                            Same Sire",
-          "currentRating": 38,
+          "currentRating": 43,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1180,7 +1188,8 @@
               "finishTime": 69.09,
               "odds": 4.7
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "HEL",
@@ -1227,7 +1236,7 @@
           "sire": "Super Seth\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Racing Nadine\n                        \n                        \n                            Dam's Sire",
           "damSire": "Bernardini\n                        \n                        \n                            Same Sire",
-          "currentRating": 48,
+          "currentRating": 52,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1375,7 +1384,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": -2,
           "pastPerformances": [
             {
               "date": "2026-01-04T00:00:00.000Z",
@@ -1411,7 +1419,8 @@
               "finishTime": 71.09,
               "odds": 88
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "CCY",
@@ -1476,7 +1485,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": -2,
           "pastPerformances": [
             {
               "date": "2026-01-04T00:00:00.000Z",
@@ -1563,7 +1571,8 @@
               "finishTime": 70.59,
               "odds": 52
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "MDB",

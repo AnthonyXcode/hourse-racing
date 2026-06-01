@@ -22,7 +22,7 @@
           "sire": "Iffraaj\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Believable\n                        \n                        \n                            Dam's Sire",
           "damSire": "Acclamation\n                        \n                        \n                            Same Sire",
-          "currentRating": 57,
+          "currentRating": 51,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -194,7 +194,8 @@
               "finishTime": 97.3,
               "odds": 12
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "BH",
@@ -241,7 +242,7 @@
           "sire": "Ferrando\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Paxos\n                        \n                        \n                            Dam's Sire",
           "damSire": "Savabeel\n                        \n                        \n                            Same Sire",
-          "currentRating": 43,
+          "currentRating": 44,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -345,7 +346,8 @@
               "finishTime": 71.23,
               "odds": 88
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "CML",
@@ -392,7 +394,7 @@
           "sire": "Courtier\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Zealous Vixen\n                        \n                        \n                            Dam's Sire",
           "damSire": "Inexplicable\n                        \n                        \n                            Same Sire",
-          "currentRating": 58,
+          "currentRating": 54,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -564,7 +566,8 @@
               "finishTime": 100.39,
               "odds": 14
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "PZ",
@@ -629,7 +632,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": -2,
           "pastPerformances": [
             {
               "date": "2026-02-22T00:00:00.000Z",
@@ -699,7 +701,8 @@
               "finishTime": 83.3,
               "odds": 46
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "AA",
@@ -746,7 +749,7 @@
           "sire": "Frankel\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Janey Muddles\n                        \n                        \n                            Dam's Sire",
           "damSire": "Lawman\n                        \n                        \n                            Same Sire",
-          "currentRating": 38,
+          "currentRating": 42,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -867,7 +870,8 @@
               "finishTime": 111.87,
               "odds": 26
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "CCY",
@@ -914,7 +918,7 @@
           "sire": "U S Navy Flag\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Ala Rasi\n                        \n                        \n                            Dam's Sire",
           "damSire": "Dalakhani\n                        \n                        \n                            Same Sire",
-          "currentRating": 50,
+          "currentRating": 55,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1052,7 +1056,8 @@
               "finishTime": 98.74000000000001,
               "odds": 3.8
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "FEL",
@@ -1271,7 +1276,8 @@
               "finishTime": 100.3,
               "odds": 5.6
             }
-          ]
+          ],
+          "ratingChange": 6
         },
         "jockey": {
           "code": "BA",
@@ -1318,7 +1324,7 @@
           "sire": "Starspangledbanner\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Deira Surprise\n                        \n                        \n                            Dam's Sire",
           "damSire": "Slade Power\n                        \n                        \n                            Same Sire",
-          "currentRating": 46,
+          "currentRating": 48,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1422,7 +1428,8 @@
               "finishTime": 70.6,
               "odds": 50
             }
-          ]
+          ],
+          "ratingChange": 2
         },
         "jockey": {
           "code": "LDE",
@@ -1469,7 +1476,7 @@
           "sire": "Sacred Falls\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "La Praline\n                        \n                        \n                            Dam's Sire",
           "damSire": "Anabaa\n                        \n                        \n                            Same Sire",
-          "currentRating": 59,
+          "currentRating": 58,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1607,7 +1614,8 @@
               "finishTime": 100.65,
               "odds": 9.8
             }
-          ]
+          ],
+          "ratingChange": 2
         },
         "jockey": {
           "code": "HCY",
@@ -1654,7 +1662,7 @@
           "sire": "Starspangledbanner\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Margarita\n                        \n                        \n                            Dam's Sire",
           "damSire": "Marju\n                        \n                        \n                            Same Sire",
-          "currentRating": 47,
+          "currentRating": 56,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1775,7 +1783,8 @@
               "finishTime": 70.59,
               "odds": 64
             }
-          ]
+          ],
+          "ratingChange": -3
         },
         "jockey": {
           "code": "YML",
@@ -1822,7 +1831,7 @@
           "sire": "The Autumn Sun\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Miss Marielle\n                        \n                        \n                            Dam's Sire",
           "damSire": "Encosta de Lago\n                        \n                        \n                            Same Sire",
-          "currentRating": 60,
+          "currentRating": 57,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2028,7 +2037,8 @@
               "finishTime": 100.07,
               "odds": 5
             }
-          ]
+          ],
+          "ratingChange": -3
         },
         "jockey": {
           "code": "OJM",
@@ -2093,8 +2103,8 @@
             "PC",
             "SR"
           ],
-          "ratingChange": -1,
-          "pastPerformances": []
+          "pastPerformances": [],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "CJE",

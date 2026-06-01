@@ -22,7 +22,7 @@
           "sire": "Ace High\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Akerra\n                        \n                        \n                            Dam's Sire",
           "damSire": "Ekraar\n                        \n                        \n                            Same Sire",
-          "currentRating": 75,
+          "currentRating": 59,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -126,7 +126,8 @@
               "finishTime": 69.49,
               "odds": 39
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "AA",
@@ -191,7 +192,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": -2,
           "pastPerformances": [
             {
               "date": "2026-02-25T00:00:00.000Z",
@@ -346,7 +346,8 @@
               "finishTime": 70,
               "odds": 12
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "BH",
@@ -393,7 +394,7 @@
           "sire": "Hellbent\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Kontiki Dane\n                        \n                        \n                            Dam's Sire",
           "damSire": "Danewin\n                        \n                        \n                            Same Sire",
-          "currentRating": 47,
+          "currentRating": 51,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -531,7 +532,8 @@
               "finishTime": 82.46000000000001,
               "odds": 146
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "MDB",
@@ -578,7 +580,7 @@
           "sire": "Derryn\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "La Petite\n                        \n                        \n                            Dam's Sire",
           "damSire": "Savabeel\n                        \n                        \n                            Same Sire",
-          "currentRating": 50,
+          "currentRating": 56,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -750,7 +752,8 @@
               "finishTime": 95.36,
               "odds": 105
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "HEL",
@@ -935,7 +938,8 @@
               "finishTime": 100.44,
               "odds": 1.9
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "PZ",
@@ -982,7 +986,7 @@
           "sire": "Shamus Award\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Star Central\n                        \n                        \n                            Dam's Sire",
           "damSire": "Star Witness\n                        \n                        \n                            Same Sire",
-          "currentRating": 53,
+          "currentRating": 58,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1069,7 +1073,8 @@
               "finishTime": 70.3,
               "odds": 138
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "AVB",
@@ -1116,7 +1121,7 @@
           "sire": "Shooting To Win\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Reggie\n                        \n                        \n                            Dam's Sire",
           "damSire": "Germano\n                        \n                        \n                            Same Sire",
-          "currentRating": 55,
+          "currentRating": 52,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1152,7 +1157,8 @@
               "finishTime": 82.32,
               "odds": 26
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "PMF",
@@ -1337,7 +1343,8 @@
               "finishTime": 83.16,
               "odds": 52
             }
-          ]
+          ],
+          "ratingChange": 6
         },
         "jockey": {
           "code": "CJE",
@@ -1384,7 +1391,7 @@
           "sire": "Deep Field\n                        \n                        \n                            Dam",
           "dam": "Vinorules\n                        \n                        \n                            Dam's Sire",
           "damSire": "Commands\n                        \n                        \n                            Same Sire",
-          "currentRating": 40,
+          "currentRating": 43,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1471,7 +1478,8 @@
               "finishTime": 71.09,
               "odds": 88
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "CCY",
@@ -1518,7 +1526,7 @@
           "sire": "Long Leaf\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Tricolore\n                        \n                        \n                            Dam's Sire",
           "damSire": "Encosta de Lago\n                        \n                        \n                            Same Sire",
-          "currentRating": 52,
+          "currentRating": 58,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1622,7 +1630,8 @@
               "finishTime": 84.05,
               "odds": 52
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "OJM",
@@ -1669,7 +1678,7 @@
           "sire": "Shooting To Win\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "We Can Dance\n                        \n                        \n                            Dam's Sire",
           "damSire": "Shinzig\n                        \n                        \n                            Same Sire",
-          "currentRating": 50,
+          "currentRating": 46,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1790,7 +1799,8 @@
               "finishTime": 100.49000000000001,
               "odds": 17
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "TEK",
@@ -1837,7 +1847,7 @@
           "sire": "Hellbent\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Balady\n                        \n                        \n                            Dam's Sire",
           "damSire": "Zamindar\n                        \n                        \n                            Same Sire",
-          "currentRating": 42,
+          "currentRating": 48,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1907,7 +1917,8 @@
               "finishTime": 71.33,
               "odds": 58
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "YML",

@@ -40,7 +40,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": -2,
           "pastPerformances": [
             {
               "date": "2026-02-01T00:00:00.000Z",
@@ -144,7 +143,8 @@
               "finishTime": 82.48,
               "odds": 58
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "KRW",
@@ -191,7 +191,7 @@
           "sire": "Unite And Conquer\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Sukhar\n                        \n                        \n                            Dam's Sire",
           "damSire": "Zabeel\n                        \n                        \n                            Same Sire",
-          "currentRating": 38,
+          "currentRating": 31,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -346,7 +346,8 @@
               "finishTime": 70.31,
               "odds": 6.8
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "BH",
@@ -393,7 +394,7 @@
           "sire": "Needs Further\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Tycoon Sali\n                        \n                        \n                            Dam's Sire",
           "damSire": "Last Tycoon\n                        \n                        \n                            Same Sire",
-          "currentRating": 35,
+          "currentRating": 24,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -514,7 +515,8 @@
               "finishTime": 81.89,
               "odds": 22
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "TEK",
@@ -561,7 +563,7 @@
           "sire": "Deep Field\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "L'Elu\n                        \n                        \n                            Dam's Sire",
           "damSire": "Fastnet Rock\n                        \n                        \n                            Same Sire",
-          "currentRating": 36,
+          "currentRating": 34,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -614,7 +616,8 @@
               "finishTime": 102.09,
               "odds": 25
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "HEL",
@@ -661,7 +664,7 @@
           "sire": "Oasis Dream\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Eastern Destiny\n                        \n                        \n                            Dam's Sire",
           "damSire": "Dubai Destination\n                        \n                        \n                            Same Sire",
-          "currentRating": 32,
+          "currentRating": 39,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -748,7 +751,8 @@
               "finishTime": 70.62,
               "odds": 50
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "AVB",
@@ -795,7 +799,7 @@
           "sire": "Capitalist\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Muchas Coronas\n                        \n                        \n                            Dam's Sire",
           "damSire": "Onemorenomore\n                        \n                        \n                            Same Sire",
-          "currentRating": 33,
+          "currentRating": 36,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -950,7 +954,8 @@
               "finishTime": 57.87,
               "odds": 5.8
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "FEL",
@@ -1182,7 +1187,7 @@
           "sire": "Capitalist\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Madame Veuve\n                        \n                        \n                            Dam's Sire",
           "damSire": "Dissident\n                        \n                        \n                            Same Sire",
-          "currentRating": 38,
+          "currentRating": 36,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1252,7 +1257,8 @@
               "finishTime": 70.14,
               "odds": 2.7
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "MDB",
@@ -1299,7 +1305,7 @@
           "sire": "Deep Field\n                        \n                        \n                            Dam",
           "dam": "Buenismo\n                        \n                        \n                            Dam's Sire",
           "damSire": "Snitzel\n                        \n                        \n                            Same Sire",
-          "currentRating": 25,
+          "currentRating": 33,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1369,7 +1375,8 @@
               "finishTime": 70.78999999999999,
               "odds": 14
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "CJE",
@@ -1416,7 +1423,7 @@
           "sire": "Time Test\n                        \n                        \n                            Dam",
           "dam": "The Beckett\n                        \n                        \n                            Dam's Sire",
           "damSire": "Spartacus\n                        \n                        \n                            Same Sire",
-          "currentRating": 52,
+          "currentRating": 20,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1537,7 +1544,8 @@
               "finishTime": 82.58,
               "odds": 18
             }
-          ]
+          ],
+          "ratingChange": -3
         },
         "jockey": {
           "code": "CML",
@@ -1584,7 +1592,7 @@
           "sire": "Deep Field\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Alberton Park\n                        \n                        \n                            Dam's Sire",
           "damSire": "Thorn Park\n                        \n                        \n                            Same Sire",
-          "currentRating": 27,
+          "currentRating": 30,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1722,7 +1730,8 @@
               "finishTime": 82.03,
               "odds": 5.5
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "GM",
@@ -1769,7 +1778,7 @@
           "sire": "El Roca\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Rubi de Lago\n                        \n                        \n                            Dam's Sire",
           "damSire": "Encosta de Lago\n                        \n                        \n                            Same Sire",
-          "currentRating": 27,
+          "currentRating": 28,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1873,7 +1882,8 @@
               "finishTime": 81.84,
               "odds": 52
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "PMF",
@@ -1920,7 +1930,7 @@
           "sire": "Toronado\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Big Spirit\n                        \n                        \n                            Dam's Sire",
           "damSire": "Invincible Spirit\n                        \n                        \n                            Same Sire",
-          "currentRating": 40,
+          "currentRating": 34,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2109,7 +2119,8 @@
               "finishTime": 69.46000000000001,
               "odds": 12
             }
-          ]
+          ],
+          "ratingChange": 7
         },
         "jockey": {
           "code": "AA",
@@ -2156,7 +2167,7 @@
           "sire": "Yes Yes Yes\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Bella Vino\n                        \n                        \n                            Dam's Sire",
           "damSire": "Exceed And Excel\n                        \n                        \n                            Same Sire",
-          "currentRating": 26,
+          "currentRating": 31,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2209,7 +2220,8 @@
               "finishTime": 71.25,
               "odds": 37
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "YML",

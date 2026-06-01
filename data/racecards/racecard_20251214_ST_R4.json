@@ -572,7 +572,8 @@
               "finishTime": 106.82,
               "odds": 6.2
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "MCJ",
@@ -619,7 +620,7 @@
           "sire": "Lookin At Lucky\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Magia Para Todos\n                        \n                        \n                            Dam's Sire",
           "damSire": "Rock Of Gibraltar\n                        \n                        \n                            Same Sire",
-          "currentRating": 94,
+          "currentRating": 107,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -808,7 +809,8 @@
               "finishTime": 100.13,
               "odds": 3.1
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "BH",
@@ -855,7 +857,7 @@
           "sire": "Churchill\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "War Goddess\n                        \n                        \n                            Dam's Sire",
           "damSire": "Champs Elysees\n                        \n                        \n                            Same Sire",
-          "currentRating": 83,
+          "currentRating": 87,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1044,7 +1046,8 @@
               "finishTime": 121.98,
               "odds": 18
             }
-          ]
+          ],
+          "ratingChange": 5
         },
         "jockey": {
           "code": "FEL",
@@ -1091,7 +1094,7 @@
           "sire": "Lemon Drop Kid\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Alluvial Gold\n                        \n                        \n                            Dam's Sire",
           "damSire": "Danehill Dancer\n                        \n                        \n                            Same Sire",
-          "currentRating": 100,
+          "currentRating": 104,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1280,7 +1283,8 @@
               "finishTime": 148.11,
               "odds": 15
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "WC",

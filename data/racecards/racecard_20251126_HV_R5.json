@@ -194,7 +194,8 @@
               "finishTime": 82.58,
               "odds": 8.7
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "MCJ",
@@ -241,7 +242,7 @@
           "sire": "Savabeel\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Lady Chaparral\n                        \n                        \n                            Dam's Sire",
           "damSire": "High Chaparral\n                        \n                        \n                            Same Sire",
-          "currentRating": 32,
+          "currentRating": 40,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -430,7 +431,8 @@
               "finishTime": 109.83,
               "odds": 5.6
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "AA",
@@ -477,7 +479,7 @@
           "sire": "Crafty C T\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Corveta\n                        \n                        \n                            Dam's Sire",
           "damSire": "Linngari\n                        \n                        \n                            Same Sire",
-          "currentRating": 40,
+          "currentRating": 46,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -666,7 +668,8 @@
               "finishTime": 70.52,
               "odds": 9.7
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "BA",
@@ -713,7 +716,7 @@
           "sire": "Per Incanto\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "O'Really Baheeya\n                        \n                        \n                            Dam's Sire",
           "damSire": "O'Reilly\n                        \n                        \n                            Same Sire",
-          "currentRating": 44,
+          "currentRating": 52,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -874,7 +877,7 @@
               "raceNumber": 3,
               "raceClass": "Class 4",
               "distance": 1800,
-              "surface": "AWT",
+              "surface": "Turf",
               "going": "Good to Firm",
               "draw": 4,
               "weight": 132,
@@ -902,7 +905,8 @@
               "finishTime": 109.5,
               "odds": 8.8
             }
-          ]
+          ],
+          "ratingChange": 2
         },
         "jockey": {
           "code": "PMF",
@@ -967,7 +971,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": 9,
           "pastPerformances": [
             {
               "date": "2025-11-02T00:00:00.000Z",
@@ -1139,7 +1142,8 @@
               "finishTime": 109.49000000000001,
               "odds": 4.8
             }
-          ]
+          ],
+          "ratingChange": 9
         },
         "jockey": {
           "code": "BH",
@@ -1186,7 +1190,7 @@
           "sire": "Super Seth\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Miracle Miss\n                        \n                        \n                            Dam's Sire",
           "damSire": "O'Reilly\n                        \n                        \n                            Same Sire",
-          "currentRating": 70,
+          "currentRating": 50,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1273,7 +1277,8 @@
               "finishTime": 81.96000000000001,
               "odds": 10
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "DHA",
@@ -1320,7 +1325,7 @@
           "sire": "Exosphere\n                        \n                        \n                            Dam",
           "dam": "Shemakhan\n                        \n                        \n                            Dam's Sire",
           "damSire": "Mastercraftsman\n                        \n                        \n                            Same Sire",
-          "currentRating": 53,
+          "currentRating": 59,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1458,7 +1463,8 @@
               "finishTime": 101.28999999999999,
               "odds": 32
             }
-          ]
+          ],
+          "ratingChange": -3
         },
         "jockey": {
           "code": "WEC",
@@ -1505,7 +1511,7 @@
           "sire": "The Autumn Sun\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Prana\n                        \n                        \n                            Dam's Sire",
           "damSire": "Siyouni\n                        \n                        \n                            Same Sire",
-          "currentRating": 57,
+          "currentRating": 45,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1592,7 +1598,8 @@
               "finishTime": 83.02,
               "odds": 70
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "AVB",
@@ -1639,7 +1646,7 @@
           "sire": "Setembro Chove\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Margaery\n                        \n                        \n                            Dam's Sire",
           "damSire": "Agnes Gold\n                        \n                        \n                            Same Sire",
-          "currentRating": 60,
+          "currentRating": 59,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1828,7 +1835,8 @@
               "finishTime": 82.18,
               "odds": 131
             }
-          ]
+          ],
+          "ratingChange": 5
         },
         "jockey": {
           "code": "PZ",
@@ -1875,7 +1883,7 @@
           "sire": "Maurice\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Vicky\n                        \n                        \n                            Dam's Sire",
           "damSire": "Encosta de Lago\n                        \n                        \n                            Same Sire",
-          "currentRating": 43,
+          "currentRating": 52,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2064,7 +2072,8 @@
               "finishTime": 97.19,
               "odds": 35
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "YML",
@@ -2111,7 +2120,7 @@
           "sire": "Maurice\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Tiffany's Diamond\n                        \n                        \n                            Dam's Sire",
           "damSire": "Northern Meteor\n                        \n                        \n                            Same Sire",
-          "currentRating": 45,
+          "currentRating": 53,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2300,7 +2309,8 @@
               "finishTime": 109.59,
               "odds": 3.9
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "OJM",
@@ -2347,7 +2357,7 @@
           "sire": "Footstepsinthesand\n                        \n                        \n                            Dam",
           "dam": "Kune Kune\n                        \n                        \n                            Dam's Sire",
           "damSire": "Sir Percy\n                        \n                        \n                            Same Sire",
-          "currentRating": 45,
+          "currentRating": 47,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2417,7 +2427,8 @@
               "finishTime": 82.68,
               "odds": 193
             }
-          ]
+          ],
+          "ratingChange": -3
         },
         "jockey": {
           "code": "CML",

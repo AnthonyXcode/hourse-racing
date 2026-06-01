@@ -22,7 +22,7 @@
           "sire": "Profitable\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "So Funny\n                        \n                        \n                            Dam's Sire",
           "damSire": "Distorted Humor\n                        \n                        \n                            Same Sire",
-          "currentRating": 73,
+          "currentRating": 64,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -211,7 +211,8 @@
               "finishTime": 70,
               "odds": 11
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "HEL",
@@ -258,7 +259,7 @@
           "sire": "Charm Spirit\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Funoon\n                        \n                        \n                            Dam's Sire",
           "damSire": "Dream Ahead\n                        \n                        \n                            Same Sire",
-          "currentRating": 65,
+          "currentRating": 71,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -447,7 +448,8 @@
               "finishTime": 69.24,
               "odds": 4.8
             }
-          ]
+          ],
+          "ratingChange": 2
         },
         "jockey": {
           "code": "BA",
@@ -615,7 +617,8 @@
               "finishTime": 81.74,
               "odds": 27
             }
-          ]
+          ],
+          "ratingChange": 2
         },
         "jockey": {
           "code": "PZ",
@@ -698,7 +701,8 @@
               "finishTime": 82.83,
               "odds": 21
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "KRW",
@@ -745,7 +749,7 @@
           "sire": "Alabama Express\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "World Awaits\n                        \n                        \n                            Dam's Sire",
           "damSire": "Written Tycoon\n                        \n                        \n                            Same Sire",
-          "currentRating": 58,
+          "currentRating": 65,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -832,7 +836,8 @@
               "finishTime": 69.94,
               "odds": 20
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "PMF",
@@ -879,7 +884,7 @@
           "sire": "Toronado\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Lotta Sugar\n                        \n                        \n                            Dam's Sire",
           "damSire": "Fastnet Rock\n                        \n                        \n                            Same Sire",
-          "currentRating": 75,
+          "currentRating": 60,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -966,7 +971,8 @@
               "finishTime": 69.01,
               "odds": 5
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "AA",
@@ -1013,7 +1019,7 @@
           "sire": "Almanzor\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Holly Holy\n                        \n                        \n                            Dam's Sire",
           "damSire": "Dylan Thomas\n                        \n                        \n                            Same Sire",
-          "currentRating": 71,
+          "currentRating": 61,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1202,7 +1208,8 @@
               "finishTime": 82.32,
               "odds": 18
             }
-          ]
+          ],
+          "ratingChange": 6
         },
         "jockey": {
           "code": "TEK",
@@ -1249,7 +1256,7 @@
           "sire": "Starspangledbanner\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Fun In Flight\n                        \n                        \n                            Dam's Sire",
           "damSire": "Fusaichi Pegasus\n                        \n                        \n                            Same Sire",
-          "currentRating": 77,
+          "currentRating": 78,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1438,7 +1445,8 @@
               "finishTime": 81.72,
               "odds": 3.3
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "BH",
@@ -1485,7 +1493,7 @@
           "sire": "Aclaim\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Twist Of Magic\n                        \n                        \n                            Dam's Sire",
           "damSire": "Arcano\n                        \n                        \n                            Same Sire",
-          "currentRating": 58,
+          "currentRating": 64,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1538,7 +1546,8 @@
               "finishTime": 69.32,
               "odds": 15
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "WEC",
@@ -1603,7 +1612,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": 0,
           "pastPerformances": [
             {
               "date": "2025-10-01T00:00:00.000Z",
@@ -1690,7 +1698,8 @@
               "finishTime": 70.28,
               "odds": 56
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "LDE",
@@ -1737,7 +1746,7 @@
           "sire": "Churchill\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Jazz Cat\n                        \n                        \n                            Dam's Sire",
           "damSire": "Tamayuz\n                        \n                        \n                            Same Sire",
-          "currentRating": 62,
+          "currentRating": 64,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1802,7 +1811,7 @@
           "sire": "Derryn\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Shimmer 'N' Shine\n                        \n                        \n                            Dam's Sire",
           "damSire": "Thano\n                        \n                        \n                            Same Sire",
-          "currentRating": 59,
+          "currentRating": 66,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1940,7 +1949,8 @@
               "finishTime": 70.17,
               "odds": 26
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "BHW",
@@ -1987,7 +1997,7 @@
           "sire": "Starspangledbanner\n                        \n                        \n                            Dam",
           "dam": "Hera\n                        \n                        \n                            Dam's Sire",
           "damSire": "O'Reilly\n                        \n                        \n                            Same Sire",
-          "currentRating": 55,
+          "currentRating": 63,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2176,7 +2186,8 @@
               "finishTime": 95.11,
               "odds": 19
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "DHA",
@@ -2223,7 +2234,7 @@
           "sire": "I Am Invincible\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Mysterious Light\n                        \n                        \n                            Dam's Sire",
           "damSire": "Fantastic Light\n                        \n                        \n                            Same Sire",
-          "currentRating": 57,
+          "currentRating": 75,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2344,7 +2355,8 @@
               "finishTime": 69.65,
               "odds": 12
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "MCJ",

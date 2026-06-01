@@ -22,7 +22,7 @@
           "sire": "Dundeel\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Madeenaty\n                        \n                        \n                            Dam's Sire",
           "damSire": "Exceed And Excel\n                        \n                        \n                            Same Sire",
-          "currentRating": 50,
+          "currentRating": 51,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -177,7 +177,8 @@
               "finishTime": 83.19,
               "odds": 172
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "YML",
@@ -224,7 +225,7 @@
           "sire": "Wrote\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "O'Sabrina\n                        \n                        \n                            Dam's Sire",
           "damSire": "Snitzel\n                        \n                        \n                            Same Sire",
-          "currentRating": 75,
+          "currentRating": 56,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -413,7 +414,8 @@
               "finishTime": 82.61,
               "odds": 30
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "CJE",
@@ -460,7 +462,7 @@
           "sire": "Deep Field\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Falqueen\n                        \n                        \n                            Dam's Sire",
           "damSire": "Falbrav\n                        \n                        \n                            Same Sire",
-          "currentRating": 55,
+          "currentRating": 47,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -598,7 +600,8 @@
               "finishTime": 71.18,
               "odds": 25
             }
-          ]
+          ],
+          "ratingChange": 1
         },
         "jockey": {
           "code": "PZ",
@@ -645,7 +648,7 @@
           "sire": "Belardo\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Asmahal\n                        \n                        \n                            Dam's Sire",
           "damSire": "Falkirk\n                        \n                        \n                            Same Sire",
-          "currentRating": 49,
+          "currentRating": 50,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -715,7 +718,8 @@
               "finishTime": 69.72,
               "odds": 16
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "MCJ",
@@ -762,7 +766,7 @@
           "sire": "D'Argento\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Ocean Spray\n                        \n                        \n                            Dam's Sire",
           "damSire": "Fastnet Rock\n                        \n                        \n                            Same Sire",
-          "currentRating": 60,
+          "currentRating": 59,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -849,7 +853,8 @@
               "finishTime": 70.12,
               "odds": 23
             }
-          ]
+          ],
+          "ratingChange": 7
         },
         "jockey": {
           "code": "BH",
@@ -914,7 +919,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": 0,
           "pastPerformances": [
             {
               "date": "2025-11-19T00:00:00.000Z",
@@ -1069,7 +1073,8 @@
               "finishTime": 70.34,
               "odds": 5.8
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "DHA",
@@ -1116,7 +1121,7 @@
           "sire": "Written Tycoon\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Sopraffina\n                        \n                        \n                            Dam's Sire",
           "damSire": "Exceed And Excel\n                        \n                        \n                            Same Sire",
-          "currentRating": 61,
+          "currentRating": 47,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1271,7 +1276,8 @@
               "finishTime": 58.07,
               "odds": 9
             }
-          ]
+          ],
+          "ratingChange": 6
         },
         "jockey": {
           "code": "BHW",
@@ -1318,7 +1324,7 @@
           "sire": "Swiss Ace\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Princess Carolina\n                        \n                        \n                            Dam's Sire",
           "damSire": "More Than Ready\n                        \n                        \n                            Same Sire",
-          "currentRating": 46,
+          "currentRating": 58,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1405,7 +1411,8 @@
               "finishTime": 57.84,
               "odds": 86
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "AVB",
@@ -1452,7 +1459,7 @@
           "sire": "Per Incanto\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Kay's Trophy\n                        \n                        \n                            Dam's Sire",
           "damSire": "Towkay\n                        \n                        \n                            Same Sire",
-          "currentRating": 30,
+          "currentRating": 45,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1539,7 +1546,8 @@
               "finishTime": 57.61,
               "odds": 35
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "PDF",
@@ -1586,7 +1594,7 @@
           "sire": "Capitalist\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Miss Amajardan\n                        \n                        \n                            Dam's Sire",
           "damSire": "Hinchinbrook\n                        \n                        \n                            Same Sire",
-          "currentRating": 64,
+          "currentRating": 60,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1775,7 +1783,8 @@
               "finishTime": 57.89,
               "odds": 58
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "MOJ",
@@ -1822,7 +1831,7 @@
           "sire": "Super One\n                        \n                        \n                            Dam",
           "dam": "Change Channels\n                        \n                        \n                            Dam's Sire",
           "damSire": "Bradbury's Luck\n                        \n                        \n                            Same Sire",
-          "currentRating": 42,
+          "currentRating": 52,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1977,7 +1986,8 @@
               "finishTime": 56.63,
               "odds": 16
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "PMF",
@@ -2024,7 +2034,7 @@
           "sire": "Per Incanto\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Miss Bluebell\n                        \n                        \n                            Dam's Sire",
           "damSire": "Savabeel\n                        \n                        \n                            Same Sire",
-          "currentRating": 35,
+          "currentRating": 53,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2162,7 +2172,8 @@
               "finishTime": 69.69,
               "odds": 67
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "FEL",

@@ -22,7 +22,7 @@
           "sire": "Shamexpress\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Missy Moo\n                        \n                        \n                            Dam's Sire",
           "damSire": "Per Incanto\n                        \n                        \n                            Same Sire",
-          "currentRating": 52,
+          "currentRating": 138,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -109,7 +109,8 @@
               "finishTime": 67.63,
               "odds": 1
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "PZ",
@@ -243,7 +244,8 @@
               "finishTime": 68.05,
               "odds": 8.2
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "BH",
@@ -290,7 +292,7 @@
           "sire": "Sweynesse\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Madonna Mia\n                        \n                        \n                            Dam's Sire",
           "damSire": "Red Clubs\n                        \n                        \n                            Same Sire",
-          "currentRating": 123,
+          "currentRating": 122,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -377,7 +379,8 @@
               "finishTime": 67.98,
               "odds": 29
             }
-          ]
+          ],
+          "ratingChange": 1
         },
         "jockey": {
           "code": "LDE",
@@ -424,7 +427,7 @@
           "sire": "Wandjina\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Voltara\n                        \n                        \n                            Dam's Sire",
           "damSire": "More Than Ready\n                        \n                        \n                            Same Sire",
-          "currentRating": 118,
+          "currentRating": 121,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -511,7 +514,8 @@
               "finishTime": 93,
               "odds": 10
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "TEK",
@@ -558,7 +562,7 @@
           "sire": "Per Incanto\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Perfect Beat\n                        \n                        \n                            Dam's Sire",
           "damSire": "Magnus\n                        \n                        \n                            Same Sire",
-          "currentRating": 115,
+          "currentRating": 113,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -679,7 +683,8 @@
               "finishTime": 68.33,
               "odds": 48
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "AVB",
@@ -726,7 +731,7 @@
           "sire": "Epaulette\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Woodstock Hussey\n                        \n                        \n                            Dam's Sire",
           "damSire": "Hussonet\n                        \n                        \n                            Same Sire",
-          "currentRating": 111,
+          "currentRating": 115,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -830,7 +835,8 @@
               "finishTime": 68.37,
               "odds": 81
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "OJM",
@@ -877,7 +883,7 @@
           "sire": "Capitalist\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Emirates Comfort\n                        \n                        \n                            Dam's Sire",
           "damSire": "Dubawi\n                        \n                        \n                            Same Sire",
-          "currentRating": 111,
+          "currentRating": 113,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -981,7 +987,8 @@
               "finishTime": 81.28,
               "odds": 45
             }
-          ]
+          ],
+          "ratingChange": 1
         },
         "jockey": {
           "code": "HCY",
@@ -1046,7 +1053,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": 5,
           "pastPerformances": [
             {
               "date": "2026-02-01T00:00:00.000Z",
@@ -1133,7 +1139,8 @@
               "finishTime": 81.18,
               "odds": 16
             }
-          ]
+          ],
+          "ratingChange": 5
         },
         "jockey": {
           "code": "GM",
@@ -1180,7 +1187,7 @@
           "sire": "Belardo\n                        \n                        \n                            Dam",
           "dam": "Crystal Idea\n                        \n                        \n                            Dam's Sire",
           "damSire": "Namid\n                        \n                        \n                            Same Sire",
-          "currentRating": 112,
+          "currentRating": 117,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1267,7 +1274,8 @@
               "finishTime": 93.28999999999999,
               "odds": 56
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "MDB",
@@ -1314,7 +1322,7 @@
           "sire": "Rubick\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Black Tulip\n                        \n                        \n                            Dam's Sire",
           "damSire": "Lonhro\n                        \n                        \n                            Same Sire",
-          "currentRating": 103,
+          "currentRating": 107,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1384,7 +1392,8 @@
               "finishTime": 81.05,
               "odds": 6.1
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "BHW",

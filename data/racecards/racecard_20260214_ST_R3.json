@@ -22,7 +22,7 @@
           "sire": "Flying Artie\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Ouija\n                        \n                        \n                            Dam's Sire",
           "damSire": "Viscount\n                        \n                        \n                            Same Sire",
-          "currentRating": 72,
+          "currentRating": 66,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -126,7 +126,8 @@
               "finishTime": 56.9,
               "odds": 19
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "AA",
@@ -173,7 +174,7 @@
           "sire": "Soldier's Call\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Parle Moi\n                        \n                        \n                            Dam's Sire",
           "damSire": "Giant's Causeway\n                        \n                        \n                            Same Sire",
-          "currentRating": 77,
+          "currentRating": 76,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -294,7 +295,8 @@
               "finishTime": 81.44,
               "odds": 9
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "OJM",
@@ -406,7 +408,7 @@
           "sire": "Sun City\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Halle Mcollywill\n                        \n                        \n                            Dam's Sire",
           "damSire": "Mossman\n                        \n                        \n                            Same Sire",
-          "currentRating": 64,
+          "currentRating": 65,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -471,7 +473,7 @@
           "sire": "Swiss Ace\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Musically\n                        \n                        \n                            Dam's Sire",
           "damSire": "Belong To Me\n                        \n                        \n                            Same Sire",
-          "currentRating": 59,
+          "currentRating": 67,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -592,7 +594,8 @@
               "finishTime": 69.32,
               "odds": 7.1
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "BH",
@@ -639,7 +642,7 @@
           "sire": "Starspangledbanner\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Wangaala\n                        \n                        \n                            Dam's Sire",
           "damSire": "Toorak Toff\n                        \n                        \n                            Same Sire",
-          "currentRating": 59,
+          "currentRating": 71,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -845,7 +848,8 @@
               "finishTime": 69.01,
               "odds": 22
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "CML",
@@ -892,7 +896,7 @@
           "sire": "I Am Invincible\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Mysterious Light\n                        \n                        \n                            Dam's Sire",
           "damSire": "Fantastic Light\n                        \n                        \n                            Same Sire",
-          "currentRating": 60,
+          "currentRating": 69,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1030,7 +1034,8 @@
               "finishTime": 82.24,
               "odds": 181
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "WEC",
@@ -1077,7 +1082,7 @@
           "sire": "Elzaam\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Live Stream\n                        \n                        \n                            Dam's Sire",
           "damSire": "Awtaad\n                        \n                        \n                            Same Sire",
-          "currentRating": 56,
+          "currentRating": 65,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1142,7 +1147,7 @@
           "sire": "Ocean Park\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Shanzam\n                        \n                        \n                            Dam's Sire",
           "damSire": "High Chaparral\n                        \n                        \n                            Same Sire",
-          "currentRating": 55,
+          "currentRating": 61,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1212,7 +1217,8 @@
               "finishTime": 83.92,
               "odds": 77
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "BA",
@@ -1259,7 +1265,7 @@
           "sire": "Your Song\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Brooklyn Rain\n                        \n                        \n                            Dam's Sire",
           "damSire": "Manhattan Rain\n                        \n                        \n                            Same Sire",
-          "currentRating": 53,
+          "currentRating": 61,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1346,7 +1352,8 @@
               "finishTime": 58.71,
               "odds": 57
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "KRW",
@@ -1497,7 +1504,8 @@
               "finishTime": 68.99,
               "odds": 54
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "MHT",

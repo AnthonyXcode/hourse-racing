@@ -22,7 +22,7 @@
           "sire": "Capitalist\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Mining Tycoon\n                        \n                        \n                            Dam's Sire",
           "damSire": "Redoute's Choice\n                        \n                        \n                            Same Sire",
-          "currentRating": 67,
+          "currentRating": 60,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -109,7 +109,8 @@
               "finishTime": 68.84,
               "odds": 2.8
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "OJM",
@@ -156,7 +157,7 @@
           "sire": "Capitalist\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Sister Sledge\n                        \n                        \n                            Dam's Sire",
           "damSire": "Uncle Mo\n                        \n                        \n                            Same Sire",
-          "currentRating": 60,
+          "currentRating": 58,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -226,7 +227,8 @@
               "finishTime": 58.83,
               "odds": 18
             }
-          ]
+          ],
+          "ratingChange": 6
         },
         "jockey": {
           "code": "LDE",
@@ -326,7 +328,8 @@
               "finishTime": 69.14,
               "odds": 12
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "PMF",
@@ -373,7 +376,7 @@
           "sire": "Merchant Navy\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Ennerdale\n                        \n                        \n                            Dam's Sire",
           "damSire": "Singspiel\n                        \n                        \n                            Same Sire",
-          "currentRating": 49,
+          "currentRating": 52,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -409,7 +412,8 @@
               "finishTime": 70.93,
               "odds": 10
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "AVB",
@@ -474,7 +478,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": 0,
           "pastPerformances": [
             {
               "date": "2026-03-08T00:00:00.000Z",
@@ -493,7 +496,8 @@
               "finishTime": 57.19,
               "odds": 23
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "KRW",
@@ -627,7 +631,8 @@
               "finishTime": 57.32,
               "odds": 24
             }
-          ]
+          ],
+          "ratingChange": 1
         },
         "jockey": {
           "code": "CCY",
@@ -674,7 +679,7 @@
           "sire": "Tassort\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Usena\n                        \n                        \n                            Dam's Sire",
           "damSire": "Sebring\n                        \n                        \n                            Same Sire",
-          "currentRating": 50,
+          "currentRating": 52,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -739,7 +744,7 @@
           "sire": "Starspangledbanner\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Miss Delima\n                        \n                        \n                            Dam's Sire",
           "damSire": "Swiss Ace\n                        \n                        \n                            Same Sire",
-          "currentRating": 48,
+          "currentRating": 52,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -775,7 +780,8 @@
               "finishTime": 70.77,
               "odds": 93
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "TEK",
@@ -822,7 +828,7 @@
           "sire": "Starspangledbanner\n                        \n                        \n                            Dam",
           "dam": "Kylix\n                        \n                        \n                            Dam's Sire",
           "damSire": "Lonhro\n                        \n                        \n                            Same Sire",
-          "currentRating": 56,
+          "currentRating": 58,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -909,7 +915,8 @@
               "finishTime": 68.69,
               "odds": 1.5
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "HEL",
@@ -956,7 +963,7 @@
           "sire": "Encryption\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Moojeh\n                        \n                        \n                            Dam's Sire",
           "damSire": "More Than Ready\n                        \n                        \n                            Same Sire",
-          "currentRating": 48,
+          "currentRating": 52,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1021,7 +1028,7 @@
           "sire": "Shalaa\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Heavenly Mum\n                        \n                        \n                            Dam's Sire",
           "damSire": "Sebring\n                        \n                        \n                            Same Sire",
-          "currentRating": 50,
+          "currentRating": 52,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1224,7 +1231,8 @@
               "finishTime": 70.64,
               "odds": 23
             }
-          ]
+          ],
+          "ratingChange": 1
         },
         "jockey": {
           "code": "WPN",
@@ -1271,7 +1279,7 @@
           "sire": "Land Force\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Phantom Spirit\n                        \n                        \n                            Dam's Sire",
           "damSire": "Invincible Spirit\n                        \n                        \n                            Same Sire",
-          "currentRating": 40,
+          "currentRating": 48,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1426,7 +1434,8 @@
               "finishTime": 57.11,
               "odds": 29
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "CJE",
@@ -1473,7 +1482,7 @@
           "sire": "Sooboog\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Rhythm Beat\n                        \n                        \n                            Dam's Sire",
           "damSire": "Pentire\n                        \n                        \n                            Same Sire",
-          "currentRating": 53,
+          "currentRating": 57,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1560,7 +1569,8 @@
               "finishTime": 57.77,
               "odds": 12
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "FEL",

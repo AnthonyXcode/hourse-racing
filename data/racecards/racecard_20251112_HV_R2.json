@@ -22,7 +22,7 @@
           "sire": "Charm Spirit\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Estrela Flicka\n                        \n                        \n                            Dam's Sire",
           "damSire": "O'Reilly\n                        \n                        \n                            Same Sire",
-          "currentRating": 32,
+          "currentRating": 26,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -211,7 +211,8 @@
               "finishTime": 70.97,
               "odds": 47
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "PMF",
@@ -276,7 +277,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": -2,
           "pastPerformances": [
             {
               "date": "2025-10-19T00:00:00.000Z",
@@ -448,7 +448,8 @@
               "finishTime": 70.3,
               "odds": 8.9
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "BH",
@@ -650,7 +651,8 @@
               "finishTime": 57.56,
               "odds": 30
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "KRW",
@@ -697,7 +699,7 @@
           "sire": "Churchill\n                        \n                        \n                            Dam",
           "dam": "La Chica Bella\n                        \n                        \n                            Dam's Sire",
           "damSire": "Host\n                        \n                        \n                            Same Sire",
-          "currentRating": 33,
+          "currentRating": 38,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -886,7 +888,8 @@
               "finishTime": 70.13,
               "odds": 14
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "LDE",
@@ -933,7 +936,7 @@
           "sire": "Spirit Of Boom\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Jaunty\n                        \n                        \n                            Dam's Sire",
           "damSire": "O'Reilly\n                        \n                        \n                            Same Sire",
-          "currentRating": 33,
+          "currentRating": 38,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1071,7 +1074,8 @@
               "finishTime": 58.3,
               "odds": 89
             }
-          ]
+          ],
+          "ratingChange": -4
         },
         "jockey": {
           "code": "CJE",
@@ -1118,7 +1122,7 @@
           "sire": "Capitalist\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Muchas Coronas\n                        \n                        \n                            Dam's Sire",
           "damSire": "Onemorenomore\n                        \n                        \n                            Same Sire",
-          "currentRating": 31,
+          "currentRating": 40,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1290,7 +1294,8 @@
               "finishTime": 57.37,
               "odds": 39
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "HEL",
@@ -1526,7 +1531,8 @@
               "finishTime": 70.59,
               "odds": 4
             }
-          ]
+          ],
+          "ratingChange": 7
         },
         "jockey": {
           "code": "PZ",
@@ -1573,7 +1579,7 @@
           "sire": "Unite And Conquer\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Sukhar\n                        \n                        \n                            Dam's Sire",
           "damSire": "Zabeel\n                        \n                        \n                            Same Sire",
-          "currentRating": 37,
+          "currentRating": 40,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1711,7 +1717,8 @@
               "finishTime": 69.24,
               "odds": 125
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "FEL",
@@ -1758,7 +1765,7 @@
           "sire": "Acclamation\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Cravin Raven\n                        \n                        \n                            Dam's Sire",
           "damSire": "Raven's Pass\n                        \n                        \n                            Same Sire",
-          "currentRating": 21,
+          "currentRating": 39,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1947,7 +1954,8 @@
               "finishTime": 73.03,
               "odds": 75
             }
-          ]
+          ],
+          "ratingChange": -5
         },
         "jockey": {
           "code": "OJM",
@@ -1994,7 +2002,7 @@
           "sire": "No Nay Never\n                        \n                        \n                            Dam",
           "dam": "Highly Valued\n                        \n                        \n                            Dam's Sire",
           "damSire": "High Chaparral\n                        \n                        \n                            Same Sire",
-          "currentRating": 32,
+          "currentRating": 38,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2183,7 +2191,8 @@
               "finishTime": 70.14,
               "odds": 17
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "WEC",
@@ -2230,7 +2239,7 @@
           "sire": "Brazen Beau\n                        \n                        \n                            Dam",
           "dam": "Beauty Option\n                        \n                        \n                            Dam's Sire",
           "damSire": "Redoute's Choice\n                        \n                        \n                            Same Sire",
-          "currentRating": 30,
+          "currentRating": 37,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2368,7 +2377,8 @@
               "finishTime": 58.61,
               "odds": 90
             }
-          ]
+          ],
+          "ratingChange": -3
         },
         "jockey": {
           "code": "CCY",
@@ -2415,7 +2425,7 @@
           "sire": "Toronado\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Big Spirit\n                        \n                        \n                            Dam's Sire",
           "damSire": "Invincible Spirit\n                        \n                        \n                            Same Sire",
-          "currentRating": 40,
+          "currentRating": 34,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2604,7 +2614,8 @@
               "finishTime": 56.63,
               "odds": 87
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "MCJ",

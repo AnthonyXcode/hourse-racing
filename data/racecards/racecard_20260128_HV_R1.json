@@ -40,7 +40,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": -2,
           "pastPerformances": [
             {
               "date": "2026-01-07T00:00:00.000Z",
@@ -110,7 +109,8 @@
               "finishTime": 57.38,
               "odds": 8.5
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "PZ",
@@ -157,7 +157,7 @@
           "sire": "Slade Power\n                        \n                        \n                            Dam",
           "dam": "Princess Kyka\n                        \n                        \n                            Dam's Sire",
           "damSire": "Namid\n                        \n                        \n                            Same Sire",
-          "currentRating": 20,
+          "currentRating": 22,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -261,7 +261,8 @@
               "finishTime": 57.59,
               "odds": 6.6
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "CML",
@@ -308,7 +309,7 @@
           "sire": "Lean Mean Machine\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Carashan Girl\n                        \n                        \n                            Dam's Sire",
           "damSire": "Artie Schiller\n                        \n                        \n                            Same Sire",
-          "currentRating": 32,
+          "currentRating": 40,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -395,7 +396,8 @@
               "finishTime": 70.62,
               "odds": 16
             }
-          ]
+          ],
+          "ratingChange": 1
         },
         "jockey": {
           "code": "FEL",
@@ -442,7 +444,7 @@
           "sire": "Headwater\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Beechal\n                        \n                        \n                            Dam's Sire",
           "damSire": "Lonhro\n                        \n                        \n                            Same Sire",
-          "currentRating": 33,
+          "currentRating": 40,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -529,7 +531,8 @@
               "finishTime": 70.28,
               "odds": 15
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "LDE",
@@ -744,7 +747,7 @@
           "sire": "Mikki Isle\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Palatine Hill\n                        \n                        \n                            Dam's Sire",
           "damSire": "Palace Music\n                        \n                        \n                            Same Sire",
-          "currentRating": 23,
+          "currentRating": 30,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -933,7 +936,8 @@
               "finishTime": 69.35,
               "odds": 10
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "AVB",
@@ -980,7 +984,7 @@
           "sire": "Ardrossan\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Queen Of Pop\n                        \n                        \n                            Dam's Sire",
           "damSire": "Pins\n                        \n                        \n                            Same Sire",
-          "currentRating": 32,
+          "currentRating": 37,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1067,7 +1071,8 @@
               "finishTime": 71.77,
               "odds": 139
             }
-          ]
+          ],
+          "ratingChange": 1
         },
         "jockey": {
           "code": "OJM",
@@ -1114,7 +1119,7 @@
           "sire": "No Nay Never\n                        \n                        \n                            Dam",
           "dam": "Highly Valued\n                        \n                        \n                            Dam's Sire",
           "damSire": "High Chaparral\n                        \n                        \n                            Same Sire",
-          "currentRating": 32,
+          "currentRating": 34,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1252,7 +1257,8 @@
               "finishTime": 70.15,
               "odds": 10
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "BH",
@@ -1299,7 +1305,7 @@
           "sire": "Capitalist\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Muchas Coronas\n                        \n                        \n                            Dam's Sire",
           "damSire": "Onemorenomore\n                        \n                        \n                            Same Sire",
-          "currentRating": 33,
+          "currentRating": 38,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1437,7 +1443,8 @@
               "finishTime": 57.87,
               "odds": 5.8
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "MDB",
@@ -1484,7 +1491,7 @@
           "sire": "Smart Missile\n                        \n                        \n                            Dam",
           "dam": "Monopole\n                        \n                        \n                            Dam's Sire",
           "damSire": "High Chaparral\n                        \n                        \n                            Same Sire",
-          "currentRating": 52,
+          "currentRating": 28,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1588,7 +1595,8 @@
               "finishTime": 71.13,
               "odds": 97
             }
-          ]
+          ],
+          "ratingChange": -3
         },
         "jockey": {
           "code": "PDF",
@@ -1635,7 +1643,7 @@
           "sire": "Phoenix Of Spain\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Freedom March\n                        \n                        \n                            Dam's Sire",
           "damSire": "Oasis Dream\n                        \n                        \n                            Same Sire",
-          "currentRating": 29,
+          "currentRating": 33,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1739,7 +1747,8 @@
               "finishTime": 83.47,
               "odds": 121
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "MHT",
@@ -1786,7 +1795,7 @@
           "sire": "Press Statement\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Split The Bill\n                        \n                        \n                            Dam's Sire",
           "damSire": "Real Saga\n                        \n                        \n                            Same Sire",
-          "currentRating": 28,
+          "currentRating": 36,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1907,7 +1916,8 @@
               "finishTime": 70.9,
               "odds": 153
             }
-          ]
+          ],
+          "ratingChange": -3
         },
         "jockey": {
           "code": "CCY",

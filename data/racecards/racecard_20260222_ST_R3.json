@@ -22,7 +22,7 @@
           "sire": "Foxwedge\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Imanana\n                        \n                        \n                            Dam's Sire",
           "damSire": "More Than Ready\n                        \n                        \n                            Same Sire",
-          "currentRating": 33,
+          "currentRating": 27,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -143,7 +143,8 @@
               "finishTime": 100.72,
               "odds": 16
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "PZ",
@@ -190,7 +191,7 @@
           "sire": "Fascinating Rock\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Ataahua\n                        \n                        \n                            Dam's Sire",
           "damSire": "Tertullian\n                        \n                        \n                            Same Sire",
-          "currentRating": 40,
+          "currentRating": 37,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -328,7 +329,8 @@
               "finishTime": 109.09,
               "odds": 6.7
             }
-          ]
+          ],
+          "ratingChange": 1
         },
         "jockey": {
           "code": "BA",
@@ -393,7 +395,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": 5,
           "pastPerformances": [
             {
               "date": "2026-01-07T00:00:00.000Z",
@@ -497,7 +498,8 @@
               "finishTime": 82.26,
               "odds": 5.7
             }
-          ]
+          ],
+          "ratingChange": 5
         },
         "jockey": {
           "code": "BH",
@@ -544,7 +546,7 @@
           "sire": "Almanzor\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Saas Fee\n                        \n                        \n                            Dam's Sire",
           "damSire": "Holy Roman Emperor\n                        \n                        \n                            Same Sire",
-          "currentRating": 40,
+          "currentRating": 37,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -648,7 +650,8 @@
               "finishTime": 101.69,
               "odds": 20
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "GM",
@@ -695,7 +698,7 @@
           "sire": "Not A Single Doubt\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Gallant Tess\n                        \n                        \n                            Dam's Sire",
           "damSire": "Galileo\n                        \n                        \n                            Same Sire",
-          "currentRating": 33,
+          "currentRating": 31,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -850,7 +853,8 @@
               "finishTime": 70.11,
               "odds": 16
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "OJM",
@@ -897,7 +901,7 @@
           "sire": "Hawkbill\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Flora Medici\n                        \n                        \n                            Dam's Sire",
           "damSire": "Sir Percy\n                        \n                        \n                            Same Sire",
-          "currentRating": 21,
+          "currentRating": 23,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1052,7 +1056,8 @@
               "finishTime": 100.75,
               "odds": 5.1
             }
-          ]
+          ],
+          "ratingChange": 2
         },
         "jockey": {
           "code": "PMF",
@@ -1099,7 +1104,7 @@
           "sire": "Derryn\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Waiana Gold\n                        \n                        \n                            Dam's Sire",
           "damSire": "Gold Centre\n                        \n                        \n                            Same Sire",
-          "currentRating": 37,
+          "currentRating": 34,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1203,7 +1208,8 @@
               "finishTime": 94.97,
               "odds": 6.4
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "WEC",
@@ -1250,7 +1256,7 @@
           "sire": "Savabeel\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Candelabra\n                        \n                        \n                            Dam's Sire",
           "damSire": "Pins\n                        \n                        \n                            Same Sire",
-          "currentRating": 36,
+          "currentRating": 38,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1320,7 +1326,8 @@
               "finishTime": 107.33,
               "odds": 10
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "FEL",
@@ -1367,7 +1374,7 @@
           "sire": "Exceed And Excel\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Barbadine\n                        \n                        \n                            Dam's Sire",
           "damSire": "Giant's Causeway\n                        \n                        \n                            Same Sire",
-          "currentRating": 36,
+          "currentRating": 40,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1454,7 +1461,8 @@
               "finishTime": 84,
               "odds": 16
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "MDB",
@@ -1501,7 +1509,7 @@
           "sire": "Invincible Army\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "La Reveuse\n                        \n                        \n                            Dam's Sire",
           "damSire": "Galileo\n                        \n                        \n                            Same Sire",
-          "currentRating": 38,
+          "currentRating": 39,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1622,7 +1630,8 @@
               "finishTime": 69.27,
               "odds": 137
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "CCY",
@@ -1669,7 +1678,7 @@
           "sire": "Embellish\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Lovetrista\n                        \n                        \n                            Dam's Sire",
           "damSire": "Rock Of Gibraltar\n                        \n                        \n                            Same Sire",
-          "currentRating": 22,
+          "currentRating": 26,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1756,7 +1765,8 @@
               "finishTime": 110.67,
               "odds": 9.5
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "HCY",
@@ -1856,7 +1866,8 @@
               "finishTime": 110.44,
               "odds": 31
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "TEK",
@@ -1903,7 +1914,7 @@
           "sire": "Snitzel\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Street Secret\n                        \n                        \n                            Dam's Sire",
           "damSire": "Street Cry\n                        \n                        \n                            Same Sire",
-          "currentRating": 21,
+          "currentRating": 29,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2041,7 +2052,8 @@
               "finishTime": 69.74,
               "odds": 187
             }
-          ]
+          ],
+          "ratingChange": -3
         },
         "jockey": {
           "code": "KRW",
@@ -2088,7 +2100,7 @@
           "sire": "Menari\n                        \n                        \n                            Dam",
           "dam": "Candy Bridge\n                        \n                        \n                            Dam's Sire",
           "damSire": "Encosta de Lago\n                        \n                        \n                            Same Sire",
-          "currentRating": 52,
+          "currentRating": 21,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2175,7 +2187,8 @@
               "finishTime": 57.7,
               "odds": 46
             }
-          ]
+          ],
+          "ratingChange": -3
         },
         "jockey": {
           "code": "MHT",

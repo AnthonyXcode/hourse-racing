@@ -22,7 +22,7 @@
           "sire": "Acclamation\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Folk Melody\n                        \n                        \n                            Dam's Sire",
           "damSire": "Street Cry\n                        \n                        \n                            Same Sire",
-          "currentRating": 139,
+          "currentRating": 135,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -126,7 +126,8 @@
               "finishTime": 120.31,
               "odds": 1.6
             }
-          ]
+          ],
+          "ratingChange": 1
         },
         "jockey": {
           "code": "MCJ",
@@ -433,7 +434,7 @@
           "sire": "Mor Spirit\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Solid Scam\n                        \n                        \n                            Dam's Sire",
           "damSire": "Consolidator\n                        \n                        \n                            Same Sire",
-          "currentRating": 105,
+          "currentRating": 110,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -622,7 +623,8 @@
               "finishTime": 94.28,
               "odds": 23
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "GM",
@@ -669,7 +671,7 @@
           "sire": "Fastnet Rock\n                        \n                        \n                            Dam",
           "dam": "Imperial Lass\n                        \n                        \n                            Dam's Sire",
           "damSire": "Tavistock\n                        \n                        \n                            Same Sire",
-          "currentRating": 107,
+          "currentRating": 115,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -858,7 +860,8 @@
               "finishTime": 93.75999999999999,
               "odds": 34
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "WC",

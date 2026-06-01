@@ -22,7 +22,7 @@
           "sire": "U S Navy Flag\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Pinstripe\n                        \n                        \n                            Dam's Sire",
           "damSire": "Pins\n                        \n                        \n                            Same Sire",
-          "currentRating": 63,
+          "currentRating": 53,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -211,7 +211,8 @@
               "finishTime": 122.42,
               "odds": 26
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "LDE",
@@ -258,7 +259,7 @@
           "sire": "Ardrossan\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Sunday Rose\n                        \n                        \n                            Dam's Sire",
           "damSire": "O'Reilly\n                        \n                        \n                            Same Sire",
-          "currentRating": 58,
+          "currentRating": 56,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -447,7 +448,8 @@
               "finishTime": 94.64,
               "odds": 9.3
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "WPN",
@@ -494,7 +496,7 @@
           "sire": "Phoenix Of Spain\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Clarinda\n                        \n                        \n                            Dam's Sire",
           "damSire": "Montjeu\n                        \n                        \n                            Same Sire",
-          "currentRating": 65,
+          "currentRating": 42,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -683,7 +685,8 @@
               "finishTime": 96.72,
               "odds": 123
             }
-          ]
+          ],
+          "ratingChange": 1
         },
         "jockey": {
           "code": "PDF",
@@ -730,7 +733,7 @@
           "sire": "U S Navy Flag\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Ala Rasi\n                        \n                        \n                            Dam's Sire",
           "damSire": "Dalakhani\n                        \n                        \n                            Same Sire",
-          "currentRating": 48,
+          "currentRating": 47,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -851,7 +854,8 @@
               "finishTime": 69.9,
               "odds": 107
             }
-          ]
+          ],
+          "ratingChange": 2
         },
         "jockey": {
           "code": "FEL",
@@ -898,7 +902,7 @@
           "sire": "Ribchester\n                        \n                        \n                            Dam",
           "dam": "Mad Existence\n                        \n                        \n                            Dam's Sire",
           "damSire": "Val Royal\n                        \n                        \n                            Same Sire",
-          "currentRating": 42,
+          "currentRating": 41,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1087,7 +1091,8 @@
               "finishTime": 70.07,
               "odds": 29
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "YML",
@@ -1152,7 +1157,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": -2,
           "pastPerformances": [
             {
               "date": "2025-10-19T00:00:00.000Z",
@@ -1273,7 +1277,8 @@
               "finishTime": 70,
               "odds": 31
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "HEL",
@@ -1509,7 +1514,8 @@
               "finishTime": 95.45,
               "odds": 78
             }
-          ]
+          ],
+          "ratingChange": 7
         },
         "jockey": {
           "code": "TEK",
@@ -1556,7 +1562,7 @@
           "sire": "Siyouni\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Playing Trix\n                        \n                        \n                            Dam's Sire",
           "damSire": "War Front\n                        \n                        \n                            Same Sire",
-          "currentRating": 43,
+          "currentRating": 47,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1643,7 +1649,8 @@
               "finishTime": 70.66,
               "odds": 37
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "KRW",
@@ -1690,7 +1697,7 @@
           "sire": "War Decree\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Back Date\n                        \n                        \n                            Dam's Sire",
           "damSire": "Zacinto\n                        \n                        \n                            Same Sire",
-          "currentRating": 34,
+          "currentRating": 43,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1879,7 +1886,8 @@
               "finishTime": 71.47,
               "odds": 77
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "AA",
@@ -1926,7 +1934,7 @@
           "sire": "Starspangledbanner\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Divine Miss Magnus\n                        \n                        \n                            Dam's Sire",
           "damSire": "Magnus\n                        \n                        \n                            Same Sire",
-          "currentRating": 53,
+          "currentRating": 52,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1962,7 +1970,8 @@
               "finishTime": 69.8,
               "odds": 143
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "BHW",
@@ -2009,7 +2018,7 @@
           "sire": "Mehmas\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Obama Rule\n                        \n                        \n                            Dam's Sire",
           "damSire": "Danehill Dancer\n                        \n                        \n                            Same Sire",
-          "currentRating": 61,
+          "currentRating": 51,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2198,7 +2207,8 @@
               "finishTime": 101.15,
               "odds": 19
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "CCY",
@@ -2245,7 +2255,7 @@
           "sire": "Acclamation\n                        \n                        \n                            Dam",
           "dam": "Piacere\n                        \n                        \n                            Dam's Sire",
           "damSire": "New Approach\n                        \n                        \n                            Same Sire",
-          "currentRating": 47,
+          "currentRating": 60,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2315,7 +2325,8 @@
               "finishTime": 98.50999999999999,
               "odds": 107
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "WEC",

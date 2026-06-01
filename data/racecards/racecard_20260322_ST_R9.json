@@ -22,7 +22,7 @@
           "sire": "Frosted\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Conscious\n                        \n                        \n                            Dam's Sire",
           "damSire": "So You Think\n                        \n                        \n                            Same Sire",
-          "currentRating": 73,
+          "currentRating": 64,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -177,7 +177,8 @@
               "finishTime": 70.75,
               "odds": 14
             }
-          ]
+          ],
+          "ratingChange": 8
         },
         "jockey": {
           "code": "PZ",
@@ -311,7 +312,8 @@
               "finishTime": 81.78999999999999,
               "odds": 1.7
             }
-          ]
+          ],
+          "ratingChange": 1
         },
         "jockey": {
           "code": "MDB",
@@ -358,7 +360,7 @@
           "sire": "Pierata\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Dizzy Diva\n                        \n                        \n                            Dam's Sire",
           "damSire": "Starspangledbanner\n                        \n                        \n                            Same Sire",
-          "currentRating": 72,
+          "currentRating": 65,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -445,7 +447,8 @@
               "finishTime": 70.03999999999999,
               "odds": 12
             }
-          ]
+          ],
+          "ratingChange": 7
         },
         "jockey": {
           "code": "HCY",
@@ -492,7 +495,7 @@
           "sire": "Pierata\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Magic Obsession\n                        \n                        \n                            Dam's Sire",
           "damSire": "Magic Albert\n                        \n                        \n                            Same Sire",
-          "currentRating": 61,
+          "currentRating": 65,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -579,7 +582,8 @@
               "finishTime": 95.33,
               "odds": 54
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "FEL",
@@ -626,7 +630,7 @@
           "sire": "Derryn\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Shimmer 'N' Shine\n                        \n                        \n                            Dam's Sire",
           "damSire": "Thano\n                        \n                        \n                            Same Sire",
-          "currentRating": 61,
+          "currentRating": 65,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -730,7 +734,8 @@
               "finishTime": 82.77,
               "odds": 50
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "BA",
@@ -777,7 +782,7 @@
           "sire": "Outstrip\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Penny Drops\n                        \n                        \n                            Dam's Sire",
           "damSire": "Invincible Spirit\n                        \n                        \n                            Same Sire",
-          "currentRating": 64,
+          "currentRating": 67,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -932,7 +937,8 @@
               "finishTime": 99.85,
               "odds": 7.6
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "CCY",
@@ -979,7 +985,7 @@
           "sire": "Mehmas\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Lady Of The Lamp\n                        \n                        \n                            Dam's Sire",
           "damSire": "Invincible Spirit\n                        \n                        \n                            Same Sire",
-          "currentRating": 75,
+          "currentRating": 77,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1044,7 +1050,7 @@
           "sire": "Headwater\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Hollywell\n                        \n                        \n                            Dam's Sire",
           "damSire": "Refuse To Bend\n                        \n                        \n                            Same Sire",
-          "currentRating": 62,
+          "currentRating": 65,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1080,7 +1086,8 @@
               "finishTime": 70.68,
               "odds": 128
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "CJE",
@@ -1145,7 +1152,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": 0,
           "pastPerformances": [
             {
               "date": "2026-02-22T00:00:00.000Z",
@@ -1232,7 +1238,8 @@
               "finishTime": 70.19,
               "odds": 29
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "BHW",
@@ -1279,7 +1286,7 @@
           "sire": "Deep Impact\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Amanee\n                        \n                        \n                            Dam's Sire",
           "damSire": "Pivotal\n                        \n                        \n                            Same Sire",
-          "currentRating": 56,
+          "currentRating": 60,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1383,7 +1390,8 @@
               "finishTime": 100.75,
               "odds": 35
             }
-          ]
+          ],
+          "ratingChange": -4
         },
         "jockey": {
           "code": "WEC",
@@ -1430,7 +1438,7 @@
           "sire": "Tivaci\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Diamond Smile\n                        \n                        \n                            Dam's Sire",
           "damSire": "Zabeel\n                        \n                        \n                            Same Sire",
-          "currentRating": 62,
+          "currentRating": 64,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1495,7 +1503,7 @@
           "sire": "Charm Spirit\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Funoon\n                        \n                        \n                            Dam's Sire",
           "damSire": "Dream Ahead\n                        \n                        \n                            Same Sire",
-          "currentRating": 67,
+          "currentRating": 71,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1616,7 +1624,8 @@
               "finishTime": 81.91,
               "odds": 2.5
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "YML",

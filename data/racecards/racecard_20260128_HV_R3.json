@@ -22,7 +22,7 @@
           "sire": "Hellbent\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Witless\n                        \n                        \n                            Dam's Sire",
           "damSire": "Stratum\n                        \n                        \n                            Same Sire",
-          "currentRating": 70,
+          "currentRating": 57,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -126,7 +126,8 @@
               "finishTime": 57.06,
               "odds": 5.4
             }
-          ]
+          ],
+          "ratingChange": 7
         },
         "jockey": {
           "code": "LDE",
@@ -294,7 +295,8 @@
               "finishTime": 58.53,
               "odds": 24
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "OJM",
@@ -359,7 +361,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": -2,
           "pastPerformances": [
             {
               "date": "2025-12-27T00:00:00.000Z",
@@ -446,7 +447,8 @@
               "finishTime": 69.23,
               "odds": 50
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "WEC",
@@ -493,7 +495,7 @@
           "sire": "Shalaa\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Lady Moura\n                        \n                        \n                            Dam's Sire",
           "damSire": "Redoute's Choice\n                        \n                        \n                            Same Sire",
-          "currentRating": 47,
+          "currentRating": 42,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -546,7 +548,8 @@
               "finishTime": 83.36,
               "odds": 170
             }
-          ]
+          ],
+          "ratingChange": -3
         },
         "jockey": {
           "code": "HEL",
@@ -593,7 +596,7 @@
           "sire": "Power\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Queen Istona\n                        \n                        \n                            Dam's Sire",
           "damSire": "Chateau Istana\n                        \n                        \n                            Same Sire",
-          "currentRating": 46,
+          "currentRating": 52,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -697,7 +700,8 @@
               "finishTime": 70.12,
               "odds": 18
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "PZ",
@@ -744,7 +748,7 @@
           "sire": "Toronado\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "In Vero We Trust\n                        \n                        \n                            Dam's Sire",
           "damSire": "Anodin\n                        \n                        \n                            Same Sire",
-          "currentRating": 42,
+          "currentRating": 46,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -797,7 +801,8 @@
               "finishTime": 71.32,
               "odds": 51
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "AA",
@@ -844,7 +849,7 @@
           "sire": "Complacent\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Thunderchine\n                        \n                        \n                            Dam's Sire",
           "damSire": "Thunder Gulch\n                        \n                        \n                            Same Sire",
-          "currentRating": 51,
+          "currentRating": 56,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -914,7 +919,8 @@
               "finishTime": 70.06,
               "odds": 6.1
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "BH",
@@ -961,7 +967,7 @@
           "sire": "Shamexpress\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Allawara\n                        \n                        \n                            Dam's Sire",
           "damSire": "Von Costa de Hero\n                        \n                        \n                            Same Sire",
-          "currentRating": 41,
+          "currentRating": 53,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1014,7 +1020,8 @@
               "finishTime": 70.34,
               "odds": 25
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "MDB",
@@ -1061,7 +1068,7 @@
           "sire": "Charm Spirit\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Nomisma\n                        \n                        \n                            Dam's Sire",
           "damSire": "Thorn Park\n                        \n                        \n                            Same Sire",
-          "currentRating": 50,
+          "currentRating": 56,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1165,7 +1172,8 @@
               "finishTime": 69.26,
               "odds": 39
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "BA",
@@ -1212,7 +1220,7 @@
           "sire": "Wrote\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Medagliana\n                        \n                        \n                            Dam's Sire",
           "damSire": "Medaglia d'Oro\n                        \n                        \n                            Same Sire",
-          "currentRating": 44,
+          "currentRating": 52,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1248,7 +1256,8 @@
               "finishTime": 70.51,
               "odds": 29
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "CCY",
@@ -1295,7 +1304,7 @@
           "sire": "Smart Missile\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Fonteyn Lane\n                        \n                        \n                            Dam's Sire",
           "damSire": "Mint Lane\n                        \n                        \n                            Same Sire",
-          "currentRating": 44,
+          "currentRating": 52,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1331,7 +1340,8 @@
               "finishTime": 72.03999999999999,
               "odds": 65
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "YML",
@@ -1378,7 +1388,7 @@
           "sire": "Hellbent\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Balady\n                        \n                        \n                            Dam's Sire",
           "damSire": "Zamindar\n                        \n                        \n                            Same Sire",
-          "currentRating": 40,
+          "currentRating": 52,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,

@@ -22,7 +22,7 @@
           "sire": "Zoustar\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Honey Rider\n                        \n                        \n                            Dam's Sire",
           "damSire": "Pins\n                        \n                        \n                            Same Sire",
-          "currentRating": 76,
+          "currentRating": 55,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -177,7 +177,8 @@
               "finishTime": 56.37,
               "odds": 11
             }
-          ]
+          ],
+          "ratingChange": -3
         },
         "jockey": {
           "code": "HCY",
@@ -224,7 +225,7 @@
           "sire": "Harry Angel\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Psychedelic\n                        \n                        \n                            Dam's Sire",
           "damSire": "Domesday\n                        \n                        \n                            Same Sire",
-          "currentRating": 60,
+          "currentRating": 52,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -260,7 +261,8 @@
               "finishTime": 70.19,
               "odds": 29
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "BH",
@@ -307,7 +309,7 @@
           "sire": "Fiorente\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Socarada\n                        \n                        \n                            Dam's Sire",
           "damSire": "Strada\n                        \n                        \n                            Same Sire",
-          "currentRating": 36,
+          "currentRating": 50,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -496,7 +498,8 @@
               "finishTime": 82.82,
               "odds": 8.2
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "YML",
@@ -561,7 +564,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": 0,
           "pastPerformances": [
             {
               "date": "2025-10-19T00:00:00.000Z",
@@ -733,7 +735,8 @@
               "finishTime": 71.48,
               "odds": 6.9
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "HEL",
@@ -780,7 +783,7 @@
           "sire": "Satono Aladdin\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Fairfield Flame\n                        \n                        \n                            Dam's Sire",
           "damSire": "Oasis Dream\n                        \n                        \n                            Same Sire",
-          "currentRating": 43,
+          "currentRating": 50,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -969,7 +972,8 @@
               "finishTime": 82.89,
               "odds": 38
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "FEL",
@@ -1016,7 +1020,7 @@
           "sire": "Wrote\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Madrekay\n                        \n                        \n                            Dam's Sire",
           "damSire": "Towkay\n                        \n                        \n                            Same Sire",
-          "currentRating": 53,
+          "currentRating": 43,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1120,7 +1124,8 @@
               "finishTime": 57.11,
               "odds": 16
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "DHA",
@@ -1167,7 +1172,7 @@
           "sire": "Deep Field\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Feeling Positive\n                        \n                        \n                            Dam's Sire",
           "damSire": "Not A Single Doubt\n                        \n                        \n                            Same Sire",
-          "currentRating": 38,
+          "currentRating": 47,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1356,7 +1361,8 @@
               "finishTime": 70.35,
               "odds": 50
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "LDE",
@@ -1403,7 +1409,7 @@
           "sire": "Deep Field\n                        \n                        \n                            Dam",
           "dam": "Murtle Turtle\n                        \n                        \n                            Dam's Sire",
           "damSire": "Murtajill\n                        \n                        \n                            Same Sire",
-          "currentRating": 40,
+          "currentRating": 50,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1592,7 +1598,8 @@
               "finishTime": 70.5,
               "odds": 65
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "MCJ",
@@ -1639,7 +1646,7 @@
           "sire": "Prized Icon\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Miss Cacciatore\n                        \n                        \n                            Dam's Sire",
           "damSire": "Snitzel\n                        \n                        \n                            Same Sire",
-          "currentRating": 27,
+          "currentRating": 44,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1828,7 +1835,8 @@
               "finishTime": 70.37,
               "odds": 57
             }
-          ]
+          ],
+          "ratingChange": -3
         },
         "jockey": {
           "code": "KRW",
@@ -1875,7 +1883,7 @@
           "sire": "Havana Grey\n                        \n                        \n                            Dam",
           "dam": "Foxcatcher\n                        \n                        \n                            Dam's Sire",
           "damSire": "Foxwedge\n                        \n                        \n                            Same Sire",
-          "currentRating": 50,
+          "currentRating": 58,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2064,7 +2072,8 @@
               "finishTime": 71.82,
               "odds": 32
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "CML",
@@ -2111,7 +2120,7 @@
           "sire": "Super One\n                        \n                        \n                            Dam",
           "dam": "Sebeauty\n                        \n                        \n                            Dam's Sire",
           "damSire": "Sebring\n                        \n                        \n                            Same Sire",
-          "currentRating": 49,
+          "currentRating": 51,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2300,7 +2309,8 @@
               "finishTime": 69.73,
               "odds": 31
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "OJM",
@@ -2365,7 +2375,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": -3,
           "pastPerformances": [
             {
               "date": "2025-10-30T00:00:00.000Z",
@@ -2435,7 +2444,8 @@
               "finishTime": 70.48,
               "odds": 238
             }
-          ]
+          ],
+          "ratingChange": -3
         },
         "jockey": {
           "code": "CCY",

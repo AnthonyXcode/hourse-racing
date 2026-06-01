@@ -22,7 +22,7 @@
           "sire": "Gingerbread Man\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Sonata\n                        \n                        \n                            Dam's Sire",
           "damSire": "Bahhare\n                        \n                        \n                            Same Sire",
-          "currentRating": 73,
+          "currentRating": 58,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -75,7 +75,8 @@
               "finishTime": 70.02,
               "odds": 34
             }
-          ]
+          ],
+          "ratingChange": 6
         },
         "jockey": {
           "code": "MCJ",
@@ -122,7 +123,7 @@
           "sire": "Proisir\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Mavorna\n                        \n                        \n                            Dam's Sire",
           "damSire": "Iffraaj\n                        \n                        \n                            Same Sire",
-          "currentRating": 70,
+          "currentRating": 54,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -158,7 +159,8 @@
               "finishTime": 69.9,
               "odds": 26
             }
-          ]
+          ],
+          "ratingChange": 2
         },
         "jockey": {
           "code": "BH",
@@ -223,7 +225,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": -2,
           "pastPerformances": [
             {
               "date": "2025-11-19T00:00:00.000Z",
@@ -327,7 +328,8 @@
               "finishTime": 59.15,
               "odds": 56
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "CCY",
@@ -374,7 +376,7 @@
           "sire": "Ribchester\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Midnight Story\n                        \n                        \n                            Dam's Sire",
           "damSire": "Dylan Thomas\n                        \n                        \n                            Same Sire",
-          "currentRating": 42,
+          "currentRating": 49,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -444,7 +446,8 @@
               "finishTime": 69.34,
               "odds": 133
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "PMF",
@@ -491,7 +494,7 @@
           "sire": "Shamexpress\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Christmas Day\n                        \n                        \n                            Dam's Sire",
           "damSire": "Zabeel\n                        \n                        \n                            Same Sire",
-          "currentRating": 51,
+          "currentRating": 48,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -680,7 +683,8 @@
               "finishTime": 82.72,
               "odds": 6.7
             }
-          ]
+          ],
+          "ratingChange": 1
         },
         "jockey": {
           "code": "AVB",
@@ -727,7 +731,7 @@
           "sire": "Impending\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Isola Blu\n                        \n                        \n                            Dam's Sire",
           "damSire": "Blackfriars\n                        \n                        \n                            Same Sire",
-          "currentRating": 59,
+          "currentRating": 55,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -916,7 +920,8 @@
               "finishTime": 82.3,
               "odds": 9.3
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "OJM",
@@ -1152,7 +1157,8 @@
               "finishTime": 69.87,
               "odds": 7.9
             }
-          ]
+          ],
+          "ratingChange": 1
         },
         "jockey": {
           "code": "DHA",
@@ -1199,7 +1205,7 @@
           "sire": "Blue Point\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Dame Hester\n                        \n                        \n                            Dam's Sire",
           "damSire": "Diktat\n                        \n                        \n                            Same Sire",
-          "currentRating": 51,
+          "currentRating": 56,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1354,7 +1360,8 @@
               "finishTime": 83.43,
               "odds": 76
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "AA",
@@ -1401,7 +1408,7 @@
           "sire": "All Too Hard\n                        \n                        \n                            Dam",
           "dam": "Givem Hell\n                        \n                        \n                            Dam's Sire",
           "damSire": "Commands\n                        \n                        \n                            Same Sire",
-          "currentRating": 31,
+          "currentRating": 50,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1454,7 +1461,8 @@
               "finishTime": 70.95,
               "odds": 86
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "HCY",
@@ -1501,7 +1509,7 @@
           "sire": "Neorealism\n                        \n                        \n                            Dam",
           "dam": "Imagined\n                        \n                        \n                            Dam's Sire",
           "damSire": "King Of Danes\n                        \n                        \n                            Same Sire",
-          "currentRating": 33,
+          "currentRating": 42,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1605,7 +1613,8 @@
               "finishTime": 103.06,
               "odds": 24
             }
-          ]
+          ],
+          "ratingChange": -3
         },
         "jockey": {
           "code": "CML",
@@ -1652,7 +1661,7 @@
           "sire": "Darci Brahma\n                        \n                        \n                            Dam",
           "dam": "Strictly Maternal\n                        \n                        \n                            Dam's Sire",
           "damSire": "O'Reilly\n                        \n                        \n                            Same Sire",
-          "currentRating": 46,
+          "currentRating": 50,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1841,7 +1850,8 @@
               "finishTime": 101.11,
               "odds": 6.8
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "HEL",
@@ -1888,7 +1898,7 @@
           "sire": "Sacred Falls\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Do Ra Mi\n                        \n                        \n                            Dam's Sire",
           "damSire": "Savabeel\n                        \n                        \n                            Same Sire",
-          "currentRating": 56,
+          "currentRating": 54,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2077,7 +2087,8 @@
               "finishTime": 70.46000000000001,
               "odds": 5.3
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "LDE",

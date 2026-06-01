@@ -22,7 +22,7 @@
           "sire": "Mongolian Khan\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Shimmy\n                        \n                        \n                            Dam's Sire",
           "damSire": "Zabeel\n                        \n                        \n                            Same Sire",
-          "currentRating": 66,
+          "currentRating": 60,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -211,7 +211,8 @@
               "finishTime": 99.85,
               "odds": 6.7
             }
-          ]
+          ],
+          "ratingChange": 2
         },
         "jockey": {
           "code": "HEL",
@@ -258,7 +259,7 @@
           "sire": "Kodi Bear\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Malilla\n                        \n                        \n                            Dam's Sire",
           "damSire": "Red Clubs\n                        \n                        \n                            Same Sire",
-          "currentRating": 59,
+          "currentRating": 51,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -430,7 +431,8 @@
               "finishTime": 82.81,
               "odds": 155
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "WEC",
@@ -477,7 +479,7 @@
           "sire": "Invincible Spirit\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Purple Sage\n                        \n                        \n                            Dam's Sire",
           "damSire": "Danehill Dancer\n                        \n                        \n                            Same Sire",
-          "currentRating": 37,
+          "currentRating": 53,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -632,7 +634,8 @@
               "finishTime": 108.99000000000001,
               "odds": 103
             }
-          ]
+          ],
+          "ratingChange": -3
         },
         "jockey": {
           "code": "PDF",
@@ -697,7 +700,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": -2,
           "pastPerformances": [
             {
               "date": "2025-10-15T00:00:00.000Z",
@@ -818,7 +820,8 @@
               "finishTime": 70.25,
               "odds": 74
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "PMF",
@@ -865,7 +868,7 @@
           "sire": "Pierro\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Aonair\n                        \n                        \n                            Dam's Sire",
           "damSire": "Fastnet Rock\n                        \n                        \n                            Same Sire",
-          "currentRating": 29,
+          "currentRating": 44,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1054,7 +1057,8 @@
               "finishTime": 123.12,
               "odds": 8
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "TEK",
@@ -1101,7 +1105,7 @@
           "sire": "Mehmas\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Obama Rule\n                        \n                        \n                            Dam's Sire",
           "damSire": "Danehill Dancer\n                        \n                        \n                            Same Sire",
-          "currentRating": 61,
+          "currentRating": 51,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1290,7 +1294,8 @@
               "finishTime": 82.64,
               "odds": 4.8
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "BH",
@@ -1337,7 +1342,7 @@
           "sire": "Ardrossan\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Miss Rule\n                        \n                        \n                            Dam's Sire",
           "damSire": "Bachelor Duke\n                        \n                        \n                            Same Sire",
-          "currentRating": 50,
+          "currentRating": 49,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1424,7 +1429,8 @@
               "finishTime": 70.41,
               "odds": 17
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "BA",
@@ -1471,7 +1477,7 @@
           "sire": "U S Navy Flag\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Lazaan\n                        \n                        \n                            Dam's Sire",
           "damSire": "Zabeel\n                        \n                        \n                            Same Sire",
-          "currentRating": 37,
+          "currentRating": 51,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1660,7 +1666,8 @@
               "finishTime": 94.15,
               "odds": 45
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "HCY",
@@ -1707,7 +1714,7 @@
           "sire": "Ribchester\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Snitz Of Time\n                        \n                        \n                            Dam's Sire",
           "damSire": "Snitzel\n                        \n                        \n                            Same Sire",
-          "currentRating": 34,
+          "currentRating": 47,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1777,7 +1784,8 @@
               "finishTime": 70.61,
               "odds": 70
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "LDE",
@@ -1824,7 +1832,7 @@
           "sire": "War Decree\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Back Date\n                        \n                        \n                            Dam's Sire",
           "damSire": "Zacinto\n                        \n                        \n                            Same Sire",
-          "currentRating": 34,
+          "currentRating": 41,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2013,7 +2021,8 @@
               "finishTime": 82.39,
               "odds": 205
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "AA",
@@ -2060,7 +2069,7 @@
           "sire": "Fastnet Rock\n                        \n                        \n                            Dam",
           "dam": "Ennerdale\n                        \n                        \n                            Dam's Sire",
           "damSire": "Singspiel\n                        \n                        \n                            Same Sire",
-          "currentRating": 49,
+          "currentRating": 56,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2147,7 +2156,8 @@
               "finishTime": 57.73,
               "odds": 101
             }
-          ]
+          ],
+          "ratingChange": -3
         },
         "jockey": {
           "code": "WPN",
@@ -2212,7 +2222,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": -1,
           "pastPerformances": [
             {
               "date": "2025-11-09T00:00:00.000Z",
@@ -2384,7 +2393,8 @@
               "finishTime": 99.84,
               "odds": 2.3
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "FEL",

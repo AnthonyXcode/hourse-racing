@@ -22,7 +22,7 @@
           "sire": "Super Seth\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Savodara\n                        \n                        \n                            Dam's Sire",
           "damSire": "Savabeel\n                        \n                        \n                            Same Sire",
-          "currentRating": 60,
+          "currentRating": 54,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -92,7 +92,8 @@
               "finishTime": 69.94,
               "odds": 83
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "HCY",
@@ -139,7 +140,7 @@
           "sire": "Almanzor\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Glittering Tax\n                        \n                        \n                            Dam's Sire",
           "damSire": "Artax\n                        \n                        \n                            Same Sire",
-          "currentRating": 50,
+          "currentRating": 48,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -260,7 +261,8 @@
               "finishTime": 81.98,
               "odds": 10
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "BA",
@@ -307,7 +309,7 @@
           "sire": "Fastnet Rock\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Pretty Paper\n                        \n                        \n                            Dam's Sire",
           "damSire": "Medaglia d'Oro\n                        \n                        \n                            Same Sire",
-          "currentRating": 56,
+          "currentRating": 58,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -445,7 +447,8 @@
               "finishTime": 69.52,
               "odds": 26
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "FEL",
@@ -492,7 +495,7 @@
           "sire": "Sooboog\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Andronica\n                        \n                        \n                            Dam's Sire",
           "damSire": "Mujahid\n                        \n                        \n                            Same Sire",
-          "currentRating": 60,
+          "currentRating": 59,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -613,7 +616,8 @@
               "finishTime": 70.64,
               "odds": 23
             }
-          ]
+          ],
+          "ratingChange": 7
         },
         "jockey": {
           "code": "LDE",
@@ -660,7 +664,7 @@
           "sire": "Lope de Vega\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "London Plane\n                        \n                        \n                            Dam's Sire",
           "damSire": "Danehill Dancer\n                        \n                        \n                            Same Sire",
-          "currentRating": 46,
+          "currentRating": 47,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -713,7 +717,8 @@
               "finishTime": 69.87,
               "odds": 28
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "AA",
@@ -760,7 +765,7 @@
           "sire": "Needs Further\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Pleats\n                        \n                        \n                            Dam's Sire",
           "damSire": "Green Desert\n                        \n                        \n                            Same Sire",
-          "currentRating": 38,
+          "currentRating": 41,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -864,7 +869,8 @@
               "finishTime": 70.61,
               "odds": 38
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "CML",
@@ -929,7 +935,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": 5,
           "pastPerformances": [
             {
               "date": "2026-01-14T00:00:00.000Z",
@@ -1016,7 +1021,8 @@
               "finishTime": 58.86,
               "odds": 7.4
             }
-          ]
+          ],
+          "ratingChange": 5
         },
         "jockey": {
           "code": "PZ",
@@ -1063,7 +1069,7 @@
           "sire": "Per Incanto\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "High Lady\n                        \n                        \n                            Dam's Sire",
           "damSire": "High Chaparral\n                        \n                        \n                            Same Sire",
-          "currentRating": 48,
+          "currentRating": 52,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1099,7 +1105,8 @@
               "finishTime": 70.58,
               "odds": 9.1
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "OJM",
@@ -1146,7 +1153,7 @@
           "sire": "Exceedance\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "La Questa\n                        \n                        \n                            Dam's Sire",
           "damSire": "West Quest\n                        \n                        \n                            Same Sire",
-          "currentRating": 65,
+          "currentRating": 58,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1284,7 +1291,8 @@
               "finishTime": 70.53,
               "odds": 16
             }
-          ]
+          ],
+          "ratingChange": 1
         },
         "jockey": {
           "code": "HEL",
@@ -1331,7 +1339,7 @@
           "sire": "Royal Meeting\n                        \n                        \n                            Dam",
           "dam": "Flying Strike\n                        \n                        \n                            Dam's Sire",
           "damSire": "Stravinsky\n                        \n                        \n                            Same Sire",
-          "currentRating": 54,
+          "currentRating": 60,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1401,7 +1409,8 @@
               "finishTime": 69.73,
               "odds": 66
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "CJE",
@@ -1448,7 +1457,7 @@
           "sire": "Charm Spirit\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Minnaloushka\n                        \n                        \n                            Dam's Sire",
           "damSire": "Black Minnaloushe\n                        \n                        \n                            Same Sire",
-          "currentRating": 43,
+          "currentRating": 48,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1603,7 +1612,8 @@
               "finishTime": 58.52,
               "odds": 143
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "KRW",
@@ -1650,7 +1660,7 @@
           "sire": "Impending\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Sandida\n                        \n                        \n                            Dam's Sire",
           "damSire": "Hinchinbrook\n                        \n                        \n                            Same Sire",
-          "currentRating": 50,
+          "currentRating": 58,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1737,7 +1747,8 @@
               "finishTime": 71.78999999999999,
               "odds": 99
             }
-          ]
+          ],
+          "ratingChange": -3
         },
         "jockey": {
           "code": "MHT",

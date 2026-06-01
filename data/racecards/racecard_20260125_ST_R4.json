@@ -22,7 +22,7 @@
           "sire": "Brave Smash\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Treatmelikealady\n                        \n                        \n                            Dam's Sire",
           "damSire": "Real Saga\n                        \n                        \n                            Same Sire",
-          "currentRating": 58,
+          "currentRating": 43,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -58,7 +58,8 @@
               "finishTime": 70.53,
               "odds": 14
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "TEK",
@@ -158,7 +159,8 @@
               "finishTime": 57.28,
               "odds": 6.4
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "PZ",
@@ -205,7 +207,7 @@
           "sire": "Ribchester\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Midnight Story\n                        \n                        \n                            Dam's Sire",
           "damSire": "Dylan Thomas\n                        \n                        \n                            Same Sire",
-          "currentRating": 42,
+          "currentRating": 47,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -292,7 +294,8 @@
               "finishTime": 70.62,
               "odds": 3.4
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "AVB",
@@ -357,7 +360,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": 0,
           "pastPerformances": [
             {
               "date": "2025-10-12T00:00:00.000Z",
@@ -393,7 +395,8 @@
               "finishTime": 70.72,
               "odds": 4.2
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "PDF",
@@ -440,7 +443,7 @@
           "sire": "Rich Enuff\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Harmony Hall\n                        \n                        \n                            Dam's Sire",
           "damSire": "Minardi\n                        \n                        \n                            Same Sire",
-          "currentRating": 42,
+          "currentRating": 50,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -544,7 +547,8 @@
               "finishTime": 69.39,
               "odds": 6.4
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "MCJ",
@@ -591,7 +595,7 @@
           "sire": "All Too Hard\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Tenderly\n                        \n                        \n                            Dam's Sire",
           "damSire": "Stratum\n                        \n                        \n                            Same Sire",
-          "currentRating": 32,
+          "currentRating": 46,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -644,7 +648,8 @@
               "finishTime": 69.68,
               "odds": 12
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "AA",
@@ -691,7 +696,7 @@
           "sire": "Divine Prophet\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Millenium Star\n                        \n                        \n                            Dam's Sire",
           "damSire": "Octagonal\n                        \n                        \n                            Same Sire",
-          "currentRating": 51,
+          "currentRating": 57,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -778,7 +783,8 @@
               "finishTime": 70.27,
               "odds": 22
             }
-          ]
+          ],
+          "ratingChange": 2
         },
         "jockey": {
           "code": "HCY",
@@ -825,7 +831,7 @@
           "sire": "All Too Hard\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Sutton Queen\n                        \n                        \n                            Dam's Sire",
           "damSire": "Beautiful Crown\n                        \n                        \n                            Same Sire",
-          "currentRating": 47,
+          "currentRating": 52,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -890,7 +896,7 @@
           "sire": "Pride Of Dubai\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Layton Abbey\n                        \n                        \n                            Dam's Sire",
           "damSire": "High Chaparral\n                        \n                        \n                            Same Sire",
-          "currentRating": 45,
+          "currentRating": 51,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -994,7 +1000,8 @@
               "finishTime": 56.85,
               "odds": 55
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "CJE",
@@ -1041,7 +1048,7 @@
           "sire": "King's Legacy\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "I Like Toucans\n                        \n                        \n                            Dam's Sire",
           "damSire": "Shooting To Win\n                        \n                        \n                            Same Sire",
-          "currentRating": 46,
+          "currentRating": 52,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1106,7 +1113,7 @@
           "sire": "Darci Brahma\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Lion Blanc\n                        \n                        \n                            Dam's Sire",
           "damSire": "Reset\n                        \n                        \n                            Same Sire",
-          "currentRating": 36,
+          "currentRating": 44,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1227,7 +1234,8 @@
               "finishTime": 69,
               "odds": 149
             }
-          ]
+          ],
+          "ratingChange": -3
         },
         "jockey": {
           "code": "PMF",
@@ -1357,7 +1365,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": 0,
           "pastPerformances": [
             {
               "date": "2026-01-01T00:00:00.000Z",
@@ -1376,7 +1383,8 @@
               "finishTime": 70.14,
               "odds": 38
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "FEL",
@@ -1441,7 +1449,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": 0,
           "pastPerformances": [
             {
               "date": "2026-01-01T00:00:00.000Z",
@@ -1528,7 +1535,8 @@
               "finishTime": 70.61,
               "odds": 59
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "YML",

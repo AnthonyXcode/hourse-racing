@@ -40,7 +40,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": -2,
           "pastPerformances": [
             {
               "date": "2026-03-01T00:00:00.000Z",
@@ -127,7 +126,8 @@
               "finishTime": 100.4,
               "odds": 52
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "BH",
@@ -174,7 +174,7 @@
           "sire": "Fascinating Rock\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Ataahua\n                        \n                        \n                            Dam's Sire",
           "damSire": "Tertullian\n                        \n                        \n                            Same Sire",
-          "currentRating": 40,
+          "currentRating": 38,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -329,7 +329,8 @@
               "finishTime": 109.09,
               "odds": 6.7
             }
-          ]
+          ],
+          "ratingChange": 1
         },
         "jockey": {
           "code": "BA",
@@ -376,7 +377,7 @@
           "sire": "Mastercraftsman\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Excellent Mariner\n                        \n                        \n                            Dam's Sire",
           "damSire": "Henrythenavigator\n                        \n                        \n                            Same Sire",
-          "currentRating": 38,
+          "currentRating": 40,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -480,7 +481,8 @@
               "finishTime": 109.43,
               "odds": 29
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "PZ",
@@ -527,7 +529,7 @@
           "sire": "Savabeel\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Lady Chaparral\n                        \n                        \n                            Dam's Sire",
           "damSire": "High Chaparral\n                        \n                        \n                            Same Sire",
-          "currentRating": 34,
+          "currentRating": 38,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -648,7 +650,8 @@
               "finishTime": 100.37,
               "odds": 8.9
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "CJE",
@@ -695,7 +698,7 @@
           "sire": "Proisir\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Ends Meet\n                        \n                        \n                            Dam's Sire",
           "damSire": "Anabaa\n                        \n                        \n                            Same Sire",
-          "currentRating": 30,
+          "currentRating": 34,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -799,7 +802,8 @@
               "finishTime": 97.69,
               "odds": 8.9
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "KRW",
@@ -933,7 +937,8 @@
               "finishTime": 69.89,
               "odds": 29
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "TEK",
@@ -980,7 +985,7 @@
           "sire": "Pierro\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Aonair\n                        \n                        \n                            Dam's Sire",
           "damSire": "Fastnet Rock\n                        \n                        \n                            Same Sire",
-          "currentRating": 31,
+          "currentRating": 35,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1186,7 +1191,8 @@
               "finishTime": 109.28,
               "odds": 36
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "AA",
@@ -1435,7 +1441,7 @@
           "sire": "All Too Hard\n                        \n                        \n                            Dam",
           "dam": "Tahnee Tiara\n                        \n                        \n                            Dam's Sire",
           "damSire": "Commands\n                        \n                        \n                            Same Sire",
-          "currentRating": 30,
+          "currentRating": 36,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1624,7 +1630,8 @@
               "finishTime": 69.53,
               "odds": 31
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "MDB",
@@ -1809,7 +1816,8 @@
               "finishTime": 95.5,
               "odds": 27
             }
-          ]
+          ],
+          "ratingChange": 7
         },
         "jockey": {
           "code": "CML",
@@ -1856,7 +1864,7 @@
           "sire": "Burgundy\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Steal\n                        \n                        \n                            Dam's Sire",
           "damSire": "Red Ransom\n                        \n                        \n                            Same Sire",
-          "currentRating": 22,
+          "currentRating": 28,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1977,7 +1985,8 @@
               "finishTime": 96.45,
               "odds": 30
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "OJM",
@@ -2024,7 +2033,7 @@
           "sire": "Embellish\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Lovetrista\n                        \n                        \n                            Dam's Sire",
           "damSire": "Rock Of Gibraltar\n                        \n                        \n                            Same Sire",
-          "currentRating": 22,
+          "currentRating": 24,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2128,7 +2137,8 @@
               "finishTime": 110.67,
               "odds": 9.5
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "HCY",

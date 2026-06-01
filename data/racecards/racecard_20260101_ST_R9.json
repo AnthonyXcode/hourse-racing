@@ -22,7 +22,7 @@
           "sire": "Deep Field\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "On The Que Tee\n                        \n                        \n                            Dam's Sire",
           "damSire": "Sebring\n                        \n                        \n                            Same Sire",
-          "currentRating": 84,
+          "currentRating": 61,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -40,7 +40,8 @@
             "PC",
             "SR"
           ],
-          "pastPerformances": []
+          "pastPerformances": [],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "KRW",
@@ -87,7 +88,7 @@
           "sire": "Rich Enuff\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Super Flare\n                        \n                        \n                            Dam's Sire",
           "damSire": "Fighting Sun\n                        \n                        \n                            Same Sire",
-          "currentRating": 80,
+          "currentRating": 77,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -105,7 +106,8 @@
             "PC",
             "SR"
           ],
-          "pastPerformances": []
+          "pastPerformances": [],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "BH",
@@ -152,7 +154,7 @@
           "sire": "I Am Invincible\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Heatherly\n                        \n                        \n                            Dam's Sire",
           "damSire": "Lonhro\n                        \n                        \n                            Same Sire",
-          "currentRating": 78,
+          "currentRating": 68,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -217,7 +219,7 @@
           "sire": "Encryption\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Lobola\n                        \n                        \n                            Dam's Sire",
           "damSire": "Anabaa\n                        \n                        \n                            Same Sire",
-          "currentRating": 68,
+          "currentRating": 65,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -270,7 +272,8 @@
               "finishTime": 57.64,
               "odds": 37
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "CML",
@@ -317,7 +320,7 @@
           "sire": "Royal Mo\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Idle Hour\n                        \n                        \n                            Dam's Sire",
           "damSire": "Imperial Stride\n                        \n                        \n                            Same Sire",
-          "currentRating": 82,
+          "currentRating": 72,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -382,7 +385,7 @@
           "sire": "Written Tycoon\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Best Yet To Come\n                        \n                        \n                            Dam's Sire",
           "damSire": "Econsul\n                        \n                        \n                            Same Sire",
-          "currentRating": 56,
+          "currentRating": 64,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -452,7 +455,8 @@
               "finishTime": 69.34,
               "odds": 11
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "AA",
@@ -499,7 +503,7 @@
           "sire": "Shooting To Win\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Magic Raelene\n                        \n                        \n                            Dam's Sire",
           "damSire": "Magic Albert\n                        \n                        \n                            Same Sire",
-          "currentRating": 53,
+          "currentRating": 62,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -552,7 +556,8 @@
               "finishTime": 72.07,
               "odds": 16
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "TEK",
@@ -599,7 +604,7 @@
           "sire": "Sooboog\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Hidden Numbers\n                        \n                        \n                            Dam's Sire",
           "damSire": "Uncle Mo\n                        \n                        \n                            Same Sire",
-          "currentRating": 56,
+          "currentRating": 65,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -635,7 +640,8 @@
               "finishTime": 70.2,
               "odds": 33
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "HCY",
@@ -700,7 +706,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": 0,
           "pastPerformances": [
             {
               "date": "2025-12-10T00:00:00.000Z",
@@ -787,7 +792,8 @@
               "finishTime": 69.65,
               "odds": 4.8
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "PDF",
@@ -834,7 +840,7 @@
           "sire": "I Am Invincible\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Faint Perfume\n                        \n                        \n                            Dam's Sire",
           "damSire": "Shamardal\n                        \n                        \n                            Same Sire",
-          "currentRating": 49,
+          "currentRating": 64,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -870,7 +876,8 @@
               "finishTime": 70.9,
               "odds": 12
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "YML",
@@ -917,7 +924,7 @@
           "sire": "Advertise\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Squash\n                        \n                        \n                            Dam's Sire",
           "damSire": "Pastoral Pursuits\n                        \n                        \n                            Same Sire",
-          "currentRating": 69,
+          "currentRating": 74,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -987,7 +994,8 @@
               "finishTime": 68.87,
               "odds": 66
             }
-          ]
+          ],
+          "ratingChange": 6
         },
         "jockey": {
           "code": "WEC",
@@ -1034,7 +1042,7 @@
           "sire": "Prince Of Brooklyn\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Perfect Jazz\n                        \n                        \n                            Dam's Sire",
           "damSire": "Perfectly Ready\n                        \n                        \n                            Same Sire",
-          "currentRating": 61,
+          "currentRating": 65,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1169,7 +1177,8 @@
               "finishTime": 69.33,
               "odds": 8
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "OJM",
@@ -1269,7 +1278,8 @@
               "finishTime": 70.1,
               "odds": 38
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "PZ",

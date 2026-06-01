@@ -22,7 +22,7 @@
           "sire": "I Am Invincible\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Heatherly\n                        \n                        \n                            Dam's Sire",
           "damSire": "Lonhro\n                        \n                        \n                            Same Sire",
-          "currentRating": 78,
+          "currentRating": 69,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -58,7 +58,8 @@
               "finishTime": 69.24,
               "odds": 14
             }
-          ]
+          ],
+          "ratingChange": 1
         },
         "jockey": {
           "code": "PZ",
@@ -105,7 +106,7 @@
           "sire": "Deep Field\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "On The Que Tee\n                        \n                        \n                            Dam's Sire",
           "damSire": "Sebring\n                        \n                        \n                            Same Sire",
-          "currentRating": 84,
+          "currentRating": 70,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -141,7 +142,8 @@
               "finishTime": 68.96000000000001,
               "odds": 3.3
             }
-          ]
+          ],
+          "ratingChange": 9
         },
         "jockey": {
           "code": "KRW",
@@ -188,7 +190,7 @@
           "sire": "Hellbent\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Heartlings\n                        \n                        \n                            Dam's Sire",
           "damSire": "Pendragon\n                        \n                        \n                            Same Sire",
-          "currentRating": 67,
+          "currentRating": 70,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -241,7 +243,8 @@
               "finishTime": 69.45,
               "odds": 29
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "FEL",
@@ -288,7 +291,7 @@
           "sire": "Capitalist\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "We Can Dance\n                        \n                        \n                            Dam's Sire",
           "damSire": "Shinzig\n                        \n                        \n                            Same Sire",
-          "currentRating": 76,
+          "currentRating": 60,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -375,7 +378,8 @@
               "finishTime": 68.36,
               "odds": 3.2
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "BA",
@@ -475,7 +479,8 @@
               "finishTime": 83.99,
               "odds": 8
             }
-          ]
+          ],
+          "ratingChange": 7
         },
         "jockey": {
           "code": "YML",
@@ -522,7 +527,7 @@
           "sire": "Ilovethiscity\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "O'Reilly's Charm\n                        \n                        \n                            Dam's Sire",
           "damSire": "O'Reilly\n                        \n                        \n                            Same Sire",
-          "currentRating": 55,
+          "currentRating": 62,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -592,7 +597,8 @@
               "finishTime": 57.16,
               "odds": 36
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "BHW",
@@ -639,7 +645,7 @@
           "sire": "Soldier's Call\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Parle Moi\n                        \n                        \n                            Dam's Sire",
           "damSire": "Giant's Causeway\n                        \n                        \n                            Same Sire",
-          "currentRating": 76,
+          "currentRating": 78,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -743,7 +749,8 @@
               "finishTime": 81.44,
               "odds": 9
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "MDB",
@@ -790,7 +797,7 @@
           "sire": "Sooboog\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Hidden Numbers\n                        \n                        \n                            Dam's Sire",
           "damSire": "Uncle Mo\n                        \n                        \n                            Same Sire",
-          "currentRating": 56,
+          "currentRating": 64,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -843,7 +850,8 @@
               "finishTime": 70.2,
               "odds": 33
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "GM",
@@ -890,7 +898,7 @@
           "sire": "Starspangledbanner\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "My Call\n                        \n                        \n                            Dam's Sire",
           "damSire": "Shamardal\n                        \n                        \n                            Same Sire",
-          "currentRating": 57,
+          "currentRating": 61,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -977,7 +985,8 @@
               "finishTime": 69.88,
               "odds": 133
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "TEK",
@@ -1042,7 +1051,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": -2,
           "pastPerformances": [
             {
               "date": "2026-01-11T00:00:00.000Z",
@@ -1112,7 +1120,8 @@
               "finishTime": 69.59,
               "odds": 53
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "AVB",
@@ -1159,7 +1168,7 @@
           "sire": "Castelvecchio\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Sister Phenomenon\n                        \n                        \n                            Dam's Sire",
           "damSire": "Rock Of Gibraltar\n                        \n                        \n                            Same Sire",
-          "currentRating": 62,
+          "currentRating": 64,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1224,7 +1233,7 @@
           "sire": "Rebel Dane\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Braeview Miss\n                        \n                        \n                            Dam's Sire",
           "damSire": "Testafiable\n                        \n                        \n                            Same Sire",
-          "currentRating": 53,
+          "currentRating": 65,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1260,7 +1269,8 @@
               "finishTime": 71.06,
               "odds": 25
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "PMF",
@@ -1307,7 +1317,7 @@
           "sire": "Fastnet Rock\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Pretty Paper\n                        \n                        \n                            Dam's Sire",
           "damSire": "Medaglia d'Oro\n                        \n                        \n                            Same Sire",
-          "currentRating": 54,
+          "currentRating": 62,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1411,7 +1421,8 @@
               "finishTime": 69.52,
               "odds": 26
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "HEL",
@@ -1458,7 +1469,7 @@
           "sire": "I Am Invincible\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Luskintyre Lass\n                        \n                        \n                            Dam's Sire",
           "damSire": "Snitzel\n                        \n                        \n                            Same Sire",
-          "currentRating": 60,
+          "currentRating": 66,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,

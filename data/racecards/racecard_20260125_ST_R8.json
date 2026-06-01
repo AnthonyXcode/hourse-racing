@@ -22,7 +22,7 @@
           "sire": "Acclamation\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Folk Melody\n                        \n                        \n                            Dam's Sire",
           "damSire": "Street Cry\n                        \n                        \n                            Same Sire",
-          "currentRating": 139,
+          "currentRating": 135,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -75,7 +75,8 @@
               "finishTime": 123.72,
               "odds": 1.4
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "MCJ",
@@ -122,7 +123,7 @@
           "sire": "Sweynesse\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Madonna Mia\n                        \n                        \n                            Dam's Sire",
           "damSire": "Red Clubs\n                        \n                        \n                            Same Sire",
-          "currentRating": 123,
+          "currentRating": 121,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -192,7 +193,8 @@
               "finishTime": 67.98,
               "odds": 29
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "LDE",
@@ -239,7 +241,7 @@
           "sire": "Deep Field\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Raheights\n                        \n                        \n                            Dam's Sire",
           "damSire": "Rahy\n                        \n                        \n                            Same Sire",
-          "currentRating": 128,
+          "currentRating": 133,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -309,7 +311,8 @@
               "finishTime": 93.45,
               "odds": 6.7
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "PZ",
@@ -356,7 +359,7 @@
           "sire": "Sebring\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Impressive Jeuney\n                        \n                        \n                            Dam's Sire",
           "damSire": "Jeune\n                        \n                        \n                            Same Sire",
-          "currentRating": 101,
+          "currentRating": 111,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -460,7 +463,8 @@
               "finishTime": 92.84,
               "odds": 22
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "AVB",
@@ -507,7 +511,7 @@
           "sire": "Wandjina\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Voltara\n                        \n                        \n                            Dam's Sire",
           "damSire": "More Than Ready\n                        \n                        \n                            Same Sire",
-          "currentRating": 118,
+          "currentRating": 122,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -577,7 +581,8 @@
               "finishTime": 93,
               "odds": 10
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "GM",
@@ -624,7 +629,7 @@
           "sire": "Flying Artie\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Set The Tone\n                        \n                        \n                            Dam's Sire",
           "damSire": "Reset\n                        \n                        \n                            Same Sire",
-          "currentRating": 124,
+          "currentRating": 122,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -711,7 +716,8 @@
               "finishTime": 80.78999999999999,
               "odds": 2.2
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "BA",
@@ -776,7 +782,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": -2,
           "pastPerformances": [
             {
               "date": "2025-12-14T00:00:00.000Z",
@@ -829,7 +834,8 @@
               "finishTime": 92.87,
               "odds": 80
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "MDB",
@@ -876,7 +882,7 @@
           "sire": "Capitalist\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Emirates Comfort\n                        \n                        \n                            Dam's Sire",
           "damSire": "Dubawi\n                        \n                        \n                            Same Sire",
-          "currentRating": 111,
+          "currentRating": 112,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -963,7 +969,8 @@
               "finishTime": 81.28,
               "odds": 45
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "HCY",
@@ -1010,7 +1017,7 @@
           "sire": "Belardo\n                        \n                        \n                            Dam",
           "dam": "Crystal Idea\n                        \n                        \n                            Dam's Sire",
           "damSire": "Namid\n                        \n                        \n                            Same Sire",
-          "currentRating": 112,
+          "currentRating": 117,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1080,7 +1087,8 @@
               "finishTime": 93.28999999999999,
               "odds": 56
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "BH",

@@ -22,7 +22,7 @@
           "sire": "All Too Hard\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Collins\n                        \n                        \n                            Dam's Sire",
           "damSire": "Desert King\n                        \n                        \n                            Same Sire",
-          "currentRating": 58,
+          "currentRating": 52,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -92,7 +92,8 @@
               "finishTime": 70.34,
               "odds": 65
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "OJM",
@@ -139,7 +140,7 @@
           "sire": "Super Seth\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Miracle Miss\n                        \n                        \n                            Dam's Sire",
           "damSire": "O'Reilly\n                        \n                        \n                            Same Sire",
-          "currentRating": 70,
+          "currentRating": 49,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -243,7 +244,8 @@
               "finishTime": 81.96000000000001,
               "odds": 10
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "PZ",
@@ -290,7 +292,7 @@
           "sire": "Put It Back\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Callana\n                        \n                        \n                            Dam's Sire",
           "damSire": "Dynaformer\n                        \n                        \n                            Same Sire",
-          "currentRating": 51,
+          "currentRating": 55,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -479,7 +481,8 @@
               "finishTime": 95.62,
               "odds": 127
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "KRW",
@@ -526,7 +529,7 @@
           "sire": "Redwood\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Wandane\n                        \n                        \n                            Dam's Sire",
           "damSire": "Danehill\n                        \n                        \n                            Same Sire",
-          "currentRating": 44,
+          "currentRating": 55,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -715,7 +718,8 @@
               "finishTime": 109.99000000000001,
               "odds": 6
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "GM",
@@ -762,7 +766,7 @@
           "sire": "Ilovethiscity\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Cyndiana Star\n                        \n                        \n                            Dam's Sire",
           "damSire": "Johannesburg\n                        \n                        \n                            Same Sire",
-          "currentRating": 40,
+          "currentRating": 49,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -951,7 +955,8 @@
               "finishTime": 100.22,
               "odds": 5.9
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "CCY",
@@ -1016,7 +1021,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": 1,
           "pastPerformances": [
             {
               "date": "2025-12-03T00:00:00.000Z",
@@ -1171,7 +1175,8 @@
               "finishTime": 101.28999999999999,
               "odds": 32
             }
-          ]
+          ],
+          "ratingChange": 1
         },
         "jockey": {
           "code": "BH",
@@ -1218,7 +1223,7 @@
           "sire": "Mondialiste\n                        \n                        \n                            Dam",
           "dam": "Storming Sioux\n                        \n                        \n                            Dam's Sire",
           "damSire": "Storming Home\n                        \n                        \n                            Same Sire",
-          "currentRating": 47,
+          "currentRating": 53,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1407,7 +1412,8 @@
               "finishTime": 107.78999999999999,
               "odds": 24
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "CJE",
@@ -1454,7 +1460,7 @@
           "sire": "Shooting To Win\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "High Class\n                        \n                        \n                            Dam's Sire",
           "damSire": "Shocking\n                        \n                        \n                            Same Sire",
-          "currentRating": 40,
+          "currentRating": 45,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1643,7 +1649,8 @@
               "finishTime": 100,
               "odds": 6.5
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "BHW",
@@ -1690,7 +1697,7 @@
           "sire": "Burgundy\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Salsa\n                        \n                        \n                            Dam's Sire",
           "damSire": "O'Reilly\n                        \n                        \n                            Same Sire",
-          "currentRating": 52,
+          "currentRating": 54,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1879,7 +1886,8 @@
               "finishTime": 100.59,
               "odds": 5.6
             }
-          ]
+          ],
+          "ratingChange": 6
         },
         "jockey": {
           "code": "DHA",
@@ -1926,7 +1934,7 @@
           "sire": "Tarzino\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Kayleen\n                        \n                        \n                            Dam's Sire",
           "damSire": "Towkay\n                        \n                        \n                            Same Sire",
-          "currentRating": 47,
+          "currentRating": 60,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2115,7 +2123,8 @@
               "finishTime": 110.53999999999999,
               "odds": 23
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "PMF",
@@ -2162,7 +2171,7 @@
           "sire": "Tavistock\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Here We Come\n                        \n                        \n                            Dam's Sire",
           "damSire": "Exceed And Excel\n                        \n                        \n                            Same Sire",
-          "currentRating": 34,
+          "currentRating": 46,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2272,7 +2281,7 @@
               "raceNumber": 3,
               "raceClass": "Class 4",
               "distance": 1800,
-              "surface": "AWT",
+              "surface": "Turf",
               "going": "Good to Firm",
               "draw": 12,
               "weight": 135,
@@ -2351,7 +2360,8 @@
               "finishTime": 99.22,
               "odds": 18
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "TEK",
@@ -2553,7 +2563,8 @@
               "finishTime": 69.9,
               "odds": 107
             }
-          ]
+          ],
+          "ratingChange": 1
         },
         "jockey": {
           "code": "FEL",

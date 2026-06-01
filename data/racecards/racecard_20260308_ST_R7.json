@@ -22,7 +22,7 @@
           "sire": "Wootton Bassett\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "A Mist Opportunity\n                        \n                        \n                            Dam's Sire",
           "damSire": "Foxwedge\n                        \n                        \n                            Same Sire",
-          "currentRating": 95,
+          "currentRating": 90,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -126,7 +126,8 @@
               "finishTime": 93.2,
               "odds": 18
             }
-          ]
+          ],
+          "ratingChange": 6
         },
         "jockey": {
           "code": "CCY",
@@ -173,7 +174,7 @@
           "sire": "Starcraft\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Rezyana\n                        \n                        \n                            Dam's Sire",
           "damSire": "Redoute's Choice\n                        \n                        \n                            Same Sire",
-          "currentRating": 84,
+          "currentRating": 75,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -243,7 +244,8 @@
               "finishTime": 82.12,
               "odds": 16
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "YML",
@@ -377,7 +379,8 @@
               "finishTime": 124.21,
               "odds": 57
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "AA",
@@ -424,7 +427,7 @@
           "sire": "Contributer\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Gin Dartre\n                        \n                        \n                            Dam's Sire",
           "damSire": "Volksraad\n                        \n                        \n                            Same Sire",
-          "currentRating": 70,
+          "currentRating": 71,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -596,7 +599,8 @@
               "finishTime": 94.33,
               "odds": 11
             }
-          ]
+          ],
+          "ratingChange": 2
         },
         "jockey": {
           "code": "BHW",
@@ -781,7 +785,8 @@
               "finishTime": 98.4,
               "odds": 10
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "TEK",
@@ -828,7 +833,7 @@
           "sire": "Sacred Falls\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Lamplighter\n                        \n                        \n                            Dam's Sire",
           "damSire": "Fastnet Rock\n                        \n                        \n                            Same Sire",
-          "currentRating": 74,
+          "currentRating": 78,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -966,7 +971,8 @@
               "finishTime": 99.5,
               "odds": 6.4
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "BA",
@@ -1031,7 +1037,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": 5,
           "pastPerformances": [
             {
               "date": "2026-02-25T00:00:00.000Z",
@@ -1186,7 +1191,8 @@
               "finishTime": 98.72999999999999,
               "odds": 5.8
             }
-          ]
+          ],
+          "ratingChange": 5
         },
         "jockey": {
           "code": "BH",
@@ -1233,7 +1239,7 @@
           "sire": "Shocking\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Out Of The Barn\n                        \n                        \n                            Dam's Sire",
           "damSire": "Sakhee's Secret\n                        \n                        \n                            Same Sire",
-          "currentRating": 85,
+          "currentRating": 90,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1286,7 +1292,8 @@
               "finishTime": 69.76,
               "odds": 12
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "HEL",
@@ -1333,7 +1340,7 @@
           "sire": "American Pharoah\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Jazz Song\n                        \n                        \n                            Dam's Sire",
           "damSire": "Fastnet Rock\n                        \n                        \n                            Same Sire",
-          "currentRating": 83,
+          "currentRating": 92,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1454,7 +1461,8 @@
               "finishTime": 94,
               "odds": 243
             }
-          ]
+          ],
+          "ratingChange": -3
         },
         "jockey": {
           "code": "PMF",
@@ -1501,7 +1509,7 @@
           "sire": "Zoustar\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Total Attraction\n                        \n                        \n                            Dam's Sire",
           "damSire": "Nadeem\n                        \n                        \n                            Same Sire",
-          "currentRating": 92,
+          "currentRating": 96,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1571,7 +1579,8 @@
               "finishTime": 99.00999999999999,
               "odds": 9.8
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "AVB",

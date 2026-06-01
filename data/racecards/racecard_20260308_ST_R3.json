@@ -22,7 +22,7 @@
           "sire": "Territories\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Escobar\n                        \n                        \n                            Dam's Sire",
           "damSire": "Not A Single Doubt\n                        \n                        \n                            Same Sire",
-          "currentRating": 51,
+          "currentRating": 42,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -143,7 +143,8 @@
               "finishTime": 82.61,
               "odds": 91
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "AA",
@@ -190,7 +191,7 @@
           "sire": "Power\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Queen Istona\n                        \n                        \n                            Dam's Sire",
           "damSire": "Chateau Istana\n                        \n                        \n                            Same Sire",
-          "currentRating": 48,
+          "currentRating": 50,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -311,7 +312,8 @@
               "finishTime": 70.12,
               "odds": 18
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "FEL",
@@ -376,7 +378,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": -1,
           "pastPerformances": [
             {
               "date": "2026-01-04T00:00:00.000Z",
@@ -497,7 +498,8 @@
               "finishTime": 69.93,
               "odds": 89
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "BA",
@@ -767,7 +769,8 @@
               "finishTime": 69.05,
               "odds": 25
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "MDB",
@@ -814,7 +817,7 @@
           "sire": "Zousain\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Beethog\n                        \n                        \n                            Dam's Sire",
           "damSire": "Shovhog\n                        \n                        \n                            Same Sire",
-          "currentRating": 50,
+          "currentRating": 45,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -918,7 +921,8 @@
               "finishTime": 58.21,
               "odds": 31
             }
-          ]
+          ],
+          "ratingChange": -3
         },
         "jockey": {
           "code": "TEK",
@@ -965,7 +969,7 @@
           "sire": "Showtime\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Single Dancer\n                        \n                        \n                            Dam's Sire",
           "damSire": "Not A Single Doubt\n                        \n                        \n                            Same Sire",
-          "currentRating": 54,
+          "currentRating": 60,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1069,7 +1073,8 @@
               "finishTime": 69.33,
               "odds": 19
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "PZ",
@@ -1116,7 +1121,7 @@
           "sire": "Land Force\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Phantom Spirit\n                        \n                        \n                            Dam's Sire",
           "damSire": "Invincible Spirit\n                        \n                        \n                            Same Sire",
-          "currentRating": 40,
+          "currentRating": 50,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1254,7 +1259,8 @@
               "finishTime": 57.11,
               "odds": 29
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "CJE",
@@ -1301,7 +1307,7 @@
           "sire": "Zousain\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Dare I Believe\n                        \n                        \n                            Dam's Sire",
           "damSire": "So You Think\n                        \n                        \n                            Same Sire",
-          "currentRating": 46,
+          "currentRating": 52,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1337,7 +1343,8 @@
               "finishTime": 56.6,
               "odds": 27
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "MHT",
@@ -1384,7 +1391,7 @@
           "sire": "Delago Deluxe\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Isadiva\n                        \n                        \n                            Dam's Sire",
           "damSire": "Casino Prince\n                        \n                        \n                            Same Sire",
-          "currentRating": 54,
+          "currentRating": 57,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1556,7 +1563,8 @@
               "finishTime": 101.16,
               "odds": 9.2
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "BH",
@@ -1792,7 +1800,8 @@
               "finishTime": 100.07,
               "odds": 5
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "CCY",
@@ -1839,7 +1848,7 @@
           "sire": "Capitalist\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Miss Gai Flyer\n                        \n                        \n                            Dam's Sire",
           "damSire": "Flying Spur\n                        \n                        \n                            Same Sire",
-          "currentRating": 48,
+          "currentRating": 54,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1977,7 +1986,8 @@
               "finishTime": 70.59,
               "odds": 52
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "PMF",
@@ -2024,7 +2034,7 @@
           "sire": "Deep Field\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Little Zeta\n                        \n                        \n                            Dam's Sire",
           "damSire": "Commands\n                        \n                        \n                            Same Sire",
-          "currentRating": 50,
+          "currentRating": 52,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2128,7 +2138,8 @@
               "finishTime": 69.82,
               "odds": 11
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "CML",

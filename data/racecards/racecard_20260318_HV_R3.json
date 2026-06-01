@@ -22,7 +22,7 @@
           "sire": "Super One\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Silly Sally\n                        \n                        \n                            Dam's Sire",
           "damSire": "Myboycharlie\n                        \n                        \n                            Same Sire",
-          "currentRating": 59,
+          "currentRating": 52,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -109,7 +109,8 @@
               "finishTime": 70.78,
               "odds": 5.9
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "KRW",
@@ -311,7 +312,8 @@
               "finishTime": 56.65,
               "odds": 21
             }
-          ]
+          ],
+          "ratingChange": 1
         },
         "jockey": {
           "code": "PZ",
@@ -376,7 +378,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": -2,
           "pastPerformances": [
             {
               "date": "2026-03-04T00:00:00.000Z",
@@ -446,7 +447,8 @@
               "finishTime": 58.9,
               "odds": 10
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "CML",
@@ -493,7 +495,7 @@
           "sire": "Toronado\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Brittany\n                        \n                        \n                            Dam's Sire",
           "damSire": "Street Cry\n                        \n                        \n                            Same Sire",
-          "currentRating": 41,
+          "currentRating": 45,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -631,7 +633,8 @@
               "finishTime": 57.16,
               "odds": 7.8
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "BHW",
@@ -678,7 +681,7 @@
           "sire": "Not A Single Doubt\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Jacquetta\n                        \n                        \n                            Dam's Sire",
           "damSire": "Encosta de Lago\n                        \n                        \n                            Same Sire",
-          "currentRating": 40,
+          "currentRating": 45,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -765,7 +768,8 @@
               "finishTime": 57.5,
               "odds": 12
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "TEK",
@@ -933,7 +937,8 @@
               "finishTime": 57.38,
               "odds": 8.5
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "BA",
@@ -980,7 +985,7 @@
           "sire": "Brazen Beau\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Ms Mazetti\n                        \n                        \n                            Dam's Sire",
           "damSire": "Lonhro\n                        \n                        \n                            Same Sire",
-          "currentRating": 52,
+          "currentRating": 54,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1101,7 +1106,8 @@
               "finishTime": 57.58,
               "odds": 10
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "BH",
@@ -1148,7 +1154,7 @@
           "sire": "Written By\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Sudden Wealth\n                        \n                        \n                            Dam's Sire",
           "damSire": "Time Thief\n                        \n                        \n                            Same Sire",
-          "currentRating": 63,
+          "currentRating": 50,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1252,7 +1258,8 @@
               "finishTime": 70.36,
               "odds": 2.9
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "FEL",
@@ -1299,7 +1306,7 @@
           "sire": "Super One\n                        \n                        \n                            Dam",
           "dam": "Change Channels\n                        \n                        \n                            Dam's Sire",
           "damSire": "Bradbury's Luck\n                        \n                        \n                            Same Sire",
-          "currentRating": 42,
+          "currentRating": 46,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1454,7 +1461,8 @@
               "finishTime": 56.62,
               "odds": 104
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "AA",
@@ -1501,7 +1509,7 @@
           "sire": "Merchant Navy\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Stormy Publisher\n                        \n                        \n                            Dam's Sire",
           "damSire": "Bernstein\n                        \n                        \n                            Same Sire",
-          "currentRating": 56,
+          "currentRating": 58,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1588,7 +1596,8 @@
               "finishTime": 70.99,
               "odds": 106
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "HCY",
@@ -1635,7 +1644,7 @@
           "sire": "Deep Field\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "National Anthem\n                        \n                        \n                            Dam's Sire",
           "damSire": "Rock Of Gibraltar\n                        \n                        \n                            Same Sire",
-          "currentRating": 63,
+          "currentRating": 59,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1807,7 +1816,8 @@
               "finishTime": 56.42,
               "odds": 8.4
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "CCY",
@@ -1854,7 +1864,7 @@
           "sire": "Brazen Beau\n                        \n                        \n                            Dam",
           "dam": "Tiersamo\n                        \n                        \n                            Dam's Sire",
           "damSire": "Stratum\n                        \n                        \n                            Same Sire",
-          "currentRating": 48,
+          "currentRating": 51,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1975,7 +1985,8 @@
               "finishTime": 57.55,
               "odds": 32
             }
-          ]
+          ],
+          "ratingChange": -3
         },
         "jockey": {
           "code": "AVB",

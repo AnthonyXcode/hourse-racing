@@ -22,7 +22,7 @@
           "sire": "Sacred Falls\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Lamplighter\n                        \n                        \n                            Dam's Sire",
           "damSire": "Fastnet Rock\n                        \n                        \n                            Same Sire",
-          "currentRating": 74,
+          "currentRating": 71,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -211,7 +211,8 @@
               "finishTime": 96.1,
               "odds": 22
             }
-          ]
+          ],
+          "ratingChange": 2
         },
         "jockey": {
           "code": "MCJ",
@@ -258,7 +259,7 @@
           "sire": "Tivaci\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Posavina\n                        \n                        \n                            Dam's Sire",
           "damSire": "Tiger Hill\n                        \n                        \n                            Same Sire",
-          "currentRating": 78,
+          "currentRating": 70,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -447,7 +448,8 @@
               "finishTime": 100.97999999999999,
               "odds": 27
             }
-          ]
+          ],
+          "ratingChange": 2
         },
         "jockey": {
           "code": "AVB",
@@ -494,7 +496,7 @@
           "sire": "Almanzor\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Holly Holy\n                        \n                        \n                            Dam's Sire",
           "damSire": "Dylan Thomas\n                        \n                        \n                            Same Sire",
-          "currentRating": 71,
+          "currentRating": 61,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -683,7 +685,8 @@
               "finishTime": 94.31,
               "odds": 25
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "TEK",
@@ -730,7 +733,7 @@
           "sire": "American Pharoah\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Amuser\n                        \n                        \n                            Dam's Sire",
           "damSire": "Galileo\n                        \n                        \n                            Same Sire",
-          "currentRating": 54,
+          "currentRating": 69,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -919,7 +922,8 @@
               "finishTime": 107.97999999999999,
               "odds": 19
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "WC",
@@ -966,7 +970,7 @@
           "sire": "Setembro Chove\n                        \n                        \n                            Dam",
           "dam": "Galang\n                        \n                        \n                            Dam's Sire",
           "damSire": "Amigoni\n                        \n                        \n                            Same Sire",
-          "currentRating": 70,
+          "currentRating": 71,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1121,7 +1125,8 @@
               "finishTime": 80.91,
               "odds": 29
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "AA",
@@ -1186,7 +1191,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": 0,
           "pastPerformances": [
             {
               "date": "2025-11-30T00:00:00.000Z",
@@ -1358,7 +1362,8 @@
               "finishTime": 82.7,
               "odds": 31
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "OJM",
@@ -1405,7 +1410,7 @@
           "sire": "Brazen Beau\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Shimada\n                        \n                        \n                            Dam's Sire",
           "damSire": "Smart Missile\n                        \n                        \n                            Same Sire",
-          "currentRating": 66,
+          "currentRating": 74,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1594,7 +1599,8 @@
               "finishTime": 107.4,
               "odds": 22
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "RU",
@@ -1641,7 +1647,7 @@
           "sire": "Ferlax\n                        \n                        \n                            Dam",
           "dam": "Warren's Sister\n                        \n                        \n                            Dam's Sire",
           "damSire": "Savabeel\n                        \n                        \n                            Same Sire",
-          "currentRating": 68,
+          "currentRating": 65,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1830,7 +1836,8 @@
               "finishTime": 94.63,
               "odds": 43
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "LDE",
@@ -1877,7 +1884,7 @@
           "sire": "Dubawi\n                        \n                        \n                            Dam",
           "dam": "Amerique\n                        \n                        \n                            Dam's Sire",
           "damSire": "Galileo\n                        \n                        \n                            Same Sire",
-          "currentRating": 76,
+          "currentRating": 78,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2066,7 +2073,8 @@
               "finishTime": 122.75,
               "odds": 30
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "SC",
@@ -2113,7 +2121,7 @@
           "sire": "Showtime\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Chaplet\n                        \n                        \n                            Dam's Sire",
           "damSire": "Street Cry\n                        \n                        \n                            Same Sire",
-          "currentRating": 91,
+          "currentRating": 78,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2251,7 +2259,8 @@
               "finishTime": 82.33,
               "odds": 55
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "PZ",
@@ -2298,7 +2307,7 @@
           "sire": "Mongolian Khan\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Shezhardtocatch\n                        \n                        \n                            Dam's Sire",
           "damSire": "Elusive City\n                        \n                        \n                            Same Sire",
-          "currentRating": 60,
+          "currentRating": 62,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2453,7 +2462,8 @@
               "finishTime": 82.85,
               "odds": 96
             }
-          ]
+          ],
+          "ratingChange": 2
         },
         "jockey": {
           "code": "YML",
@@ -2500,7 +2510,7 @@
           "sire": "Vino Rosso\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Sombre Sea\n                        \n                        \n                            Dam's Sire",
           "damSire": "Dash For Cash\n                        \n                        \n                            Same Sire",
-          "currentRating": 80,
+          "currentRating": 66,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2689,7 +2699,8 @@
               "finishTime": 100.82,
               "odds": 4.5
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "HCY",
@@ -2736,7 +2747,7 @@
           "sire": "The Autumn Sun\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Sultry Dreamer\n                        \n                        \n                            Dam's Sire",
           "damSire": "Dream Ahead\n                        \n                        \n                            Same Sire",
-          "currentRating": 54,
+          "currentRating": 60,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2857,7 +2868,8 @@
               "finishTime": 82.78,
               "odds": 28
             }
-          ]
+          ],
+          "ratingChange": 2
         },
         "jockey": {
           "code": "DHA",
@@ -2904,7 +2916,7 @@
           "sire": "Too Darn Hot\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Compostela\n                        \n                        \n                            Dam's Sire",
           "damSire": "Sea The Stars\n                        \n                        \n                            Same Sire",
-          "currentRating": 62,
+          "currentRating": 68,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2974,7 +2986,8 @@
               "finishTime": 82.23,
               "odds": 185
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "CML",

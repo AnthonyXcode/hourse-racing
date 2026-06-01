@@ -22,7 +22,7 @@
           "sire": "Written By\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Sudden Wealth\n                        \n                        \n                            Dam's Sire",
           "damSire": "Time Thief\n                        \n                        \n                            Same Sire",
-          "currentRating": 63,
+          "currentRating": 48,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -143,7 +143,8 @@
               "finishTime": 70.36,
               "odds": 2.9
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "PZ",
@@ -190,7 +191,7 @@
           "sire": "Impending\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Isola Blu\n                        \n                        \n                            Dam's Sire",
           "damSire": "Blackfriars\n                        \n                        \n                            Same Sire",
-          "currentRating": 52,
+          "currentRating": 53,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -362,7 +363,8 @@
               "finishTime": 81.4,
               "odds": 4.4
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "OJM",
@@ -427,7 +429,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": -2,
           "pastPerformances": [
             {
               "date": "2026-02-14T00:00:00.000Z",
@@ -497,7 +498,8 @@
               "finishTime": 70.2,
               "odds": 33
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "AVB",
@@ -614,7 +616,8 @@
               "finishTime": 69.42,
               "odds": 47
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "HEL",
@@ -782,7 +785,8 @@
               "finishTime": 69.57,
               "odds": 8.7
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "WPN",
@@ -829,7 +833,7 @@
           "sire": "Fastnet Rock\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Pretty Paper\n                        \n                        \n                            Dam's Sire",
           "damSire": "Medaglia d'Oro\n                        \n                        \n                            Same Sire",
-          "currentRating": 56,
+          "currentRating": 59,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -984,7 +988,8 @@
               "finishTime": 69.52,
               "odds": 26
             }
-          ]
+          ],
+          "ratingChange": 1
         },
         "jockey": {
           "code": "FEL",
@@ -1031,7 +1036,7 @@
           "sire": "Rebel Dane\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Braeview Miss\n                        \n                        \n                            Dam's Sire",
           "damSire": "Testafiable\n                        \n                        \n                            Same Sire",
-          "currentRating": 53,
+          "currentRating": 59,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1118,7 +1123,8 @@
               "finishTime": 71.06,
               "odds": 25
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "PMF",
@@ -1165,7 +1171,7 @@
           "sire": "Rich Enuff\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Harmony Hall\n                        \n                        \n                            Dam's Sire",
           "damSire": "Minardi\n                        \n                        \n                            Same Sire",
-          "currentRating": 42,
+          "currentRating": 47,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1303,7 +1309,8 @@
               "finishTime": 69.39,
               "odds": 6.4
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "BHW",
@@ -1350,7 +1357,7 @@
           "sire": "Fiorente\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Socarada\n                        \n                        \n                            Dam's Sire",
           "damSire": "Strada\n                        \n                        \n                            Same Sire",
-          "currentRating": 36,
+          "currentRating": 41,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1488,7 +1495,8 @@
               "finishTime": 69.78,
               "odds": 11
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "TEK",
@@ -1535,7 +1543,7 @@
           "sire": "Super One\n                        \n                        \n                            Dam",
           "dam": "Change Channels\n                        \n                        \n                            Dam's Sire",
           "damSire": "Bradbury's Luck\n                        \n                        \n                            Same Sire",
-          "currentRating": 42,
+          "currentRating": 44,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1707,7 +1715,8 @@
               "finishTime": 56.62,
               "odds": 104
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "AA",
@@ -1754,7 +1763,7 @@
           "sire": "Sizzling\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Stitchery\n                        \n                        \n                            Dam's Sire",
           "damSire": "Mossman\n                        \n                        \n                            Same Sire",
-          "currentRating": 57,
+          "currentRating": 58,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1772,7 +1781,8 @@
             "PC",
             "SR"
           ],
-          "pastPerformances": []
+          "pastPerformances": [],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "HCY",
@@ -1819,7 +1829,7 @@
           "sire": "Contributer\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Polaset\n                        \n                        \n                            Dam's Sire",
           "damSire": "Reset\n                        \n                        \n                            Same Sire",
-          "currentRating": 44,
+          "currentRating": 48,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1889,7 +1899,8 @@
               "finishTime": 57.92,
               "odds": 120
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "LDE",

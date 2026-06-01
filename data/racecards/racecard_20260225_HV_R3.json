@@ -22,7 +22,7 @@
           "sire": "Sea The Moon\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Force One\n                        \n                        \n                            Dam's Sire",
           "damSire": "Dansili\n                        \n                        \n                            Same Sire",
-          "currentRating": 96,
+          "currentRating": 91,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -177,7 +177,8 @@
               "finishTime": 98.72999999999999,
               "odds": 5.8
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "BH",
@@ -345,7 +346,8 @@
               "finishTime": 81.15,
               "odds": 6.9
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "BA",
@@ -410,7 +412,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": 0,
           "pastPerformances": [
             {
               "date": "2026-02-22T00:00:00.000Z",
@@ -514,7 +515,8 @@
               "finishTime": 81.11,
               "odds": 15
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "WEC",
@@ -561,7 +563,7 @@
           "sire": "Hinchinbrook\n                        \n                        \n                            Dam",
           "dam": "Morinda\n                        \n                        \n                            Dam's Sire",
           "damSire": "Desert King\n                        \n                        \n                            Same Sire",
-          "currentRating": 74,
+          "currentRating": 78,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -682,7 +684,8 @@
               "finishTime": 98.89,
               "odds": 7.5
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "TEK",
@@ -729,7 +732,7 @@
           "sire": "Zoustar\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Total Attraction\n                        \n                        \n                            Dam's Sire",
           "damSire": "Nadeem\n                        \n                        \n                            Same Sire",
-          "currentRating": 92,
+          "currentRating": 96,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -782,7 +785,8 @@
               "finishTime": 99.00999999999999,
               "odds": 9.8
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "AVB",
@@ -950,7 +954,8 @@
               "finishTime": 95.33,
               "odds": 19
             }
-          ]
+          ],
+          "ratingChange": 7
         },
         "jockey": {
           "code": "AA",
@@ -997,7 +1002,7 @@
           "sire": "American Pharoah\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Jazz Song\n                        \n                        \n                            Dam's Sire",
           "damSire": "Fastnet Rock\n                        \n                        \n                            Same Sire",
-          "currentRating": 83,
+          "currentRating": 95,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1101,7 +1106,8 @@
               "finishTime": 94,
               "odds": 243
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "LDE",

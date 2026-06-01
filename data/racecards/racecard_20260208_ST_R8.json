@@ -22,7 +22,7 @@
           "sire": "Tivaci\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Sheezababe\n                        \n                        \n                            Dam's Sire",
           "damSire": "Zabeel\n                        \n                        \n                            Same Sire",
-          "currentRating": 103,
+          "currentRating": 90,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -75,7 +75,8 @@
               "finishTime": 109.3,
               "odds": 14
             }
-          ]
+          ],
+          "ratingChange": 8
         },
         "jockey": {
           "code": "LDE",
@@ -209,7 +210,8 @@
               "finishTime": 107.96000000000001,
               "odds": 8.6
             }
-          ]
+          ],
+          "ratingChange": 8
         },
         "jockey": {
           "code": "HEL",
@@ -256,7 +258,7 @@
           "sire": "Churchill\n                        \n                        \n                            Dam",
           "dam": "Enrol\n                        \n                        \n                            Dam's Sire",
           "damSire": "Pivotal\n                        \n                        \n                            Same Sire",
-          "currentRating": 100,
+          "currentRating": 101,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -360,7 +362,8 @@
               "finishTime": 98.4,
               "odds": 10
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "TEK",
@@ -511,7 +514,8 @@
               "finishTime": 93.82,
               "odds": 106
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "AA",
@@ -558,7 +562,7 @@
           "sire": "Mor Spirit\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Solid Scam\n                        \n                        \n                            Dam's Sire",
           "damSire": "Consolidator\n                        \n                        \n                            Same Sire",
-          "currentRating": 105,
+          "currentRating": 107,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -645,7 +649,8 @@
               "finishTime": 109.34,
               "odds": 18
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "PZ",
@@ -692,7 +697,7 @@
           "sire": "Sebring\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Impressive Jeuney\n                        \n                        \n                            Dam's Sire",
           "damSire": "Jeune\n                        \n                        \n                            Same Sire",
-          "currentRating": 101,
+          "currentRating": 109,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -813,7 +818,8 @@
               "finishTime": 92.84,
               "odds": 22
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "BH",
@@ -860,7 +866,7 @@
           "sire": "Fastnet Rock\n                        \n                        \n                            Dam",
           "dam": "Imperial Lass\n                        \n                        \n                            Dam's Sire",
           "damSire": "Tavistock\n                        \n                        \n                            Same Sire",
-          "currentRating": 107,
+          "currentRating": 110,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -947,7 +953,8 @@
               "finishTime": 92.87,
               "odds": 80
             }
-          ]
+          ],
+          "ratingChange": -3
         },
         "jockey": {
           "code": "MDB",

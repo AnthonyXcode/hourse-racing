@@ -40,7 +40,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": 0,
           "pastPerformances": [
             {
               "date": "2025-11-19T00:00:00.000Z",
@@ -212,7 +211,8 @@
               "finishTime": 70.49,
               "odds": 117
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "MCJ",
@@ -259,7 +259,7 @@
           "sire": "Charm Spirit\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Lucky's Revenge\n                        \n                        \n                            Dam's Sire",
           "damSire": "Darci Brahma\n                        \n                        \n                            Same Sire",
-          "currentRating": 35,
+          "currentRating": 36,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -448,7 +448,8 @@
               "finishTime": 70.46000000000001,
               "odds": 3.5
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "BA",
@@ -495,7 +496,7 @@
           "sire": "Better Than Ready\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Lune Rouge\n                        \n                        \n                            Dam's Sire",
           "damSire": "Malibu Moon\n                        \n                        \n                            Same Sire",
-          "currentRating": 52,
+          "currentRating": 24,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -684,7 +685,8 @@
               "finishTime": 69.85,
               "odds": 5.2
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "BHW",
@@ -731,7 +733,7 @@
           "sire": "Good Journey\n                        \n                        \n                            Dam",
           "dam": "Syncopated\n                        \n                        \n                            Dam's Sire",
           "damSire": "Lonhro\n                        \n                        \n                            Same Sire",
-          "currentRating": 52,
+          "currentRating": 21,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -824,7 +826,7 @@
               "raceNumber": 1,
               "raceClass": "Class 5",
               "distance": 1000,
-              "surface": "AWT",
+              "surface": "Turf",
               "going": "Good to Firm",
               "draw": 7,
               "weight": 124,
@@ -920,7 +922,8 @@
               "finishTime": 70.48,
               "odds": 36
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "KRW",
@@ -967,7 +970,7 @@
           "sire": "Charm Spirit\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Estrela Flicka\n                        \n                        \n                            Dam's Sire",
           "damSire": "O'Reilly\n                        \n                        \n                            Same Sire",
-          "currentRating": 32,
+          "currentRating": 31,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1156,7 +1159,8 @@
               "finishTime": 58.03,
               "odds": 91
             }
-          ]
+          ],
+          "ratingChange": 5
         },
         "jockey": {
           "code": "PMF",
@@ -1203,7 +1207,7 @@
           "sire": "Darci Brahma\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Mi Shari\n                        \n                        \n                            Dam's Sire",
           "damSire": "Shinko King\n                        \n                        \n                            Same Sire",
-          "currentRating": 32,
+          "currentRating": 38,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1341,7 +1345,8 @@
               "finishTime": 70.5,
               "odds": 7.5
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "CML",
@@ -1813,7 +1818,8 @@
               "finishTime": 70.58,
               "odds": 28
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "DMK",
@@ -1860,7 +1866,7 @@
           "sire": "Justify\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "So You Merge\n                        \n                        \n                            Dam's Sire",
           "damSire": "So You Think\n                        \n                        \n                            Same Sire",
-          "currentRating": 52,
+          "currentRating": 34,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1998,7 +2004,8 @@
               "finishTime": 57.98,
               "odds": 15
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "PDF",
@@ -2234,7 +2241,8 @@
               "finishTime": 70.2,
               "odds": 45
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "TEK",
@@ -2281,7 +2289,7 @@
           "sire": "U S Navy Flag\n                        \n                        \n                            Dam",
           "dam": "Ala Rasi\n                        \n                        \n                            Dam's Sire",
           "damSire": "Dalakhani\n                        \n                        \n                            Same Sire",
-          "currentRating": 28,
+          "currentRating": 33,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2470,7 +2478,8 @@
               "finishTime": 70.39,
               "odds": 4.7
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "FEL",
@@ -2517,7 +2526,7 @@
           "sire": "Brazen Beau\n                        \n                        \n                            Dam",
           "dam": "Beauty Option\n                        \n                        \n                            Dam's Sire",
           "damSire": "Redoute's Choice\n                        \n                        \n                            Same Sire",
-          "currentRating": 30,
+          "currentRating": 34,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2672,7 +2681,8 @@
               "finishTime": 58.61,
               "odds": 90
             }
-          ]
+          ],
+          "ratingChange": -3
         },
         "jockey": {
           "code": "CCY",

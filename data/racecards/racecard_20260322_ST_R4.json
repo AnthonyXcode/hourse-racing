@@ -22,7 +22,7 @@
           "sire": "Ardrossan\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "La Donna\n                        \n                        \n                            Dam's Sire",
           "damSire": "Per Incanto\n                        \n                        \n                            Same Sire",
-          "currentRating": 73,
+          "currentRating": 58,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -75,7 +75,8 @@
               "finishTime": 56.73,
               "odds": 1.5
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "PZ",
@@ -122,7 +123,7 @@
           "sire": "Brave Smash\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Treatmelikealady\n                        \n                        \n                            Dam's Sire",
           "damSire": "Real Saga\n                        \n                        \n                            Same Sire",
-          "currentRating": 58,
+          "currentRating": 56,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -209,7 +210,8 @@
               "finishTime": 70.53,
               "odds": 14
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "TEK",
@@ -360,7 +362,8 @@
               "finishTime": 70.72,
               "odds": 4.2
             }
-          ]
+          ],
+          "ratingChange": 7
         },
         "jockey": {
           "code": "WEC",
@@ -425,7 +428,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": -1,
           "pastPerformances": [
             {
               "date": "2026-03-01T00:00:00.000Z",
@@ -529,7 +531,8 @@
               "finishTime": 69.43,
               "odds": 34
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "MDB",
@@ -576,7 +579,7 @@
           "sire": "Harry Angel\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Dubrovnik\n                        \n                        \n                            Dam's Sire",
           "damSire": "Medaglia d'Oro\n                        \n                        \n                            Same Sire",
-          "currentRating": 53,
+          "currentRating": 59,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -714,7 +717,8 @@
               "finishTime": 68.77,
               "odds": 19
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "YML",
@@ -761,7 +765,7 @@
           "sire": "American Pharoah\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Hermosa Beach\n                        \n                        \n                            Dam's Sire",
           "damSire": "Magnus\n                        \n                        \n                            Same Sire",
-          "currentRating": 46,
+          "currentRating": 48,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -899,7 +903,8 @@
               "finishTime": 70.7,
               "odds": 14
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "PMF",
@@ -946,7 +951,7 @@
           "sire": "Shamus Award\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Under The Sea\n                        \n                        \n                            Dam's Sire",
           "damSire": "Husson\n                        \n                        \n                            Same Sire",
-          "currentRating": 55,
+          "currentRating": 58,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1016,7 +1021,8 @@
               "finishTime": 57.36,
               "odds": 35
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "AA",
@@ -1150,7 +1156,8 @@
               "finishTime": 70.4,
               "odds": 38
             }
-          ]
+          ],
+          "ratingChange": 2
         },
         "jockey": {
           "code": "HEL",
@@ -1197,7 +1204,7 @@
           "sire": "Written By\n                        \n                        \n                            Dam",
           "dam": "Call Me Tilly\n                        \n                        \n                            Dam's Sire",
           "damSire": "I Am Invincible\n                        \n                        \n                            Same Sire",
-          "currentRating": 43,
+          "currentRating": 45,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1284,7 +1291,8 @@
               "finishTime": 58.29,
               "odds": 21
             }
-          ]
+          ],
+          "ratingChange": -3
         },
         "jockey": {
           "code": "WPN",
@@ -1331,7 +1339,7 @@
           "sire": "Smart Missile\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Fonteyn Lane\n                        \n                        \n                            Dam's Sire",
           "damSire": "Mint Lane\n                        \n                        \n                            Same Sire",
-          "currentRating": 46,
+          "currentRating": 48,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1401,7 +1409,8 @@
               "finishTime": 72.03999999999999,
               "odds": 65
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "CML",
@@ -1448,7 +1457,7 @@
           "sire": "All Too Hard\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "The Bride\n                        \n                        \n                            Dam's Sire",
           "damSire": "More Than Ready\n                        \n                        \n                            Same Sire",
-          "currentRating": 50,
+          "currentRating": 52,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1484,7 +1493,8 @@
               "finishTime": 56.72,
               "odds": 37
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "OJM",
@@ -1614,7 +1624,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": -2,
           "pastPerformances": [
             {
               "date": "2026-03-04T00:00:00.000Z",
@@ -1752,7 +1761,8 @@
               "finishTime": 70.15,
               "odds": 67
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "CCY",
@@ -1817,7 +1827,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": -2,
           "pastPerformances": [
             {
               "date": "2026-02-14T00:00:00.000Z",
@@ -1870,7 +1879,8 @@
               "finishTime": 70.03999999999999,
               "odds": 52
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "MHT",

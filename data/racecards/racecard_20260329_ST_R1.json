@@ -40,7 +40,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": -1,
           "pastPerformances": [
             {
               "date": "2026-03-01T00:00:00.000Z",
@@ -127,7 +126,8 @@
               "finishTime": 82.25,
               "odds": 52
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "CJE",
@@ -174,7 +174,7 @@
           "sire": "Starspangledbanner\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "In The Fast Lane\n                        \n                        \n                            Dam's Sire",
           "damSire": "Jet Master\n                        \n                        \n                            Same Sire",
-          "currentRating": 43,
+          "currentRating": 37,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -312,7 +312,8 @@
               "finishTime": 82.87,
               "odds": 6.9
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "BH",
@@ -359,7 +360,7 @@
           "sire": "Showcasing\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Showus\n                        \n                        \n                            Dam's Sire",
           "damSire": "Pentire\n                        \n                        \n                            Same Sire",
-          "currentRating": 30,
+          "currentRating": 31,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -446,7 +447,8 @@
               "finishTime": 69.92,
               "odds": 7.7
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "FEL",
@@ -493,7 +495,7 @@
           "sire": "Lean Mean Machine\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "It's Poets Day\n                        \n                        \n                            Dam's Sire",
           "damSire": "Dylan Thomas\n                        \n                        \n                            Same Sire",
-          "currentRating": 38,
+          "currentRating": 37,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -648,7 +650,8 @@
               "finishTime": 82.02,
               "odds": 5.2
             }
-          ]
+          ],
+          "ratingChange": 1
         },
         "jockey": {
           "code": "WEC",
@@ -695,7 +698,7 @@
           "sire": "Exceed And Excel\n                        \n                        \n                            Dam",
           "dam": "Antarctic Dream\n                        \n                        \n                            Dam's Sire",
           "damSire": "Southern Image\n                        \n                        \n                            Same Sire",
-          "currentRating": 52,
+          "currentRating": 22,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -816,7 +819,8 @@
               "finishTime": 70.2,
               "odds": 10
             }
-          ]
+          ],
+          "ratingChange": -3
         },
         "jockey": {
           "code": "WPN",
@@ -863,7 +867,7 @@
           "sire": "Starspangledbanner\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Sunbird\n                        \n                        \n                            Dam's Sire",
           "damSire": "Echo Of Light\n                        \n                        \n                            Same Sire",
-          "currentRating": 34,
+          "currentRating": 38,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1001,7 +1005,8 @@
               "finishTime": 70.57,
               "odds": 70
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "KRW",
@@ -1169,7 +1174,8 @@
               "finishTime": 70.05,
               "odds": 14
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "OJM",
@@ -1216,7 +1222,7 @@
           "sire": "Needs Further\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Tycoon Sali\n                        \n                        \n                            Dam's Sire",
           "damSire": "Last Tycoon\n                        \n                        \n                            Same Sire",
-          "currentRating": 35,
+          "currentRating": 29,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1371,7 +1377,8 @@
               "finishTime": 81.89,
               "odds": 22
             }
-          ]
+          ],
+          "ratingChange": 5
         },
         "jockey": {
           "code": "AA",
@@ -1418,7 +1425,7 @@
           "sire": "Zoustar\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Summer Girlfriend\n                        \n                        \n                            Dam's Sire",
           "damSire": "Forest Camp\n                        \n                        \n                            Same Sire",
-          "currentRating": 30,
+          "currentRating": 32,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1573,7 +1580,8 @@
               "finishTime": 81.43,
               "odds": 8.8
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "BA",
@@ -1620,7 +1628,7 @@
           "sire": "Capitalist\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Meri Rani\n                        \n                        \n                            Dam's Sire",
           "damSire": "Stratum\n                        \n                        \n                            Same Sire",
-          "currentRating": 29,
+          "currentRating": 32,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1758,7 +1766,8 @@
               "finishTime": 100.33,
               "odds": 13
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "YML",
@@ -1805,7 +1814,7 @@
           "sire": "Per Incanto\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Kay's Trophy\n                        \n                        \n                            Dam's Sire",
           "damSire": "Towkay\n                        \n                        \n                            Same Sire",
-          "currentRating": 32,
+          "currentRating": 38,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1943,7 +1952,8 @@
               "finishTime": 70.47,
               "odds": 42
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "AVB",
@@ -1990,7 +2000,7 @@
           "sire": "Ribchester\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Snitz Of Time\n                        \n                        \n                            Dam's Sire",
           "damSire": "Snitzel\n                        \n                        \n                            Same Sire",
-          "currentRating": 34,
+          "currentRating": 38,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2111,7 +2121,8 @@
               "finishTime": 69.69,
               "odds": 93
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "TEK",
@@ -2158,7 +2169,7 @@
           "sire": "Acclamation\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Cravin Raven\n                        \n                        \n                            Dam's Sire",
           "damSire": "Raven's Pass\n                        \n                        \n                            Same Sire",
-          "currentRating": 21,
+          "currentRating": 25,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2279,7 +2290,8 @@
               "finishTime": 70.64,
               "odds": 119
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "PMF",
@@ -2430,7 +2442,8 @@
               "finishTime": 81.71000000000001,
               "odds": 107
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "CCY",

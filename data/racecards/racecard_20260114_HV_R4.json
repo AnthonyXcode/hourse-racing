@@ -22,7 +22,7 @@
           "sire": "U S Navy Flag\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Ala Rasi\n                        \n                        \n                            Dam's Sire",
           "damSire": "Dalakhani\n                        \n                        \n                            Same Sire",
-          "currentRating": 50,
+          "currentRating": 48,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -109,7 +109,8 @@
               "finishTime": 98.74000000000001,
               "odds": 3.8
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "FEL",
@@ -156,7 +157,7 @@
           "sire": "Per Incanto\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Scintillating\n                        \n                        \n                            Dam's Sire",
           "damSire": "Rock 'N' Pop\n                        \n                        \n                            Same Sire",
-          "currentRating": 42,
+          "currentRating": 47,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -226,7 +227,8 @@
               "finishTime": 56.94,
               "odds": 48
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "PZ",
@@ -273,7 +275,7 @@
           "sire": "Starspangledbanner\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Cristal Fashion\n                        \n                        \n                            Dam's Sire",
           "damSire": "Jeremy\n                        \n                        \n                            Same Sire",
-          "currentRating": 44,
+          "currentRating": 46,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -377,7 +379,8 @@
               "finishTime": 69.74,
               "odds": 36
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "CML",
@@ -442,7 +445,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": -2,
           "pastPerformances": [
             {
               "date": "2025-12-17T00:00:00.000Z",
@@ -512,7 +514,8 @@
               "finishTime": 100.86,
               "odds": 12
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "PMF",
@@ -559,7 +562,7 @@
           "sire": "Ilovethiscity\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Cyndiana Star\n                        \n                        \n                            Dam's Sire",
           "damSire": "Johannesburg\n                        \n                        \n                            Same Sire",
-          "currentRating": 40,
+          "currentRating": 48,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -646,7 +649,8 @@
               "finishTime": 83.2,
               "odds": 43
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "CCY",
@@ -693,7 +697,7 @@
           "sire": "Savabeel\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Okahu Bay\n                        \n                        \n                            Dam's Sire",
           "damSire": "Flying Spur\n                        \n                        \n                            Same Sire",
-          "currentRating": 51,
+          "currentRating": 58,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -797,7 +801,8 @@
               "finishTime": 100.08,
               "odds": 12
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "BH",
@@ -844,7 +849,7 @@
           "sire": "Sacred Falls\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "La Praline\n                        \n                        \n                            Dam's Sire",
           "damSire": "Anabaa\n                        \n                        \n                            Same Sire",
-          "currentRating": 59,
+          "currentRating": 56,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -931,7 +936,8 @@
               "finishTime": 100.65,
               "odds": 9.8
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "HCY",
@@ -978,7 +984,7 @@
           "sire": "Sooboog\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Andronica\n                        \n                        \n                            Dam's Sire",
           "damSire": "Mujahid\n                        \n                        \n                            Same Sire",
-          "currentRating": 68,
+          "currentRating": 55,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1048,7 +1054,8 @@
               "finishTime": 70.64,
               "odds": 23
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "WEC",
@@ -1095,7 +1102,7 @@
           "sire": "All Too Hard\n                        \n                        \n                            Dam",
           "dam": "Tahnee Tiara\n                        \n                        \n                            Dam's Sire",
           "damSire": "Commands\n                        \n                        \n                            Same Sire",
-          "currentRating": 30,
+          "currentRating": 43,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1216,7 +1223,8 @@
               "finishTime": 69.53,
               "odds": 31
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "BHW",
@@ -1263,7 +1271,7 @@
           "sire": "Courtier\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Zealous Vixen\n                        \n                        \n                            Dam's Sire",
           "damSire": "Inexplicable\n                        \n                        \n                            Same Sire",
-          "currentRating": 58,
+          "currentRating": 60,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1384,7 +1392,8 @@
               "finishTime": 100.39,
               "odds": 14
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "KRW",
@@ -1467,7 +1476,8 @@
               "finishTime": 100.56,
               "odds": 21
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "HEL",
@@ -1532,7 +1542,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": 0,
           "pastPerformances": [
             {
               "date": "2025-11-12T00:00:00.000Z",
@@ -1585,7 +1594,8 @@
               "finishTime": 81.98,
               "odds": 10
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "GM",

@@ -22,7 +22,7 @@
           "sire": "Zoustar\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Sharliyna\n                        \n                        \n                            Dam's Sire",
           "damSire": "Pivotal\n                        \n                        \n                            Same Sire",
-          "currentRating": 92,
+          "currentRating": 85,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -228,7 +228,8 @@
               "finishTime": 81.72,
               "odds": 8
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "AA",
@@ -275,7 +276,7 @@
           "sire": "All Too Hard\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Tuscany Lady\n                        \n                        \n                            Dam's Sire",
           "damSire": "Mossman\n                        \n                        \n                            Same Sire",
-          "currentRating": 94,
+          "currentRating": 92,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -379,7 +380,8 @@
               "finishTime": 81.88,
               "odds": 2.5
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "BH",
@@ -564,7 +566,8 @@
               "finishTime": 55.98,
               "odds": 2.1
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "AVB",
@@ -664,7 +667,8 @@
               "finishTime": 68.38,
               "odds": 1.8
             }
-          ]
+          ],
+          "ratingChange": 11
         },
         "jockey": {
           "code": "PZ",
@@ -711,7 +715,7 @@
           "sire": "Shamus Award\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Miss Ethics\n                        \n                        \n                            Dam's Sire",
           "damSire": "Count Dubois\n                        \n                        \n                            Same Sire",
-          "currentRating": 100,
+          "currentRating": 97,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -815,7 +819,8 @@
               "finishTime": 68.26,
               "odds": 57
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "FEL",
@@ -949,7 +954,8 @@
               "finishTime": 69.46000000000001,
               "odds": 14
             }
-          ]
+          ],
+          "ratingChange": 8
         },
         "jockey": {
           "code": "CJE",
@@ -996,7 +1002,7 @@
           "sire": "Fastnet Rock\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "My Sabeel\n                        \n                        \n                            Dam's Sire",
           "damSire": "Savabeel\n                        \n                        \n                            Same Sire",
-          "currentRating": 77,
+          "currentRating": 83,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1134,7 +1140,8 @@
               "finishTime": 69.24,
               "odds": 25
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "HEL",
@@ -1181,7 +1188,7 @@
           "sire": "Charm Spirit\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "No Pushover\n                        \n                        \n                            Dam's Sire",
           "damSire": "Pins\n                        \n                        \n                            Same Sire",
-          "currentRating": 82,
+          "currentRating": 86,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1336,7 +1343,8 @@
               "finishTime": 68.38,
               "odds": 10
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "KRW",
@@ -1538,7 +1546,8 @@
               "finishTime": 69.39,
               "odds": 4.2
             }
-          ]
+          ],
+          "ratingChange": 2
         },
         "jockey": {
           "code": "WEC",
@@ -1603,7 +1612,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": 7,
           "pastPerformances": [
             {
               "date": "2026-03-08T00:00:00.000Z",
@@ -1656,7 +1664,8 @@
               "finishTime": 55.85,
               "odds": 3.4
             }
-          ]
+          ],
+          "ratingChange": 7
         },
         "jockey": {
           "code": "OJM",
@@ -1703,7 +1712,7 @@
           "sire": "Toronado\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Noetic\n                        \n                        \n                            Dam's Sire",
           "damSire": "Cape Cross\n                        \n                        \n                            Same Sire",
-          "currentRating": 85,
+          "currentRating": 91,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1858,7 +1867,8 @@
               "finishTime": 68.69,
               "odds": 63
             }
-          ]
+          ],
+          "ratingChange": -3
         },
         "jockey": {
           "code": "YML",

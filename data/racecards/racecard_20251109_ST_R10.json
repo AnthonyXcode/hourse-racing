@@ -211,7 +211,8 @@
               "finishTime": 82.02,
               "odds": 3.7
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "PZ",
@@ -258,7 +259,7 @@
           "sire": "Justify\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Fine Scent\n                        \n                        \n                            Dam's Sire",
           "damSire": "All Too Hard\n                        \n                        \n                            Same Sire",
-          "currentRating": 91,
+          "currentRating": 81,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -447,7 +448,8 @@
               "finishTime": 70.02,
               "odds": 22
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "LDE",
@@ -494,7 +496,7 @@
           "sire": "What A Winter\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Lady In Black\n                        \n                        \n                            Dam's Sire",
           "damSire": "Dynasty\n                        \n                        \n                            Same Sire",
-          "currentRating": 78,
+          "currentRating": 80,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -649,7 +651,8 @@
               "finishTime": 69.23,
               "odds": 42
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "CML",
@@ -696,7 +699,7 @@
           "sire": "Acclamation\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Up In Time\n                        \n                        \n                            Dam's Sire",
           "damSire": "Noverre\n                        \n                        \n                            Same Sire",
-          "currentRating": 75,
+          "currentRating": 81,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -885,7 +888,8 @@
               "finishTime": 82.09,
               "odds": 16
             }
-          ]
+          ],
+          "ratingChange": 6
         },
         "jockey": {
           "code": "CCY",
@@ -932,7 +936,7 @@
           "sire": "Written By\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Avocado\n                        \n                        \n                            Dam's Sire",
           "damSire": "Snitzel\n                        \n                        \n                            Same Sire",
-          "currentRating": 80,
+          "currentRating": 90,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1121,7 +1125,8 @@
               "finishTime": 94.75,
               "odds": 7
             }
-          ]
+          ],
+          "ratingChange": 2
         },
         "jockey": {
           "code": "HEL",
@@ -1168,7 +1173,7 @@
           "sire": "Starspangledbanner\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Drombeg Dawn\n                        \n                        \n                            Dam's Sire",
           "damSire": "Orpen\n                        \n                        \n                            Same Sire",
-          "currentRating": 85,
+          "currentRating": 91,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1357,7 +1362,8 @@
               "finishTime": 68.88,
               "odds": 7.4
             }
-          ]
+          ],
+          "ratingChange": -3
         },
         "jockey": {
           "code": "DHA",
@@ -1404,7 +1410,7 @@
           "sire": "Soldier's Call\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Parle Moi\n                        \n                        \n                            Dam's Sire",
           "damSire": "Giant's Causeway\n                        \n                        \n                            Same Sire",
-          "currentRating": 74,
+          "currentRating": 81,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1593,7 +1599,8 @@
               "finishTime": 107.66,
               "odds": 18
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "YML",
@@ -1640,7 +1647,7 @@
           "sire": "Zoustar\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Pearl Star\n                        \n                        \n                            Dam's Sire",
           "damSire": "Star Witness\n                        \n                        \n                            Same Sire",
-          "currentRating": 75,
+          "currentRating": 86,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1829,7 +1836,8 @@
               "finishTime": 81.41,
               "odds": 20
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "AA",
@@ -1876,7 +1884,7 @@
           "sire": "Zoustar\n                        \n                        \n                            Dam",
           "dam": "Lady Lakshmi\n                        \n                        \n                            Dam's Sire",
           "damSire": "Lonhro\n                        \n                        \n                            Same Sire",
-          "currentRating": 92,
+          "currentRating": 98,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2065,7 +2073,8 @@
               "finishTime": 95.25999999999999,
               "odds": 69
             }
-          ]
+          ],
+          "ratingChange": 5
         },
         "jockey": {
           "code": "CJE",
@@ -2130,7 +2139,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": -2,
           "pastPerformances": [
             {
               "date": "2025-10-12T00:00:00.000Z",
@@ -2302,7 +2310,8 @@
               "finishTime": 80.91,
               "odds": 3.3
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "AVB",
@@ -2349,7 +2358,7 @@
           "sire": "Too Darn Hot\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Lady Sayyida\n                        \n                        \n                            Dam's Sire",
           "damSire": "Iffraaj\n                        \n                        \n                            Same Sire",
-          "currentRating": 71,
+          "currentRating": 83,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2414,7 +2423,7 @@
           "sire": "Havana Grey\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Starboard Watch\n                        \n                        \n                            Dam's Sire",
           "damSire": "Harbour Watch\n                        \n                        \n                            Same Sire",
-          "currentRating": 85,
+          "currentRating": 91,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2603,7 +2612,8 @@
               "finishTime": 81.64,
               "odds": 18
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "WEC",
@@ -2650,7 +2660,7 @@
           "sire": "Deep Field\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Little Favours\n                        \n                        \n                            Dam's Sire",
           "damSire": "Falvelon\n                        \n                        \n                            Same Sire",
-          "currentRating": 94,
+          "currentRating": 98,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2839,7 +2849,8 @@
               "finishTime": 69.69,
               "odds": 9.8
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "WPN",
@@ -2886,7 +2897,7 @@
           "sire": "Toronado\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Noetic\n                        \n                        \n                            Dam's Sire",
           "damSire": "Cape Cross\n                        \n                        \n                            Same Sire",
-          "currentRating": 90,
+          "currentRating": 105,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -3075,7 +3086,8 @@
               "finishTime": 68.66,
               "odds": 19
             }
-          ]
+          ],
+          "ratingChange": -3
         },
         "jockey": {
           "code": "TEK",

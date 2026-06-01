@@ -22,7 +22,7 @@
           "sire": "Justify\n                        \n                        \n                            Dam",
           "dam": "Paulownia\n                        \n                        \n                            Dam's Sire",
           "damSire": "Fastnet Rock\n                        \n                        \n                            Same Sire",
-          "currentRating": 88,
+          "currentRating": 83,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -92,7 +92,8 @@
               "finishTime": 99.59,
               "odds": 7.6
             }
-          ]
+          ],
+          "ratingChange": 7
         },
         "jockey": {
           "code": "AA",
@@ -139,7 +140,7 @@
           "sire": "Press Statement\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Hollywell\n                        \n                        \n                            Dam's Sire",
           "damSire": "Refuse To Bend\n                        \n                        \n                            Same Sire",
-          "currentRating": 91,
+          "currentRating": 96,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -260,7 +261,8 @@
               "finishTime": 68.21000000000001,
               "odds": 73
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "CJE",
@@ -307,7 +309,7 @@
           "sire": "Into Mischief\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Spirit Of Ecstasy\n                        \n                        \n                            Dam's Sire",
           "damSire": "Congrats\n                        \n                        \n                            Same Sire",
-          "currentRating": 85,
+          "currentRating": 87,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -377,7 +379,8 @@
               "finishTime": 93.43,
               "odds": 46
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "HEL",
@@ -442,7 +445,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": -3,
           "pastPerformances": [
             {
               "date": "2025-12-27T00:00:00.000Z",
@@ -512,7 +514,8 @@
               "finishTime": 94,
               "odds": 243
             }
-          ]
+          ],
+          "ratingChange": -3
         },
         "jockey": {
           "code": "LDE",
@@ -559,7 +562,7 @@
           "sire": "Sea The Moon\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Force One\n                        \n                        \n                            Dam's Sire",
           "damSire": "Dansili\n                        \n                        \n                            Same Sire",
-          "currentRating": 96,
+          "currentRating": 90,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -663,7 +666,8 @@
               "finishTime": 98.72999999999999,
               "odds": 5.8
             }
-          ]
+          ],
+          "ratingChange": 1
         },
         "jockey": {
           "code": "PZ",
@@ -710,7 +714,7 @@
           "sire": "Capitalist\n                        \n                        \n                            Dam",
           "dam": "Eiffel Tower\n                        \n                        \n                            Dam's Sire",
           "damSire": "Stratum\n                        \n                        \n                            Same Sire",
-          "currentRating": 80,
+          "currentRating": 89,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -763,7 +767,8 @@
               "finishTime": 68.78999999999999,
               "odds": 17
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "HCY",

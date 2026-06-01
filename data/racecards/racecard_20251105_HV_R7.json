@@ -22,7 +22,7 @@
           "sire": "Pride Of Dubai\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Dubawi's Image\n                        \n                        \n                            Dam's Sire",
           "damSire": "Dubawi\n                        \n                        \n                            Same Sire",
-          "currentRating": 56,
+          "currentRating": 60,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -211,7 +211,8 @@
               "finishTime": 82.86,
               "odds": 134
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "FEL",
@@ -258,7 +259,7 @@
           "sire": "Capitalist\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Terrifying\n                        \n                        \n                            Dam's Sire",
           "damSire": "Stratum\n                        \n                        \n                            Same Sire",
-          "currentRating": 49,
+          "currentRating": 50,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -447,7 +448,8 @@
               "finishTime": 70.49,
               "odds": 56
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "WPN",
@@ -494,7 +496,7 @@
           "sire": "I Am Invincible\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Royal Missile\n                        \n                        \n                            Dam's Sire",
           "damSire": "Smart Missile\n                        \n                        \n                            Same Sire",
-          "currentRating": 51,
+          "currentRating": 53,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -683,7 +685,8 @@
               "finishTime": 69.9,
               "odds": 19
             }
-          ]
+          ],
+          "ratingChange": 2
         },
         "jockey": {
           "code": "BH",
@@ -730,7 +733,7 @@
           "sire": "Dundeel\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Madeenaty\n                        \n                        \n                            Dam's Sire",
           "damSire": "Exceed And Excel\n                        \n                        \n                            Same Sire",
-          "currentRating": 50,
+          "currentRating": 52,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -851,7 +854,8 @@
               "finishTime": 83.19,
               "odds": 172
             }
-          ]
+          ],
+          "ratingChange": -4
         },
         "jockey": {
           "code": "YML",
@@ -898,7 +902,7 @@
           "sire": "Cosmic Force\n                        \n                        \n                            Dam",
           "dam": "Quick's The Word\n                        \n                        \n                            Dam's Sire",
           "damSire": "Shamardal\n                        \n                        \n                            Same Sire",
-          "currentRating": 49,
+          "currentRating": 47,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1002,7 +1006,8 @@
               "finishTime": 70.86,
               "odds": 64
             }
-          ]
+          ],
+          "ratingChange": 2
         },
         "jockey": {
           "code": "LDE",
@@ -1049,7 +1054,7 @@
           "sire": "Toronado\n                        \n                        \n                            Dam",
           "dam": "Spot On Maggie\n                        \n                        \n                            Dam's Sire",
           "damSire": "One Cool Cat\n                        \n                        \n                            Same Sire",
-          "currentRating": 37,
+          "currentRating": 41,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1238,7 +1243,8 @@
               "finishTime": 70.07,
               "odds": 9.6
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "BA",
@@ -1303,7 +1309,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": -2,
           "pastPerformances": [
             {
               "date": "2025-10-19T00:00:00.000Z",
@@ -1356,7 +1361,8 @@
               "finishTime": 58.52,
               "odds": 143
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "KRW",
@@ -1592,7 +1598,8 @@
               "finishTime": 70.53999999999999,
               "odds": 1.9
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "TEK",
@@ -1639,7 +1646,7 @@
           "sire": "Darci Brahma\n                        \n                        \n                            Dam",
           "dam": "Strictly Maternal\n                        \n                        \n                            Dam's Sire",
           "damSire": "O'Reilly\n                        \n                        \n                            Same Sire",
-          "currentRating": 46,
+          "currentRating": 51,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1828,7 +1835,8 @@
               "finishTime": 70.44,
               "odds": 12
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "OJM",
@@ -1875,7 +1883,7 @@
           "sire": "Darci Brahma\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Mi Shari\n                        \n                        \n                            Dam's Sire",
           "damSire": "Shinko King\n                        \n                        \n                            Same Sire",
-          "currentRating": 32,
+          "currentRating": 40,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1996,7 +2004,8 @@
               "finishTime": 70.5,
               "odds": 7.5
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "DHA",
@@ -2043,7 +2052,7 @@
           "sire": "Shaman Ghost\n                        \n                        \n                            Dam",
           "dam": "She Has Charm\n                        \n                        \n                            Dam's Sire",
           "damSire": "Smart Strike\n                        \n                        \n                            Same Sire",
-          "currentRating": 44,
+          "currentRating": 47,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2113,7 +2122,8 @@
               "finishTime": 57.85,
               "odds": 156
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "CML",
@@ -2160,7 +2170,7 @@
           "sire": "Per Incanto\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "I Got A Rock\n                        \n                        \n                            Dam's Sire",
           "damSire": "Fastnet Rock\n                        \n                        \n                            Same Sire",
-          "currentRating": 37,
+          "currentRating": 51,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2196,7 +2206,8 @@
               "finishTime": 56.8,
               "odds": 38
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "WEC",

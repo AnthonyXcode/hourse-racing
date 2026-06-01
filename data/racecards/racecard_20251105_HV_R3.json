@@ -109,7 +109,8 @@
               "finishTime": 69.48,
               "odds": 15
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "PZ",
@@ -156,7 +157,7 @@
           "sire": "Mehmas\n                        \n                        \n                            Dam",
           "dam": "My Henrietta\n                        \n                        \n                            Dam's Sire",
           "damSire": "Henrythenavigator\n                        \n                        \n                            Same Sire",
-          "currentRating": 46,
+          "currentRating": 47,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -345,7 +346,8 @@
               "finishTime": 82.42,
               "odds": 13
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "DHA",
@@ -646,7 +648,8 @@
               "finishTime": 57.23,
               "odds": 12
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "AVB",
@@ -693,7 +696,7 @@
           "sire": "No Nay Never\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Lasilia\n                        \n                        \n                            Dam's Sire",
           "damSire": "Acclamation\n                        \n                        \n                            Same Sire",
-          "currentRating": 33,
+          "currentRating": 45,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -882,7 +885,8 @@
               "finishTime": 69.83,
               "odds": 158
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "WEC",
@@ -929,7 +933,7 @@
           "sire": "Divine Prophet\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Special Miss\n                        \n                        \n                            Dam's Sire",
           "damSire": "Darci Brahma\n                        \n                        \n                            Same Sire",
-          "currentRating": 64,
+          "currentRating": 54,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1033,7 +1037,8 @@
               "finishTime": 57.67,
               "odds": 57
             }
-          ]
+          ],
+          "ratingChange": -4
         },
         "jockey": {
           "code": "BA",
@@ -1080,7 +1085,7 @@
           "sire": "Deep Field\n                        \n                        \n                            Dam",
           "dam": "Murtle Turtle\n                        \n                        \n                            Dam's Sire",
           "damSire": "Murtajill\n                        \n                        \n                            Same Sire",
-          "currentRating": 40,
+          "currentRating": 54,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1269,7 +1274,8 @@
               "finishTime": 69.8,
               "odds": 10
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "BH",
@@ -1316,7 +1322,7 @@
           "sire": "Sweynesse\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Zaperb\n                        \n                        \n                            Dam's Sire",
           "damSire": "Volksraad\n                        \n                        \n                            Same Sire",
-          "currentRating": 56,
+          "currentRating": 49,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1369,7 +1375,8 @@
               "finishTime": 70.91,
               "odds": 206
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "PDF",
@@ -1416,7 +1423,7 @@
           "sire": "Charm Spirit\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Shama de Oro\n                        \n                        \n                            Dam's Sire",
           "damSire": "Shamardal\n                        \n                        \n                            Same Sire",
-          "currentRating": 50,
+          "currentRating": 40,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1537,7 +1544,8 @@
               "finishTime": 71.1,
               "odds": 6.4
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "TEK",
@@ -1584,7 +1592,7 @@
           "sire": "Sweynesse\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Prist\n                        \n                        \n                            Dam's Sire",
           "damSire": "Shocking\n                        \n                        \n                            Same Sire",
-          "currentRating": 37,
+          "currentRating": 45,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1756,7 +1764,8 @@
               "finishTime": 70.13,
               "odds": 198
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "AA",
@@ -1992,7 +2001,8 @@
               "finishTime": 74.09,
               "odds": 9.2
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "HEL",
@@ -2039,7 +2049,7 @@
           "sire": "Russian Revolution\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Helsonic\n                        \n                        \n                            Dam's Sire",
           "damSire": "All Too Hard\n                        \n                        \n                            Same Sire",
-          "currentRating": 56,
+          "currentRating": 52,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2075,7 +2085,8 @@
               "finishTime": 57.71,
               "odds": 29
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "KRW",

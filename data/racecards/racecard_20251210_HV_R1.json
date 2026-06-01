@@ -40,7 +40,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": 0,
           "pastPerformances": [
             {
               "date": "2025-09-28T00:00:00.000Z",
@@ -212,7 +211,8 @@
               "finishTime": 82.5,
               "odds": 71
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "MOJ",
@@ -259,7 +259,7 @@
           "sire": "Demerit\n                        \n                        \n                            Dam",
           "dam": "Native Silver\n                        \n                        \n                            Dam's Sire",
           "damSire": "Metal Storm\n                        \n                        \n                            Same Sire",
-          "currentRating": 37,
+          "currentRating": 40,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -448,7 +448,8 @@
               "finishTime": 69.41,
               "odds": 16
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "BH",
@@ -495,7 +496,7 @@
           "sire": "Sweynesse\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Coterie\n                        \n                        \n                            Dam's Sire",
           "damSire": "Keeper\n                        \n                        \n                            Same Sire",
-          "currentRating": 23,
+          "currentRating": 25,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -684,7 +685,8 @@
               "finishTime": 82.56,
               "odds": 65
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "YML",
@@ -920,7 +922,8 @@
               "finishTime": 82.12,
               "odds": 39
             }
-          ]
+          ],
+          "ratingChange": 1
         },
         "jockey": {
           "code": "DHA",
@@ -1156,7 +1159,8 @@
               "finishTime": 99.6,
               "odds": 2.7
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "GM",
@@ -1203,7 +1207,7 @@
           "sire": "Spirit Of Boom\n                        \n                        \n                            Dam",
           "dam": "Darook Park\n                        \n                        \n                            Dam's Sire",
           "damSire": "Darci Brahma\n                        \n                        \n                            Same Sire",
-          "currentRating": 52,
+          "currentRating": 20,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1392,7 +1396,8 @@
               "finishTime": 95.37,
               "odds": 12
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "TEK",
@@ -1439,7 +1444,7 @@
           "sire": "Frosted\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "My Rachel\n                        \n                        \n                            Dam's Sire",
           "damSire": "Horse Chestnut\n                        \n                        \n                            Same Sire",
-          "currentRating": 22,
+          "currentRating": 30,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1628,7 +1633,8 @@
               "finishTime": 69.98,
               "odds": 128
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "HEL",
@@ -1675,7 +1681,7 @@
           "sire": "Invincible Army\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "La Reveuse\n                        \n                        \n                            Dam's Sire",
           "damSire": "Galileo\n                        \n                        \n                            Same Sire",
-          "currentRating": 36,
+          "currentRating": 38,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1813,7 +1819,8 @@
               "finishTime": 71.36,
               "odds": 26
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "CCY",
@@ -1860,7 +1867,7 @@
           "sire": "Russian Revolution\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "One Mansini\n                        \n                        \n                            Dam's Sire",
           "damSire": "Nicconi\n                        \n                        \n                            Same Sire",
-          "currentRating": 20,
+          "currentRating": 25,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2049,7 +2056,8 @@
               "finishTime": 56.59,
               "odds": 128
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "MHT",
@@ -2096,7 +2104,7 @@
           "sire": "Press Statement\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Max It Out\n                        \n                        \n                            Dam's Sire",
           "damSire": "Northern Meteor\n                        \n                        \n                            Same Sire",
-          "currentRating": 31,
+          "currentRating": 34,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2285,7 +2293,8 @@
               "finishTime": 82.78999999999999,
               "odds": 12
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "MCJ",
@@ -2332,7 +2341,7 @@
           "sire": "Brutal\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Pearl Congenial\n                        \n                        \n                            Dam's Sire",
           "damSire": "Gio Ponti\n                        \n                        \n                            Same Sire",
-          "currentRating": 32,
+          "currentRating": 40,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2521,7 +2530,8 @@
               "finishTime": 70.4,
               "odds": 78
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "LDE",
@@ -2568,7 +2578,7 @@
           "sire": "Microphone\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Embellished\n                        \n                        \n                            Dam's Sire",
           "damSire": "Bellamy Road\n                        \n                        \n                            Same Sire",
-          "currentRating": 35,
+          "currentRating": 40,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2757,7 +2767,8 @@
               "finishTime": 70.15,
               "odds": 47
             }
-          ]
+          ],
+          "ratingChange": 5
         },
         "jockey": {
           "code": "PMF",

@@ -40,7 +40,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": 0,
           "pastPerformances": [
             {
               "date": "2026-01-14T00:00:00.000Z",
@@ -144,7 +143,8 @@
               "finishTime": 70.44,
               "odds": 16
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "WEC",
@@ -191,7 +191,7 @@
           "sire": "Mikki Isle\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Palatine Hill\n                        \n                        \n                            Dam's Sire",
           "damSire": "Palace Music\n                        \n                        \n                            Same Sire",
-          "currentRating": 23,
+          "currentRating": 26,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -414,7 +414,8 @@
               "finishTime": 69.35,
               "odds": 10
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "PZ",
@@ -461,7 +462,7 @@
           "sire": "Cosmic Force\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Cappella Magna\n                        \n                        \n                            Dam's Sire",
           "damSire": "Stratum\n                        \n                        \n                            Same Sire",
-          "currentRating": 33,
+          "currentRating": 36,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -565,7 +566,8 @@
               "finishTime": 69.23,
               "odds": 22
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "KRW",
@@ -682,7 +684,8 @@
               "finishTime": 69.91,
               "odds": 45
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "CJE",
@@ -765,7 +768,8 @@
               "finishTime": 57.56,
               "odds": 4.2
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "GM",
@@ -812,7 +816,7 @@
           "sire": "Zoustar\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Summer Girlfriend\n                        \n                        \n                            Dam's Sire",
           "damSire": "Forest Camp\n                        \n                        \n                            Same Sire",
-          "currentRating": 30,
+          "currentRating": 33,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -950,7 +954,8 @@
               "finishTime": 81.43,
               "odds": 8.8
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "BA",
@@ -997,7 +1002,7 @@
           "sire": "Better Than Ready\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Lune Rouge\n                        \n                        \n                            Dam's Sire",
           "damSire": "Malibu Moon\n                        \n                        \n                            Same Sire",
-          "currentRating": 52,
+          "currentRating": 22,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1135,7 +1140,8 @@
               "finishTime": 69.34,
               "odds": 23
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "BHW",
@@ -1182,7 +1188,7 @@
           "sire": "El Roca\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Daly River\n                        \n                        \n                            Dam's Sire",
           "damSire": "General Nediym\n                        \n                        \n                            Same Sire",
-          "currentRating": 34,
+          "currentRating": 39,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1286,7 +1292,8 @@
               "finishTime": 70.95,
               "odds": 60
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "LDE",
@@ -1333,7 +1340,7 @@
           "sire": "Holy Roman Emperor\n                        \n                        \n                            Dam",
           "dam": "Guilia\n                        \n                        \n                            Dam's Sire",
           "damSire": "Galileo\n                        \n                        \n                            Same Sire",
-          "currentRating": 28,
+          "currentRating": 30,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1437,7 +1444,8 @@
               "finishTime": 69.18,
               "odds": 6.5
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "TEK",
@@ -1484,7 +1492,7 @@
           "sire": "Nicconi\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Alana's Party\n                        \n                        \n                            Dam's Sire",
           "damSire": "Exceed And Excel\n                        \n                        \n                            Same Sire",
-          "currentRating": 36,
+          "currentRating": 40,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1537,7 +1545,8 @@
               "finishTime": 70.8,
               "odds": 35
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "MDB",
@@ -1584,7 +1593,7 @@
           "sire": "Pride Of Dubai\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Allez France\n                        \n                        \n                            Dam's Sire",
           "damSire": "Hennessy\n                        \n                        \n                            Same Sire",
-          "currentRating": 22,
+          "currentRating": 28,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1620,7 +1629,8 @@
               "finishTime": 57.09,
               "odds": 35
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "HEL",
@@ -1667,7 +1677,7 @@
           "sire": "Acclamation\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Cravin Raven\n                        \n                        \n                            Dam's Sire",
           "damSire": "Raven's Pass\n                        \n                        \n                            Same Sire",
-          "currentRating": 21,
+          "currentRating": 30,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1754,7 +1764,8 @@
               "finishTime": 70.64,
               "odds": 119
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "PMF",

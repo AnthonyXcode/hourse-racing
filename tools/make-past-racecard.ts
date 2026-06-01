@@ -42,6 +42,7 @@ import { PastRaceResultsScraper } from "../src/scrapers/pastRaceResults.js";
 import { HorseProfileScraper } from "../src/scrapers/horseProfile.js";
 import { RaceCardHistoryScraper } from "../src/scrapers/raceCardHistory.js";
 import { HorseDataEnricher } from "../src/data/horseEnricher.js";
+import { resolveRaceDayRatingFromProfile } from "../src/data/raceDayRating.js";
 import { JockeyEnricher } from "../src/data/jockeyEnricher.js";
 import { TrainerEnricher } from "../src/data/trainerEnricher.js";
 
@@ -333,25 +334,15 @@ async function buildRace(
     try {
       const profile = await horseScraper.scrapeHorseProfile(runner.horseCode);
 
-      // Find the rating the horse carried into THIS race from the profile's form table.
-      // parsePastPerformances now extracts speedRating (the "Rtg." column) per row.
-      // Profile PPs are sorted descending (most recent first).
-      const matchingIdx = profile.pastPerformances.findIndex((pp) => {
-        const ppDate = format(new Date(pp.date), "yyyy-MM-dd");
-        return ppDate === raceDateStr && pp.raceNumber === raceNo;
-      });
-      const matchingPP = matchingIdx >= 0 ? profile.pastPerformances[matchingIdx] : undefined;
-      const ratingAtRaceTime = matchingPP?.speedRating ?? profile.currentRating;
-
-      // ratingChange = this race's rating minus the previous race's rating.
-      // "Previous" = the entry one position later in the descending list.
-      let ratingChange: number | undefined;
-      if (matchingPP?.speedRating !== undefined && matchingIdx >= 0) {
-        const prevPP = profile.pastPerformances[matchingIdx + 1];
-        if (prevPP?.speedRating !== undefined) {
-          const delta = matchingPP.speedRating - prevPP.speedRating;
-          ratingChange = delta;
-        }
+      const raceDayRating = resolveRaceDayRatingFromProfile(
+        profile.pastPerformances,
+        date,
+        raceNo
+      );
+      if (!raceDayRating) {
+        console.warn(
+          `  [WARNING] No race-day Rtg for ${runner.horseName} on ${raceDateStr} R${raceNo}`
+        );
       }
 
       // Exclude nameChinese and HorseProfile-only fields when building a Horse.
@@ -363,8 +354,10 @@ async function buildRace(
         // Use the full HKJC code (e.g. HK_2023_J391), not just the short tail.
         code: runner.horseCode,
         name: runner.horseName || baseProfile.name,
-        currentRating: ratingAtRaceTime,
-        ...(ratingChange !== undefined ? { ratingChange } : {}),
+        currentRating: raceDayRating?.currentRating ?? 50,
+        ...(raceDayRating?.ratingChange !== undefined
+          ? { ratingChange: raceDayRating.ratingChange }
+          : {}),
         // pastPerformances will be populated by HorseDataEnricher below.
         pastPerformances: [],
       };

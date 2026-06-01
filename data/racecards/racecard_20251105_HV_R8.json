@@ -22,7 +22,7 @@
           "sire": "Zoustar\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Sassy Dresser\n                        \n                        \n                            Dam's Sire",
           "damSire": "Kingman\n                        \n                        \n                            Same Sire",
-          "currentRating": 84,
+          "currentRating": 76,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -143,7 +143,8 @@
               "finishTime": 70.03,
               "odds": 11
             }
-          ]
+          ],
+          "ratingChange": 6
         },
         "jockey": {
           "code": "LDE",
@@ -190,7 +191,7 @@
           "sire": "So You Think\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Spectrolite\n                        \n                        \n                            Dam's Sire",
           "damSire": "Stratum\n                        \n                        \n                            Same Sire",
-          "currentRating": 62,
+          "currentRating": 73,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -379,7 +380,8 @@
               "finishTime": 70.17,
               "odds": 7.1
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "BA",
@@ -426,7 +428,7 @@
           "sire": "Starspangledbanner\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Rely On Me\n                        \n                        \n                            Dam's Sire",
           "damSire": "Kyllachy\n                        \n                        \n                            Same Sire",
-          "currentRating": 58,
+          "currentRating": 67,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -615,7 +617,8 @@
               "finishTime": 82.03,
               "odds": 3.7
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "BHW",
@@ -662,7 +665,7 @@
           "sire": "Starspangledbanner\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Wangaala\n                        \n                        \n                            Dam's Sire",
           "damSire": "Toorak Toff\n                        \n                        \n                            Same Sire",
-          "currentRating": 59,
+          "currentRating": 74,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -851,7 +854,8 @@
               "finishTime": 81.7,
               "odds": 144
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "WPN",
@@ -898,7 +902,7 @@
           "sire": "Alabama Express\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Sorrentina\n                        \n                        \n                            Dam's Sire",
           "damSire": "Savabeel\n                        \n                        \n                            Same Sire",
-          "currentRating": 57,
+          "currentRating": 72,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -963,7 +967,7 @@
           "sire": "Aclaim\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Twist Of Magic\n                        \n                        \n                            Dam's Sire",
           "damSire": "Arcano\n                        \n                        \n                            Same Sire",
-          "currentRating": 58,
+          "currentRating": 65,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -999,7 +1003,8 @@
               "finishTime": 69.32,
               "odds": 15
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "WEC",
@@ -1046,7 +1051,7 @@
           "sire": "Headwater\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Phar Too Fast\n                        \n                        \n                            Dam's Sire",
           "damSire": "Dane Shadow\n                        \n                        \n                            Same Sire",
-          "currentRating": 61,
+          "currentRating": 64,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1235,7 +1240,8 @@
               "finishTime": 82.23,
               "odds": 31
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "CML",
@@ -1300,7 +1306,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": 2,
           "pastPerformances": [
             {
               "date": "2025-10-08T00:00:00.000Z",
@@ -1472,7 +1477,8 @@
               "finishTime": 82.56,
               "odds": 33
             }
-          ]
+          ],
+          "ratingChange": 2
         },
         "jockey": {
           "code": "AA",
@@ -1519,7 +1525,7 @@
           "sire": "Showtime\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Hediard\n                        \n                        \n                            Dam's Sire",
           "damSire": "Bernardini\n                        \n                        \n                            Same Sire",
-          "currentRating": 60,
+          "currentRating": 65,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1708,7 +1714,8 @@
               "finishTime": 70.16,
               "odds": 40
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "DHA",
@@ -1944,7 +1951,8 @@
               "finishTime": 69.49,
               "odds": 32
             }
-          ]
+          ],
+          "ratingChange": 2
         },
         "jockey": {
           "code": "PZ",
@@ -1991,7 +1999,7 @@
           "sire": "Brave Smash\n                        \n                        \n                            Dam",
           "dam": "Devil's Harmony\n                        \n                        \n                            Dam's Sire",
           "damSire": "Pentire\n                        \n                        \n                            Same Sire",
-          "currentRating": 59,
+          "currentRating": 63,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2180,7 +2188,8 @@
               "finishTime": 69.4,
               "odds": 3.3
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "KRW",
@@ -2227,7 +2236,7 @@
           "sire": "Nicconi\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Bedizened\n                        \n                        \n                            Dam's Sire",
           "damSire": "Commands\n                        \n                        \n                            Same Sire",
-          "currentRating": 58,
+          "currentRating": 61,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -2314,7 +2323,8 @@
               "finishTime": 69.83,
               "odds": 3.8
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "TEK",

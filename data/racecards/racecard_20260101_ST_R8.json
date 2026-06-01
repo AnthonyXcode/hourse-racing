@@ -22,7 +22,7 @@
           "sire": "Dracarys\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Zeffiretta\n                        \n                        \n                            Dam's Sire",
           "damSire": "Husson\n                        \n                        \n                            Same Sire",
-          "currentRating": 100,
+          "currentRating": 86,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -109,7 +109,8 @@
               "finishTime": 69.31,
               "odds": 18
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "TEK",
@@ -156,7 +157,7 @@
           "sire": "Panzer Division\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Parraay\n                        \n                        \n                            Dam's Sire",
           "damSire": "Excites\n                        \n                        \n                            Same Sire",
-          "currentRating": 93,
+          "currentRating": 91,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -243,7 +244,8 @@
               "finishTime": 68.1,
               "odds": 3.5
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "BA",
@@ -290,7 +292,7 @@
           "sire": "Zoustar\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Fortune Of War\n                        \n                        \n                            Dam's Sire",
           "damSire": "General Nediym\n                        \n                        \n                            Same Sire",
-          "currentRating": 114,
+          "currentRating": 109,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -360,7 +362,8 @@
               "finishTime": 81.18,
               "odds": 16
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "BH",
@@ -407,7 +410,7 @@
           "sire": "So You Think\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Humble\n                        \n                        \n                            Dam's Sire",
           "damSire": "Exceed And Excel\n                        \n                        \n                            Same Sire",
-          "currentRating": 98,
+          "currentRating": 89,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -494,7 +497,8 @@
               "finishTime": 69.39,
               "odds": 4.2
             }
-          ]
+          ],
+          "ratingChange": 7
         },
         "jockey": {
           "code": "CML",
@@ -541,7 +545,7 @@
           "sire": "Written Tycoon\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Rainbeam\n                        \n                        \n                            Dam's Sire",
           "damSire": "Fastnet Rock\n                        \n                        \n                            Same Sire",
-          "currentRating": 106,
+          "currentRating": 110,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -645,7 +649,8 @@
               "finishTime": 67.76,
               "odds": 5.4
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "BHW",
@@ -779,7 +784,8 @@
               "finishTime": 68.53999999999999,
               "odds": 24
             }
-          ]
+          ],
+          "ratingChange": 6
         },
         "jockey": {
           "code": "LDE",
@@ -826,7 +832,7 @@
           "sire": "Exceed And Excel\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Kaniana\n                        \n                        \n                            Dam's Sire",
           "damSire": "Canny Lad\n                        \n                        \n                            Same Sire",
-          "currentRating": 80,
+          "currentRating": 82,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -913,7 +919,8 @@
               "finishTime": 81.28999999999999,
               "odds": 12
             }
-          ]
+          ],
+          "ratingChange": -1
         },
         "jockey": {
           "code": "AA",
@@ -978,7 +985,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": 0,
           "pastPerformances": [
             {
               "date": "2025-11-23T00:00:00.000Z",
@@ -1031,7 +1037,8 @@
               "finishTime": 81.19,
               "odds": 3.8
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "PZ",
@@ -1078,7 +1085,7 @@
           "sire": "Rubick\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Black Tulip\n                        \n                        \n                            Dam's Sire",
           "damSire": "Lonhro\n                        \n                        \n                            Same Sire",
-          "currentRating": 103,
+          "currentRating": 108,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1131,7 +1138,8 @@
               "finishTime": 81.05,
               "odds": 6.1
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "GM",
@@ -1178,7 +1186,7 @@
           "sire": "Starspangledbanner\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Ithacan Queen\n                        \n                        \n                            Dam's Sire",
           "damSire": "Savabeel\n                        \n                        \n                            Same Sire",
-          "currentRating": 90,
+          "currentRating": 102,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1248,7 +1256,8 @@
               "finishTime": 93.24000000000001,
               "odds": 97
             }
-          ]
+          ],
+          "ratingChange": -3
         },
         "jockey": {
           "code": "AVB",
@@ -1295,7 +1304,7 @@
           "sire": "Siyouni\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Illaunmore\n                        \n                        \n                            Dam's Sire",
           "damSire": "Shamardal\n                        \n                        \n                            Same Sire",
-          "currentRating": 90,
+          "currentRating": 92,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1365,7 +1374,8 @@
               "finishTime": 81.23,
               "odds": 12
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "PMF",
@@ -1412,7 +1422,7 @@
           "sire": "Capitalist\n                        \n                        \n                            Dam",
           "dam": "Eiffel Tower\n                        \n                        \n                            Dam's Sire",
           "damSire": "Stratum\n                        \n                        \n                            Same Sire",
-          "currentRating": 80,
+          "currentRating": 91,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1448,7 +1458,8 @@
               "finishTime": 68.78999999999999,
               "odds": 17
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "YML",

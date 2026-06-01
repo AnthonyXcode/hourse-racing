@@ -40,7 +40,6 @@
             "PC",
             "SR"
           ],
-          "ratingChange": -2,
           "pastPerformances": [
             {
               "date": "2025-12-20T00:00:00.000Z",
@@ -110,7 +109,8 @@
               "finishTime": 69.27,
               "odds": 137
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "CCY",
@@ -429,7 +429,8 @@
               "finishTime": 95.49000000000001,
               "odds": 6.1
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "FEL",
@@ -476,7 +477,7 @@
           "sire": "Press Statement\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Max It Out\n                        \n                        \n                            Dam's Sire",
           "damSire": "Northern Meteor\n                        \n                        \n                            Same Sire",
-          "currentRating": 31,
+          "currentRating": 32,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -580,7 +581,8 @@
               "finishTime": 81.89,
               "odds": 9.7
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "PZ",
@@ -627,7 +629,7 @@
           "sire": "Belardo\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Maneo Invictus\n                        \n                        \n                            Dam's Sire",
           "damSire": "Volksraad\n                        \n                        \n                            Same Sire",
-          "currentRating": 33,
+          "currentRating": 35,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -714,7 +716,8 @@
               "finishTime": 83.28999999999999,
               "odds": 10
             }
-          ]
+          ],
+          "ratingChange": -3
         },
         "jockey": {
           "code": "AVB",
@@ -912,7 +915,7 @@
           "sire": "Astern\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Jessica Ann\n                        \n                        \n                            Dam's Sire",
           "damSire": "Fastnet Rock\n                        \n                        \n                            Same Sire",
-          "currentRating": 28,
+          "currentRating": 35,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -999,7 +1002,8 @@
               "finishTime": 81.68,
               "odds": 24
             }
-          ]
+          ],
+          "ratingChange": 0
         },
         "jockey": {
           "code": "HCY",
@@ -1046,7 +1050,7 @@
           "sire": "Frosted\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "My Rachel\n                        \n                        \n                            Dam's Sire",
           "damSire": "Horse Chestnut\n                        \n                        \n                            Same Sire",
-          "currentRating": 22,
+          "currentRating": 28,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1150,7 +1154,8 @@
               "finishTime": 82.89,
               "odds": 40
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "PDF",
@@ -1197,7 +1202,7 @@
           "sire": "Snitzel\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Street Secret\n                        \n                        \n                            Dam's Sire",
           "damSire": "Street Cry\n                        \n                        \n                            Same Sire",
-          "currentRating": 21,
+          "currentRating": 32,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1318,7 +1323,8 @@
               "finishTime": 69.74,
               "odds": 187
             }
-          ]
+          ],
+          "ratingChange": -3
         },
         "jockey": {
           "code": "LDE",
@@ -1365,7 +1371,7 @@
           "sire": "Time Test\n                        \n                        \n                            Dam",
           "dam": "The Beckett\n                        \n                        \n                            Dam's Sire",
           "damSire": "Spartacus\n                        \n                        \n                            Same Sire",
-          "currentRating": 52,
+          "currentRating": 23,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1469,7 +1475,8 @@
               "finishTime": 82.58,
               "odds": 18
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "PMF",
@@ -1516,7 +1523,7 @@
           "sire": "Telperion\n                        \n                        \n                            Dam",
           "dam": "Treat\n                        \n                        \n                            Dam's Sire",
           "damSire": "Ishiguru\n                        \n                        \n                            Same Sire",
-          "currentRating": 21,
+          "currentRating": 23,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1586,7 +1593,8 @@
               "finishTime": 81.71000000000001,
               "odds": 107
             }
-          ]
+          ],
+          "ratingChange": 1
         },
         "jockey": {
           "code": "TEK",
@@ -1633,7 +1641,7 @@
           "sire": "Exceed And Excel\n                        \n                        \n                            Dam",
           "dam": "Antarctic Dream\n                        \n                        \n                            Dam's Sire",
           "damSire": "Southern Image\n                        \n                        \n                            Same Sire",
-          "currentRating": 52,
+          "currentRating": 31,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1703,7 +1711,8 @@
               "finishTime": 70.2,
               "odds": 10
             }
-          ]
+          ],
+          "ratingChange": -3
         },
         "jockey": {
           "code": "OJM",
@@ -1750,7 +1759,7 @@
           "sire": "Capitalist\n                                    \n                            \n                        \n                        \n                            Dam",
           "dam": "Meri Rani\n                        \n                        \n                            Dam's Sire",
           "damSire": "Stratum\n                        \n                        \n                            Same Sire",
-          "currentRating": 27,
+          "currentRating": 38,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1837,7 +1846,8 @@
               "finishTime": 100.33,
               "odds": 13
             }
-          ]
+          ],
+          "ratingChange": -2
         },
         "jockey": {
           "code": "KRW",
@@ -1884,7 +1894,7 @@
           "sire": "Turn Me Loose\n                        \n                        \n                            Dam",
           "dam": "Spendaholic\n                        \n                        \n                            Dam's Sire",
           "damSire": "No Excuse Needed\n                        \n                        \n                            Same Sire",
-          "currentRating": 52,
+          "currentRating": 20,
           "seasonStarts": 0,
           "seasonWins": 0,
           "seasonPlaces": 0,
@@ -1971,7 +1981,8 @@
               "finishTime": 97.22999999999999,
               "odds": 88
             }
-          ]
+          ],
+          "ratingChange": -3
         },
         "jockey": {
           "code": "MHT",
