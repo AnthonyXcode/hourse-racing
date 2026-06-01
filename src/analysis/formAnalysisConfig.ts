@@ -287,8 +287,8 @@ export const WEIGHT_BIAS: Record<Venue, WeightBiasBySurface> = {
   "Sha Tin": {
     Turf: {
       default: uniformDistanceWeights(ST_TURF_DISTANCES, ST_TURF_DEFAULT),
-      "Class 3": ST_TURF_CLASS3_MAP,
-      "Class 4": ST_TURF_CLASS4_MAP,
+    //   "Class 3": ST_TURF_CLASS3_MAP,
+    //   "Class 4": ST_TURF_CLASS4_MAP,
     },
     AWT: {
       default: uniformDistanceWeights(ST_AWT_DISTANCES, ST_AWT_DEFAULT),
@@ -298,7 +298,7 @@ export const WEIGHT_BIAS: Record<Venue, WeightBiasBySurface> = {
     Turf: {
       default: HV_TURF_DEFAULT_MAP,
       "Class 4": mergeDistanceWeights(HV_TURF_DEFAULT_MAP, {
-        1650: HV_TURF_1650_C4,
+        // 1650: HV_TURF_1650_C4,
       }),
     },
     AWT: {},

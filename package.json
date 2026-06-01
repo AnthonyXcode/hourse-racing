@@ -13,7 +13,9 @@
     "analyze": "tsx tools/analyze-race.ts",
     "odds": "tsx tools/fetch-odds.ts",
     "lint": "eslint src/**/*.ts",
-    "test": "vitest"
+    "test": "vitest",
+    "optimize:HV": "npx tsx tools/backtest-differentiation.ts --sparse=3 --close=2 --avgdiff=15 --gap=1 --venue=HV --surface=Turf --form=all",
+    "optimize:ST": "npx tsx tools/backtest-differentiation.ts --sparse=4 --close=4 --avgdiff=11 --gap=1 --venue=ST --surface=Turf --form=all --ignore-class=\"Griffin, 4 Year Olds, class 5\""
   },
   "keywords": [
     "horse-racing",
