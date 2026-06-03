@@ -37,6 +37,7 @@
 | **20**  | **24 May** | **ST** | **Turf**     | **Good to Firm** | **11** | **38.4%** | **74.8%**  | **3/11** | **27.3%** | **✅❌❌✅❌❌❌❌❌❌✅❌** | **1**          |
 | **21**  | **27 May** | **HV** | **Turf**     | **Good to Firm** | **9**  | **37.9%** | **69.8%**  | **4/9**  | **44.4%** | **✅❌✅❌✅❌❌✅❌**   | **1**          |
 | **22** | **31 May** | **ST** | **Turf** | **Good** | **11** | **36.7%** | **—** | **6/11** | **54.5%** | **❌❌✅✅❌✅❌❌✅✅✅** | **1** |
+| **23** | **3 Jun** | **HV** | **Turf "C"** | **Good to Firm** | **9** | **31.5%** | **64.8%** | **2/9** | **22.2%** | **✅❌❌❌❌❌❌✅❌** | **1** |
 
 \*Meeting 8 **R1** (6 runners): MC #1 **#6** ran **3rd** but HKJC Place pool pays **two** places only → **$0** dividend; counts as **❌** for streaks and all-ups (same dividend logic as other meetings).
 
@@ -1465,3 +1466,23 @@ Place dividends (MC #1 when placed): R1=$14.50, R3=$12.00, R5=$10.50, R8=$18.00
 | R9 | Group 3 | 1200 | #7 PATCH OF STARS | 29% | 63% | ✅ 1st | 13 |
 | R10 | Class 3 | 1600 | #3 ENDUED | 38.6% | 72.7% | ✅ 2nd | 16.5 |
 | R11 | Class 3 | 1200 | #4 KA YING ATTACK | 23.6% | 58.5% | ✅ 1st | 16 |
+
+## Meeting 23: Happy Valley | 3 Jun 2026 (9 races)
+
+**MC #1** = raw MC Win% rank from `data/temp/simulation_summaries_20260603_HV(enriched).md` (5,000 iterations, `--form-data all`). **Results** from `data/historical/results_20260603_HV.json`.
+
+| Race | Class | Dist (m) | MC #1 | MC Win% | MC Place% | Placed? | Place $ (if placed) |
+|------|-------|----------|-------|---------|-----------|---------|---------------------|
+| R1 | Class 5 | 1650 | #3 FAMILY FORTUNE | 43.3% | 76.6% | ✅ 1st | 13 |
+| R2 | Class 5 | 1200 | #2 ALWAYS MY FOLKS | 37.5% | 70.6% | ❌ (5th) | — |
+| R3 | Class 4 | 1200 | #3 CAPTAIN LINK | 19.5% | 47.1% | ❌ (10th) | — |
+| R4 | Class 4 | 1650 | #10 RUN RUN TIMING | 26.1% | 58.0% | ❌ (12th) | — |
+| R5 | Class 4 | 1200 | #10 PODIUM | 43.6% | 77.3% | ❌ (4th) | — |
+| R6 | Class 4 | 1200 | #7 NEBRASKAN | 33.6% | 69.2% | ❌ (6th) | — |
+| R7 | Class 3 | 1200 | #1 HAPPY INDEX | 25.1% | 56.7% | ❌ (9th) | — |
+| R8 | Class 2 | 1800 | #6 SILVERY BREEZE | 22.2% | 55.0% | ✅ 1st | 24 |
+| R9 | Class 3 | 1650 | #1 SMART AVENUE | 31.6% | 65.4% | ❌ (5th) | — |
+
+**Placed:** 2/9 (22.2%) | **Pattern:** ✅❌❌❌❌❌❌✅❌ | **Max streak:** 1
+
+**Trio card note (R1–R9):** Strategy A **2/8** staked hits (−$250); R3 PASS. Strategy B (report) **0/9** (−$1,200); three Pattern A near-misses (R3, R5, R6). MC #1 placed **R1** and **R8** only (2/9); favourites **#10** R4/R5 failed to place.
