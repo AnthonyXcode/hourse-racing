@@ -139,6 +139,25 @@ function histThresholdOpts(sparse: number, close8: number, avgDiff: number, topG
   };
 }
 
+function formatWinRankingsTable(
+  horses: RaceSimDetail["horses"],
+  fieldSize: number,
+  iterations = 5000
+): string[] {
+  const lines: string[] = [];
+  lines.push(`Win Probability Rankings (all ${fieldSize} horses, ${iterations.toLocaleString()} iterations):`);
+  lines.push("");
+  lines.push("| # | Horse | Win% | Place% | Form | Rating | Diff | Odds | ePos |");
+  lines.push("|---|-------|-----:|-------:|-----:|-------:|-----:|-----:|-----:|");
+  for (const h of horses) {
+    const odds = h.winOdds > 0 ? h.winOdds.toFixed(1) : "—";
+    lines.push(
+      `| ${h.number} | ${h.name} | ${h.winProb.toFixed(1)}% | ${h.placeProb.toFixed(1)}% | ${h.formCount} | ${h.rating} | ${h.diff} | ${odds} | ${h.expectedPosition.toFixed(1)} |`
+    );
+  }
+  return lines;
+}
+
 function hitRateStrings(
   rows: DifferentiationBacktestRow[],
   vCode: "HV" | "ST",
@@ -496,18 +515,7 @@ async function main() {
         lines.push(`RACE ${detail.raceNumber} - ${venueLabel} | ${detail.raceClass} | ${detail.distance} ${detail.surface} | ${detail.fieldSize} runners`);
         lines.push("═".repeat(55));
         lines.push("");
-        lines.push(`Win Probability Rankings (all ${detail.fieldSize} horses, 5,000 iterations):`);
-
-        for (const h of detail.horses) {
-          const numStr = `#${h.number.toString().padStart(2)}`;
-          const nameStr = h.name.substring(0, 15).padEnd(15);
-          const winStr = `${h.winProb.toFixed(1)}% win`.padStart(10);
-          const plcStr = `${h.placeProb.toFixed(1)}% place`.padStart(12);
-          const formStr = `[${h.formCount} form]`;
-          const oddsStr = h.winOdds > 0 ? `odds: ${h.winOdds.toFixed(1)}` : `odds: -`;
-          const ePosStr = `ePos: ${h.expectedPosition.toFixed(1)}`;
-          lines.push(`  ${numStr} ${nameStr}: ${winStr}, ${plcStr} ${formStr} rating: ${h.rating} diff: ${h.diff} ${oddsStr} ${ePosStr}`);
-        }
+        lines.push(...formatWinRankingsTable(detail.horses, detail.fieldSize));
 
         lines.push("");
         lines.push(
