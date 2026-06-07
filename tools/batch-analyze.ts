@@ -136,6 +136,7 @@ function histThresholdOpts(sparse: number, close8: number, avgDiff: number, topG
     closeMax: close8,
     avgDiffMin: avgDiff,
     gapMin: topGap,
+    ratingChangeMin: null as number | null,
   };
 }
 
@@ -334,7 +335,9 @@ async function main() {
         close8,
         avgDiff,
         topGap,
-        histOpts
+        histOpts,
+        topEntry ? winOddsMap.get(topEntry.horseNumber) : undefined,
+        topEntry?.horse.ratingChange
       );
       const diffBet = diffSkipped ? "SKIP" : "BET";
       const surf = race.surface ?? "Turf";

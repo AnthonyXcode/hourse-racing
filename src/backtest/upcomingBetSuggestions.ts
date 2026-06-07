@@ -96,6 +96,7 @@ export interface UpcomingPlaceRace {
   topRatedHorseNumber: number;
   topRatedWinOdds: number;
   topRatedMcPlacePct: number;
+  topRatedExpectedPosition: number;
   overallRating: number;
   avgDiff: number;
   horsesWithDiffLt8: number;
@@ -195,6 +196,7 @@ export async function runUpcomingPlaceSuggestions(
       const topRatedEntry = race.entries.find((e) => e.horse.code === topRatedAnalysis.horseCode);
       const topRatedHorseNum = topRatedEntry?.horseNumber ?? 0;
       const topRatedWinOdds = loaded.winOddsMap.get(topRatedHorseNum) ?? 0;
+      const topRatedRatingChange = topRatedEntry?.horse.ratingChange;
 
       const { skipped, skipReason } = computeSkipDecision(
         metrics.sparseFormCount,
@@ -202,7 +204,8 @@ export async function runUpcomingPlaceSuggestions(
         metrics.avgDiff,
         metrics.topGap,
         opts,
-        topRatedWinOdds
+        topRatedWinOdds,
+        topRatedRatingChange
       );
 
       const hvStdDev = parsed.venue === "Happy Valley" ? 11 : 8;
@@ -225,6 +228,7 @@ export async function runUpcomingPlaceSuggestions(
         topRatedHorseNumber: topRatedHorseNum,
         topRatedWinOdds,
         topRatedMcPlacePct: topRatedMcResult?.placeProbability ?? 0,
+        topRatedExpectedPosition: topRatedMcResult?.expectedPosition ?? 0,
         overallRating: metrics.topRating,
         avgDiff: metrics.avgDiff,
         horsesWithDiffLt8: metrics.horsesWithDiffLt8,
@@ -327,9 +331,10 @@ export async function runUpcomingTrioSuggestions(
 }
 
 export function printUpcomingPlaceSuggestions(byMeeting: Map<string, UpcomingPlaceRace[]>) {
-  console.log("\n" + "═".repeat(78));
+  const tableWidth = 86;
+  console.log("\n" + "═".repeat(tableWidth));
   console.log("UPCOMING RACE BETTING SUGGESTIONS  (racecards without results file)");
-  console.log("═".repeat(78));
+  console.log("═".repeat(tableWidth));
 
   if (byMeeting.size === 0) {
     console.log("  (none — all matching meetings already have results files)\n");
@@ -343,25 +348,26 @@ export function printUpcomingPlaceSuggestions(byMeeting: Map<string, UpcomingPla
     const stake = betted.length * BET_UNIT;
 
     console.log(`\n${fmtDate} ${first.venue}  —  ${betted.length}/${races.length} races to bet  |  suggested stake $${stake} ($${BET_UNIT}/race)`);
-    console.log("─".repeat(78));
+    console.log("─".repeat(tableWidth));
     console.log(
-      `${"Race".padEnd(8)} ${"Act".padEnd(5)} ${"Horse".padEnd(16)} ${"#".padStart(2)} ${"WinO".padStart(6)} ${"MCPl%".padStart(6)} ${"AvgD".padStart(5)} ${"Cls/Dist".padEnd(14)} ${"Skip reason"}`
+      `${"Race".padEnd(8)} ${"Act".padEnd(5)} ${"Horse".padEnd(16)} ${"#".padStart(2)} ${"WinO".padStart(6)} ${"MCPl%".padStart(6)} ${"ePos".padStart(5)} ${"AvgD".padStart(5)} ${"Cls/Dist".padEnd(14)} ${"Skip reason"}`
     );
-    console.log("─".repeat(78));
+    console.log("─".repeat(tableWidth));
 
     for (const r of races) {
       const act = r.skipped ? "SKIP" : "BET";
       const winO = r.topRatedWinOdds > 0 ? r.topRatedWinOdds.toFixed(1) : "-";
       const mcPl = r.topRatedMcPlacePct > 0 ? (r.topRatedMcPlacePct * 100).toFixed(1) : "-";
+      const ePos = r.topRatedExpectedPosition > 0 ? r.topRatedExpectedPosition.toFixed(1) : "-";
       const clsDist = `${r.raceClass}/${r.distance}m`.substring(0, 13);
       const horse = r.topRatedHorseName ? r.topRatedHorseName.substring(0, 15) : "-";
       const num = r.topRatedHorseNumber > 0 ? r.topRatedHorseNumber.toString() : "-";
       console.log(
-        `${(`R${r.raceNumber}`).padEnd(8)} ${act.padEnd(5)} ${horse.padEnd(16)} ${num.padStart(2)} ${winO.padStart(6)} ${mcPl.padStart(6)} ${r.avgDiff.toString().padStart(5)} ${clsDist.padEnd(14)} ${r.skipped ? r.skipReason : "Place on #1 rated"}`
+        `${(`R${r.raceNumber}`).padEnd(8)} ${act.padEnd(5)} ${horse.padEnd(16)} ${num.padStart(2)} ${winO.padStart(6)} ${mcPl.padStart(6)} ${ePos.padStart(5)} ${r.avgDiff.toString().padStart(5)} ${clsDist.padEnd(14)} ${r.skipped ? r.skipReason : "Place on #1 rated"}`
       );
     }
   }
-  console.log("─".repeat(78));
+  console.log("─".repeat(tableWidth));
 }
 
 export function printUpcomingTrioSuggestions(byMeeting: Map<string, UpcomingTrioRace[]>) {

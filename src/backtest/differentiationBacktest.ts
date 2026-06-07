@@ -85,6 +85,11 @@ export interface DifferentiationBacktestOptions {
   gapMin: number;
   /** Skip if the top-rated horse's win odds > this value (0 = disabled) */
   oddsMax: number;
+  /**
+   * Skip if top-rated horse Rtg+/- <= this value (bet only when Rtg+/- > threshold).
+   * null = disabled. Default in CLI is -1 (skip -1 and below; bet when Rtg+/- > -1).
+   */
+  ratingChangeMin?: number | null;
   months: string[];
   venue: "ST" | "HV" | null;
   surface: "Turf" | "AWT" | null;
@@ -250,8 +255,12 @@ export function computeSkipDecision(
   horsesWithDiffLt8: number,
   avgDiff: number,
   topGap: number,
-  opts: Pick<DifferentiationBacktestOptions, "sparseMax" | "closeMax" | "avgDiffMin" | "gapMin"> & { oddsMax?: number },
-  topRatedWinOdds?: number
+  opts: Pick<
+    DifferentiationBacktestOptions,
+    "sparseMax" | "closeMax" | "avgDiffMin" | "gapMin" | "ratingChangeMin"
+  > & { oddsMax?: number },
+  topRatedWinOdds?: number,
+  topRatedRatingChange?: number
 ): { skipped: boolean; skipReason: string } {
   if (sparseFormCount > opts.sparseMax) {
     return { skipped: true, skipReason: `${sparseFormCount} horses w/ <${SPARSE_FORM_MIN_RECORDS} form` };
@@ -268,6 +277,15 @@ export function computeSkipDecision(
   const oddsMax = opts.oddsMax ?? 0;
   if (oddsMax > 0 && topRatedWinOdds !== undefined && topRatedWinOdds > oddsMax) {
     return { skipped: true, skipReason: `odds=${topRatedWinOdds}>${oddsMax}` };
+  }
+  if (opts.ratingChangeMin != null) {
+    if (topRatedRatingChange === undefined) {
+      return { skipped: true, skipReason: "Rtg+/- unknown" };
+    }
+    if (topRatedRatingChange <= opts.ratingChangeMin) {
+      const sign = topRatedRatingChange > 0 ? "+" : "";
+      return { skipped: true, skipReason: `Rtg+/-=${sign}${topRatedRatingChange}` };
+    }
   }
   return { skipped: false, skipReason: "" };
 }
@@ -291,7 +309,10 @@ export function summarizeHitRate(
 export function summarizeHitRateWithThresholds(
   rows: DifferentiationBacktestRow[],
   filter: (r: DifferentiationBacktestRow) => boolean,
-  opts: Pick<DifferentiationBacktestOptions, "sparseMax" | "closeMax" | "avgDiffMin" | "gapMin"> & { oddsMax?: number }
+  opts: Pick<
+    DifferentiationBacktestOptions,
+    "sparseMax" | "closeMax" | "avgDiffMin" | "gapMin" | "ratingChangeMin"
+  > & { oddsMax?: number }
 ): HitRateSummary {
   const bucket = rows.filter(filter);
   let bets = 0;
@@ -303,7 +324,8 @@ export function summarizeHitRateWithThresholds(
       r.avgDiff,
       r.topGap,
       opts,
-      r.topRatedWinOdds
+      r.topRatedWinOdds,
+      r.topRatedRatingChange
     );
     if (skipped) continue;
     bets++;
@@ -339,6 +361,7 @@ export async function runDifferentiationBacktest(
     avgDiffMin,
     gapMin,
     oddsMax,
+    ratingChangeMin = null,
     months,
     venue,
     surface,
@@ -405,14 +428,16 @@ export async function runDifferentiationBacktest(
     const topRatedWinOdds = topRatedFinish?.winOdds ?? winOddsMap.get(topRatedHorseNum) ?? 0;
     const resultPlaceOdds = meeting.placeDividendMap.get(parsed.raceNumber);
     const topRatedPlaceOdds = resultPlaceOdds?.get(topRatedHorseNum) ?? 0;
+    const topRatedRatingChange = topRatedEntry?.horse.ratingChange;
 
     const { skipped, skipReason } = computeSkipDecision(
       sparseFormCount,
       horsesWithDiffLt8,
       avgDiff,
       topGap,
-      { sparseMax, closeMax, avgDiffMin, gapMin, oddsMax },
-      topRatedWinOdds
+      { sparseMax, closeMax, avgDiffMin, gapMin, oddsMax, ratingChangeMin },
+      topRatedWinOdds,
+      topRatedRatingChange
     );
 
     const hvStdDev = parsed.venue === "Happy Valley" ? 11 : 8;

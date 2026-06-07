@@ -34,6 +34,7 @@ function parseArgs() {
   let avgDiffMin = 14;
   let gapMin = 0;
   let oddsMax = 0;
+  let ratingChangeMin: number | null = -1;
   let months: string[] = [];
   let venue: "ST" | "HV" | null = null;
   let surface: "Turf" | "AWT" | null = null;
@@ -53,6 +54,10 @@ function parseArgs() {
     else if (key === "avgdiff") avgDiffMin = parseInt(val, 10);
     else if (key === "gap") gapMin = parseInt(val, 10);
     else if (key === "odds") oddsMax = parseFloat(val);
+    else if (key === "ratingchange") {
+      if (val.toLowerCase() === "off") ratingChangeMin = null;
+      else ratingChangeMin = parseInt(val, 10);
+    }
     else if (key === "months") months = val.split(",").map((s) => s.trim().padStart(2, "0"));
     else if (key === "venue") venue = val.toUpperCase() === "HV" ? "HV" : "ST";
     else if (key === "surface") surface = val.toUpperCase() === "AWT" ? "AWT" : "Turf";
@@ -67,11 +72,11 @@ function parseArgs() {
     }
   }
 
-  return { sparseMax, closeMax, avgDiffMin, gapMin, oddsMax, months, venue, surface, ignoreClasses, ignoreDistances, form, ignoreAfter };
+  return { sparseMax, closeMax, avgDiffMin, gapMin, oddsMax, ratingChangeMin, months, venue, surface, ignoreClasses, ignoreDistances, form, ignoreAfter };
 }
 
 async function main() {
-  const { sparseMax, closeMax, avgDiffMin, gapMin, oddsMax, months, venue, surface, ignoreClasses, ignoreDistances, form, ignoreAfter } =
+  const { sparseMax, closeMax, avgDiffMin, gapMin, oddsMax, ratingChangeMin, months, venue, surface, ignoreClasses, ignoreDistances, form, ignoreAfter } =
     parseArgs();
   const monthLabel = months.length === 0 ? "all" : months.join(",");
   const venueLabel = venue ?? "all";
@@ -81,8 +86,10 @@ async function main() {
   const ignoreDistLabel = ignoreDistances.length === 0 ? "none" : ignoreDistances.map((d) => `${d}m`).join(",");
   const ignoreAfterLabel = ignoreAfter ?? "none";
   const oddsLabel = oddsMax > 0 ? `>${oddsMax}` : "off";
+  const rtgChangeLabel =
+    ratingChangeMin !== null && ratingChangeMin !== undefined ? `Rtg+/>${ratingChangeMin}` : "off";
   console.log(
-    `Skip rules: sparse>${sparseMax}, close<8>${closeMax}, avgDiff<${avgDiffMin}, 1st-2nd gap<${gapMin}, odds ${oddsLabel} | months=${monthLabel} | venue=${venueLabel} | surface=${surfaceLabel} | form=${formLabel} | ignore-class=${ignoreClassLabel} | ignore-distance=${ignoreDistLabel} | ignore-after=${ignoreAfterLabel}\n`
+    `Skip rules: sparse>${sparseMax}, close<8>${closeMax}, avgDiff<${avgDiffMin}, 1st-2nd gap<${gapMin}, odds ${oddsLabel}, ${rtgChangeLabel} | months=${monthLabel} | venue=${venueLabel} | surface=${surfaceLabel} | form=${formLabel} | ignore-class=${ignoreClassLabel} | ignore-distance=${ignoreDistLabel} | ignore-after=${ignoreAfterLabel}\n`
   );
 
   const allResults = await runDifferentiationBacktest({
@@ -91,6 +98,7 @@ async function main() {
     avgDiffMin,
     gapMin,
     oddsMax,
+    ratingChangeMin,
     months,
     venue,
     surface,
@@ -519,6 +527,9 @@ async function main() {
   console.log(`  3. Clustered field: horses within <8 pts of top-rated count > ${closeMax} → skip`);
   console.log(`  4. Low differentiation: mean |topRating − each rating| < ${avgDiffMin} (--avgdiff) → skip`);
   console.log(`  5. High odds: top-rated horse win odds > ${oddsMax > 0 ? oddsMax : "disabled"} (--odds) → skip`);
+  console.log(
+    `  6. Rating change: top-rated Rtg+/- <= ${ratingChangeMin !== null && ratingChangeMin !== undefined ? ratingChangeMin : "disabled"} (--ratingchange, bet when > threshold) → skip`
+  );
   console.log("\nSkipped races this run (by reason):");
   const skipReasonCounts = new Map<string, number>();
   for (const r of skippedRaces) {
@@ -540,6 +551,7 @@ async function main() {
     avgDiffMin,
     gapMin,
     oddsMax,
+    ratingChangeMin,
     months,
     venue,
     surface,
