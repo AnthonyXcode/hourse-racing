@@ -38,6 +38,7 @@
 | **21**  | **27 May** | **HV** | **Turf**     | **Good to Firm** | **9**  | **37.9%** | **69.8%**  | **4/9**  | **44.4%** | **✅❌✅❌✅❌❌✅❌**   | **1**          |
 | **22** | **31 May** | **ST** | **Turf** | **Good** | **11** | **36.7%** | **—** | **6/11** | **54.5%** | **❌❌✅✅❌✅❌❌✅✅✅** | **1** |
 | **23** | **3 Jun** | **HV** | **Turf "C"** | **Good to Firm** | **9** | **31.5%** | **64.8%** | **2/9** | **22.2%** | **✅❌❌❌❌❌❌✅❌** | **1** |
+| **24** | **07 Jun** | **ST** | **Mixed** | **Yielding** | **11** | **38.2%** | **74.4%** | **6/11** | **54.5%** | **✅✅✅✅❌❌✅✅❌❌❌** | **4 (R1–R4)** |
 
 \*Meeting 8 **R1** (6 runners): MC #1 **#6** ran **3rd** but HKJC Place pool pays **two** places only → **$0** dividend; counts as **❌** for streaks and all-ups (same dividend logic as other meetings).
 
@@ -1486,3 +1487,24 @@ Place dividends (MC #1 when placed): R1=$14.50, R3=$12.00, R5=$10.50, R8=$18.00
 **Placed:** 2/9 (22.2%) | **Pattern:** ✅❌❌❌❌❌❌✅❌ | **Max streak:** 1
 
 **Trio card note (R1–R9):** Strategy A **2/8** staked hits (−$250); R3 PASS. Strategy B (report) **0/9** (−$1,200); three Pattern A near-misses (R3, R5, R6). MC #1 placed **R1** and **R8** only (2/9); favourites **#10** R4/R5 failed to place.
+## Meeting 24: Sha Tin | 07 Jun 2026 (11 races)
+
+**MC #1** = raw MC Win% from trio_strategy_20260607_ST_R*.md (10,000 iterations, form=all). **Results** from data/historical/results_20260607_ST.json.
+
+| Race | Class | Dist (m) | MC #1 | MC Win% | MC Place% | Placed? | Place $ (if placed) |
+|------|-------|----------|-------|---------|-----------|---------|---------------------|
+| R1 | Class 5 | 1800 | #3 HAILTOTHEVICTORS | 35.2% | 80.3% | ✅ 2nd | 1.65 |
+| R2 | Class 5 | 1400 | #1 WINNING MACHINE | 47.2% | 79.1% | ✅ 2nd | 1.45 |
+| R3 | Class 4 | 1200 | #2 MASTER PAYMENT | 49.0% | 92.5% | ✅ 1st | 1.35 |
+| R4 | Class 4 | 1400 | #6 MASTER LUCKY | 36.3% | 74.2% | ✅ 2nd | 1.7 |
+| R5 | Class 4 | 1800 | #5 PERFECT TEAM | 32.4% | 67.8% | ❌ (5th) | — |
+| R6 | Class 4 | 1600 | #2 MEGA MASTERMIND | 45.8% | 78.4% | ❌ (8th) | — |
+| R7 | Class 4 | 1200 | #5 VIRTUS GLORY | 27.2% | 59.6% | ✅ 2nd | 1.7 |
+| R8 | Class 3 | 1000 | #2 LOVE TOGETHER | 43.0% | 76.9% | ✅ 1st | 3.95 |
+| R9 | Class 3 | 1200 | #1 GUSTOSISIMO | 31.9% | 67.1% | ❌ (4th) | — |
+| R10 | Class 2 | 1200 | #1 STORM RIDER | 42.0% | 75.9% | ❌ (7th) | — |
+| R11 | Class 3 | 1400 | #3 FIT FOR BEAUTY | 30.4% | 66.7% | ❌ (7th) | — |
+
+**Placed:** 6/11 (54.5%) | **Pattern:** ✅✅✅✅❌❌✅✅❌❌❌ | **Max streak:** 4 (R1–R4)
+
+**Trio card note (R1–R11):** Strategy A **1/11** ($-709); Strategy B (report) **3/11** (+$454); MC top-6 **2/11** (+$319). R5 Trio **$9,563** upset.

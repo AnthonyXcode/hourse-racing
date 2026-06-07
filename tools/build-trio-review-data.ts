@@ -212,14 +212,14 @@ function main() {
         pnl: sum('a', 'pnl'),
       },
       bReport: {
-        races: 9,
+        races: races.length,
         hits: hits('bReport'),
         staked: sum('bReport', 'stake'),
         returned: sum('bReport', 'return'),
         pnl: sum('bReport', 'pnl'),
       },
       bMc6: {
-        races: 9,
+        races: races.length,
         hits: hits('bMc6'),
         staked: sum('bMc6', 'stake'),
         returned: sum('bMc6', 'return'),
