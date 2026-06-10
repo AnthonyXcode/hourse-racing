@@ -495,6 +495,244 @@ export async function runDifferentiationBacktest(
   return allResults;
 }
 
+/** Parsed CLI flags shared by backtest-differentiation and backtest-mc-accuracy. */
+export interface DifferentiationBacktestCliArgs {
+  sparseMax: number;
+  closeMax: number;
+  avgDiffMin: number;
+  gapMin: number;
+  oddsMax: number;
+  ratingChangeMin: number | null;
+  months: string[];
+  venue: "ST" | "HV" | null;
+  surface: "Turf" | "AWT" | null;
+  ignoreClasses: string[];
+  ignoreDistances: number[];
+  form: FormSource;
+  ignoreAfter?: string;
+}
+
+export function parseDifferentiationBacktestCliArgs(argv: string[]): DifferentiationBacktestCliArgs {
+  let sparseMax = 3;
+  let closeMax = 4;
+  let avgDiffMin = 14;
+  let gapMin = 0;
+  let oddsMax = 0;
+  let ratingChangeMin: number | null = -1;
+  let months: string[] = [];
+  let venue: "ST" | "HV" | null = null;
+  let surface: "Turf" | "AWT" | null = null;
+  let ignoreClasses: string[] = [];
+  let ignoreDistances: number[] = [];
+  let form: FormSource = "all";
+  let ignoreAfter: string | undefined;
+
+  for (const arg of argv) {
+    const m = arg.match(/^--([a-zA-Z-]+)=(.+)$/);
+    if (!m) continue;
+    const key = m[1]!;
+    const val = m[2] ?? "";
+    if (key === "sparse") sparseMax = parseInt(val, 10);
+    else if (key === "close") closeMax = parseInt(val, 10);
+    else if (key === "avgdiff") avgDiffMin = parseInt(val, 10);
+    else if (key === "gap") gapMin = parseInt(val, 10);
+    else if (key === "odds") oddsMax = parseFloat(val);
+    else if (key === "ratingchange") {
+      if (val.toLowerCase() === "off") ratingChangeMin = null;
+      else ratingChangeMin = parseInt(val, 10);
+    } else if (key === "months") months = val.split(",").map((s) => s.trim().padStart(2, "0"));
+    else if (key === "venue") venue = val.toUpperCase() === "HV" ? "HV" : "ST";
+    else if (key === "surface") surface = val.toUpperCase() === "AWT" ? "AWT" : "Turf";
+    else if (key === "ignore-class") ignoreClasses = val.split(",").map((s) => s.trim().toUpperCase());
+    else if (key === "ignore-distance") ignoreDistances = val.split(",").map((s) => parseInt(s.trim(), 10));
+    else if (key === "ignore-after") ignoreAfter = val.trim();
+    else if (key === "form" || key === "form-data") {
+      const u = val.trim().toUpperCase();
+      if (u === "ALL") form = "all";
+      else if (u === "ST") form = "ST";
+      else if (u === "HV") form = "HV";
+    }
+  }
+
+  return {
+    sparseMax,
+    closeMax,
+    avgDiffMin,
+    gapMin,
+    oddsMax,
+    ratingChangeMin,
+    months,
+    venue,
+    surface,
+    ignoreClasses,
+    ignoreDistances,
+    form,
+    ignoreAfter,
+  };
+}
+
+export interface McAccuracyPick {
+  /** 1-based form overall-rating rank */
+  ratingRank: number;
+  /** 1-based MC win% rank */
+  mcRank: number;
+  horseCode: string;
+  horseName: string;
+  horseNumber: number;
+  overallRating: number;
+  mcWinPct: number;
+  mcPlacePct: number;
+  winOdds: number;
+  placeOdds: number;
+  placed: boolean;
+}
+
+export interface McAccuracyRaceRow {
+  raceId: string;
+  date: string;
+  venue: "HV" | "ST";
+  raceNumber: number;
+  skipped: boolean;
+  skipReason: string;
+  numRunners: number;
+  picks: McAccuracyPick[];
+}
+
+/**
+ * Per-race form-rating ranks + MC ranks with actual place results.
+ * Skip rules match backtest-differentiation (evaluated on #1-rated horse).
+ */
+export async function runMcAccuracyBacktest(
+  opts: DifferentiationBacktestOptions
+): Promise<McAccuracyRaceRow[]> {
+  const {
+    sparseMax,
+    closeMax,
+    avgDiffMin,
+    gapMin,
+    oddsMax,
+    ratingChangeMin = null,
+    months,
+    venue,
+    surface,
+    ignoreClasses,
+    ignoreDistances,
+    form,
+  } = opts;
+  const ignoreAfterYmd = parseIgnoreAfterDate(opts.ignoreAfter ?? null);
+  const raceCardDir = opts.raceCardDir ?? path.join(process.cwd(), "data", "racecards");
+
+  const formAnalyzer = new FormAnalyzer();
+  const files = await readdir(raceCardDir);
+  const venueSegment = venue ?? "ST|HV";
+  const monthPattern =
+    months.length === 0
+      ? new RegExp(`racecard_\\d{8}_(${venueSegment})_R\\d+\\.json`)
+      : new RegExp(`racecard_2026(${months.join("|")})\\d{2}_(${venueSegment})_R\\d+\\.json`);
+  const matchedFiles = files.filter((f) => monthPattern.test(f)).sort();
+
+  const resultsCache = new Map<string, MeetingResults>();
+  const allRows: McAccuracyRaceRow[] = [];
+
+  for (const file of matchedFiles) {
+    const parsed = parseRaceCardFileName(file);
+    if (!parsed) continue;
+    if (ignoreAfterYmd && parsed.date >= ignoreAfterYmd) continue;
+
+    const filePath = path.join(raceCardDir, file);
+    const loaded = await loadRaceCard(filePath);
+    if (!loaded) continue;
+
+    const { race: rawRace, winOddsMap } = loaded;
+    const race = applyFormSourceFilter(rawRace, form);
+    if (race.entries.length < 4) continue;
+    if (surface && race.surface !== surface) continue;
+    if (ignoreClasses.length > 0 && ignoreClasses.includes((race.class ?? "").toUpperCase())) continue;
+    if (ignoreDistances.length > 0 && ignoreDistances.includes(race.distance)) continue;
+
+    const cacheKey = `${parsed.date}_${parsed.venue}`;
+    if (!resultsCache.has(cacheKey)) {
+      resultsCache.set(cacheKey, await loadMeetingResults(parsed.date, parsed.venue));
+    }
+    const meeting = resultsCache.get(cacheKey)!;
+    const finishOrder = meeting.finishOrders.get(parsed.raceNumber);
+    if (!finishOrder || finishOrder.length === 0) continue;
+
+    const analyses = formAnalyzer.analyzeRace(race);
+    if (analyses.length === 0) continue;
+
+    const topRating = analyses[0].overallRating;
+    const diffs = analyses.map((a) => Math.abs(topRating - a.overallRating));
+    const avgDiff = Math.round(diffs.reduce((s, d) => s + d, 0) / diffs.length);
+    const horsesWithDiffLt8 = diffs.filter((d) => d < 8).length;
+    const sparseFormCount = race.entries.filter(isSparseFormEntry).length;
+    const topGap =
+      analyses.length >= 2 ? Math.abs(analyses[0].overallRating - analyses[1].overallRating) : 999;
+
+    const topRatedEntry = race.entries.find((e) => e.horse.code === analyses[0].horseCode);
+    const topRatedHorseNum = topRatedEntry?.horseNumber ?? 0;
+    const topRatedFinish = finishOrder.find((f) => f.horseNumber === topRatedHorseNum);
+    const topRatedWinOdds = topRatedFinish?.winOdds ?? winOddsMap.get(topRatedHorseNum) ?? 0;
+    const topRatedRatingChange = topRatedEntry?.horse.ratingChange;
+
+    const { skipped, skipReason } = computeSkipDecision(
+      sparseFormCount,
+      horsesWithDiffLt8,
+      avgDiff,
+      topGap,
+      { sparseMax, closeMax, avgDiffMin, gapMin, oddsMax, ratingChangeMin },
+      topRatedWinOdds,
+      topRatedRatingChange
+    );
+
+    const hvStdDev = parsed.venue === "Happy Valley" ? 11 : 8;
+    const simulator = new MonteCarloSimulator({ runs: 5000, performanceStdDev: hvStdDev });
+    const { results: simResults } = simulator.simulateRace(race);
+
+    const mcRankByCode = new Map<string, number>();
+    simResults.forEach((s, i) => mcRankByCode.set(s.horseCode, i + 1));
+    const simByCode = new Map(simResults.map((s) => [s.horseCode, s]));
+
+    const top3Codes = finishOrder.slice(0, 3).map((f) => f.horseCode);
+    const resultPlaceOdds = meeting.placeDividendMap.get(parsed.raceNumber);
+
+    const picks: McAccuracyPick[] = analyses.map((a, i) => {
+      const entry = race.entries.find((e) => e.horse.code === a.horseCode);
+      const horseNumber = entry?.horseNumber ?? 0;
+      const sim = simByCode.get(a.horseCode);
+      const finishEntry = finishOrder.find((f) => f.horseNumber === horseNumber);
+      const winOdds = finishEntry?.winOdds ?? winOddsMap.get(horseNumber) ?? 0;
+      const placeOdds = resultPlaceOdds?.get(horseNumber) ?? 0;
+      return {
+        ratingRank: i + 1,
+        mcRank: mcRankByCode.get(a.horseCode) ?? analyses.length,
+        horseCode: a.horseCode,
+        horseName: a.horseName,
+        horseNumber,
+        overallRating: a.overallRating,
+        mcWinPct: sim?.winProbability ?? 0,
+        mcPlacePct: sim?.placeProbability ?? 0,
+        winOdds,
+        placeOdds,
+        placed: top3Codes.includes(a.horseCode),
+      };
+    });
+
+    allRows.push({
+      raceId: `${parsed.date}_${parsed.venue === "Happy Valley" ? "HV" : "ST"}_R${parsed.raceNumber}`,
+      date: parsed.date,
+      venue: parsed.venue === "Happy Valley" ? "HV" : "ST",
+      raceNumber: parsed.raceNumber,
+      skipped,
+      skipReason,
+      numRunners: race.entries.filter((e) => !e.isScratched).length,
+      picks,
+    });
+  }
+
+  return allRows;
+}
+
 function raceClassSortKey(raceClass: string): number {
   const g = raceClass.match(/^Group (\d+)$/);
   if (g) return parseInt(g[1], 10);

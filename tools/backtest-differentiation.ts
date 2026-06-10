@@ -16,68 +16,20 @@
  * (same calendar as racecard filenames). batch-analyze passes the meeting date.
  */
 import {
+  parseDifferentiationBacktestCliArgs,
   printBreakdown,
   printClassDistanceVenueBreakdown,
   runDifferentiationBacktest,
   type DifferentiationBacktestRow,
-  type FormSource,
 } from "../src/backtest/differentiationBacktest.js";
 import {
   printUpcomingPlaceSuggestions,
   runUpcomingPlaceSuggestions,
 } from "../src/backtest/upcomingBetSuggestions.js";
 
-function parseArgs() {
-  const args = process.argv.slice(2);
-  let sparseMax = 3;
-  let closeMax = 4;
-  let avgDiffMin = 14;
-  let gapMin = 0;
-  let oddsMax = 0;
-  let ratingChangeMin: number | null = -1;
-  let months: string[] = [];
-  let venue: "ST" | "HV" | null = null;
-  let surface: "Turf" | "AWT" | null = null;
-  let ignoreClasses: string[] = [];
-  let ignoreDistances: number[] = [];
-  let form: FormSource = "all";
-
-  let ignoreAfter: string | undefined;
-
-  for (const arg of args) {
-    const m = arg.match(/^--([a-zA-Z-]+)=(.+)$/);
-    if (!m) continue;
-    const key = m[1];
-    const val = m[2];
-    if (key === "sparse") sparseMax = parseInt(val, 10);
-    else if (key === "close") closeMax = parseInt(val, 10);
-    else if (key === "avgdiff") avgDiffMin = parseInt(val, 10);
-    else if (key === "gap") gapMin = parseInt(val, 10);
-    else if (key === "odds") oddsMax = parseFloat(val);
-    else if (key === "ratingchange") {
-      if (val.toLowerCase() === "off") ratingChangeMin = null;
-      else ratingChangeMin = parseInt(val, 10);
-    }
-    else if (key === "months") months = val.split(",").map((s) => s.trim().padStart(2, "0"));
-    else if (key === "venue") venue = val.toUpperCase() === "HV" ? "HV" : "ST";
-    else if (key === "surface") surface = val.toUpperCase() === "AWT" ? "AWT" : "Turf";
-    else if (key === "ignore-class") ignoreClasses = val.split(",").map((s) => s.trim().toUpperCase());
-    else if (key === "ignore-distance") ignoreDistances = val.split(",").map((s) => parseInt(s.trim(), 10));
-    else if (key === "ignore-after") ignoreAfter = val.trim();
-    else if (key === "form" || key === "form-data") {
-      const u = val.trim().toUpperCase();
-      if (u === "ALL") form = "all";
-      else if (u === "ST") form = "ST";
-      else if (u === "HV") form = "HV";
-    }
-  }
-
-  return { sparseMax, closeMax, avgDiffMin, gapMin, oddsMax, ratingChangeMin, months, venue, surface, ignoreClasses, ignoreDistances, form, ignoreAfter };
-}
-
 async function main() {
   const { sparseMax, closeMax, avgDiffMin, gapMin, oddsMax, ratingChangeMin, months, venue, surface, ignoreClasses, ignoreDistances, form, ignoreAfter } =
-    parseArgs();
+    parseDifferentiationBacktestCliArgs(process.argv.slice(2));
   const monthLabel = months.length === 0 ? "all" : months.join(",");
   const venueLabel = venue ?? "all";
   const surfaceLabel = surface ?? "all";
@@ -115,7 +67,8 @@ async function main() {
   console.log(`Analyzed ${allResults.length} races — betting ${betted.length}, skipping ${skippedRaces.length}\n`);
 
   // --- Race-by-race table with strategy ---
-  const tableWidth = 116;
+  const skipReasonWidth = 22;
+  const tableWidth = 116 + skipReasonWidth + 1;
   console.log("═".repeat(tableWidth));
   const oddsRule = oddsMax > 0 ? ` OR odds>${oddsMax}` : "";
   console.log(
@@ -123,7 +76,7 @@ async function main() {
   );
   console.log("═".repeat(tableWidth));
   console.log(
-    `${"Race".padEnd(18)} ${"Horse".padEnd(16)} ${"#".padStart(2)} ${"Bet".padStart(4)} ${"Hit".padStart(4)} ${"WinO".padStart(6)} ${"PlcO".padStart(6)} ${"AvgDiff".padStart(7)} ${"Close<8".padStart(7)} ${"Sparse".padStart(6)} ${"Rating".padStart(6)} ${"Winner".padEnd(16)}`
+    `${"Race".padEnd(18)} ${"Horse".padEnd(16)} ${"#".padStart(2)} ${"Bet".padStart(4)} ${"Hit".padStart(4)} ${"WinO".padStart(6)} ${"PlcO".padStart(6)} ${"AvgDiff".padStart(7)} ${"Close<8".padStart(7)} ${"Sparse".padStart(6)} ${"Rating".padStart(6)} ${"Winner".padEnd(16)} ${"SkipReason".padEnd(skipReasonWidth)}`
   );
   console.log("─".repeat(tableWidth));
   for (const r of allResults) {
@@ -131,8 +84,9 @@ async function main() {
     const hit = r.skipped ? "-" : r.topRatedPlaced ? "Y" : "N";
     const winO = r.topRatedWinOdds > 0 ? r.topRatedWinOdds.toFixed(1) : "-";
     const plcO = r.topRatedPlaceOdds > 0 ? r.topRatedPlaceOdds.toFixed(1) : "-";
+    const skipReason = r.skipped ? r.skipReason.substring(0, skipReasonWidth) : "-";
     console.log(
-      `${r.raceId.padEnd(18)} ${r.topRatedHorseName.substring(0, 15).padEnd(16)} ${r.topRatedHorseNumber.toString().padStart(2)} ${bet.padStart(4)} ${hit.padStart(4)} ${winO.padStart(6)} ${plcO.padStart(6)} ${r.avgDiff.toString().padStart(7)} ${r.horsesWithDiffLt8.toString().padStart(7)} ${r.sparseFormCount.toString().padStart(6)} ${r.overallRating.toString().padStart(6)} ${r.actualWinnerName.substring(0, 15).padEnd(16)}`
+      `${r.raceId.padEnd(18)} ${r.topRatedHorseName.substring(0, 15).padEnd(16)} ${r.topRatedHorseNumber.toString().padStart(2)} ${bet.padStart(4)} ${hit.padStart(4)} ${winO.padStart(6)} ${plcO.padStart(6)} ${r.avgDiff.toString().padStart(7)} ${r.horsesWithDiffLt8.toString().padStart(7)} ${r.sparseFormCount.toString().padStart(6)} ${r.overallRating.toString().padStart(6)} ${r.actualWinnerName.substring(0, 15).padEnd(16)} ${skipReason.padEnd(skipReasonWidth)}`
     );
   }
   console.log("─".repeat(tableWidth));
@@ -396,14 +350,12 @@ async function main() {
 
   // --- By expected position bucket ---
   const byEPos = new Map<string, DifferentiationBacktestRow[]>();
-  const ePosBuckets = [
-    { label: "1.0-2.0", min: 1.0, max: 2.0 },
-    { label: "2.0-3.0", min: 2.0, max: 3.0 },
-    { label: "3.0-4.0", min: 3.0, max: 4.0 },
-    { label: "4.0-5.0", min: 4.0, max: 5.0 },
-    { label: "5.0-6.0", min: 5.0, max: 6.0 },
-    { label: "6.0+", min: 6.0, max: Infinity },
-  ];
+  const ePosBuckets: { label: string; min: number; max: number }[] = [];
+  for (let min = 1.0; min < 6.0; min += 0.5) {
+    const max = min + 0.5;
+    ePosBuckets.push({ label: `${min.toFixed(1)}-${max.toFixed(1)}`, min, max });
+  }
+  ePosBuckets.push({ label: "6.0+", min: 6.0, max: Infinity });
   for (const r of allResults) {
     if (r.topRatedExpectedPosition <= 0) {
       const key = "N/A";
@@ -424,7 +376,36 @@ async function main() {
   for (const key of ePosOrder) {
     if (byEPos.has(key)) byEPosSorted.set(key, byEPos.get(key)!);
   }
-  printBreakdown("EXPECTED POSITION (top-rated)", byEPosSorted);
+  printBreakdown("EXPECTED POSITION (top-rated)", byEPosSorted, { preserveOrder: true });
+
+  // --- By overall rating bucket ---
+  const byRating = new Map<string, DifferentiationBacktestRow[]>();
+  const ratingBuckets = [
+    { label: "<60", min: -Infinity, max: 60 },
+    { label: "60-65", min: 60, max: 65 },
+    { label: "65-70", min: 65, max: 70 },
+    { label: "70-75", min: 70, max: 75 },
+    { label: "75-80", min: 75, max: 80 },
+    { label: "80-85", min: 80, max: 85 },
+    { label: "85-90", min: 85, max: 90 },
+    { label: "90-95", min: 90, max: 95 },
+    { label: "95+", min: 95, max: Infinity },
+  ];
+  for (const r of allResults) {
+    for (const b of ratingBuckets) {
+      if (r.overallRating >= b.min && r.overallRating < b.max) {
+        if (!byRating.has(b.label)) byRating.set(b.label, []);
+        byRating.get(b.label)!.push(r);
+        break;
+      }
+    }
+  }
+  const ratingOrder = ratingBuckets.map((b) => b.label);
+  const byRatingSorted = new Map<string, DifferentiationBacktestRow[]>();
+  for (const key of ratingOrder) {
+    if (byRating.has(key)) byRatingSorted.set(key, byRating.get(key)!);
+  }
+  printBreakdown("RATING (top-rated)", byRatingSorted, { preserveOrder: true });
 
   // --- By avgDiff bucket ---
   const byAvgDiff = new Map<string, DifferentiationBacktestRow[]>();
