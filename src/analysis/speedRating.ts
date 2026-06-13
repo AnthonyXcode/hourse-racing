@@ -250,7 +250,11 @@ const GOING_ADJUSTMENTS: Record<Going, number> = {
 // ============================================================================
 
 const STANDARD_WEIGHT = 126; // Standard weight in pounds
-const WEIGHT_ADJUSTMENT_PER_LB_PER_200M = 0.08;
+// Was 0.08 ≈ 2.4 rating pts/lb at 1200m, which badly over-credited horses that
+// ran fast under top weight (a 135lb run got +21 figure points). 0.045 ≈ 1.35 pts/lb,
+// closer to realistic handicapping. Validated by weight-coefficient sweep on the
+// all-months ST and HV Turf place pools: place hit rate ST 48.1%→52.6%, HV 53.2%→57.9%.
+const WEIGHT_ADJUSTMENT_PER_LB_PER_200M = 0.045;
 
 // ============================================================================
 // SPEED RATING CALCULATOR CLASS

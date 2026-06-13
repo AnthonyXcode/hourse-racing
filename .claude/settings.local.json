@@ -18,7 +18,10 @@
       "Bash(./node_modules/.bin/tsx tools/backtest-differentiation.ts --sparse=3 --close=2 --avgdiff=15 --gap=2 --surface=Turf --form=all)",
       "Bash(./node_modules/.bin/tsx tools/backtest-differentiation.ts --sparse=3 --close=2 --avgdiff=13 --gap=3 --surface=Turf --form=all)",
       "Bash(./node_modules/.bin/tsx tools/backtest-differentiation.ts --sparse=3 --close=3 --avgdiff=13 --gap=2 --surface=Turf --form=all)",
-      "Bash(./node_modules/.bin/tsx tools/backtest-differentiation.ts --sparse=3 --close=2 --avgdiff=13 --gap=1 --surface=Turf --form=all)"
+      "Bash(./node_modules/.bin/tsx tools/backtest-differentiation.ts --sparse=3 --close=2 --avgdiff=13 --gap=1 --surface=Turf --form=all)",
+      "Bash(npx tsc *)",
+      "Bash(node -e ' *)",
+      "Bash(node --import tsx -e ' *)"
     ]
   }
 }
