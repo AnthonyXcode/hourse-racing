@@ -775,41 +775,65 @@ function parseClassDistanceVenueKey(key: string): [string, string, number] {
   return [key, "", 0];
 }
 
+const PLACE_BET_UNIT = 10;
+
+function placeBetReturn(betted: DifferentiationBacktestRow[]): number {
+  return betted
+    .filter((r) => r.topRatedPlaced)
+    .reduce(
+      (sum, r) =>
+        sum + (r.topRatedPlaceOdds > 0 ? r.topRatedPlaceOdds * PLACE_BET_UNIT : PLACE_BET_UNIT),
+      0
+    );
+}
+
+function placeBetRoiPct(betted: DifferentiationBacktestRow[]): string {
+  if (betted.length === 0) return "N/A";
+  const cost = betted.length * PLACE_BET_UNIT;
+  const placeReturn = placeBetReturn(betted);
+  return (((placeReturn - cost) / cost) * 100).toFixed(1) + "%";
+}
+
 export function printBreakdown(
   label: string,
   groups: Map<string, DifferentiationBacktestRow[]>,
   options?: { groupWidth?: number; preserveOrder?: boolean }
 ) {
   const groupWidth = options?.groupWidth ?? 12;
-  const width = groupWidth + 38;
+  const width = groupWidth + 48;
   console.log("\n" + "═".repeat(width));
   console.log(`HIT RATE BY ${label}`);
   console.log("═".repeat(width));
   console.log(
-    `${"Group".padEnd(groupWidth)} ${"Total".padStart(5)} ${"Bet".padStart(4)} ${"Hit".padStart(4)} ${"Miss".padStart(4)} ${"Skip".padStart(4)} ${"HitRate".padStart(8)}`
+    `${"Group".padEnd(groupWidth)} ${"Total".padStart(5)} ${"Bet".padStart(4)} ${"Hit".padStart(4)} ${"Miss".padStart(4)} ${"Skip".padStart(4)} ${"HitRate".padStart(8)} ${"ROI(Pla)".padStart(10)}`
   );
   console.log("─".repeat(width));
   let gTotalRaces = 0;
   let gTotalBet = 0;
   let gTotalHit = 0;
+  let gTotalPlaReturn = 0;
   const entries = options?.preserveOrder
     ? [...groups.entries()]
     : [...groups.entries()].sort((a, b) => a[0].localeCompare(b[0]));
   for (const [key, races] of entries) {
-    const gb = races.filter((r) => !r.skipped);
-    const gh = gb.filter((r) => r.topRatedPlaced).length;
-    const rate = gb.length > 0 ? ((gh / gb.length) * 100).toFixed(1) + "%" : "N/A";
+    const stats = bucketStats(races);
     console.log(
-      `${key.padEnd(groupWidth)} ${races.length.toString().padStart(5)} ${gb.length.toString().padStart(4)} ${gh.toString().padStart(4)} ${(gb.length - gh).toString().padStart(4)} ${(races.length - gb.length).toString().padStart(4)} ${rate.padStart(8)}`
+      `${key.padEnd(groupWidth)} ${stats.total.toString().padStart(5)} ${stats.bet.toString().padStart(4)} ${stats.hits.toString().padStart(4)} ${stats.miss.toString().padStart(4)} ${stats.skip.toString().padStart(4)} ${stats.ratePct.padStart(8)} ${stats.roiPlaPct.padStart(10)}`
     );
-    gTotalRaces += races.length;
-    gTotalBet += gb.length;
-    gTotalHit += gh;
+    gTotalRaces += stats.total;
+    gTotalBet += stats.bet;
+    gTotalHit += stats.hits;
+    gTotalPlaReturn += placeBetReturn(races.filter((r) => !r.skipped));
   }
   console.log("─".repeat(width));
   const totalRate = gTotalBet > 0 ? ((gTotalHit / gTotalBet) * 100).toFixed(1) + "%" : "0.0%";
+  const totalCost = gTotalBet * PLACE_BET_UNIT;
+  const totalRoi =
+    gTotalBet > 0
+      ? (((gTotalPlaReturn - totalCost) / totalCost) * 100).toFixed(1) + "%"
+      : "0.0%";
   console.log(
-    `${"TOTAL".padEnd(groupWidth)} ${gTotalRaces.toString().padStart(5)} ${gTotalBet.toString().padStart(4)} ${gTotalHit.toString().padStart(4)} ${(gTotalBet - gTotalHit).toString().padStart(4)} ${(gTotalRaces - gTotalBet).toString().padStart(4)} ${totalRate.padStart(8)}`
+    `${"TOTAL".padEnd(groupWidth)} ${gTotalRaces.toString().padStart(5)} ${gTotalBet.toString().padStart(4)} ${gTotalHit.toString().padStart(4)} ${(gTotalBet - gTotalHit).toString().padStart(4)} ${(gTotalRaces - gTotalBet).toString().padStart(4)} ${totalRate.padStart(8)} ${totalRoi.padStart(10)}`
   );
 }
 
@@ -824,6 +848,7 @@ function bucketStats(races: DifferentiationBacktestRow[]) {
     skip: races.length - betted.length,
     ratePct:
       betted.length > 0 ? ((hits / betted.length) * 100).toFixed(1) + "%" : "N/A",
+    roiPlaPct: placeBetRoiPct(betted),
   };
 }
 
@@ -833,7 +858,7 @@ function printBreakdownRow(
   groupWidth: number
 ) {
   console.log(
-    `${label.padEnd(groupWidth)} ${stats.total.toString().padStart(5)} ${stats.bet.toString().padStart(4)} ${stats.hits.toString().padStart(4)} ${stats.miss.toString().padStart(4)} ${stats.skip.toString().padStart(4)} ${stats.ratePct.padStart(8)}`
+    `${label.padEnd(groupWidth)} ${stats.total.toString().padStart(5)} ${stats.bet.toString().padStart(4)} ${stats.hits.toString().padStart(4)} ${stats.miss.toString().padStart(4)} ${stats.skip.toString().padStart(4)} ${stats.ratePct.padStart(8)} ${stats.roiPlaPct.padStart(10)}`
   );
 }
 
@@ -844,7 +869,7 @@ function printBreakdownRow(
 export function printClassDistanceVenueBreakdown(rows: DifferentiationBacktestRow[]) {
   const groups = groupByClassDistanceVenue(rows);
   const groupWidth = 28;
-  const width = groupWidth + 38;
+  const width = groupWidth + 48;
 
   const byVenue = new Map<string, DifferentiationBacktestRow[]>();
   const byVenueClass = new Map<string, DifferentiationBacktestRow[]>();
@@ -860,7 +885,7 @@ export function printClassDistanceVenueBreakdown(rows: DifferentiationBacktestRo
   console.log("HIT RATE BY CLASS × DISTANCE × VENUE");
   console.log("═".repeat(width));
   console.log(
-    `${"Group".padEnd(groupWidth)} ${"Total".padStart(5)} ${"Bet".padStart(4)} ${"Hit".padStart(4)} ${"Miss".padStart(4)} ${"Skip".padStart(4)} ${"HitRate".padStart(8)}`
+    `${"Group".padEnd(groupWidth)} ${"Total".padStart(5)} ${"Bet".padStart(4)} ${"Hit".padStart(4)} ${"Miss".padStart(4)} ${"Skip".padStart(4)} ${"HitRate".padStart(8)} ${"ROI(Pla)".padStart(10)}`
   );
   console.log("─".repeat(width));
 
@@ -869,6 +894,7 @@ export function printClassDistanceVenueBreakdown(rows: DifferentiationBacktestRo
   let gTotal = 0;
   let gBet = 0;
   let gHit = 0;
+  let gPlaReturn = 0;
 
   for (const [key, distanceRaces] of groups) {
     const [venue, raceClass, distance] = parseClassDistanceVenueKey(key);
@@ -895,11 +921,15 @@ export function printClassDistanceVenueBreakdown(rows: DifferentiationBacktestRo
     const distStats = bucketStats(distanceRaces);
     gBet += distStats.bet;
     gHit += distStats.hits;
+    gPlaReturn += placeBetReturn(distanceRaces.filter((r) => !r.skipped));
   }
 
   console.log("─".repeat(width));
   const totalRate = gBet > 0 ? ((gHit / gBet) * 100).toFixed(1) + "%" : "0.0%";
+  const totalCost = gBet * PLACE_BET_UNIT;
+  const totalRoi =
+    gBet > 0 ? (((gPlaReturn - totalCost) / totalCost) * 100).toFixed(1) + "%" : "0.0%";
   console.log(
-    `${"TOTAL".padEnd(groupWidth)} ${gTotal.toString().padStart(5)} ${gBet.toString().padStart(4)} ${gHit.toString().padStart(4)} ${(gBet - gHit).toString().padStart(4)} ${(gTotal - gBet).toString().padStart(4)} ${totalRate.padStart(8)}`
+    `${"TOTAL".padEnd(groupWidth)} ${gTotal.toString().padStart(5)} ${gBet.toString().padStart(4)} ${gHit.toString().padStart(4)} ${(gBet - gHit).toString().padStart(4)} ${(gTotal - gBet).toString().padStart(4)} ${totalRate.padStart(8)} ${totalRoi.padStart(10)}`
   );
 }
