@@ -38,6 +38,7 @@
 | **21**  | **27 May** | **HV** | **Turf**     | **Good to Firm** | **9**  | **37.9%** | **69.8%**  | **4/9**  | **44.4%** | **✅❌✅❌✅❌❌✅❌**   | **1**          |
 | **22** | **31 May** | **ST** | **Turf** | **Good** | **11** | **36.7%** | **—** | **6/11** | **54.5%** | **❌❌✅✅❌✅❌❌✅✅✅** | **1** |
 | **23** | **3 Jun** | **HV** | **Turf "C"** | **Good to Firm** | **9** | **31.5%** | **64.8%** | **2/9** | **22.2%** | **✅❌❌❌❌❌❌✅❌** | **1** |
+| **26** | **13 Jun** | **ST** | **Mixed** | **Yielding** | **11** | **34.0%** | **69.9%** | **7/11** | **63.6%** | **✅✅✅❌❌❌✅✅❌✅✅** | **4 (R1–R4)** |
 | **25** | **10 Jun** | **HV** | **Mixed** | **Yielding** | **9** | **30.9%** | **62.5%** | **4/9** | **44.4%** | **❌❌✅✅❌✅❌❌✅** | **4 (R1–R4)** |
 | **24** | **07 Jun** | **ST** | **Mixed** | **Yielding** | **11** | **38.2%** | **74.4%** | **6/11** | **54.5%** | **✅✅✅✅❌❌✅✅❌❌❌** | **4 (R1–R4)** |
 
@@ -1529,3 +1530,25 @@ Place dividends (MC #1 when placed): R1=$14.50, R3=$12.00, R5=$10.50, R8=$18.00
 **Placed:** 4/9 (44.4%) | **Pattern:** ❌❌✅✅❌✅❌❌✅ | **Max streak:** 4 (R1–R4)
 
 **Trio card note (R1–R9):** Strategy A **1/9** ($-675); Strategy B (report) **2/9** ($-645); MC top-6 **1/9** ($-635). R5 Trio **$9,563** upset.
+
+## Meeting 26: Sha Tin | 13 Jun 2026 (11 races)
+
+**MC #1** = raw MC Win% from trio_strategy_20260613_ST_R*.md (10,000 iterations, form=all). **Results** from data/historical/results_20260613_ST.json.
+
+| Race | Class | Dist (m) | MC #1 | MC Win% | MC Place% | Placed? | Place $ (if placed) |
+|------|-------|----------|-------|---------|-----------|---------|---------------------|
+| R1 | Griffin | 1000 | #1 CHANCHENG SPARKLE | 37.4% | 76.5% | ✅ 2nd | 1.55 |
+| R2 | Class 5 | 1200 | #4 ALWAYS FLUKE | 34.0% | 70.5% | ✅ 2nd | 1.95 |
+| R3 | Class 4 | 1400 | #5 CALL ME SPARKLE | 37.2% | 72.0% | ✅ 3rd | 1.35 |
+| R4 | Class 4 | 1800 | #5 SERANGOON | 21.1% | 50.7% | ❌ (10th) | — |
+| R5 | Class 4 | 1200 | #1 JUICY DRAGON | 27.5% | 66.0% | ❌ (4th) | — |
+| R6 | Class 4 | 1400 | #6 ROMANTIC LAOS | 25.7% | 59.8% | ❌ (7th) | — |
+| R7 | Class 4 | 1200 | #3 SUPERB SPIRIT | 38.3% | 78.3% | ✅ 1st | 1.2 |
+| R8 | Class 2 | 1600 | #2 SOLEIL FIGHTER | 56.8% | 88.6% | ✅ 1st | 3.4 |
+| R9 | Class 3 | 1200 | #2 BLAZING WIND | 32.7% | 69.3% | ❌ (4th) | — |
+| R10 | Class 3 | 1600 | #2 ENDUED | 36.4% | 75.5% | ✅ 1st | 1.65 |
+| R11 | Class 3 | 1400 | #3 SUPER EXPRESS | 26.4% | 62.2% | ✅ 2nd | 1.35 |
+
+**Placed:** 7/11 (63.6%) | **Pattern:** ✅✅✅❌❌❌✅✅❌✅✅ | **Max streak:** 4 (R1–R4)
+
+**Trio card note (R1–R11):** Strategy A **1/11** ($-413); Strategy B (report) **4/11** ($-34); MC top-6 **3/11** (+$127). R9 Trio **$3,274** upset (PI LEGEND #10).

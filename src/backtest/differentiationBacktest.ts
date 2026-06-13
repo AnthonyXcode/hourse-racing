@@ -45,6 +45,8 @@ export interface DifferentiationBacktestRow {
   distance: number;
   topRatedWon: boolean;
   topRatedPlaced: boolean;
+  /** Actual finishing position of the top-rated pick (0 if unknown/scratched) */
+  topRatedFinishPosition: number;
   topSimWon: boolean;
   topSimPlaced: boolean;
   numRunners: number;
@@ -479,6 +481,7 @@ export async function runDifferentiationBacktest(
       distance: race.distance,
       topRatedWon: topRatedAnalysis.horseCode === winnerCode,
       topRatedPlaced: top3Codes.includes(topRatedAnalysis.horseCode),
+      topRatedFinishPosition: topRatedFinish?.finishPosition ?? 0,
       topSimWon: topSimResult.horseCode === winnerCode,
       topSimPlaced: top3Codes.includes(topSimResult.horseCode),
       numRunners: race.entries.filter((e) => !e.isScratched).length,
