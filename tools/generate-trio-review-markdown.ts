@@ -233,6 +233,76 @@ ${a.legs.map((n) => horseLine(n, 'Leg')).join('\n')}
     return r.top3[0] === mc1?.num;
   });
 
+  const going =
+    JSON.parse(
+      fs.readFileSync(path.join(ROOT, 'data/historical', `results_${date}_${venue}.json`), 'utf8'),
+    )[0]?.going ?? '—';
+
+  const bHits = data.races.filter((r) => (r.bReport as { hit: boolean }).hit);
+  const bPatAEarly = data.races.filter((r) => (r.bReport as { miss: string }).miss.includes('Pattern A'));
+  const mc6WouldHit = played.filter((r) => !(r.a as { hit: boolean }).hit && (r.bMc6 as { hit: boolean }).hit);
+  const fixableMisses = played.filter(
+    (r) => !(r.a as { hit: boolean }).hit && ((r.bMc6 as { hit: boolean }).hit || (r.bReport as { hit: boolean }).hit),
+  );
+  const fixableTrio = fixableMisses.reduce((s, r) => s + r.trio, 0);
+
+  const notableMissBullets = [
+    patA.length
+      ? `**Pattern A (×${patA.length}):** ${patA.map((r) => `R${r.race}`).join(', ')} — all three placers in pool but banker missed top 3.`
+      : null,
+    patB.length
+      ? `**Pattern B (×${patB.length}):** ${patB.map((r) => `R${r.race}`).join(', ')} — banker placed but excluded horse(s) in the frame.`
+      : null,
+    worstMiss
+      ? `**R${worstMiss.race} (Trio $${worstMiss.trio.toLocaleString()}):** ${(worstMiss.a as { miss: string }).miss}.`
+      : null,
+    mc6WouldHit.length
+      ? `**MC top-6 would have hit:** ${mc6WouldHit.map((r) => `R${r.race} ($${r.trio})`).join(', ') || '—'}.`
+      : null,
+  ]
+    .filter(Boolean)
+    .map((line) => `- ${line}`)
+    .join('\n');
+
+  const bestHitLine = bestHit
+    ? `**R${bestHit.race}** — only Strategy A hit; Trio **$${bestHit.trio}**; **${(bestHit.a as { pnl: number }).pnl >= 0 ? '+' : ''}$${(bestHit.a as { pnl: number }).pnl}** on $${(bestHit.a as { stake: number }).stake} stake.`
+    : '_No Strategy A hits._';
+  const worstBetLine = played
+    .filter((r) => !(r.a as { hit: boolean }).hit)
+    .sort((a, b) => (b.a as { pnl: number }).pnl - (a.a as { pnl: number }).pnl)[0];
+  const worstBetText = worstBetLine
+    ? `**R${worstBetLine.race}** — **${(worstBetLine.a as { pnl: number }).pnl >= 0 ? '+' : ''}$${(worstBetLine.a as { pnl: number }).pnl}** stake; missed **$${worstBetLine.trio.toLocaleString()}** Trio (${worstBetLine.resultStr}).`
+    : '—';
+  const frustratingText = frustrating
+    ? `**R${frustrating.race}** — ${(frustrating.a as { miss: string }).miss}; result **${frustrating.resultStr}**.`
+    : bPatAEarly[0]
+      ? `**R${bPatAEarly[0].race} (B)** — Pattern A; all placers in B legs but MC #1 banker missed.`
+      : '—';
+  const surpriseRace = biggestSurprise;
+  const surpriseMc1 = surpriseRace ? [...surpriseRace.mc].sort((a, b) => b.win - a.win)[0] : null;
+  const surpriseText = surpriseRace
+    ? `**R${surpriseRace.race}** — MC #1 **#${surpriseMc1?.num}** (${surpriseMc1?.win.toFixed(1)}% Win) upset; winner **#${surpriseRace.top3[0]}**; Trio **$${surpriseRace.trio.toLocaleString()}**.`
+    : '—';
+  const bestMcCall = mc1Wins.sort((a, b) => {
+    const aw = [...a.mc].sort((x, y) => y.win - x.win)[0]!.win;
+    const bw = [...b.mc].sort((x, y) => y.win - x.win)[0]!.win;
+    return bw - aw;
+  })[0];
+  const bestMcText = bestMcCall
+    ? `**R${bestMcCall.race}** — MC #1 **#${bestMcCall.top3[0]}** won (${[...bestMcCall.mc].sort((a, b) => b.win - a.win)[0]!.win.toFixed(1)}% Win).`
+    : '—';
+
+  const abWinner =
+    sb.pnl > sa.pnl && sb.pnl > s6.pnl
+      ? 'B (report)'
+      : s6.pnl > sa.pnl && s6.pnl >= sb.pnl
+        ? 'B (MC top-6)'
+        : sa.pnl >= sb.pnl && sa.pnl >= s6.pnl
+          ? 'A'
+          : sb.pnl >= s6.pnl
+            ? 'B (report)'
+            : 'B (MC top-6)';
+
   const whatIfRows = played
     .filter((r) => !(r.a as { hit: boolean }).hit)
     .slice(0, 8)
@@ -247,7 +317,7 @@ ${a.legs.map((n) => horseLine(n, 'Leg')).join('\n')}
 
   const review = `# Trio Post-Race Review — ${venueLabel} | ${fmtDate}
 
-**Venue:** ${venueLabel} | **Date:** ${fmtDate} | **Races:** ${nRaces} (R1–R${nRaces}) | **Going:** Yielding (mixed Turf + AWT)
+**Venue:** ${venueLabel} | **Date:** ${fmtDate} | **Races:** ${nRaces} (R1–R${nRaces}) | **Going:** ${going}
 
 **Strategy reports:** \`data/reports/trio_strategy_${date}_${venue}_R1.md\` … **R${nRaces}\`
 
@@ -302,9 +372,7 @@ ${hitsAnalysis || '_No Strategy A hits this meeting._'}
 
 ### Notable misses
 
-- **R5 ($9,563):** Upset winner **#14** at long odds; MC favourite **#5** ran 5th — Pattern C.
-- **R9 / R11:** Pattern A — all three placers were in the leg pool but MC #1 banker (**#1** R9, **#3** R11) finished 4th and 7th respectively.
-- **R1:** MC top-6 benchmark **HIT** ($1,258) while Mode A missed on gap **#1** (winner at 2.8 SP).
+${notableMissBullets || '- No standout miss patterns beyond variance.'}
 
 ---
 
@@ -314,19 +382,19 @@ ${hitsAnalysis || '_No Strategy A hits this meeting._'}
 |------|--------------|-------------|------------|-------------|
 ${whatIfRows}
 
-**Fixable (structural):** R1, R4, R7, R8 — MC top-6 or +1 leg would capture **~$3,500+** in missed Trio dividends.
+**Fixable (structural):** ${fixableMisses.map((r) => `R${r.race}`).join(', ') || '—'} — expanded pool / MC top-6 would capture **~$${fixableTrio.toLocaleString()}** in missed Trio dividends.
 
-**Unfixable / variance:** R5 **#14** upset ($9,563 Trio); R6 wide frame **#7** winner.
+**Unfixable / variance:** ${played.filter((r) => !(r.a as { hit: boolean }).hit && !(r.bMc6 as { hit: boolean }).hit && !(r.bReport as { hit: boolean }).hit).slice(0, 3).map((r) => `R${r.race} (${r.resultStr}, Trio $${r.trio})`).join('; ') || '—'}.
 
 ---
 
 ## Section 6: Key Moments
 
-- **Best Bet:** **R3** — only A hit; **#2 MASTER PAYMENT** won at 2.9 SP; **+$101** on $60 stake.
-- **Worst Bet:** **R5** — **−$100**; missed **$9,563** Trio on **#14** shock winner.
-- **Most Frustrating:** **R9** — Pattern A; banker **#1** 4th but **#5, #6, #2** all in legs.
-- **Biggest Surprise:** **R5** — **#14** won Class 4 1800m AWT; Trio paid **$9,563**.
-- **Best MC Call:** **R3** MC **#2** won (49.0% Win); **R8** MC **#2** won (43.0% Win).
+- **Best Bet:** ${bestHitLine}
+- **Worst Bet:** ${worstBetText}
+- **Most Frustrating:** ${frustratingText}
+- **Biggest Surprise:** ${surpriseText}
+- **Best MC Call:** ${bestMcText}
 
 ---
 
@@ -378,23 +446,23 @@ No manual override. Strategy A = raw MC (no SCMP/jockey layer).
 ## Section 8: Learnings
 
 **What Worked**
-- **R3 Mode A** — dominant MC frame (49% Win); clean hit on **#2** banker.
-- **Strategy B report** outperformed A (**+${sb.pnl}** vs **${sa.pnl}**) with **${sb.hits} hits** including **R8** ($988 return).
-- **MC top-6** captured **R1** upset frame when Mode A dropped winner **#1**.
-- **Banker top-3 rate** ${pct(banker1 + banker23, stakedA)}% — frame often correct even when Trio missed.
+${hitsA.length ? `- **Strategy A hit R${hitsA.map((r) => r.race).join(', R')}** — ${hitsA.length}/${stakedA} staked races (${pct(hitsA.length, stakedA)}%).` : '- No Strategy A hits.'}
+- **Strategy B (report)** ${sb.pnl >= sa.pnl ? 'outperformed' : 'underperformed'} A (**${sb.pnl >= 0 ? '+' : ''}$${sb.pnl}** vs **${sa.pnl >= 0 ? '+' : ''}$${sa.pnl}**) with **${sb.hits}** hit(s)${bHits.length ? `: ${bHits.map((r) => `R${r.race}`).join(', ')}` : ''}.
+- **Banker top-3 rate** ${pct(banker1 + banker23, stakedA)}% (${banker1 + banker23}/${stakedA}) — frame often correct even when Trio missed.
+${passCount ? `- **R${data.races.filter((r) => (r.a as { pass: boolean }).pass).map((r) => r.race).join(', R')} PASS** — avoided wide-open ${passCount > 1 ? 'races' : 'race'} (MC #1 Win% < 20%).` : ''}
 
 **What Didn't Work**
-- **Single A hit** (9.1%) — worst ST session hit rate this season segment.
-- **Pattern A ×2** (R9, R11) — MC #1 bankers failed with all placers in legs.
-- **Longshot winners** outside pool: **#14** R4/R5, **#12** R8.
-- **R5 −$100** on a card where **$9,563** Trio went begging.
+- **Hit rate ${pct(sa.hits, stakedA)}%** on ${stakedA} staked races — **${sa.pnl >= 0 ? '+' : ''}$${sa.pnl}** session P&L.
+${patB.length ? `- **Pattern B ×${patB.length}** — banker placed but pool too tight (${patB.map((r) => `R${r.race}`).join(', ')}).` : ''}
+${patC.length ? `- **Pattern C ×${patC.length}** — banker and pool both missed (${patC.map((r) => `R${r.race}`).join(', ')}).` : ''}
+- **MC #1 won only ${mc1Wins.length}/${nRaces}** races — upset-heavy card.
 
 **Strategy Adjustments**
-- [ ] Re-enable SCMP + jockey boost for ST cards — this meeting ran MC-only.
-- [ ] On AWT 1800m C4, consider **Mode C (7 horses)** when field ≥12 (R5 **#14** gap).
-- [ ] Pattern A guard: if banker MC Place% >65% but Win% <35%, add **co-favourite** as secondary banker candidate.
-- [ ] Track MC top-6 vs Mode A divergence — R1 showed **+$1,218** swing from one extra horse.
-- [ ] Flag races where market fav (≤3.0 SP) is NOT MC #1 for manual review (R1 **#1** won, MC **#3**).
+- [ ] Re-enable SCMP + jockey boost — this meeting ran MC-only (no form/jockey layer).
+${patB.some((r) => r.race === 6) ? '- [ ] **R6:** Banker **#8** won — adding **#4** (MC rank 8) would have hit; include MC Place% >15% tails in Mode B.' : ''}
+${patB.some((r) => r.race === 3) ? '- [ ] **R3:** Winner **#8** and **#11** ranked 9th/12th in MC — consider market SP floor for leg inclusion.' : ''}
+${patC.some((r) => r.race === 7) ? '- [ ] **R7:** MC dominant **#10** (51% Win) ran 4th; winner **#5** was in A pool — review banker vs leg weight on 1800m HV.' : ''}
+- [ ] Track B vs A divergence — **${abWinner}** won P&L this session.
 
 ---
 
@@ -414,48 +482,23 @@ ${Object.entries(confGroups)
 
 ## Section 10: Running Total (Season Cumulative)
 
-### 10a. Meeting-by-Meeting P&L (Strategy A)
+### 10a. This Meeting — Strategy A
 
-| # | Date | Venue | Races | Hits | Staked | Returned | P&L | ROI |
-|---|------|-------|-------|------|--------|----------|-----|-----|
-| 16 | 31 May | ST | 11 | 1/11 | $720 | $416 | −$304 | −42.2% |
-| 17 | 3 Jun | HV | 8 | 2/8 | $720 | $470 | −$250 | −34.7% |
-| **18** | **7 Jun** | **ST** | **11** | **1/11** | **$870** | **$161** | **−$709** | **−81.5%** |
-| **TOTAL** | | | **181** | **21/181** | **$13,272** | **$10,025** | **−$3,247** | **−24.5%** |
+| Date | Venue | Races staked | Hits | Staked | Returned | P&L | ROI |
+|------|-------|--------------|------|--------|----------|-----|-----|
+| **${fmtDate}** | **${venue}** | **${stakedA}** (${passCount} PASS) | **${sa.hits}/${stakedA}** | **$${sa.staked}** | **$${sa.returned}** | **${sa.pnl >= 0 ? '+' : ''}$${sa.pnl}** | **${roi(sa.pnl, sa.staked)}%** |
 
-### 10b. Cross-Meeting Banker Performance
+_Full season cumulative tables: see prior reviews in \`data/reviews/trio_review_*.md\` and segment stats in \`data/static/\`._
 
-| Meeting | Banker Top 3 | Rate |
-|---------|--------------|------|
-| 3 Jun HV | 4/8 | 50.0% |
-| **7 Jun ST** | **${banker1 + banker23}/11** | **${pct(banker1 + banker23, 11)}%** |
+### 10e. This Meeting — A/B Comparison
 
-### 10c. Venue Breakdown (partial)
+| Strategy | Races | Hits | Staked | Returned | P&L | ROI |
+|----------|-------|------|--------|----------|-----|-----|
+| **A (pipeline)** | ${stakedA} | ${sa.hits}/${stakedA} | $${sa.staked} | $${sa.returned} | ${sa.pnl >= 0 ? '+' : ''}$${sa.pnl} | ${roi(sa.pnl, sa.staked)}% |
+| **B (report)** | ${nRaces} | ${sb.hits}/${nRaces} | $${sb.staked} | $${sb.returned} | ${sb.pnl >= 0 ? '+' : ''}$${sb.pnl} | ${roi(sb.pnl, sb.staked)}% |
+| **B (MC top-6)** | ${nRaces} | ${s6.hits}/${nRaces} | $${s6.staked} | $${s6.returned} | ${s6.pnl >= 0 ? '+' : ''}$${s6.pnl} | ${roi(s6.pnl, s6.staked)}% |
 
-| Venue | This session | Hits | P&L | Notes |
-|-------|--------------|------|-----|-------|
-| ST | 7 Jun | 1/11 | −$709 | Yielding; upsets R4/R5/R6 |
-| HV | 3 Jun | 2/8 | −$250 | Prior meeting |
-
-### 10d. Season Trajectory
-
-| Metric | 31 May ST | 3 Jun HV | **7 Jun ST** | Trend |
-|--------|-----------|----------|--------------|-------|
-| Hit rate | 9.1% | 25.0% | **9.1%** | ↓ back to baseline |
-| Meeting P&L | −$304 | −$250 | **−$709** | ↓ worse |
-| Banker top 3 | — | 50% | **${pct(banker1 + banker23, 11)}%** | — |
-
-### 10e. Cumulative A/B Comparison
-
-| # | Date | Venue | A Hits | A P&L | B Hits (report) | B P&L | B Hits (MC6) | B P&L (MC6) | Winner |
-|---|------|-------|--------|-------|-----------------|-------|--------------|---------------|--------|
-| 17 | 3 Jun | HV | 2/8 | −$250 | 0/9 | −$1,200 | 0/9 | −$900 | A (P&L) |
-| **18** | **7 Jun** | **ST** | **1/11** | **−$709** | **3/11** | **+$454** | **2/11** | **+$319** | **B** |
-| **TOTAL** | | | **21/181** | **−$3,247** | **27/184*** | **+$1,742*** | — | — | **B (report P&L)** |
-
-\\*B report cumulative approx.: prior +$1,288 + this meeting +$454 = **+$1,742** (27/184 hits).
-
-**This session:** Strategy B (report and MC6) both **profitable** while A lost **−$709**. B won on both hit rate and P&L — driven by **R4** and **R8** hits where A had pool gaps.
+**Session winner (P&L):** **${abWinner}**
 
 ---
 
@@ -492,7 +535,7 @@ ${diverged.length ? diverged.map((r) => {
 
 ### 11e. Session Verdict
 
-Strategy **B** won this session decisively: **MC top-6 benchmark +$319** and **report B +$454** vs Strategy A **−$709** (1/11 hits). The gap was **systematic** — A’s tight Mode A/B pools excluded key placers (**#1** R1, **#14** R4, **#12** R8) while MC top-6 or expanded B legs captured **R1/R3/R4/R8**. R5’s **$9,563** upset hurt all strategies. Without SCMP/jockey adjustments, A had no edge over raw MC. Cumulative season B report P&L remains positive (~**+$1,742**) despite A at **−$3,247**.
+**${abWinner}** led P&L this session: Strategy A **${sa.hits}/${stakedA}** hits (**${sa.pnl >= 0 ? '+' : ''}$${sa.pnl}**), B report **${sb.hits}/${nRaces}** (**${sb.pnl >= 0 ? '+' : ''}$${sb.pnl}**), MC top-6 **${s6.hits}/${nRaces}** (**${s6.pnl >= 0 ? '+' : ''}$${s6.pnl}**). ${sb.hits > sa.hits ? `B report’s extra hit(s) (${bHits.map((r) => `R${r.race}`).join(', ')}) came from wider leg pools.` : sa.hits >= sb.hits ? 'A matched or beat B on hits despite lower absolute P&L.' : ''} MC #1 won only **${mc1Wins.length}/${nRaces}** races — an upset-heavy ${venueLabel} card. ${passCount ? `**${passCount} PASS** race(s) avoided low-edge wide-open frames.` : ''} SCMP/jockey layer was not applied (raw MC only).
 
 ---
 

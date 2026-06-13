@@ -54,18 +54,21 @@ function parseMcTable(text: string): { num: number; win: number; place: number }
 }
 
 function parseStrategyA(text: string) {
-  const pass = /DEFAULT:\s*PASS/i.test(text) && !/RECOMMENDED:.*膽拖/i.test(text.split('TICKET SUMMARY (Strategy A)')[1]?.slice(0, 200) ?? '');
-  const mode = extract(/MODE:\s*\*\*([A-D][^*]*)\*\*/, text) ?? '—';
-  const bankerM = text.match(/膽 \(Banker\):\s*\*\*#(\d+)/);
+  const aBlock = text.split('STRATEGY B')[0] ?? text;
+  const pass =
+    /DEFAULT:.*PASS/i.test(aBlock) ||
+    /MODE:\s*\*\*D PASS/i.test(aBlock) ||
+    /no Trio ticket recommended/i.test(aBlock);
+  const mode = extract(/MODE:\s*\*\*([A-D][^*]*)\*\*/, aBlock) ?? '—';
+  const bankerM = aBlock.match(/膽 \(Banker\):\s*\*\*#(\d+)/);
   const banker = bankerM ? +bankerM[1] : null;
-  const legsM = text.match(/腳 \(Legs\):\s*\*\*([^*\n]+)\*\*/);
+  const legsM = aBlock.match(/腳 \(Legs\):\s*\*\*([^*\n]+)\*\*/);
   const legs: number[] = [];
   if (legsM) {
     const legBlock = legsM[1];
     for (const m of legBlock.matchAll(/#(\d+)/g)) legs.push(+m[1]);
   }
-  const stakeM = text.match(/TICKET SUMMARY \(Strategy A\)[\s\S]*?TOTAL STAKE[:\s]*\*\*\$?(\d+)/i)
-    ?? text.match(/TOTAL STAKE \*\*\$(\d+)/);
+  const stakeM = aBlock.match(/TICKET SUMMARY \(Strategy A\)[\s\S]*?TOTAL STAKE[:\s]*\*\*\$?(\d+)/i);
   const stake = pass ? 0 : stakeM ? +stakeM[1] : 0;
   const conf = extract(/CONFIDENCE:\s*\*\*([^*]+)\*\*/, text.split('TICKET SUMMARY (Strategy A)')[1] ?? text) ?? '—';
   return { pass, mode, banker, legs, stake, conf };
