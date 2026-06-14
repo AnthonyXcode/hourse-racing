@@ -402,6 +402,46 @@ export class SpeedRatingCalculator {
   }
 
   /**
+   * Shrunk average speed rating: blends the recent-N average toward the horse's
+   * own median figure (over all available runs). alpha=1 → pure recent average
+   * (no shrink); alpha=0 → pure median. Pulls peak/outlier recent figures back
+   * toward the horse's typical level, countering regression-to-the-mean
+   * over-ranking of horses whose rating was built on an unrepeatable best run.
+   */
+  getShrunkAverageSpeedRating(
+    figures: SpeedFigure[],
+    lastN: number = 3,
+    alpha: number = 0.5,
+    peakPenalty: number = 0.4,
+    medianWindow: number = 6
+  ): number {
+    if (figures.length === 0) return this.baseRating;
+
+    const recent = figures.slice(0, lastN).map((f) => f.speedRating);
+    const recentAvg = recent.reduce((a, b) => a + b, 0) / recent.length;
+
+    // Median (and peak) over the last `medianWindow` runs only.
+    const all = figures
+      .slice(0, medianWindow)
+      .map((f) => f.speedRating)
+      .sort((a, b) => a - b);
+    const mid = Math.floor(all.length / 2);
+    const median = all.length % 2 ? all[mid]! : (all[mid - 1]! + all[mid]!) / 2;
+
+    let rating = alpha * recentAvg + (1 - alpha) * median;
+
+    // Peak penalty: discount ratings propped up by a single outlier figure.
+    // A consistent horse has max ≈ median (no penalty); a one-peak horse has a
+    // best figure far above its typical level, which over-ranks it (regression).
+    if (peakPenalty > 0 && all.length >= 2) {
+      const max = all[all.length - 1]!;
+      rating -= peakPenalty * Math.max(0, max - median);
+    }
+
+    return Math.round(rating);
+  }
+
+  /**
    * Get best speed rating from last N races
    */
   getBestSpeedRating(figures: SpeedFigure[], lastN: number = 6): number {

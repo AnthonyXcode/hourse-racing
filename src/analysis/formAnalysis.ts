@@ -102,7 +102,7 @@ export class FormAnalyzer {
     const analysis: HorseAnalysis = {
         horseCode: horse.code,
         horseName: horse.name,
-        averageSpeedRating: this.speedCalculator.getAverageSpeedRating(speedFigures),
+        averageSpeedRating: this.speedCalculator.getShrunkAverageSpeedRating(speedFigures),
         bestSpeedRating: this.speedCalculator.getBestSpeedRating(speedFigures),
         lastSpeedRating: this.speedCalculator.getLastSpeedRating(speedFigures),
         formScore: this.calculateFormScore(horse),
