@@ -97,6 +97,10 @@ export interface DifferentiationBacktestOptions {
   surface: "Turf" | "AWT" | null;
   ignoreClasses: string[];
   ignoreDistances: number[];
+  /** Skip if the bet pick's overall rating > this (0 = disabled). Cuts over-confident high-rating picks. */
+  maxRating?: number;
+  /** Skip if the race avgDiff (field spread) > this (0 = disabled). Cuts illusory big-gap races. */
+  maxAvgDiff?: number;
   form: FormSource;
   /**
    * If set (`YYYY-MM-DD` or `YYYYMMDD`), drop races on or after that calendar day
@@ -432,7 +436,7 @@ export async function runDifferentiationBacktest(
     const topRatedPlaceOdds = resultPlaceOdds?.get(topRatedHorseNum) ?? 0;
     const topRatedRatingChange = topRatedEntry?.horse.ratingChange;
 
-    const { skipped, skipReason } = computeSkipDecision(
+    let { skipped, skipReason } = computeSkipDecision(
       sparseFormCount,
       horsesWithDiffLt8,
       avgDiff,
@@ -441,6 +445,15 @@ export async function runDifferentiationBacktest(
       topRatedWinOdds,
       topRatedRatingChange
     );
+    // Opt-in upper caps: skip over-confident high-rating / illusory big-gap picks.
+    if (!skipped && opts.maxRating && topRatedAnalysis.overallRating > opts.maxRating) {
+      skipped = true;
+      skipReason = `rating>${opts.maxRating}`;
+    }
+    if (!skipped && opts.maxAvgDiff && avgDiff > opts.maxAvgDiff) {
+      skipped = true;
+      skipReason = `avgDiff>${opts.maxAvgDiff}`;
+    }
 
     const hvStdDev = parsed.venue === "Happy Valley" ? 11 : 8;
     const simulator = new MonteCarloSimulator({ runs: 5000, performanceStdDev: hvStdDev });
@@ -511,6 +524,10 @@ export interface DifferentiationBacktestCliArgs {
   surface: "Turf" | "AWT" | null;
   ignoreClasses: string[];
   ignoreDistances: number[];
+  /** Skip if the bet pick's overall rating > this (0 = disabled). Cuts over-confident high-rating picks. */
+  maxRating?: number;
+  /** Skip if the race avgDiff (field spread) > this (0 = disabled). Cuts illusory big-gap races. */
+  maxAvgDiff?: number;
   form: FormSource;
   ignoreAfter?: string;
 }
@@ -527,6 +544,8 @@ export function parseDifferentiationBacktestCliArgs(argv: string[]): Differentia
   let surface: "Turf" | "AWT" | null = null;
   let ignoreClasses: string[] = [];
   let ignoreDistances: number[] = [];
+  let maxRating = 0;
+  let maxAvgDiff = 0;
   let form: FormSource = "all";
   let ignoreAfter: string | undefined;
 
@@ -548,6 +567,8 @@ export function parseDifferentiationBacktestCliArgs(argv: string[]): Differentia
     else if (key === "surface") surface = val.toUpperCase() === "AWT" ? "AWT" : "Turf";
     else if (key === "ignore-class") ignoreClasses = val.split(",").map((s) => s.trim().toUpperCase());
     else if (key === "ignore-distance") ignoreDistances = val.split(",").map((s) => parseInt(s.trim(), 10));
+    else if (key === "max-rating") maxRating = parseInt(val, 10);
+    else if (key === "max-avgdiff") maxAvgDiff = parseInt(val, 10);
     else if (key === "ignore-after") ignoreAfter = val.trim();
     else if (key === "form" || key === "form-data") {
       const u = val.trim().toUpperCase();
@@ -569,6 +590,8 @@ export function parseDifferentiationBacktestCliArgs(argv: string[]): Differentia
     surface,
     ignoreClasses,
     ignoreDistances,
+    maxRating,
+    maxAvgDiff,
     form,
     ignoreAfter,
   };

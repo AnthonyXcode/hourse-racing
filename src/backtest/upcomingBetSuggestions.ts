@@ -198,7 +198,7 @@ export async function runUpcomingPlaceSuggestions(
       const topRatedWinOdds = loaded.winOddsMap.get(topRatedHorseNum) ?? 0;
       const topRatedRatingChange = topRatedEntry?.horse.ratingChange;
 
-      const { skipped, skipReason } = computeSkipDecision(
+      let { skipped, skipReason } = computeSkipDecision(
         metrics.sparseFormCount,
         metrics.horsesWithDiffLt8,
         metrics.avgDiff,
@@ -207,6 +207,15 @@ export async function runUpcomingPlaceSuggestions(
         topRatedWinOdds,
         topRatedRatingChange
       );
+      // Opt-in upper caps (mirror runDifferentiationBacktest).
+      if (!skipped && opts.maxRating && topRatedAnalysis.overallRating > opts.maxRating) {
+        skipped = true;
+        skipReason = `rating>${opts.maxRating}`;
+      }
+      if (!skipped && opts.maxAvgDiff && metrics.avgDiff > opts.maxAvgDiff) {
+        skipped = true;
+        skipReason = `avgDiff>${opts.maxAvgDiff}`;
+      }
 
       const hvStdDev = parsed.venue === "Happy Valley" ? 11 : 8;
       const simulator = new MonteCarloSimulator({ runs: 5000, performanceStdDev: hvStdDev });

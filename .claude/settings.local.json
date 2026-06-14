@@ -21,7 +21,8 @@
       "Bash(./node_modules/.bin/tsx tools/backtest-differentiation.ts --sparse=3 --close=2 --avgdiff=13 --gap=1 --surface=Turf --form=all)",
       "Bash(npx tsc *)",
       "Bash(node -e ' *)",
-      "Bash(node --import tsx -e ' *)"
+      "Bash(node --import tsx -e ' *)",
+      "Bash(grep -n \"const { skipped, skipReason } = computeSkipDecision\\\\|hvStdDev = parsed.venue\\\\|^export async function\\\\|^async function\\\\|topRatedAnalysis\\\\b\" src/backtest/differentiationBacktest.ts)"
     ]
   }
 }

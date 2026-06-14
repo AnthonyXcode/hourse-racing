@@ -28,7 +28,7 @@ import {
 } from "../src/backtest/upcomingBetSuggestions.js";
 
 async function main() {
-  const { sparseMax, closeMax, avgDiffMin, gapMin, oddsMax, ratingChangeMin, months, venue, surface, ignoreClasses, ignoreDistances, form, ignoreAfter } =
+  const { sparseMax, closeMax, avgDiffMin, gapMin, oddsMax, ratingChangeMin, months, venue, surface, ignoreClasses, ignoreDistances, maxRating, maxAvgDiff, form, ignoreAfter } =
     parseDifferentiationBacktestCliArgs(process.argv.slice(2));
   const monthLabel = months.length === 0 ? "all" : months.join(",");
   const venueLabel = venue ?? "all";
@@ -40,8 +40,10 @@ async function main() {
   const oddsLabel = oddsMax > 0 ? `>${oddsMax}` : "off";
   const rtgChangeLabel =
     ratingChangeMin !== null && ratingChangeMin !== undefined ? `Rtg+/>${ratingChangeMin}` : "off";
+  const maxRatingLabel = maxRating > 0 ? `>${maxRating}` : "off";
+  const maxAvgDiffLabel = maxAvgDiff > 0 ? `>${maxAvgDiff}` : "off";
   console.log(
-    `Skip rules: sparse>${sparseMax}, close<8>${closeMax}, avgDiff<${avgDiffMin}, 1st-2nd gap<${gapMin}, odds ${oddsLabel}, ${rtgChangeLabel} | months=${monthLabel} | venue=${venueLabel} | surface=${surfaceLabel} | form=${formLabel} | ignore-class=${ignoreClassLabel} | ignore-distance=${ignoreDistLabel} | ignore-after=${ignoreAfterLabel}\n`
+    `Skip rules: sparse>${sparseMax}, close<8>${closeMax}, avgDiff<${avgDiffMin}, 1st-2nd gap<${gapMin}, odds ${oddsLabel}, ${rtgChangeLabel}, max-rating ${maxRatingLabel}, max-avgdiff ${maxAvgDiffLabel} | months=${monthLabel} | venue=${venueLabel} | surface=${surfaceLabel} | form=${formLabel} | ignore-class=${ignoreClassLabel} | ignore-distance=${ignoreDistLabel} | ignore-after=${ignoreAfterLabel}\n`
   );
 
   const allResults = await runDifferentiationBacktest({
@@ -56,6 +58,8 @@ async function main() {
     surface,
     ignoreClasses,
     ignoreDistances,
+    maxRating,
+    maxAvgDiff,
     form,
     ...(ignoreAfter ? { ignoreAfter } : {}),
   });
@@ -540,6 +544,8 @@ async function main() {
     surface,
     ignoreClasses,
     ignoreDistances,
+    maxRating,
+    maxAvgDiff,
     form,
     ...(ignoreAfter ? { ignoreAfter } : {}),
   });
