@@ -85,7 +85,7 @@ async function main() {
   console.log("─".repeat(tableWidth));
   for (const r of allResults) {
     const bet = r.skipped ? "SKIP" : "BET";
-    const hit = r.skipped ? "-" : r.topRatedPlaced ? "Y" : "N";
+    const hit = r.skipped ? "➖" : r.topRatedPlaced ? "✅" : "❌";
     const winO = r.topRatedWinOdds > 0 ? r.topRatedWinOdds.toFixed(1) : "-";
     const plcO = r.topRatedPlaceOdds > 0 ? r.topRatedPlaceOdds.toFixed(1) : "-";
     const skipReason = r.skipped ? r.skipReason.substring(0, skipReasonWidth) : "-";
@@ -100,7 +100,9 @@ async function main() {
   const bettedHits = betted.filter((r) => r.topRatedPlaced).length;
   const bettedRate = betted.length > 0 ? ((bettedHits / betted.length) * 100).toFixed(1) : "0.0";
   console.log(`\nBetted: ${bettedHits}/${betted.length} placed (${bettedRate}%)`);
-  console.log(`Skipped: ${skippedRaces.length} races`);
+  const skippedHits = skippedRaces.filter((r) => r.topRatedPlaced).length;
+  const skippedRate = skippedRaces.length > 0 ? ((skippedHits / skippedRaces.length) * 100).toFixed(1) : "0.0";
+  console.log(`Skipped: ${skippedRaces.length} races — pick would have placed ${skippedHits}/${skippedRaces.length} (${skippedRate}%)`);
   const allPlaces = allResults.filter((r) => r.topRatedPlaced).length;
   console.log(
     `Without filter: ${allPlaces}/${allResults.length} placed (${((allPlaces / allResults.length) * 100).toFixed(1)}%)`
