@@ -469,8 +469,8 @@ async function main() {
     const mode = r.hasBanker ? "BKR" : "LEGS";
     const legsStr = r.legNumbers.join(",");
     const top3Str = r.actualTop3Numbers.join(",");
-    const bnkHit = r.skipped ? "-" : r.bankerHit ? "Y" : "N";
-    const hit = r.skipped ? "-" : r.trioHit ? "Y" : "N";
+    const bnkHit = r.skipped ? "➖" : r.bankerHit ? "✅" : "❌";
+    const hit = r.skipped ? "➖" : r.trioHit ? "✅" : "❌";
     const bnkOdds = r.bankerWinOdds > 0 ? r.bankerWinOdds.toFixed(1) : "-";
     const divStr = r.trioDividend > 0 ? `$${r.trioDividend}` : "-";
     const pnl = r.skipped ? "-" : `${r.payout - r.staked >= 0 ? "+" : ""}$${r.payout - r.staked}`;
