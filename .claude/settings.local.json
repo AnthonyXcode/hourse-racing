@@ -34,7 +34,11 @@
       "Bash(grep -rln \"_2026\\\\|results_.*_.*json\\\\|toISOString\\(\\).*results\\\\|results_\\\\${\" tools/)",
       "Bash(grep -iE \"start|end|from|to|range|_\\\\$\\\\{\")",
       "Bash(PLAYWRIGHT_BROWSERS_PATH=0 npx tsx tools/scrape-meeting.ts --date=2026-06-13 --venue=20260620)",
-      "Bash(echo \"exit: $?\")"
+      "Bash(echo \"exit: $?\")",
+      "Bash(node -e 'const d=require\\(\"./data/racecards/racecard_20260610_HV_R1.json\"\\);const h=d.race.entries[0].horse;console.log\\(\"name\",h.name\\);console.log\\(JSON.stringify\\(\\(h.pastPerformances||[]\\).slice\\(0,2\\),null,1\\)\\)')",
+      "Bash(PLAYWRIGHT_BROWSERS_PATH=0 npx tsx tools/backtest-mc-place-distance.ts --form=all --stake=10)",
+      "Bash(PLAYWRIGHT_BROWSERS_PATH=0 npx tsx tools/backtest-mc-place-compare.ts --form=all --stake=10)",
+      "Bash(PLAYWRIGHT_BROWSERS_PATH=0 npx tsx tools/backtest-mc1-neverdist.ts --form=all)"
     ]
   }
 }
