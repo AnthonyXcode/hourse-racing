@@ -38,7 +38,13 @@
       "Bash(node -e 'const d=require\\(\"./data/racecards/racecard_20260610_HV_R1.json\"\\);const h=d.race.entries[0].horse;console.log\\(\"name\",h.name\\);console.log\\(JSON.stringify\\(\\(h.pastPerformances||[]\\).slice\\(0,2\\),null,1\\)\\)')",
       "Bash(PLAYWRIGHT_BROWSERS_PATH=0 npx tsx tools/backtest-mc-place-distance.ts --form=all --stake=10)",
       "Bash(PLAYWRIGHT_BROWSERS_PATH=0 npx tsx tools/backtest-mc-place-compare.ts --form=all --stake=10)",
-      "Bash(PLAYWRIGHT_BROWSERS_PATH=0 npx tsx tools/backtest-mc1-neverdist.ts --form=all)"
+      "Bash(PLAYWRIGHT_BROWSERS_PATH=0 npx tsx tools/backtest-mc1-neverdist.ts --form=all)",
+      "Bash(PLAYWRIGHT_BROWSERS_PATH=0 npx tsx tools/backtest-trio-tophalf.ts --form=all --half=round)",
+      "Bash(PLAYWRIGHT_BROWSERS_PATH=0 npx tsx tools/backtest-place-by-mcrank.ts --form=all --max-rank=14)",
+      "Bash(PLAYWRIGHT_BROWSERS_PATH=0 npx tsx tools/backtest-trio-top4-random-elig.ts --form=all --half=round --trials=300)",
+      "Bash(PLAYWRIGHT_BROWSERS_PATH=0 npx tsx tools/backtest-trio-top4-random-elig.ts --form=all --half=round --trials=300 --top=2)",
+      "Bash(PLAYWRIGHT_BROWSERS_PATH=0 npx tsx tools/backtest-trio-top4-random-elig.ts --form=all --half=round --trials=300 --top=2 --venue=ST)",
+      "Bash(PLAYWRIGHT_BROWSERS_PATH=0 npx tsx tools/backtest-trio-top4-random-elig.ts --form=all --half=round --trials=300 --top=2 --venue=HV)"
     ]
   }
 }
