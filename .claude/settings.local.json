@@ -22,7 +22,19 @@
       "Bash(npx tsc *)",
       "Bash(node -e ' *)",
       "Bash(node --import tsx -e ' *)",
-      "Bash(grep -n \"const { skipped, skipReason } = computeSkipDecision\\\\|hvStdDev = parsed.venue\\\\|^export async function\\\\|^async function\\\\|topRatedAnalysis\\\\b\" src/backtest/differentiationBacktest.ts)"
+      "Bash(grep -n \"const { skipped, skipReason } = computeSkipDecision\\\\|hvStdDev = parsed.venue\\\\|^export async function\\\\|^async function\\\\|topRatedAnalysis\\\\b\" src/backtest/differentiationBacktest.ts)",
+      "Bash(PLAYWRIGHT_BROWSERS_PATH=0 npx tsx tools/sync-historical.ts)",
+      "WebFetch(domain:racing.hkjc.com)",
+      "Bash(PLAYWRIGHT_BROWSERS_PATH=0 npx tsx tools/fetch-odds.ts --date=2026-06-21 --venue=ST --json --save)",
+      "WebFetch(domain:www.scmp.com)",
+      "Bash(PLAYWRIGHT_BROWSERS_PATH=0 npx tsx tools/analyze-race.ts --date 2026-06-21 --venue \"Sha Tin\" --race 1 --form-data all --bankroll 1000 --kelly 0.35 --min-edge 5)",
+      "Bash(awk '{print $9, $5}')",
+      "Bash(awk '{print $9,$5}')",
+      "Bash(node -e 'const d=require\\(\"./data/historical/results_20260613_20260620.json\"\\); *)",
+      "Bash(grep -rln \"_2026\\\\|results_.*_.*json\\\\|toISOString\\(\\).*results\\\\|results_\\\\${\" tools/)",
+      "Bash(grep -iE \"start|end|from|to|range|_\\\\$\\\\{\")",
+      "Bash(PLAYWRIGHT_BROWSERS_PATH=0 npx tsx tools/scrape-meeting.ts --date=2026-06-13 --venue=20260620)",
+      "Bash(echo \"exit: $?\")"
     ]
   }
 }

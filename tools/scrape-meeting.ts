@@ -16,6 +16,11 @@ async function main() {
     process.exit(1);
   }
 
+  if (venueArg !== "ST" && venueArg !== "HV") {
+    console.error(`Invalid --venue "${venueArg}". Must be ST or HV (a non-venue value here produces a misnamed results_*.json — check arg order).`);
+    process.exit(1);
+  }
+
   const date = new Date(dateArg);
   const venue = venueArg === "HV" ? "Happy Valley" as const : "Sha Tin" as const;
 
