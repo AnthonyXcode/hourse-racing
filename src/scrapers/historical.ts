@@ -322,9 +322,15 @@ export class HistoricalScraper {
       surface = "Turf"; // Turf is more common, but we log the warning
     }
 
-    // Parse going - look for "Going : GOOD" pattern
+    // Parse going - look for "Going : GOOD" pattern.
+    // NOTE: the capture must list the multi-word goings explicitly. A naive
+    // `(\w+(?:\s+to\s+\w+)?)` truncates "WET SLOW"/"WET FAST" to "WET" (two words,
+    // no "to"), which normalizeGoing then mis-maps to "Yielding" — corrupting the
+    // going for every wet AWT meeting. Match the longest forms first.
     let going: Going | null = null;
-    const goingMatch = allText.match(/Going\s*:\s*(\w+(?:\s+to\s+\w+)?)/i);
+    const goingMatch = allText.match(
+      /Going\s*:\s*(GOOD TO FIRM|GOOD TO YIELDING|YIELDING TO SOFT|WET SLOW|WET FAST|FIRM|GOOD|YIELDING|SOFT|HEAVY|SEALED|WET)/i
+    );
     if (goingMatch) {
       going = this.normalizeGoing(goingMatch[1]!);
     } else {

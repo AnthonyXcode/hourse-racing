@@ -8,7 +8,7 @@
     "class": "Class 4",
     "distance": 1800,
     "surface": "Turf",
-    "going": "Yielding",
+    "going": "Good to Yielding",
     "prizeMoney": 1170000,
     "entries": [
       {
@@ -1547,7 +1547,7 @@
               "raceClass": "Class 4",
               "distance": 1800,
               "surface": "AWT",
-              "going": "Yielding",
+              "going": "Wet Slow",
               "draw": 12,
               "weight": 128,
               "jockeyCode": "BEP",
@@ -2940,7 +2940,7 @@
               "raceNumber": 1,
               "raceClass": "Class 5",
               "distance": 1800,
-              "surface": "AWT",
+              "surface": "Turf",
               "going": "Good to Yielding",
               "draw": 3,
               "weight": 121,

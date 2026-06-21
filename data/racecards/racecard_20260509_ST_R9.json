@@ -8,7 +8,7 @@
     "class": "Class 3",
     "distance": 1000,
     "surface": "Turf",
-    "going": "Good",
+    "going": "Good to Yielding",
     "prizeMoney": 1860000,
     "entries": [
       {
@@ -175,7 +175,7 @@
               "raceNumber": 7,
               "raceClass": "Class 3",
               "distance": 1000,
-              "surface": "AWT",
+              "surface": "Turf",
               "going": "Good to Firm",
               "draw": 14,
               "weight": 123,
@@ -637,7 +637,7 @@
               "raceNumber": 7,
               "raceClass": "Class 3",
               "distance": 1000,
-              "surface": "AWT",
+              "surface": "Turf",
               "going": "Good to Firm",
               "draw": 10,
               "weight": 123,
