@@ -41,6 +41,7 @@ export interface DifferentiationBacktestRow {
   skipped: boolean;
   skipReason: string;
   surface: string;
+  going: string;
   raceClass: string;
   distance: number;
   topRatedWon: boolean;
@@ -490,6 +491,7 @@ export async function runDifferentiationBacktest(
       skipped,
       skipReason,
       surface: race.surface,
+      going: race.going,
       raceClass: race.class,
       distance: race.distance,
       topRatedWon: topRatedAnalysis.horseCode === winnerCode,

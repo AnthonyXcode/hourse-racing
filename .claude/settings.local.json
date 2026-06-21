@@ -53,7 +53,11 @@
       "Bash(node -e 'const d=require\\(\"./data/historical/results_20260621_ST.json\"\\);d.forEach\\(r=>{const t=r.finishOrder.slice\\(0,3\\).map\\(f=>f.horseNumber\\);console.log\\(\"R\"+r.raceNumber,\"top3=\"+t.join\\(\"-\"\\),\"place$=\"+JSON.stringify\\(r.placeDividends\\),\"win$=\"+r.winDividend\\)}\\)')",
       "Bash(awk '/Running Total|Season Cumulative|Cumulative A\\\\/B|Meeting-by-Meeting|TOTAL/{f=1} f' data/reviews/trio_review_20260613_ST.md)",
       "Bash(cat)",
-      "Read(//tmp/**)"
+      "Read(//tmp/**)",
+      "Bash(PLAYWRIGHT_BROWSERS_PATH=0 npx tsx tools/backtest-differentiation.ts --form=all)",
+      "Bash(awk '/GOING/{f=1} f&&/^═|^─|GOING|\\\\|/{print} /CLASS|DISTANCE|NUMBER OF RUNNERS/{if\\(f\\)exit}')",
+      "Bash(echo \"exit $?\")",
+      "Bash(awk '/HIT RATE BY GOING/{f=1} f{print} f&&/CLASS|DISTANCE BREAKDOWN|NUMBER OF RUNNERS/{exit}' /tmp/diff_out.txt)"
     ]
   }
 }

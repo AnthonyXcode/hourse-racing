@@ -298,6 +298,22 @@ async function main() {
     printBreakdown("SURFACE", bySurface);
   }
 
+  // --- By going (race-time actual, synced from results) ---
+  const goingOrder = ["Firm","Good to Firm","Good","Good to Yielding","Yielding","Yielding to Soft","Soft","Heavy","Wet Fast","Wet Slow"];
+  const byGoing = new Map<string, DifferentiationBacktestRow[]>();
+  for (const r of allResults) {
+    const g = r.going || "(unknown)";
+    if (!byGoing.has(g)) byGoing.set(g, []);
+    byGoing.get(g)!.push(r);
+  }
+  const byGoingSorted = new Map(
+    [...byGoing.entries()].sort((a, b) => {
+      const ia = goingOrder.indexOf(a[0]); const ib = goingOrder.indexOf(b[0]);
+      return (ia === -1 ? 99 : ia) - (ib === -1 ? 99 : ib);
+    })
+  );
+  printBreakdown("GOING", byGoingSorted);
+
   printClassDistanceVenueBreakdown(allResults);
 
   // --- By number of runners ---
