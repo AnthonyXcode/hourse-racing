@@ -11,3 +11,4 @@ Filename: `YYYY-MM-DD-slug.md`
 |------|------|--------|
 | 2026-06-21 | [MC#1 place — distance debutants up vs down](2026-06-21-mc1-distance-debutant-place.md) | confirmed-directional |
 | 2026-06-21 | [Trio leg coverage by MC rank + top-half box](2026-06-21-trio-mc-rank-coverage.md) | confirmed |
+| 2026-06-21 | [Speed model — empirical pars + field shrinkage](2026-06-21-speed-model-par-calibration.md) | confirmed |
