@@ -9,6 +9,8 @@
  * - Track/distance par times
  */
 
+import fs from "fs";
+import path from "path";
 import type {
   PastPerformance,
   Horse,
@@ -260,12 +262,55 @@ const WEIGHT_ADJUSTMENT_PER_LB_PER_200M = 0.045;
 // SPEED RATING CALCULATOR CLASS
 // ============================================================================
 
+/**
+ * Field shrinkage for finish-time projection. The best-on-paper horse's last-6
+ * average figure overstates what it runs when the whole field tries, so shrink
+ * each horse's figure toward the field mean before projecting a time:
+ *   shrunk = fieldMean + FIELD_TIME_SHRINK · (rating − fieldMean)
+ * Tuned on 788 races (projected vs actual winning time): 0.7 cut MAE 1.62→1.43s
+ * and bias −1.34→−1.06s while keeping a meaningful per-horse spread.
+ */
+export const FIELD_TIME_SHRINK = 0.7;
+
+/** Empirical par overrides: "Venue|Surface|Distance|Class" → seconds. */
+const EMPIRICAL_PARS: Record<string, number> = loadStatic("par_times_empirical.json");
+/** Per-bucket residual offset to add to a projected finish time (seconds). */
+const TIME_OFFSETS: Record<string, number> = loadStatic("time_offsets.json");
+/** Empirical going adjustments (sec per 200m), data-driven. Overrides the hand table. */
+const EMPIRICAL_GOING: Record<string, number> = loadStatic("going_adjustments_empirical.json");
+
+function loadStatic(file: string): Record<string, number> {
+  try {
+    return JSON.parse(fs.readFileSync(path.join(process.cwd(), "data", "static", file), "utf-8"));
+  } catch {
+    return {};
+  }
+}
+
+/**
+ * Per-bucket calibration offset (seconds) to add to a projected finish time,
+ * zeroing the residual bias left after empirical pars + field shrinkage.
+ * From tools/calibrate-time-offsets.ts. Returns 0 when no calibrated bucket.
+ */
+export function getTimeOffset(
+  venue: Venue,
+  surface: TrackSurface,
+  distance: number,
+  raceClass: RaceClass
+): number {
+  return TIME_OFFSETS[`${venue}|${surface}|${distance}|${raceClass}`] ?? 0;
+}
+
 export class SpeedRatingCalculator {
   private readonly baseRating = 100; // Par performance = 100
   private readonly secondsPerRatingPoint = 0.2; // 0.2 seconds = 1 rating point
 
   /**
-   * Get par time for a race configuration
+   * Get par time for a race configuration.
+   * Prefers the data-driven empirical par (median winner time normalized to
+   * Good/126lb, from tools/calibrate-par-times.ts) when available for the exact
+   * venue/surface/distance/class; otherwise falls back to the hand-set table
+   * (nearest distance).
    */
   getParTime(
     venue: Venue,
@@ -273,6 +318,9 @@ export class SpeedRatingCalculator {
     distance: number,
     raceClass: RaceClass
   ): number | null {
+    const emp = EMPIRICAL_PARS[`${venue}|${surface}|${distance}|${raceClass}`];
+    if (emp !== undefined) return emp;
+
     const venuePars = PAR_TIMES[venue];
     if (!venuePars) return null;
 
@@ -296,7 +344,9 @@ export class SpeedRatingCalculator {
    * Calculate going adjustment for a race
    */
   calculateGoingAdjustment(going: Going, distance: number): number {
-    const adjustmentPer200m = GOING_ADJUSTMENTS[going] ?? 0;
+    // Prefer the data-driven going delta (calibrate-going-adjustments.ts); the
+    // hand-set table badly over-slowed wet turf (Soft +0.8 vs empirical ~+0.21).
+    const adjustmentPer200m = EMPIRICAL_GOING[going] ?? GOING_ADJUSTMENTS[going] ?? 0;
     return (distance / 200) * adjustmentPer200m;
   }
 
@@ -364,6 +414,37 @@ export class SpeedRatingCalculator {
       goingAdjustment: goingAdj,
       weightAdjustment: weightAdj,
     };
+  }
+
+  /**
+   * Project a finish time (seconds) for a horse running THIS race at a given
+   * speed figure. Inverse of calculateSpeedFigure():
+   *   speedRating = base + (parTime − adjustedTime) / secPerPt
+   *   adjustedTime = finishTime − goingAdj − weightAdj
+   * ⇒ finishTime = parTime − (speedRating − base)·secPerPt + goingAdj + weightAdj
+   *
+   * Returns null if no par time exists for the race configuration.
+   */
+  projectFinishTime(
+    speedRating: number,
+    venue: Venue,
+    surface: TrackSurface,
+    distance: number,
+    raceClass: RaceClass,
+    going: Going,
+    weight: number
+  ): number | null {
+    const parTime = this.getParTime(venue, surface, distance, raceClass);
+    if (parTime === null) return null;
+    const goingAdj = this.calculateGoingAdjustment(going, distance);
+    const weightAdj = this.calculateWeightAdjustment(weight, distance);
+    const adjustedTime = parTime - (speedRating - this.baseRating) * this.secondsPerRatingPoint;
+    return adjustedTime + goingAdj + weightAdj;
+  }
+
+  /** Seconds added to finish time per 1 point of speed-figure variability. */
+  get secondsPerPoint(): number {
+    return this.secondsPerRatingPoint;
   }
 
   /**

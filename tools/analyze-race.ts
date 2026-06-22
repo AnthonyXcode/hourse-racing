@@ -17,7 +17,9 @@ import { DEFAULT_BETTING_CONFIG } from "../src/types/index.js";
 import { RaceCardScraper } from "../src/scrapers/raceCard.js";
 import { RaceCardHistoryScraper } from "../src/scrapers/raceCardHistory.js";
 import { FormAnalyzer } from "../src/analysis/formAnalysis.js";
+import { SpeedRatingCalculator, FIELD_TIME_SHRINK, getTimeOffset } from "../src/analysis/speedRating.js";
 import { MonteCarloSimulator } from "../src/simulation/monteCarlo.js";
+import type { HorseAnalysis } from "../src/types/index.js";
 import {
   RecommendationEngine,
   formatRaceReport,
@@ -181,6 +183,89 @@ Examples:
   npm run analyze -- --race 3 --kelly 0.35
   npm run analyze -- -d 2026-03-29 -v ST -r 1 --use-saved -f all
 `);
+}
+
+// ============================================================================
+// FINISH-TIME PROJECTION
+// ============================================================================
+
+/** Format seconds as M:SS.ss (>=60s) or SS.ss. */
+function fmtTime(s: number): string {
+  if (s >= 60) {
+    const m = Math.floor(s / 60);
+    const rem = s - m * 60;
+    return `${m}:${rem.toFixed(2).padStart(5, "0")}`;
+  }
+  return s.toFixed(2);
+}
+
+/**
+ * Print projected finish times per runner (independent of the ordinal MC).
+ * Closed-form: finishTime ~ Normal(mean, sd) where
+ *   mean = projectFinishTime(avgSpeedRating), sd = speedStd · secondsPerPoint.
+ * P10/P50/P90 from the normal quantiles; margin = lengths behind the fastest mean.
+ */
+function printFinishTimeProjection(
+  race: Race,
+  analysisMap: Map<string, HorseAnalysis>,
+  venue: Venue
+): void {
+  const speed = new SpeedRatingCalculator();
+  const offset = getTimeOffset(race.venue, race.surface, race.distance, race.class);
+  // Speed-figure run-to-run variability (points). HV is tighter/trickier → wider.
+  const speedStd = venue === "Happy Valley" ? 6 : 5;
+  const sd = speedStd * speed.secondsPerPoint; // seconds
+  const Z90 = 1.2816; // P10/P90 normal quantile
+  const SEC_PER_LENGTH = 1 / 6; // ≈0.167s per length (HKJC convention)
+
+  // Field mean speed figure → shrink each horse toward it (regression to mean).
+  const active = race.entries.filter((e) => !e.isScratched && analysisMap.has(e.horse.code));
+  const ratings = active.map((e) => analysisMap.get(e.horse.code)!.averageSpeedRating);
+  const fieldMean = ratings.length ? ratings.reduce((s, r) => s + r, 0) / ratings.length : 100;
+
+  type Row = { num: number; name: string; mean: number; sd: number };
+  const rows: Row[] = [];
+  for (const entry of active) {
+    const a = analysisMap.get(entry.horse.code)!;
+    const shrunk = fieldMean + FIELD_TIME_SHRINK * (a.averageSpeedRating - fieldMean);
+    const mean = speed.projectFinishTime(
+      shrunk,
+      race.venue,
+      race.surface,
+      race.distance,
+      race.class,
+      race.going,
+      entry.weight
+    );
+    if (mean === null) {
+      console.log(
+        `\nFinish-Time Projection: no par time for ${race.venue} ${race.surface} ${race.distance}m ${race.class} — skipped.`
+      );
+      return;
+    }
+    rows.push({ num: entry.horseNumber, name: entry.horse.name, mean: mean + offset, sd });
+  }
+  if (rows.length === 0) return;
+
+  rows.sort((a, b) => a.mean - b.mean);
+  const fastest = rows[0]!.mean;
+
+  console.log("\n" + "─".repeat(60));
+  console.log(`FINISH-TIME PROJECTION (${race.distance}m, ${race.going}, ±1σ=${sd.toFixed(2)}s)`);
+  console.log("─".repeat(60));
+  console.log(`   # Horse              P10     Mean     P90     Margin`);
+  for (const r of rows) {
+    const p10 = r.mean - Z90 * r.sd;
+    const p90 = r.mean + Z90 * r.sd;
+    const marginSec = r.mean - fastest;
+    const marginL = marginSec / SEC_PER_LENGTH;
+    const marginStr = marginSec === 0 ? "  —  " : `+${marginSec.toFixed(2)}s (${marginL.toFixed(1)}L)`;
+    console.log(
+      `  ${r.num.toString().padStart(2)} ${r.name.substring(0, 16).padEnd(16)} ` +
+        `${fmtTime(p10).padStart(7)} ${fmtTime(r.mean).padStart(7)} ${fmtTime(p90).padStart(7)}   ${marginStr}`
+    );
+  }
+  console.log(`\n  Projected winning time: ~${fmtTime(fastest)} (#${rows[0]!.num} ${rows[0]!.name}). Times from avg speed figure + par/going/weight; SD from ±${speedStd}pt figure spread.`);
 }
 
 // ============================================================================
@@ -408,6 +493,12 @@ async function analyzeRace(args: CliArgs): Promise<void> {
     const avgDiff = diffs.length > 0 ? diffs.reduce((s, d) => s + d, 0) / diffs.length : 0;
     const closeDiffCount = diffs.filter(d => d < 8).length;
     console.log(`\n  Avg differentiation: ${avgDiff.toFixed(0)} | Horses with diff < 8: ${closeDiffCount}`);
+
+    // --- Finish-time projection (independent pass) ---
+    // Each horse's finish time is a linear function of its speed figure, and the
+    // speed figure varies ~Normal(avgSpeedRating, σ). So the time distribution is
+    // closed-form: mean = projectFinishTime(avgSpeed), SD = σ · secondsPerPoint.
+    printFinishTimeProjection(race, analysisMap, args.venue);
 
     console.log("\nTop Quinella Combinations:");
     const topQuinellas = simulator

@@ -6,6 +6,7 @@
 import { HistoricalScraper } from "../src/scrapers/historical.js";
 import { format } from "date-fns";
 import { writeFile } from "fs/promises";
+import { enrichMeeting } from "./enrich-multi-trio.js";
 
 async function main() {
   const dateArg = process.argv.find(a => a.startsWith("--date="))?.split("=")[1];
@@ -75,9 +76,18 @@ async function main() {
     }
 
     // Save to file
-    const filename = `data/historical/results_${format(date, "yyyyMMdd")}_${venueArg}.json`;
+    const ymd = format(date, "yyyyMMdd");
+    const filename = `data/historical/results_${ymd}_${venueArg}.json`;
     await writeFile(filename, JSON.stringify(results, null, 2));
     console.log(`\nSaved to: ${filename}`);
+
+    // Enrich with Double Trio / Triple Trio dividends (overwrite to refresh).
+    try {
+      console.log("Fetching Double/Triple Trio dividends...");
+      console.log(`  ${await enrichMeeting(ymd, venueArg, 300, true)}`);
+    } catch (e) {
+      console.warn(`[WARNING] DT/TT enrichment failed: ${e instanceof Error ? e.message : e}`);
+    }
 
   } catch (error) {
     console.error("\nScraping failed:", error instanceof Error ? error.message : error);
