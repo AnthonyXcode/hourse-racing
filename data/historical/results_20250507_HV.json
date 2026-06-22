@@ -425,7 +425,12 @@
     ],
     "tierceDividend": 778,
     "trioDividend": 161,
-    "first4Dividend": 870
+    "first4Dividend": 870,
+    "doubleTrioDividend": 1910,
+    "doubleTrioLegs": [
+      2,
+      3
+    ]
   },
   {
     "id": "2025-05-07-HV-3",
@@ -631,7 +636,12 @@
     ],
     "tierceDividend": 1182,
     "trioDividend": 153,
-    "first4Dividend": 653
+    "first4Dividend": 653,
+    "doubleTrioDividend": 1910,
+    "doubleTrioLegs": [
+      2,
+      3
+    ]
   },
   {
     "id": "2025-05-07-HV-4",
@@ -853,7 +863,12 @@
     ],
     "tierceDividend": 4249,
     "trioDividend": 602,
-    "first4Dividend": 1975
+    "first4Dividend": 1975,
+    "doubleTrioDividend": 29389,
+    "doubleTrioLegs": [
+      4,
+      5
+    ]
   },
   {
     "id": "2025-05-07-HV-5",
@@ -1075,7 +1090,12 @@
     ],
     "tierceDividend": 3076,
     "trioDividend": 424,
-    "first4Dividend": 640
+    "first4Dividend": 640,
+    "doubleTrioDividend": 29389,
+    "doubleTrioLegs": [
+      4,
+      5
+    ]
   },
   {
     "id": "2025-05-07-HV-6",
@@ -1281,7 +1301,12 @@
     ],
     "tierceDividend": 9187,
     "trioDividend": 1916,
-    "first4Dividend": 3813
+    "first4Dividend": 3813,
+    "doubleTrioDividend": 246464,
+    "doubleTrioLegs": [
+      6,
+      7
+    ]
   },
   {
     "id": "2025-05-07-HV-7",
@@ -1503,7 +1528,12 @@
     ],
     "tierceDividend": 4443,
     "trioDividend": 967,
-    "first4Dividend": 466
+    "first4Dividend": 466,
+    "doubleTrioDividend": 246464,
+    "doubleTrioLegs": [
+      6,
+      7
+    ]
   },
   {
     "id": "2025-05-07-HV-8",
@@ -1725,7 +1755,12 @@
     ],
     "tierceDividend": 3665,
     "trioDividend": 386,
-    "first4Dividend": 440
+    "first4Dividend": 440,
+    "doubleTrioDividend": 6495,
+    "doubleTrioLegs": [
+      8,
+      9
+    ]
   },
   {
     "id": "2025-05-07-HV-9",
@@ -1947,6 +1982,11 @@
     ],
     "tierceDividend": 711,
     "trioDividend": 165,
-    "first4Dividend": 225
+    "first4Dividend": 225,
+    "doubleTrioDividend": 6495,
+    "doubleTrioLegs": [
+      8,
+      9
+    ]
   }
 ]

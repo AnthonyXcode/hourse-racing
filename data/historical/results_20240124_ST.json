@@ -203,7 +203,12 @@
     ],
     "tierceDividend": 1119,
     "trioDividend": 258,
-    "first4Dividend": 197
+    "first4Dividend": 197,
+    "doubleTrioDividend": 16331,
+    "doubleTrioLegs": [
+      1,
+      2
+    ]
   },
   {
     "id": "2024-01-24-ST-2",
@@ -361,7 +366,12 @@
     ],
     "tierceDividend": 3099,
     "trioDividend": 398,
-    "first4Dividend": 180
+    "first4Dividend": 180,
+    "doubleTrioDividend": 16331,
+    "doubleTrioLegs": [
+      1,
+      2
+    ]
   },
   {
     "id": "2024-01-24-ST-3",
@@ -615,7 +625,12 @@
     ],
     "tierceDividend": 17999,
     "trioDividend": 2431,
-    "first4Dividend": 1309
+    "first4Dividend": 1309,
+    "doubleTrioDividend": 527805,
+    "doubleTrioLegs": [
+      3,
+      4
+    ]
   },
   {
     "id": "2024-01-24-ST-4",
@@ -869,7 +884,12 @@
     ],
     "tierceDividend": 44371,
     "trioDividend": 6714,
-    "first4Dividend": 8123
+    "first4Dividend": 8123,
+    "doubleTrioDividend": 527805,
+    "doubleTrioLegs": [
+      3,
+      4
+    ]
   },
   {
     "id": "2024-01-24-ST-5",
@@ -1091,7 +1111,12 @@
     ],
     "tierceDividend": 17548,
     "trioDividend": 2253,
-    "first4Dividend": 23902
+    "first4Dividend": 23902,
+    "doubleTrioDividend": 1350718,
+    "doubleTrioLegs": [
+      5,
+      6
+    ]
   },
   {
     "id": "2024-01-24-ST-6",
@@ -1313,7 +1338,12 @@
     ],
     "tierceDividend": 34329,
     "trioDividend": 3616,
-    "first4Dividend": 6271
+    "first4Dividend": 6271,
+    "doubleTrioDividend": 1350718,
+    "doubleTrioLegs": [
+      5,
+      6
+    ]
   },
   {
     "id": "2024-01-24-ST-7",
@@ -1535,7 +1565,12 @@
     ],
     "tierceDividend": 1313,
     "trioDividend": 184,
-    "first4Dividend": 1905
+    "first4Dividend": 1905,
+    "doubleTrioDividend": 19457,
+    "doubleTrioLegs": [
+      7,
+      8
+    ]
   },
   {
     "id": "2024-01-24-ST-8",
@@ -1773,6 +1808,11 @@
     ],
     "tierceDividend": 7422,
     "trioDividend": 761,
-    "first4Dividend": 1359
+    "first4Dividend": 1359,
+    "doubleTrioDividend": 19457,
+    "doubleTrioLegs": [
+      7,
+      8
+    ]
   }
 ]

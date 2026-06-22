@@ -487,7 +487,12 @@
       85
     ],
     "tierceDividend": 7218,
-    "trioDividend": 1058
+    "trioDividend": 1058,
+    "doubleTrioDividend": 86136,
+    "doubleTrioLegs": [
+      2,
+      3
+    ]
   },
   {
     "id": "2026-03-08-ST-3",
@@ -692,7 +697,12 @@
       187.5
     ],
     "tierceDividend": 2623,
-    "trioDividend": 566
+    "trioDividend": 566,
+    "doubleTrioDividend": 86136,
+    "doubleTrioLegs": [
+      2,
+      3
+    ]
   },
   {
     "id": "2026-03-08-ST-4",
@@ -913,7 +923,12 @@
       184.5
     ],
     "tierceDividend": 3085,
-    "trioDividend": 811
+    "trioDividend": 811,
+    "doubleTrioDividend": 62559,
+    "doubleTrioLegs": [
+      4,
+      5
+    ]
   },
   {
     "id": "2026-03-08-ST-5",
@@ -1166,7 +1181,12 @@
       265.5
     ],
     "tierceDividend": 4661,
-    "trioDividend": 1024
+    "trioDividend": 1024,
+    "doubleTrioDividend": 62559,
+    "doubleTrioLegs": [
+      4,
+      5
+    ]
   },
   {
     "id": "2026-03-08-ST-6",
@@ -1387,7 +1407,12 @@
       233
     ],
     "tierceDividend": 3718,
-    "trioDividend": 990
+    "trioDividend": 990,
+    "doubleTrioDividend": 114760,
+    "doubleTrioLegs": [
+      6,
+      9
+    ]
   },
   {
     "id": "2026-03-08-ST-7",
@@ -1797,7 +1822,12 @@
       139
     ],
     "tierceDividend": 2480,
-    "trioDividend": 536
+    "trioDividend": 536,
+    "doubleTrioDividend": 14643,
+    "doubleTrioLegs": [
+      8,
+      9
+    ]
   },
   {
     "id": "2026-03-08-ST-9",
@@ -2050,7 +2080,12 @@
       45
     ],
     "tierceDividend": 2388,
-    "trioDividend": 294
+    "trioDividend": 294,
+    "doubleTrioDividend": 14643,
+    "doubleTrioLegs": [
+      8,
+      9
+    ]
   },
   {
     "id": "2026-03-08-ST-10",
@@ -2271,7 +2306,12 @@
       91
     ],
     "tierceDividend": 626,
-    "trioDividend": 158
+    "trioDividend": 158,
+    "doubleTrioDividend": 39517,
+    "doubleTrioLegs": [
+      10,
+      11
+    ]
   },
   {
     "id": "2026-03-08-ST-11",
@@ -2524,6 +2564,11 @@
       224
     ],
     "tierceDividend": 6872,
-    "trioDividend": 1566
+    "trioDividend": 1566,
+    "doubleTrioDividend": 39517,
+    "doubleTrioLegs": [
+      10,
+      11
+    ]
   }
 ]

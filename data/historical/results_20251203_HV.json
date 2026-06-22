@@ -218,7 +218,12 @@
       76.5
     ],
     "tierceDividend": 1533,
-    "trioDividend": 349
+    "trioDividend": 349,
+    "doubleTrioDividend": 232526,
+    "doubleTrioLegs": [
+      1,
+      2
+    ]
   },
   {
     "id": "2025-12-03-HV-2",
@@ -439,7 +444,12 @@
       852.5
     ],
     "tierceDividend": 24823,
-    "trioDividend": 5824
+    "trioDividend": 5824,
+    "doubleTrioDividend": 232526,
+    "doubleTrioLegs": [
+      1,
+      2
+    ]
   },
   {
     "id": "2025-12-03-HV-3",
@@ -881,7 +891,18 @@
       198.5
     ],
     "tierceDividend": 2323,
-    "trioDividend": 552
+    "trioDividend": 552,
+    "doubleTrioDividend": 10486,
+    "doubleTrioLegs": [
+      4,
+      4
+    ],
+    "tripleTrioDividend": 1435033,
+    "tripleTrioLegs": [
+      4,
+      5,
+      6
+    ]
   },
   {
     "id": "2025-12-03-HV-5",
@@ -1102,7 +1123,18 @@
       98
     ],
     "tierceDividend": 3878,
-    "trioDividend": 653
+    "trioDividend": 653,
+    "doubleTrioDividend": 42157,
+    "doubleTrioLegs": [
+      5,
+      6
+    ],
+    "tripleTrioDividend": 1435033,
+    "tripleTrioLegs": [
+      4,
+      5,
+      6
+    ]
   },
   {
     "id": "2025-12-03-HV-6",
@@ -1323,7 +1355,18 @@
       231.5
     ],
     "tierceDividend": 3465,
-    "trioDividend": 814
+    "trioDividend": 814,
+    "doubleTrioDividend": 42157,
+    "doubleTrioLegs": [
+      5,
+      6
+    ],
+    "tripleTrioDividend": 1435033,
+    "tripleTrioLegs": [
+      4,
+      5,
+      6
+    ]
   },
   {
     "id": "2025-12-03-HV-7",
@@ -1545,7 +1588,12 @@
       79.5
     ],
     "tierceDividend": 64186,
-    "trioDividend": 6064
+    "trioDividend": 6064,
+    "doubleTrioDividend": 198547,
+    "doubleTrioLegs": [
+      7,
+      8
+    ]
   },
   {
     "id": "2025-12-03-HV-8",
@@ -1766,6 +1814,11 @@
       47
     ],
     "tierceDividend": 1338,
-    "trioDividend": 201
+    "trioDividend": 201,
+    "doubleTrioDividend": 198547,
+    "doubleTrioLegs": [
+      7,
+      8
+    ]
   }
 ]

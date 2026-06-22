@@ -203,7 +203,12 @@
     ],
     "tierceDividend": 2288,
     "trioDividend": 297,
-    "first4Dividend": 134
+    "first4Dividend": 134,
+    "doubleTrioDividend": 435039,
+    "doubleTrioLegs": [
+      1,
+      2
+    ]
   },
   {
     "id": "2024-10-30-HV-2",
@@ -425,7 +430,12 @@
     ],
     "tierceDividend": 16029,
     "trioDividend": 3758,
-    "first4Dividend": 2565
+    "first4Dividend": 2565,
+    "doubleTrioDividend": 435039,
+    "doubleTrioLegs": [
+      1,
+      2
+    ]
   },
   {
     "id": "2024-10-30-HV-3",
@@ -647,7 +657,12 @@
     ],
     "tierceDividend": 2409,
     "trioDividend": 481,
-    "first4Dividend": 4831
+    "first4Dividend": 4831,
+    "doubleTrioDividend": 49208,
+    "doubleTrioLegs": [
+      3,
+      4
+    ]
   },
   {
     "id": "2024-10-30-HV-4",
@@ -869,7 +884,18 @@
     ],
     "tierceDividend": 2953,
     "trioDividend": 887,
-    "first4Dividend": 2249
+    "first4Dividend": 2249,
+    "doubleTrioDividend": 49208,
+    "doubleTrioLegs": [
+      3,
+      4
+    ],
+    "tripleTrioDividend": 7989737,
+    "tripleTrioLegs": [
+      4,
+      5,
+      6
+    ]
   },
   {
     "id": "2024-10-30-HV-5",
@@ -1091,7 +1117,18 @@
     ],
     "tierceDividend": 24272,
     "trioDividend": 3578,
-    "first4Dividend": 2544
+    "first4Dividend": 2544,
+    "doubleTrioDividend": 302487,
+    "doubleTrioLegs": [
+      5,
+      6
+    ],
+    "tripleTrioDividend": 7989737,
+    "tripleTrioLegs": [
+      4,
+      5,
+      6
+    ]
   },
   {
     "id": "2024-10-30-HV-6",
@@ -1313,7 +1350,18 @@
     ],
     "tierceDividend": 2091,
     "trioDividend": 603,
-    "first4Dividend": 739
+    "first4Dividend": 739,
+    "doubleTrioDividend": 302487,
+    "doubleTrioLegs": [
+      5,
+      6
+    ],
+    "tripleTrioDividend": 7989737,
+    "tripleTrioLegs": [
+      4,
+      5,
+      6
+    ]
   },
   {
     "id": "2024-10-30-HV-7",
@@ -1519,7 +1567,12 @@
     ],
     "tierceDividend": 1289,
     "trioDividend": 154,
-    "first4Dividend": 891
+    "first4Dividend": 891,
+    "doubleTrioDividend": 2894,
+    "doubleTrioLegs": [
+      7,
+      8
+    ]
   },
   {
     "id": "2024-10-30-HV-8",
@@ -1741,6 +1794,11 @@
     ],
     "tierceDividend": 879,
     "trioDividend": 124,
-    "first4Dividend": 154
+    "first4Dividend": 154,
+    "doubleTrioDividend": 2894,
+    "doubleTrioLegs": [
+      7,
+      8
+    ]
   }
 ]

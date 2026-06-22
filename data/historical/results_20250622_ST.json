@@ -505,7 +505,12 @@
     ],
     "tierceDividend": 2960,
     "trioDividend": 578,
-    "first4Dividend": 651
+    "first4Dividend": 651,
+    "doubleTrioDividend": 58369,
+    "doubleTrioLegs": [
+      2,
+      3
+    ]
   },
   {
     "id": "2025-06-22-ST-3",
@@ -759,7 +764,12 @@
     ],
     "tierceDividend": 3383,
     "trioDividend": 706,
-    "first4Dividend": 2235
+    "first4Dividend": 2235,
+    "doubleTrioDividend": 58369,
+    "doubleTrioLegs": [
+      2,
+      3
+    ]
   },
   {
     "id": "2025-06-22-ST-4",
@@ -1013,7 +1023,12 @@
     ],
     "tierceDividend": 906,
     "trioDividend": 178,
-    "first4Dividend": 3390
+    "first4Dividend": 3390,
+    "doubleTrioDividend": 437455,
+    "doubleTrioLegs": [
+      4,
+      5
+    ]
   },
   {
     "id": "2025-06-22-ST-5",
@@ -1268,7 +1283,12 @@
     ],
     "tierceDividend": 184037,
     "trioDividend": 23921,
-    "first4Dividend": 17205
+    "first4Dividend": 17205,
+    "doubleTrioDividend": 437455,
+    "doubleTrioLegs": [
+      4,
+      5
+    ]
   },
   {
     "id": "2025-06-22-ST-6",
@@ -1933,7 +1953,12 @@
     ],
     "tierceDividend": 9398,
     "trioDividend": 873,
-    "first4Dividend": 1507
+    "first4Dividend": 1507,
+    "doubleTrioDividend": 41450,
+    "doubleTrioLegs": [
+      8,
+      9
+    ]
   },
   {
     "id": "2025-06-22-ST-9",
@@ -2187,7 +2212,12 @@
     ],
     "tierceDividend": 3347,
     "trioDividend": 304,
-    "first4Dividend": 680
+    "first4Dividend": 680,
+    "doubleTrioDividend": 41450,
+    "doubleTrioLegs": [
+      8,
+      9
+    ]
   },
   {
     "id": "2025-06-22-ST-10",
@@ -2441,7 +2471,12 @@
     ],
     "tierceDividend": 5113,
     "trioDividend": 1078,
-    "first4Dividend": 1960
+    "first4Dividend": 1960,
+    "doubleTrioDividend": 38603,
+    "doubleTrioLegs": [
+      10,
+      11
+    ]
   },
   {
     "id": "2025-06-22-ST-11",
@@ -2695,6 +2730,11 @@
     ],
     "tierceDividend": 3607,
     "trioDividend": 280,
-    "first4Dividend": 311
+    "first4Dividend": 311,
+    "doubleTrioDividend": 38603,
+    "doubleTrioLegs": [
+      10,
+      11
+    ]
   }
 ]

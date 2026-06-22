@@ -456,7 +456,12 @@
     ],
     "tierceDividend": 901,
     "trioDividend": 194,
-    "first4Dividend": 386
+    "first4Dividend": 386,
+    "doubleTrioDividend": 25438,
+    "doubleTrioLegs": [
+      2,
+      3
+    ]
   },
   {
     "id": "2025-05-25-ST-3",
@@ -710,7 +715,12 @@
     ],
     "tierceDividend": 7282,
     "trioDividend": 1179,
-    "first4Dividend": 3385
+    "first4Dividend": 3385,
+    "doubleTrioDividend": 25438,
+    "doubleTrioLegs": [
+      2,
+      3
+    ]
   },
   {
     "id": "2025-05-25-ST-4",
@@ -868,7 +878,12 @@
     ],
     "tierceDividend": 228,
     "trioDividend": 88,
-    "first4Dividend": 75
+    "first4Dividend": 75,
+    "doubleTrioDividend": 48174,
+    "doubleTrioLegs": [
+      4,
+      5
+    ]
   },
   {
     "id": "2025-05-25-ST-5",
@@ -1122,7 +1137,12 @@
     ],
     "tierceDividend": 11255,
     "trioDividend": 3112,
-    "first4Dividend": 12060
+    "first4Dividend": 12060,
+    "doubleTrioDividend": 48174,
+    "doubleTrioLegs": [
+      4,
+      5
+    ]
   },
   {
     "id": "2025-05-25-ST-6",
@@ -1804,7 +1824,12 @@
     ],
     "tierceDividend": 1607,
     "trioDividend": 599,
-    "first4Dividend": 255
+    "first4Dividend": 255,
+    "doubleTrioDividend": 312998,
+    "doubleTrioLegs": [
+      8,
+      9
+    ]
   },
   {
     "id": "2025-05-25-ST-9",
@@ -2058,7 +2083,12 @@
     ],
     "tierceDividend": 21846,
     "trioDividend": 5018,
-    "first4Dividend": 7942
+    "first4Dividend": 7942,
+    "doubleTrioDividend": 312998,
+    "doubleTrioLegs": [
+      8,
+      9
+    ]
   },
   {
     "id": "2025-05-25-ST-10",
@@ -2312,7 +2342,12 @@
     ],
     "tierceDividend": 1434,
     "trioDividend": 512,
-    "first4Dividend": 625
+    "first4Dividend": 625,
+    "doubleTrioDividend": 4519,
+    "doubleTrioLegs": [
+      10,
+      11
+    ]
   },
   {
     "id": "2025-05-25-ST-11",
@@ -2566,6 +2601,11 @@
     ],
     "tierceDividend": 358,
     "trioDividend": 51,
-    "first4Dividend": 251
+    "first4Dividend": 251,
+    "doubleTrioDividend": 4519,
+    "doubleTrioLegs": [
+      10,
+      11
+    ]
   }
 ]

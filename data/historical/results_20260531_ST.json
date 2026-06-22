@@ -505,7 +505,12 @@
     ],
     "tierceDividend": 4617,
     "trioDividend": 558,
-    "first4Dividend": 926
+    "first4Dividend": 926,
+    "doubleTrioDividend": 35257,
+    "doubleTrioLegs": [
+      2,
+      3
+    ]
   },
   {
     "id": "2026-05-31-ST-3",
@@ -759,7 +764,12 @@
     ],
     "tierceDividend": 2227,
     "trioDividend": 711,
-    "first4Dividend": 999
+    "first4Dividend": 999,
+    "doubleTrioDividend": 35257,
+    "doubleTrioLegs": [
+      2,
+      3
+    ]
   },
   {
     "id": "2026-05-31-ST-4",
@@ -1013,7 +1023,12 @@
     ],
     "tierceDividend": 1718,
     "trioDividend": 416,
-    "first4Dividend": 1014
+    "first4Dividend": 1014,
+    "doubleTrioDividend": 68202,
+    "doubleTrioLegs": [
+      4,
+      5
+    ]
   },
   {
     "id": "2026-05-31-ST-5",
@@ -1267,7 +1282,12 @@
     ],
     "tierceDividend": 9299,
     "trioDividend": 1101,
-    "first4Dividend": 1625
+    "first4Dividend": 1625,
+    "doubleTrioDividend": 68202,
+    "doubleTrioLegs": [
+      4,
+      5
+    ]
   },
   {
     "id": "2026-05-31-ST-6",
@@ -1521,7 +1541,12 @@
     ],
     "tierceDividend": 2195,
     "trioDividend": 322,
-    "first4Dividend": 344
+    "first4Dividend": 344,
+    "doubleTrioDividend": 837671,
+    "doubleTrioLegs": [
+      6,
+      7
+    ]
   },
   {
     "id": "2026-05-31-ST-7",
@@ -1695,7 +1720,12 @@
     ],
     "tierceDividend": 78265,
     "trioDividend": 9438,
-    "first4Dividend": 4111
+    "first4Dividend": 4111,
+    "doubleTrioDividend": 837671,
+    "doubleTrioLegs": [
+      6,
+      7
+    ]
   },
   {
     "id": "2026-05-31-ST-8",
@@ -1949,7 +1979,12 @@
     ],
     "tierceDividend": 12055,
     "trioDividend": 1090,
-    "first4Dividend": 4962
+    "first4Dividend": 4962,
+    "doubleTrioDividend": 55972,
+    "doubleTrioLegs": [
+      8,
+      9
+    ]
   },
   {
     "id": "2026-05-31-ST-9",
@@ -2138,7 +2173,12 @@
     ],
     "tierceDividend": 3673,
     "trioDividend": 833,
-    "first4Dividend": 2732
+    "first4Dividend": 2732,
+    "doubleTrioDividend": 55972,
+    "doubleTrioLegs": [
+      8,
+      9
+    ]
   },
   {
     "id": "2026-05-31-ST-10",

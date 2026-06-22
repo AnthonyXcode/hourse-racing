@@ -473,7 +473,12 @@
     ],
     "tierceDividend": 5720,
     "trioDividend": 626,
-    "first4Dividend": 2152
+    "first4Dividend": 2152,
+    "doubleTrioDividend": 20259,
+    "doubleTrioLegs": [
+      2,
+      3
+    ]
   },
   {
     "id": "2026-06-07-ST-3",
@@ -695,7 +700,12 @@
     ],
     "tierceDividend": 1537,
     "trioDividend": 161,
-    "first4Dividend": 512
+    "first4Dividend": 512,
+    "doubleTrioDividend": 20259,
+    "doubleTrioLegs": [
+      2,
+      3
+    ]
   },
   {
     "id": "2026-06-07-ST-4",
@@ -949,7 +959,12 @@
     ],
     "tierceDividend": 3107,
     "trioDividend": 555,
-    "first4Dividend": 1600
+    "first4Dividend": 1600,
+    "doubleTrioDividend": 858926,
+    "doubleTrioLegs": [
+      4,
+      5
+    ]
   },
   {
     "id": "2026-06-07-ST-5",
@@ -1203,7 +1218,12 @@
     ],
     "tierceDividend": 104629,
     "trioDividend": 9563,
-    "first4Dividend": 12164
+    "first4Dividend": 12164,
+    "doubleTrioDividend": 858926,
+    "doubleTrioLegs": [
+      4,
+      5
+    ]
   },
   {
     "id": "2026-06-07-ST-6",
@@ -1457,7 +1477,12 @@
     ],
     "tierceDividend": 2975,
     "trioDividend": 687,
-    "first4Dividend": 1473
+    "first4Dividend": 1473,
+    "doubleTrioDividend": 40225,
+    "doubleTrioLegs": [
+      6,
+      7
+    ]
   },
   {
     "id": "2026-06-07-ST-7",
@@ -1663,7 +1688,12 @@
     ],
     "tierceDividend": 2831,
     "trioDividend": 413,
-    "first4Dividend": 3803
+    "first4Dividend": 3803,
+    "doubleTrioDividend": 40225,
+    "doubleTrioLegs": [
+      6,
+      7
+    ]
   },
   {
     "id": "2026-06-07-ST-8",
@@ -1917,7 +1947,12 @@
     ],
     "tierceDividend": 7641,
     "trioDividend": 1138,
-    "first4Dividend": 1050
+    "first4Dividend": 1050,
+    "doubleTrioDividend": 24061,
+    "doubleTrioLegs": [
+      8,
+      9
+    ]
   },
   {
     "id": "2026-06-07-ST-9",
@@ -2139,7 +2174,12 @@
     ],
     "tierceDividend": 2279,
     "trioDividend": 394,
-    "first4Dividend": 293
+    "first4Dividend": 293,
+    "doubleTrioDividend": 24061,
+    "doubleTrioLegs": [
+      8,
+      9
+    ]
   },
   {
     "id": "2026-06-07-ST-10",
@@ -2361,7 +2401,12 @@
     ],
     "tierceDividend": 4768,
     "trioDividend": 913,
-    "first4Dividend": 1525
+    "first4Dividend": 1525,
+    "doubleTrioDividend": 172583,
+    "doubleTrioLegs": [
+      10,
+      11
+    ]
   },
   {
     "id": "2026-06-07-ST-11",
@@ -2615,6 +2660,11 @@
     ],
     "tierceDividend": 11015,
     "trioDividend": 2293,
-    "first4Dividend": 10320
+    "first4Dividend": 10320,
+    "doubleTrioDividend": 172583,
+    "doubleTrioLegs": [
+      10,
+      11
+    ]
   }
 ]

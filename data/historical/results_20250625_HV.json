@@ -441,7 +441,12 @@
     ],
     "tierceDividend": 699,
     "trioDividend": 172,
-    "first4Dividend": 277
+    "first4Dividend": 277,
+    "doubleTrioDividend": 100394,
+    "doubleTrioLegs": [
+      2,
+      3
+    ]
   },
   {
     "id": "2025-06-25-HV-3",
@@ -663,7 +668,12 @@
     ],
     "tierceDividend": 15270,
     "trioDividend": 1707,
-    "first4Dividend": 4941
+    "first4Dividend": 4941,
+    "doubleTrioDividend": 100394,
+    "doubleTrioLegs": [
+      2,
+      3
+    ]
   },
   {
     "id": "2025-06-25-HV-4",
@@ -885,7 +895,12 @@
     ],
     "tierceDividend": 18015,
     "trioDividend": 4019,
-    "first4Dividend": 6369
+    "first4Dividend": 6369,
+    "doubleTrioDividend": 994005,
+    "doubleTrioLegs": [
+      4,
+      5
+    ]
   },
   {
     "id": "2025-06-25-HV-5",
@@ -1059,7 +1074,18 @@
     ],
     "tierceDividend": 11628,
     "trioDividend": 2184,
-    "first4Dividend": 4737
+    "first4Dividend": 4737,
+    "doubleTrioDividend": 994005,
+    "doubleTrioLegs": [
+      4,
+      5
+    ],
+    "tripleTrioDividend": 7009841,
+    "tripleTrioLegs": [
+      5,
+      6,
+      7
+    ]
   },
   {
     "id": "2025-06-25-HV-6",
@@ -1281,7 +1307,18 @@
     ],
     "tierceDividend": 3434,
     "trioDividend": 786,
-    "first4Dividend": 4809
+    "first4Dividend": 4809,
+    "doubleTrioDividend": 28769,
+    "doubleTrioLegs": [
+      6,
+      7
+    ],
+    "tripleTrioDividend": 7009841,
+    "tripleTrioLegs": [
+      5,
+      6,
+      7
+    ]
   },
   {
     "id": "2025-06-25-HV-7",
@@ -1503,7 +1540,18 @@
     ],
     "tierceDividend": 1241,
     "trioDividend": 142,
-    "first4Dividend": 474
+    "first4Dividend": 474,
+    "doubleTrioDividend": 28769,
+    "doubleTrioLegs": [
+      6,
+      7
+    ],
+    "tripleTrioDividend": 7009841,
+    "tripleTrioLegs": [
+      5,
+      6,
+      7
+    ]
   },
   {
     "id": "2025-06-25-HV-8",
@@ -1725,7 +1773,12 @@
     ],
     "tierceDividend": 11582,
     "trioDividend": 1953,
-    "first4Dividend": 2688
+    "first4Dividend": 2688,
+    "doubleTrioDividend": 159217,
+    "doubleTrioLegs": [
+      8,
+      9
+    ]
   },
   {
     "id": "2025-06-25-HV-9",
@@ -1947,6 +2000,11 @@
     ],
     "tierceDividend": 1983,
     "trioDividend": 470,
-    "first4Dividend": 1867
+    "first4Dividend": 1867,
+    "doubleTrioDividend": 159217,
+    "doubleTrioLegs": [
+      8,
+      9
+    ]
   }
 ]

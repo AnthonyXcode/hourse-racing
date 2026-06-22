@@ -376,7 +376,12 @@
     ],
     "tierceDividend": 2832,
     "trioDividend": 489,
-    "first4Dividend": 798
+    "first4Dividend": 798,
+    "doubleTrioDividend": 329655,
+    "doubleTrioLegs": [
+      2,
+      3
+    ]
   },
   {
     "id": "2024-05-05-ST-3",
@@ -598,7 +603,12 @@
     ],
     "tierceDividend": 46183,
     "trioDividend": 5706,
-    "first4Dividend": 6846
+    "first4Dividend": 6846,
+    "doubleTrioDividend": 329655,
+    "doubleTrioLegs": [
+      2,
+      3
+    ]
   },
   {
     "id": "2024-05-05-ST-4",
@@ -788,7 +798,12 @@
     ],
     "tierceDividend": 19650,
     "trioDividend": 3182,
-    "first4Dividend": 3382
+    "first4Dividend": 3382,
+    "doubleTrioDividend": 241680,
+    "doubleTrioLegs": [
+      4,
+      5
+    ]
   },
   {
     "id": "2024-05-05-ST-5",
@@ -1042,7 +1057,12 @@
     ],
     "tierceDividend": 1376,
     "trioDividend": 415,
-    "first4Dividend": 2992
+    "first4Dividend": 2992,
+    "doubleTrioDividend": 241680,
+    "doubleTrioLegs": [
+      4,
+      5
+    ]
   },
   {
     "id": "2024-05-05-ST-6",
@@ -1296,7 +1316,12 @@
     ],
     "tierceDividend": 5295,
     "trioDividend": 759,
-    "first4Dividend": 5759
+    "first4Dividend": 5759,
+    "doubleTrioDividend": 225027,
+    "doubleTrioLegs": [
+      6,
+      7
+    ]
   },
   {
     "id": "2024-05-05-ST-7",
@@ -1550,7 +1575,12 @@
     ],
     "tierceDividend": 23699,
     "trioDividend": 1503,
-    "first4Dividend": 5387
+    "first4Dividend": 5387,
+    "doubleTrioDividend": 225027,
+    "doubleTrioLegs": [
+      6,
+      7
+    ]
   },
   {
     "id": "2024-05-05-ST-8",
@@ -1756,7 +1786,12 @@
     ],
     "tierceDividend": 7191,
     "trioDividend": 790,
-    "first4Dividend": 1782
+    "first4Dividend": 1782,
+    "doubleTrioDividend": 18626,
+    "doubleTrioLegs": [
+      8,
+      9
+    ]
   },
   {
     "id": "2024-05-05-ST-9",
@@ -1978,7 +2013,12 @@
     ],
     "tierceDividend": 1963,
     "trioDividend": 166,
-    "first4Dividend": 292
+    "first4Dividend": 292,
+    "doubleTrioDividend": 18626,
+    "doubleTrioLegs": [
+      8,
+      9
+    ]
   },
   {
     "id": "2024-05-05-ST-10",

@@ -425,7 +425,12 @@
     ],
     "tierceDividend": 590,
     "trioDividend": 122,
-    "first4Dividend": 274
+    "first4Dividend": 274,
+    "doubleTrioDividend": 103577,
+    "doubleTrioLegs": [
+      2,
+      3
+    ]
   },
   {
     "id": "2024-06-23-ST-3",
@@ -679,7 +684,12 @@
     ],
     "tierceDividend": 50930,
     "trioDividend": 6346,
-    "first4Dividend": 15600
+    "first4Dividend": 15600,
+    "doubleTrioDividend": 103577,
+    "doubleTrioLegs": [
+      2,
+      3
+    ]
   },
   {
     "id": "2024-06-23-ST-4",
@@ -933,7 +943,12 @@
     ],
     "tierceDividend": 2613,
     "trioDividend": 568,
-    "first4Dividend": 1188
+    "first4Dividend": 1188,
+    "doubleTrioDividend": 17534,
+    "doubleTrioLegs": [
+      4,
+      5
+    ]
   },
   {
     "id": "2024-06-23-ST-5",
@@ -1187,7 +1202,12 @@
     ],
     "tierceDividend": 3945,
     "trioDividend": 391,
-    "first4Dividend": 1567
+    "first4Dividend": 1567,
+    "doubleTrioDividend": 17534,
+    "doubleTrioLegs": [
+      4,
+      5
+    ]
   },
   {
     "id": "2024-06-23-ST-6",
@@ -1441,7 +1461,12 @@
     ],
     "tierceDividend": 14055,
     "trioDividend": 3228,
-    "first4Dividend": 3238
+    "first4Dividend": 3238,
+    "doubleTrioDividend": 295882,
+    "doubleTrioLegs": [
+      6,
+      7
+    ]
   },
   {
     "id": "2024-06-23-ST-7",
@@ -1695,7 +1720,12 @@
     ],
     "tierceDividend": 3090,
     "trioDividend": 503,
-    "first4Dividend": 2213
+    "first4Dividend": 2213,
+    "doubleTrioDividend": 295882,
+    "doubleTrioLegs": [
+      6,
+      7
+    ]
   },
   {
     "id": "2024-06-23-ST-8",
@@ -1837,7 +1867,12 @@
     ],
     "tierceDividend": 279,
     "trioDividend": 67,
-    "first4Dividend": 95
+    "first4Dividend": 95,
+    "doubleTrioDividend": 3564,
+    "doubleTrioLegs": [
+      8,
+      9
+    ]
   },
   {
     "id": "2024-06-23-ST-9",
@@ -2042,7 +2077,12 @@
     ],
     "tierceDividend": 2122,
     "trioDividend": 517,
-    "first4Dividend": 273
+    "first4Dividend": 273,
+    "doubleTrioDividend": 3564,
+    "doubleTrioLegs": [
+      8,
+      9
+    ]
   },
   {
     "id": "2024-06-23-ST-10",

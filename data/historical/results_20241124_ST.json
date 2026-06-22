@@ -251,7 +251,12 @@
     ],
     "tierceDividend": 2456,
     "trioDividend": 544,
-    "first4Dividend": 5182
+    "first4Dividend": 5182,
+    "doubleTrioDividend": 50564,
+    "doubleTrioLegs": [
+      1,
+      2
+    ]
   },
   {
     "id": "2024-11-24-ST-2",
@@ -505,7 +510,12 @@
     ],
     "tierceDividend": 6647,
     "trioDividend": 824,
-    "first4Dividend": 9649
+    "first4Dividend": 9649,
+    "doubleTrioDividend": 50564,
+    "doubleTrioLegs": [
+      1,
+      2
+    ]
   },
   {
     "id": "2024-11-24-ST-3",
@@ -727,7 +737,12 @@
     ],
     "tierceDividend": 37609,
     "trioDividend": 4292,
-    "first4Dividend": 11098
+    "first4Dividend": 11098,
+    "doubleTrioDividend": 255469,
+    "doubleTrioLegs": [
+      3,
+      4
+    ]
   },
   {
     "id": "2024-11-24-ST-4",
@@ -949,7 +964,18 @@
     ],
     "tierceDividend": 2493,
     "trioDividend": 237,
-    "first4Dividend": 272
+    "first4Dividend": 272,
+    "doubleTrioDividend": 255469,
+    "doubleTrioLegs": [
+      3,
+      4
+    ],
+    "tripleTrioDividend": 1602798,
+    "tripleTrioLegs": [
+      4,
+      5,
+      6
+    ]
   },
   {
     "id": "2024-11-24-ST-5",
@@ -1171,7 +1197,18 @@
     ],
     "tierceDividend": 801,
     "trioDividend": 129,
-    "first4Dividend": 107
+    "first4Dividend": 107,
+    "doubleTrioDividend": 133087,
+    "doubleTrioLegs": [
+      5,
+      6
+    ],
+    "tripleTrioDividend": 1602798,
+    "tripleTrioLegs": [
+      4,
+      5,
+      6
+    ]
   },
   {
     "id": "2024-11-24-ST-6",
@@ -1425,7 +1462,18 @@
     ],
     "tierceDividend": 43612,
     "trioDividend": 4608,
-    "first4Dividend": 7827
+    "first4Dividend": 7827,
+    "doubleTrioDividend": 133087,
+    "doubleTrioLegs": [
+      5,
+      6
+    ],
+    "tripleTrioDividend": 1602798,
+    "tripleTrioLegs": [
+      4,
+      5,
+      6
+    ]
   },
   {
     "id": "2024-11-24-ST-7",
@@ -1679,7 +1727,12 @@
     ],
     "tierceDividend": 1342,
     "trioDividend": 280,
-    "first4Dividend": 2636
+    "first4Dividend": 2636,
+    "doubleTrioDividend": 145979,
+    "doubleTrioLegs": [
+      7,
+      8
+    ]
   },
   {
     "id": "2024-11-24-ST-8",
@@ -1917,7 +1970,12 @@
     ],
     "tierceDividend": 15839,
     "trioDividend": 2999,
-    "first4Dividend": 8894
+    "first4Dividend": 8894,
+    "doubleTrioDividend": 145979,
+    "doubleTrioLegs": [
+      7,
+      8
+    ]
   },
   {
     "id": "2024-11-24-ST-9",
@@ -2139,7 +2197,12 @@
     ],
     "tierceDividend": 929,
     "trioDividend": 131,
-    "first4Dividend": 516
+    "first4Dividend": 516,
+    "doubleTrioDividend": 48307,
+    "doubleTrioLegs": [
+      9,
+      10
+    ]
   },
   {
     "id": "2024-11-24-ST-10",
@@ -2393,6 +2456,11 @@
     ],
     "tierceDividend": 8136,
     "trioDividend": 1490,
-    "first4Dividend": 3272
+    "first4Dividend": 3272,
+    "doubleTrioDividend": 48307,
+    "doubleTrioLegs": [
+      9,
+      10
+    ]
   }
 ]

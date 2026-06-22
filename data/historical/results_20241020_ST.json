@@ -235,7 +235,12 @@
     ],
     "tierceDividend": 1525,
     "trioDividend": 217,
-    "first4Dividend": 1707
+    "first4Dividend": 1707,
+    "doubleTrioDividend": 1044098,
+    "doubleTrioLegs": [
+      1,
+      2
+    ]
   },
   {
     "id": "2024-10-20-ST-2",
@@ -489,7 +494,12 @@
     ],
     "tierceDividend": 123338,
     "trioDividend": 18094,
-    "first4Dividend": 25416
+    "first4Dividend": 25416,
+    "doubleTrioDividend": 1044098,
+    "doubleTrioLegs": [
+      1,
+      2
+    ]
   },
   {
     "id": "2024-10-20-ST-3",
@@ -981,7 +991,13 @@
     ],
     "tierceDividend": 20794,
     "trioDividend": 4010,
-    "first4Dividend": 5357
+    "first4Dividend": 5357,
+    "tripleTrioDividend": 7998616,
+    "tripleTrioLegs": [
+      4,
+      5,
+      6
+    ]
   },
   {
     "id": "2024-10-20-ST-5",
@@ -1203,7 +1219,18 @@
     ],
     "tierceDividend": 3918,
     "trioDividend": 404,
-    "first4Dividend": 3218
+    "first4Dividend": 3218,
+    "doubleTrioDividend": 14795,
+    "doubleTrioLegs": [
+      5,
+      6
+    ],
+    "tripleTrioDividend": 7998616,
+    "tripleTrioLegs": [
+      4,
+      5,
+      6
+    ]
   },
   {
     "id": "2024-10-20-ST-6",
@@ -1457,7 +1484,18 @@
     ],
     "tierceDividend": 2315,
     "trioDividend": 363,
-    "first4Dividend": 3645
+    "first4Dividend": 3645,
+    "doubleTrioDividend": 14795,
+    "doubleTrioLegs": [
+      5,
+      6
+    ],
+    "tripleTrioDividend": 7998616,
+    "tripleTrioLegs": [
+      4,
+      5,
+      6
+    ]
   },
   {
     "id": "2024-10-20-ST-7",
@@ -2186,7 +2224,12 @@
     ],
     "tierceDividend": 29368,
     "trioDividend": 12049,
-    "first4Dividend": 26914
+    "first4Dividend": 26914,
+    "doubleTrioDividend": 433206,
+    "doubleTrioLegs": [
+      9,
+      10
+    ]
   },
   {
     "id": "2024-10-20-ST-10",
@@ -2424,6 +2467,11 @@
     ],
     "tierceDividend": 765,
     "trioDividend": 160,
-    "first4Dividend": 383
+    "first4Dividend": 383,
+    "doubleTrioDividend": 433206,
+    "doubleTrioLegs": [
+      9,
+      10
+    ]
   }
 ]

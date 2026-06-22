@@ -252,7 +252,12 @@
     ],
     "tierceDividend": 45765,
     "trioDividend": 8823,
-    "first4Dividend": 48014
+    "first4Dividend": 48014,
+    "doubleTrioDividend": 88151,
+    "doubleTrioLegs": [
+      1,
+      2
+    ]
   },
   {
     "id": "2025-03-30-ST-2",
@@ -394,7 +399,12 @@
     ],
     "tierceDividend": 288,
     "trioDividend": 141,
-    "first4Dividend": 192
+    "first4Dividend": 192,
+    "doubleTrioDividend": 88151,
+    "doubleTrioLegs": [
+      1,
+      2
+    ]
   },
   {
     "id": "2025-03-30-ST-3",
@@ -648,7 +658,12 @@
     ],
     "tierceDividend": 3178,
     "trioDividend": 460,
-    "first4Dividend": 345
+    "first4Dividend": 345,
+    "doubleTrioDividend": 10446,
+    "doubleTrioLegs": [
+      3,
+      4
+    ]
   },
   {
     "id": "2025-03-30-ST-4",
@@ -902,7 +917,18 @@
     ],
     "tierceDividend": 689,
     "trioDividend": 105,
-    "first4Dividend": 830
+    "first4Dividend": 830,
+    "doubleTrioDividend": 10446,
+    "doubleTrioLegs": [
+      3,
+      4
+    ],
+    "tripleTrioDividend": 1505833,
+    "tripleTrioLegs": [
+      4,
+      5,
+      6
+    ]
   },
   {
     "id": "2025-03-30-ST-5",
@@ -1125,7 +1151,18 @@
     ],
     "tierceDividend": 26981,
     "trioDividend": 3767,
-    "first4Dividend": 9560
+    "first4Dividend": 9560,
+    "doubleTrioDividend": 192654,
+    "doubleTrioLegs": [
+      5,
+      6
+    ],
+    "tripleTrioDividend": 1505833,
+    "tripleTrioLegs": [
+      4,
+      5,
+      6
+    ]
   },
   {
     "id": "2025-03-30-ST-6",
@@ -1331,7 +1368,18 @@
     ],
     "tierceDividend": 821,
     "trioDividend": 233,
-    "first4Dividend": 1031
+    "first4Dividend": 1031,
+    "doubleTrioDividend": 192654,
+    "doubleTrioLegs": [
+      5,
+      6
+    ],
+    "tripleTrioDividend": 1505833,
+    "tripleTrioLegs": [
+      4,
+      5,
+      6
+    ]
   },
   {
     "id": "2025-03-30-ST-7",
@@ -1473,7 +1521,12 @@
     ],
     "tierceDividend": 39,
     "trioDividend": 28,
-    "first4Dividend": 107
+    "first4Dividend": 107,
+    "doubleTrioDividend": 4849,
+    "doubleTrioLegs": [
+      7,
+      8
+    ]
   },
   {
     "id": "2025-03-30-ST-8",
@@ -1727,7 +1780,12 @@
     ],
     "tierceDividend": 2304,
     "trioDividend": 670,
-    "first4Dividend": 1452
+    "first4Dividend": 1452,
+    "doubleTrioDividend": 4849,
+    "doubleTrioLegs": [
+      7,
+      8
+    ]
   },
   {
     "id": "2025-03-30-ST-9",
@@ -2156,6 +2214,11 @@
     ],
     "tierceDividend": 453,
     "trioDividend": 115,
-    "first4Dividend": 204
+    "first4Dividend": 204,
+    "doubleTrioDividend": 32681,
+    "doubleTrioLegs": [
+      10,
+      10
+    ]
   }
 ]

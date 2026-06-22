@@ -251,7 +251,12 @@
     ],
     "tierceDividend": 1288,
     "trioDividend": 382,
-    "first4Dividend": 712
+    "first4Dividend": 712,
+    "doubleTrioDividend": 311188,
+    "doubleTrioLegs": [
+      1,
+      2
+    ]
   },
   {
     "id": "2025-03-02-ST-2",
@@ -505,7 +510,12 @@
     ],
     "tierceDividend": 28775,
     "trioDividend": 4550,
-    "first4Dividend": 14839
+    "first4Dividend": 14839,
+    "doubleTrioDividend": 311188,
+    "doubleTrioLegs": [
+      1,
+      2
+    ]
   },
   {
     "id": "2025-03-02-ST-3",
@@ -711,7 +721,12 @@
     ],
     "tierceDividend": 3114,
     "trioDividend": 416,
-    "first4Dividend": 164
+    "first4Dividend": 164,
+    "doubleTrioDividend": 33681,
+    "doubleTrioLegs": [
+      3,
+      4
+    ]
   },
   {
     "id": "2025-03-02-ST-4",
@@ -965,7 +980,12 @@
     ],
     "tierceDividend": 2321,
     "trioDividend": 572,
-    "first4Dividend": 1952
+    "first4Dividend": 1952,
+    "doubleTrioDividend": 33681,
+    "doubleTrioLegs": [
+      3,
+      4
+    ]
   },
   {
     "id": "2025-03-02-ST-5",
@@ -1219,7 +1239,12 @@
     ],
     "tierceDividend": 8128,
     "trioDividend": 3494,
-    "first4Dividend": 3193
+    "first4Dividend": 3193,
+    "doubleTrioDividend": 961520,
+    "doubleTrioLegs": [
+      5,
+      6
+    ]
   },
   {
     "id": "2025-03-02-ST-6",
@@ -1473,7 +1498,12 @@
     ],
     "tierceDividend": 17229,
     "trioDividend": 2187,
-    "first4Dividend": 6733
+    "first4Dividend": 6733,
+    "doubleTrioDividend": 961520,
+    "doubleTrioLegs": [
+      5,
+      6
+    ]
   },
   {
     "id": "2025-03-02-ST-7",
@@ -1727,7 +1757,12 @@
     ],
     "tierceDividend": 6522,
     "trioDividend": 1316,
-    "first4Dividend": 1347
+    "first4Dividend": 1347,
+    "doubleTrioDividend": 87630,
+    "doubleTrioLegs": [
+      7,
+      8
+    ]
   },
   {
     "id": "2025-03-02-ST-8",
@@ -1933,7 +1968,12 @@
     ],
     "tierceDividend": 2667,
     "trioDividend": 387,
-    "first4Dividend": 1655
+    "first4Dividend": 1655,
+    "doubleTrioDividend": 87630,
+    "doubleTrioLegs": [
+      7,
+      8
+    ]
   },
   {
     "id": "2025-03-02-ST-9",

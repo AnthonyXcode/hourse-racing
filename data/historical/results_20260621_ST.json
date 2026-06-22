@@ -505,7 +505,12 @@
     ],
     "tierceDividend": 2262,
     "trioDividend": 564,
-    "first4Dividend": 919
+    "first4Dividend": 919,
+    "doubleTrioDividend": 24161,
+    "doubleTrioLegs": [
+      2,
+      3
+    ]
   },
   {
     "id": "2026-06-21-ST-3",
@@ -759,7 +764,12 @@
     ],
     "tierceDividend": 1056,
     "trioDividend": 253,
-    "first4Dividend": 462
+    "first4Dividend": 462,
+    "doubleTrioDividend": 24161,
+    "doubleTrioLegs": [
+      2,
+      3
+    ]
   },
   {
     "id": "2026-06-21-ST-4",
@@ -1013,7 +1023,12 @@
     ],
     "tierceDividend": 451,
     "trioDividend": 166,
-    "first4Dividend": 262
+    "first4Dividend": 262,
+    "doubleTrioDividend": 2552,
+    "doubleTrioLegs": [
+      4,
+      6
+    ]
   },
   {
     "id": "2026-06-21-ST-5",
@@ -1505,7 +1520,12 @@
     ],
     "tierceDividend": 9808,
     "trioDividend": 3146,
-    "first4Dividend": 13013
+    "first4Dividend": 13013,
+    "doubleTrioDividend": 2552,
+    "doubleTrioLegs": [
+      4,
+      6
+    ]
   },
   {
     "id": "2026-06-21-ST-7",
@@ -1934,7 +1954,12 @@
     ],
     "tierceDividend": 48708,
     "trioDividend": 10297,
-    "first4Dividend": 22598
+    "first4Dividend": 22598,
+    "doubleTrioDividend": 867482,
+    "doubleTrioLegs": [
+      8,
+      9
+    ]
   },
   {
     "id": "2026-06-21-ST-9",
@@ -2139,7 +2164,12 @@
     ],
     "tierceDividend": 7899,
     "trioDividend": 1318,
-    "first4Dividend": 2753
+    "first4Dividend": 2753,
+    "doubleTrioDividend": 867482,
+    "doubleTrioLegs": [
+      8,
+      9
+    ]
   },
   {
     "id": "2026-06-21-ST-10",
@@ -2393,7 +2423,12 @@
     ],
     "tierceDividend": 22685,
     "trioDividend": 2394,
-    "first4Dividend": 554
+    "first4Dividend": 554,
+    "doubleTrioDividend": 3517135,
+    "doubleTrioLegs": [
+      10,
+      11
+    ]
   },
   {
     "id": "2026-06-21-ST-11",
@@ -2647,6 +2682,11 @@
     ],
     "tierceDividend": 33169,
     "trioDividend": 5872,
-    "first4Dividend": 37920
+    "first4Dividend": 37920,
+    "doubleTrioDividend": 3517135,
+    "doubleTrioLegs": [
+      10,
+      11
+    ]
   }
 ]

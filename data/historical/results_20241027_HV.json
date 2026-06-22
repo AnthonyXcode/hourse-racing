@@ -219,7 +219,12 @@
     ],
     "tierceDividend": 6322,
     "trioDividend": 957,
-    "first4Dividend": 1002
+    "first4Dividend": 1002,
+    "doubleTrioDividend": 29058,
+    "doubleTrioLegs": [
+      1,
+      2
+    ]
   },
   {
     "id": "2024-10-27-HV-2",
@@ -393,7 +398,12 @@
     ],
     "tierceDividend": 997,
     "trioDividend": 230,
-    "first4Dividend": 81
+    "first4Dividend": 81,
+    "doubleTrioDividend": 29058,
+    "doubleTrioLegs": [
+      1,
+      2
+    ]
   },
   {
     "id": "2024-10-27-HV-3",
@@ -615,7 +625,12 @@
     ],
     "tierceDividend": 13331,
     "trioDividend": 3255,
-    "first4Dividend": 19518
+    "first4Dividend": 19518,
+    "doubleTrioDividend": 178509,
+    "doubleTrioLegs": [
+      3,
+      4
+    ]
   },
   {
     "id": "2024-10-27-HV-4",
@@ -837,7 +852,12 @@
     ],
     "tierceDividend": 2364,
     "trioDividend": 623,
-    "first4Dividend": 1051
+    "first4Dividend": 1051,
+    "doubleTrioDividend": 178509,
+    "doubleTrioLegs": [
+      3,
+      4
+    ]
   },
   {
     "id": "2024-10-27-HV-5",
@@ -1471,7 +1491,12 @@
     ],
     "tierceDividend": 25545,
     "trioDividend": 6493,
-    "first4Dividend": 15231
+    "first4Dividend": 15231,
+    "doubleTrioDividend": 596046,
+    "doubleTrioLegs": [
+      7,
+      8
+    ]
   },
   {
     "id": "2024-10-27-HV-8",
@@ -1693,7 +1718,12 @@
     ],
     "tierceDividend": 12863,
     "trioDividend": 1434,
-    "first4Dividend": 720
+    "first4Dividend": 720,
+    "doubleTrioDividend": 596046,
+    "doubleTrioLegs": [
+      7,
+      8
+    ]
   },
   {
     "id": "2024-10-27-HV-9",
@@ -1915,7 +1945,12 @@
     ],
     "tierceDividend": 6373,
     "trioDividend": 1369,
-    "first4Dividend": 985
+    "first4Dividend": 985,
+    "doubleTrioDividend": 77369,
+    "doubleTrioLegs": [
+      9,
+      10
+    ]
   },
   {
     "id": "2024-10-27-HV-10",
@@ -2137,6 +2172,11 @@
     ],
     "tierceDividend": 2151,
     "trioDividend": 468,
-    "first4Dividend": 2084
+    "first4Dividend": 2084,
+    "doubleTrioDividend": 77369,
+    "doubleTrioLegs": [
+      9,
+      10
+    ]
   }
 ]
