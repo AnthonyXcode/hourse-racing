@@ -493,7 +493,7 @@ export class SpeedRatingCalculator {
     figures: SpeedFigure[],
     lastN: number = 3,
     alpha: number = 0.5,
-    peakPenalty: number = 0.4,
+    peakPenalty: number = 0,
     medianWindow: number = 6
   ): number {
     if (figures.length === 0) return this.baseRating;

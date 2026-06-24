@@ -218,8 +218,15 @@ function printFinishTimeProjection(
   const Z90 = 1.2816; // P10/P90 normal quantile
   const SEC_PER_LENGTH = 1 / 6; // ≈0.167s per length (HKJC convention)
 
-  // Field mean speed figure → shrink each horse toward it (regression to mean).
-  const active = race.entries.filter((e) => !e.isScratched && analysisMap.has(e.horse.code));
+  // Debutants (no past runs) have no speed evidence — their averageSpeedRating
+  // falls back to baseRating (100), which is usually above the field and would
+  // wrongly project them fastest. Exclude them from the projection and list
+  // them separately as "debut".
+  const activeAll = race.entries.filter((e) => !e.isScratched && analysisMap.has(e.horse.code));
+  const active = activeAll.filter((e) => e.horse.pastPerformances.length > 0);
+  const debuts = activeAll.filter((e) => e.horse.pastPerformances.length === 0);
+
+  // Field mean speed figure (formed horses only) → shrink each horse toward it.
   const ratings = active.map((e) => analysisMap.get(e.horse.code)!.averageSpeedRating);
   const fieldMean = ratings.length ? ratings.reduce((s, r) => s + r, 0) / ratings.length : 100;
 
@@ -264,6 +271,10 @@ function printFinishTimeProjection(
       `  ${r.num.toString().padStart(2)} ${r.name.substring(0, 16).padEnd(16)} ` +
         `${fmtTime(p10).padStart(7)} ${fmtTime(r.mean).padStart(7)} ${fmtTime(p90).padStart(7)}   ${marginStr}`
     );
+  }
+  if (debuts.length > 0) {
+    const list = debuts.map((e) => `#${e.horseNumber} ${e.horse.name}`).join(", ");
+    console.log(`\n  Debut (no form, excluded from projection): ${list}`);
   }
   console.log(`\n  Projected winning time: ~${fmtTime(fastest)} (#${rows[0]!.num} ${rows[0]!.name}). Times from avg speed figure + par/going/weight; SD from ±${speedStd}pt figure spread.`);
 }
