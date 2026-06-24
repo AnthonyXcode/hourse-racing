@@ -41,7 +41,8 @@
 | **26** | **13 Jun** | **ST** | **Mixed** | **Yielding** | **11** | **34.0%** | **69.9%** | **7/11** | **63.6%** | **✅✅✅❌❌❌✅✅❌✅✅** | **4 (R1–R4)** |
 | **25** | **10 Jun** | **HV** | **Mixed** | **Yielding** | **9** | **30.9%** | **62.5%** | **4/9** | **44.4%** | **❌❌✅✅❌✅❌❌✅** | **4 (R1–R4)** |
 | **24** | **07 Jun** | **ST** | **Mixed** | **Yielding** | **11** | **38.2%** | **74.4%** | **6/11** | **54.5%** | **✅✅✅✅❌❌✅✅❌❌❌** | **4 (R1–R4)** |
-| **27** | **21 Jun** | **ST** | **Turf** | **Good** | **11** | **37.1%** | **70.7%** | **4/11** | **36.4%** | **❌✅❌✅❌✅❌❌✅❌❌** | **1** |
+| 27 | 21 Jun | ST | Turf | Good | 11 | 37.1% | 70.7% | 4/11 | 36.4% | ❌✅❌✅❌✅❌❌✅❌❌ | 1 |
+| **28** | **24 Jun** | **HV** | **Turf** | **Good** | **9** | **28.5%** | **59.1%** | **6/9** | **66.7%** | **❌✅✅✅✅❌❌✅✅** | **4 (R2-R5)** |
 
 \*Meeting 8 **R1** (6 runners): MC #1 **#6** ran **3rd** but HKJC Place pool pays **two** places only → **$0** dividend; counts as **❌** for streaks and all-ups (same dividend logic as other meetings).
 
@@ -1577,3 +1578,23 @@ Place dividends (MC #1 when placed): R1=$14.50, R3=$12.00, R5=$10.50, R8=$18.00
 **Placed:** 4/11 (36.4%) | **Pattern:** ❌✅❌✅❌✅❌❌✅❌❌ | **Max streak:** 1
 
 **Trio card note (R1–R11):** Strategy A **2/11** (+$2,412, ROI +268%); Strategy B report **2/11** (+$244); Strategy B MC top-6 **2/11** (+$2,212). R6 Trio **$3,146** (banker #3 COME FAST won) carried the meeting; R8 **$10,297** upset (#10 @64). Banker top-3 only 36.4% — poor banker day rescued by R6 dividend size.
+
+## Meeting 28: Happy Valley | 24 Jun 2026 (9 races)
+
+**MC #1** = raw MC Win% from trio_strategy_20260624_HV_R*.md (10,000 iterations, form=all). **Results** from data/historical/results_20260624_HV.json. Place $ = HKJC place dividend for that finisher.
+
+| Race | Class | Dist (m) | MC #1 | MC Win% | MC Place% | Placed? | Place $ (if placed) |
+|------|-------|----------|-------|---------|-----------|---------|---------------------|
+| R1 | Class 5 | 2200 | #2 HAILTOTHEVICTORS | 27.1% | 61.9% | ❌ (8th) | — |
+| R2 | Class 5 | 1650 | #11 ORIENTAL | 18.4% | 43.9% | ✅ 2nd | 23.5 |
+| R3 | Class 4 | 1650 | #5 FLYING FORTUNE | 18.5% | 45.6% | ✅ 1st | 15.5 |
+| R4 | Class 4 | 1650 | #5 VIVACIOUS WIN | 49.5% | 80.4% | ✅ 3rd | 13 |
+| R5 | Class 4 | 1200 | #4 GAMEPLAYER ELITE | 19.5% | 47.7% | ✅ 2nd | 16 |
+| R6 | Class 4 | 1200 | #1 SPIRIT OF PEACE | 24.6% | 55.5% | ❌ (6th) | — |
+| R7 | Class 3 | 1000 | #4 TOGETHER WE VALUE | 23.6% | 54.9% | ❌ (6th) | — |
+| R8 | Class 3 | 1200 | #7 THE HEIR | 42.0% | 73.5% | ✅ 3rd (DH) | 10.5 |
+| R9 | Class 3 | 1650 | #5 ROMANTIC GLADIATOR | 32.9% | 68.9% | ✅ 2nd | 13.5 |
+
+**Placed:** 6/9 (66.7%) | **Pattern:** ❌✅✅✅✅❌❌✅✅ | **Max streak:** 4 (R2-R5)
+
+**Trio card note (R1–R9):** Strategy A **1/9** (-$703, ROI -75.6%); Strategy B report **1/9** (-$953, ROI -80.8%); Strategy B MC top-6 **2/9** (+$1,250, ROI +138.9%). MC-top-6 carried by R2 #11 banker (placed 2nd) catching the $1,923 trio that A's #6 swap and report-B's odds-swap both lost. MC #1 banker placed 6/9 — good day for the banker, bad day for pool construction. R8 #7 THE HEIR (MC 42% vs market 8.4) dead-heated 3rd. Double Trio (R2+R3) paid **$373,658** — not bet.

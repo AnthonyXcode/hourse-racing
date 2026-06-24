@@ -89,7 +89,17 @@
       "Bash(awk '/^# General Summary/{f=1} f' data/reviews/trio_projection_box_norestrict.md)",
       "Bash(node -e 'const d=require\\(\"./data/historical/results_20260613_ST.json\"\\);d.forEach\\(r=>{if\\(r.doubleTrioDividend!==undefined||r.tripleTrioDividend!==undefined\\)console.log\\(\"R\"+r.raceNumber,\"DT\",r.doubleTrioDividend,r.doubleTrioLegs,\"| TT\",r.tripleTrioDividend,r.tripleTrioLegs\\)}\\)')",
       "Bash(git add *)",
-      "Bash(git status *)"
+      "Bash(git status *)",
+      "Bash(PLAYWRIGHT_BROWSERS_PATH=0 npx tsx tools/tripletrio-review.ts --runs=5000)",
+      "Bash(PLAYWRIGHT_BROWSERS_PATH=0 npx tsx tools/doubletrio-review.ts --runs=5000)",
+      "Bash(awk '/by Month/{f=1} f' data/reviews/doubletrio_review.md)",
+      "Bash(PLAYWRIGHT_BROWSERS_PATH=0 npx tsx tools/analyze-race.ts --date 2026-06-24 --venue \"Happy Valley\" --race 1 --form-data all --bankroll 1000 --kelly 0.35 --min-edge 5)",
+      "Bash(awk '/Win Probability Rankings/,/Avg differentiation/' /tmp/hv_r1.txt)",
+      "Bash(awk '/FINISH-TIME PROJECTION/,/Projected winning/' /tmp/hv_r1.txt)",
+      "Bash(awk '/Top Quinella/,/Jockey\\\\/Trainer/' /tmp/hv_r1.txt)",
+      "Bash(PLAYWRIGHT_BROWSERS_PATH=0 npx tsx tools/trio-mctime-review.ts --runs=5000)",
+      "Bash(awk '/Leg-count/{f=1} f' data/reviews/trio_mctime_review.md)",
+      "Bash(awk '/Form effect/{f=1} /Race-by-Race/{f=0} f' data/reviews/trio_hv_mc6.md)"
     ]
   }
 }

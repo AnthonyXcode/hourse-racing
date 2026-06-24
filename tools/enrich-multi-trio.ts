@@ -11,7 +11,8 @@
  *      --all [--delay=350]               (every results file; polite delay ms)
  *      --overwrite                       (re-enrich even if already present)
  */
-import { readdir, readFile, writeFile, realpath } from "fs/promises";
+import { readdir, readFile, writeFile } from "fs/promises";
+import { realpathSync } from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 
@@ -94,7 +95,10 @@ async function main() {
 }
 
 // Run only when invoked directly (not when imported by scrape-meeting).
-const entry = process.argv[1] ? await realpath(process.argv[1]).catch(() => process.argv[1]) : "";
-if (entry && entry === fileURLToPath(import.meta.url)) {
+function isEntry(): boolean {
+  if (!process.argv[1]) return false;
+  try { return realpathSync(process.argv[1]) === fileURLToPath(import.meta.url); } catch { return false; }
+}
+if (isEntry()) {
   main().catch((e) => { console.error(e); process.exit(1); });
 }
