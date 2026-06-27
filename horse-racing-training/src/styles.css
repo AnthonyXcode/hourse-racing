@@ -18,6 +18,33 @@ header { display: flex; align-items: center; gap: 16px; border-bottom: 3px solid
 header h1 { color: var(--hkjc-red); font-size: 22px; margin: 0; flex: 0 0 auto; }
 header select { margin-left: auto; padding: 8px 10px; font-size: 14px; border: 1px solid var(--line); border-radius: 4px; background: #fff; }
 
+header .tabs { display: flex; gap: 4px; }
+header .tabs button { padding: 6px 16px; border: 1px solid var(--line); background: #fff; cursor: pointer; border-radius: 4px; font-weight: 600; }
+header .tabs button.active { background: var(--hkjc-red); color: #fff; border-color: var(--hkjc-red); }
+
+.history { margin-top: 14px; }
+.hist-summary { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; background: #fff; border: 1px solid var(--line); border-radius: 6px; padding: 14px 16px; margin-bottom: 14px; }
+.hist-summary .stat { display: flex; flex-direction: column; font-size: 12px; color: #777; }
+.hist-summary .stat strong { font-size: 18px; color: var(--hkjc-dark); }
+.hist-summary .stat.big strong { font-size: 22px; }
+.hist-summary .pos strong { color: var(--hit); }
+.hist-summary .neg strong { color: var(--miss); }
+.hist-summary .clear { margin-left: auto; padding: 7px 14px; border: 1px solid var(--miss); background: #fff; color: var(--miss); border-radius: 4px; cursor: pointer; }
+.empty { color: #888; padding: 30px; text-align: center; }
+
+table.histtable { width: 100%; border-collapse: collapse; font-size: 13px; background: #fff; border: 1px solid var(--line); }
+.histtable th { background: #ececec; text-align: left; padding: 8px; border-bottom: 2px solid var(--hkjc-red); }
+.histtable td { padding: 7px 8px; border-bottom: 1px solid #eee; }
+.histtable td.r { text-align: right; font-variant-numeric: tabular-nums; }
+.histtable td.ts { color: #888; white-space: nowrap; }
+.histtable td.picks { color: #444; font-size: 12px; }
+.histtable td.hit { color: var(--hit); font-weight: 700; }
+.histtable td.miss { color: var(--miss); font-weight: 700; }
+.histtable td.pos { color: var(--hit); font-weight: 700; }
+.histtable td.neg { color: var(--miss); font-weight: 700; }
+.histtable .del { border: none; background: none; color: #bbb; cursor: pointer; font-size: 14px; }
+.histtable .del:hover { color: var(--miss); }
+
 .error { background: #fdecec; color: var(--hkjc-red); border: 1px solid var(--miss); padding: 8px 12px; border-radius: 4px; margin: 10px 0; }
 .warn { color: #8a6d00; font-size: 13px; }
 .loading { padding: 30px; text-align: center; color: #888; }

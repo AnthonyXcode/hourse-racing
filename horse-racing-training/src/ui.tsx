@@ -1,5 +1,6 @@
 // Presentational components for the bet trainer.
-import type { RaceCard, RaceLeg, SettleResult, BetTypeId } from "../shared/types";
+import type { RaceCard, RaceLeg, SettleResult, BetTypeId, HistoryEntry } from "../shared/types";
+import { fmtDate } from "./api";
 
 export const HORSE_ROLE = { none: 0, leg: 1, banker: 2 } as const;
 export type Role = keyof typeof HORSE_ROLE;
@@ -192,6 +193,77 @@ export function ResultModal({ result, onClose }: { result: SettleResult; onClose
         </table>
         <button onClick={onClose}>Close</button>
       </div>
+    </div>
+  );
+}
+
+// ---- History page ----
+const money = (n: number) => `$${n.toLocaleString()}`;
+
+export function HistoryPage({
+  entries,
+  onDelete,
+  onClear,
+}: {
+  entries: HistoryEntry[];
+  onDelete: (id: string) => void;
+  onClear: () => void;
+}) {
+  const totalCost = entries.reduce((s, e) => s + e.cost, 0);
+  // Treat unknown payouts (missing dividend) as 0 for the running total.
+  const totalReturn = entries.reduce((s, e) => s + (e.payout ?? 0), 0);
+  const net = totalReturn - totalCost;
+  const hits = entries.filter((e) => e.hit).length;
+  const roi = totalCost ? (net / totalCost) * 100 : 0;
+
+  return (
+    <div className="history">
+      <div className="hist-summary">
+        <div className="stat"><span>Bets</span><strong>{entries.length}</strong></div>
+        <div className="stat"><span>Hits</span><strong>{hits}{entries.length ? ` (${((100 * hits) / entries.length).toFixed(0)}%)` : ""}</strong></div>
+        <div className="stat"><span>Total staked</span><strong>{money(totalCost)}</strong></div>
+        <div className="stat"><span>Total return</span><strong>{money(totalReturn)}</strong></div>
+        <div className={`stat big ${net >= 0 ? "pos" : "neg"}`}>
+          <span>Net P&L</span><strong>{net >= 0 ? "+" : ""}{money(net)}</strong>
+        </div>
+        <div className={`stat ${roi >= 0 ? "pos" : "neg"}`}>
+          <span>ROI</span><strong>{roi >= 0 ? "+" : ""}{roi.toFixed(1)}%</strong>
+        </div>
+        {entries.length > 0 && (
+          <button className="clear" onClick={onClear}>Clear all</button>
+        )}
+      </div>
+
+      {entries.length === 0 ? (
+        <p className="empty">No bets yet. Place one from the Bet tab.</p>
+      ) : (
+        <table className="histtable">
+          <thead>
+            <tr>
+              <th>Placed</th><th>Meeting</th><th>Bet</th><th>Picks</th>
+              <th>Combos</th><th>Cost</th><th>Result</th><th>Payout</th><th>Net</th><th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {entries.map((e) => (
+              <tr key={e.id} className={e.hit ? "win" : "lose"}>
+                <td className="ts">{new Date(e.ts).toLocaleString()}</td>
+                <td>{fmtDate(e.date)} {e.venue}</td>
+                <td>{e.betLabel}</td>
+                <td className="picks">{e.picks}</td>
+                <td className="r">{e.combos}</td>
+                <td className="r">{money(e.cost)}</td>
+                <td className={e.hit ? "hit" : "miss"}>{e.hit ? "HIT" : "MISS"}</td>
+                <td className="r">{e.payout === null ? "?" : money(e.payout)}</td>
+                <td className={`r ${(e.net ?? 0) >= 0 ? "pos" : "neg"}`}>
+                  {e.net === null ? "—" : `${e.net >= 0 ? "+" : ""}${money(e.net)}`}
+                </td>
+                <td><button className="del" onClick={() => onDelete(e.id)}>✕</button></td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
     </div>
   );
 }

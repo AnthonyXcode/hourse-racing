@@ -8,8 +8,9 @@ import type {
   BetTypeId,
   BetSelection,
   SettleResult,
+  HistoryEntry,
 } from "../shared/types";
-import { RaceCardTable, BetTypePicker, CostBar, ResultModal, legSummary, type Role } from "./ui";
+import { RaceCardTable, BetTypePicker, CostBar, ResultModal, HistoryPage, legSummary, type Role } from "./ui";
 
 interface Picks {
   bankers: number[];
@@ -28,11 +29,18 @@ export default function App() {
   const [editRace, setEditRace] = useState(1);
   const [result, setResult] = useState<SettleResult | null>(null);
   const [error, setError] = useState<string>("");
+  const [view, setView] = useState<"bet" | "history">("bet");
+  const [history, setHistory] = useState<HistoryEntry[]>([]);
 
   // Load meeting list once.
   useEffect(() => {
     api.days().then(setDays).catch((e) => setError(String(e)));
   }, []);
+
+  // Refresh history whenever the History tab is opened.
+  useEffect(() => {
+    if (view === "history") api.history().then(setHistory).catch((e) => setError(String(e)));
+  }, [view]);
 
   const [date, venue] = meetingKey ? meetingKey.split("_") : ["", ""];
 
@@ -125,6 +133,23 @@ export default function App() {
     try {
       const r = await api.settle({ date, venue: venue as MeetingRef["venue"], selection });
       setResult(r);
+      // Record the settled bet to history.
+      const picks = selection.raceLegs.map((l) => `R${l.raceNumber} ${legSummary(l)}`).join("  |  ");
+      const entry: HistoryEntry = {
+        id: `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+        ts: new Date().toISOString(),
+        date,
+        venue: venue as MeetingRef["venue"],
+        betType,
+        betLabel: BET_TYPES[betType].label,
+        picks,
+        combos,
+        cost: totalCost,
+        hit: r.hit,
+        payout: r.payout,
+        net: r.net,
+      };
+      api.addHistory(entry).catch((e) => setError(String(e)));
     } catch (e) {
       setError(String(e));
     }
@@ -136,19 +161,33 @@ export default function App() {
     <div className="app">
       <header>
         <h1>HKJC Bet Trainer</h1>
-        <select value={meetingKey} onChange={(e) => setMeetingKey(e.target.value)}>
-          <option value="">Select a racing day…</option>
-          {days.map((m) => (
-            <option key={`${m.date}_${m.venue}`} value={`${m.date}_${m.venue}`}>
-              {fmtDate(m.date)} · {m.venue} · {m.races.length} races{m.hasResults ? "" : " (no results)"}
-            </option>
-          ))}
-        </select>
+        <nav className="tabs">
+          <button className={view === "bet" ? "active" : ""} onClick={() => setView("bet")}>Bet</button>
+          <button className={view === "history" ? "active" : ""} onClick={() => setView("history")}>History</button>
+        </nav>
+        {view === "bet" && (
+          <select value={meetingKey} onChange={(e) => setMeetingKey(e.target.value)}>
+            <option value="">Select a racing day…</option>
+            {days.map((m) => (
+              <option key={`${m.date}_${m.venue}`} value={`${m.date}_${m.venue}`}>
+                {fmtDate(m.date)} · {m.venue} · {m.races.length} races{m.hasResults ? "" : " (no results)"}
+              </option>
+            ))}
+          </select>
+        )}
       </header>
 
       {error && <div className="error">{error}</div>}
 
-      {meeting && (
+      {view === "history" && (
+        <HistoryPage
+          entries={history}
+          onDelete={(id) => api.deleteHistory(id).then(setHistory).catch((e) => setError(String(e)))}
+          onClear={() => api.clearHistory().then(setHistory).catch((e) => setError(String(e)))}
+        />
+      )}
+
+      {view === "bet" && meeting && (
         <>
           {/* Race tabs (browse + single-race selection) */}
           <nav className="racetabs">

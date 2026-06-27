@@ -4,10 +4,21 @@ import type {
   RaceCard,
   SettleRequest,
   SettleResult,
+  HistoryEntry,
 } from "../shared/types";
 
 async function get<T>(url: string): Promise<T> {
   const r = await fetch(url);
+  if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || r.statusText);
+  return r.json();
+}
+
+async function send<T>(method: string, url: string, body?: unknown): Promise<T> {
+  const r = await fetch(url, {
+    method,
+    headers: body ? { "Content-Type": "application/json" } : undefined,
+    body: body ? JSON.stringify(body) : undefined,
+  });
   if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || r.statusText);
   return r.json();
 }
@@ -17,15 +28,11 @@ export const api = {
   meeting: (date: string, venue: string) => get<MeetingDetail>(`/api/meeting/${date}/${venue}`),
   race: (date: string, venue: string, rn: number) =>
     get<RaceCard>(`/api/race/${date}/${venue}/${rn}`),
-  settle: async (req: SettleRequest): Promise<SettleResult> => {
-    const r = await fetch("/api/settle", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(req),
-    });
-    if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || r.statusText);
-    return r.json();
-  },
+  settle: (req: SettleRequest) => send<SettleResult>("POST", "/api/settle", req),
+  history: () => get<HistoryEntry[]>("/api/history"),
+  addHistory: (e: HistoryEntry) => send<HistoryEntry[]>("POST", "/api/history", e),
+  deleteHistory: (id: string) => send<HistoryEntry[]>("DELETE", `/api/history/${id}`),
+  clearHistory: () => send<HistoryEntry[]>("DELETE", "/api/history"),
 };
 
 /** "20260627" → "27 Jun 2026" */

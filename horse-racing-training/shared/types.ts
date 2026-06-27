@@ -143,3 +143,19 @@ export interface SettleRequest {
   venue: Venue;
   selection: BetSelection;
 }
+
+/** A persisted, already-settled bet. */
+export interface HistoryEntry {
+  id: string;
+  ts: string; // ISO timestamp placed
+  date: string; // meeting date YYYYMMDD
+  venue: Venue;
+  betType: BetTypeId;
+  betLabel: string; // "Trio", "Double Trio", ...
+  picks: string; // human-readable selection, e.g. "R11 膽6 腳2,4,7,5,10"
+  combos: number;
+  cost: number;
+  hit: boolean;
+  payout: number | null;
+  net: number | null;
+}

@@ -1,16 +1,27 @@
 import { Router } from "express";
 import { getManifest, cardPath, resultPath, readJson } from "./dataIndex";
 import { settle } from "../shared/betEngine/index";
+import { readHistory, addEntry, deleteEntry, clearHistory } from "./history";
 import type {
   RaceCard,
   RaceResult,
   MeetingDetail,
   SettleRequest,
   SettleResult,
+  HistoryEntry,
   Venue,
 } from "../shared/types";
 
 export const api = Router();
+
+// ---- Pick history ----
+api.get("/history", (_req, res) => res.json(readHistory()));
+api.post("/history", (req, res) => res.json(addEntry(req.body as HistoryEntry)));
+api.delete("/history/:id", (req, res) => res.json(deleteEntry(req.params.id)));
+api.delete("/history", (_req, res) => {
+  clearHistory();
+  res.json([]);
+});
 
 /** GET /api/days → all meetings with saved cards, newest first. */
 api.get("/days", (_req, res) => {
