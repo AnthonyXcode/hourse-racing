@@ -43,14 +43,26 @@ api.get("/meeting/:date/:venue", (req, res) => {
   res.json(detail);
 });
 
-/** GET /api/race/:date/:venue/:rn → the race card (flattened DTO). */
+/** GET /api/race/:date/:venue/:rn → the race card (flattened DTO).
+ *  Win odds come from the meeting RESULTS (actual starting price) when available,
+ *  falling back to the race card's forecast odds. */
 api.get("/race/:date/:venue/:rn", (req, res) => {
   const { date, venue, rn } = req.params;
   const raw = readJson<{ race: Omit<RaceCard, "winOdds">; winOdds: Record<string, number> }>(
     cardPath(date!, venue!, Number(rn))
   );
   if (!raw) return res.status(404).json({ error: "race card not found" });
-  const card: RaceCard = { ...raw.race, winOdds: raw.winOdds ?? {} };
+
+  const winOdds: Record<string, number> = { ...(raw.winOdds ?? {}) };
+  const results = readJson<RaceResult[]>(resultPath(date!, venue!));
+  const finish = results?.find((r) => r.raceNumber === Number(rn))?.finishOrder;
+  if (finish) {
+    for (const f of finish) {
+      if (typeof f.winOdds === "number") winOdds[String(f.horseNumber)] = f.winOdds;
+    }
+  }
+
+  const card: RaceCard = { ...raw.race, winOdds };
   res.json(card);
 });
 
