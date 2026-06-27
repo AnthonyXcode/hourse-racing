@@ -185,6 +185,7 @@ export function ResultModal({ result, onClose }: { result: SettleResult; onClose
 
         <table className="settle">
           <tbody>
+            <tr><td>Pool dividend</td><td>{result.poolDividendText}</td></tr>
             <tr><td>Combinations won</td><td>{result.combosWon} / {result.combos}</td></tr>
             <tr><td>Cost</td><td>${result.cost.toLocaleString()}</td></tr>
             <tr><td>Payout</td><td>{payoutStr}</td></tr>
@@ -241,7 +242,7 @@ export function HistoryPage({
           <thead>
             <tr>
               <th>Placed</th><th>Meeting</th><th>Bet</th><th>Picks</th>
-              <th>Combos</th><th>Cost</th><th>Result</th><th>Payout</th><th>Net</th><th></th>
+              <th>Combos</th><th>Cost</th><th>Result</th><th>Dividend</th><th>Payout</th><th>Net</th><th></th>
             </tr>
           </thead>
           <tbody>
@@ -254,6 +255,7 @@ export function HistoryPage({
                 <td className="r">{e.combos}</td>
                 <td className="r">{money(e.cost)}</td>
                 <td className={e.hit ? "hit" : "miss"}>{e.hit ? "HIT" : "MISS"}</td>
+                <td className="r div">{e.poolDividendText}</td>
                 <td className="r">{e.payout === null ? "?" : money(e.payout)}</td>
                 <td className={`r ${(e.net ?? 0) >= 0 ? "pos" : "neg"}`}>
                   {e.net === null ? "—" : `${e.net >= 0 ? "+" : ""}${money(e.net)}`}

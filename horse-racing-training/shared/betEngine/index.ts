@@ -12,6 +12,31 @@ import type {
 import { choose, perm, bankerLegCombos, subsets } from "./combinatorics";
 import { coverCount, placedHorses, positionOf } from "./settle";
 
+const fmt = (n: number) => `$${n.toLocaleString()}`;
+
+/**
+ * The pool's headline winning dividend (what a correct $10 bet paid), independent
+ * of the user's selection. value is null for multi-value pools (place/qpl); text
+ * always renders something.
+ */
+function headlineDividend(type: BetTypeId, src: RaceResult): { value: number | null; text: string } {
+  const one = (n: number | undefined): { value: number | null; text: string } =>
+    n == null ? { value: null, text: "—" } : { value: n, text: fmt(n) };
+  const many = (a: number[] | undefined): { value: number | null; text: string } =>
+    a && a.length ? { value: null, text: a.map(fmt).join(" / ") } : { value: null, text: "—" };
+  switch (type) {
+    case "win": return one(src.winDividend);
+    case "place": return many(src.placeDividends);
+    case "quinella": return one(src.quinellaDividend);
+    case "qpl": return many(src.quinellaPlaceDividends);
+    case "trio": return one(src.trioDividend);
+    case "tierce": return one(src.tierceDividend);
+    case "first4": return one(src.first4Dividend);
+    case "doubleTrio": return one(src.doubleTrioDividend);
+    case "tripleTrio": return one(src.tripleTrioDividend);
+  }
+}
+
 /** Top finishers of a race for display (ascending position, includes dead-heats). */
 function legResult(res: RaceResult, depth: number, covered: boolean): LegResult {
   const finishers = res.finishOrder
@@ -143,6 +168,8 @@ export function settle(
   // show the placing context).
   const showDepth = sel.type === "first4" ? 4 : 3;
 
+  const head = headlineDividend(sel.type, dividendSource);
+
   const base = (
     hit: boolean,
     combosWon: number,
@@ -158,6 +185,8 @@ export function settle(
     net: hit ? (payout === null ? null : payout - costAmt) : -costAmt,
     detail,
     legResults,
+    poolDividend: head.value,
+    poolDividendText: head.text,
   });
 
   if (combos === 0) return base(false, 0, 0, "Invalid selection (need more horses).", []);

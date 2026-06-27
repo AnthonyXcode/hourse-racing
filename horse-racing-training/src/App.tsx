@@ -148,6 +148,7 @@ export default function App() {
         hit: r.hit,
         payout: r.payout,
         net: r.net,
+        poolDividendText: r.poolDividendText,
       };
       api.addHistory(entry).catch((e) => setError(String(e)));
     } catch (e) {

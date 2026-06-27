@@ -118,6 +118,11 @@ export interface SettleResult {
   detail: string;
   /** per leg-race finish order + cover status (always populated). */
   legResults: LegResult[];
+  /** the pool's actual winning dividend (what a correct $10 bet paid), shown
+   *  whether the user hit or missed. null for multi-value pools (place/qpl) — see text. */
+  poolDividend: number | null;
+  /** display string of the pool dividend, e.g. "$1,653" or "$45.5 / $33.5 / $18.5". */
+  poolDividendText: string;
 }
 
 // ---- API DTOs ----
@@ -158,4 +163,6 @@ export interface HistoryEntry {
   hit: boolean;
   payout: number | null;
   net: number | null;
+  /** the pool's winning dividend (what a correct bet paid), shown even on a miss. */
+  poolDividendText: string;
 }

@@ -206,6 +206,24 @@ describe("quinella place (any 2 of top 3)", () => {
   });
 });
 
+describe("pool dividend shown even on a miss", () => {
+  it("trio miss still reports the pool's trio dividend", () => {
+    const res = result({ finishOrder: fin([[10, 1], [4, 2], [3, 3]]), trioDividend: 1653 });
+    const sel: BetSelection = { type: "trio", raceLegs: [{ raceNumber: 1, bankers: [7], legs: [1, 2] }] };
+    const r = settle(sel, oneRace(res), res);
+    expect(r.hit).toBe(false);
+    expect(r.poolDividend).toBe(1653);
+    expect(r.poolDividendText).toBe("$1,653");
+  });
+  it("place shows all place dividends as text", () => {
+    const res = result({ finishOrder: fin([[5, 1], [6, 2], [7, 3]]), placeDividends: [45.5, 33.5, 18.5] });
+    const sel: BetSelection = { type: "place", raceLegs: [{ raceNumber: 1, bankers: [], legs: [99] }] };
+    const r = settle(sel, oneRace(res), res);
+    expect(r.hit).toBe(false);
+    expect(r.poolDividendText).toBe("$45.5 / $33.5 / $18.5");
+  });
+});
+
 describe("legResults always populated", () => {
   it("double trio returns finish order for BOTH legs on a miss", () => {
     const r2 = result({ raceNumber: 2, finishOrder: fin([[12, 1], [1, 2], [2, 3]]) });
