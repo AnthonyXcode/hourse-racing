@@ -48,6 +48,10 @@ export interface FinishEntry {
   horseName: string;
   horseCode: string;
   winOdds: number;
+  jockeyName?: string;
+  trainerName?: string;
+  draw?: number;
+  finishTime?: number;
 }
 export interface RaceResult {
   raceNumber: number;

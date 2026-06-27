@@ -66,6 +66,27 @@ api.get("/race/:date/:venue/:rn", (req, res) => {
   res.json(card);
 });
 
+/** GET /api/result/:date/:venue/:rn → one race's full result + dividends,
+ *  with the meeting's Double/Triple Trio legs+dividend merged on. */
+api.get("/result/:date/:venue/:rn", (req, res) => {
+  const { date, venue, rn } = req.params;
+  const results = readJson<RaceResult[]>(resultPath(date!, venue!));
+  if (!results) return res.status(404).json({ error: "no results for this meeting yet" });
+  const race = results.find((r) => r.raceNumber === Number(rn));
+  if (!race) return res.status(404).json({ error: "race result not found" });
+
+  const dt = results.find((r) => r.doubleTrioDividend != null);
+  const tt = results.find((r) => r.tripleTrioDividend != null);
+  const merged: RaceResult = {
+    ...race,
+    doubleTrioLegs: dt?.doubleTrioLegs,
+    doubleTrioDividend: dt?.doubleTrioDividend,
+    tripleTrioLegs: tt?.tripleTrioLegs,
+    tripleTrioDividend: tt?.tripleTrioDividend,
+  };
+  res.json(merged);
+});
+
 /** POST /api/settle → grade a bet slip against the meeting results. */
 api.post("/settle", (req, res) => {
   const { date, venue, selection } = req.body as SettleRequest;

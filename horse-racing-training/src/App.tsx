@@ -10,7 +10,8 @@ import type {
   SettleResult,
   HistoryEntry,
 } from "../shared/types";
-import { RaceCardTable, BetTypePicker, CostBar, ResultModal, HistoryPage, legSummary, type Role } from "./ui";
+import { RaceCardTable, BetTypePicker, CostBar, ResultModal, ResultPanel, HistoryPage, legSummary, type Role } from "./ui";
+import type { RaceResult } from "../shared/types";
 
 interface Picks {
   bankers: number[];
@@ -31,6 +32,7 @@ export default function App() {
   const [error, setError] = useState<string>("");
   const [view, setView] = useState<"bet" | "history">("bet");
   const [history, setHistory] = useState<HistoryEntry[]>([]);
+  const [raceResult, setRaceResult] = useState<RaceResult | null>(null);
 
   // Load meeting list once.
   useEffect(() => {
@@ -233,6 +235,19 @@ export default function App() {
             </div>
           )}
 
+          <div className="cardbar">
+            <button
+              className="showresult"
+              disabled={!meeting.hasResults}
+              title={meeting.hasResults ? "" : "No results for this meeting"}
+              onClick={() =>
+                date && venue && api.result(date, venue, editRace).then(setRaceResult).catch((e) => setError(String(e)))
+              }
+            >
+              Show result (R{editRace})
+            </button>
+          </div>
+
           {card ? (
             <RaceCardTable
               card={card}
@@ -250,6 +265,7 @@ export default function App() {
       )}
 
       {result && <ResultModal result={result} onClose={() => setResult(null)} />}
+      {raceResult && <ResultPanel result={raceResult} onClose={() => setRaceResult(null)} />}
     </div>
   );
 }

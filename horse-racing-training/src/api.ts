@@ -2,6 +2,7 @@ import type {
   MeetingRef,
   MeetingDetail,
   RaceCard,
+  RaceResult,
   SettleRequest,
   SettleResult,
   HistoryEntry,
@@ -28,6 +29,8 @@ export const api = {
   meeting: (date: string, venue: string) => get<MeetingDetail>(`/api/meeting/${date}/${venue}`),
   race: (date: string, venue: string, rn: number) =>
     get<RaceCard>(`/api/race/${date}/${venue}/${rn}`),
+  result: (date: string, venue: string, rn: number) =>
+    get<RaceResult>(`/api/result/${date}/${venue}/${rn}`),
   settle: (req: SettleRequest) => send<SettleResult>("POST", "/api/settle", req),
   history: () => get<HistoryEntry[]>("/api/history"),
   addHistory: (e: HistoryEntry) => send<HistoryEntry[]>("POST", "/api/history", e),

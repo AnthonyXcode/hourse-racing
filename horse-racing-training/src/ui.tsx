@@ -1,5 +1,5 @@
 // Presentational components for the bet trainer.
-import type { RaceCard, RaceLeg, SettleResult, BetTypeId, HistoryEntry } from "../shared/types";
+import type { RaceCard, RaceLeg, RaceResult, SettleResult, BetTypeId, HistoryEntry } from "../shared/types";
 import { fmtDate } from "./api";
 
 export const HORSE_ROLE = { none: 0, leg: 1, banker: 2 } as const;
@@ -198,8 +198,80 @@ export function ResultModal({ result, onClose }: { result: SettleResult; onClose
   );
 }
 
-// ---- History page ----
+// ---- Official result + dividends (HKJC local-results style) ----
 const money = (n: number) => `$${n.toLocaleString()}`;
+const fmtT = (s?: number) => (s == null ? "" : s >= 60 ? `${Math.floor(s / 60)}:${(s % 60).toFixed(2).padStart(5, "0")}` : s.toFixed(2));
+
+export function ResultPanel({ result, onClose }: { result: RaceResult; onClose: () => void }) {
+  const fo = [...result.finishOrder].sort((a, b) => a.finishPosition - b.finishPosition);
+  const at = (pos: number) => fo.filter((f) => f.finishPosition === pos).map((f) => f.horseNumber);
+  const top = (n: number) => fo.filter((f) => f.finishPosition <= n).map((f) => f.horseNumber);
+
+  type Row = { pool: string; combo: string; div: number };
+  const rows: Row[] = [];
+  const add = (pool: string, combo: string, div?: number) => {
+    if (div != null) rows.push({ pool, combo, div });
+  };
+  add("Win", at(1).join(","), result.winDividend);
+  (result.placeDividends ?? []).forEach((d, i) => add("Place", at(i + 1).join(","), d));
+  add("Quinella", top(2).join("-"), result.quinellaDividend);
+  const qp = result.quinellaPlaceDividends ?? [];
+  const t3 = top(3);
+  if (qp.length === 3 && t3.length >= 3) {
+    add("Quinella Place", `${t3[0]}-${t3[1]}`, qp[0]);
+    add("Quinella Place", `${t3[0]}-${t3[2]}`, qp[1]);
+    add("Quinella Place", `${t3[1]}-${t3[2]}`, qp[2]);
+  }
+  add("Tierce", top(3).join("-"), result.tierceDividend);
+  add("Trio", top(3).join(","), result.trioDividend);
+  add("First 4", top(4).join(","), result.first4Dividend);
+  if (result.doubleTrioLegs) add("Double Trio", `Races ${result.doubleTrioLegs.join(",")}`, result.doubleTrioDividend);
+  if (result.tripleTrioLegs) add("Triple Trio", `Races ${result.tripleTrioLegs.join(",")}`, result.tripleTrioDividend);
+
+  return (
+    <div className="modal-bg" onClick={onClose}>
+      <div className="modal result-panel" onClick={(e) => e.stopPropagation()}>
+        <h2>Race {result.raceNumber} Result</h2>
+        <table className="finishtable">
+          <thead>
+            <tr><th>Pl.</th><th>No.</th><th>Horse</th><th>Jockey</th><th>Win Odds</th><th>Time</th></tr>
+          </thead>
+          <tbody>
+            {fo.map((f) => (
+              <tr key={`${f.finishPosition}-${f.horseNumber}`}>
+                <td className="pl">{f.finishPosition}</td>
+                <td className="num">{f.horseNumber}</td>
+                <td className="hname">{f.horseName}</td>
+                <td>{f.jockeyName ?? ""}</td>
+                <td className="odds">{f.winOdds}</td>
+                <td className="time">{fmtT(f.finishTime)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+
+        <h3>Dividends</h3>
+        <table className="divtable">
+          <thead>
+            <tr><th>Pool</th><th>Combination</th><th>Dividend (per $10)</th></tr>
+          </thead>
+          <tbody>
+            {rows.map((r, i) => (
+              <tr key={i}>
+                <td>{r.pool}</td>
+                <td className="combo">{r.combo}</td>
+                <td className="r">{money(r.div)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <button onClick={onClose}>Close</button>
+      </div>
+    </div>
+  );
+}
+
+// ---- History page ----
 
 export function HistoryPage({
   entries,

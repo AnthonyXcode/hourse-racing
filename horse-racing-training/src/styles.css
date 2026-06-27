@@ -93,6 +93,22 @@ table.racecard { width: 100%; border-collapse: collapse; font-size: 13px; }
 .costbar .submit { padding: 10px 22px; background: var(--hkjc-red); color: #fff; border: none; border-radius: 4px; font-size: 15px; font-weight: 700; cursor: pointer; }
 .costbar .submit:disabled { background: #ccc; cursor: not-allowed; }
 
+.cardbar { display: flex; justify-content: flex-end; margin: 6px 0; }
+.showresult { padding: 7px 14px; border: 1px solid var(--hkjc-dark); background: #fff; color: var(--hkjc-dark); border-radius: 4px; font-weight: 600; cursor: pointer; }
+.showresult:disabled { opacity: .4; cursor: not-allowed; }
+
+.result-panel { min-width: 560px; max-height: 86vh; overflow: auto; }
+.result-panel h3 { margin: 16px 0 6px; border-bottom: 2px solid var(--hkjc-red); padding-bottom: 4px; }
+table.finishtable, table.divtable { width: 100%; border-collapse: collapse; font-size: 13px; }
+.finishtable th, .divtable th { background: #ececec; text-align: left; padding: 6px 8px; border-bottom: 2px solid var(--hkjc-red); }
+.finishtable td, .divtable td { padding: 6px 8px; border-bottom: 1px solid #eee; }
+.finishtable .pl { font-weight: 700; width: 32px; }
+.finishtable .num { font-weight: 700; width: 36px; }
+.finishtable .hname { font-weight: 600; }
+.finishtable .odds, .finishtable .time { text-align: right; font-variant-numeric: tabular-nums; }
+.divtable td.r { text-align: right; font-variant-numeric: tabular-nums; font-weight: 600; }
+.divtable td.combo { font-variant-numeric: tabular-nums; }
+
 .modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,.5); display: flex; align-items: center; justify-content: center; }
 .modal { background: #fff; border-radius: 8px; padding: 24px 28px; min-width: 340px; box-shadow: 0 10px 40px rgba(0,0,0,.3); }
 .modal h2 { margin: 0 0 8px; }
