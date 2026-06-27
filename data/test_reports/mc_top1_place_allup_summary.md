@@ -42,7 +42,8 @@
 | **25** | **10 Jun** | **HV** | **Mixed** | **Yielding** | **9** | **30.9%** | **62.5%** | **4/9** | **44.4%** | **❌❌✅✅❌✅❌❌✅** | **4 (R1–R4)** |
 | **24** | **07 Jun** | **ST** | **Mixed** | **Yielding** | **11** | **38.2%** | **74.4%** | **6/11** | **54.5%** | **✅✅✅✅❌❌✅✅❌❌❌** | **4 (R1–R4)** |
 | 27 | 21 Jun | ST | Turf | Good | 11 | 37.1% | 70.7% | 4/11 | 36.4% | ❌✅❌✅❌✅❌❌✅❌❌ | 1 |
-| **28** | **24 Jun** | **HV** | **Turf** | **Good** | **9** | **28.5%** | **59.1%** | **6/9** | **66.7%** | **❌✅✅✅✅❌❌✅✅** | **4 (R2-R5)** |
+| 28 | 24 Jun | HV | Turf | Good | 9 | 28.5% | 59.1% | 6/9 | 66.7% | ❌✅✅✅✅❌❌✅✅ | 4 (R2-R5) |
+| **29** | **27 Jun** | **ST** | **Turf** | **Good** | **11** | **32.2%** | **65.1%** | **6/11** | **54.5%** | **✅❌❌❌❌❌✅✅✅✅✅** | **5 (R7-R11)** |
 
 \*Meeting 8 **R1** (6 runners): MC #1 **#6** ran **3rd** but HKJC Place pool pays **two** places only → **$0** dividend; counts as **❌** for streaks and all-ups (same dividend logic as other meetings).
 
@@ -1598,3 +1599,25 @@ Place dividends (MC #1 when placed): R1=$14.50, R3=$12.00, R5=$10.50, R8=$18.00
 **Placed:** 6/9 (66.7%) | **Pattern:** ❌✅✅✅✅❌❌✅✅ | **Max streak:** 4 (R2-R5)
 
 **Trio card note (R1–R9):** Strategy A **1/9** (-$703, ROI -75.6%); Strategy B report **1/9** (-$953, ROI -80.8%); Strategy B MC top-6 **2/9** (+$1,250, ROI +138.9%). MC-top-6 carried by R2 #11 banker (placed 2nd) catching the $1,923 trio that A's #6 swap and report-B's odds-swap both lost. MC #1 banker placed 6/9 — good day for the banker, bad day for pool construction. R8 #7 THE HEIR (MC 42% vs market 8.4) dead-heated 3rd. Double Trio (R2+R3) paid **$373,658** — not bet.
+
+## Meeting 29: Sha Tin | 27 Jun 2026 (11 races)
+
+**MC #1** = raw MC Win% from trio_strategy_20260627_ST_R*.md (10,000 iterations, form=all). **Results** from data/historical/results_20260627_ST.json. Place $ = HKJC place dividend.
+
+| Race | Class | Dist (m) | MC #1 | MC Win% | MC Place% | Placed? | Place $ (if placed) |
+|------|-------|----------|-------|---------|-----------|---------|---------------------|
+| R1 | Class 5 | 1200 | #3 ALWAYS FLUKE | 27.0% | 57.2% | ✅ 3rd | 18.5 |
+| R2 | Class 5 | 1200 | #3 BASIC INSTINCT | 22.3% | 51.4% | ❌ (14th) | — |
+| R3 | Class 4 | 1200 | #6 GENIUS BABY | 31.0% | 63.7% | ❌ (4th) | — |
+| R4 | Class 4 | 2000 | #2 DOUBLE WIN | 44.9% | 79.8% | ❌ (8th) | — |
+| R5 | Class 4 | 1650 | #5 PERFECT TEAM | 29.8% | 62.5% | ❌ (6th) | — |
+| R6 | Class 4 | 1200 | #3 ELEGANT LIFE | 30.7% | 62.3% | ❌ (10th) | — |
+| R7 | Class 4 | 1400 | #1 JOYFUL JOY | 36.9% | 72.5% | ✅ 3rd | 14 |
+| R8 | Class 1 | 1000 | #4 COLOURFUL KING | 23.6% | 55.2% | ✅ 1st | 18.5 |
+| R9 | Class 3 | 1650 | #1 TALENTS AMBITION | 44.9% | 80.0% | ✅ 1st | 17 |
+| R10 | Class 3 | 1200 | #6 MR INCREDIBLE | 32.4% | 67.0% | ✅ 1st | 10.1 |
+| R11 | Class 3 | 1400 | #6 CIRCUIT CHAMPION | 30.8% | 64.1% | ✅ 3rd | 12.5 |
+
+**Placed:** 6/11 (54.5%) | **Pattern:** ✅❌❌❌❌❌✅✅✅✅✅ | **Max streak:** 5 (R7-R11)
+
+**Trio card note (R1–R11):** Strategy A **2/11** (+$112, ROI +12.3%) — WON the meeting; Strategy B report **3/11** (-$260, -17.4%); Strategy B MC top-6 **2/11** (-$78, -7.1%). R11 #6 CIRCUIT CHAMPION (3rd) + 33-1 leg #5 winner → Trio $854 carried Strategy A. Striking split: MC#1 went 0/5 in R2–R6 (incl strong divergence bankers R2 #3 14th, R4 #2 8th) then 5/5 in R7–R11. Double Trio (R2+R3) paid **$380,689** — not bet.

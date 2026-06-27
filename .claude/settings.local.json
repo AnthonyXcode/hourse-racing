@@ -106,7 +106,8 @@
       "Bash(awk '/FINISH-TIME PROJECTION/{f=1} f{print} /Projected winning time/{f=0}')",
       "Bash(node -e 'const fx=require\\(\"./data/historical/fixtures.json\"\\); const f=\\(Array.isArray\\(fx\\)?fx:fx.fixtures||[]\\).filter\\(x=>JSON.stringify\\(x\\).includes\\(\"2026-06-27\"\\)||JSON.stringify\\(x\\).includes\\(\"20260627\"\\)\\); console.log\\(JSON.stringify\\(f\\)\\);')",
       "Bash(PLAYWRIGHT_BROWSERS_PATH=0 npx tsx tools/analyze-race.ts --date 2026-06-27 --venue \"Sha Tin\" --race 1 --form-data all --bankroll 10000 --kelly 0.35 --min-edge 5)",
-      "Bash(tee /tmp/st27_r1.txt)"
+      "Bash(tee /tmp/st27_r1.txt)",
+      "Bash(PLAYWRIGHT_BROWSERS_PATH=0 npx tsx tools/scrape-meeting.ts --date=2026-06-27 --venue=ST)"
     ]
   }
 }
