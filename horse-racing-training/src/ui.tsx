@@ -161,6 +161,27 @@ export function ResultModal({ result, onClose }: { result: SettleResult; onClose
       <div className={`modal ${result.hit ? "hit" : "miss"}`} onClick={(e) => e.stopPropagation()}>
         <h2>{result.hit ? "HIT ✅" : "MISS ❌"}</h2>
         <p className="detail">{result.detail}</p>
+
+        {/* Finish order of every leg race — always shown, hit or miss. */}
+        <div className="legresults">
+          {result.legResults.map((lr) => (
+            <div key={lr.raceNumber} className={`legres ${lr.covered ? "ok" : "no"}`}>
+              <div className="lrhead">
+                Race {lr.raceNumber} <span className="mark">{lr.covered ? "✓" : "✗"}</span>
+              </div>
+              <ol className="finish">
+                {lr.finishers.map((f) => (
+                  <li key={`${f.position}-${f.horseNumber}`}>
+                    <span className="pos">{f.position}</span>
+                    <span className="fnum">#{f.horseNumber}</span>
+                    <span className="fname">{f.horseName}</span>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          ))}
+        </div>
+
         <table className="settle">
           <tbody>
             <tr><td>Combinations won</td><td>{result.combosWon} / {result.combos}</td></tr>

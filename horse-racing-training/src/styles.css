@@ -72,6 +72,19 @@ table.racecard { width: 100%; border-collapse: collapse; font-size: 13px; }
 .modal.hit h2 { color: var(--hit); }
 .modal.miss h2 { color: var(--miss); }
 .modal .detail { color: #444; font-size: 14px; }
+.legresults { display: flex; flex-wrap: wrap; gap: 10px; margin: 12px 0; }
+.legres { flex: 1 1 140px; border: 1px solid var(--line); border-radius: 5px; padding: 8px 10px; }
+.legres.ok { border-color: var(--hit); background: #f1faf3; }
+.legres.no { border-color: var(--miss); background: #fdf2f3; }
+.legres .lrhead { font-weight: 700; font-size: 13px; margin-bottom: 4px; display: flex; justify-content: space-between; }
+.legres.ok .mark { color: var(--hit); }
+.legres.no .mark { color: var(--miss); }
+.legres ol.finish { list-style: none; margin: 0; padding: 0; font-size: 13px; }
+.legres ol.finish li { display: flex; gap: 6px; padding: 1px 0; }
+.legres .pos { width: 16px; color: #999; font-weight: 700; }
+.legres .fnum { font-weight: 700; min-width: 28px; }
+.legres .fname { color: #444; }
+
 table.settle { width: 100%; border-collapse: collapse; margin: 12px 0; }
 table.settle td { padding: 6px 4px; border-bottom: 1px solid #eee; }
 table.settle td:last-child { text-align: right; font-variant-numeric: tabular-nums; font-weight: 600; }

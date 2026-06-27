@@ -180,6 +180,53 @@ describe("double trio", () => {
   });
 });
 
+describe("quinella place (any 2 of top 3)", () => {
+  const res = result({
+    finishOrder: fin([[10, 1], [4, 2], [3, 3], [12, 4]]),
+    quinellaPlaceDividends: [50, 80, 70], // 1-2, 1-3, 2-3
+  });
+  it("box all three placers → 3 winning pairs, payout sums all 3", () => {
+    const sel: BetSelection = { type: "qpl", raceLegs: [{ raceNumber: 1, bankers: [], legs: [10, 4, 3] }] };
+    const r = settle(sel, oneRace(res), res);
+    expect(r.hit).toBe(true);
+    expect(r.combosWon).toBe(3);
+    expect(r.payout).toBe(200); // 50+80+70
+    expect(countCombos(sel)).toBe(3); // C(3,2)
+  });
+  it("two placers → 1 winning pair", () => {
+    const sel: BetSelection = { type: "qpl", raceLegs: [{ raceNumber: 1, bankers: [], legs: [10, 4, 7] }] };
+    const r = settle(sel, oneRace(res), res);
+    expect(r.hit).toBe(true);
+    expect(r.combosWon).toBe(1);
+    expect(r.payout).toBe(50); // only the 1-2 pair
+  });
+  it("one placer → miss", () => {
+    const sel: BetSelection = { type: "qpl", raceLegs: [{ raceNumber: 1, bankers: [], legs: [10, 7, 8] }] };
+    expect(settle(sel, oneRace(res), res).hit).toBe(false);
+  });
+});
+
+describe("legResults always populated", () => {
+  it("double trio returns finish order for BOTH legs on a miss", () => {
+    const r2 = result({ raceNumber: 2, finishOrder: fin([[12, 1], [1, 2], [2, 3]]) });
+    const r3 = result({ raceNumber: 3, finishOrder: fin([[2, 1], [5, 2], [8, 3]]), doubleTrioDividend: 100 });
+    const map = new Map([[2, r2], [3, r3]]);
+    const sel: BetSelection = {
+      type: "doubleTrio",
+      raceLegs: [
+        { raceNumber: 2, bankers: [], legs: [12, 1, 7] }, // miss
+        { raceNumber: 3, bankers: [], legs: [2, 5, 8] }, // covered
+      ],
+    };
+    const r = settle(sel, map, r3);
+    expect(r.hit).toBe(false);
+    expect(r.legResults.length).toBe(2);
+    expect(r.legResults[0]!.covered).toBe(false);
+    expect(r.legResults[1]!.covered).toBe(true);
+    expect(r.legResults[0]!.finishers.map((f) => f.horseNumber)).toEqual([12, 1, 2]);
+  });
+});
+
 describe("coverCount banker", () => {
   it("counts both dead-heat combos when pool holds both tied horses", () => {
     const f = fin([[10, 1], [4, 2], [3, 3], [12, 3]]);

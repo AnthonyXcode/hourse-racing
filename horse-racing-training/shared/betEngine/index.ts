@@ -7,9 +7,19 @@ import type {
   RaceLeg,
   RaceResult,
   SettleResult,
+  LegResult,
 } from "../types";
 import { choose, perm, bankerLegCombos, subsets } from "./combinatorics";
 import { coverCount, placedHorses, positionOf } from "./settle";
+
+/** Top finishers of a race for display (ascending position, includes dead-heats). */
+function legResult(res: RaceResult, depth: number, covered: boolean): LegResult {
+  const finishers = res.finishOrder
+    .filter((f) => f.finishPosition <= depth)
+    .sort((a, b) => a.finishPosition - b.finishPosition)
+    .map((f) => ({ position: f.finishPosition, horseNumber: f.horseNumber, horseName: f.horseName }));
+  return { raceNumber: res.raceNumber, finishers, covered };
+}
 
 export const UNIT = 10; // HKD per combination
 
@@ -129,7 +139,17 @@ export function settle(
   const combos = countCombos(sel);
   const costAmt = combos * UNIT;
 
-  const base = (hit: boolean, combosWon: number, payout: number | null, detail: string): SettleResult => ({
+  // Finishers shown for context: top-4 for First 4, else top-3 (top-1 pools still
+  // show the placing context).
+  const showDepth = sel.type === "first4" ? 4 : 3;
+
+  const base = (
+    hit: boolean,
+    combosWon: number,
+    payout: number | null,
+    detail: string,
+    legResults: LegResult[]
+  ): SettleResult => ({
     hit,
     combosWon,
     combos,
@@ -137,40 +157,68 @@ export function settle(
     payout: hit ? payout : 0,
     net: hit ? (payout === null ? null : payout - costAmt) : -costAmt,
     detail,
+    legResults,
   });
 
-  if (combos === 0) return base(false, 0, 0, "Invalid selection (need more horses).");
+  if (combos === 0) return base(false, 0, 0, "Invalid selection (need more horses).", []);
 
   // Win / Place: hit if any selected horse occupies a paying placing.
   if (sel.type === "win" || sel.type === "place") {
     const leg = sel.raceLegs[0]!;
     const res = resultsByRace.get(leg.raceNumber);
-    if (!res) return base(false, 0, 0, `No result for race ${leg.raceNumber}.`);
-    const depth = sel.type === "win" ? 1 : (res.placeDividends?.length ?? 3);
+    if (!res) return base(false, 0, 0, `No result for race ${leg.raceNumber}.`, []);
+    const depth = sel.type === "win" ? 1 : res.placeDividends?.length ?? 3;
     const placed = new Set(placedHorses(res.finishOrder, depth));
     const winners = leg.legs.filter((h) => placed.has(h));
-    if (winners.length === 0) return base(false, 0, 0, `Miss — none of [${leg.legs.join(",")}] in top ${depth}.`);
+    const lr = [legResult(res, Math.max(showDepth, depth), winners.length > 0)];
+    if (winners.length === 0) return base(false, 0, 0, `Miss — none of [${leg.legs.join(",")}] in top ${depth}.`, lr);
     const div = dividend(sel.type, res, leg);
-    return base(true, winners.length, div, `Hit — #${winners.join(",#")} placed (top ${depth}).`);
+    return base(true, winners.length, div, `Hit — #${winners.join(",#")} placed (top ${depth}).`, lr);
   }
 
-  // Every leg race must cover a winning combo of `depth`.
+  // Quinella Place: any TWO of the top three. Up to 3 winning pairs.
+  if (sel.type === "qpl") {
+    const leg = sel.raceLegs[0]!;
+    const res = resultsByRace.get(leg.raceNumber);
+    if (!res) return base(false, 0, 0, `No result for race ${leg.raceNumber}.`, []);
+    const top3 = placedHorses(res.finishOrder, 3);
+    const p = new Set([...leg.bankers, ...leg.legs]);
+    const bset = new Set(leg.bankers);
+    let combosWon = 0;
+    for (const pair of subsets(top3, 2)) {
+      if (pair.every((h) => p.has(h)) && [...bset].every((b) => pair.includes(b))) combosWon++;
+    }
+    const lr = [legResult(res, 3, combosWon > 0)];
+    if (combosWon === 0) return base(false, 0, 0, `Miss — no covered pair among top 3 (${top3.join("-")}).`, lr);
+    const div = dividend("qpl", res, leg);
+    return base(true, combosWon, div, `Hit — ${combosWon} of 3 placing pairs covered.`, lr);
+  }
+
+  // Trio / Tierce / First4 / Double Trio / Triple Trio:
+  // every leg race must cover a winning combo of `depth`.
+  const legResults: LegResult[] = [];
   let combosWon = 1;
+  let missRace = -1;
   for (const leg of sel.raceLegs) {
     const res = resultsByRace.get(leg.raceNumber);
-    if (!res) return base(false, 0, 0, `No result for race ${leg.raceNumber}.`);
+    if (!res) return base(false, 0, 0, `No result for race ${leg.raceNumber}.`, legResults);
     const n = coverCount(leg.bankers, leg.legs, res.finishOrder, def.depth);
+    legResults.push(legResult(res, showDepth, n > 0));
     if (n === 0) {
-      const top = placedHorses(res.finishOrder, def.depth).join("-");
-      return base(false, 0, 0, `Miss in race ${leg.raceNumber} — top ${def.depth} was ${top}.`);
+      if (missRace < 0) missRace = leg.raceNumber;
+      combosWon = 0;
+    } else if (combosWon > 0) {
+      combosWon *= n;
     }
-    combosWon *= n;
   }
 
+  if (combosWon === 0) {
+    return base(false, 0, 0, `Miss — race ${missRace} not covered.`, legResults);
+  }
   const div = dividend(sel.type, dividendSource, sel.raceLegs[0]!);
   const payout = div === null ? null : div * combosWon;
   const legsDesc = sel.raceLegs
     .map((l) => `R${l.raceNumber}${l.bankers.length ? ` 膽${l.bankers.join(",")}` : ""}`)
     .join(" + ");
-  return base(true, combosWon, payout, `Hit — ${legsDesc}.${combosWon > 1 ? ` ${combosWon}× (dead-heat)` : ""}`);
+  return base(true, combosWon, payout, `Hit — ${legsDesc}.${combosWon > 1 ? ` ${combosWon}× (dead-heat)` : ""}`, legResults);
 }

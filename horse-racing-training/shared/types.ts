@@ -94,6 +94,15 @@ export interface BetSelection {
   raceLegs: RaceLeg[];
 }
 
+/** Finish order + cover status for one leg race, shown whether the bet hit or missed. */
+export interface LegResult {
+  raceNumber: number;
+  /** finishers shown for context, ascending position (incl dead-heats). */
+  finishers: { position: number; horseNumber: number; horseName: string }[];
+  /** did this leg race cover a winning combo from the selection? */
+  covered: boolean;
+}
+
 export interface SettleResult {
   hit: boolean;
   /** number of winning combinations the selection covered (>=1 on a hit). */
@@ -107,6 +116,8 @@ export interface SettleResult {
   net: number | null;
   /** human-readable explanation (which combo won / why it missed). */
   detail: string;
+  /** per leg-race finish order + cover status (always populated). */
+  legResults: LegResult[];
 }
 
 // ---- API DTOs ----
