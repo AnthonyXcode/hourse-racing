@@ -164,9 +164,8 @@ export function settle(
   const combos = countCombos(sel);
   const costAmt = combos * UNIT;
 
-  // Finishers shown for context: top-4 for First 4, else top-3 (top-1 pools still
-  // show the placing context).
-  const showDepth = sel.type === "first4" ? 4 : 3;
+  // Always surface the first 4 finishers for context (history "Result" column).
+  const showDepth = 4;
 
   const head = headlineDividend(sel.type, dividendSource);
 

@@ -158,6 +158,7 @@ export interface HistoryEntry {
   betType: BetTypeId;
   betLabel: string; // "Trio", "Double Trio", ...
   picks: string; // human-readable selection, e.g. "R11 膽6 腳2,4,7,5,10"
+  result: string; // first 4 of the race(s), e.g. "5-2-6-7" or "R2:12-1-2-7  R3:2-5-8-6"
   combos: number;
   cost: number;
   hit: boolean;

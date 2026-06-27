@@ -242,7 +242,7 @@ export function HistoryPage({
           <thead>
             <tr>
               <th>Placed</th><th>Meeting</th><th>Bet</th><th>Picks</th>
-              <th>Combos</th><th>Cost</th><th>Result</th><th>Dividend</th><th>Payout</th><th>Net</th><th></th>
+              <th>Combos</th><th>Cost</th><th>Hit?</th><th>Result</th><th>Dividend</th><th>Payout</th><th>Net</th><th></th>
             </tr>
           </thead>
           <tbody>
@@ -254,7 +254,8 @@ export function HistoryPage({
                 <td className="picks">{e.picks}</td>
                 <td className="r">{e.combos}</td>
                 <td className="r">{money(e.cost)}</td>
-                <td className={e.hit ? "hit" : "miss"}>{e.hit ? "HIT" : "MISS"}</td>
+                <td className="hitcell">{e.hit ? "✅" : "❌"}</td>
+                <td className="resultcell">{e.result}</td>
                 <td className="r div">{e.poolDividendText}</td>
                 <td className="r">{e.payout === null ? "?" : money(e.payout)}</td>
                 <td className={`r ${(e.net ?? 0) >= 0 ? "pos" : "neg"}`}>

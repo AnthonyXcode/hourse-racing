@@ -135,6 +135,13 @@ export default function App() {
       setResult(r);
       // Record the settled bet to history.
       const picks = selection.raceLegs.map((l) => `R${l.raceNumber} ${legSummary(l)}`).join("  |  ");
+      const multi = r.legResults.length > 1;
+      const resultStr = r.legResults
+        .map((lr) => {
+          const top4 = lr.finishers.slice(0, 4).map((f) => f.horseNumber).join("-");
+          return multi ? `R${lr.raceNumber}:${top4}` : top4;
+        })
+        .join("  ");
       const entry: HistoryEntry = {
         id: `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
         ts: new Date().toISOString(),
@@ -143,6 +150,7 @@ export default function App() {
         betType,
         betLabel: BET_TYPES[betType].label,
         picks,
+        result: resultStr,
         combos,
         cost: totalCost,
         hit: r.hit,

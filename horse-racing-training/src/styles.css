@@ -38,8 +38,8 @@ table.histtable { width: 100%; border-collapse: collapse; font-size: 13px; backg
 .histtable td.r { text-align: right; font-variant-numeric: tabular-nums; }
 .histtable td.ts { color: #888; white-space: nowrap; }
 .histtable td.picks { color: #444; font-size: 12px; }
-.histtable td.hit { color: var(--hit); font-weight: 700; }
-.histtable td.miss { color: var(--miss); font-weight: 700; }
+.histtable td.hitcell { text-align: center; }
+.histtable td.resultcell { font-variant-numeric: tabular-nums; white-space: nowrap; font-weight: 600; }
 .histtable td.pos { color: var(--hit); font-weight: 700; }
 .histtable td.neg { color: var(--miss); font-weight: 700; }
 .histtable .del { border: none; background: none; color: #bbb; cursor: pointer; font-size: 14px; }
