@@ -99,7 +99,14 @@
       "Bash(awk '/Top Quinella/,/Jockey\\\\/Trainer/' /tmp/hv_r1.txt)",
       "Bash(PLAYWRIGHT_BROWSERS_PATH=0 npx tsx tools/trio-mctime-review.ts --runs=5000)",
       "Bash(awk '/Leg-count/{f=1} f' data/reviews/trio_mctime_review.md)",
-      "Bash(awk '/Form effect/{f=1} /Race-by-Race/{f=0} f' data/reviews/trio_hv_mc6.md)"
+      "Bash(awk '/Form effect/{f=1} /Race-by-Race/{f=0} f' data/reviews/trio_hv_mc6.md)",
+      "Bash(sed 's#\"../src/#\"../src/#g' /tmp/ftproj.ts)",
+      "Bash(PLAYWRIGHT_BROWSERS_PATH=0 npx tsx tools/_ftproj.ts)",
+      "Bash(PLAYWRIGHT_BROWSERS_PATH=0 npx tsx tools/analyze-race.ts -d 2026-06-24 -v \"Happy Valley\" -r 8 --use-saved -f all)",
+      "Bash(awk '/FINISH-TIME PROJECTION/{f=1} f{print} /Projected winning time/{f=0}')",
+      "Bash(node -e 'const fx=require\\(\"./data/historical/fixtures.json\"\\); const f=\\(Array.isArray\\(fx\\)?fx:fx.fixtures||[]\\).filter\\(x=>JSON.stringify\\(x\\).includes\\(\"2026-06-27\"\\)||JSON.stringify\\(x\\).includes\\(\"20260627\"\\)\\); console.log\\(JSON.stringify\\(f\\)\\);')",
+      "Bash(PLAYWRIGHT_BROWSERS_PATH=0 npx tsx tools/analyze-race.ts --date 2026-06-27 --venue \"Sha Tin\" --race 1 --form-data all --bankroll 10000 --kelly 0.35 --min-edge 5)",
+      "Bash(tee /tmp/st27_r1.txt)"
     ]
   }
 }
