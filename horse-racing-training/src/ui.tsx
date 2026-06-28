@@ -40,7 +40,7 @@ export function RaceCardTable({
           </tr>
         </thead>
         <tbody>
-          {card.entries.map((e) => {
+          {[...card.entries].sort((a, b) => a.horseNumber - b.horseNumber).map((e) => {
             const role = roleOf(e.horseNumber);
             const scratched = e.isScratched;
             return (
