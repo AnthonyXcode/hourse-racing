@@ -34,12 +34,22 @@ api.get("/meeting/:date/:venue", (req, res) => {
   const ref = getManifest().find((m) => m.date === date && m.venue === venue);
   if (!ref) return res.status(404).json({ error: "meeting not found" });
 
-  const detail: MeetingDetail = { ...ref };
-  if (ref.hasResults) {
-    const results = readJson<RaceResult[]>(resultPath(date!, venue!));
-    detail.doubleTrioLegs = results?.find((r) => r.doubleTrioLegs)?.doubleTrioLegs;
-    detail.tripleTrioLegs = results?.find((r) => r.tripleTrioLegs)?.tripleTrioLegs;
-  }
+  // Collect ALL distinct DT/TT pools (each pool is stored on every one of its legs).
+  const uniquePools = (legsOf: (r: RaceResult) => number[] | undefined): number[][] => {
+    const results = readJson<RaceResult[]>(resultPath(date!, venue!)) ?? [];
+    const seen = new Map<string, number[]>();
+    for (const r of results) {
+      const legs = legsOf(r);
+      if (legs && legs.length) seen.set([...legs].sort((a, b) => a - b).join(","), legs);
+    }
+    return [...seen.values()].sort((a, b) => a[0]! - b[0]!);
+  };
+
+  const detail: MeetingDetail = {
+    ...ref,
+    doubleTrioPools: ref.hasResults ? uniquePools((r) => r.doubleTrioLegs) : [],
+    tripleTrioPools: ref.hasResults ? uniquePools((r) => r.tripleTrioLegs) : [],
+  };
   res.json(detail);
 });
 
@@ -75,14 +85,15 @@ api.get("/result/:date/:venue/:rn", (req, res) => {
   const race = results.find((r) => r.raceNumber === Number(rn));
   if (!race) return res.status(404).json({ error: "race result not found" });
 
-  const dt = results.find((r) => r.doubleTrioDividend != null);
-  const tt = results.find((r) => r.tripleTrioDividend != null);
+  // Attach the DT/TT pool whose legs include THIS race (not merely the first).
+  const dtHere = results.find((r) => r.doubleTrioDividend != null && r.doubleTrioLegs?.includes(Number(rn)));
+  const ttHere = results.find((r) => r.tripleTrioDividend != null && r.tripleTrioLegs?.includes(Number(rn)));
   const merged: RaceResult = {
     ...race,
-    doubleTrioLegs: dt?.doubleTrioLegs,
-    doubleTrioDividend: dt?.doubleTrioDividend,
-    tripleTrioLegs: tt?.tripleTrioLegs,
-    tripleTrioDividend: tt?.tripleTrioDividend,
+    doubleTrioLegs: dtHere?.doubleTrioLegs,
+    doubleTrioDividend: dtHere?.doubleTrioDividend,
+    tripleTrioLegs: ttHere?.tripleTrioLegs,
+    tripleTrioDividend: ttHere?.tripleTrioDividend,
   };
   res.json(merged);
 });
@@ -97,16 +108,30 @@ api.post("/settle", (req, res) => {
 
   const byRace = new Map<number, RaceResult>(results.map((r) => [r.raceNumber, r]));
 
-  // The DT/TT dividend lives on whichever race object carries it; for single-race
-  // pools the dividend source is the bet's own race.
+  // The DT/TT dividend lives on whichever race object carries it, and only applies
+  // when the user's chosen leg races EXACTLY match the designated pool. Picking a
+  // different pair/triple still grades hit/miss but has no official dividend.
+  const sameSet = (a: number[], b: number[]) =>
+    a.length === b.length && [...a].sort((x, y) => x - y).join() === [...b].sort((x, y) => x - y).join();
+  const selRaces = selection.raceLegs.map((l) => l.raceNumber);
+
+  const multi = selection.type === "doubleTrio" || selection.type === "tripleTrio";
   let dividendSource: RaceResult | undefined;
   if (selection.type === "doubleTrio") {
-    dividendSource = results.find((r) => r.doubleTrioDividend != null);
+    dividendSource = results.find((r) => r.doubleTrioDividend != null && r.doubleTrioLegs && sameSet(r.doubleTrioLegs, selRaces));
   } else if (selection.type === "tripleTrio") {
-    dividendSource = results.find((r) => r.tripleTrioDividend != null);
+    dividendSource = results.find((r) => r.tripleTrioDividend != null && r.tripleTrioLegs && sameSet(r.tripleTrioLegs, selRaces));
+  } else {
+    dividendSource = byRace.get(selRaces[0] ?? -1);
   }
-  dividendSource ??= byRace.get(selection.raceLegs[0]?.raceNumber ?? -1);
-  if (!dividendSource) return res.status(400).json({ error: "no result for selected race" });
+  // No matching designated pool (or single pool with no result): use the bet's
+  // own race but STRIP any DT/TT dividend so a non-designated combo never inherits
+  // an unrelated pool's payout.
+  if (!dividendSource) {
+    const fb = byRace.get(selRaces[0] ?? -1);
+    if (!fb) return res.status(400).json({ error: "no result for selected race" });
+    dividendSource = multi ? { ...fb, doubleTrioDividend: undefined, tripleTrioDividend: undefined } : fb;
+  }
 
   const out: SettleResult = settle(selection, byRace, dividendSource);
   res.json(out);

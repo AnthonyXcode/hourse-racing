@@ -143,9 +143,10 @@ export interface MeetingDetail {
   venue: Venue;
   races: number[];
   hasResults: boolean;
-  /** designated multi-race pools, when results expose them. */
-  doubleTrioLegs?: number[];
-  tripleTrioLegs?: number[];
+  /** all designated Double Trio pools (each a pair of race numbers). */
+  doubleTrioPools: number[][];
+  /** all designated Triple Trio pools (each a triple of race numbers). */
+  tripleTrioPools: number[][];
 }
 export interface SettleRequest {
   date: string;

@@ -58,6 +58,18 @@ table.histtable { width: 100%; border-collapse: collapse; font-size: 13px; backg
 .bt.active { background: var(--hkjc-dark); color: #fff; border-color: var(--hkjc-dark); }
 .bt:disabled { opacity: .4; cursor: not-allowed; }
 
+.legchooser { display: flex; flex-direction: column; gap: 6px; margin: 10px 0; padding: 10px 12px; background: #fff; border: 1px solid var(--leg-bd); border-radius: 6px; }
+.legchooser .lc-label { font-size: 13px; font-weight: 600; }
+.legchooser .lc-pools { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.lc-pool { padding: 5px 10px; border: 1px solid var(--banker-bd); background: #fff; border-radius: 14px; cursor: pointer; font-size: 12px; font-weight: 600; }
+.lc-pool.active { background: var(--banker); }
+.legchooser .lc-races { display: flex; flex-wrap: wrap; gap: 4px; }
+.lc-race { min-width: 40px; padding: 6px 10px; border: 1px solid var(--line); background: #fff; cursor: pointer; border-radius: 3px; font-weight: 600; }
+.lc-race.picked { background: var(--leg); border-color: var(--leg-bd); }
+.lc-race.editing { background: var(--leg-bd); color: #fff; }
+.lc-race:disabled { opacity: .35; cursor: not-allowed; }
+.legchooser .lc-note { font-size: 12px; color: #888; }
+
 .legtabs { display: flex; align-items: center; gap: 8px; margin: 8px 0; font-size: 13px; }
 .legtabs button { padding: 6px 10px; border: 1px solid var(--leg-bd); background: #fff; border-radius: 4px; cursor: pointer; }
 .legtabs button.active { background: var(--leg); }

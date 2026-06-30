@@ -28,6 +28,7 @@ export default function App() {
   const [cards, setCards] = useState<Record<number, RaceCard>>({});
   const [picks, setPicks] = useState<Record<number, Picks>>({});
   const [editRace, setEditRace] = useState(1);
+  const [dtLegs, setDtLegs] = useState<number[]>([]); // chosen leg races for DT/TT
   const [result, setResult] = useState<SettleResult | null>(null);
   const [error, setError] = useState<string>("");
   const [view, setView] = useState<"bet" | "history">("bet");
@@ -62,13 +63,33 @@ export default function App() {
       .catch((e) => setError(String(e)));
   }, [meetingKey]);
 
+  const legCount = BET_TYPES[betType].legRaces; // 1, 2 (DT), or 3 (TT)
+
+  const dtPools = meeting?.doubleTrioPools ?? [];
+  const ttPools = meeting?.tripleTrioPools ?? [];
+  const officialPools = betType === "doubleTrio" ? dtPools : betType === "tripleTrio" ? ttPools : [];
+
+  // Default the DT/TT leg races to the first designated pool when switching in.
+  useEffect(() => {
+    if (!meeting) return;
+    if (betType === "doubleTrio") setDtLegs(meeting.doubleTrioPools[0] ?? []);
+    else if (betType === "tripleTrio") setDtLegs(meeting.tripleTrioPools[0] ?? []);
+  }, [betType, meeting]);
+
   // Which races this bet type collects picks in.
   const legRaces = useMemo<number[]>(() => {
     if (!meeting) return [];
-    if (betType === "doubleTrio") return meeting.doubleTrioLegs ?? [];
-    if (betType === "tripleTrio") return meeting.tripleTrioLegs ?? [];
+    if (legCount > 1) return [...dtLegs].sort((a, b) => a - b);
     return [activeRace];
-  }, [betType, activeRace, meeting]);
+  }, [legCount, dtLegs, activeRace, meeting]);
+
+  // Toggle a race in/out of the DT/TT leg set (max legCount).
+  function toggleLeg(rn: number) {
+    setDtLegs((prev) =>
+      prev.includes(rn) ? prev.filter((x) => x !== rn) : prev.length < legCount ? [...prev, rn] : prev
+    );
+    setEditRace(rn);
+  }
 
   // Keep editRace inside the current leg set.
   useEffect(() => {
@@ -219,14 +240,57 @@ export default function App() {
           <BetTypePicker
             value={betType}
             onChange={setBetType}
-            dtAvailable={!!meeting.doubleTrioLegs?.length}
-            ttAvailable={!!meeting.tripleTrioLegs?.length}
+            dtAvailable={dtPools.length > 0}
+            ttAvailable={ttPools.length > 0}
           />
 
-          {/* Multi-race leg selector */}
-          {legRaces.length > 1 && (
+          {/* Multi-race leg chooser */}
+          {legCount > 1 && (
+            <div className="legchooser">
+              {officialPools.length > 0 && (
+                <div className="lc-pools">
+                  <span className="lc-label">{BET_TYPES[betType].label} pools:</span>
+                  {officialPools.map((pool) => {
+                    const active = [...dtLegs].sort((a, b) => a - b).join() === [...pool].sort((a, b) => a - b).join();
+                    return (
+                      <button
+                        key={pool.join()}
+                        className={`lc-pool ${active ? "active" : ""}`}
+                        onClick={() => { setDtLegs(pool); setEditRace(pool[0]!); }}
+                      >
+                        R{pool.join("-R")}
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+              <span className="lc-label">
+                Or pick any {legCount} races ({dtLegs.length}/{legCount}):
+              </span>
+              <div className="lc-races">
+                {meeting.races.map((rn) => {
+                  const picked = dtLegs.includes(rn);
+                  const isEdit = rn === editRace && picked;
+                  return (
+                    <button
+                      key={rn}
+                      className={`lc-race ${picked ? "picked" : ""} ${isEdit ? "editing" : ""}`}
+                      disabled={!picked && dtLegs.length >= legCount}
+                      onClick={() => toggleLeg(rn)}
+                    >
+                      R{rn}
+                    </button>
+                  );
+                })}
+              </div>
+              <span className="lc-note">Only an official pool pays a dividend; a custom combo still grades hit/miss.</span>
+            </div>
+          )}
+
+          {/* Edit which leg's picks you're entering. */}
+          {legCount > 1 && legRaces.length > 0 && (
             <div className="legtabs">
-              <span>Legs:</span>
+              <span>Editing:</span>
               {legRaces.map((rn) => (
                 <button key={rn} className={rn === editRace ? "active" : ""} onClick={() => setEditRace(rn)}>
                   R{rn} <em>{legSummary(selection.raceLegs.find((l) => l.raceNumber === rn) ?? { raceNumber: rn, bankers: [], legs: [] })}</em>
