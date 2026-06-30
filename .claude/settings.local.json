@@ -115,7 +115,22 @@
       "Bash(npx vite *)",
       "Bash(git commit *)",
       "Bash(git restore *)",
-      "Bash(git merge *)"
+      "Bash(git merge *)",
+      "Bash(PLAYWRIGHT_BROWSERS_PATH=0 npx tsx tools/backtest-trio-mc-gap.ts --runs=5000)",
+      "Bash(awk '/## By Month/{f=1} /## By Racing Day/{f=0} f' data/reviews/trio_mc_gap_backtest.md)",
+      "Bash(awk '/## By Racing Day/{f=1} f' data/reviews/trio_mc_gap_backtest.md)",
+      "Bash(awk '/## Race-by-Race/{f=1} f' data/reviews/trio_mc_gap_backtest.md)",
+      "Bash(awk '/## Race-by-Race/{f=1} f&&/^\\\\| 20/{c++} END{print c}' data/reviews/trio_mc_gap_backtest.md)",
+      "Bash(PLAYWRIGHT_BROWSERS_PATH=0 npx tsx tools/backtest-trio-mc-gap.ts --venue=ST --runs=5000)",
+      "Bash(PLAYWRIGHT_BROWSERS_PATH=0 npx tsx tools/backtest-trio-mc-gap.ts --venue=HV --runs=5000)",
+      "Bash(awk '/Pool size dist/{print}' data/reviews/trio_mc_gap_backtest_ST.md)",
+      "Bash(awk '/## By Month/{f=1} /## By Racing Day/{f=0} f' data/reviews/trio_mc_gap_backtest_ST.md)",
+      "Bash(awk '/Pool size dist/{print}' data/reviews/trio_mc_gap_backtest_HV.md)",
+      "Bash(awk '/## By Month/{f=1} /## By Racing Day/{f=0} f' data/reviews/trio_mc_gap_backtest_HV.md)",
+      "Bash(PLAYWRIGHT_BROWSERS_PATH=0 npx tsx tools/analyze-race.ts --date 2026-07-01 --venue \"Sha Tin\" --race 1 --form-data all --bankroll 10000 --kelly 0.35 --min-edge 5)",
+      "Bash(awk '/Win Probability Rankings/{f=1} f&&/^  #/{print} /Avg differentiation/{f=0}' /tmp/st0701_r1.txt)",
+      "Bash(awk '/Market Efficiency/{f=1} f' /tmp/st0701_r1.txt)",
+      "Bash(awk '/Top Quinella/{f=1} f&&/:/{print} /Jockey/{f=0}' /tmp/st0701_r1.txt)"
     ]
   }
 }
