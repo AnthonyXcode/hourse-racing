@@ -43,7 +43,8 @@
 | **24** | **07 Jun** | **ST** | **Mixed** | **Yielding** | **11** | **38.2%** | **74.4%** | **6/11** | **54.5%** | **✅✅✅✅❌❌✅✅❌❌❌** | **4 (R1–R4)** |
 | 27 | 21 Jun | ST | Turf | Good | 11 | 37.1% | 70.7% | 4/11 | 36.4% | ❌✅❌✅❌✅❌❌✅❌❌ | 1 |
 | 28 | 24 Jun | HV | Turf | Good | 9 | 28.5% | 59.1% | 6/9 | 66.7% | ❌✅✅✅✅❌❌✅✅ | 4 (R2-R5) |
-| **29** | **27 Jun** | **ST** | **Turf** | **Good** | **11** | **32.2%** | **65.1%** | **6/11** | **54.5%** | **✅❌❌❌❌❌✅✅✅✅✅** | **5 (R7-R11)** |
+| 29 | 27 Jun | ST | Turf | Good | 11 | 32.2% | 65.1% | 6/11 | 54.5% | ✅❌❌❌❌❌✅✅✅✅✅ | 5 (R7-R11) |
+| **30** | **1 Jul** | **ST** | **Turf** | **Good** | **11** | **33.5%** | **66.0%** | **6/11** | **54.5%** | **✅✅✅✅❌✅❌✅❌❌❌** | **4 (R1-R4)** |
 
 \*Meeting 8 **R1** (6 runners): MC #1 **#6** ran **3rd** but HKJC Place pool pays **two** places only → **$0** dividend; counts as **❌** for streaks and all-ups (same dividend logic as other meetings).
 
@@ -1621,3 +1622,25 @@ Place dividends (MC #1 when placed): R1=$14.50, R3=$12.00, R5=$10.50, R8=$18.00
 **Placed:** 6/11 (54.5%) | **Pattern:** ✅❌❌❌❌❌✅✅✅✅✅ | **Max streak:** 5 (R7-R11)
 
 **Trio card note (R1–R11):** Strategy A **2/11** (+$112, ROI +12.3%) — WON the meeting; Strategy B report **3/11** (-$260, -17.4%); Strategy B MC top-6 **2/11** (-$78, -7.1%). R11 #6 CIRCUIT CHAMPION (3rd) + 33-1 leg #5 winner → Trio $854 carried Strategy A. Striking split: MC#1 went 0/5 in R2–R6 (incl strong divergence bankers R2 #3 14th, R4 #2 8th) then 5/5 in R7–R11. Double Trio (R2+R3) paid **$380,689** — not bet.
+
+## Meeting 30: Sha Tin | 1 Jul 2026 (11 races)
+
+**MC #1** = raw MC Win% from trio_strategy_20260701_ST_R*.md (10,000 iterations, form=all). **Results** from data/historical/results_20260701_ST.json. Place $ = HKJC place dividend.
+
+| Race | Class | Dist (m) | MC #1 | MC Win% | MC Place% | Placed? | Place $ (if placed) |
+|------|-------|----------|-------|---------|-----------|---------|---------------------|
+| R1 | Class 5 | 1600 | #7 GENERAL SMART | 26.5% | 58.7% | ✅ 3rd | 50 |
+| R2 | Class 5 | 1400 | #4 HE WAS ME | 21.6% | 49.6% | ✅ 3rd | 21 |
+| R3 | Class 4 | 1400 | #14 WINNING MACHINE | 61.1% | 89.0% | ✅ 3rd | 15.5 |
+| R4 | Class 4 | 1000 | #3 BEAUTY THUNDER | 27.1% | 62.8% | ✅ 2nd | 46.5 |
+| R5 | Class 2 | 1400 | #3 STORM RIDER | 29.1% | 62.6% | ❌ (6th) | — |
+| R6 | Class 4 | 1200 | #6 STORM MIRROR | 39.5% | 72.6% | ✅ 2nd | 14 |
+| R7 | Class 3 | 1000 | #3 MICKLEY | 31.6% | 64.5% | ❌ (10th) | — |
+| R8 | Class 4 | 1400 | #3 NYX GLUCK | 32.3% | 65.1% | ✅ 1st | 15 |
+| R9 | Class 4 | 1600 | #13 FAMILY FORTUNE | 36.6% | 68.0% | ❌ (8th) | — |
+| R10 | Class 3 | 1600 | #4 POWER OF VITAM | 29.3% | 63.9% | ❌ (7th) | — |
+| R11 | Class 3 | 1200 | #2 TYCOON RESOURCES | 33.4% | 68.9% | ❌ (12th) | — |
+
+**Placed:** 6/11 (54.5%) | **Pattern:** ✅✅✅✅❌✅❌✅❌❌❌ | **Max streak:** 4 (R1-R4)
+
+**Trio card note (R1–R11):** Strategy A **2/11** (+$137, ROI +14.9%) — WON; Strategy B report **2/11** (-$103, -8.9%); Strategy B MC top-6 **2/11** (-$43, -3.9%). R8 #3 NYX GLUCK (Purton) won → Trio $786; R2 $271 the other hit. R11 unbeaten 2.5-fav #2 TYCOON RESOURCES ran **12th of 12** — all 3 placers (7-4-3) were in the legs (Pattern A). MC#1 placed 4-in-a-row R1-R4 then faded.
