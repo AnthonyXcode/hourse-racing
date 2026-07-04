@@ -44,7 +44,8 @@
 | 27 | 21 Jun | ST | Turf | Good | 11 | 37.1% | 70.7% | 4/11 | 36.4% | ❌✅❌✅❌✅❌❌✅❌❌ | 1 |
 | 28 | 24 Jun | HV | Turf | Good | 9 | 28.5% | 59.1% | 6/9 | 66.7% | ❌✅✅✅✅❌❌✅✅ | 4 (R2-R5) |
 | 29 | 27 Jun | ST | Turf | Good | 11 | 32.2% | 65.1% | 6/11 | 54.5% | ✅❌❌❌❌❌✅✅✅✅✅ | 5 (R7-R11) |
-| **30** | **1 Jul** | **ST** | **Turf** | **Good** | **11** | **33.5%** | **66.0%** | **6/11** | **54.5%** | **✅✅✅✅❌✅❌✅❌❌❌** | **4 (R1-R4)** |
+| 30 | 1 Jul | ST | Turf | Good | 11 | 33.5% | 66.0% | 6/11 | 54.5% | ✅✅✅✅❌✅❌✅❌❌❌ | 4 (R1-R4) |
+| **31** | **4 Jul** | **ST** | **Turf** | **Good** | **11** | **37.9%** | **73.0%** | **7/11** | **63.6%** | **✅✅✅✅✅❌❌❌✅✅❌** | **5 (R1-R5)** |
 
 \*Meeting 8 **R1** (6 runners): MC #1 **#6** ran **3rd** but HKJC Place pool pays **two** places only → **$0** dividend; counts as **❌** for streaks and all-ups (same dividend logic as other meetings).
 
@@ -1644,3 +1645,25 @@ Place dividends (MC #1 when placed): R1=$14.50, R3=$12.00, R5=$10.50, R8=$18.00
 **Placed:** 6/11 (54.5%) | **Pattern:** ✅✅✅✅❌✅❌✅❌❌❌ | **Max streak:** 4 (R1-R4)
 
 **Trio card note (R1–R11):** Strategy A **2/11** (+$137, ROI +14.9%) — WON; Strategy B report **2/11** (-$103, -8.9%); Strategy B MC top-6 **2/11** (-$43, -3.9%). R8 #3 NYX GLUCK (Purton) won → Trio $786; R2 $271 the other hit. R11 unbeaten 2.5-fav #2 TYCOON RESOURCES ran **12th of 12** — all 3 placers (7-4-3) were in the legs (Pattern A). MC#1 placed 4-in-a-row R1-R4 then faded.
+
+## Meeting 31: Sha Tin | 4 Jul 2026 (11 races)
+
+**MC #1** = raw MC Win% from trio_strategy_20260704_ST_R*.md (10,000 iterations, form=all). **Results** from data/historical/results_20260704_ST.json. Place $ = HKJC place dividend.
+
+| Race | Class | Dist (m) | MC #1 | MC Win% | MC Place% | Placed? | Place $ (if placed) |
+|------|-------|----------|-------|---------|-----------|---------|---------------------|
+| R1 | Griffin | 1200 | #1 JEDI SPURS | 38.1% | 74.1% | ✅ 2nd | 10.1 |
+| R2 | Class 5 | 1200 | #5 VERBIER | 50.9% | 84.0% | ✅ 3rd | 11 |
+| R3 | Class 5 | 1200 | #12 VIVA CHALEUR | 32.8% | 72.2% | ✅ 3rd | 14 |
+| R4 | Class 2 | 1200 | #4 RISING FORCE | 41.2% | 80.3% | ✅ 1st | 10.1 |
+| R5 | Class 4 | 1400 | #4 SUNDAY'S SERENADE | 31.6% | 65.3% | ✅ 2nd | 34 |
+| R6 | Class 4 | 1200 | #1 PEJIBAYE | 37.4% | 77.1% | ❌ (11th) | — |
+| R7 | Class 4 | 1200 | #4 A TIME FOR US | 20.8% | 52.2% | ❌ (10th) | — |
+| R8 | Class 4 | 1800 | #2 MR COOL | 29.4% | 62.3% | ❌ (8th) | — |
+| R9 | Class 4 | 1200 | #3 LUCRATIVE EIGHT | 51.9% | 84.7% | ✅ 1st | 10.5 |
+| R10 | Class 3 | 1200 | #6 SUPERB SPIRIT | 48.7% | 83.6% | ✅ 2nd | 11.5 |
+| R11 | Class 3 | 1400 | #3 GREATER BAE | 34.5% | 66.9% | ❌ (5th) | — |
+
+**Placed:** 7/11 (63.6%) | **Pattern:** ✅✅✅✅✅❌❌❌✅✅❌ | **Max streak:** 5 (R1-R5)
+
+**Trio card note (R1–R11):** Strategy A **2/11** (-$330, -46.5%) — LOSS; Strategy B report **4/11** (-$245, -21.9%) — WON; Strategy B MC top-6 **3/11** (-$292, -26.5%). MC#1 placed 7/11 but A converted only 2 (R1 $36, R4 $344). The two A-only rules backfired: 雙膽拖 0/3 (R3/R6/R8) and tight Mode-A pools gapped 4 fat frames (R2 $1,581, R9 $1,872, R5 $980, R10). B's single-banker + wider legs caught R3 ($428) and R10 ($67) that A missed. Lesson: drop 雙膽拖, widen pools.
