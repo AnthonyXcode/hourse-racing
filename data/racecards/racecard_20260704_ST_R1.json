@@ -1,0 +1,832 @@
+{
+  "race": {
+    "id": "2026-07-04-ST-1",
+    "date": "2026-07-03T16:00:00.000Z",
+    "venue": "Sha Tin",
+    "raceNumber": 1,
+    "class": "Griffin",
+    "distance": 1200,
+    "surface": "Turf",
+    "going": "Good",
+    "prizeMoney": 950000,
+    "entries": [
+      {
+        "horse": {
+          "code": "HK_2025_L441",
+          "name": "JEDI SPURS",
+          "age": 2,
+          "sex": "G",
+          "color": "Bay",
+          "origin": "AUS",
+          "sire": "",
+          "dam": "",
+          "currentRating": 60,
+          "seasonStarts": 0,
+          "seasonWins": 0,
+          "seasonPlaces": 0,
+          "careerStarts": 0,
+          "careerWins": 0,
+          "careerPlaces": 0,
+          "totalPrizeMoney": 0,
+          "gear": [],
+          "pastPerformances": [
+            {
+              "date": "2026-06-13T00:00:00.000Z",
+              "venue": "Sha Tin",
+              "raceNumber": 1,
+              "raceClass": "Griffin",
+              "distance": 1000,
+              "surface": "Turf",
+              "going": "Good to Yielding",
+              "draw": 6,
+              "weight": 121,
+              "jockeyCode": "AVB",
+              "finishPosition": 1,
+              "fieldSize": 7,
+              "winningMargin": 1,
+              "finishTime": 55.81,
+              "odds": 1.6
+            }
+          ]
+        },
+        "jockey": {
+          "code": "AVB",
+          "name": "B Avdulla",
+          "nationality": "AUS",
+          "weightClaim": 0,
+          "seasonStats": {
+            "wins": 20,
+            "places": 70,
+            "rides": 413,
+            "winRate": 0.0484,
+            "placeRate": 0.2179176755447942,
+            "roi": 1
+          },
+          "courseStats": []
+        },
+        "trainer": {
+          "code": "HDA",
+          "name": "D A Hayes",
+          "seasonStats": {
+            "wins": 53,
+            "places": 91,
+            "rides": 646,
+            "winRate": 0.08199999999999999,
+            "placeRate": 0.22291021671826625,
+            "roi": 1
+          },
+          "courseStats": [],
+          "specialties": []
+        },
+        "horseNumber": 1,
+        "draw": 1,
+        "weight": 128,
+        "isScratched": false
+      },
+      {
+        "horse": {
+          "code": "HK_2025_L245",
+          "name": "ALMIGHTY WARRIOR",
+          "age": 3,
+          "sex": "G",
+          "color": "Bay",
+          "origin": "AUS",
+          "sire": "",
+          "dam": "",
+          "currentRating": 60,
+          "seasonStarts": 0,
+          "seasonWins": 0,
+          "seasonPlaces": 0,
+          "careerStarts": 0,
+          "careerWins": 0,
+          "careerPlaces": 0,
+          "totalPrizeMoney": 0,
+          "gear": [
+            "XB"
+          ],
+          "pastPerformances": [
+            {
+              "date": "2026-05-31T00:00:00.000Z",
+              "venue": "Sha Tin",
+              "raceNumber": 1,
+              "raceClass": "Griffin",
+              "distance": 1200,
+              "surface": "Turf",
+              "going": "Good",
+              "draw": 1,
+              "weight": 126,
+              "jockeyCode": "BEP",
+              "finishPosition": 2,
+              "fieldSize": 14,
+              "winningMargin": 2,
+              "finishTime": 69.75,
+              "odds": 15
+            },
+            {
+              "date": "2026-05-09T00:00:00.000Z",
+              "venue": "Sha Tin",
+              "raceNumber": 1,
+              "raceClass": "Griffin",
+              "distance": 1000,
+              "surface": "Turf",
+              "going": "Good to Yielding",
+              "draw": 3,
+              "weight": 126,
+              "jockeyCode": "PZ",
+              "finishPosition": 5,
+              "fieldSize": 10,
+              "winningMargin": 5,
+              "finishTime": 58.41,
+              "odds": 6.3
+            }
+          ]
+        },
+        "jockey": {
+          "code": "BEP",
+          "name": "E Brown",
+          "nationality": "AUS",
+          "weightClaim": 0,
+          "seasonStats": {
+            "wins": 7,
+            "places": 13,
+            "rides": 117,
+            "winRate": 0.059800000000000006,
+            "placeRate": 0.17094017094017094,
+            "roi": 1
+          },
+          "courseStats": []
+        },
+        "trainer": {
+          "code": "LKW",
+          "name": "K W Lui",
+          "seasonStats": {
+            "wins": 54,
+            "places": 113,
+            "rides": 522,
+            "winRate": 0.10339999999999999,
+            "placeRate": 0.31992337164750956,
+            "roi": 1
+          },
+          "courseStats": [],
+          "specialties": []
+        },
+        "horseNumber": 2,
+        "draw": 2,
+        "weight": 126,
+        "gearChanges": [
+          "XB"
+        ],
+        "isScratched": false
+      },
+      {
+        "horse": {
+          "code": "HK_2025_L051",
+          "name": "CHANCHENG SPARKLE",
+          "age": 3,
+          "sex": "G",
+          "color": "Bay",
+          "origin": "AUS",
+          "sire": "",
+          "dam": "",
+          "currentRating": 60,
+          "seasonStarts": 0,
+          "seasonWins": 0,
+          "seasonPlaces": 0,
+          "careerStarts": 0,
+          "careerWins": 0,
+          "careerPlaces": 0,
+          "totalPrizeMoney": 0,
+          "gear": [],
+          "pastPerformances": [
+            {
+              "date": "2026-06-13T00:00:00.000Z",
+              "venue": "Sha Tin",
+              "raceNumber": 1,
+              "raceClass": "Griffin",
+              "distance": 1000,
+              "surface": "Turf",
+              "going": "Good to Yielding",
+              "draw": 2,
+              "weight": 124,
+              "jockeyCode": "CJE",
+              "finishPosition": 2,
+              "fieldSize": 7,
+              "winningMargin": 2,
+              "finishTime": 56.52,
+              "odds": 10
+            },
+            {
+              "date": "2026-05-31T00:00:00.000Z",
+              "venue": "Sha Tin",
+              "raceNumber": 1,
+              "raceClass": "Griffin",
+              "distance": 1200,
+              "surface": "Turf",
+              "going": "Good",
+              "draw": 4,
+              "weight": 124,
+              "jockeyCode": "CJE",
+              "finishPosition": 5,
+              "fieldSize": 14,
+              "winningMargin": 5,
+              "finishTime": 70.37,
+              "odds": 5.7
+            }
+          ]
+        },
+        "jockey": {
+          "code": "CJE",
+          "name": "C L Chau (-2)",
+          "nationality": "CHN",
+          "weightClaim": 0,
+          "seasonStats": {
+            "wins": 46,
+            "places": 81,
+            "rides": 502,
+            "winRate": 0.0916,
+            "placeRate": 0.25298804780876494,
+            "roi": 1
+          },
+          "courseStats": []
+        },
+        "trainer": {
+          "code": "LKW",
+          "name": "K W Lui",
+          "seasonStats": {
+            "wins": 54,
+            "places": 113,
+            "rides": 522,
+            "winRate": 0.10339999999999999,
+            "placeRate": 0.31992337164750956,
+            "roi": 1
+          },
+          "courseStats": [],
+          "specialties": []
+        },
+        "horseNumber": 3,
+        "draw": 9,
+        "weight": 126,
+        "isScratched": false
+      },
+      {
+        "horse": {
+          "code": "HK_2025_L307",
+          "name": "COOGEE BAY",
+          "age": 3,
+          "sex": "G",
+          "color": "Bay",
+          "origin": "AUS",
+          "sire": "",
+          "dam": "",
+          "currentRating": 60,
+          "seasonStarts": 0,
+          "seasonWins": 0,
+          "seasonPlaces": 0,
+          "careerStarts": 0,
+          "careerWins": 0,
+          "careerPlaces": 0,
+          "totalPrizeMoney": 0,
+          "gear": [],
+          "pastPerformances": [
+            {
+              "date": "2026-05-31T00:00:00.000Z",
+              "venue": "Sha Tin",
+              "raceNumber": 1,
+              "raceClass": "Griffin",
+              "distance": 1200,
+              "surface": "Turf",
+              "going": "Good",
+              "draw": 5,
+              "weight": 126,
+              "jockeyCode": "PMF",
+              "finishPosition": 11,
+              "fieldSize": 14,
+              "winningMargin": 11,
+              "finishTime": 71.03,
+              "odds": 102
+            }
+          ]
+        },
+        "jockey": {
+          "code": "TEK",
+          "name": "K Teetan",
+          "nationality": "MAU",
+          "weightClaim": 0,
+          "seasonStats": {
+            "wins": 48,
+            "places": 95,
+            "rides": 609,
+            "winRate": 0.0788,
+            "placeRate": 0.2348111658456486,
+            "roi": 1
+          },
+          "courseStats": []
+        },
+        "trainer": {
+          "code": "NPC",
+          "name": "P C Ng",
+          "seasonStats": {
+            "wins": 27,
+            "places": 65,
+            "rides": 508,
+            "winRate": 0.053099999999999994,
+            "placeRate": 0.18110236220472442,
+            "roi": 1
+          },
+          "courseStats": [],
+          "specialties": []
+        },
+        "horseNumber": 4,
+        "draw": 8,
+        "weight": 126,
+        "isScratched": false
+      },
+      {
+        "horse": {
+          "code": "HK_2025_L335",
+          "name": "DRAGON GENERATION",
+          "age": 3,
+          "sex": "G",
+          "color": "Bay",
+          "origin": "AUS",
+          "sire": "",
+          "dam": "",
+          "currentRating": 60,
+          "seasonStarts": 0,
+          "seasonWins": 0,
+          "seasonPlaces": 0,
+          "careerStarts": 0,
+          "careerWins": 0,
+          "careerPlaces": 0,
+          "totalPrizeMoney": 0,
+          "gear": [
+            "TT"
+          ],
+          "pastPerformances": [
+            {
+              "date": "2026-06-13T00:00:00.000Z",
+              "venue": "Sha Tin",
+              "raceNumber": 1,
+              "raceClass": "Griffin",
+              "distance": 1000,
+              "surface": "Turf",
+              "going": "Good to Yielding",
+              "draw": 4,
+              "weight": 126,
+              "jockeyCode": "HEL",
+              "finishPosition": 5,
+              "fieldSize": 7,
+              "winningMargin": 5,
+              "finishTime": 57.2,
+              "odds": 21
+            }
+          ]
+        },
+        "jockey": {
+          "code": "HEL",
+          "name": "L Hewitson",
+          "nationality": "SAF",
+          "weightClaim": 0,
+          "seasonStats": {
+            "wins": 25,
+            "places": 67,
+            "rides": 454,
+            "winRate": 0.055099999999999996,
+            "placeRate": 0.2026431718061674,
+            "roi": 1
+          },
+          "courseStats": []
+        },
+        "trainer": {
+          "code": "LKW",
+          "name": "K W Lui",
+          "seasonStats": {
+            "wins": 54,
+            "places": 113,
+            "rides": 522,
+            "winRate": 0.10339999999999999,
+            "placeRate": 0.31992337164750956,
+            "roi": 1
+          },
+          "courseStats": [],
+          "specialties": []
+        },
+        "horseNumber": 5,
+        "draw": 3,
+        "weight": 126,
+        "gearChanges": [
+          "TT"
+        ],
+        "isScratched": false
+      },
+      {
+        "horse": {
+          "code": "HK_2025_L306",
+          "name": "GOLDEN GUNNERS",
+          "age": 3,
+          "sex": "G",
+          "color": "Bay",
+          "origin": "AUS",
+          "sire": "",
+          "dam": "",
+          "currentRating": 60,
+          "seasonStarts": 0,
+          "seasonWins": 0,
+          "seasonPlaces": 0,
+          "careerStarts": 0,
+          "careerWins": 0,
+          "careerPlaces": 0,
+          "totalPrizeMoney": 0,
+          "gear": [
+            "TT"
+          ],
+          "pastPerformances": [
+            {
+              "date": "2026-05-31T00:00:00.000Z",
+              "venue": "Sha Tin",
+              "raceNumber": 1,
+              "raceClass": "Griffin",
+              "distance": 1200,
+              "surface": "Turf",
+              "going": "Good",
+              "draw": 11,
+              "weight": 123,
+              "jockeyCode": "WEC",
+              "finishPosition": 13,
+              "fieldSize": 14,
+              "winningMargin": 13,
+              "finishTime": 71.37,
+              "odds": 80
+            }
+          ]
+        },
+        "jockey": {
+          "code": "MOJ",
+          "name": "J Moreira",
+          "nationality": "BRZ",
+          "weightClaim": 0,
+          "seasonStats": {
+            "wins": 27,
+            "places": 21,
+            "rides": 161,
+            "winRate": 0.1677,
+            "placeRate": 0.2981366459627329,
+            "roi": 1
+          },
+          "courseStats": []
+        },
+        "trainer": {
+          "code": "FC",
+          "name": "C Fownes",
+          "seasonStats": {
+            "wins": 66,
+            "places": 86,
+            "rides": 546,
+            "winRate": 0.1209,
+            "placeRate": 0.2783882783882784,
+            "roi": 1
+          },
+          "courseStats": [],
+          "specialties": []
+        },
+        "horseNumber": 6,
+        "draw": 4,
+        "weight": 126,
+        "gearChanges": [
+          "TT"
+        ],
+        "isScratched": false
+      },
+      {
+        "horse": {
+          "code": "HK_2025_L190",
+          "name": "KYOTO SPRING",
+          "age": 3,
+          "sex": "G",
+          "color": "Bay",
+          "origin": "AUS",
+          "sire": "",
+          "dam": "",
+          "currentRating": 60,
+          "seasonStarts": 0,
+          "seasonWins": 0,
+          "seasonPlaces": 0,
+          "careerStarts": 0,
+          "careerWins": 0,
+          "careerPlaces": 0,
+          "totalPrizeMoney": 0,
+          "gear": [
+            "XB"
+          ],
+          "pastPerformances": [
+            {
+              "date": "2026-06-13T00:00:00.000Z",
+              "venue": "Sha Tin",
+              "raceNumber": 1,
+              "raceClass": "Griffin",
+              "distance": 1000,
+              "surface": "Turf",
+              "going": "Good to Yielding",
+              "draw": 3,
+              "weight": 126,
+              "jockeyCode": "LDE",
+              "finishPosition": 7,
+              "fieldSize": 7,
+              "winningMargin": 7,
+              "finishTime": 58.87,
+              "odds": 35
+            }
+          ]
+        },
+        "jockey": {
+          "code": "LDE",
+          "name": "K C Leung",
+          "nationality": "CHN",
+          "weightClaim": 0,
+          "seasonStats": {
+            "wins": 31,
+            "places": 49,
+            "rides": 406,
+            "winRate": 0.0764,
+            "placeRate": 0.19704433497536947,
+            "roi": 1
+          },
+          "courseStats": []
+        },
+        "trainer": {
+          "code": "CCW",
+          "name": "C W Chang",
+          "seasonStats": {
+            "wins": 16,
+            "places": 41,
+            "rides": 369,
+            "winRate": 0.0434,
+            "placeRate": 0.15447154471544716,
+            "roi": 1
+          },
+          "courseStats": [],
+          "specialties": []
+        },
+        "horseNumber": 7,
+        "draw": 6,
+        "weight": 126,
+        "gearChanges": [
+          "XB"
+        ],
+        "isScratched": false
+      },
+      {
+        "horse": {
+          "code": "HK_2025_L317",
+          "name": "EVER WEALTH",
+          "age": 2,
+          "sex": "G",
+          "color": "Bay",
+          "origin": "AUS",
+          "sire": "",
+          "dam": "",
+          "currentRating": 60,
+          "seasonStarts": 0,
+          "seasonWins": 0,
+          "seasonPlaces": 0,
+          "careerStarts": 0,
+          "careerWins": 0,
+          "careerPlaces": 0,
+          "totalPrizeMoney": 0,
+          "gear": [],
+          "pastPerformances": [
+            {
+              "date": "2026-05-31T00:00:00.000Z",
+              "venue": "Sha Tin",
+              "raceNumber": 1,
+              "raceClass": "Griffin",
+              "distance": 1200,
+              "surface": "Turf",
+              "going": "Good",
+              "draw": 3,
+              "weight": 111,
+              "jockeyCode": "YHY",
+              "finishPosition": 3,
+              "fieldSize": 14,
+              "winningMargin": 3,
+              "finishTime": 69.96000000000001,
+              "odds": 4.3
+            },
+            {
+              "date": "2026-05-09T00:00:00.000Z",
+              "venue": "Sha Tin",
+              "raceNumber": 1,
+              "raceClass": "Griffin",
+              "distance": 1000,
+              "surface": "Turf",
+              "going": "Good to Yielding",
+              "draw": 8,
+              "weight": 111,
+              "jockeyCode": "YHY",
+              "finishPosition": 3,
+              "fieldSize": 10,
+              "winningMargin": 3,
+              "finishTime": 58.11,
+              "odds": 10
+            }
+          ]
+        },
+        "jockey": {
+          "code": "AA",
+          "name": "A Atzeni",
+          "nationality": "ITY",
+          "weightClaim": 0,
+          "seasonStats": {
+            "wins": 60,
+            "places": 97,
+            "rides": 565,
+            "winRate": 0.10619999999999999,
+            "placeRate": 0.2778761061946903,
+            "roi": 1
+          },
+          "courseStats": []
+        },
+        "trainer": {
+          "code": "YPF",
+          "name": "P F Yiu",
+          "seasonStats": {
+            "wins": 40,
+            "places": 96,
+            "rides": 454,
+            "winRate": 0.08810000000000001,
+            "placeRate": 0.29955947136563876,
+            "roi": 1
+          },
+          "courseStats": [],
+          "specialties": []
+        },
+        "horseNumber": 8,
+        "draw": 7,
+        "weight": 121,
+        "isScratched": false
+      },
+      {
+        "horse": {
+          "code": "HK_2025_L393",
+          "name": "QUANTUM WUKONG",
+          "age": 2,
+          "sex": "G",
+          "color": "Bay",
+          "origin": "AUS",
+          "sire": "",
+          "dam": "",
+          "currentRating": 60,
+          "seasonStarts": 0,
+          "seasonWins": 0,
+          "seasonPlaces": 0,
+          "careerStarts": 0,
+          "careerWins": 0,
+          "careerPlaces": 0,
+          "totalPrizeMoney": 0,
+          "gear": [
+            "TT"
+          ],
+          "pastPerformances": [
+            {
+              "date": "2026-06-13T00:00:00.000Z",
+              "venue": "Sha Tin",
+              "raceNumber": 1,
+              "raceClass": "Griffin",
+              "distance": 1000,
+              "surface": "Turf",
+              "going": "Good to Yielding",
+              "draw": 7,
+              "weight": 119,
+              "jockeyCode": "CCY",
+              "finishPosition": 3,
+              "fieldSize": 7,
+              "winningMargin": 3,
+              "finishTime": 56.53,
+              "odds": 3.5
+            },
+            {
+              "date": "2026-05-31T00:00:00.000Z",
+              "venue": "Sha Tin",
+              "raceNumber": 1,
+              "raceClass": "Griffin",
+              "distance": 1200,
+              "surface": "Turf",
+              "going": "Good",
+              "draw": 14,
+              "weight": 119,
+              "jockeyCode": "CCY",
+              "finishPosition": 4,
+              "fieldSize": 14,
+              "winningMargin": 4,
+              "finishTime": 70.17,
+              "odds": 9.7
+            }
+          ]
+        },
+        "jockey": {
+          "code": "CCY",
+          "name": "Y L Chung (-2)",
+          "nationality": "CHN",
+          "weightClaim": 0,
+          "seasonStats": {
+            "wins": 24,
+            "places": 37,
+            "rides": 405,
+            "winRate": 0.0593,
+            "placeRate": 0.1506172839506173,
+            "roi": 1
+          },
+          "courseStats": []
+        },
+        "trainer": {
+          "code": "CAS",
+          "name": "A S Cruz",
+          "seasonStats": {
+            "wins": 45,
+            "places": 79,
+            "rides": 584,
+            "winRate": 0.0771,
+            "placeRate": 0.21232876712328766,
+            "roi": 1
+          },
+          "courseStats": [],
+          "specialties": []
+        },
+        "horseNumber": 9,
+        "draw": 5,
+        "weight": 121,
+        "gearChanges": [
+          "TT"
+        ],
+        "isScratched": false
+      },
+      {
+        "horse": {
+          "code": "HK_2025_L387",
+          "name": "ULTRA BOLT",
+          "age": 2,
+          "sex": "G",
+          "color": "Bay",
+          "origin": "AUS",
+          "sire": "",
+          "dam": "",
+          "currentRating": 60,
+          "seasonStarts": 0,
+          "seasonWins": 0,
+          "seasonPlaces": 0,
+          "careerStarts": 0,
+          "careerWins": 0,
+          "careerPlaces": 0,
+          "totalPrizeMoney": 0,
+          "gear": [],
+          "pastPerformances": []
+        },
+        "jockey": {
+          "code": "CML",
+          "name": "M Chadwick",
+          "nationality": "CHN",
+          "weightClaim": 0,
+          "seasonStats": {
+            "wins": 12,
+            "places": 58,
+            "rides": 407,
+            "winRate": 0.029500000000000002,
+            "placeRate": 0.171990171990172,
+            "roi": 1
+          },
+          "courseStats": []
+        },
+        "trainer": {
+          "code": "YCH",
+          "name": "C H Yip",
+          "seasonStats": {
+            "wins": 21,
+            "places": 40,
+            "rides": 425,
+            "winRate": 0.049400000000000006,
+            "placeRate": 0.14352941176470588,
+            "roi": 1
+          },
+          "courseStats": [],
+          "specialties": []
+        },
+        "horseNumber": 10,
+        "draw": 10,
+        "weight": 121,
+        "isScratched": false
+      }
+    ]
+  },
+  "winOdds": {
+    "1": 1.4,
+    "2": 6.9,
+    "3": 17,
+    "4": 64,
+    "5": 33,
+    "6": 25,
+    "7": 46,
+    "8": 10,
+    "9": 10,
+    "10": 30
+  }
+}

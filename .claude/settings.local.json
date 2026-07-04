@@ -135,7 +135,10 @@
       "Bash(PLAYWRIGHT_BROWSERS_PATH=0 npx tsx tools/backtest-trio-gap2.ts --venue=HV --runs=5000)",
       "Bash(awk '/## By Month/{f=1}/## By Racing Day/{f=0}f' data/reviews/trio_gap2_ST.md)",
       "Bash(awk '/## By Month/{f=1}/## By Racing Day/{f=0}f' data/reviews/trio_gap2_HV.md)",
-      "Bash(awk '/STRATEGY B/{f=1} f' data/reports/trio_strategy_20260701_ST_R5.md)"
+      "Bash(awk '/STRATEGY B/{f=1} f' data/reports/trio_strategy_20260701_ST_R5.md)",
+      "Bash(PLAYWRIGHT_BROWSERS_PATH=0 npx tsx tools/analyze-race.ts --date 2026-07-04 --venue \"Sha Tin\" --race 1 --form-data all --bankroll 10000 --kelly 0.35 --min-edge 5)",
+      "Bash(awk '/Win Probability Rankings/{f=1} f&&/^  #/{print} /Avg differentiation/{f=0}' /tmp/st0704_r1.txt)",
+      "Bash(awk '/Market Efficiency/{f=1} f' /tmp/st0704_r1.txt)"
     ]
   }
 }
