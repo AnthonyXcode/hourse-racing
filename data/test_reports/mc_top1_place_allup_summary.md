@@ -45,7 +45,8 @@
 | 28 | 24 Jun | HV | Turf | Good | 9 | 28.5% | 59.1% | 6/9 | 66.7% | ❌✅✅✅✅❌❌✅✅ | 4 (R2-R5) |
 | 29 | 27 Jun | ST | Turf | Good | 11 | 32.2% | 65.1% | 6/11 | 54.5% | ✅❌❌❌❌❌✅✅✅✅✅ | 5 (R7-R11) |
 | 30 | 1 Jul | ST | Turf | Good | 11 | 33.5% | 66.0% | 6/11 | 54.5% | ✅✅✅✅❌✅❌✅❌❌❌ | 4 (R1-R4) |
-| **31** | **4 Jul** | **ST** | **Turf** | **Good** | **11** | **37.9%** | **73.0%** | **7/11** | **63.6%** | **✅✅✅✅✅❌❌❌✅✅❌** | **5 (R1-R5)** |
+| 31 | 4 Jul | ST | Turf | Good | 11 | 37.9% | 73.0% | 7/11 | 63.6% | ✅✅✅✅✅❌❌❌✅✅❌ | 5 (R1-R5) |
+| **32** | **8 Jul** | **HV** | **Turf** | **Yielding** | **9** | **28.3%** | **60.9%** | **6/9** | **66.7%** | **✅✅✅✅❌✅✅❌❌** | **4 (R1-R4)** |
 
 \*Meeting 8 **R1** (6 runners): MC #1 **#6** ran **3rd** but HKJC Place pool pays **two** places only → **$0** dividend; counts as **❌** for streaks and all-ups (same dividend logic as other meetings).
 
@@ -1667,3 +1668,23 @@ Place dividends (MC #1 when placed): R1=$14.50, R3=$12.00, R5=$10.50, R8=$18.00
 **Placed:** 7/11 (63.6%) | **Pattern:** ✅✅✅✅✅❌❌❌✅✅❌ | **Max streak:** 5 (R1-R5)
 
 **Trio card note (R1–R11):** Strategy A **2/11** (-$330, -46.5%) — LOSS; Strategy B report **4/11** (-$245, -21.9%) — WON; Strategy B MC top-6 **3/11** (-$292, -26.5%). MC#1 placed 7/11 but A converted only 2 (R1 $36, R4 $344). The two A-only rules backfired: 雙膽拖 0/3 (R3/R6/R8) and tight Mode-A pools gapped 4 fat frames (R2 $1,581, R9 $1,872, R5 $980, R10). B's single-banker + wider legs caught R3 ($428) and R10 ($67) that A missed. Lesson: drop 雙膽拖, widen pools.
+
+## Meeting 32: Happy Valley | 8 Jul 2026 (9 races)
+
+**MC #1** = raw MC Win% from trio_strategy_20260708_HV_R*.md (10,000 iterations, form=all). **Results** from data/historical/results_20260708_HV.json. Place $ = HKJC place dividend. Going: Yielding.
+
+| Race | Class | Dist (m) | MC #1 | MC Win% | MC Place% | Placed? | Place $ (if placed) |
+|------|-------|----------|-------|---------|-----------|---------|---------------------|
+| R1 | Class 5 | 1000 | #1 COUNTRY DANCER | 26.8% | 59.8% | ✅ 2nd | 30.5 |
+| R2 | Class 4 | 1650 | #6 SHOOTING TO TOP | 22.6% | 52.4% | ✅ 2nd | 17 |
+| R3 | Class 4 | 1000 | #4 BEAUTY SHOW | 38.5% | 74.3% | ✅ 2nd | 14.5 |
+| R4 | Class 4 | 1650 | #1 FORZA TORO | 25.2% | 61.7% | ✅ 1st | 13.5 |
+| R5 | Class 4 | 1200 | #3 SUPERB KING | 27.8% | 59.3% | ❌ (6th) | — |
+| R6 | Class 4 | 1200 | #4 LEADING AGILITY | 25.6% | 55.9% | ✅ 1st | 12 |
+| R7 | Class 3 | 1000 | #3 BUNTA BABY | 37.2% | 69.6% | ✅ 3rd | 20 |
+| R8 | Class 2 | 1800 | #2 BEAUTY ALLIANCE | 23.3% | 54.4% | ❌ (12th) | — |
+| R9 | Class 3 | 1200 | #7 KING PROFIT | 27.5% | 60.8% | ❌ (8th) | — |
+
+**Placed:** 6/9 (66.7%) | **Pattern:** ✅✅✅✅❌✅✅❌❌ | **Max streak:** 4 (R1-R4)
+
+**Trio card note (R1–R9):** Strategy A **5/9** (+$1,510, ROI +184.1%) — WON, best meeting to date; Strategy B report **4/9** (+$956, +88.5%); Strategy B MC top-6 **4/9** (+$1,136, +126.2%). All three profitable (favourite-friendly HV, MC#1 6/9). A beat B on WIDTH: R6 banker #4 won with #3/#2 behind, only A's 6-horse Mode-B pool held #2 (both B variants trimmed it). MED-HIGH bucket went 4/4 (+496%). 雙膽拖 stayed dropped — all 5 hits clean single-banker. Fat frames R9 $1,629 / R8 $1,159 missed on banker failures (the flat/lean-PASS races). DT pools all 4 captured after dead-heat parse fix.

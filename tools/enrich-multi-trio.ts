@@ -33,12 +33,29 @@ export async function enrichMeeting(ymd: string, vc: string, delay = 300, overwr
   if (!overwrite && races.some((r) => r.doubleTrioDividend !== undefined || r.tripleTrioDividend !== undefined)) {
     return `skip ${ymd}_${vc}: already enriched`;
   }
-  // top-3 set → race number
-  const top3ToRace = new Map<string, number>();
+  // Placed set (finishPosition <= 3) per race. Dead-heats put >3 horses here, so a
+  // winning DT/TT leg trio is matched by SUBSET (all 3 horses placed in that race)
+  // rather than an exact slice(0,3) equality — which would miss the tied combo.
+  const placedByRace = new Map<number, Set<number>>();
   for (const r of races) {
-    const t3 = (r.finishOrder ?? []).slice(0, 3).map((f: any) => f.horseNumber);
-    if (t3.length === 3) top3ToRace.set(setKey(t3), r.raceNumber);
+    const placed = (r.finishOrder ?? [])
+      .filter((f: any) => f.finishPosition <= 3)
+      .map((f: any) => f.horseNumber);
+    if (placed.length >= 3) placedByRace.set(r.raceNumber, new Set<number>(placed));
   }
+  // A leg's winning trio matches a race when at least 3 of that race's placed
+  // horses appear in the combo tokens. Dead-heats can list a "1,3>5,12"-style
+  // combo (extra token / ">" separator), so we compare by intersection size,
+  // not exact/subset equality.
+  const matchRace = (tokens: number[]): number | undefined => {
+    const tset = new Set(tokens);
+    for (const [rn, placed] of placedByRace) {
+      let hit = 0;
+      for (const h of placed) if (tset.has(h)) hit++;
+      if (hit >= 3) return rn;
+    }
+    return undefined;
+  };
   const apiDate = `${ymd.slice(0, 4)}/${ymd.slice(4, 6)}/${ymd.slice(6, 8)}`;
 
   const found = { double: 0, triple: 0 };
@@ -56,10 +73,11 @@ export async function enrichMeeting(ymd: string, vc: string, delay = 300, overwr
       const isTriple = /TRIPLE/i.test(label);
       const sig = (isTriple ? "T:" : "D:") + combos;
       if (seen.has(sig)) continue; seen.add(sig);
-      const trios = combos.split("/").map((s) => s.split(",").map(Number));
-      // valid only if every leg has exactly 3 numbers (DT=2 legs, TT=3 legs)
-      if (!(trios.length === (isTriple ? 3 : 2) && trios.every((t) => t.length === 3))) continue;
-      const legRaces = trios.map((t) => top3ToRace.get(setKey(t))).filter((x): x is number => x !== undefined);
+      // Extract each leg's numbers with \d+ so HTML entities / dead-heat markers
+      // (e.g. "1,3&gt;5,12") don't produce NaN. DT = 2 legs, TT = 3 legs.
+      const trios = combos.split("/").map((s) => (s.match(/\d+/g) ?? []).map(Number));
+      if (!(trios.length === (isTriple ? 3 : 2) && trios.every((t) => t.length >= 3))) continue;
+      const legRaces = trios.map((t) => matchRace(t)).filter((x): x is number => x !== undefined);
       if (legRaces.length !== trios.length) continue; // couldn't match all legs
       const dividend = Number.isFinite(div) ? div : 0;
       for (const rn of legRaces) {

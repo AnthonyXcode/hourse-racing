@@ -28,7 +28,9 @@
       "WebFetch(domain:racing.hkjc.com)",
       "WebFetch(domain:www.scmp.com)",
       "Skill(plan-eng-review)",
-      "Skill(plan-eng-review:*)"
+      "Skill(plan-eng-review:*)",
+      "Bash(cd /Users/anthonycyy/Documents/HR-project/hourse-racing *)",
+      "Bash(curl -s \"https://racing.hkjc.com/racing/information/English/Racing/LocalResults.aspx?RaceDate=2026/06/24&Racecourse=HV&RaceNo=9\" -o /tmp/hv24r9.html)"
     ]
   }
 }
