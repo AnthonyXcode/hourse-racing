@@ -670,7 +670,18 @@
       72
     ],
     "tierceDividend": 1375,
-    "trioDividend": 277
+    "trioDividend": 277,
+    "doubleTrioDividend": 10486,
+    "doubleTrioLegs": [
+      3,
+      3
+    ],
+    "tripleTrioDividend": 1435033,
+    "tripleTrioLegs": [
+      3,
+      5,
+      6
+    ]
   },
   {
     "id": "2025-12-03-HV-4",
@@ -1131,7 +1142,7 @@
     ],
     "tripleTrioDividend": 1435033,
     "tripleTrioLegs": [
-      4,
+      3,
       5,
       6
     ]
@@ -1363,7 +1374,7 @@
     ],
     "tripleTrioDividend": 1435033,
     "tripleTrioLegs": [
-      4,
+      3,
       5,
       6
     ]

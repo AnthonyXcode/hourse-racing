@@ -593,7 +593,12 @@
     ],
     "tierceDividend": 3793,
     "trioDividend": 286,
-    "first4Dividend": 180
+    "first4Dividend": 180,
+    "doubleTrioDividend": 4275,
+    "doubleTrioLegs": [
+      9,
+      3
+    ]
   },
   {
     "id": "2024-09-22-ST-4",
@@ -834,7 +839,7 @@
     "first4Dividend": 13520,
     "doubleTrioDividend": 86943,
     "doubleTrioLegs": [
-      10,
+      3,
       4
     ]
   },
@@ -1906,7 +1911,7 @@
     "doubleTrioDividend": 4275,
     "doubleTrioLegs": [
       9,
-      10
+      3
     ]
   },
   {

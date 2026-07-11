@@ -1820,7 +1820,12 @@
     ],
     "tierceDividend": 991,
     "trioDividend": 143,
-    "first4Dividend": 205
+    "first4Dividend": 205,
+    "doubleTrioDividend": 1671,
+    "doubleTrioLegs": [
+      8,
+      9
+    ]
   },
   {
     "id": "2024-06-15-ST-9",
@@ -2010,7 +2015,12 @@
     ],
     "tierceDividend": 477,
     "trioDividend": 95,
-    "first4Dividend": 146
+    "first4Dividend": 146,
+    "doubleTrioDividend": 1671,
+    "doubleTrioLegs": [
+      8,
+      9
+    ]
   },
   {
     "id": "2024-06-15-ST-10",

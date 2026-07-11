@@ -365,7 +365,7 @@
     "doubleTrioDividend": 1401,
     "doubleTrioLegs": [
       2,
-      8
+      3
     ]
   },
   {
@@ -588,7 +588,12 @@
     ],
     "tierceDividend": 522,
     "trioDividend": 103,
-    "first4Dividend": 501
+    "first4Dividend": 501,
+    "doubleTrioDividend": 370884,
+    "doubleTrioLegs": [
+      3,
+      9
+    ]
   },
   {
     "id": "2024-07-04-HV-4",
@@ -1949,7 +1954,7 @@
     "first4Dividend": 5738,
     "doubleTrioDividend": 370884,
     "doubleTrioLegs": [
-      8,
+      3,
       9
     ]
   }

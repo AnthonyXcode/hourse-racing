@@ -365,7 +365,7 @@
     "doubleTrioDividend": 17858,
     "doubleTrioLegs": [
       2,
-      9
+      3
     ]
   },
   {
@@ -588,7 +588,12 @@
     ],
     "tierceDividend": 6080,
     "trioDividend": 982,
-    "first4Dividend": 2720
+    "first4Dividend": 2720,
+    "doubleTrioDividend": 43284,
+    "doubleTrioLegs": [
+      8,
+      3
+    ]
   },
   {
     "id": "2025-05-14-HV-4",
@@ -1644,7 +1649,7 @@
     "doubleTrioDividend": 43284,
     "doubleTrioLegs": [
       8,
-      9
+      3
     ]
   },
   {

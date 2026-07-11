@@ -793,7 +793,18 @@
     "quinellaDividend": 32.5,
     "tierceDividend": 191,
     "trioDividend": 18,
-    "first4Dividend": 21
+    "first4Dividend": 21,
+    "doubleTrioDividend": 2601,
+    "doubleTrioLegs": [
+      4,
+      4
+    ],
+    "tripleTrioDividend": 3098438,
+    "tripleTrioLegs": [
+      4,
+      6,
+      7
+    ]
   },
   {
     "id": "2025-01-01-ST-5",
@@ -1320,7 +1331,7 @@
     ],
     "tripleTrioDividend": 3098438,
     "tripleTrioLegs": [
-      5,
+      4,
       6,
       7
     ]
@@ -1585,7 +1596,7 @@
     ],
     "tripleTrioDividend": 3098438,
     "tripleTrioLegs": [
-      5,
+      4,
       6,
       7
     ]

@@ -1,5 +1,6 @@
 {
   "permissions": {
+    "defaultMode": "bypassPermissions",
     "allow": [
       "Bash(npx tsx *)",
       "Bash(PLAYWRIGHT_BROWSERS_PATH=0 npx tsx *)",

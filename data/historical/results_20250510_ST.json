@@ -769,7 +769,18 @@
     ],
     "tierceDividend": 768,
     "trioDividend": 231,
-    "first4Dividend": 177
+    "first4Dividend": 177,
+    "doubleTrioDividend": 11197,
+    "doubleTrioLegs": [
+      5,
+      3
+    ],
+    "tripleTrioDividend": 4571203,
+    "tripleTrioLegs": [
+      4,
+      5,
+      3
+    ]
   },
   {
     "id": "2025-05-10-ST-4",
@@ -1026,14 +1037,14 @@
     "first4Dividend": 3790,
     "doubleTrioDividend": 54776,
     "doubleTrioLegs": [
-      6,
+      3,
       4
     ],
     "tripleTrioDividend": 4571203,
     "tripleTrioLegs": [
       4,
       5,
-      6
+      3
     ]
   },
   {
@@ -1292,13 +1303,13 @@
     "doubleTrioDividend": 11197,
     "doubleTrioLegs": [
       5,
-      6
+      3
     ],
     "tripleTrioDividend": 4571203,
     "tripleTrioLegs": [
       4,
       5,
-      6
+      3
     ]
   },
   {

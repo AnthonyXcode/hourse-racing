@@ -1992,7 +1992,12 @@
     ],
     "tierceDividend": 22868,
     "trioDividend": 2322,
-    "first4Dividend": 2814
+    "first4Dividend": 2814,
+    "doubleTrioDividend": 32681,
+    "doubleTrioLegs": [
+      9,
+      9
+    ]
   },
   {
     "id": "2025-03-30-ST-10",

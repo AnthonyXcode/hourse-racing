@@ -1284,9 +1284,9 @@
     "tierceDividend": 184037,
     "trioDividend": 23921,
     "first4Dividend": 17205,
-    "doubleTrioDividend": 437455,
+    "doubleTrioDividend": 12863,
     "doubleTrioLegs": [
-      4,
+      6,
       5
     ]
   },
@@ -1462,7 +1462,12 @@
     ],
     "tierceDividend": 8859,
     "trioDividend": 840,
-    "first4Dividend": 392
+    "first4Dividend": 392,
+    "doubleTrioDividend": 12863,
+    "doubleTrioLegs": [
+      6,
+      5
+    ]
   },
   {
     "id": "2025-06-22-ST-7",

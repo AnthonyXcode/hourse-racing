@@ -892,7 +892,12 @@
       61
     ],
     "tierceDividend": 1906,
-    "trioDividend": 317
+    "trioDividend": 317,
+    "doubleTrioDividend": 31525,
+    "doubleTrioLegs": [
+      8,
+      4
+    ]
   },
   {
     "id": "2026-01-07-HV-5",
@@ -1116,7 +1121,7 @@
     "trioDividend": 826,
     "doubleTrioDividend": 29773,
     "doubleTrioLegs": [
-      9,
+      4,
       5
     ],
     "tripleTrioDividend": 5678204,
@@ -1813,7 +1818,7 @@
     "doubleTrioDividend": 31525,
     "doubleTrioLegs": [
       8,
-      9
+      4
     ]
   },
   {

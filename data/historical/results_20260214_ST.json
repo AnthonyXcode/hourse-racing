@@ -1688,7 +1688,12 @@
       58.5
     ],
     "tierceDividend": 1194,
-    "trioDividend": 174
+    "trioDividend": 174,
+    "doubleTrioDividend": 75991,
+    "doubleTrioLegs": [
+      7,
+      8
+    ]
   },
   {
     "id": "2026-02-14-ST-8",
@@ -1941,7 +1946,12 @@
       101
     ],
     "tierceDividend": 27360,
-    "trioDividend": 2539
+    "trioDividend": 2539,
+    "doubleTrioDividend": 75991,
+    "doubleTrioLegs": [
+      7,
+      8
+    ]
   },
   {
     "id": "2026-02-14-ST-9",

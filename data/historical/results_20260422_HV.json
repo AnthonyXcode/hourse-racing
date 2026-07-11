@@ -425,7 +425,12 @@
     ],
     "tierceDividend": 1971,
     "trioDividend": 367,
-    "first4Dividend": 215
+    "first4Dividend": 215,
+    "doubleTrioDividend": 92449,
+    "doubleTrioLegs": [
+      2,
+      3
+    ]
   },
   {
     "id": "2026-04-22-HV-3",
@@ -647,7 +652,12 @@
     ],
     "tierceDividend": 10558,
     "trioDividend": 2450,
-    "first4Dividend": 5716
+    "first4Dividend": 5716,
+    "doubleTrioDividend": 92449,
+    "doubleTrioLegs": [
+      2,
+      3
+    ]
   },
   {
     "id": "2026-04-22-HV-4",

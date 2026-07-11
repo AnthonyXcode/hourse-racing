@@ -737,7 +737,12 @@
     ],
     "tierceDividend": 2374,
     "trioDividend": 305,
-    "first4Dividend": 467
+    "first4Dividend": 467,
+    "doubleTrioDividend": 149731,
+    "doubleTrioLegs": [
+      3,
+      4
+    ]
   },
   {
     "id": "2024-10-20-ST-4",
@@ -997,6 +1002,11 @@
       4,
       5,
       6
+    ],
+    "doubleTrioDividend": 1503,
+    "doubleTrioLegs": [
+      7,
+      4
     ]
   },
   {
@@ -1732,7 +1742,12 @@
     ],
     "tierceDividend": 573,
     "trioDividend": 187,
-    "first4Dividend": 177
+    "first4Dividend": 177,
+    "doubleTrioDividend": 433206,
+    "doubleTrioLegs": [
+      9,
+      7
+    ]
   },
   {
     "id": "2024-10-20-ST-8",
@@ -2228,7 +2243,7 @@
     "doubleTrioDividend": 433206,
     "doubleTrioLegs": [
       9,
-      10
+      7
     ]
   },
   {

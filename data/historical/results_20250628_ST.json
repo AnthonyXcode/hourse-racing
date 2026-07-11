@@ -251,7 +251,12 @@
     ],
     "tierceDividend": 4438,
     "trioDividend": 494,
-    "first4Dividend": 1131
+    "first4Dividend": 1131,
+    "doubleTrioDividend": 59607,
+    "doubleTrioLegs": [
+      1,
+      9
+    ]
   },
   {
     "id": "2025-06-28-ST-2",
@@ -1191,6 +1196,12 @@
     "doubleTrioLegs": [
       4,
       5
+    ],
+    "tripleTrioDividend": 2153086,
+    "tripleTrioLegs": [
+      5,
+      6,
+      7
     ]
   },
   {
@@ -1445,7 +1456,18 @@
     ],
     "tierceDividend": 716,
     "trioDividend": 119,
-    "first4Dividend": 285
+    "first4Dividend": 285,
+    "doubleTrioDividend": 6235,
+    "doubleTrioLegs": [
+      6,
+      7
+    ],
+    "tripleTrioDividend": 2153086,
+    "tripleTrioLegs": [
+      5,
+      6,
+      7
+    ]
   },
   {
     "id": "2025-06-28-ST-7",
@@ -1683,7 +1705,18 @@
     ],
     "tierceDividend": 1855,
     "trioDividend": 426,
-    "first4Dividend": 1000
+    "first4Dividend": 1000,
+    "doubleTrioDividend": 6235,
+    "doubleTrioLegs": [
+      6,
+      7
+    ],
+    "tripleTrioDividend": 2153086,
+    "tripleTrioLegs": [
+      5,
+      6,
+      7
+    ]
   },
   {
     "id": "2025-06-28-ST-8",
@@ -2087,7 +2120,7 @@
     "first4Dividend": 10802,
     "doubleTrioDividend": 59607,
     "doubleTrioLegs": [
-      8,
+      1,
       9
     ]
   },

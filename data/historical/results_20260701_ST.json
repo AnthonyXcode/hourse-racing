@@ -1965,7 +1965,12 @@
     ],
     "tierceDividend": 2967,
     "trioDividend": 786,
-    "first4Dividend": 7705
+    "first4Dividend": 7705,
+    "doubleTrioDividend": 62042,
+    "doubleTrioLegs": [
+      10,
+      8
+    ]
   },
   {
     "id": "2026-07-01-ST-9",
@@ -2222,7 +2227,7 @@
     "first4Dividend": 642,
     "doubleTrioDividend": 15807,
     "doubleTrioLegs": [
-      11,
+      8,
       9
     ]
   },
@@ -2482,7 +2487,7 @@
     "doubleTrioDividend": 62042,
     "doubleTrioLegs": [
       10,
-      11
+      8
     ]
   },
   {

@@ -1661,7 +1661,12 @@
     ],
     "tierceDividend": 405,
     "trioDividend": 168,
-    "first4Dividend": 696
+    "first4Dividend": 696,
+    "doubleTrioDividend": 1867,
+    "doubleTrioLegs": [
+      7,
+      7
+    ]
   },
   {
     "id": "2025-03-15-ST-8",

@@ -2224,7 +2224,12 @@
     ],
     "tierceDividend": 138,
     "trioDividend": 50,
-    "first4Dividend": 49
+    "first4Dividend": 49,
+    "doubleTrioDividend": 6411,
+    "doubleTrioLegs": [
+      10,
+      11
+    ]
   },
   {
     "id": "2024-05-05-ST-11",
@@ -2462,6 +2467,11 @@
     ],
     "tierceDividend": 4306,
     "trioDividend": 686,
-    "first4Dividend": 563
+    "first4Dividend": 563,
+    "doubleTrioDividend": 6411,
+    "doubleTrioLegs": [
+      10,
+      11
+    ]
   }
 ]

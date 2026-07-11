@@ -203,7 +203,12 @@
     ],
     "tierceDividend": 1648,
     "trioDividend": 189,
-    "first4Dividend": 241
+    "first4Dividend": 241,
+    "doubleTrioDividend": 18753,
+    "doubleTrioLegs": [
+      1,
+      2
+    ]
   },
   {
     "id": "2024-01-17-HV-2",
@@ -409,7 +414,12 @@
     ],
     "tierceDividend": 1781,
     "trioDividend": 495,
-    "first4Dividend": 914
+    "first4Dividend": 914,
+    "doubleTrioDividend": 18753,
+    "doubleTrioLegs": [
+      1,
+      2
+    ]
   },
   {
     "id": "2024-01-17-HV-3",

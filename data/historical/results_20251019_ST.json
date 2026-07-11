@@ -1019,7 +1019,12 @@
       1
     ],
     "tierceDividend": 42125,
-    "trioDividend": 8207
+    "trioDividend": 8207,
+    "doubleTrioDividend": 6778,
+    "doubleTrioLegs": [
+      7,
+      4
+    ]
   },
   {
     "id": "2025-10-19-ST-5",
@@ -1756,7 +1761,12 @@
       361.5
     ],
     "tierceDividend": 2114,
-    "trioDividend": 725
+    "trioDividend": 725,
+    "doubleTrioDividend": 6778,
+    "doubleTrioLegs": [
+      7,
+      4
+    ]
   },
   {
     "id": "2025-10-19-ST-8",

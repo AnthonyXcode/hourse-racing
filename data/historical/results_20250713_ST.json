@@ -489,7 +489,12 @@
     ],
     "tierceDividend": 708,
     "trioDividend": 236,
-    "first4Dividend": 1471
+    "first4Dividend": 1471,
+    "doubleTrioDividend": 51344,
+    "doubleTrioLegs": [
+      2,
+      3
+    ]
   },
   {
     "id": "2025-07-13-ST-3",
@@ -743,7 +748,12 @@
     ],
     "tierceDividend": 50739,
     "trioDividend": 5103,
-    "first4Dividend": 7881
+    "first4Dividend": 7881,
+    "doubleTrioDividend": 51344,
+    "doubleTrioLegs": [
+      2,
+      3
+    ]
   },
   {
     "id": "2025-07-13-ST-4",

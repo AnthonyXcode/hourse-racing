@@ -202,7 +202,12 @@
       31.5
     ],
     "tierceDividend": 653,
-    "trioDividend": 94
+    "trioDividend": 94,
+    "doubleTrioDividend": 16295,
+    "doubleTrioLegs": [
+      1,
+      2
+    ]
   },
   {
     "id": "2025-11-02-HV-2",
@@ -407,7 +412,12 @@
       173
     ],
     "tierceDividend": 5043,
-    "trioDividend": 1241
+    "trioDividend": 1241,
+    "doubleTrioDividend": 16295,
+    "doubleTrioLegs": [
+      1,
+      2
+    ]
   },
   {
     "id": "2025-11-02-HV-3",
