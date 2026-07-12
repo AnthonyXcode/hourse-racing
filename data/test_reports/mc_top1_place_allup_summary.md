@@ -47,6 +47,7 @@
 | 30 | 1 Jul | ST | Turf | Good | 11 | 33.5% | 66.0% | 6/11 | 54.5% | ✅✅✅✅❌✅❌✅❌❌❌ | 4 (R1-R4) |
 | 31 | 4 Jul | ST | Turf | Good | 11 | 37.9% | 73.0% | 7/11 | 63.6% | ✅✅✅✅✅❌❌❌✅✅❌ | 5 (R1-R5) |
 | **32** | **8 Jul** | **HV** | **Turf** | **Yielding** | **9** | **28.3%** | **60.9%** | **6/9** | **66.7%** | **✅✅✅✅❌✅✅❌❌** | **4 (R1-R4)** |
+| **33** | **12 Jul** | **ST** | **Turf** | **Good to Firm** | **11** | **35.7%** | **68.7%** | **5/11** | **45.5%** | **✅✅✅❌✅❌❌❌✅❌❌** | **3 (R1-R3)** |
 
 \*Meeting 8 **R1** (6 runners): MC #1 **#6** ran **3rd** but HKJC Place pool pays **two** places only → **$0** dividend; counts as **❌** for streaks and all-ups (same dividend logic as other meetings).
 
@@ -1688,3 +1689,25 @@ Place dividends (MC #1 when placed): R1=$14.50, R3=$12.00, R5=$10.50, R8=$18.00
 **Placed:** 6/9 (66.7%) | **Pattern:** ✅✅✅✅❌✅✅❌❌ | **Max streak:** 4 (R1-R4)
 
 **Trio card note (R1–R9):** Strategy A **5/9** (+$1,510, ROI +184.1%) — WON, best meeting to date; Strategy B report **4/9** (+$956, +88.5%); Strategy B MC top-6 **4/9** (+$1,136, +126.2%). All three profitable (favourite-friendly HV, MC#1 6/9). A beat B on WIDTH: R6 banker #4 won with #3/#2 behind, only A's 6-horse Mode-B pool held #2 (both B variants trimmed it). MED-HIGH bucket went 4/4 (+496%). 雙膽拖 stayed dropped — all 5 hits clean single-banker. Fat frames R9 $1,629 / R8 $1,159 missed on banker failures (the flat/lean-PASS races). DT pools all 4 captured after dead-heat parse fix.
+
+## Meeting 33: Sha Tin | 12 Jul 2026 (11 races)
+
+**MC #1** = raw MC Win% from trio_strategy_20260712_ST_R*.md (10,000 iterations, form=all). **Results** from data/historical/results_20260712_ST.json. Place $ = HKJC place dividend. Going: Good to Firm.
+
+| Race | Class | Dist (m) | MC #1 | MC Win% | MC Place% | Placed? | Place $ (if placed) |
+|------|-------|----------|-------|---------|-----------|---------|---------------------|
+| R1 | Class 5 | 1800 | #2 HAILTOTHEVICTORS | 51.9% | 84.9% | ✅ 3rd | 33.5 |
+| R2 | Class 5 | 1400 | #7 DOUBLE BINGO | 29.1% | 64.4% | ✅ 1st | 13.5 |
+| R3 | Class 4 | 1400 | #10 VOYAGE BOSS | 24.3% | 56.5% | ✅ 3rd | 14.5 |
+| R4 | Class 4 | 1400 | #6 SUPER LOVE | 26.4% | 55.9% | ❌ (4th) | — |
+| R5 | Class 4 | 1200 | #1 LUNAR DASH | 34.1% | 67.4% | ✅ 3rd | 14.5 |
+| R6 | Class 4 | 1200 | #1 OLDTOWN | 37.9% | 70.2% | ❌ (6th) | — |
+| R7 | Class 4 | 1600 | #1 MIGHTY STEED | 40.1% | 72.5% | ❌ (7th) | — |
+| R8 | Class 1 | 1600 | #4 SOLEIL FIGHTER | 35.2% | 68.9% | ❌ (4th) | — |
+| R9 | Class 3 | 1200 | #1 CROSSBORDER PEGASUS | 36.6% | 73.3% | ✅ 2nd | 14.5 |
+| R10 | Class 3 | 1600 | #1 ENDUED | 30.4% | 62.5% | ❌ (11th) | — |
+| R11 | Class 3 | 1400 | #1 SUPER EXPRESS | 46.9% | 79.0% | ❌ (5th) | — |
+
+**Placed:** 5/11 (45.5%) | **Pattern:** ✅✅✅❌✅❌❌❌✅❌❌ | **Max streak:** 3 (R1-R3)
+
+**Trio card note (R1–R11):** WIPEOUT — Strategy A **0/11** (−$860, ROI −100%); Strategy B report (Place%>20+swap) **1/11** (−$988, −85.2%, only R3 via #9 odds-swap); Strategy B MC top-6 **0/11** (−$1,100, −100%). Six banker failures incl. three deep-longshot placings (#12@68 R4, #6@93 R7, #10@97 R6). MC lost all 3 divergence calls (R6/R7/R8); the R7 EXTREME-divergence PASS warning was vindicated (market fav #3 won, MC-40% banker #1 failed). Only structural positive: the odds<10 swap (#9 into R3) was the day's sole hit → fold swap into Strategy A. R10 Pattern A near-miss (all 3 placers in B's widened legs, only failed banker cost it). Cold banker sample (45%), treat as variance not structural break.
