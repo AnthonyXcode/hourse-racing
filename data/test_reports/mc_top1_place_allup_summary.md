@@ -48,6 +48,7 @@
 | 31 | 4 Jul | ST | Turf | Good | 11 | 37.9% | 73.0% | 7/11 | 63.6% | ✅✅✅✅✅❌❌❌✅✅❌ | 5 (R1-R5) |
 | **32** | **8 Jul** | **HV** | **Turf** | **Yielding** | **9** | **28.3%** | **60.9%** | **6/9** | **66.7%** | **✅✅✅✅❌✅✅❌❌** | **4 (R1-R4)** |
 | **33** | **12 Jul** | **ST** | **Turf** | **Good to Firm** | **11** | **35.7%** | **68.7%** | **5/11** | **45.5%** | **✅✅✅❌✅❌❌❌✅❌❌** | **3 (R1-R3)** |
+| **34** | **15 Jul** | **HV** | **Turf** | **Good to Yielding** | **9** | **25.7%** | **55.4%** | **4/9** | **44.4%** | **❌❌✅✅✅❌❌❌✅** | **3 (R3-R5)** |
 
 \*Meeting 8 **R1** (6 runners): MC #1 **#6** ran **3rd** but HKJC Place pool pays **two** places only → **$0** dividend; counts as **❌** for streaks and all-ups (same dividend logic as other meetings).
 
@@ -1711,3 +1712,23 @@ Place dividends (MC #1 when placed): R1=$14.50, R3=$12.00, R5=$10.50, R8=$18.00
 **Placed:** 5/11 (45.5%) | **Pattern:** ✅✅✅❌✅❌❌❌✅❌❌ | **Max streak:** 3 (R1-R3)
 
 **Trio card note (R1–R11):** WIPEOUT — Strategy A **0/11** (−$860, ROI −100%); Strategy B report (Place%>20+swap) **1/11** (−$988, −85.2%, only R3 via #9 odds-swap); Strategy B MC top-6 **0/11** (−$1,100, −100%). Six banker failures incl. three deep-longshot placings (#12@68 R4, #6@93 R7, #10@97 R6). MC lost all 3 divergence calls (R6/R7/R8); the R7 EXTREME-divergence PASS warning was vindicated (market fav #3 won, MC-40% banker #1 failed). Only structural positive: the odds<10 swap (#9 into R3) was the day's sole hit → fold swap into Strategy A. R10 Pattern A near-miss (all 3 placers in B's widened legs, only failed banker cost it). Cold banker sample (45%), treat as variance not structural break.
+
+## Meeting 34: Happy Valley | 15 Jul 2026 (9 races)
+
+**MC #1** = raw MC Win% from trio_strategy_20260715_HV_R*.md (10,000 iterations, form=all). **Results** from data/historical/results_20260715_HV.json. Place $ = HKJC place dividend. Going: Good to Yielding.
+
+| Race | Class | Dist (m) | MC #1 | MC Win% | MC Place% | Placed? | Place $ (if placed) |
+|------|-------|----------|-------|---------|-----------|---------|---------------------|
+| R1 | Class 5 | 1650 | #9 KASA PAPA | 18.3% | 44.8% | ❌ (5th) | — |
+| R2 | Class 4 | 1200 | #2 WINNING MONEY | 21.1% | 51.0% | ❌ (4th) | — |
+| R3 | Class 4 | 1800 | #10 KYRUS TREASURE | 18.3% | 43.6% | ✅ 1st | 14.5 |
+| R4 | Class 4 | 1650 | #1 SKY DEEP | 37.1% | 70.9% | ✅ 2nd | 24.5 |
+| R5 | Class 4 | 1200 | #1 PEJIBAYE | 38.5% | 72.2% | ✅ 3rd | 13.5 |
+| R6 | Class 4 | 1200 | #7 DOUBLE ALPHA | 17.6% | 44.5% | ❌ (10th) | — |
+| R7 | Class 3 | 1650 | #10 SOMELOVEFROMABOVE | 28.9% | 59.7% | ❌ (5th) | — |
+| R8 | Class 2 | 1200 | #2 BOTTOMUPTOGETHER | 29.0% | 59.8% | ❌ (4th) | — |
+| R9 | Class 3 | 1200 | #11 DANICA'S CHOICE | 22.2% | 51.7% | ✅ 2nd | 14 |
+
+**Placed:** 4/9 (44.4%) | **Pattern:** ❌❌✅✅✅❌❌❌✅ | **Max streak:** 3 (R3-R5)
+
+**Trio card note (R1–R9):** WON on one race — Strategy A **1/9** (+$1,022, ROI +111.1%); canonical MC top-6 B **1/9** (+$1,042, +115.8%); MC-only Place%>20 variant **2/9** (+$709, +47.3%). R3 ($1,942, a LEAN-PASS Mode-C wide race) carried the meeting: banker #10 won, MC-liked 33-1 #5 SERANGOON filled 3rd (MC place 44% vs market 20 — divergence resolved MC's way). Banker top-3 only 4/9 (2nd straight cold-banker meeting). Two near-Pattern-A misses (R1, R8: all 3 placers were legs, banker failed) argue against forcing a banker on flat/wide races. The wide MC-only variant uniquely caught R9 (#3 kept as leg, A/canonical-B both dropped it). Confidence ranking inverted — all profit from the LOW/lean-PASS bucket.
