@@ -787,7 +787,7 @@ export class RaceCardScraper {
       const rtgChangeText = cellTexts[trainerCellIdx + 3]?.trim();
       if (rtgText) {
         const rtgVal = parseInt(rtgText, 10);
-        if (!isNaN(rtgVal) && rtgVal >= 10 && rtgVal <= 140) {
+        if (!isNaN(rtgVal) && rtgVal >= 10 && rtgVal <= 150) {
           currentRating = rtgVal;
         }
       }

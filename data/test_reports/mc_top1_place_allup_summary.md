@@ -46,6 +46,7 @@
 | 29 | 27 Jun | ST | Turf | Good | 11 | 32.2% | 65.1% | 6/11 | 54.5% | ✅❌❌❌❌❌✅✅✅✅✅ | 5 (R7-R11) |
 | 30 | 1 Jul | ST | Turf | Good | 11 | 33.5% | 66.0% | 6/11 | 54.5% | ✅✅✅✅❌✅❌✅❌❌❌ | 4 (R1-R4) |
 | 31 | 4 Jul | ST | Turf | Good | 11 | 37.9% | 73.0% | 7/11 | 63.6% | ✅✅✅✅✅❌❌❌✅✅❌ | 5 (R1-R5) |
+| 35 | 6 Sep | ST | Turf | Good | 10 | 31.6% | 64.2% | 3/9 | 33.3% | ❌❌✅❌❌✅SCR✅❌❌ | 1 |
 | **32** | **8 Jul** | **HV** | **Turf** | **Yielding** | **9** | **28.3%** | **60.9%** | **6/9** | **66.7%** | **✅✅✅✅❌✅✅❌❌** | **4 (R1-R4)** |
 | **33** | **12 Jul** | **ST** | **Turf** | **Good to Firm** | **11** | **35.7%** | **68.7%** | **5/11** | **45.5%** | **✅✅✅❌✅❌❌❌✅❌❌** | **3 (R1-R3)** |
 | **34** | **15 Jul** | **HV** | **Turf** | **Good to Yielding** | **9** | **25.7%** | **55.4%** | **4/9** | **44.4%** | **❌❌✅✅✅❌❌❌✅** | **3 (R3-R5)** |
@@ -1732,3 +1733,24 @@ Place dividends (MC #1 when placed): R1=$14.50, R3=$12.00, R5=$10.50, R8=$18.00
 **Placed:** 4/9 (44.4%) | **Pattern:** ❌❌✅✅✅❌❌❌✅ | **Max streak:** 3 (R3-R5)
 
 **Trio card note (R1–R9):** WON on one race — Strategy A **1/9** (+$1,022, ROI +111.1%); canonical MC top-6 B **1/9** (+$1,042, +115.8%); MC-only Place%>20 variant **2/9** (+$709, +47.3%). R3 ($1,942, a LEAN-PASS Mode-C wide race) carried the meeting: banker #10 won, MC-liked 33-1 #5 SERANGOON filled 3rd (MC place 44% vs market 20 — divergence resolved MC's way). Banker top-3 only 4/9 (2nd straight cold-banker meeting). Two near-Pattern-A misses (R1, R8: all 3 placers were legs, banker failed) argue against forcing a banker on flat/wide races. The wide MC-only variant uniquely caught R9 (#3 kept as leg, A/canonical-B both dropped it). Confidence ranking inverted — all profit from the LOW/lean-PASS bucket.
+
+## Meeting 35: Sha Tin | 6 Sep 2026 (10 races)
+
+**MC #1** = raw MC Win% from trio_strategy_20260906_ST_R*.md (10,000 iterations, form=all). **Results** from data/historical/results_20260906_ST.json. Place $ = HKJC place dividend. Going: Good. **2026/27 season opener.** R7 banker was scratched — excluded from rate.
+
+| Race | Class | Dist (m) | MC #1 | MC Win% | MC Place% | Placed? | Place $ (if placed) |
+|------|-------|----------|-------|---------|-----------|---------|---------------------|
+| R1 | Class 5 | 1200 | #11 YEE CHEONG RAIDER | 28.5% | 59.8% | ❌ (5th) | — |
+| R2 | Class 4 | 1000 | #6 MABUBU | 22.4% | 51.1% | ❌ (5th) | — |
+| R3 | Group 3 | 1200 | #1 KA YING RISING | 34.1% | 77.0% | ✅ 1st | 10.1 |
+| R4 | Class 5 | 1600 | #2 HAILTOTHEVICTORS | 57.1% | 86.1% | ❌ (9th) | — |
+| R5 | Class 4 | 1200 | #1 ISLAND BUDDY | 34.9% | 67.5% | ❌ (13th) | — |
+| R6 | Class 4 | 1200 | #3 MATZDEN | 30.4% | 63.3% | ✅ 2nd | 17.5 |
+| R7 | Class 2 | 1400 | #2 INVINCIBLE SHIELD | 18.0% | 49.4% | — SCRATCHED | — |
+| R8 | Class 4 | 1400 | #1 JOYFUL JOY | 34.6% | 67.6% | ✅ 1st | 16 |
+| R9 | Class 3 | 1400 | #1 LUCKY SAM GOR | 24.0% | 58.9% | ❌ (7th) | — |
+| R10 | Class 3 | 1200 | #12 MASTER PAYMENT | 18.5% | 46.8% | ❌ (12th) | — |
+
+**Placed:** 3/9 (33.3%) | **Pattern:** ❌❌✅❌❌✅ SCR ✅❌❌ | **Max streak:** 1
+
+**Trio card note (R1–R10):** LOSS. As recommended (6 played, 4 PASSed) **1/6, −$126, ROI −18.0%**; Strategy A all races (R7 void) **2/9, −$79, −9.1%**; canonical MC top-6 B **2/9, −$109, −12.1%**; MC-only Place%>20 variant **2/9, −$379, −32.4%**. Only R8 hit ($574) — the one race where MC and market agreed on the banker. **MC #1 placed just 3/9 (33.3%)**, well below the season-prior average, and #2 HAILTOTHEVICTORS ran 9th off an 86.1% MC Place% — the worst single calibration failure recorded. Class-drop defect confirmed: the three horses MC most under-rated (R4 #1 AMAZING DUCK, R10 #1 PUBLIC ATTENTION, R9 #5 BABY SAKURA) all placed, two of them 2nd and one winning. Both discretionary banker overrides (R6, R9) failed. PASSing R3 forfeited a $217 hit (+$117).
