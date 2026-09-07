@@ -2,7 +2,7 @@
 
 Findings from backtests, model tuning, and strategy experiments on the HK racing project.
 One file per finding. Format defined by the `research-notes` skill
-(`.cursor/skills/research-notes/SKILL.md`).
+(`skills/research-notes/SKILL.md`).
 
 Filename: `YYYY-MM-DD-slug.md`
 

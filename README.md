@@ -151,10 +151,30 @@ hourse-racing/
 │   └── odds/               # Saved odds snapshots
 ├── prompts/                # AI prompts for analysis
 ├── rules/                  # Cursor rules
-└── skills/                 # Cursor skills
-    ├── bet-recommendation/ # Betting workflow
-    └── analyze-race/       # Analysis workflow
+└── skills/                 # Agent skills (shared by Claude Code + Cursor)
+    ├── trio-strategy/      # Trio (單T) 5-step pipeline
+    ├── trio-daily-run/     # Scheduled race-day check + per-race report fan-out
+    ├── post-race-review/   # Results, P&L, learnings
+    ├── verify-racecard/    # Racecard vs SCMP cross-check
+    └── research-notes/     # Write findings to notes/
 ```
+
+### Shared skills directory
+
+`.claude/skills/` holds the real skill files — one source of truth for both agents:
+
+```
+.claude/skills/     <- real directory (Claude Code reads this)
+skills/             -> .claude/skills      (convenience path used in docs)
+.cursor/skills/     -> ../.claude/skills   (Cursor reads this)
+```
+
+Add or edit a skill under any of the three paths and both Claude Code and Cursor pick it up —
+no copying, no sync step. Claude Code's skill loader does not follow a symlinked
+`.claude/skills`, which is why the real files live there rather than at the repo root.
+Do not replace either symlink with a real directory.
+
+New skills are discovered on the next session start.
 
 ## HKJC Data Sources
 
