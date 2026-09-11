@@ -10,6 +10,7 @@
 
 import { chromium, type Browser, type Page } from "playwright";
 import * as cheerio from "cheerio";
+import { basename } from "node:path";
 import { format, subDays, parse } from "date-fns";
 import type {
   RaceResult,
@@ -995,7 +996,11 @@ async function main() {
   }
 }
 
-// Run if called directly
-if (process.argv[1]?.includes("historical")) {
+// Run if called directly.
+// Match the basename exactly — a substring test also matches other entry points
+// that merely contain "historical" (e.g. tools/sync-historical.ts), which would
+// fire this demo scrape as a side effect of importing the module.
+const invokedAs = process.argv[1] ? basename(process.argv[1]) : "";
+if (invokedAs === "historical.ts" || invokedAs === "historical.js") {
   main();
 }

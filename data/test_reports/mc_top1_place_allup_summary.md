@@ -47,6 +47,7 @@
 | 30 | 1 Jul | ST | Turf | Good | 11 | 33.5% | 66.0% | 6/11 | 54.5% | ✅✅✅✅❌✅❌✅❌❌❌ | 4 (R1-R4) |
 | 31 | 4 Jul | ST | Turf | Good | 11 | 37.9% | 73.0% | 7/11 | 63.6% | ✅✅✅✅✅❌❌❌✅✅❌ | 5 (R1-R5) |
 | 35 | 6 Sep | ST | Turf | Good | 10 | 31.6% | 64.2% | 3/9 | 33.3% | ❌❌✅❌❌✅SCR✅❌❌ | 1 |
+| 36 | 9 Sep | HV | Turf | Good | 8 | 33.8% | 68.1% | 4/8 | 50.0% | ❌✅✅❌✅❌✅❌ | 2 |
 | **32** | **8 Jul** | **HV** | **Turf** | **Yielding** | **9** | **28.3%** | **60.9%** | **6/9** | **66.7%** | **✅✅✅✅❌✅✅❌❌** | **4 (R1-R4)** |
 | **33** | **12 Jul** | **ST** | **Turf** | **Good to Firm** | **11** | **35.7%** | **68.7%** | **5/11** | **45.5%** | **✅✅✅❌✅❌❌❌✅❌❌** | **3 (R1-R3)** |
 | **34** | **15 Jul** | **HV** | **Turf** | **Good to Yielding** | **9** | **25.7%** | **55.4%** | **4/9** | **44.4%** | **❌❌✅✅✅❌❌❌✅** | **3 (R3-R5)** |
@@ -1754,3 +1755,24 @@ Place dividends (MC #1 when placed): R1=$14.50, R3=$12.00, R5=$10.50, R8=$18.00
 **Placed:** 3/9 (33.3%) | **Pattern:** ❌❌✅❌❌✅ SCR ✅❌❌ | **Max streak:** 1
 
 **Trio card note (R1–R10):** LOSS. As recommended (6 played, 4 PASSed) **1/6, −$126, ROI −18.0%**; Strategy A all races (R7 void) **2/9, −$79, −9.1%**; canonical MC top-6 B **2/9, −$109, −12.1%**; MC-only Place%>20 variant **2/9, −$379, −32.4%**. Only R8 hit ($574) — the one race where MC and market agreed on the banker. **MC #1 placed just 3/9 (33.3%)**, well below the season-prior average, and #2 HAILTOTHEVICTORS ran 9th off an 86.1% MC Place% — the worst single calibration failure recorded. Class-drop defect confirmed: the three horses MC most under-rated (R4 #1 AMAZING DUCK, R10 #1 PUBLIC ATTENTION, R9 #5 BABY SAKURA) all placed, two of them 2nd and one winning. Both discretionary banker overrides (R6, R9) failed. PASSing R3 forfeited a $217 hit (+$117).
+
+---
+
+## Meeting 36: Happy Valley | 9 Sep 2026 (8 races)
+
+**MC #1** = raw MC Win% from trio_strategy_20260909_HV_R*.md (10,000 iterations, form=all). **Results** from data/historical/results_20260909_HV.json. Place $ = HKJC place dividend. Going: Good. **First meeting generated end-to-end by the scheduled agent loop.** No scratchings.
+
+| Race | Class | Dist (m) | MC #1 | MC Win% | MC Place% | Placed? | Place $ (if placed) |
+|------|-------|----------|-------|---------|-----------|---------|---------------------|
+| R1 | Class 5 | 1200 | #7 NOBLE FANS | 35.9% | 72.8% | ❌ (7th) | — |
+| R2 | Class 4 | 1650 | #1 MIGHTY STEED | 45.5% | 79.2% | ✅ 1st | 14.5 |
+| R3 | Class 5 | 1200 | #1 LAKESHORE HERO | 30.9% | 66.0% | ✅ 2nd | 21 |
+| R4 | Class 4 | 1650 | #1 SHAMZ | 35.0% | 70.9% | ❌ (9th) | — |
+| R5 | Class 3 | 1650 | #10 FORTUNATE SON | 18.5% | 44.9% | ✅ 1st | 32.5 |
+| R6 | Class 4 | 1000 | #2 BEAUTY SHOW | 31.2% | 69.9% | ❌ (12th) | — |
+| R7 | Class 4 | 1200 | #2 FORERUNNER | 34.0% | 67.9% | ✅ 2nd | 47.5 |
+| R8 | Class 3 | 1200 | #2 HARMONY N BLESSED | 39.2% | 73.4% | ❌ (6th) | — |
+
+**Placed:** 4/8 (50.0%) | **Pattern:** ❌✅✅❌✅❌✅❌ | **Max streak:** 2
+
+**Trio card note (R1–R8):** Total **LOSS — 0/8, −$640, ROI −100.0%** on Strategy A; canonical MC top-6 B **0/8, −$800, −100.0%**; MC-only Place%>20 variant (B-trio, as bet) **1/8, −$756, −68.7%** — its only hit was R7, from the Win-odds swap #5→#12. **Banker (= MC #1) failed in 4 of 8**, and those four races (R1, R4, R6, R8) were unwinnable for every variant. The dominant miss pattern was **Pattern B at 4/8** — banker placed, one excluded horse filled the frame — with the missing horse at **MC rank 7 in both R5 and R7**. R6 is the meeting's sharpest lesson: all three placers sat in Strategy A's leg pool and the 2.6 favourite MC #1 ran **12th of 12**. Two calibration notes: #2 BEAUTY SHOW ran 12th off 69.9% MC Place%, and the MC ranked **#4 TYCOON RESOURCES 8th at 4.2 market odds** in R8 — it ran 2nd. Adding one extra MC-ranked leg per race would have turned the meeting into 2/8 for +$2,118, but that is a single-meeting retrofit and needs backtesting before adoption.
