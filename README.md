@@ -438,6 +438,61 @@ API server (`.env`, see `.env.example`):
 | `ANALYSIS_MAX_CONCURRENT` | no | `1` | Runs at once across all analysis endpoints (1–8) |
 | `PLAYWRIGHT_BROWSERS_PATH` | no | — | Set to `0` for live scraping, as the CLI skills do |
 
+## Deployment (Ubuntu + pm2)
+
+Assumes Node.js 22, pm2 and the cloned repo are already on the server, with `npm ci` and
+`npx playwright install --with-deps chromium` done. Run everything from the repo folder.
+
+**1. Configure**
+
+```bash
+cp .env.example .env    # set API_KEYS and NODE_ENV=production
+```
+
+Create `ecosystem.config.cjs`:
+
+```js
+module.exports = {
+  apps: [
+    {
+      name: "hk-racing-api",
+      cwd: __dirname,
+      script: "src/server/index.ts",
+      interpreter: "node",
+      node_args: "--import tsx",   // runs TypeScript directly, no build step
+      exec_mode: "fork",           // a single process
+      env: {
+        NODE_ENV: "production",
+        TZ: "Asia/Hong_Kong",      // race dates are Hong Kong dates
+      },
+    },
+  ],
+};
+```
+
+**2. Start**
+
+```bash
+pm2 start ecosystem.config.cjs
+pm2 save && pm2 startup      # start on boot — run the command pm2 prints
+
+curl -H "x-api-key: <your key>" http://localhost:3000/health
+```
+
+**3. Update**
+
+```bash
+git pull && npm ci
+pm2 restart hk-racing-api
+```
+
+Logs: `pm2 logs hk-racing-api`
+
+**Notes**
+- Keep `TZ=Asia/Hong_Kong`: on a UTC server, race dates come out a day early.
+- Keep one instance: the cache and concurrency limit live in memory.
+- Behind nginx, use HTTPS and a long timeout (`proxy_read_timeout 900s;`): live analyses can take minutes.
+
 ## Troubleshooting
 
 ### Playwright Browser Not Found
