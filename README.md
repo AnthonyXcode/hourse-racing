@@ -285,12 +285,48 @@ flowchart TB
     Compare -->|No| Pass[No Bet]
 ```
 
+## REST API
+
+Express server (`src/server/`) exposing the analysis to other sites. Every route requires an API key.
+
+```bash
+# 1. Configure keys (.env is gitignored)
+cp .env.example .env
+# set API_KEYS in .env — generate with: openssl rand -hex 32
+# multiple keys: API_KEYS=key-for-site-a,key-for-site-b
+
+# 2. Run
+npm run dev:api          # watch mode
+npm run build && npm run start:api
+
+# 3. Call
+curl -H "x-api-key: $API_KEY" http://localhost:3000/health
+curl -H "Authorization: Bearer $API_KEY" http://localhost:3000/health
+```
+
+| Method | Path | Response |
+|--------|------|----------|
+| GET | `/health` | `{ status, uptime, timestamp, version }` |
+
+Errors are JSON: `401 {"error":"unauthorized"}`, `404 {"error":"not_found"}`.
+
+Keys are only accepted in headers, never the query string. Call the API server-to-server —
+a key embedded in browser JavaScript is visible to anyone.
+
 ## Environment Variables
 
 ```bash
 # Set Playwright browser path if needed
 export PLAYWRIGHT_BROWSERS_PATH=/Users/you/Library/Caches/ms-playwright
 ```
+
+API server (`.env`, see `.env.example`):
+
+| Variable | Required | Default | Notes |
+|----------|----------|---------|-------|
+| `API_KEYS` | yes | — | Comma-separated, min 32 chars each |
+| `PORT` | no | `3000` | |
+| `NODE_ENV` | no | `development` | `production` hides 5xx error details |
 
 ## Troubleshooting
 
