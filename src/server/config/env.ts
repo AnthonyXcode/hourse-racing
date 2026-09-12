@@ -24,6 +24,10 @@ const EnvSchema = z.object({
         .array(z.string().min(MIN_KEY_LENGTH, `each API key must be at least ${MIN_KEY_LENGTH} characters`))
         .min(1, "API_KEYS must contain at least one key"),
     ),
+  // Race analysis cache (POST /v1/analyses), relative to the working directory
+  ANALYSIS_CACHE_DIR: z.string().min(1).default("data/analysis"),
+  // Live analyses each launch Chromium — keep this low
+  ANALYSIS_MAX_CONCURRENT: z.coerce.number().int().min(1).max(8).default(1),
 });
 
 export type Env = z.infer<typeof EnvSchema>;

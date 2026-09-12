@@ -5,48 +5,27 @@
  * Usage:
  *   npm run analyze -- --date 2026-01-29 --venue "Sha Tin" --race 5
  *   npm run analyze -- --help
+ *
+ * The analysis itself lives in src/pipeline/raceAnalysis.ts (shared with the API server);
+ * this file parses arguments and prints the report.
  */
 
 import { format, parse } from "date-fns";
-import type {
-  Race,
-  Venue,
-  BettingConfig,
-} from "../src/types/index.js";
-import { DEFAULT_BETTING_CONFIG } from "../src/types/index.js";
-import { RaceCardScraper } from "../src/scrapers/raceCard.js";
-import { RaceCardHistoryScraper } from "../src/scrapers/raceCardHistory.js";
-import { FormAnalyzer } from "../src/analysis/formAnalysis.js";
-import { SpeedRatingCalculator, FIELD_TIME_SHRINK, getTimeOffset } from "../src/analysis/speedRating.js";
-import { MonteCarloSimulator } from "../src/simulation/monteCarlo.js";
-import type { HorseAnalysis } from "../src/types/index.js";
+import type { Venue } from "../src/types/index.js";
+import { formatRaceReport } from "../src/betting/recommendations.js";
 import {
-  RecommendationEngine,
-  formatRaceReport,
-} from "../src/betting/recommendations.js";
-import { ValueCalculator, MarketOdds } from "../src/betting/valueCalculator.js";
-import { HorseDataEnricher } from "../src/data/horseEnricher.js";
-import { JockeyEnricher } from "../src/data/jockeyEnricher.js";
-import { TrainerEnricher } from "../src/data/trainerEnricher.js";
+  consoleLogger,
+  runRaceAnalysis,
+  type FinishTimeProjection,
+  type RaceAnalysisOptions,
+  type RaceAnalysisResult,
+} from "../src/pipeline/raceAnalysis.js";
 
 // ============================================================================
 // CLI ARGUMENT PARSING
 // ============================================================================
 
-interface CliArgs {
-  date: Date;
-  /** Venue for fetching race card. */
-  venue: Venue;
-  /** Form data: "all" = HV + ST; if omitted, form uses --venue only. */
-  formData?: "all";
-  /** Ignore historical files whose name contains any of these strings (e.g. 20260315,HV). */
-  ignoreRecords?: string[];
-  raceNumber: number;
-  /** When true, load from saved race card snapshot instead of live scraping. */
-  useSaved?: boolean;
-  bankroll?: number;
-  kellyFraction?: number;
-  minEdge?: number;
+interface CliArgs extends RaceAnalysisOptions {
   help?: boolean;
 }
 
@@ -186,7 +165,7 @@ Examples:
 }
 
 // ============================================================================
-// FINISH-TIME PROJECTION
+// REPORT PRINTING
 // ============================================================================
 
 /** Format seconds as M:SS.ss (>=60s) or SS.ss. */
@@ -199,91 +178,7 @@ function fmtTime(s: number): string {
   return s.toFixed(2);
 }
 
-/**
- * Print projected finish times per runner (independent of the ordinal MC).
- * Closed-form: finishTime ~ Normal(mean, sd) where
- *   mean = projectFinishTime(avgSpeedRating), sd = speedStd · secondsPerPoint.
- * P10/P50/P90 from the normal quantiles; margin = lengths behind the fastest mean.
- */
-function printFinishTimeProjection(
-  race: Race,
-  analysisMap: Map<string, HorseAnalysis>,
-  venue: Venue
-): void {
-  const speed = new SpeedRatingCalculator();
-  const offset = getTimeOffset(race.venue, race.surface, race.distance, race.class);
-  // Speed-figure run-to-run variability (points). HV is tighter/trickier → wider.
-  const speedStd = venue === "Happy Valley" ? 6 : 5;
-  const sd = speedStd * speed.secondsPerPoint; // seconds
-  const Z90 = 1.2816; // P10/P90 normal quantile
-  const SEC_PER_LENGTH = 1 / 6; // ≈0.167s per length (HKJC convention)
-
-  // Debutants (no past runs) have no speed evidence — their averageSpeedRating
-  // falls back to baseRating (100), which is usually above the field and would
-  // wrongly project them fastest. Exclude them from the projection and list
-  // them separately as "debut".
-  const activeAll = race.entries.filter((e) => !e.isScratched && analysisMap.has(e.horse.code));
-  const active = activeAll.filter((e) => e.horse.pastPerformances.length > 0);
-  const debuts = activeAll.filter((e) => e.horse.pastPerformances.length === 0);
-
-  // Field mean speed figure (formed horses only) → shrink each horse toward it.
-  const ratings = active.map((e) => analysisMap.get(e.horse.code)!.averageSpeedRating);
-  const fieldMean = ratings.length ? ratings.reduce((s, r) => s + r, 0) / ratings.length : 100;
-
-  type Row = { num: number; name: string; mean: number; sd: number };
-  const rows: Row[] = [];
-  for (const entry of active) {
-    const a = analysisMap.get(entry.horse.code)!;
-    const shrunk = fieldMean + FIELD_TIME_SHRINK * (a.averageSpeedRating - fieldMean);
-    const mean = speed.projectFinishTime(
-      shrunk,
-      race.venue,
-      race.surface,
-      race.distance,
-      race.class,
-      race.going,
-      entry.weight
-    );
-    if (mean === null) {
-      console.log(
-        `\nFinish-Time Projection: no par time for ${race.venue} ${race.surface} ${race.distance}m ${race.class} — skipped.`
-      );
-      return;
-    }
-    rows.push({ num: entry.horseNumber, name: entry.horse.name, mean: mean + offset, sd });
-  }
-  if (rows.length === 0) return;
-
-  rows.sort((a, b) => a.mean - b.mean);
-  const fastest = rows[0]!.mean;
-
-  console.log("\n" + "─".repeat(60));
-  console.log(`FINISH-TIME PROJECTION (${race.distance}m, ${race.going}, ±1σ=${sd.toFixed(2)}s)`);
-  console.log("─".repeat(60));
-  console.log(`   # Horse              P10     Mean     P90     Margin`);
-  for (const r of rows) {
-    const p10 = r.mean - Z90 * r.sd;
-    const p90 = r.mean + Z90 * r.sd;
-    const marginSec = r.mean - fastest;
-    const marginL = marginSec / SEC_PER_LENGTH;
-    const marginStr = marginSec === 0 ? "  —  " : `+${marginSec.toFixed(2)}s (${marginL.toFixed(1)}L)`;
-    console.log(
-      `  ${r.num.toString().padStart(2)} ${r.name.substring(0, 16).padEnd(16)} ` +
-        `${fmtTime(p10).padStart(7)} ${fmtTime(r.mean).padStart(7)} ${fmtTime(p90).padStart(7)}   ${marginStr}`
-    );
-  }
-  if (debuts.length > 0) {
-    const list = debuts.map((e) => `#${e.horseNumber} ${e.horse.name}`).join(", ");
-    console.log(`\n  Debut (no form, excluded from projection): ${list}`);
-  }
-  console.log(`\n  Projected winning time: ~${fmtTime(fastest)} (#${rows[0]!.num} ${rows[0]!.name}). Times from avg speed figure + par/going/weight; SD from ±${speedStd}pt figure spread.`);
-}
-
-// ============================================================================
-// MAIN ANALYSIS FUNCTION
-// ============================================================================
-
-async function analyzeRace(args: CliArgs): Promise<void> {
+function printHeader(args: CliArgs): void {
   console.log("\n" + "═".repeat(60));
   console.log("HK HORSE RACING ANALYZER");
   console.log("═".repeat(60) + "\n");
@@ -299,287 +194,139 @@ async function analyzeRace(args: CliArgs): Promise<void> {
   }
   console.log(`Race: ${args.raceNumber}`);
   console.log("");
+}
 
-  // Initialize components
-  const formAnalyzer = new FormAnalyzer();
-  const hvStdDev = args.venue === "Happy Valley" ? 11 : 8;
-  const simulator = new MonteCarloSimulator({ runs: 10000, performanceStdDev: hvStdDev });
-
-  const config: Partial<BettingConfig> = {
-    bankroll: args.bankroll ?? DEFAULT_BETTING_CONFIG.bankroll,
-    kellyFraction: args.kellyFraction ?? DEFAULT_BETTING_CONFIG.kellyFraction,
-    minEdgeThreshold: args.minEdge ?? DEFAULT_BETTING_CONFIG.minEdgeThreshold,
-  };
-
-  const recommendationEngine = new RecommendationEngine(config);
-  let scraper: RaceCardScraper | null = null;
-
-  try {
-    // -------------------------------------------------------------------
-    // Load race card: either from saved snapshot (--use-saved) or live scrape
-    // -------------------------------------------------------------------
-    let race: Race | null = null;
-    let winOddsMap: Map<number, number>;
-    const historyScraper = new RaceCardHistoryScraper();
-
-    if (args.useSaved) {
-      // Saved snapshot already contains all enrichment + odds — skip scraping & enrichment
-      console.log("Loading saved race card snapshot...");
-      const saved = await historyScraper.loadSavedRaceCard(args.date, args.venue, args.raceNumber);
-      if (saved) {
-        race = saved.race;
-        winOddsMap = saved.winOddsMap;
-        const horsesWithHistory = race.entries.filter(
-          (e) => e.horse.pastPerformances.length > 0
-        ).length;
-        console.log(
-          `[INFO] Loaded saved race card (${race.entries.length} runners, ${horsesWithHistory} with form data, race-day snapshot)`
-        );
-        console.log(`[INFO] Win odds loaded for ${winOddsMap.size} horses\n`);
-      } else {
-        throw new Error(
-          `No saved race card found for Race ${args.raceNumber} at ${args.venue} on ${format(args.date, "yyyy-MM-dd")}. ` +
-          `No file in data/racecards/. Run analyze-race without --use-saved before the meeting to save the race card.`
-        );
-      }
-    } else {
-      // Live scrape + full enrichment pipeline
-      console.log("Loading historical data...");
-      const enricher =
-        args.ignoreRecords && args.ignoreRecords.length > 0
-          ? new HorseDataEnricher({ ignoreFilePatterns: args.ignoreRecords })
-          : new HorseDataEnricher();
-      await enricher.loadHistoricalData();
-      const dataSummary = enricher.getDataSummary();
-      if (dataSummary.totalRaces > 0) {
-        console.log(`  Found ${dataSummary.totalRaces} historical races`);
-        console.log(`  Indexed ${dataSummary.totalHorses} horse performances`);
-      }
-
-      scraper = new RaceCardScraper({ headless: true });
-      try {
-        console.log("Initializing scraper...");
-        await scraper.init();
-
-        console.log("Fetching race card...");
-        const scraped = await scraper.scrapeRaceCard(
-          args.date,
-          args.venue,
-          args.raceNumber
-        );
-
-        if (scraped.entries.length > 0) {
-          race = scraped;
-        }
-      } catch (err) {
-        console.warn(
-          `[WARNING] Race card scrape failed: ${err instanceof Error ? err.message : err}`
-        );
-      }
-
-      if (!race) {
-        throw new Error(
-          `No entries found for Race ${args.raceNumber} at ${args.venue} on ${format(args.date, "yyyy-MM-dd")}. ` +
-          `Live race card is unavailable. If you have a saved snapshot, re-run with --use-saved.`
-        );
-      }
-
-      console.log(`Found ${race.entries.length} entries`);
-
-      // Fetch current odds while scraper is still open
-      if (scraper) {
-        console.log("Fetching current odds...");
-        winOddsMap = await scraper.fetchCurrentOdds(
-          args.date,
-          args.venue,
-          args.raceNumber
-        );
-      } else {
-        winOddsMap = new Map();
-      }
-
-      // Enrich horses with historical data
-      console.log("Enriching horses with past performances...");
-      race = enricher.enrichRace(race, {
-        formVenue: args.formData === "all" ? "all" : args.venue,
-      });
-
-      const horsesWithHistory = race.entries.filter(
-        (e) => e.horse.pastPerformances.length > 0
-      ).length;
-      console.log(`  ${horsesWithHistory}/${race.entries.length} horses enriched with form data\n`);
-
-      // Enrich race with jockey data (from data/jockeys/*.json or HKJC jockeyprofile page)
-      const jockeyEnricher = new JockeyEnricher({ fetchFromHKJC: true });
-      await jockeyEnricher.loadFromDirectory();
-      console.log("Enriching jockeys with season stats...");
-      race = await jockeyEnricher.enrichRace(race);
-      await jockeyEnricher.closeBrowser();
-      console.log(`  ${jockeyEnricher.getCachedCount()} jockey profiles loaded\n`);
-
-      // Enrich race with trainer data (from HKJC trainerprofile page)
-      const trainerEnricher = new TrainerEnricher({ fetchFromHKJC: true });
-      await trainerEnricher.loadFromDirectory();
-      console.log("Enriching trainers with season stats...");
-      race = await trainerEnricher.enrichRace(race);
-      await trainerEnricher.closeBrowser();
-      console.log(`  ${trainerEnricher.getCachedCount()} trainer profiles loaded\n`);
-
-      // Save enriched race card + odds for future --use-saved runs
-      try {
-        const savedPath = await historyScraper.saveRaceCard(race, winOddsMap);
-        console.log(`[INFO] Enriched race card saved to ${savedPath}`);
-      } catch (err) {
-        console.warn(
-          `[WARNING] Could not save race card: ${err instanceof Error ? err.message : err}`
-        );
-      }
-    }
-
-    // Estimate place odds
-    const valueCalc = new ValueCalculator();
-    if (winOddsMap.size === 0) {
-      console.log("[WARNING] No win odds fetched — value calculations will be unreliable");
-    } else {
-      console.log(`[INFO] Win odds for ${winOddsMap.size} horses (place odds estimated from win odds)`);
-    }
-
-    // Analyze horses
-    console.log("Analyzing form factors...");
-    const analyses = formAnalyzer.analyzeRace(race);
-
-    // Run simulations
-    console.log("Running Monte Carlo simulation (10,000 iterations)...");
-    const { results: simResults, exoticProbabilities } =
-      simulator.simulateRace(race);
-
-    const placeOddsMap = valueCalc.estimatePlaceOdds(winOddsMap);
-
-    const marketOdds: MarketOdds = {
-      winOdds: winOddsMap,
-      placeOdds: placeOddsMap,
-    };
-
-    // Generate recommendations
-    console.log("Generating recommendations...\n");
-    const recommendation = recommendationEngine.generateRecommendations(
-      race,
-      analyses,
-      simResults,
-      exoticProbabilities,
-      marketOdds
-    );
-
-    // Print report
-    const report = formatRaceReport(recommendation);
-    console.log(report);
-
-    // Additional simulation summary
-    console.log("\n" + "─".repeat(60));
-    console.log("SIMULATION SUMMARY");
-    console.log("─".repeat(60));
-
-    const runs = simResults[0]?.simulationRuns ?? 10000;
-    const analysisMap = new Map(analyses.map(a => [a.horseCode, a]));
-    const topRating = analyses.length > 0 ? analyses[0]?.overallRating ?? 0 : 0;
-
-    console.log(`\nWin Probability Rankings (all ${simResults.length} horses, ${runs.toLocaleString()} iterations):`);
-    const diffs: number[] = [];
-    for (const result of simResults) {
-      const analysis = analysisMap.get(result.horseCode);
-      const recStr = result.formRecordCount !== undefined ? ` [${result.formRecordCount} form]` : "";
-      const ratingStr = analysis ? ` rating: ${analysis.overallRating.toFixed(0)}` : "";
-      const diff = analysis ? Math.abs(topRating - analysis.overallRating) : 0;
-      diffs.push(diff);
-      const diffStr = analysis ? ` diff: ${diff.toFixed(0)}` : "";
-      const ePosStr = ` ePos: ${result.expectedPosition.toFixed(1)}`;
-      console.log(
-        `  #${result.horseNumber.toString().padStart(2)} ${result.horseName.padEnd(15).substring(0, 15)}: ` +
-          `${(result.winProbability * 100).toFixed(1).padStart(5)}% win, ` +
-          `${(result.placeProbability * 100).toFixed(1).padStart(5)}% place` +
-          recStr + ratingStr + diffStr + ePosStr
-      );
-    }
-
-    const avgDiff = diffs.length > 0 ? diffs.reduce((s, d) => s + d, 0) / diffs.length : 0;
-    const closeDiffCount = diffs.filter(d => d < 8).length;
-    console.log(`\n  Avg differentiation: ${avgDiff.toFixed(0)} | Horses with diff < 8: ${closeDiffCount}`);
-
-    // --- Finish-time projection (independent pass) ---
-    // Each horse's finish time is a linear function of its speed figure, and the
-    // speed figure varies ~Normal(avgSpeedRating, σ). So the time distribution is
-    // closed-form: mean = projectFinishTime(avgSpeed), SD = σ · secondsPerPoint.
-    printFinishTimeProjection(race, analysisMap, args.venue);
-
-    console.log("\nTop Quinella Combinations:");
-    const topQuinellas = simulator
-      .getTopExoticOutcomes(exoticProbabilities.quinella, 5);
-    for (const q of topQuinellas) {
-      const fairOdds = simulator.probabilityToFairOdds(q.probability);
-      console.log(
-        `  ${q.combination}: ${(q.probability * 100).toFixed(1)}% (fair odds: ${fairOdds.toFixed(1)})`
-      );
-    }
-
-    // Show jockey/trainer analysis
-    console.log("\nJockey/Trainer Form (from historical data):");
-    const topEntries = race.entries
-      .filter(e => e.jockey.seasonStats.rides > 0 || e.trainer.seasonStats.rides > 0)
-      .sort((a, b) => b.jockey.seasonStats.winRate - a.jockey.seasonStats.winRate)
-    
-    for (const entry of topEntries) {
-      const jWR = (entry.jockey.seasonStats.winRate * 100).toFixed(0);
-      const jRides = entry.jockey.seasonStats.rides;
-      const tWR = (entry.trainer.seasonStats.winRate * 100).toFixed(0);
-      const tRides = entry.trainer.seasonStats.rides;
-      console.log(
-        `  #${entry.horseNumber.toString().padStart(2)} ${entry.horse.name.substring(0, 15).padEnd(15)} - ` +
-        `J: ${entry.jockey.name.substring(0, 12).padEnd(12)} (${jWR}% from ${jRides} rides) | ` +
-        `T: ${entry.trainer.name.substring(0, 12).padEnd(12)} (${tWR}% from ${tRides})`
-      );
-    }
-
-    console.log("\nMarket Efficiency:");
-    const efficiency = valueCalc.analyzeMarketEfficiency(simResults, winOddsMap);
-    console.log(`  Overround: ${efficiency.overround.toFixed(1)}%`);
-    console.log(`  Favorite Bias: ${efficiency.favoriteBias >= 0 ? "+" : ""}${efficiency.favoriteBias.toFixed(1)}%`);
-    console.log(`  Longshot Bias: ${efficiency.longShotBias >= 0 ? "+" : ""}${efficiency.longShotBias.toFixed(1)}%`);
-
-    if (efficiency.inefficiencies.length > 0) {
-      console.log("\n  Potential Inefficiencies:");
-      for (const ineff of efficiency.inefficiencies.slice(0, 3)) {
-        const direction = ineff.edge > 0 ? "undervalued" : "overvalued";
-        console.log(
-          `    #${ineff.horseNumber}: ${direction} by ${Math.abs(ineff.edge).toFixed(0)}%`
-        );
-      }
-    }
-
-  } catch (error) {
-    console.error("\n" + "═".repeat(60));
-    console.error("ANALYSIS FAILED");
-    console.error("═".repeat(60));
-    console.error("\nError:", error instanceof Error ? error.message : error);
-    console.error("\nPossible causes:");
-    console.error("  - No racing on the specified date");
-    console.error("  - HKJC website unavailable or structure changed");
-    console.error("  - Network connectivity issues");
-    console.error("  - Invalid race number for this meeting");
-    console.error("\nTry:");
-    console.error("  - Check HKJC website for race schedule");
-    console.error("  - Verify the date and race number");
-    console.error("  - Run 'npm run scrape:racecard' to see available races");
-    console.error("═".repeat(60) + "\n");
-    
-    process.exit(1);
-  } finally {
-    if (scraper) await scraper.close();
+function printFinishTimeProjection(projection: FinishTimeProjection): void {
+  if (projection.status === "skipped") {
+    console.log(`\nFinish-Time Projection: ${projection.reason} — skipped.`);
+    return;
   }
+  if (projection.status === "empty") return;
+
+  const { rows, debuts } = projection;
+  console.log("\n" + "─".repeat(60));
+  console.log(
+    `FINISH-TIME PROJECTION (${projection.distance}m, ${projection.going}, ±1σ=${projection.sdSeconds.toFixed(2)}s)`
+  );
+  console.log("─".repeat(60));
+  console.log(`   # Horse              P10     Mean     P90     Margin`);
+  for (const r of rows) {
+    const marginStr =
+      r.marginSeconds === 0 ? "  —  " : `+${r.marginSeconds.toFixed(2)}s (${r.marginLengths.toFixed(1)}L)`;
+    console.log(
+      `  ${r.horseNumber.toString().padStart(2)} ${r.horseName.substring(0, 16).padEnd(16)} ` +
+        `${fmtTime(r.p10).padStart(7)} ${fmtTime(r.mean).padStart(7)} ${fmtTime(r.p90).padStart(7)}   ${marginStr}`
+    );
+  }
+  if (debuts.length > 0) {
+    const list = debuts.map((d) => `#${d.horseNumber} ${d.horseName}`).join(", ");
+    console.log(`\n  Debut (no form, excluded from projection): ${list}`);
+  }
+  const winner = rows[0]!;
+  console.log(`\n  Projected winning time: ~${fmtTime(winner.mean)} (#${winner.horseNumber} ${winner.horseName}). Times from avg speed figure + par/going/weight; SD from ±${projection.speedStd}pt figure spread.`);
+}
+
+function printAnalysis(result: RaceAnalysisResult): void {
+  // Print report
+  console.log(formatRaceReport(result.recommendation));
+
+  // Additional simulation summary
+  console.log("\n" + "─".repeat(60));
+  console.log("SIMULATION SUMMARY");
+  console.log("─".repeat(60));
+
+  console.log(`\nWin Probability Rankings (all ${result.rankings.length} horses, ${result.simulationRuns.toLocaleString()} iterations):`);
+  for (const { simulation: s, analysis, ratingDiff } of result.rankings) {
+    const recStr = s.formRecordCount !== undefined ? ` [${s.formRecordCount} form]` : "";
+    const ratingStr = analysis ? ` rating: ${analysis.overallRating.toFixed(0)}` : "";
+    const diffStr = analysis ? ` diff: ${ratingDiff.toFixed(0)}` : "";
+    const ePosStr = ` ePos: ${s.expectedPosition.toFixed(1)}`;
+    console.log(
+      `  #${s.horseNumber.toString().padStart(2)} ${s.horseName.padEnd(15).substring(0, 15)}: ` +
+        `${(s.winProbability * 100).toFixed(1).padStart(5)}% win, ` +
+        `${(s.placeProbability * 100).toFixed(1).padStart(5)}% place` +
+        recStr + ratingStr + diffStr + ePosStr
+    );
+  }
+
+  console.log(`\n  Avg differentiation: ${result.avgDifferentiation.toFixed(0)} | Horses with diff < 8: ${result.closeDiffCount}`);
+
+  // --- Finish-time projection (independent pass) ---
+  printFinishTimeProjection(result.finishTimes);
+
+  console.log("\nTop Quinella Combinations:");
+  for (const q of result.topExotics.quinella.slice(0, 5)) {
+    console.log(
+      `  ${q.combination}: ${(q.probability * 100).toFixed(1)}% (fair odds: ${q.fairOdds.toFixed(1)})`
+    );
+  }
+
+  // Show jockey/trainer analysis
+  console.log("\nJockey/Trainer Form (from historical data):");
+  const topEntries = result.race.entries
+    .filter(e => e.jockey.seasonStats.rides > 0 || e.trainer.seasonStats.rides > 0)
+    .sort((a, b) => b.jockey.seasonStats.winRate - a.jockey.seasonStats.winRate);
+
+  for (const entry of topEntries) {
+    const jWR = (entry.jockey.seasonStats.winRate * 100).toFixed(0);
+    const jRides = entry.jockey.seasonStats.rides;
+    const tWR = (entry.trainer.seasonStats.winRate * 100).toFixed(0);
+    const tRides = entry.trainer.seasonStats.rides;
+    console.log(
+      `  #${entry.horseNumber.toString().padStart(2)} ${entry.horse.name.substring(0, 15).padEnd(15)} - ` +
+      `J: ${entry.jockey.name.substring(0, 12).padEnd(12)} (${jWR}% from ${jRides} rides) | ` +
+      `T: ${entry.trainer.name.substring(0, 12).padEnd(12)} (${tWR}% from ${tRides})`
+    );
+  }
+
+  const efficiency = result.marketEfficiency;
+  console.log("\nMarket Efficiency:");
+  console.log(`  Overround: ${efficiency.overround.toFixed(1)}%`);
+  console.log(`  Favorite Bias: ${efficiency.favoriteBias >= 0 ? "+" : ""}${efficiency.favoriteBias.toFixed(1)}%`);
+  console.log(`  Longshot Bias: ${efficiency.longShotBias >= 0 ? "+" : ""}${efficiency.longShotBias.toFixed(1)}%`);
+
+  if (efficiency.inefficiencies.length > 0) {
+    console.log("\n  Potential Inefficiencies:");
+    for (const ineff of efficiency.inefficiencies.slice(0, 3)) {
+      const direction = ineff.edge > 0 ? "undervalued" : "overvalued";
+      console.log(
+        `    #${ineff.horseNumber}: ${direction} by ${Math.abs(ineff.edge).toFixed(0)}%`
+      );
+    }
+  }
+}
+
+function printFailure(error: unknown): void {
+  console.error("\n" + "═".repeat(60));
+  console.error("ANALYSIS FAILED");
+  console.error("═".repeat(60));
+  console.error("\nError:", error instanceof Error ? error.message : error);
+  console.error("\nPossible causes:");
+  console.error("  - No racing on the specified date");
+  console.error("  - HKJC website unavailable or structure changed");
+  console.error("  - Network connectivity issues");
+  console.error("  - Invalid race number for this meeting");
+  console.error("\nTry:");
+  console.error("  - Check HKJC website for race schedule");
+  console.error("  - Verify the date and race number");
+  console.error("  - Run 'npm run scrape:racecard' to see available races");
+  console.error("═".repeat(60) + "\n");
 }
 
 // ============================================================================
 // ENTRY POINT
 // ============================================================================
 
+async function main(args: CliArgs): Promise<void> {
+  printHeader(args);
+  try {
+    const result = await runRaceAnalysis(args, consoleLogger);
+    printAnalysis(result);
+  } catch (error) {
+    printFailure(error);
+    process.exit(1);
+  }
+}
+
 const args = parseArgs();
-analyzeRace(args);
+main(args);

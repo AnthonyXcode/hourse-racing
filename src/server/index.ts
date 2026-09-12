@@ -5,11 +5,42 @@
  *   npm run start:api   # built output
  */
 
-import dotenv from "dotenv";
+import "./config/dotenv.js";
+import path from "node:path";
+import { parse } from "date-fns";
+import {
+  runRaceAnalysis,
+  venueCode,
+  type AnalysisLogger,
+  type RaceAnalysisOptions,
+} from "../pipeline/raceAnalysis.js";
+import { toRaceAnalysisJson } from "../pipeline/raceAnalysisJson.js";
 import { createApp } from "./app.js";
 import { loadEnv, type Env } from "./config/env.js";
+import { AnalysisService, type AnalysisParams } from "./services/analysisService.js";
 
-dotenv.config({ quiet: true });
+/** Maps validated API params onto the analysis pipeline; returns JSON-safe output. */
+async function runAnalysis(params: AnalysisParams): Promise<unknown> {
+  const tag = `[analysis ${venueCode(params.venue)}-${params.date}-${params.raceNumber}]`;
+  const log: AnalysisLogger = {
+    info: (message) => console.log(tag, message.trim()),
+    warn: (message) => console.warn(tag, message.trim()),
+  };
+
+  const options: RaceAnalysisOptions = {
+    date: parse(params.date, "yyyy-MM-dd", new Date()),
+    venue: params.venue,
+    raceNumber: params.raceNumber,
+    useSaved: params.useSaved,
+    bankroll: params.bankroll,
+    kellyFraction: params.kellyFraction,
+    minEdge: params.minEdge,
+  };
+  if (params.formData === "all") options.formData = "all";
+  if (params.ignoreRecords.length > 0) options.ignoreRecords = params.ignoreRecords;
+
+  return toRaceAnalysisJson(await runRaceAnalysis(options, log));
+}
 
 let env: Env;
 try {
@@ -19,9 +50,16 @@ try {
   process.exit(1);
 }
 
+const analysisService = new AnalysisService({
+  runner: runAnalysis,
+  cacheDir: path.resolve(env.ANALYSIS_CACHE_DIR),
+  maxConcurrent: env.ANALYSIS_MAX_CONCURRENT,
+});
+
 const app = createApp({
   apiKeys: env.API_KEYS,
   exposeErrorDetails: env.NODE_ENV !== "production",
+  analysisService,
 });
 
 const server = app.listen(env.PORT, (error) => {

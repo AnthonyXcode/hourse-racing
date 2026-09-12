@@ -307,8 +307,46 @@ curl -H "Authorization: Bearer $API_KEY" http://localhost:3000/health
 | Method | Path | Response |
 |--------|------|----------|
 | GET | `/health` | `{ status, uptime, timestamp, version }` |
+| POST | `/v1/analyses` | Race analysis as JSON (see below) |
 
-Errors are JSON: `401 {"error":"unauthorized"}`, `404 {"error":"not_found"}`.
+Errors are JSON: `400 {"error":"invalid_request","details":[…]}`, `401 {"error":"unauthorized"}`,
+`404 {"error":"not_found"}` or `{"error":"race_not_found","message":…}`.
+
+### POST /v1/analyses
+
+Runs the same pipeline as `tools/analyze-race.ts` (shared code in `src/pipeline/raceAnalysis.ts`)
+and returns the result as JSON.
+
+```bash
+curl -X POST http://localhost:3000/v1/analyses \
+  -H "x-api-key: $API_KEY" -H "Content-Type: application/json" \
+  -d '{"date":"2026-09-09","venue":"HV","race":7,"formData":"all"}'
+```
+
+| Field | Required | Default | CLI equivalent |
+|-------|----------|---------|----------------|
+| `date` | yes | — | `--date` (`YYYY-MM-DD`) |
+| `venue` | yes | — | `--venue` (`ST`, `HV`, `Sha Tin`, `Happy Valley`) |
+| `race` | yes | — | `--race` (1–14) |
+| `formData` | no | `"venue"` | `--form-data all` → `"all"` |
+| `useSaved` | no | `false` | `--use-saved` |
+| `bankroll` | no | `10000` | `--bankroll` |
+| `kellyFraction` | no | `0.25` | `--kelly` |
+| `minEdge` | no | `5` | `--min-edge` |
+| `ignoreRecords` | no | `[]` | `--ignore-records` (as an array) |
+
+Response: `{ cache, generatedAt, params, result }`. `result` holds `race`, `runners` (odds, jockey/trainer
+stats), `simulation` (win/place %, rating diff), `analysis` (form factors), `recommendations` (bets, stakes,
+top picks), `exotics` (top 20 quinella / quinella place / trio / tierce with fair odds), `finishTimes` and
+`marketEfficiency`.
+
+**Caching**: results are saved to `data/analysis/<ST|HV>-<date>-<race>.json`.
+- **Miss** (no file, or a file made with different options): runs the analysis, saves it, returns it
+  (`"cache": "miss"`). Live runs scrape HKJC and can take minutes, so give the client a long timeout.
+- **Hit**: returns the saved file immediately (`"cache": "hit"`) and re-runs the analysis in the background
+  to update the file. If the refresh fails, the old file stays.
+
+Analyses run one at a time by default (`ANALYSIS_MAX_CONCURRENT`) because live runs launch Chromium.
 
 Keys are only accepted in headers, never the query string. Call the API server-to-server —
 a key embedded in browser JavaScript is visible to anyone.
@@ -327,6 +365,9 @@ API server (`.env`, see `.env.example`):
 | `API_KEYS` | yes | — | Comma-separated, min 32 chars each |
 | `PORT` | no | `3000` | |
 | `NODE_ENV` | no | `development` | `production` hides 5xx error details |
+| `ANALYSIS_CACHE_DIR` | no | `data/analysis` | Analysis cache, relative to the working directory |
+| `ANALYSIS_MAX_CONCURRENT` | no | `1` | Analyses running at once (1–8) |
+| `PLAYWRIGHT_BROWSERS_PATH` | no | — | Set to `0` for live scraping, as the CLI skills do |
 
 ## Troubleshooting
 

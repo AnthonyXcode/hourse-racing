@@ -7,7 +7,9 @@ import { readFileSync } from "node:fs";
 import express, { type Express } from "express";
 import { apiKeyAuth } from "./middleware/apiKeyAuth.js";
 import { errorHandler, notFound } from "./middleware/errorHandler.js";
+import { analysesRouter } from "./routes/analyses.js";
 import { healthRouter } from "./routes/health.js";
+import type { AnalysisService } from "./services/analysisService.js";
 
 export interface AppOptions {
   apiKeys: readonly string[];
@@ -15,6 +17,8 @@ export interface AppOptions {
   version?: string;
   /** Include error messages in 5xx responses (never enable in production) */
   exposeErrorDetails?: boolean;
+  /** Mounts POST /v1/analyses when provided */
+  analysisService?: AnalysisService;
 }
 
 function readPackageVersion(): string {
@@ -24,7 +28,12 @@ function readPackageVersion(): string {
   return pkg.version ?? "unknown";
 }
 
-export function createApp({ apiKeys, version = readPackageVersion(), exposeErrorDetails = false }: AppOptions): Express {
+export function createApp({
+  apiKeys,
+  version = readPackageVersion(),
+  exposeErrorDetails = false,
+  analysisService,
+}: AppOptions): Express {
   const app = express();
 
   app.disable("x-powered-by");
@@ -34,6 +43,7 @@ export function createApp({ apiKeys, version = readPackageVersion(), exposeError
   app.use(express.json({ limit: "100kb" }));
 
   app.use("/health", healthRouter(version));
+  if (analysisService) app.use("/v1/analyses", analysesRouter(analysisService));
 
   app.use(notFound);
   app.use(errorHandler(exposeErrorDetails));
