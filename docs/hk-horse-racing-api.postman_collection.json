@@ -1,0 +1,1009 @@
+{
+  "info": {
+    "_postman_id": "5e1bde8f-5640-4b5a-9d3e-ca082431d7bc",
+    "name": "HK Horse Racing API",
+    "description": "Express API exposing the HK horse racing tools (`analyze-race`, `backtest-differentiation`, `batch-analyze`) as JSON.\n\n**Setup**\n1. Start the server: `npm run dev:api` (reads `.env`).\n2. Import this collection and an environment from `docs/`:\n   - `hk-horse-racing-api.local.postman_environment.json` — your key from `.env` (gitignored, local only)\n   - `hk-horse-racing-api.postman_environment.json` — template; paste a key from `API_KEYS` into `apiKey`\n3. Select the environment. Every request sends `x-api-key: {{apiKey}}` (auth is set on the collection) to `{{baseUrl}}`.\n\n**Caching** — the analysis endpoints are synchronous and cache results in `data/analysis/`. Synchronous. `\"cache\": \"miss\"` = ran now and saved; `\"cache\": \"hit\"` = returned the saved file immediately and refreshed it in the background. A saved file made with different options counts as a miss. Live scraping can take minutes: keep Postman's request timeout at 0 (no timeout).\n\n**Errors** — JSON: 400 `invalid_request` (with `details`), 401 `unauthorized`, 404 `not_found` / `race_not_found`, 500 `internal_error`.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "x-api-key",
+        "type": "string"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}",
+        "type": "string"
+      },
+      {
+        "key": "in",
+        "value": "header",
+        "type": "string"
+      }
+    ]
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "if (!pm.variables.get(\"baseUrl\") || !pm.variables.get(\"apiKey\")) {",
+          "  console.warn(\"Select an environment that sets baseUrl and apiKey (docs/*.postman_environment.json)\");",
+          "}"
+        ]
+      }
+    }
+  ],
+  "item": [
+    {
+      "name": "Health check",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"status is 200\", () => pm.response.to.have.status(200));",
+              "pm.test(\"status is ok\", () => pm.expect(pm.response.json().status).to.eql(\"ok\"));"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/health",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "health"
+          ]
+        },
+        "description": "Liveness check. Needs the API key like every other route.\n\nResponse: `{ status, uptime, timestamp, version }`."
+      },
+      "response": [
+        {
+          "name": "200 OK",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/health",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "health"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"status\": \"ok\",\n  \"uptime\": 123.4,\n  \"timestamp\": \"2026-09-12T14:00:00.000Z\",\n  \"version\": \"1.0.0\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "Race analysis",
+      "description": "Runs the `tools/analyze-race.ts` pipeline for one race and returns JSON.\n\n| Field | Required | Default | CLI flag |\n|---|---|---|---|\n| `date` | yes | — | `--date` (`YYYY-MM-DD`) |\n| `venue` | yes | — | `--venue` (`ST`, `HV`, `Sha Tin`, `Happy Valley`) |\n| `race` | yes | — | `--race` (1–14) |\n| `formData` | no | `\"venue\"` | `--form-data all` → `\"all\"` |\n| `useSaved` | no | `false` | `--use-saved` |\n| `bankroll` | no | `10000` | `--bankroll` |\n| `kellyFraction` | no | `0.25` | `--kelly` |\n| `minEdge` | no | `5` | `--min-edge` |\n| `ignoreRecords` | no | `[]` | `--ignore-records` (as an array) |\n\nResponse: `{ cache, generatedAt, params, result }`. `result` holds `race`, `config`, `runners`, `simulation`, `analysis`, `recommendations`, `exotics` (top 20 quinella / quinella place / trio / tierce), `finishTimes`, `marketEfficiency`.\n\nSynchronous. `\"cache\": \"miss\"` = ran now and saved; `\"cache\": \"hit\"` = returned the saved file immediately and refreshed it in the background. A saved file made with different options counts as a miss.\n\nCache file: `data/analysis/<ST|HV>-<date>-<race>.json`. Errors: 400 `invalid_request`, 404 `race_not_found`.",
+      "item": [
+        {
+          "name": "Analyze race — saved racecard",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 200\", () => pm.response.to.have.status(200));",
+                  "const json = pm.response.json();",
+                  "pm.test(\"reports cache hit or miss\", () => pm.expect([\"hit\", \"miss\"]).to.include(json.cache));",
+                  "pm.test(\"has race and simulation\", () => {",
+                  "  pm.expect(json.result.race).to.be.an(\"object\");",
+                  "  pm.expect(json.result.simulation.horses).to.be.an(\"array\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/analyses",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "analyses"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"date\": \"2026-09-09\",\n  \"venue\": \"HV\",\n  \"race\": 1,\n  \"formData\": \"all\",\n  \"useSaved\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Uses the saved race card snapshot in `data/racecards/` — fast (~1 s), works after race day."
+          },
+          "response": [
+            {
+              "name": "200 cache miss (trimmed)",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/v1/analyses",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "analyses"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"date\": \"2026-09-09\",\n  \"venue\": \"HV\",\n  \"race\": 1,\n  \"formData\": \"all\",\n  \"useSaved\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"cache\": \"miss\",\n  \"generatedAt\": \"2026-09-12T14:47:56.436Z\",\n  \"params\": {\n    \"date\": \"2026-09-09\",\n    \"venue\": \"Happy Valley\",\n    \"formData\": \"venue\",\n    \"useSaved\": true,\n    \"bankroll\": 10000,\n    \"kellyFraction\": 0.25,\n    \"minEdge\": 5,\n    \"ignoreRecords\": [],\n    \"raceNumber\": 1\n  },\n  \"result\": {\n    \"race\": {\n      \"id\": \"2026-09-09-HV-1\",\n      \"date\": \"2026-09-09\",\n      \"venue\": \"Happy Valley\",\n      \"venueCode\": \"HV\",\n      \"raceNumber\": 1,\n      \"name\": \"ADMIRALTY HANDICAP\",\n      \"class\": \"Class 5\",\n      \"distance\": 1200,\n      \"surface\": \"Turf\",\n      \"going\": \"Good\",\n      \"prizeMoney\": 875000,\n      \"raceType\": null,\n      \"postTime\": null\n    },\n    \"config\": {\n      \"bankroll\": 10000,\n      \"kellyFraction\": 0.25,\n      \"minEdgeThreshold\": 5\n    },\n    \"runners\": [\n      {\n        \"horseNumber\": 1,\n        \"horseCode\": \"HK_2024_K431\",\n        \"horseName\": \"FLASH STAR\",\n        \"horseNameChinese\": null,\n        \"draw\": 11,\n        \"weight\": 135,\n        \"currentRating\": 40,\n        \"ratingChange\": -3,\n        \"gear\": [\n          \"TT\"\n        ],\n        \"isScratched\": false,\n        \"winOdds\": 12,\n        \"placeOddsEstimate\": 3.3722015042362097,\n        \"formRecordCount\": 10,\n        \"jockey\": {\n          \"code\": \"KRW\",\n          \"name\": \"R Kingscote\",\n          \"weightClaim\": 0,\n          \"seasonStats\": {\n            \"wins\": 0,\n            \"places\": 0,\n            \"rides\": 0,\n            \"winRate\": 0,\n            \"placeRate\": 0,\n            \"roi\": 1\n          }\n        },\n        \"trainer\": {\n          \"code\": \"SCS\",\n          \"name\": \"C S Shum\",\n          \"seasonStats\": {\n            \"wins\": 2,\n            \"places\": 1,\n            \"rides\": 9,\n            \"winRate\": 0.22219999999999998,\n            \"placeRate\": 0.3333333333333333,\n            \"roi\": 1\n          }\n        }\n      }\n    ],\n    \"simulation\": {\n      \"runs\": 10000,\n      \"avgDifferentiation\": 16.083333333333332,\n      \"closeDiffCount\": 3,\n      \"horses\": [\n        {\n          \"horseNumber\": 7,\n          \"horseCode\": \"HK_2024_K038\",\n          \"horseName\": \"NOBLE FANS\",\n          \"winProbability\": 0.3525,\n          \"placeProbability\": 0.7245,\n          \"expectedPosition\": 2.8018,\n          \"positionStdDev\": 2.107775310605948,\n          \"formRecordCount\": 10,\n          \"overallRating\": 67,\n          \"ratingDiff\": 0\n        },\n        {\n          \"horseNumber\": 6,\n          \"horseCode\": \"HK_2022_H252\",\n          \"horseName\": \"ALWAYS FLUKE\",\n          \"winProbability\": 0.2747,\n          \"placeProbability\": 0.669,\n          \"expectedPosition\": 3.118,\n          \"positionStdDev\": 2.2032875436492625,\n          \"formRecordCount\": 10,\n          \"overallRating\": 65,\n          \"ratingDiff\": 2\n        }\n      ]\n    },\n    \"analysis\": [\n      {\n        \"horseCode\": \"HK_2024_K038\",\n        \"horseName\": \"NOBLE FANS\",\n        \"averageSpeedRating\": 97,\n        \"bestSpeedRating\": 102,\n        \"lastSpeedRating\": 96,\n        \"formScore\": 0.5531024531024532,\n        \"classIndicator\": 0.4,\n        \"daysSinceLastRace\": 66,\n        \"drawAdvantage\": 0.01,\n        \"jockeyEdge\": 0.1,\n        \"trainerForm\": 1,\n        \"surfacePreference\": 0.2,\n        \"goingPreference\": -0.5600000000000002,\n        \"distancePreference\": -0.11999999999999993,\n        \"ratingMomentum\": 0.4875,\n        \"formRecordCount\": 10,\n        \"overallRating\": 67\n      }\n    ],\n    \"recommendations\": {\n      \"bets\": [\n        {\n          \"betType\": \"Place\",\n          \"selection\": \"7\",\n          \"modelProbability\": 0.7245,\n          \"marketProbability\": 0.3324921556839216,\n          \"edge\": 117.89987752033899,\n          \"expectedOdds\": 1.3802622498274673,\n          \"currentOdds\": 3.0075897518335264,\n          \"recommendedStake\": 500,\n          \"maxStake\": 500,\n          \"expectedValue\": 1.17899877520339,\n          \"confidence\": \"High\",\n          \"reasoning\": \"Strong edge of 117.9% vs market. Very likely to place. EV: +117.9% per $1.\"\n        }\n      ],\n      \"totalRecommendedStake\": 1000,\n      \"topPicks\": [\n        {\n          \"rank\": 1,\n          \"horseNumber\": 7,\n          \"horseName\": \"NOBLE FANS\",\n          \"winProb\": 0.3525,\n          \"value\": 2.7847500000000003\n        },\n        {\n          \"rank\": 2,\n          \"horseNumber\": 6,\n          \"horseName\": \"ALWAYS FLUKE\",\n          \"winProb\": 0.2747,\n          \"value\": 1.95037\n        }\n      ]\n    },\n    \"exotics\": {\n      \"quinella\": [\n        {\n          \"combination\": \"6-7\",\n          \"probability\": 0.2299,\n          \"fairOdds\": 4.349717268377556\n        },\n        {\n          \"combination\": \"5-7\",\n          \"probability\": 0.1268,\n          \"fairOdds\": 7.886435331230284\n        }\n      ],\n      \"quinellaPlace\": [\n        {\n          \"combination\": \"6-7\",\n          \"probability\": 1,\n          \"fairOdds\": 1\n        }\n      ],\n      \"trio\": [\n        {\n          \"combination\": \"5-6-7\",\n          \"probability\": 0.157,\n          \"fairOdds\": 6.369426751592357\n        }\n      ],\n      \"tierce\": [\n        {\n          \"combination\": \"7-6-5\",\n          \"probability\": 0.0332,\n          \"fairOdds\": 30.12048192771084\n        }\n      ]\n    },\n    \"finishTimes\": {\n      \"status\": \"ok\",\n      \"distance\": 1200,\n      \"going\": \"Good\",\n      \"sdSeconds\": 1.2000000000000002,\n      \"speedStd\": 6,\n      \"rows\": [\n        {\n          \"horseNumber\": 11,\n          \"horseName\": \"VON BAER\",\n          \"mean\": 69.26,\n          \"p10\": 67.72208,\n          \"p90\": 70.79792,\n          \"marginSeconds\": 0,\n          \"marginLengths\": 0\n        },\n        {\n          \"horseNumber\": 12,\n          \"horseName\": \"TEAM HAPPY\",\n          \"mean\": 69.56,\n          \"p10\": 68.02208,\n          \"p90\": 71.09792,\n          \"marginSeconds\": 0.29999999999999716,\n          \"marginLengths\": 1.799999999999983\n        }\n      ],\n      \"debuts\": []\n    },\n    \"marketEfficiency\": {\n      \"overround\": 23.03730442306504,\n      \"favoriteBias\": 0,\n      \"longShotBias\": 0,\n      \"inefficiencies\": [\n        {\n          \"horseNumber\": 7,\n          \"edge\": 178.47500000000002\n        },\n        {\n          \"horseNumber\": 6,\n          \"edge\": 95.03699999999999\n        }\n      ]\n    }\n  }\n}"
+            },
+            {
+              "name": "200 cache hit (trimmed)",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/v1/analyses",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "analyses"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"date\": \"2026-09-09\",\n  \"venue\": \"HV\",\n  \"race\": 1,\n  \"formData\": \"all\",\n  \"useSaved\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"cache\": \"hit\",\n  \"generatedAt\": \"2026-09-12T14:47:56.436Z\",\n  \"params\": {\n    \"date\": \"2026-09-09\",\n    \"venue\": \"Happy Valley\",\n    \"formData\": \"venue\",\n    \"useSaved\": true,\n    \"bankroll\": 10000,\n    \"kellyFraction\": 0.25,\n    \"minEdge\": 5,\n    \"ignoreRecords\": [],\n    \"raceNumber\": 1\n  },\n  \"result\": {\n    \"race\": {\n      \"id\": \"2026-09-09-HV-1\",\n      \"date\": \"2026-09-09\",\n      \"venue\": \"Happy Valley\",\n      \"venueCode\": \"HV\",\n      \"raceNumber\": 1,\n      \"name\": \"ADMIRALTY HANDICAP\",\n      \"class\": \"Class 5\",\n      \"distance\": 1200,\n      \"surface\": \"Turf\",\n      \"going\": \"Good\",\n      \"prizeMoney\": 875000,\n      \"raceType\": null,\n      \"postTime\": null\n    },\n    \"config\": {\n      \"bankroll\": 10000,\n      \"kellyFraction\": 0.25,\n      \"minEdgeThreshold\": 5\n    },\n    \"runners\": [\n      {\n        \"horseNumber\": 1,\n        \"horseCode\": \"HK_2024_K431\",\n        \"horseName\": \"FLASH STAR\",\n        \"horseNameChinese\": null,\n        \"draw\": 11,\n        \"weight\": 135,\n        \"currentRating\": 40,\n        \"ratingChange\": -3,\n        \"gear\": [\n          \"TT\"\n        ],\n        \"isScratched\": false,\n        \"winOdds\": 12,\n        \"placeOddsEstimate\": 3.3722015042362097,\n        \"formRecordCount\": 10,\n        \"jockey\": {\n          \"code\": \"KRW\",\n          \"name\": \"R Kingscote\",\n          \"weightClaim\": 0,\n          \"seasonStats\": {\n            \"wins\": 0,\n            \"places\": 0,\n            \"rides\": 0,\n            \"winRate\": 0,\n            \"placeRate\": 0,\n            \"roi\": 1\n          }\n        },\n        \"trainer\": {\n          \"code\": \"SCS\",\n          \"name\": \"C S Shum\",\n          \"seasonStats\": {\n            \"wins\": 2,\n            \"places\": 1,\n            \"rides\": 9,\n            \"winRate\": 0.22219999999999998,\n            \"placeRate\": 0.3333333333333333,\n            \"roi\": 1\n          }\n        }\n      }\n    ],\n    \"simulation\": {\n      \"runs\": 10000,\n      \"avgDifferentiation\": 16.083333333333332,\n      \"closeDiffCount\": 3,\n      \"horses\": [\n        {\n          \"horseNumber\": 7,\n          \"horseCode\": \"HK_2024_K038\",\n          \"horseName\": \"NOBLE FANS\",\n          \"winProbability\": 0.3525,\n          \"placeProbability\": 0.7245,\n          \"expectedPosition\": 2.8018,\n          \"positionStdDev\": 2.107775310605948,\n          \"formRecordCount\": 10,\n          \"overallRating\": 67,\n          \"ratingDiff\": 0\n        },\n        {\n          \"horseNumber\": 6,\n          \"horseCode\": \"HK_2022_H252\",\n          \"horseName\": \"ALWAYS FLUKE\",\n          \"winProbability\": 0.2747,\n          \"placeProbability\": 0.669,\n          \"expectedPosition\": 3.118,\n          \"positionStdDev\": 2.2032875436492625,\n          \"formRecordCount\": 10,\n          \"overallRating\": 65,\n          \"ratingDiff\": 2\n        }\n      ]\n    },\n    \"analysis\": [\n      {\n        \"horseCode\": \"HK_2024_K038\",\n        \"horseName\": \"NOBLE FANS\",\n        \"averageSpeedRating\": 97,\n        \"bestSpeedRating\": 102,\n        \"lastSpeedRating\": 96,\n        \"formScore\": 0.5531024531024532,\n        \"classIndicator\": 0.4,\n        \"daysSinceLastRace\": 66,\n        \"drawAdvantage\": 0.01,\n        \"jockeyEdge\": 0.1,\n        \"trainerForm\": 1,\n        \"surfacePreference\": 0.2,\n        \"goingPreference\": -0.5600000000000002,\n        \"distancePreference\": -0.11999999999999993,\n        \"ratingMomentum\": 0.4875,\n        \"formRecordCount\": 10,\n        \"overallRating\": 67\n      }\n    ],\n    \"recommendations\": {\n      \"bets\": [\n        {\n          \"betType\": \"Place\",\n          \"selection\": \"7\",\n          \"modelProbability\": 0.7245,\n          \"marketProbability\": 0.3324921556839216,\n          \"edge\": 117.89987752033899,\n          \"expectedOdds\": 1.3802622498274673,\n          \"currentOdds\": 3.0075897518335264,\n          \"recommendedStake\": 500,\n          \"maxStake\": 500,\n          \"expectedValue\": 1.17899877520339,\n          \"confidence\": \"High\",\n          \"reasoning\": \"Strong edge of 117.9% vs market. Very likely to place. EV: +117.9% per $1.\"\n        }\n      ],\n      \"totalRecommendedStake\": 1000,\n      \"topPicks\": [\n        {\n          \"rank\": 1,\n          \"horseNumber\": 7,\n          \"horseName\": \"NOBLE FANS\",\n          \"winProb\": 0.3525,\n          \"value\": 2.7847500000000003\n        },\n        {\n          \"rank\": 2,\n          \"horseNumber\": 6,\n          \"horseName\": \"ALWAYS FLUKE\",\n          \"winProb\": 0.2747,\n          \"value\": 1.95037\n        }\n      ]\n    },\n    \"exotics\": {\n      \"quinella\": [\n        {\n          \"combination\": \"6-7\",\n          \"probability\": 0.2299,\n          \"fairOdds\": 4.349717268377556\n        },\n        {\n          \"combination\": \"5-7\",\n          \"probability\": 0.1268,\n          \"fairOdds\": 7.886435331230284\n        }\n      ],\n      \"quinellaPlace\": [\n        {\n          \"combination\": \"6-7\",\n          \"probability\": 1,\n          \"fairOdds\": 1\n        }\n      ],\n      \"trio\": [\n        {\n          \"combination\": \"5-6-7\",\n          \"probability\": 0.157,\n          \"fairOdds\": 6.369426751592357\n        }\n      ],\n      \"tierce\": [\n        {\n          \"combination\": \"7-6-5\",\n          \"probability\": 0.0332,\n          \"fairOdds\": 30.12048192771084\n        }\n      ]\n    },\n    \"finishTimes\": {\n      \"status\": \"ok\",\n      \"distance\": 1200,\n      \"going\": \"Good\",\n      \"sdSeconds\": 1.2000000000000002,\n      \"speedStd\": 6,\n      \"rows\": [\n        {\n          \"horseNumber\": 11,\n          \"horseName\": \"VON BAER\",\n          \"mean\": 69.26,\n          \"p10\": 67.72208,\n          \"p90\": 70.79792,\n          \"marginSeconds\": 0,\n          \"marginLengths\": 0\n        },\n        {\n          \"horseNumber\": 12,\n          \"horseName\": \"TEAM HAPPY\",\n          \"mean\": 69.56,\n          \"p10\": 68.02208,\n          \"p90\": 71.09792,\n          \"marginSeconds\": 0.29999999999999716,\n          \"marginLengths\": 1.799999999999983\n        }\n      ],\n      \"debuts\": []\n    },\n    \"marketEfficiency\": {\n      \"overround\": 23.03730442306504,\n      \"favoriteBias\": 0,\n      \"longShotBias\": 0,\n      \"inefficiencies\": [\n        {\n          \"horseNumber\": 7,\n          \"edge\": 178.47500000000002\n        },\n        {\n          \"horseNumber\": 6,\n          \"edge\": 95.03699999999999\n        }\n      ]\n    }\n  }\n}"
+            },
+            {
+              "name": "404 race not found",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/v1/analyses",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "analyses"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"date\": \"2020-01-01\",\n  \"venue\": \"ST\",\n  \"race\": 3,\n  \"useSaved\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"error\": \"race_not_found\",\n  \"message\": \"No saved race card found for Race 3 at Sha Tin on 2020-01-01. No file in data/racecards/. Run analyze-race without --use-saved before the meeting to save the race card.\"\n}"
+            },
+            {
+              "name": "400 invalid body",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/v1/analyses",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "analyses"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"date\": \"2026-13-01\",\n  \"venue\": \"XX\",\n  \"race\": 0\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"error\": \"invalid_request\",\n  \"details\": [\n    {\n      \"path\": \"date\",\n      \"message\": \"not a valid calendar date\"\n    },\n    {\n      \"path\": \"venue\",\n      \"message\": \"must be \\\"ST\\\", \\\"HV\\\", \\\"Sha Tin\\\" or \\\"Happy Valley\\\"\"\n    },\n    {\n      \"path\": \"race\",\n      \"message\": \"Number must be greater than or equal to 1\"\n    }\n  ]\n}"
+            }
+          ]
+        },
+        {
+          "name": "Analyze race — live scrape",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 200\", () => pm.response.to.have.status(200));",
+                  "const json = pm.response.json();",
+                  "pm.test(\"reports cache hit or miss\", () => pm.expect([\"hit\", \"miss\"]).to.include(json.cache));",
+                  "pm.test(\"has race and simulation\", () => {",
+                  "  pm.expect(json.result.race).to.be.an(\"object\");",
+                  "  pm.expect(json.result.simulation.horses).to.be.an(\"array\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/analyses",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "analyses"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"date\": \"2026-09-13\",\n  \"venue\": \"ST\",\n  \"race\": 1,\n  \"formData\": \"all\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Scrapes HKJC live (race card, odds, jockey and trainer profiles) — can take minutes and only works while HKJC still shows the race card. Also saves a snapshot to `data/racecards/`. Change date / venue / race to an upcoming race."
+          },
+          "response": []
+        },
+        {
+          "name": "Analyze race — all options",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 200\", () => pm.response.to.have.status(200));",
+                  "const json = pm.response.json();",
+                  "pm.test(\"reports cache hit or miss\", () => pm.expect([\"hit\", \"miss\"]).to.include(json.cache));",
+                  "pm.test(\"has race and simulation\", () => {",
+                  "  pm.expect(json.result.race).to.be.an(\"object\");",
+                  "  pm.expect(json.result.simulation.horses).to.be.an(\"array\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/analyses",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "analyses"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"date\": \"2026-09-09\",\n  \"venue\": \"Happy Valley\",\n  \"race\": 7,\n  \"formData\": \"all\",\n  \"useSaved\": true,\n  \"bankroll\": 20000,\n  \"kellyFraction\": 0.35,\n  \"minEdge\": 5,\n  \"ignoreRecords\": [\n    \"20260315\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Backtests",
+      "description": "Runs `tools/backtest-differentiation.ts` over saved racecards that have results. Every field is optional; defaults match the CLI.\n\n| Field | Default | CLI flag |\n|---|---|---|\n| `sparseMax` | `3` | `--sparse` |\n| `closeMax` | `4` | `--close` |\n| `avgDiffMin` | `14` | `--avgdiff` |\n| `gapMin` | `0` | `--gap` |\n| `oddsMax` | `0` (off) | `--odds` |\n| `ratingChangeMin` | `-1` (`null` = off) | `--ratingchange` |\n| `months` | `[]` (all) | `--months` (as an array, e.g. `[\"08\",\"09\"]`) |\n| `venue` | `null` (both) | `--venue` (`ST` / `HV`) |\n| `surface` | `null` (both) | `--surface` (`Turf` / `AWT`) |\n| `ignoreClasses` | `[]` | `--ignore-class` (as an array) |\n| `ignoreDistances` | `[]` | `--ignore-distance` (array of metres) |\n| `maxRating` | `0` (off) | `--max-rating` |\n| `maxAvgDiff` | `0` (off) | `--max-avgdiff` |\n| `form` | `\"all\"` | `--form` (`all` / `ST` / `HV`) |\n| `ignoreAfter` | `null` | `--ignore-after` (`YYYY-MM-DD`) |\n\n`result` holds `totals`, `races`, `byDay`, `byMonth`, `breakdowns`, `classDistanceVenue`, `skipReasons` and `upcoming`. Percentages are numbers, `null` when there were no bets. Takes ~5–15 s on a miss.\n\nSynchronous. `\"cache\": \"miss\"` = ran now and saved; `\"cache\": \"hit\"` = returned the saved file immediately and refreshed it in the background. A saved file made with different options counts as a miss.\n\nCache file: `data/analysis/backtest-differentiation-<hash>.json` (one per option set).",
+      "item": [
+        {
+          "name": "Differentiation backtest — CLI defaults",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 200\", () => pm.response.to.have.status(200));",
+                  "const json = pm.response.json();",
+                  "pm.test(\"reports cache hit or miss\", () => pm.expect([\"hit\", \"miss\"]).to.include(json.cache));",
+                  "pm.test(\"has totals\", () => pm.expect(json.result.totals.races).to.be.a(\"number\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/backtests/differentiation",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "backtests",
+                "differentiation"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Same as `npx tsx tools/backtest-differentiation.ts` with no flags (both venues)."
+          },
+          "response": []
+        },
+        {
+          "name": "Differentiation backtest — HV Turf (optimize:HV)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 200\", () => pm.response.to.have.status(200));",
+                  "const json = pm.response.json();",
+                  "pm.test(\"reports cache hit or miss\", () => pm.expect([\"hit\", \"miss\"]).to.include(json.cache));",
+                  "pm.test(\"has totals\", () => pm.expect(json.result.totals.races).to.be.a(\"number\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/backtests/differentiation",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "backtests",
+                "differentiation"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sparseMax\": 3,\n  \"closeMax\": 2,\n  \"avgDiffMin\": 15,\n  \"gapMin\": 1,\n  \"venue\": \"HV\",\n  \"surface\": \"Turf\",\n  \"form\": \"all\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Same as `npm run optimize:HV`."
+          },
+          "response": [
+            {
+              "name": "200 cache miss (trimmed)",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/v1/backtests/differentiation",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "backtests",
+                    "differentiation"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"sparseMax\": 3,\n  \"closeMax\": 2,\n  \"avgDiffMin\": 15,\n  \"gapMin\": 1,\n  \"venue\": \"HV\",\n  \"surface\": \"Turf\",\n  \"form\": \"all\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"cache\": \"miss\",\n  \"generatedAt\": \"2026-09-12T14:47:46.205Z\",\n  \"params\": {\n    \"sparseMax\": 3,\n    \"closeMax\": 2,\n    \"avgDiffMin\": 15,\n    \"gapMin\": 1,\n    \"oddsMax\": 0,\n    \"ratingChangeMin\": -1,\n    \"months\": [],\n    \"venue\": \"HV\",\n    \"surface\": \"Turf\",\n    \"ignoreClasses\": [],\n    \"ignoreDistances\": [],\n    \"maxRating\": 0,\n    \"maxAvgDiff\": 0,\n    \"form\": \"all\",\n    \"ignoreAfter\": null\n  },\n  \"result\": {\n    \"totals\": {\n      \"races\": 330,\n      \"betted\": 52,\n      \"bettedHits\": 36,\n      \"skipped\": 278,\n      \"skippedHits\": 133,\n      \"allPlaces\": 169\n    },\n    \"races\": [\n      {\n        \"raceId\": \"20250910_HV_R1\",\n        \"date\": \"20250910\",\n        \"venue\": \"HV\",\n        \"raceNumber\": 1,\n        \"topRatedHorseCode\": \"HK_2022_H292\",\n        \"topRatedHorseName\": \"WOODFIRE CHAMP\",\n        \"topRatedHorseNumber\": 7,\n        \"topSimHorseCode\": \"HK_2022_H292\",\n        \"topSimHorseName\": \"WOODFIRE CHAMP\",\n        \"topSimHorseNumber\": 7,\n        \"actualWinnerCode\": \"HK_2022_H317\",\n        \"actualWinnerName\": \"DAN ATTACK\",\n        \"actualWinnerNumber\": 4,\n        \"actualTop3Codes\": [\n          \"HK_2022_H317\",\n          \"HK_2022_H133\",\n          \"HK_2022_H297\"\n        ],\n        \"overallRating\": 60,\n        \"avgDiff\": 10,\n        \"horsesWithDiffLt8\": 5,\n        \"sparseFormCount\": 0,\n        \"topGap\": 2,\n        \"skipped\": true,\n        \"skipReason\": \"close<8=5\",\n        \"surface\": \"Turf\",\n        \"going\": \"Good\",\n        \"raceClass\": \"Class 5\",\n        \"distance\": 1200,\n        \"topRatedWon\": false,\n        \"topRatedPlaced\": false,\n        \"topRatedFinishPosition\": 4,\n        \"topSimWon\": false,\n        \"topSimPlaced\": false,\n        \"numRunners\": 12,\n        \"topRatedMcPlacePct\": 0.5182,\n        \"topRatedWinOdds\": 11,\n        \"topRatedPlaceOdds\": 0,\n        \"topRatedExpectedPosition\": 4.0644,\n        \"topRatedRatingChange\": 5\n      }\n    ],\n    \"byDay\": {\n      \"days\": [\n        {\n          \"date\": \"20250910\",\n          \"venue\": \"HV\",\n          \"total\": 8,\n          \"bet\": 1,\n          \"hits\": 1,\n          \"wins\": 0,\n          \"skip\": 7,\n          \"hitRate\": 100,\n          \"winRoi\": -100,\n          \"placeRoi\": 35,\n          \"allUpPayout\": 13.5\n        }\n      ],\n      \"total\": {\n        \"races\": 330,\n        \"bet\": 52,\n        \"hits\": 36,\n        \"wins\": 14,\n        \"skip\": 278,\n        \"hitRate\": 69.23076923076923,\n        \"winRoi\": -19.807692307692307,\n        \"placeRoi\": -2.2115384615384617,\n        \"allUpDays\": 26,\n        \"allUpCost\": 260,\n        \"allUpReturn\": 292.72375,\n        \"allUpRoi\": 12.586057692307689\n      }\n    },\n    \"byMonth\": {\n      \"months\": [\n        {\n          \"month\": \"2025-09\",\n          \"days\": 1,\n          \"bet\": 1,\n          \"hits\": 1,\n          \"wins\": 0,\n          \"cost\": 10,\n          \"winReturn\": 0,\n          \"placeReturn\": 13.5,\n          \"hitRate\": 100,\n          \"winRate\": 0,\n          \"winRoi\": -100,\n          \"placeRoi\": 35,\n          \"allUpReturn\": 13.5,\n          \"allUpRoi\": 35\n        }\n      ],\n      \"total\": {\n        \"days\": 26,\n        \"bet\": 52,\n        \"hits\": 36,\n        \"wins\": 14,\n        \"cost\": 520,\n        \"winReturn\": 417,\n        \"placeReturn\": 508.5,\n        \"hitRate\": 69.23076923076923,\n        \"winRate\": 26.923076923076923,\n        \"winRoi\": -19.807692307692307,\n        \"placeRoi\": -2.2115384615384617,\n        \"allUpCost\": 260,\n        \"allUpReturn\": 292.72375,\n        \"allUpRoi\": 12.586057692307689\n      }\n    },\n    \"breakdowns\": {\n      \"going\": {\n        \"rows\": [\n          {\n            \"group\": \"Good\",\n            \"total\": 179,\n            \"bet\": 27,\n            \"hits\": 19,\n            \"miss\": 8,\n            \"skip\": 152,\n            \"ratePct\": \"70.4%\",\n            \"roiPlaPct\": \"-0.2%\"\n          }\n        ],\n        \"total\": {\n          \"total\": 330,\n          \"bet\": 52,\n          \"hits\": 36,\n          \"miss\": 16,\n          \"skip\": 278,\n          \"ratePct\": \"69.2%\",\n          \"roiPlaPct\": \"-2.2%\"\n        }\n      },\n      \"runners\": {\n        \"rows\": [\n          {\n            \"group\": \"10\",\n            \"total\": 8,\n            \"bet\": 2,\n            \"hits\": 2,\n            \"miss\": 0,\n            \"skip\": 6,\n            \"ratePct\": \"100.0%\",\n            \"roiPlaPct\": \"25.0%\"\n          }\n        ],\n        \"total\": {\n          \"total\": 330,\n          \"bet\": 52,\n          \"hits\": 36,\n          \"miss\": 16,\n          \"skip\": 278,\n          \"ratePct\": \"69.2%\",\n          \"roiPlaPct\": \"-2.2%\"\n        }\n      },\n      \"mcPlacePct\": {\n        \"rows\": [\n          {\n            \"group\": \"35-40%\",\n            \"total\": 4,\n            \"bet\": 0,\n            \"hits\": 0,\n            \"miss\": 0,\n            \"skip\": 4,\n            \"ratePct\": \"N/A\",\n            \"roiPlaPct\": \"N/A\"\n          }\n        ],\n        \"total\": {\n          \"total\": 330,\n          \"bet\": 52,\n          \"hits\": 36,\n          \"miss\": 16,\n          \"skip\": 278,\n          \"ratePct\": \"69.2%\",\n          \"roiPlaPct\": \"-2.2%\"\n        }\n      },\n      \"winOdds\": {\n        \"rows\": [\n          {\n            \"group\": \"1-3\",\n            \"total\": 78,\n            \"bet\": 25,\n            \"hits\": 21,\n            \"miss\": 4,\n            \"skip\": 53,\n            \"ratePct\": \"84.0%\",\n            \"roiPlaPct\": \"7.0%\"\n          }\n        ],\n        \"total\": {\n          \"total\": 330,\n          \"bet\": 52,\n          \"hits\": 36,\n          \"miss\": 16,\n          \"skip\": 278,\n          \"ratePct\": \"69.2%\",\n          \"roiPlaPct\": \"-2.2%\"\n        }\n      },\n      \"expectedPosition\": {\n        \"rows\": [\n          {\n            \"group\": \"1.5-2.0\",\n            \"total\": 2,\n            \"bet\": 2,\n            \"hits\": 2,\n            \"miss\": 0,\n            \"skip\": 0,\n            \"ratePct\": \"100.0%\",\n            \"roiPlaPct\": \"22.5%\"\n          }\n        ],\n        \"total\": {\n          \"total\": 330,\n          \"bet\": 52,\n          \"hits\": 36,\n          \"miss\": 16,\n          \"skip\": 278,\n          \"ratePct\": \"69.2%\",\n          \"roiPlaPct\": \"-2.2%\"\n        }\n      },\n      \"rating\": {\n        \"rows\": [\n          {\n            \"group\": \"<60\",\n            \"total\": 5,\n            \"bet\": 0,\n            \"hits\": 0,\n            \"miss\": 0,\n            \"skip\": 5,\n            \"ratePct\": \"N/A\",\n            \"roiPlaPct\": \"N/A\"\n          }\n        ],\n        \"total\": {\n          \"total\": 330,\n          \"bet\": 52,\n          \"hits\": 36,\n          \"miss\": 16,\n          \"skip\": 278,\n          \"ratePct\": \"69.2%\",\n          \"roiPlaPct\": \"-2.2%\"\n        }\n      },\n      \"avgDiff\": {\n        \"rows\": [\n          {\n            \"group\": \"11-13\",\n            \"total\": 61,\n            \"bet\": 0,\n            \"hits\": 0,\n            \"miss\": 0,\n            \"skip\": 61,\n            \"ratePct\": \"N/A\",\n            \"roiPlaPct\": \"N/A\"\n          }\n        ],\n        \"total\": {\n          \"total\": 183,\n          \"bet\": 52,\n          \"hits\": 36,\n          \"miss\": 16,\n          \"skip\": 131,\n          \"ratePct\": \"69.2%\",\n          \"roiPlaPct\": \"-2.2%\"\n        }\n      },\n      \"topGap\": {\n        \"rows\": [\n          {\n            \"group\": \"1\",\n            \"total\": 59,\n            \"bet\": 1,\n            \"hits\": 0,\n            \"miss\": 1,\n            \"skip\": 58,\n            \"ratePct\": \"0.0%\",\n            \"roiPlaPct\": \"-100.0%\"\n          }\n        ],\n        \"total\": {\n          \"total\": 295,\n          \"bet\": 52,\n          \"hits\": 36,\n          \"miss\": 16,\n          \"skip\": 243,\n          \"ratePct\": \"69.2%\",\n          \"roiPlaPct\": \"-2.2%\"\n        }\n      },\n      \"close8\": {\n        \"rows\": [\n          {\n            \"group\": \"1\",\n            \"total\": 46,\n            \"bet\": 37,\n            \"hits\": 27,\n            \"miss\": 10,\n            \"skip\": 9,\n            \"ratePct\": \"73.0%\",\n            \"roiPlaPct\": \"2.0%\"\n          }\n        ],\n        \"total\": {\n          \"total\": 330,\n          \"bet\": 52,\n          \"hits\": 36,\n          \"miss\": 16,\n          \"skip\": 278,\n          \"ratePct\": \"69.2%\",\n          \"roiPlaPct\": \"-2.2%\"\n        }\n      },\n      \"ratingChange\": {\n        \"rows\": [\n          {\n            \"group\": \"-2\",\n            \"total\": 23,\n            \"bet\": 0,\n            \"hits\": 0,\n            \"miss\": 0,\n            \"skip\": 23,\n            \"ratePct\": \"N/A\",\n            \"roiPlaPct\": \"N/A\"\n          }\n        ],\n        \"total\": {\n          \"total\": 330,\n          \"bet\": 52,\n          \"hits\": 36,\n          \"miss\": 16,\n          \"skip\": 278,\n          \"ratePct\": \"69.2%\",\n          \"roiPlaPct\": \"-2.2%\"\n        }\n      }\n    },\n    \"classDistanceVenue\": {\n      \"rows\": [\n        {\n          \"level\": \"venue\",\n          \"venue\": \"HV\",\n          \"raceClass\": null,\n          \"distance\": null,\n          \"total\": 330,\n          \"bet\": 52,\n          \"hits\": 36,\n          \"miss\": 16,\n          \"skip\": 278,\n          \"ratePct\": \"69.2%\",\n          \"roiPlaPct\": \"-2.2%\"\n        },\n        {\n          \"level\": \"class\",\n          \"venue\": \"HV\",\n          \"raceClass\": \"Group 1\",\n          \"distance\": null,\n          \"total\": 1,\n          \"bet\": 1,\n          \"hits\": 1,\n          \"miss\": 0,\n          \"skip\": 0,\n          \"ratePct\": \"100.0%\",\n          \"roiPlaPct\": \"100.0%\"\n        },\n        {\n          \"level\": \"distance\",\n          \"venue\": \"HV\",\n          \"raceClass\": \"Group 1\",\n          \"distance\": 1800,\n          \"total\": 1,\n          \"bet\": 1,\n          \"hits\": 1,\n          \"miss\": 0,\n          \"skip\": 0,\n          \"ratePct\": \"100.0%\",\n          \"roiPlaPct\": \"100.0%\"\n        }\n      ],\n      \"total\": {\n        \"total\": 330,\n        \"bet\": 52,\n        \"hits\": 36,\n        \"miss\": 16,\n        \"skip\": 278,\n        \"ratePct\": \"69.2%\",\n        \"roiPlaPct\": \"-2.2%\"\n      }\n    },\n    \"skipReasons\": [\n      {\n        \"reason\": \"close<8=3\",\n        \"count\": 65\n      },\n      {\n        \"reason\": \"close<8=4\",\n        \"count\": 41\n      }\n    ],\n    \"upcoming\": []\n  }\n}"
+            },
+            {
+              "name": "400 invalid body",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/v1/backtests/differentiation",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "backtests",
+                    "differentiation"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"sparseMax\": -1\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"error\": \"invalid_request\",\n  \"details\": [\n    {\n      \"path\": \"sparseMax\",\n      \"message\": \"Number must be greater than or equal to 0\"\n    }\n  ]\n}"
+            }
+          ]
+        },
+        {
+          "name": "Differentiation backtest — ST Turf (optimize:ST)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 200\", () => pm.response.to.have.status(200));",
+                  "const json = pm.response.json();",
+                  "pm.test(\"reports cache hit or miss\", () => pm.expect([\"hit\", \"miss\"]).to.include(json.cache));",
+                  "pm.test(\"has totals\", () => pm.expect(json.result.totals.races).to.be.a(\"number\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/backtests/differentiation",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "backtests",
+                "differentiation"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sparseMax\": 4,\n  \"closeMax\": 4,\n  \"avgDiffMin\": 11,\n  \"gapMin\": 1,\n  \"venue\": \"ST\",\n  \"surface\": \"Turf\",\n  \"form\": \"all\",\n  \"ignoreClasses\": [\n    \"Griffin\",\n    \"4 Year Olds\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Same as `npm run optimize:ST`."
+          },
+          "response": []
+        },
+        {
+          "name": "Differentiation backtest — all options",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 200\", () => pm.response.to.have.status(200));",
+                  "const json = pm.response.json();",
+                  "pm.test(\"reports cache hit or miss\", () => pm.expect([\"hit\", \"miss\"]).to.include(json.cache));",
+                  "pm.test(\"has totals\", () => pm.expect(json.result.totals.races).to.be.a(\"number\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/backtests/differentiation",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "backtests",
+                "differentiation"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sparseMax\": 3,\n  \"closeMax\": 4,\n  \"avgDiffMin\": 14,\n  \"gapMin\": 0,\n  \"oddsMax\": 6,\n  \"ratingChangeMin\": null,\n  \"months\": [\n    \"08\",\n    \"09\"\n  ],\n  \"venue\": \"ST\",\n  \"surface\": \"Turf\",\n  \"ignoreClasses\": [\n    \"Griffin\"\n  ],\n  \"ignoreDistances\": [\n    1000\n  ],\n  \"maxRating\": 90,\n  \"maxAvgDiff\": 30,\n  \"form\": \"all\",\n  \"ignoreAfter\": \"2026-09-01\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Batch analyses",
+      "description": "Runs `tools/batch-analyze.ts` for a meeting and returns every race as JSON. Unlike the CLI it does not write `data/temp/simulation_summaries_*.md`.\n\n| Field | Required | Default | CLI flag |\n|---|---|---|---|\n| `date` | yes | — | `-d` (`YYYY-MM-DD`) |\n| `venue` | yes | — | `-v` (`ST`, `HV`, `Sha Tin`, `Happy Valley`) |\n| `firstRace`, `lastRace` | no | `1`, `11` | `-r 1-11` |\n| `formData` | no | `\"venue\"` | `-f all` → `\"all\"` |\n| `useSaved` | no | `false` | `--use-saved` |\n| `backtestMonths` | no | `[]` (all) | `--backtest-months` (as an array) |\n\n`result.races`: per race — top-rated horse, rating, avgDiff / close<8 / sparse / top gap, betting signal (🔴 / 🟡 / 🟢), historical place hit rates (text and numbers), confidence, every runner's MC win/place % and odds. `result.unavailable` lists races with no data.\n\nSynchronous. `\"cache\": \"miss\"` = ran now and saved; `\"cache\": \"hit\"` = returned the saved file immediately and refreshed it in the background. A saved file made with different options counts as a miss.\n\nCache file: `data/analysis/batch-<ST|HV>-<date>-R<first>-<last>.json`.",
+      "item": [
+        {
+          "name": "Batch analyze meeting — saved racecards",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 200\", () => pm.response.to.have.status(200));",
+                  "const json = pm.response.json();",
+                  "pm.test(\"reports cache hit or miss\", () => pm.expect([\"hit\", \"miss\"]).to.include(json.cache));",
+                  "pm.test(\"has races\", () => pm.expect(json.result.races).to.be.an(\"array\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/batch-analyses",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "batch-analyses"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"date\": \"2026-09-09\",\n  \"venue\": \"HV\",\n  \"firstRace\": 1,\n  \"lastRace\": 9,\n  \"formData\": \"all\",\n  \"useSaved\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Uses saved race card snapshots — ~5 s."
+          },
+          "response": [
+            {
+              "name": "200 cache miss (trimmed)",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/v1/batch-analyses",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "batch-analyses"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"date\": \"2026-09-09\",\n  \"venue\": \"HV\",\n  \"firstRace\": 1,\n  \"lastRace\": 9,\n  \"formData\": \"all\",\n  \"useSaved\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"cache\": \"miss\",\n  \"generatedAt\": \"2026-09-12T14:47:56.407Z\",\n  \"params\": {\n    \"date\": \"2026-09-09\",\n    \"venue\": \"Happy Valley\",\n    \"firstRace\": 1,\n    \"lastRace\": 9,\n    \"formData\": \"all\",\n    \"useSaved\": true,\n    \"backtestMonths\": []\n  },\n  \"result\": {\n    \"date\": \"2026-09-09\",\n    \"venue\": \"Happy Valley\",\n    \"venueCode\": \"HV\",\n    \"formSource\": \"all\",\n    \"ignoreAfter\": \"2026-09-09\",\n    \"backtestMonths\": [],\n    \"historicalRaces\": 322,\n    \"races\": [\n      {\n        \"raceNumber\": 1,\n        \"raceClass\": \"Class 5\",\n        \"histClass\": \"Class 5\",\n        \"distance\": \"1200m\",\n        \"distanceM\": 1200,\n        \"surface\": \"Turf\",\n        \"fieldSize\": 12,\n        \"topHorseName\": \"NOBLE FANS\",\n        \"topHorseNumber\": 7,\n        \"rating\": 67,\n        \"avgDiff\": 16,\n        \"close8\": 3,\n        \"sparse\": 0,\n        \"topGap\": 2,\n        \"diffBet\": \"BET\",\n        \"bettingSignal\": \"🔴\",\n        \"histOverall\": \"11/13 (84.6%)\",\n        \"histSameClass\": \"6/7 (85.7%)\",\n        \"histSameDist\": \"1/2 (50.0%)\",\n        \"hist\": {\n          \"overall\": {\n            \"eligible\": 322,\n            \"bets\": 13,\n            \"hits\": 11,\n            \"ratePct\": \"84.6%\"\n          },\n          \"sameClass\": {\n            \"eligible\": 50,\n            \"bets\": 7,\n            \"hits\": 6,\n            \"ratePct\": \"85.7%\"\n          },\n          \"sameDist\": {\n            \"eligible\": 148,\n            \"bets\": 2,\n            \"hits\": 1,\n            \"ratePct\": \"50.0%\"\n          }\n        },\n        \"winProb\": 35.14,\n        \"placeProb\": 72.38,\n        \"confidence\": \"MED-HIGH (avgDiff and close8)\",\n        \"horses\": [\n          {\n            \"number\": 7,\n            \"name\": \"NOBLE FANS\",\n            \"winProb\": 35.14,\n            \"placeProb\": 72.38,\n            \"formCount\": 10,\n            \"rating\": 67,\n            \"diff\": 0,\n            \"winOdds\": 7.9,\n            \"expectedPosition\": 2.808\n          },\n          {\n            \"number\": 6,\n            \"name\": \"ALWAYS FLUKE\",\n            \"winProb\": 27.46,\n            \"placeProb\": 65.75999999999999,\n            \"formCount\": 10,\n            \"rating\": 65,\n            \"diff\": 2,\n            \"winOdds\": 7.1,\n            \"expectedPosition\": 3.1214\n          }\n        ]\n      }\n    ],\n    \"unavailable\": [\n      {\n        \"raceNumber\": 9,\n        \"reason\": \"no_data\"\n      }\n    ]\n  }\n}"
+            },
+            {
+              "name": "400 invalid body",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/v1/batch-analyses",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "batch-analyses"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"date\": \"2026-09-09\",\n  \"venue\": \"HV\",\n  \"firstRace\": 9,\n  \"lastRace\": 1\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"error\": \"invalid_request\",\n  \"details\": [\n    {\n      \"path\": \"lastRace\",\n      \"message\": \"must be >= firstRace\"\n    }\n  ]\n}"
+            }
+          ]
+        },
+        {
+          "name": "Batch analyze meeting — live scrape",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 200\", () => pm.response.to.have.status(200));",
+                  "const json = pm.response.json();",
+                  "pm.test(\"reports cache hit or miss\", () => pm.expect([\"hit\", \"miss\"]).to.include(json.cache));",
+                  "pm.test(\"has races\", () => pm.expect(json.result.races).to.be.an(\"array\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/batch-analyses",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "batch-analyses"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"date\": \"2026-09-13\",\n  \"venue\": \"ST\",\n  \"firstRace\": 1,\n  \"lastRace\": 10,\n  \"formData\": \"all\",\n  \"backtestMonths\": [\n    \"08\",\n    \"09\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Scrapes every race live from HKJC — can take many minutes. Change date / venue to an upcoming meeting."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Errors",
+      "description": "Errors are JSON: 400 `invalid_request` (with `details`), 401 `unauthorized`, 404 `not_found` / `race_not_found`, 500 `internal_error`.",
+      "item": [
+        {
+          "name": "Missing API key → 401",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 401\", () => pm.response.to.have.status(401));",
+                  "pm.test(\"error is unauthorized\", () => pm.expect(pm.response.json().error).to.eql(\"unauthorized\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/health",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "health"
+              ]
+            },
+            "auth": {
+              "type": "noauth"
+            },
+            "description": "Auth disabled on this request to show the 401. Wrong keys get the same response."
+          },
+          "response": [
+            {
+              "name": "401 unauthorized",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/health",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "health"
+                  ]
+                },
+                "auth": {
+                  "type": "noauth"
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"error\": \"unauthorized\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Invalid body → 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 400\", () => pm.response.to.have.status(400));",
+                  "pm.test(\"error is invalid_request\", () => pm.expect(pm.response.json().error).to.eql(\"invalid_request\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/analyses",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "analyses"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"date\": \"2026-13-01\",\n  \"venue\": \"XX\",\n  \"race\": 0\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Every route validates its body and lists each problem in `details`."
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

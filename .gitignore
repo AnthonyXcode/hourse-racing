@@ -13,6 +13,8 @@ dist/
 # Environment
 .env
 .env.local
+# Postman environment with a real API key (docs/*.postman_environment.json template stays tracked)
+docs/*.local.postman_environment.json
 
 # IDE
 .vscode/

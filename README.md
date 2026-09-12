@@ -308,6 +308,8 @@ curl -H "Authorization: Bearer $API_KEY" http://localhost:3000/health
 |--------|------|----------|
 | GET | `/health` | `{ status, uptime, timestamp, version }` |
 | POST | `/v1/analyses` | Race analysis as JSON (see below) |
+| POST | `/v1/backtests/differentiation` | Differentiation backtest report as JSON (see below) |
+| POST | `/v1/batch-analyses` | Whole-meeting analysis as JSON (see below) |
 
 Errors are JSON: `400 {"error":"invalid_request","details":[…]}`, `401 {"error":"unauthorized"}`,
 `404 {"error":"not_found"}` or `{"error":"race_not_found","message":…}`.
@@ -348,8 +350,75 @@ top picks), `exotics` (top 20 quinella / quinella place / trio / tierce with fai
 
 Analyses run one at a time by default (`ANALYSIS_MAX_CONCURRENT`) because live runs launch Chromium.
 
+### POST /v1/backtests/differentiation
+
+Runs `tools/backtest-differentiation.ts` over saved racecards that have results and returns the report as JSON
+(shared code in `src/backtest/differentiationReport.ts`). Every field is optional; defaults match the CLI.
+
+```bash
+curl -X POST http://localhost:3000/v1/backtests/differentiation \
+  -H "x-api-key: $API_KEY" -H "Content-Type: application/json" \
+  -d '{"sparseMax":3,"closeMax":2,"avgDiffMin":15,"gapMin":1,"venue":"HV","surface":"Turf","form":"all"}'
+```
+
+| Field | Default | CLI flag |
+|-------|---------|----------|
+| `sparseMax` | `3` | `--sparse` |
+| `closeMax` | `4` | `--close` |
+| `avgDiffMin` | `14` | `--avgdiff` |
+| `gapMin` | `0` | `--gap` |
+| `oddsMax` | `0` (off) | `--odds` |
+| `ratingChangeMin` | `-1` (`null` = off) | `--ratingchange` |
+| `months` | `[]` (all) | `--months` (as an array, e.g. `["08","09"]`) |
+| `venue` | `null` (both) | `--venue` (`ST` / `HV`) |
+| `surface` | `null` (both) | `--surface` (`Turf` / `AWT`) |
+| `ignoreClasses` | `[]` | `--ignore-class` (as an array) |
+| `ignoreDistances` | `[]` | `--ignore-distance` (array of metres) |
+| `maxRating` | `0` (off) | `--max-rating` |
+| `maxAvgDiff` | `0` (off) | `--max-avgdiff` |
+| `form` | `"all"` | `--form` (`all` / `ST` / `HV`) |
+| `ignoreAfter` | `null` | `--ignore-after` (`YYYY-MM-DD`) |
+
+`result` holds `totals`, `races` (one row per race: BET/SKIP, pick, finish, odds, metrics), `byDay` and `byMonth`
+(hit rate, win/place ROI, all-up place), `breakdowns` (going, runners, MC place %, win odds, expected position, rating,
+avg diff, top-two gap, close<8, rating change, plus venue and surface unless both are filtered), `classDistanceVenue`,
+`skipReasons` and `upcoming` (racecards without results yet). Percentages are numbers, `null` when there were no bets.
+Cached as `data/analysis/backtest-differentiation-<hash>.json`, one file per option set.
+
+### POST /v1/batch-analyses
+
+Runs `tools/batch-analyze.ts` for a meeting and returns every race as JSON (shared code in
+`src/pipeline/batchAnalysis.ts`). Unlike the CLI it does not write `data/temp/simulation_summaries_*.md`.
+
+```bash
+curl -X POST http://localhost:3000/v1/batch-analyses \
+  -H "x-api-key: $API_KEY" -H "Content-Type: application/json" \
+  -d '{"date":"2026-09-09","venue":"HV","firstRace":1,"lastRace":9,"formData":"all","useSaved":true}'
+```
+
+| Field | Required | Default | CLI flag |
+|-------|----------|---------|----------|
+| `date` | yes | — | `-d` (`YYYY-MM-DD`) |
+| `venue` | yes | — | `-v` (`ST`, `HV`, `Sha Tin`, `Happy Valley`) |
+| `firstRace`, `lastRace` | no | `1`, `11` | `-r 1-11` |
+| `formData` | no | `"venue"` | `-f all` → `"all"` |
+| `useSaved` | no | `false` | `--use-saved` |
+| `backtestMonths` | no | `[]` (all) | `--backtest-months` (as an array) |
+
+`result.races` has one entry per race: top-rated horse, rating, avgDiff / close<8 / sparse / top gap, betting signal
+(🔴 / 🟡 / 🟢 from historical place hit rates), the hit rates overall / same class / same distance (as text and as
+numbers), confidence, and every runner's MC win/place %, odds and rating. `result.unavailable` lists races with no data.
+Cached as `data/analysis/batch-<ST|HV>-<date>-R<first>-<last>.json`.
+
+All three endpoints share the cache directory, the hit/miss behaviour above and the `ANALYSIS_MAX_CONCURRENT` cap.
+
 Keys are only accepted in headers, never the query string. Call the API server-to-server —
 a key embedded in browser JavaScript is visible to anyone.
+
+**Postman**: import `docs/hk-horse-racing-api.postman_collection.json` and an environment from `docs/`, then select
+the environment. `baseUrl` and `apiKey` live only in the environment:
+- `hk-horse-racing-api.postman_environment.json` — template to commit; paste a key from `API_KEYS` into `apiKey`
+- `hk-horse-racing-api.local.postman_environment.json` — holds a real key; gitignored, keep it local
 
 ## Environment Variables
 
@@ -366,7 +435,7 @@ API server (`.env`, see `.env.example`):
 | `PORT` | no | `3000` | |
 | `NODE_ENV` | no | `development` | `production` hides 5xx error details |
 | `ANALYSIS_CACHE_DIR` | no | `data/analysis` | Analysis cache, relative to the working directory |
-| `ANALYSIS_MAX_CONCURRENT` | no | `1` | Analyses running at once (1–8) |
+| `ANALYSIS_MAX_CONCURRENT` | no | `1` | Runs at once across all analysis endpoints (1–8) |
 | `PLAYWRIGHT_BROWSERS_PATH` | no | — | Set to `0` for live scraping, as the CLI skills do |
 
 ## Troubleshooting
