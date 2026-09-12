@@ -297,7 +297,7 @@ cp .env.example .env
 
 # 2. Run
 npm run dev:api          # watch mode
-npm run build && npm run start:api
+npm run start:api        # production (tsx, no build step)
 
 # 3. Call
 curl -H "x-api-key: $API_KEY" http://localhost:3000/health
@@ -434,6 +434,7 @@ API server (`.env`, see `.env.example`):
 | `API_KEYS` | yes | — | Comma-separated, min 32 chars each |
 | `PORT` | no | `3000` | |
 | `NODE_ENV` | no | `development` | `production` hides 5xx error details |
+| `TZ` | no | system | Set `Asia/Hong_Kong` on servers outside HK — race dates are HK dates |
 | `ANALYSIS_CACHE_DIR` | no | `data/analysis` | Analysis cache, relative to the working directory |
 | `ANALYSIS_MAX_CONCURRENT` | no | `1` | Runs at once across all analysis endpoints (1–8) |
 | `PLAYWRIGHT_BROWSERS_PATH` | no | — | Set to `0` for live scraping, as the CLI skills do |
@@ -446,34 +447,13 @@ Assumes Node.js 22, pm2 and the cloned repo are already on the server, with `npm
 **1. Configure**
 
 ```bash
-cp .env.example .env    # set API_KEYS and NODE_ENV=production
-```
-
-Create `ecosystem.config.cjs`:
-
-```js
-module.exports = {
-  apps: [
-    {
-      name: "hk-racing-api",
-      cwd: __dirname,
-      script: "src/server/index.ts",
-      interpreter: "node",
-      node_args: "--import tsx",   // runs TypeScript directly, no build step
-      exec_mode: "fork",           // a single process
-      env: {
-        NODE_ENV: "production",
-        TZ: "Asia/Hong_Kong",      // race dates are Hong Kong dates
-      },
-    },
-  ],
-};
+cp .env.example .env    # set API_KEYS and NODE_ENV=production; keep TZ=Asia/Hong_Kong
 ```
 
 **2. Start**
 
 ```bash
-pm2 start ecosystem.config.cjs
+pm2 start "npm run start:api" --name horse-racing
 pm2 save && pm2 startup      # start on boot — run the command pm2 prints
 
 curl -H "x-api-key: <your key>" http://localhost:3000/health
@@ -483,14 +463,15 @@ curl -H "x-api-key: <your key>" http://localhost:3000/health
 
 ```bash
 git pull && npm ci
-pm2 restart hk-racing-api
+pm2 restart horse-racing
 ```
 
-Logs: `pm2 logs hk-racing-api`
+Logs: `pm2 logs horse-racing`
 
 **Notes**
-- Keep `TZ=Asia/Hong_Kong`: on a UTC server, race dates come out a day early.
-- Keep one instance: the cache and concurrency limit live in memory.
+- `npm run start:api` runs the TypeScript directly with `tsx`, so there is no build step.
+- Keep `TZ=Asia/Hong_Kong` in `.env`: on a UTC server, race dates come out a day early.
+- Run a single instance: the cache and concurrency limit live in memory.
 - Behind nginx, use HTTPS and a long timeout (`proxy_read_timeout 900s;`): live analyses can take minutes.
 
 ## Troubleshooting

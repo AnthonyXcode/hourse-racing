@@ -2,7 +2,7 @@
  * API server entry point.
  *
  *   npm run dev:api     # watch mode via tsx
- *   npm run start:api   # built output
+ *   npm run start:api   # production: tsx, no build step
  */
 
 import "./config/dotenv.js";
