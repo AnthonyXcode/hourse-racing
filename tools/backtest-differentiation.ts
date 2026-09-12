@@ -14,18 +14,21 @@
  *
  * Leak-free pool: `--ignore-after=YYYY-MM-DD` drops saved races on or after that day
  * (same calendar as racecard filenames). batch-analyze passes the meeting date.
+ *
+ * The report is built in src/backtest/differentiationReport.ts (shared with the API);
+ * this file parses flags and prints it.
  */
 import {
   parseDifferentiationBacktestCliArgs,
-  printBreakdown,
-  printClassDistanceVenueBreakdown,
-  runDifferentiationBacktest,
-  type DifferentiationBacktestRow,
+  printBreakdownSummary,
+  printClassDistanceVenueSummary,
+  type DifferentiationBacktestOptions,
 } from "../src/backtest/differentiationBacktest.js";
-import {
-  printUpcomingPlaceSuggestions,
-  runUpcomingPlaceSuggestions,
-} from "../src/backtest/upcomingBetSuggestions.js";
+import { BET_UNIT, runDifferentiationReport } from "../src/backtest/differentiationReport.js";
+import { printUpcomingPlaceSuggestions } from "../src/backtest/upcomingBetSuggestions.js";
+
+/** value.toFixed(1), or `fallback` when there is no value (no bets) */
+const fixed1 = (value: number | null, fallback: string): string => (value === null ? fallback : value.toFixed(1));
 
 async function main() {
   const { sparseMax, closeMax, avgDiffMin, gapMin, oddsMax, ratingChangeMin, months, venue, surface, ignoreClasses, ignoreDistances, maxRating, maxAvgDiff, form, ignoreAfter } =
@@ -40,13 +43,13 @@ async function main() {
   const oddsLabel = oddsMax > 0 ? `>${oddsMax}` : "off";
   const rtgChangeLabel =
     ratingChangeMin !== null && ratingChangeMin !== undefined ? `Rtg+/>${ratingChangeMin}` : "off";
-  const maxRatingLabel = maxRating > 0 ? `>${maxRating}` : "off";
-  const maxAvgDiffLabel = maxAvgDiff > 0 ? `>${maxAvgDiff}` : "off";
+  const maxRatingLabel = maxRating && maxRating > 0 ? `>${maxRating}` : "off";
+  const maxAvgDiffLabel = maxAvgDiff && maxAvgDiff > 0 ? `>${maxAvgDiff}` : "off";
   console.log(
     `Skip rules: sparse>${sparseMax}, close<8>${closeMax}, avgDiff<${avgDiffMin}, 1st-2nd gap<${gapMin}, odds ${oddsLabel}, ${rtgChangeLabel}, max-rating ${maxRatingLabel}, max-avgdiff ${maxAvgDiffLabel} | months=${monthLabel} | venue=${venueLabel} | surface=${surfaceLabel} | form=${formLabel} | ignore-class=${ignoreClassLabel} | ignore-distance=${ignoreDistLabel} | ignore-after=${ignoreAfterLabel}\n`
   );
 
-  const allResults = await runDifferentiationBacktest({
+  const opts: DifferentiationBacktestOptions = {
     sparseMax,
     closeMax,
     avgDiffMin,
@@ -58,17 +61,16 @@ async function main() {
     surface,
     ignoreClasses,
     ignoreDistances,
-    maxRating,
-    maxAvgDiff,
+    maxRating: maxRating ?? 0,
+    maxAvgDiff: maxAvgDiff ?? 0,
     form,
     ...(ignoreAfter ? { ignoreAfter } : {}),
-  });
+  };
+  const report = await runDifferentiationReport(opts);
+  const { totals } = report;
 
-  console.log(`Found ${allResults.length} saved racecards with results (after venue/surface/month filters)\n`);
-
-  const betted = allResults.filter((r) => !r.skipped);
-  const skippedRaces = allResults.filter((r) => r.skipped);
-  console.log(`Analyzed ${allResults.length} races — betting ${betted.length}, skipping ${skippedRaces.length}\n`);
+  console.log(`Found ${totals.races} saved racecards with results (after venue/surface/month filters)\n`);
+  console.log(`Analyzed ${totals.races} races — betting ${totals.betted}, skipping ${totals.skipped}\n`);
 
   // --- Race-by-race table with strategy ---
   const skipReasonWidth = 22;
@@ -83,7 +85,7 @@ async function main() {
     `${"Race".padEnd(18)} ${"Horse".padEnd(16)} ${"#".padStart(2)} ${"Bet".padStart(4)} ${"Hit".padStart(4)} ${"WinO".padStart(6)} ${"PlcO".padStart(6)} ${"AvgDiff".padStart(7)} ${"Close<8".padStart(7)} ${"Sparse".padStart(6)} ${"Rating".padStart(6)} ${"Pos".padStart(4)} ${"SkipReason".padEnd(skipReasonWidth)}`
   );
   console.log("─".repeat(tableWidth));
-  for (const r of allResults) {
+  for (const r of report.races) {
     const bet = r.skipped ? "SKIP" : "BET";
     const hit = r.skipped ? "➖" : r.topRatedPlaced ? "✅" : "❌";
     const winO = r.topRatedWinOdds > 0 ? r.topRatedWinOdds.toFixed(1) : "-";
@@ -97,15 +99,12 @@ async function main() {
   }
   console.log("─".repeat(tableWidth));
 
-  const bettedHits = betted.filter((r) => r.topRatedPlaced).length;
-  const bettedRate = betted.length > 0 ? ((bettedHits / betted.length) * 100).toFixed(1) : "0.0";
-  console.log(`\nBetted: ${bettedHits}/${betted.length} placed (${bettedRate}%)`);
-  const skippedHits = skippedRaces.filter((r) => r.topRatedPlaced).length;
-  const skippedRate = skippedRaces.length > 0 ? ((skippedHits / skippedRaces.length) * 100).toFixed(1) : "0.0";
-  console.log(`Skipped: ${skippedRaces.length} races — pick would have placed ${skippedHits}/${skippedRaces.length} (${skippedRate}%)`);
-  const allPlaces = allResults.filter((r) => r.topRatedPlaced).length;
+  const bettedRate = totals.betted > 0 ? ((totals.bettedHits / totals.betted) * 100).toFixed(1) : "0.0";
+  console.log(`\nBetted: ${totals.bettedHits}/${totals.betted} placed (${bettedRate}%)`);
+  const skippedRate = totals.skipped > 0 ? ((totals.skippedHits / totals.skipped) * 100).toFixed(1) : "0.0";
+  console.log(`Skipped: ${totals.skipped} races — pick would have placed ${totals.skippedHits}/${totals.skipped} (${skippedRate}%)`);
   console.log(
-    `Without filter: ${allPlaces}/${allResults.length} placed (${((allPlaces / allResults.length) * 100).toFixed(1)}%)`
+    `Without filter: ${totals.allPlaces}/${totals.races} placed (${((totals.allPlaces / totals.races) * 100).toFixed(1)}%)`
   );
 
   // --- Per racing day hit rate ---
@@ -113,85 +112,23 @@ async function main() {
   console.log("\n" + "═".repeat(dayTableWidth));
   console.log("HIT RATE PER RACING DAY  ($10 per bet on 1st-ranked horse)");
   console.log("═".repeat(dayTableWidth));
-  const dayMap = new Map<string, DifferentiationBacktestRow[]>();
-  for (const r of allResults) {
-    const key = `${r.date}_${r.venue}`;
-    if (!dayMap.has(key)) dayMap.set(key, []);
-    dayMap.get(key)!.push(r);
-  }
-
   console.log(
     `${"Date".padEnd(12)} ${"Venue".padEnd(4)} ${"Total".padStart(5)} ${"Bet".padStart(4)} ${"Hit".padStart(4)} ${"Won".padStart(4)} ${"Skip".padStart(4)} ${"HitRate".padStart(8)} ${"ROI(Win)".padStart(10)} ${"ROI(Pla)".padStart(10)} ${"AllUpPla".padStart(12)}`
   );
   console.log("─".repeat(dayTableWidth));
-
-  const BET_UNIT = 10;
-  const sortedDays = [...dayMap.entries()].sort((a, b) => a[0].localeCompare(b[0]));
-  let totalBet = 0;
-  let totalHit = 0;
-  let totalWon = 0;
-  let totalWinCost = 0;
-  let totalWinReturn = 0;
-  let totalPlaCost = 0;
-  let totalPlaReturn = 0;
-  let totalAllUpDays = 0;
-  let totalAllUpRet = 0;
-  for (const [, races] of sortedDays) {
-    const [dateStr, v] = [races[0].date, races[0].venue];
-    const dayBetted = races.filter((r) => !r.skipped);
-    const dayHits = dayBetted.filter((r) => r.topRatedPlaced).length;
-    const dayWins = dayBetted.filter((r) => r.topRatedWon).length;
-    const daySkip = races.length - dayBetted.length;
-    const dayRate = dayBetted.length > 0 ? ((dayHits / dayBetted.length) * 100).toFixed(1) : "N/A";
-    const dayCost = dayBetted.length * BET_UNIT;
-    const dayWinReturn = dayBetted
-      .filter((r) => r.topRatedWon)
-      .reduce((sum, r) => sum + (r.topRatedWinOdds > 0 ? r.topRatedWinOdds * BET_UNIT : BET_UNIT), 0);
-    const dayPlaReturn = dayBetted
-      .filter((r) => r.topRatedPlaced)
-      .reduce((sum, r) => sum + (r.topRatedPlaceOdds > 0 ? r.topRatedPlaceOdds * BET_UNIT : BET_UNIT), 0);
-    const dayWinRoi = dayCost > 0 ? (((dayWinReturn - dayCost) / dayCost) * 100).toFixed(1) : "N/A";
-    const dayPlaRoi = dayCost > 0 ? (((dayPlaReturn - dayCost) / dayCost) * 100).toFixed(1) : "N/A";
-
-    // All-up place: $10 compounds through all legs; $0 if any leg misses
-    let allUpLabel = "-";
-    if (dayBetted.length > 0) {
-      totalAllUpDays++;
-      const allPlaced = dayBetted.every((r) => r.topRatedPlaced);
-      if (allPlaced) {
-        let payout = BET_UNIT;
-        for (const r of dayBetted) {
-          payout *= r.topRatedPlaceOdds > 0 ? r.topRatedPlaceOdds : 1;
-        }
-        totalAllUpRet += payout;
-        allUpLabel = "$" + payout.toFixed(0);
-      } else {
-        allUpLabel = "$0";
-      }
-    }
-
-    const formattedDate = `${dateStr.slice(0, 4)}-${dateStr.slice(4, 6)}-${dateStr.slice(6, 8)}`;
+  for (const d of report.byDay.days) {
+    const formattedDate = `${d.date.slice(0, 4)}-${d.date.slice(4, 6)}-${d.date.slice(6, 8)}`;
+    const allUpLabel = d.allUpPayout === null ? "-" : "$" + d.allUpPayout.toFixed(0);
     console.log(
-      `${formattedDate.padEnd(12)} ${v.padEnd(4)} ${races.length.toString().padStart(5)} ${dayBetted.length.toString().padStart(4)} ${dayHits.toString().padStart(4)} ${dayWins.toString().padStart(4)} ${daySkip.toString().padStart(4)} ${(dayRate + "%").padStart(8)} ${(dayWinRoi + "%").padStart(10)} ${(dayPlaRoi + "%").padStart(10)} ${allUpLabel.padStart(12)}`
+      `${formattedDate.padEnd(12)} ${d.venue.padEnd(4)} ${d.total.toString().padStart(5)} ${d.bet.toString().padStart(4)} ${d.hits.toString().padStart(4)} ${d.wins.toString().padStart(4)} ${d.skip.toString().padStart(4)} ${(fixed1(d.hitRate, "N/A") + "%").padStart(8)} ${(fixed1(d.winRoi, "N/A") + "%").padStart(10)} ${(fixed1(d.placeRoi, "N/A") + "%").padStart(10)} ${allUpLabel.padStart(12)}`
     );
-    totalBet += dayBetted.length;
-    totalHit += dayHits;
-    totalWon += dayWins;
-    totalWinCost += dayCost;
-    totalWinReturn += dayWinReturn;
-    totalPlaCost += dayCost;
-    totalPlaReturn += dayPlaReturn;
   }
   console.log("─".repeat(dayTableWidth));
-  const overallRate = totalBet > 0 ? ((totalHit / totalBet) * 100).toFixed(1) : "0.0";
-  const overallWinRoi = totalWinCost > 0 ? (((totalWinReturn - totalWinCost) / totalWinCost) * 100).toFixed(1) : "0.0";
-  const overallPlaRoi = totalPlaCost > 0 ? (((totalPlaReturn - totalPlaCost) / totalPlaCost) * 100).toFixed(1) : "0.0";
-  const totalAllUpCost = totalAllUpDays * BET_UNIT;
-  const overallAllUpDayRoi = totalAllUpCost > 0 ? (((totalAllUpRet - totalAllUpCost) / totalAllUpCost) * 100).toFixed(1) : "0.0";
+  const dt = report.byDay.total;
   console.log(
-    `${"TOTAL".padEnd(12)} ${"".padEnd(4)} ${allResults.length.toString().padStart(5)} ${totalBet.toString().padStart(4)} ${totalHit.toString().padStart(4)} ${totalWon.toString().padStart(4)} ${(allResults.length - totalBet).toString().padStart(4)} ${(overallRate + "%").padStart(8)} ${(overallWinRoi + "%").padStart(10)} ${(overallPlaRoi + "%").padStart(10)} ${(overallAllUpDayRoi + "%").padStart(12)}`
+    `${"TOTAL".padEnd(12)} ${"".padEnd(4)} ${dt.races.toString().padStart(5)} ${dt.bet.toString().padStart(4)} ${dt.hits.toString().padStart(4)} ${dt.wins.toString().padStart(4)} ${dt.skip.toString().padStart(4)} ${(fixed1(dt.hitRate, "0.0") + "%").padStart(8)} ${(fixed1(dt.winRoi, "0.0") + "%").padStart(10)} ${(fixed1(dt.placeRoi, "0.0") + "%").padStart(10)} ${(fixed1(dt.allUpRoi, "0.0") + "%").padStart(12)}`
   );
-  console.log(`  All-Up Place: ${totalAllUpDays} days × $${BET_UNIT} = $${totalAllUpCost} cost, $${totalAllUpRet.toFixed(0)} return`);
+  console.log(`  All-Up Place: ${dt.allUpDays} days × $${BET_UNIT} = $${dt.allUpCost} cost, $${dt.allUpReturn.toFixed(0)} return`);
 
   // --- ROI by month ---
   const monthTableWidth = 108;
@@ -202,325 +139,32 @@ async function main() {
     `${"Month".padEnd(10)} ${"Days".padStart(5)} ${"Bet".padStart(4)} ${"Hit".padStart(4)} ${"Won".padStart(4)} ${"HitRate".padStart(8)} ${"WinRate".padStart(8)} ${"Cost".padStart(7)} ${"WinRet".padStart(7)} ${"PlaRet".padStart(7)} ${"ROI(Win)".padStart(10)} ${"ROI(Pla)".padStart(10)} ${"ROI(AllUpPla)".padStart(14)}`
   );
   console.log("─".repeat(monthTableWidth));
-  const monthMap = new Map<string, DifferentiationBacktestRow[]>();
-  for (const r of allResults) {
-    const key = `${r.date.slice(0, 4)}-${r.date.slice(4, 6)}`;
-    if (!monthMap.has(key)) monthMap.set(key, []);
-    monthMap.get(key)!.push(r);
-  }
-
-  // Build month -> day -> races for all-up place calculation
-  const monthDayMap = new Map<string, Map<string, DifferentiationBacktestRow[]>>();
-  for (const r of allResults) {
-    const mKey = `${r.date.slice(0, 4)}-${r.date.slice(4, 6)}`;
-    const dKey = `${r.date}_${r.venue}`;
-    if (!monthDayMap.has(mKey)) monthDayMap.set(mKey, new Map());
-    const days = monthDayMap.get(mKey)!;
-    if (!days.has(dKey)) days.set(dKey, []);
-    days.get(dKey)!.push(r);
-  }
-
-  const sortedMonths = [...monthMap.entries()].sort((a, b) => a[0].localeCompare(b[0]));
-  let mTotalBet = 0, mTotalHit = 0, mTotalWon = 0, mTotalCost = 0, mTotalWinRet = 0, mTotalPlaRet = 0;
-  let mTotalAllUpDays = 0, mTotalAllUpRet = 0;
-  for (const [month, races] of sortedMonths) {
-    const mBetted = races.filter((r) => !r.skipped);
-    const mHits = mBetted.filter((r) => r.topRatedPlaced).length;
-    const mWins = mBetted.filter((r) => r.topRatedWon).length;
-    const mCost = mBetted.length * BET_UNIT;
-    const mWinRet = mBetted
-      .filter((r) => r.topRatedWon)
-      .reduce((sum, r) => sum + (r.topRatedWinOdds > 0 ? r.topRatedWinOdds * BET_UNIT : BET_UNIT), 0);
-    const mPlaRet = mBetted
-      .filter((r) => r.topRatedPlaced)
-      .reduce((sum, r) => sum + (r.topRatedPlaceOdds > 0 ? r.topRatedPlaceOdds * BET_UNIT : BET_UNIT), 0);
-    const mHitRate = mBetted.length > 0 ? ((mHits / mBetted.length) * 100).toFixed(1) : "N/A";
-    const mWinRate = mBetted.length > 0 ? ((mWins / mBetted.length) * 100).toFixed(1) : "N/A";
-    const mWinRoi = mCost > 0 ? (((mWinRet - mCost) / mCost) * 100).toFixed(1) : "N/A";
-    const mPlaRoi = mCost > 0 ? (((mPlaRet - mCost) / mCost) * 100).toFixed(1) : "N/A";
-
-    // All-up place: $10 per racing day, compound across all betted legs
-    let allUpDays = 0, allUpRet = 0;
-    const days = monthDayMap.get(month)!;
-    for (const [, dayRaces] of days) {
-      const dayBetted = dayRaces.filter((r) => !r.skipped);
-      if (dayBetted.length === 0) continue;
-      allUpDays++;
-      const allPlaced = dayBetted.every((r) => r.topRatedPlaced);
-      if (allPlaced) {
-        let payout = BET_UNIT;
-        for (const r of dayBetted) {
-          payout *= r.topRatedPlaceOdds > 0 ? r.topRatedPlaceOdds : 1;
-        }
-        allUpRet += payout;
-      }
-    }
-    const allUpCost = allUpDays * BET_UNIT;
-    const allUpRoi = allUpCost > 0 ? (((allUpRet - allUpCost) / allUpCost) * 100).toFixed(1) : "N/A";
-
+  for (const m of report.byMonth.months) {
     console.log(
-      `${month.padEnd(10)} ${allUpDays.toString().padStart(5)} ${mBetted.length.toString().padStart(4)} ${mHits.toString().padStart(4)} ${mWins.toString().padStart(4)} ${(mHitRate + "%").padStart(8)} ${(mWinRate + "%").padStart(8)} ${("$" + mCost).padStart(7)} ${("$" + mWinRet.toFixed(0)).padStart(7)} ${("$" + mPlaRet.toFixed(0)).padStart(7)} ${(mWinRoi + "%").padStart(10)} ${(mPlaRoi + "%").padStart(10)} ${(allUpRoi + "%").padStart(14)}`
+      `${m.month.padEnd(10)} ${m.days.toString().padStart(5)} ${m.bet.toString().padStart(4)} ${m.hits.toString().padStart(4)} ${m.wins.toString().padStart(4)} ${(fixed1(m.hitRate, "N/A") + "%").padStart(8)} ${(fixed1(m.winRate, "N/A") + "%").padStart(8)} ${("$" + m.cost).padStart(7)} ${("$" + m.winReturn.toFixed(0)).padStart(7)} ${("$" + m.placeReturn.toFixed(0)).padStart(7)} ${(fixed1(m.winRoi, "N/A") + "%").padStart(10)} ${(fixed1(m.placeRoi, "N/A") + "%").padStart(10)} ${(fixed1(m.allUpRoi, "N/A") + "%").padStart(14)}`
     );
-    mTotalBet += mBetted.length;
-    mTotalHit += mHits;
-    mTotalWon += mWins;
-    mTotalCost += mCost;
-    mTotalWinRet += mWinRet;
-    mTotalPlaRet += mPlaRet;
-    mTotalAllUpDays += allUpDays;
-    mTotalAllUpRet += allUpRet;
   }
   console.log("─".repeat(monthTableWidth));
-  const mOverallHitRate = mTotalBet > 0 ? ((mTotalHit / mTotalBet) * 100).toFixed(1) : "0.0";
-  const mOverallWinRate = mTotalBet > 0 ? ((mTotalWon / mTotalBet) * 100).toFixed(1) : "0.0";
-  const mOverallWinRoi = mTotalCost > 0 ? (((mTotalWinRet - mTotalCost) / mTotalCost) * 100).toFixed(1) : "0.0";
-  const mOverallPlaRoi = mTotalCost > 0 ? (((mTotalPlaRet - mTotalCost) / mTotalCost) * 100).toFixed(1) : "0.0";
-  const mTotalAllUpCost = mTotalAllUpDays * BET_UNIT;
-  const mOverallAllUpRoi = mTotalAllUpCost > 0 ? (((mTotalAllUpRet - mTotalAllUpCost) / mTotalAllUpCost) * 100).toFixed(1) : "0.0";
+  const mt = report.byMonth.total;
   console.log(
-    `${"TOTAL".padEnd(10)} ${mTotalAllUpDays.toString().padStart(5)} ${mTotalBet.toString().padStart(4)} ${mTotalHit.toString().padStart(4)} ${mTotalWon.toString().padStart(4)} ${(mOverallHitRate + "%").padStart(8)} ${(mOverallWinRate + "%").padStart(8)} ${("$" + mTotalCost).padStart(7)} ${("$" + mTotalWinRet.toFixed(0)).padStart(7)} ${("$" + mTotalPlaRet.toFixed(0)).padStart(7)} ${(mOverallWinRoi + "%").padStart(10)} ${(mOverallPlaRoi + "%").padStart(10)} ${(mOverallAllUpRoi + "%").padStart(14)}`
+    `${"TOTAL".padEnd(10)} ${mt.days.toString().padStart(5)} ${mt.bet.toString().padStart(4)} ${mt.hits.toString().padStart(4)} ${mt.wins.toString().padStart(4)} ${(fixed1(mt.hitRate, "0.0") + "%").padStart(8)} ${(fixed1(mt.winRate, "0.0") + "%").padStart(8)} ${("$" + mt.cost).padStart(7)} ${("$" + mt.winReturn.toFixed(0)).padStart(7)} ${("$" + mt.placeReturn.toFixed(0)).padStart(7)} ${(fixed1(mt.winRoi, "0.0") + "%").padStart(10)} ${(fixed1(mt.placeRoi, "0.0") + "%").padStart(10)} ${(fixed1(mt.allUpRoi, "0.0") + "%").padStart(14)}`
   );
 
-  // --- By venue / surface (redundant when CLI already filters by both) ---
-  if (!(venue && surface)) {
-    const byVenue = new Map<string, DifferentiationBacktestRow[]>();
-    for (const r of allResults) {
-      if (!byVenue.has(r.venue)) byVenue.set(r.venue, []);
-      byVenue.get(r.venue)!.push(r);
-    }
-    printBreakdown("VENUE", byVenue);
-
-    const bySurface = new Map<string, DifferentiationBacktestRow[]>();
-    for (const r of allResults) {
-      if (!bySurface.has(r.surface)) bySurface.set(r.surface, []);
-      bySurface.get(r.surface)!.push(r);
-    }
-    printBreakdown("SURFACE", bySurface);
-  }
-
-  // --- By going (race-time actual, synced from results) ---
-  const goingOrder = ["Firm","Good to Firm","Good","Good to Yielding","Yielding","Yielding to Soft","Soft","Heavy","Wet Fast","Wet Slow"];
-  const byGoing = new Map<string, DifferentiationBacktestRow[]>();
-  for (const r of allResults) {
-    const g = r.going || "(unknown)";
-    if (!byGoing.has(g)) byGoing.set(g, []);
-    byGoing.get(g)!.push(r);
-  }
-  const byGoingSorted = new Map(
-    [...byGoing.entries()].sort((a, b) => {
-      const ia = goingOrder.indexOf(a[0]); const ib = goingOrder.indexOf(b[0]);
-      return (ia === -1 ? 99 : ia) - (ib === -1 ? 99 : ib);
-    })
-  );
-  printBreakdown("GOING", byGoingSorted);
-
-  printClassDistanceVenueBreakdown(allResults);
-
-  // --- By number of runners ---
-  const byRunners = new Map<string, DifferentiationBacktestRow[]>();
-  for (const r of allResults) {
-    const key = `${r.numRunners}`;
-    if (!byRunners.has(key)) byRunners.set(key, []);
-    byRunners.get(key)!.push(r);
-  }
-  const byRunnersSorted = new Map([...byRunners.entries()].sort((a, b) => parseInt(a[0]) - parseInt(b[0])));
-  printBreakdown("NUMBER OF RUNNERS", byRunnersSorted);
-
-  // --- By MC Place% slot (5% buckets) ---
-  const byMcPlace = new Map<string, DifferentiationBacktestRow[]>();
-  for (const r of allResults) {
-    const pct = r.topRatedMcPlacePct * 100;
-    const lower = Math.floor(pct / 5) * 5;
-    const key = `${lower}-${lower + 5}%`;
-    if (!byMcPlace.has(key)) byMcPlace.set(key, []);
-    byMcPlace.get(key)!.push(r);
-  }
-  const byMcPlaceSorted = new Map(
-    [...byMcPlace.entries()].sort((a, b) => parseInt(a[0]) - parseInt(b[0]))
-  );
-  printBreakdown("MC PLACE% SLOT (5%)", byMcPlaceSorted);
-
-  // --- By win odds bucket ---
-  const byOdds = new Map<string, DifferentiationBacktestRow[]>();
-  const oddsBuckets = [
-    { label: "1-3", min: 1, max: 3 },
-    { label: "3-5", min: 3, max: 5 },
-    { label: "5-7", min: 5, max: 7 },
-    { label: "7-9", min: 7, max: 10 },
-    { label: "10-15", min: 10, max: 15 },
-    { label: "15+", min: 15, max: Infinity },
-  ];
-  for (const r of allResults) {
-    if (r.topRatedWinOdds <= 0) {
-      const key = "N/A";
-      if (!byOdds.has(key)) byOdds.set(key, []);
-      byOdds.get(key)!.push(r);
-      continue;
-    }
-    for (const b of oddsBuckets) {
-      if (r.topRatedWinOdds >= b.min && r.topRatedWinOdds < b.max) {
-        if (!byOdds.has(b.label)) byOdds.set(b.label, []);
-        byOdds.get(b.label)!.push(r);
-        break;
-      }
-    }
-  }
-  const oddsOrder = [...oddsBuckets.map((b) => b.label), "N/A"];
-  const byOddsSorted = new Map<string, DifferentiationBacktestRow[]>();
-  for (const key of oddsOrder) {
-    if (byOdds.has(key)) byOddsSorted.set(key, byOdds.get(key)!);
-  }
-  printBreakdown("WIN ODDS (top-rated)", byOddsSorted);
-
-  // --- By expected position bucket ---
-  const byEPos = new Map<string, DifferentiationBacktestRow[]>();
-  const ePosBuckets: { label: string; min: number; max: number }[] = [];
-  for (let min = 1.0; min < 6.0; min += 0.5) {
-    const max = min + 0.5;
-    ePosBuckets.push({ label: `${min.toFixed(1)}-${max.toFixed(1)}`, min, max });
-  }
-  ePosBuckets.push({ label: "6.0+", min: 6.0, max: Infinity });
-  for (const r of allResults) {
-    if (r.topRatedExpectedPosition <= 0) {
-      const key = "N/A";
-      if (!byEPos.has(key)) byEPos.set(key, []);
-      byEPos.get(key)!.push(r);
-      continue;
-    }
-    for (const b of ePosBuckets) {
-      if (r.topRatedExpectedPosition >= b.min && r.topRatedExpectedPosition < b.max) {
-        if (!byEPos.has(b.label)) byEPos.set(b.label, []);
-        byEPos.get(b.label)!.push(r);
-        break;
-      }
-    }
-  }
-  const ePosOrder = [...ePosBuckets.map((b) => b.label), "N/A"];
-  const byEPosSorted = new Map<string, DifferentiationBacktestRow[]>();
-  for (const key of ePosOrder) {
-    if (byEPos.has(key)) byEPosSorted.set(key, byEPos.get(key)!);
-  }
-  printBreakdown("EXPECTED POSITION (top-rated)", byEPosSorted, { preserveOrder: true });
-
-  // --- By overall rating bucket ---
-  const byRating = new Map<string, DifferentiationBacktestRow[]>();
-  const ratingBuckets = [
-    { label: "<60", min: -Infinity, max: 60 },
-    { label: "60-65", min: 60, max: 65 },
-    { label: "65-70", min: 65, max: 70 },
-    { label: "70-75", min: 70, max: 75 },
-    { label: "75-80", min: 75, max: 80 },
-    { label: "80-85", min: 80, max: 85 },
-    { label: "85-90", min: 85, max: 90 },
-    { label: "90-95", min: 90, max: 95 },
-    { label: "95+", min: 95, max: Infinity },
-  ];
-  for (const r of allResults) {
-    for (const b of ratingBuckets) {
-      if (r.overallRating >= b.min && r.overallRating < b.max) {
-        if (!byRating.has(b.label)) byRating.set(b.label, []);
-        byRating.get(b.label)!.push(r);
-        break;
-      }
-    }
-  }
-  const ratingOrder = ratingBuckets.map((b) => b.label);
-  const byRatingSorted = new Map<string, DifferentiationBacktestRow[]>();
-  for (const key of ratingOrder) {
-    if (byRating.has(key)) byRatingSorted.set(key, byRating.get(key)!);
-  }
-  printBreakdown("RATING (top-rated)", byRatingSorted, { preserveOrder: true });
-
-  // --- By avgDiff bucket ---
-  const byAvgDiff = new Map<string, DifferentiationBacktestRow[]>();
-  const avgDiffBuckets = [
-    { label: "11-13", min: 11, max: 13 },
-    { label: "13-15", min: 13, max: 15 },
-    { label: "15-18", min: 15, max: 18 },
-    { label: "18-22", min: 18, max: 22 },
-    { label: "22-27", min: 22, max: 27 },
-    { label: "27+",   min: 27, max: Infinity },
-  ];
-  for (const r of allResults) {
-    for (const b of avgDiffBuckets) {
-      if (r.avgDiff >= b.min && r.avgDiff < b.max) {
-        if (!byAvgDiff.has(b.label)) byAvgDiff.set(b.label, []);
-        byAvgDiff.get(b.label)!.push(r);
-        break;
-      }
-    }
-  }
-  const avgDiffOrder = avgDiffBuckets.map((b) => b.label);
-  const byAvgDiffSorted = new Map<string, DifferentiationBacktestRow[]>();
-  for (const key of avgDiffOrder) {
-    if (byAvgDiff.has(key)) byAvgDiffSorted.set(key, byAvgDiff.get(key)!);
-  }
-  printBreakdown("AVG DIFF (field spread)", byAvgDiffSorted);
-
-  // --- By top-two gap bucket ---
-  const byTopGap = new Map<string, DifferentiationBacktestRow[]>();
-  const topGapBuckets = [
-    { label: "1",   min: 1, max: 2 },
-    { label: "2-3", min: 2, max: 4 },
-    { label: "4-6", min: 4, max: 7 },
-    { label: "7-10",min: 7, max: 11 },
-    { label: "11+", min: 11, max: Infinity },
-  ];
-  for (const r of allResults) {
-    for (const b of topGapBuckets) {
-      if (r.topGap >= b.min && r.topGap < b.max) {
-        if (!byTopGap.has(b.label)) byTopGap.set(b.label, []);
-        byTopGap.get(b.label)!.push(r);
-        break;
-      }
-    }
-  }
-  const topGapOrder = topGapBuckets.map((b) => b.label);
-  const byTopGapSorted = new Map<string, DifferentiationBacktestRow[]>();
-  for (const key of topGapOrder) {
-    if (byTopGap.has(key)) byTopGapSorted.set(key, byTopGap.get(key)!);
-  }
-  printBreakdown("TOP-TWO GAP (#1 vs #2 rating)", byTopGapSorted);
-
-  // --- By close<8 count bucket ---
-  const byClose8 = new Map<string, DifferentiationBacktestRow[]>();
-  for (const r of allResults) {
-    const key = `${r.horsesWithDiffLt8}`;
-    if (!byClose8.has(key)) byClose8.set(key, []);
-    byClose8.get(key)!.push(r);
-  }
-  const byClose8Sorted = new Map(
-    [...byClose8.entries()].sort((a, b) => parseInt(a[0]) - parseInt(b[0]))
-  );
-  printBreakdown("CLOSE<8 COUNT (field cluster)", byClose8Sorted);
-
-  // --- By rating change (top-rated horse Rtg.+/-), one bucket per integer ---
-  const byRatingChange = new Map<string, DifferentiationBacktestRow[]>();
-  for (const r of allResults) {
-    const change = r.topRatedRatingChange;
-    if (change === undefined) {
-      const key = "N/A";
-      if (!byRatingChange.has(key)) byRatingChange.set(key, []);
-      byRatingChange.get(key)!.push(r);
-      continue;
-    }
-    const key = change > 0 ? `+${change}` : String(change);
-    if (!byRatingChange.has(key)) byRatingChange.set(key, []);
-    byRatingChange.get(key)!.push(r);
-  }
-  const parseRatingChangeKey = (key: string): number => {
-    if (key === "N/A") return Infinity;
-    if (key.startsWith("+")) return parseInt(key.slice(1), 10);
-    return parseInt(key, 10);
-  };
-  const byRatingChangeSorted = new Map(
-    [...byRatingChange.entries()].sort(
-      (a, b) => parseRatingChangeKey(a[0]) - parseRatingChangeKey(b[0])
-    )
-  );
-  printBreakdown("RATING CHANGE (top-rated Rtg.+/-)", byRatingChangeSorted, {
-    preserveOrder: true,
-  });
+  // --- Breakdowns ---
+  const b = report.breakdowns;
+  if (b.venue) printBreakdownSummary("VENUE", b.venue);
+  if (b.surface) printBreakdownSummary("SURFACE", b.surface);
+  printBreakdownSummary("GOING", b.going);
+  printClassDistanceVenueSummary(report.classDistanceVenue);
+  printBreakdownSummary("NUMBER OF RUNNERS", b.runners);
+  printBreakdownSummary("MC PLACE% SLOT (5%)", b.mcPlacePct);
+  printBreakdownSummary("WIN ODDS (top-rated)", b.winOdds);
+  printBreakdownSummary("EXPECTED POSITION (top-rated)", b.expectedPosition);
+  printBreakdownSummary("RATING (top-rated)", b.rating);
+  printBreakdownSummary("AVG DIFF (field spread)", b.avgDiff);
+  printBreakdownSummary("TOP-TWO GAP (#1 vs #2 rating)", b.topGap);
+  printBreakdownSummary("CLOSE<8 COUNT (field cluster)", b.close8);
+  printBreakdownSummary("RATING CHANGE (top-rated Rtg.+/-)", b.ratingChange);
 
   // --- Skip logic summary ---
   console.log("\n" + "═".repeat(70));
@@ -536,38 +180,16 @@ async function main() {
     `  6. Rating change: top-rated Rtg+/- <= ${ratingChangeMin !== null && ratingChangeMin !== undefined ? ratingChangeMin : "disabled"} (--ratingchange, bet when > threshold) → skip`
   );
   console.log("\nSkipped races this run (by reason):");
-  const skipReasonCounts = new Map<string, number>();
-  for (const r of skippedRaces) {
-    skipReasonCounts.set(r.skipReason, (skipReasonCounts.get(r.skipReason) ?? 0) + 1);
-  }
-  const sortedReasons = [...skipReasonCounts.entries()].sort((a, b) => b[1] - a[1]);
-  if (sortedReasons.length === 0) {
+  if (report.skipReasons.length === 0) {
     console.log("  (none)");
   } else {
-    for (const [reason, n] of sortedReasons) {
-      console.log(`  ${n.toString().padStart(3)}  ${reason}`);
+    for (const { reason, count } of report.skipReasons) {
+      console.log(`  ${count.toString().padStart(3)}  ${reason}`);
     }
   }
   console.log("─".repeat(70));
 
-  const upcoming = await runUpcomingPlaceSuggestions({
-    sparseMax,
-    closeMax,
-    avgDiffMin,
-    gapMin,
-    oddsMax,
-    ratingChangeMin,
-    months,
-    venue,
-    surface,
-    ignoreClasses,
-    ignoreDistances,
-    maxRating,
-    maxAvgDiff,
-    form,
-    ...(ignoreAfter ? { ignoreAfter } : {}),
-  });
-  printUpcomingPlaceSuggestions(upcoming);
+  printUpcomingPlaceSuggestions(new Map(report.upcoming.map((m) => [m.meeting, m.races])));
 }
 
 main().catch(console.error);

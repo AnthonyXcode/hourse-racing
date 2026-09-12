@@ -7,7 +7,9 @@ import { readFileSync } from "node:fs";
 import express, { type Express } from "express";
 import { apiKeyAuth } from "./middleware/apiKeyAuth.js";
 import { errorHandler, notFound } from "./middleware/errorHandler.js";
-import { analysesRouter } from "./routes/analyses.js";
+import { analysesRouter, type AnalysisParams } from "./routes/analyses.js";
+import { backtestsRouter, type BacktestParams } from "./routes/backtests.js";
+import { batchAnalysesRouter, type BatchAnalysisParams } from "./routes/batchAnalyses.js";
 import { healthRouter } from "./routes/health.js";
 import type { AnalysisService } from "./services/analysisService.js";
 
@@ -18,7 +20,11 @@ export interface AppOptions {
   /** Include error messages in 5xx responses (never enable in production) */
   exposeErrorDetails?: boolean;
   /** Mounts POST /v1/analyses when provided */
-  analysisService?: AnalysisService;
+  analysisService?: AnalysisService<AnalysisParams>;
+  /** Mounts POST /v1/backtests/differentiation when provided */
+  backtestService?: AnalysisService<BacktestParams>;
+  /** Mounts POST /v1/batch-analyses when provided */
+  batchAnalysisService?: AnalysisService<BatchAnalysisParams>;
 }
 
 function readPackageVersion(): string {
@@ -33,6 +39,8 @@ export function createApp({
   version = readPackageVersion(),
   exposeErrorDetails = false,
   analysisService,
+  backtestService,
+  batchAnalysisService,
 }: AppOptions): Express {
   const app = express();
 
@@ -44,6 +52,8 @@ export function createApp({
 
   app.use("/health", healthRouter(version));
   if (analysisService) app.use("/v1/analyses", analysesRouter(analysisService));
+  if (backtestService) app.use("/v1/backtests", backtestsRouter(backtestService));
+  if (batchAnalysisService) app.use("/v1/batch-analyses", batchAnalysesRouter(batchAnalysisService));
 
   app.use(notFound);
   app.use(errorHandler(exposeErrorDetails));

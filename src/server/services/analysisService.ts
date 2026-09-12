@@ -1,85 +1,74 @@
 /**
- * Race analysis with a JSON file cache (stale-while-revalidate).
+ * Runs a slow analysis behind a JSON file cache (stale-while-revalidate).
  *
- *   cache hit  → return the cached file right away, re-run the analysis in the
- *                background and overwrite the file when it finishes
- *   cache miss → run the analysis, save it, then return it
+ *   cache hit  → return the cached file right away, re-run in the background and
+ *                overwrite the file when it finishes
+ *   cache miss → run, save, then return
  *
- * Cache file: <cacheDir>/<ST|HV>-<YYYY-MM-DD>-<race>.json. A cached file produced
- * with different options (bankroll, formData, …) counts as a miss and is overwritten.
+ * A cached file produced with different params counts as a miss and is overwritten.
+ * One service per endpoint; give them the same `limiter` so they share one concurrency cap.
  */
 
 import { randomUUID } from "node:crypto";
 import { mkdir, readFile, rename, writeFile } from "node:fs/promises";
 import path from "node:path";
-import { venueCode } from "../../pipeline/raceAnalysis.js";
-import type { Venue } from "../../types/index.js";
 
-/** Validated request options with all defaults filled in. */
-export interface AnalysisParams {
-  /** YYYY-MM-DD */
-  date: string;
-  venue: Venue;
-  raceNumber: number;
-  formData: "all" | "venue";
-  useSaved: boolean;
-  bankroll: number;
-  kellyFraction: number;
-  minEdge: number;
-  ignoreRecords: string[];
-}
-
-export interface CachedAnalysis {
-  params: AnalysisParams;
+export interface CachedAnalysis<P> {
+  params: P;
   generatedAt: string;
   result: unknown;
 }
 
-export interface AnalysisResponse extends CachedAnalysis {
+export interface AnalysisResponse<P> extends CachedAnalysis<P> {
   /** "hit" = served from the cache file; a background refresh has been started */
   cache: "hit" | "miss";
 }
 
-export interface AnalysisServiceOptions {
-  runner: (params: AnalysisParams) => Promise<unknown>;
+export type Limiter = <R>(task: () => Promise<R>) => Promise<R>;
+
+export interface AnalysisServiceOptions<P> {
+  runner: (params: P) => Promise<unknown>;
   cacheDir: string;
-  /** Max analyses running at once — live runs each launch Chromium. Default 1. */
-  maxConcurrent?: number;
-  onRefreshError?: (error: unknown, params: AnalysisParams) => void;
+  /** Cache file name inside cacheDir. Params are already validated, so they are safe in a path. */
+  fileName: (params: P) => string;
+  /** Concurrency cap shared across services. Default: a private one allowing a single run. */
+  limiter?: Limiter;
+  onRefreshError?: (error: unknown, params: P) => void;
 }
 
-type Limiter = <R>(task: () => Promise<R>) => Promise<R>;
-
-export class AnalysisService {
-  private readonly runner: AnalysisServiceOptions["runner"];
+export class AnalysisService<P extends object> {
+  private readonly runner: (params: P) => Promise<unknown>;
   private readonly cacheDir: string;
+  private readonly fileName: (params: P) => string;
   private readonly limit: Limiter;
-  private readonly onRefreshError: NonNullable<AnalysisServiceOptions["onRefreshError"]>;
-  private readonly inFlight = new Map<string, Promise<CachedAnalysis>>();
+  private readonly onRefreshError: (error: unknown, params: P) => void;
+  private readonly inFlight = new Map<string, Promise<CachedAnalysis<P>>>();
 
-  constructor(options: AnalysisServiceOptions) {
+  constructor(options: AnalysisServiceOptions<P>) {
     this.runner = options.runner;
     this.cacheDir = options.cacheDir;
-    this.limit = createLimiter(options.maxConcurrent ?? 1);
+    this.fileName = options.fileName;
+    this.limit = options.limiter ?? createLimiter(1);
     this.onRefreshError =
       options.onRefreshError ??
       ((error, params) =>
         console.error(
-          `[analysis] background refresh failed for ${path.basename(this.cachePath(params))}:`,
+          `[analysis] background refresh failed for ${this.fileName(params)}:`,
           error instanceof Error ? error.message : error
         ));
   }
 
-  async getAnalysis(params: AnalysisParams): Promise<AnalysisResponse> {
+  async getAnalysis(params: P): Promise<AnalysisResponse<P>> {
+    const key = stableStringify(params);
     const cached = await this.readCache(params);
-    if (cached && paramsKey(cached.params) === paramsKey(params)) {
+    if (cached && stableStringify(cached.params) === key) {
       // Serve the cached copy now; the refresh overwrites the file for later callers
-      if (!this.inFlight.has(paramsKey(params))) {
-        this.run(params).catch((error: unknown) => this.onRefreshError(error, params));
+      if (!this.inFlight.has(key)) {
+        this.run(params, key).catch((error: unknown) => this.onRefreshError(error, params));
       }
       return { ...cached, cache: "hit" };
     }
-    return { ...(await this.run(params)), cache: "miss" };
+    return { ...(await this.run(params, key)), cache: "miss" };
   }
 
   /** Resolves once no analysis is running (tests, shutdown). */
@@ -89,19 +78,18 @@ export class AnalysisService {
     }
   }
 
-  cachePath(params: AnalysisParams): string {
-    return path.join(this.cacheDir, `${venueCode(params.venue)}-${params.date}-${params.raceNumber}.json`);
+  cachePath(params: P): string {
+    return path.join(this.cacheDir, this.fileName(params));
   }
 
   /** Runs the analysis and saves it; joins an identical run that is already in flight. */
-  private run(params: AnalysisParams): Promise<CachedAnalysis> {
-    const key = paramsKey(params);
+  private run(params: P, key: string): Promise<CachedAnalysis<P>> {
     const existing = this.inFlight.get(key);
     if (existing) return existing;
 
     const promise = this.limit(async () => {
       const result = await this.runner(params);
-      const entry: CachedAnalysis = { params, generatedAt: new Date().toISOString(), result };
+      const entry: CachedAnalysis<P> = { params, generatedAt: new Date().toISOString(), result };
       await this.writeCache(entry);
       return entry;
     }).finally(() => this.inFlight.delete(key));
@@ -110,18 +98,18 @@ export class AnalysisService {
     return promise;
   }
 
-  private async readCache(params: AnalysisParams): Promise<CachedAnalysis | null> {
+  private async readCache(params: P): Promise<CachedAnalysis<P> | null> {
     try {
-      const parsed = JSON.parse(await readFile(this.cachePath(params), "utf8")) as Partial<CachedAnalysis>;
-      return parsed.params && Array.isArray(parsed.params.ignoreRecords) && "result" in parsed
-        ? (parsed as CachedAnalysis)
+      const parsed = JSON.parse(await readFile(this.cachePath(params), "utf8")) as Partial<CachedAnalysis<P>>;
+      return typeof parsed.params === "object" && parsed.params !== null && "result" in parsed
+        ? (parsed as CachedAnalysis<P>)
         : null;
     } catch {
       return null; // missing or unreadable → miss; the next run overwrites it
     }
   }
 
-  private async writeCache(entry: CachedAnalysis): Promise<void> {
+  private async writeCache(entry: CachedAnalysis<P>): Promise<void> {
     const file = this.cachePath(entry.params);
     const tmp = `${file}.${randomUUID()}.tmp`;
     await mkdir(this.cacheDir, { recursive: true });
@@ -131,22 +119,18 @@ export class AnalysisService {
   }
 }
 
-/** Canonical form of every option that affects the result. */
-function paramsKey(p: AnalysisParams): string {
-  return JSON.stringify([
-    p.date,
-    p.venue,
-    p.raceNumber,
-    p.formData,
-    p.useSaved,
-    p.bankroll,
-    p.kellyFraction,
-    p.minEdge,
-    [...p.ignoreRecords].sort(),
-  ]);
+/** JSON with object keys sorted, so equal params give the same string whatever their key order. */
+export function stableStringify(value: unknown): string {
+  return JSON.stringify(value, (_key, v: unknown) =>
+    v !== null && typeof v === "object" && !Array.isArray(v)
+      ? Object.fromEntries(
+          Object.entries(v as Record<string, unknown>).sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0))
+        )
+      : v
+  );
 }
 
-function createLimiter(max: number): Limiter {
+export function createLimiter(max: number): Limiter {
   let active = 0;
   const waiting: (() => void)[] = [];
 

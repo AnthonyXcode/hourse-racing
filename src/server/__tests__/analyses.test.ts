@@ -5,7 +5,8 @@ import request from "supertest";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { RaceNotFoundError } from "../../pipeline/raceAnalysis.js";
 import { createApp } from "../app.js";
-import { AnalysisService, type AnalysisParams } from "../services/analysisService.js";
+import { analysisCacheFile, type AnalysisParams } from "../routes/analyses.js";
+import { AnalysisService } from "../services/analysisService.js";
 
 const KEY = "k".repeat(64);
 const VALID = { date: "2026-09-09", venue: "HV", race: 7 };
@@ -19,7 +20,12 @@ afterEach(async () => {
 });
 
 function setup(runner: (params: AnalysisParams) => Promise<unknown>) {
-  const service = new AnalysisService({ runner, cacheDir: dir, onRefreshError: () => {} });
+  const service = new AnalysisService<AnalysisParams>({
+    runner,
+    cacheDir: dir,
+    fileName: analysisCacheFile,
+    onRefreshError: () => {},
+  });
   const app = createApp({ apiKeys: [KEY], version: "test", analysisService: service });
   const post = (body: object) => request(app).post("/v1/analyses").set("x-api-key", KEY).send(body);
   return { app, service, post };
@@ -98,6 +104,18 @@ describe("POST /v1/analyses", () => {
 
     expect(res.body.cache).toBe("hit");
     expect(runner).toHaveBeenCalledTimes(2); // miss + background refresh
+  });
+
+  it("treats ignoreRecords as a set when matching the cache", async () => {
+    const runner = vi.fn(async () => ({}));
+    const { post, service } = setup(runner);
+    await post({ ...VALID, ignoreRecords: ["HV", "20260315"] });
+
+    const res = await post({ ...VALID, ignoreRecords: ["20260315", "HV", "HV"] });
+    await service.idle();
+
+    expect(res.body.cache).toBe("hit");
+    expect(res.body.params.ignoreRecords).toEqual(["20260315", "HV"]);
   });
 
   it.each([

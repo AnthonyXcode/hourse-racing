@@ -822,50 +822,89 @@ function placeBetRoiPct(betted: DifferentiationBacktestRow[]): string {
   return (((placeReturn - cost) / cost) * 100).toFixed(1) + "%";
 }
 
-export function printBreakdown(
-  label: string,
+export interface BreakdownStats {
+  total: number;
+  bet: number;
+  hits: number;
+  miss: number;
+  skip: number;
+  /** e.g. "71.4%"; "N/A" for a group with no bets, "0.0%" for an empty TOTAL */
+  ratePct: string;
+  /** Place ROI at $10 flat stakes, same fallbacks as ratePct */
+  roiPlaPct: string;
+}
+
+export interface BreakdownSummary {
+  rows: (BreakdownStats & { group: string })[];
+  total: BreakdownStats;
+}
+
+/** Per-group stats plus TOTAL, in the order printBreakdown prints them. */
+export function summarizeBreakdown(
   groups: Map<string, DifferentiationBacktestRow[]>,
-  options?: { groupWidth?: number; preserveOrder?: boolean }
-) {
-  const groupWidth = options?.groupWidth ?? 12;
+  options?: { preserveOrder?: boolean }
+): BreakdownSummary {
+  const entries = options?.preserveOrder
+    ? [...groups.entries()]
+    : [...groups.entries()].sort((a, b) => a[0].localeCompare(b[0]));
+  let gTotalRaces = 0;
+  let gTotalBet = 0;
+  let gTotalHit = 0;
+  let gTotalPlaReturn = 0;
+  const rows = entries.map(([group, races]) => {
+    const stats = bucketStats(races);
+    gTotalRaces += stats.total;
+    gTotalBet += stats.bet;
+    gTotalHit += stats.hits;
+    gTotalPlaReturn += placeBetReturn(races.filter((r) => !r.skipped));
+    return { group, ...stats };
+  });
+  return { rows, total: totalStats(gTotalRaces, gTotalBet, gTotalHit, gTotalPlaReturn) };
+}
+
+function totalStats(total: number, bet: number, hits: number, plaReturn: number): BreakdownStats {
+  const cost = bet * PLACE_BET_UNIT;
+  return {
+    total,
+    bet,
+    hits,
+    miss: bet - hits,
+    skip: total - bet,
+    ratePct: bet > 0 ? ((hits / bet) * 100).toFixed(1) + "%" : "0.0%",
+    roiPlaPct: bet > 0 ? (((plaReturn - cost) / cost) * 100).toFixed(1) + "%" : "0.0%",
+  };
+}
+
+function printBreakdownHeader(title: string, groupWidth: number) {
   const width = groupWidth + 48;
   console.log("\n" + "═".repeat(width));
-  console.log(`HIT RATE BY ${label}`);
+  console.log(title);
   console.log("═".repeat(width));
   console.log(
     `${"Group".padEnd(groupWidth)} ${"Total".padStart(5)} ${"Bet".padStart(4)} ${"Hit".padStart(4)} ${"Miss".padStart(4)} ${"Skip".padStart(4)} ${"HitRate".padStart(8)} ${"ROI(Pla)".padStart(10)}`
   );
   console.log("─".repeat(width));
-  let gTotalRaces = 0;
-  let gTotalBet = 0;
-  let gTotalHit = 0;
-  let gTotalPlaReturn = 0;
-  const entries = options?.preserveOrder
-    ? [...groups.entries()]
-    : [...groups.entries()].sort((a, b) => a[0].localeCompare(b[0]));
-  for (const [key, races] of entries) {
-    const stats = bucketStats(races);
-    console.log(
-      `${key.padEnd(groupWidth)} ${stats.total.toString().padStart(5)} ${stats.bet.toString().padStart(4)} ${stats.hits.toString().padStart(4)} ${stats.miss.toString().padStart(4)} ${stats.skip.toString().padStart(4)} ${stats.ratePct.padStart(8)} ${stats.roiPlaPct.padStart(10)}`
-    );
-    gTotalRaces += stats.total;
-    gTotalBet += stats.bet;
-    gTotalHit += stats.hits;
-    gTotalPlaReturn += placeBetReturn(races.filter((r) => !r.skipped));
-  }
-  console.log("─".repeat(width));
-  const totalRate = gTotalBet > 0 ? ((gTotalHit / gTotalBet) * 100).toFixed(1) + "%" : "0.0%";
-  const totalCost = gTotalBet * PLACE_BET_UNIT;
-  const totalRoi =
-    gTotalBet > 0
-      ? (((gTotalPlaReturn - totalCost) / totalCost) * 100).toFixed(1) + "%"
-      : "0.0%";
-  console.log(
-    `${"TOTAL".padEnd(groupWidth)} ${gTotalRaces.toString().padStart(5)} ${gTotalBet.toString().padStart(4)} ${gTotalHit.toString().padStart(4)} ${(gTotalBet - gTotalHit).toString().padStart(4)} ${(gTotalRaces - gTotalBet).toString().padStart(4)} ${totalRate.padStart(8)} ${totalRoi.padStart(10)}`
-  );
 }
 
-function bucketStats(races: DifferentiationBacktestRow[]) {
+/** Prints a summarizeBreakdown() result as a "HIT RATE BY <label>" table. */
+export function printBreakdownSummary(label: string, summary: BreakdownSummary, groupWidth = 12) {
+  printBreakdownHeader(`HIT RATE BY ${label}`, groupWidth);
+  for (const row of summary.rows) {
+    printBreakdownRow(row.group, row, groupWidth);
+  }
+  console.log("─".repeat(groupWidth + 48));
+  printBreakdownRow("TOTAL", summary.total, groupWidth);
+}
+
+export function printBreakdown(
+  label: string,
+  groups: Map<string, DifferentiationBacktestRow[]>,
+  options?: { groupWidth?: number; preserveOrder?: boolean }
+) {
+  printBreakdownSummary(label, summarizeBreakdown(groups, options), options?.groupWidth ?? 12);
+}
+
+function bucketStats(races: DifferentiationBacktestRow[]): BreakdownStats {
   const betted = races.filter((r) => !r.skipped);
   const hits = betted.filter((r) => r.topRatedPlaced).length;
   return {
@@ -882,7 +921,7 @@ function bucketStats(races: DifferentiationBacktestRow[]) {
 
 function printBreakdownRow(
   label: string,
-  stats: ReturnType<typeof bucketStats>,
+  stats: BreakdownStats,
   groupWidth: number
 ) {
   console.log(
@@ -890,14 +929,23 @@ function printBreakdownRow(
   );
 }
 
+export interface ClassDistanceVenueRow extends BreakdownStats {
+  /** "venue" and "class" rows are subtotals printed before their distance rows */
+  level: "venue" | "class" | "distance";
+  venue: string;
+  raceClass: string | null;
+  distance: number | null;
+}
+
 /**
- * Class × distance × venue table grouped by venue and class.
- * Inserts summary header rows for each venue and each venue+class before distance lines.
+ * Class × distance × venue rows grouped by venue and class, with venue and venue+class
+ * subtotal rows before their distance rows. TOTAL sums the distance rows.
  */
-export function printClassDistanceVenueBreakdown(rows: DifferentiationBacktestRow[]) {
+export function summarizeClassDistanceVenue(rows: DifferentiationBacktestRow[]): {
+  rows: ClassDistanceVenueRow[];
+  total: BreakdownStats;
+} {
   const groups = groupByClassDistanceVenue(rows);
-  const groupWidth = 28;
-  const width = groupWidth + 48;
 
   const byVenue = new Map<string, DifferentiationBacktestRow[]>();
   const byVenueClass = new Map<string, DifferentiationBacktestRow[]>();
@@ -909,16 +957,9 @@ export function printClassDistanceVenueBreakdown(rows: DifferentiationBacktestRo
     byVenueClass.get(vc)!.push(r);
   }
 
-  console.log("\n" + "═".repeat(width));
-  console.log("HIT RATE BY CLASS × DISTANCE × VENUE");
-  console.log("═".repeat(width));
-  console.log(
-    `${"Group".padEnd(groupWidth)} ${"Total".padStart(5)} ${"Bet".padStart(4)} ${"Hit".padStart(4)} ${"Miss".padStart(4)} ${"Skip".padStart(4)} ${"HitRate".padStart(8)} ${"ROI(Pla)".padStart(10)}`
-  );
-  console.log("─".repeat(width));
-
-  const printedVenue = new Set<string>();
-  const printedVenueClass = new Set<string>();
+  const out: ClassDistanceVenueRow[] = [];
+  const seenVenue = new Set<string>();
+  const seenVenueClass = new Set<string>();
   let gTotal = 0;
   let gBet = 0;
   let gHit = 0;
@@ -928,36 +969,55 @@ export function printClassDistanceVenueBreakdown(rows: DifferentiationBacktestRo
     const [venue, raceClass, distance] = parseClassDistanceVenueKey(key);
     const vcKey = `${venue}\t${raceClass}`;
 
-    if (!printedVenue.has(venue)) {
-      if (printedVenue.size > 0) console.log("─".repeat(width));
-      printedVenue.add(venue);
-      const venueRows = byVenue.get(venue) ?? [];
-      const venueLabel =
-        venue === "HV" ? "▶ HV  (Happy Valley)" : "▶ ST  (Sha Tin)";
-      printBreakdownRow(venueLabel, bucketStats(venueRows), groupWidth);
+    if (!seenVenue.has(venue)) {
+      seenVenue.add(venue);
+      out.push({ level: "venue", venue, raceClass: null, distance: null, ...bucketStats(byVenue.get(venue) ?? []) });
+    }
+    if (!seenVenueClass.has(vcKey)) {
+      seenVenueClass.add(vcKey);
+      out.push({ level: "class", venue, raceClass, distance: null, ...bucketStats(byVenueClass.get(vcKey) ?? []) });
     }
 
-    if (!printedVenueClass.has(vcKey)) {
-      printedVenueClass.add(vcKey);
-      const classRows = byVenueClass.get(vcKey) ?? [];
-      printBreakdownRow(`  ▶ ${venue}  ${raceClass}`, bucketStats(classRows), groupWidth);
-    }
-
-    printBreakdownRow(`      ${distance}m`, bucketStats(distanceRaces), groupWidth);
+    const distStats = bucketStats(distanceRaces);
+    out.push({ level: "distance", venue, raceClass, distance, ...distStats });
 
     gTotal += distanceRaces.length;
-    const distStats = bucketStats(distanceRaces);
     gBet += distStats.bet;
     gHit += distStats.hits;
     gPlaReturn += placeBetReturn(distanceRaces.filter((r) => !r.skipped));
   }
 
+  return { rows: out, total: totalStats(gTotal, gBet, gHit, gPlaReturn) };
+}
+
+/** Prints a summarizeClassDistanceVenue() result. */
+export function printClassDistanceVenueSummary(summary: ReturnType<typeof summarizeClassDistanceVenue>) {
+  const groupWidth = 28;
+  const width = groupWidth + 48;
+  printBreakdownHeader("HIT RATE BY CLASS × DISTANCE × VENUE", groupWidth);
+
+  let venuesPrinted = 0;
+  for (const row of summary.rows) {
+    if (row.level === "venue") {
+      if (venuesPrinted > 0) console.log("─".repeat(width));
+      venuesPrinted++;
+      const venueLabel = row.venue === "HV" ? "▶ HV  (Happy Valley)" : "▶ ST  (Sha Tin)";
+      printBreakdownRow(venueLabel, row, groupWidth);
+    } else if (row.level === "class") {
+      printBreakdownRow(`  ▶ ${row.venue}  ${row.raceClass}`, row, groupWidth);
+    } else {
+      printBreakdownRow(`      ${row.distance}m`, row, groupWidth);
+    }
+  }
+
   console.log("─".repeat(width));
-  const totalRate = gBet > 0 ? ((gHit / gBet) * 100).toFixed(1) + "%" : "0.0%";
-  const totalCost = gBet * PLACE_BET_UNIT;
-  const totalRoi =
-    gBet > 0 ? (((gPlaReturn - totalCost) / totalCost) * 100).toFixed(1) + "%" : "0.0%";
-  console.log(
-    `${"TOTAL".padEnd(groupWidth)} ${gTotal.toString().padStart(5)} ${gBet.toString().padStart(4)} ${gHit.toString().padStart(4)} ${(gBet - gHit).toString().padStart(4)} ${(gTotal - gBet).toString().padStart(4)} ${totalRate.padStart(8)} ${totalRoi.padStart(10)}`
-  );
+  printBreakdownRow("TOTAL", summary.total, groupWidth);
+}
+
+/**
+ * Class × distance × venue table grouped by venue and class.
+ * Inserts summary header rows for each venue and each venue+class before distance lines.
+ */
+export function printClassDistanceVenueBreakdown(rows: DifferentiationBacktestRow[]) {
+  printClassDistanceVenueSummary(summarizeClassDistanceVenue(rows));
 }
