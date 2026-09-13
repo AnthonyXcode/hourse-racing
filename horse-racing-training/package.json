@@ -6,10 +6,10 @@
   "description": "Local HKJC bet-practice trainer. Pick a meeting, build a bet, settle hit/miss against historical results.",
   "scripts": {
     "dev": "concurrently -k -n server,web -c blue,green \"npm:dev:server\" \"npm:dev:web\"",
-    "dev:server": "tsx watch server/index.ts",
+    "dev:server": "tsx watch --env-file-if-exists=.env server/index.ts",
     "dev:web": "vite",
     "build": "vite build",
-    "start": "NODE_ENV=production tsx server/index.ts",
+    "start": "NODE_ENV=production tsx --env-file-if-exists=.env server/index.ts",
     "test": "vitest run",
     "test:watch": "vitest",
     "typecheck": "tsc --noEmit"

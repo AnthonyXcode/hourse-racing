@@ -11,7 +11,8 @@ Reads the parent repo's data directly — no duplication:
 
 ```bash
 npm install
-npm run dev      # Vite UI on :5173, API on :8787 (proxied)
+cp .env.example .env    # optional — defaults are used if absent
+npm run dev             # Vite UI on WEB_PORT (5173), API on PORT (8787), proxied
 ```
 
 Open http://localhost:5173. Pick a racing day → race tab (default R1) → bet type →
@@ -23,6 +24,80 @@ Production (single process serving built SPA + API):
 ```bash
 npm run build && npm start    # http://localhost:8787
 ```
+
+## Ports
+
+Both ports are set in `.env` (copy `.env.example`). `.env` is gitignored.
+
+| Variable | Default | What it is |
+|----------|---------|------------|
+| `PORT` | `8787` | Backend. The Express API, and in production the built SPA too — **this is the production port**. |
+| `WEB_PORT` | `5173` | Frontend. The Vite dev server, `npm run dev` only. Unused in production. |
+
+`WEB_PORT` proxies `/api` to `PORT`, so changing `PORT` keeps dev working — there is no
+second place to update.
+
+**Precedence:** a real environment variable always beats `.env`, so a one-off still works:
+
+```bash
+PORT=9000 npm start
+```
+
+Both are read at startup only. The server loads `.env` via `--env-file-if-exists`
+(missing file is fine); Vite reads it through `loadEnv`. Restart after editing.
+
+## Deployment (pm2)
+
+Assumes Node.js 22 and pm2 are already on the machine. Run everything from this folder —
+pm2 records the cwd, and the server reads the parent repo's data via `../data/...`.
+
+**1. Configure**
+
+```bash
+npm ci
+cp .env.example .env    # set PORT; keep TZ=Asia/Hong_Kong
+```
+
+**2. Build**
+
+```bash
+npm run build
+```
+
+Required, not optional: `server/index.ts` mounts the SPA only `if (existsSync(dist))`.
+Skip it and you get a working `/api` with a 404 at `/`.
+
+**3. Start**
+
+```bash
+pm2 start "npm start" --name horse-racing-training
+pm2 save && pm2 startup      # start on boot — run the command pm2 prints
+
+curl http://localhost:8787/api/meetings    # or whatever PORT you set
+```
+
+**4. Update**
+
+```bash
+git pull && npm ci && npm run build
+pm2 restart horse-racing-training
+```
+
+Logs: `pm2 logs horse-racing-training`
+
+**Notes**
+- To change the port after deploying, edit `PORT` in `.env` and
+  `pm2 restart horse-racing-training`. No `--update-env` needed: the app reads `.env` at
+  startup, so pm2 never caches the value. (`--update-env` is only for variables passed to
+  pm2 itself, e.g. `PORT=8788 pm2 start ...`.)
+- If you also run `npm run dev` on the same machine, give production a different `PORT`
+  (e.g. 8788) — otherwise the dev API and the deployed server fight over 8787. The parent
+  repo's API uses 3000.
+- `npm start` runs the TypeScript directly with `tsx`, so there is no server build step —
+  only the SPA needs building. Going through the npm script also means the app does not
+  depend on which Node pm2 was installed under.
+- Run a single instance: the meeting manifest is an in-memory cache.
+- Keep `TZ=Asia/Hong_Kong` in `.env`: on a UTC host, race dates come out a day early.
 
 ## Bet types
 
