@@ -38,19 +38,20 @@
 | **21**  | **27 May** | **HV** | **Turf**     | **Good to Firm** | **9**  | **37.9%** | **69.8%**  | **4/9**  | **44.4%** | **✅❌✅❌✅❌❌✅❌**   | **1**          |
 | **22** | **31 May** | **ST** | **Turf** | **Good** | **11** | **36.7%** | **—** | **6/11** | **54.5%** | **❌❌✅✅❌✅❌❌✅✅✅** | **1** |
 | **23** | **3 Jun** | **HV** | **Turf "C"** | **Good to Firm** | **9** | **31.5%** | **64.8%** | **2/9** | **22.2%** | **✅❌❌❌❌❌❌✅❌** | **1** |
-| **26** | **13 Jun** | **ST** | **Mixed** | **Yielding** | **11** | **34.0%** | **69.9%** | **7/11** | **63.6%** | **✅✅✅❌❌❌✅✅❌✅✅** | **4 (R1–R4)** |
-| **25** | **10 Jun** | **HV** | **Mixed** | **Yielding** | **9** | **30.9%** | **62.5%** | **4/9** | **44.4%** | **❌❌✅✅❌✅❌❌✅** | **4 (R1–R4)** |
 | **24** | **07 Jun** | **ST** | **Mixed** | **Yielding** | **11** | **38.2%** | **74.4%** | **6/11** | **54.5%** | **✅✅✅✅❌❌✅✅❌❌❌** | **4 (R1–R4)** |
+| **25** | **10 Jun** | **HV** | **Mixed** | **Yielding** | **9** | **30.9%** | **62.5%** | **4/9** | **44.4%** | **❌❌✅✅❌✅❌❌✅** | **4 (R1–R4)** |
+| **26** | **13 Jun** | **ST** | **Mixed** | **Yielding** | **11** | **34.0%** | **69.9%** | **7/11** | **63.6%** | **✅✅✅❌❌❌✅✅❌✅✅** | **4 (R1–R4)** |
 | 27 | 21 Jun | ST | Turf | Good | 11 | 37.1% | 70.7% | 4/11 | 36.4% | ❌✅❌✅❌✅❌❌✅❌❌ | 1 |
 | 28 | 24 Jun | HV | Turf | Good | 9 | 28.5% | 59.1% | 6/9 | 66.7% | ❌✅✅✅✅❌❌✅✅ | 4 (R2-R5) |
 | 29 | 27 Jun | ST | Turf | Good | 11 | 32.2% | 65.1% | 6/11 | 54.5% | ✅❌❌❌❌❌✅✅✅✅✅ | 5 (R7-R11) |
 | 30 | 1 Jul | ST | Turf | Good | 11 | 33.5% | 66.0% | 6/11 | 54.5% | ✅✅✅✅❌✅❌✅❌❌❌ | 4 (R1-R4) |
 | 31 | 4 Jul | ST | Turf | Good | 11 | 37.9% | 73.0% | 7/11 | 63.6% | ✅✅✅✅✅❌❌❌✅✅❌ | 5 (R1-R5) |
-| 35 | 6 Sep | ST | Turf | Good | 10 | 31.6% | 64.2% | 3/9 | 33.3% | ❌❌✅❌❌✅SCR✅❌❌ | 1 |
-| 36 | 9 Sep | HV | Turf | Good | 8 | 33.8% | 68.1% | 4/8 | 50.0% | ❌✅✅❌✅❌✅❌ | 2 |
 | **32** | **8 Jul** | **HV** | **Turf** | **Yielding** | **9** | **28.3%** | **60.9%** | **6/9** | **66.7%** | **✅✅✅✅❌✅✅❌❌** | **4 (R1-R4)** |
 | **33** | **12 Jul** | **ST** | **Turf** | **Good to Firm** | **11** | **35.7%** | **68.7%** | **5/11** | **45.5%** | **✅✅✅❌✅❌❌❌✅❌❌** | **3 (R1-R3)** |
 | **34** | **15 Jul** | **HV** | **Turf** | **Good to Yielding** | **9** | **25.7%** | **55.4%** | **4/9** | **44.4%** | **❌❌✅✅✅❌❌❌✅** | **3 (R3-R5)** |
+| **35** | **6 Sep** | **ST** | **Turf** | **Good** | **9\*** | **30.4%** | **64.2%** | **3/9** | **33.3%** | **❌❌✅❌❌✅ SCR ✅❌❌** | **1** |
+| **36** | **9 Sep** | **HV** | **Turf** | **Good** | **8** | **33.8%** | **68.1%** | **4/8** | **50.0%** | **❌✅✅❌✅❌✅❌** | **2 (R2-R3)** |
+| **37** | **13 Sep** | **ST** | **Turf "B"** | **Good to Firm** | **10** | **34.3%** | **66.2%** | **3/10** | **30.0%** | **✅❌❌❌❌❌❌✅❌✅** | **1** |
 
 \*Meeting 8 **R1** (6 runners): MC #1 **#6** ran **3rd** but HKJC Place pool pays **two** places only → **$0** dividend; counts as **❌** for streaks and all-ups (same dividend logic as other meetings).
 
@@ -1776,3 +1777,30 @@ Place dividends (MC #1 when placed): R1=$14.50, R3=$12.00, R5=$10.50, R8=$18.00
 **Placed:** 4/8 (50.0%) | **Pattern:** ❌✅✅❌✅❌✅❌ | **Max streak:** 2
 
 **Trio card note (R1–R8):** Total **LOSS — 0/8, −$640, ROI −100.0%** on Strategy A; canonical MC top-6 B **0/8, −$800, −100.0%**; MC-only Place%>20 variant (B-trio, as bet) **1/8, −$756, −68.7%** — its only hit was R7, from the Win-odds swap #5→#12. **Banker (= MC #1) failed in 4 of 8**, and those four races (R1, R4, R6, R8) were unwinnable for every variant. The dominant miss pattern was **Pattern B at 4/8** — banker placed, one excluded horse filled the frame — with the missing horse at **MC rank 7 in both R5 and R7**. R6 is the meeting's sharpest lesson: all three placers sat in Strategy A's leg pool and the 2.6 favourite MC #1 ran **12th of 12**. Two calibration notes: #2 BEAUTY SHOW ran 12th off 69.9% MC Place%, and the MC ranked **#4 TYCOON RESOURCES 8th at 4.2 market odds** in R8 — it ran 2nd. Adding one extra MC-ranked leg per race would have turned the meeting into 2/8 for +$2,118, but that is a single-meeting retrofit and needs backtesting before adoption.
+
+---
+
+## Meeting 37: Sha Tin | 13 Sep 2026 (10 races)
+
+**MC #1** = raw MC Win% from trio_strategy_20260913_ST_R*.md (10,000 iterations, form=all). **Results** from data/historical/results_20260913_ST.json. Place $ = HKJC place dividend. Going: **Good to Firm** (all 10 races — note the pre-race reports R1–R7 recorded "Good"). Turf "B" course. No scratchings.
+
+| Race | Class | Dist (m) | MC #1 | MC Win% | MC Place% | Placed? | Place $ (if placed) |
+|------|-------|----------|-------|---------|-----------|---------|---------------------|
+| R1 | Class 5 | 1400 | #10 RATTAN GALAXY | 63.3% | 92.2% | ✅ 1st | 16.5 |
+| R2 | Class 4 | 1000 | #7 HERO MASTERMIND | 22.7% | 55.7% | ❌ (7th) | — |
+| R3 | Class 5 | 1400 | #12 CHILL MASTER | 23.0% | 53.5% | ❌ (7th) | — |
+| R4 | Class 4 | 1200 | #8 SPEEDY PATCH | 19.1% | 45.5% | ❌ (14th) | — |
+| R5 | Class 4 | 1200 | #9 ROAD TO GLORY | 49.7% | 83.3% | ❌ (8th) | — |
+| R6 | Class 4 | 1600 | #1 VICTOR SUPREME | 43.6% | 78.8% | ❌ (9th) | — |
+| R7 | Class 4 | 1400 | #2 MEGA MASTERMIND | 27.2% | 62.8% | ❌ (8th) | — |
+| R8 | Class 3 | 1000 | #1 SOLID STATE | 22.1% | 50.6% | ✅ 2nd | 11 |
+| R9 | Class 3 | 1200 | #8 THUNDER KIT | 30.4% | 64.3% | ❌ (8th) | — |
+| R10 | Class 3 | 1400 | #12 NYX GLUCK | 41.6% | 75.7% | ✅ 1st | 13 |
+
+**Placed:** 3/10 (30.0%) | **Pattern:** ✅❌❌❌❌❌❌✅❌✅ | **Max streak:** 1
+
+**Trio card note (R1–R10):** **LOSS.** Strategy A (as bet) **1/10, $870 staked, $476 returned, −$394, ROI −45.3%**; canonical MC top-6 B **1/10, −$524, −52.4%**; MC-only Place%>20 variant (B-trio, as bet) **1/10, $1,160 staked, −$684, −59.0%**. All three variants hit only R1 and missed the same nine races. **Banker (= MC #1) failed in 7 of 10**, finishing 7th–14th every time — never 4th or 5th. The dominant miss pattern was **Pattern C at 7/9 for Strategy A** (banker fail *and* pool gap): unlike 09-Sep, adding legs rescues almost nothing.
+
+The meeting's structural finding is the **MC–market split**: in the 4 races where MC #1 was also the market favourite the banker placed **3 times (75%)**; in the 6 races where MC preferred a different horse it placed **0 times (0%)**, finishing 7th, 7th, 14th, 8th, 8th, 8th. Market favourites placed **7/10** against MC #1's **3/10**. Mean banker MC Place% was **66.2%** against a **30.0%** actual — a ~36pp over-statement.
+
+Flag calibration: **`+excuses` fired on 74 of ~139 runners (53% of the card) for a 20.3% top-3 rate against a 21.6% base rate** — below random, and it inflated Adj Place% sums past 300% (R6: 324%). **`+trial` went 8/24 (33.3%)**, +11.7pp over base. Two threshold misses worth logging: R7's winner #12 ABSOLUTE AWAKENED was excluded at **MC Place% 19.7%**, 0.3pp under the 20% leg bar, on a race paying **$18,953**; R8's winner #10 ALPHA STRIKE was the **market's 2nd choice** rated MC 12th of 14. R9 was the card's only Pattern A for B-trio — all three placers in the legs, banker #8 ran 8th.
