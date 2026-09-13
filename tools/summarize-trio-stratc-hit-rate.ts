@@ -51,18 +51,30 @@ interface RaceLeg {
 }
 
 function parseRaceByRaceHits(md: string): { race: number; hit: boolean }[] {
-  const sectionIdx = md.indexOf("## Race-by-Race");
-  if (sectionIdx === -1) return [];
-  const rest = md.slice(sectionIdx);
-  const lines = rest.split("\n");
+  // The review history uses several layouts for the Strategy B race-by-race
+  // table. Headings seen: "## Race-by-Race Results" (earliest, Strategy B is
+  // simply the first such table), "## Strategy B: Race-by-Race Results", and
+  // "## Race-by-Race[ Results] — Strategy B" (21-Jun-2026 onward). Row labels
+  // are "| R1 |" in some files and "| 1 |" in others, and the Hit? cell may be
+  // "✅", "**✅**" or "**HIT ✅**". Accept all of them; a parser that silently
+  // matches none of a file's rows drops a whole meeting from the statistics.
+  const lines = md.split("\n");
+  const headingIdx = lines.findIndex(
+    (l) =>
+      /^##+\s/.test(l) && /race-by-race/i.test(l) && !/strategy\s*a/i.test(l)
+  );
+  if (headingIdx === -1) return [];
 
   let hitCol = -1;
   let headerLine = -1;
-
-  for (let i = 0; i < lines.length; i++) {
+  for (let i = headingIdx + 1; i < lines.length; i++) {
     const line = lines[i]!;
-    if (!line.includes("| Race |") || !line.includes("Hit?")) continue;
+    // Only a same-level (##) heading ends the search: some files put the table
+    // under a "### Strategy B" sub-heading inside "## Race-by-Race Results".
+    if (/^##\s/.test(line)) break;
+    if (!line.trim().startsWith("|")) continue;
     const cells = line.split("|").map((s) => s.trim());
+    if (!(cells[1] === "R" || cells[1] === "Race")) continue;
     const idx = cells.findIndex((c) => c === "Hit?" || c.startsWith("Hit?"));
     if (idx >= 0) {
       hitCol = idx;
@@ -72,17 +84,22 @@ function parseRaceByRaceHits(md: string): { race: number; hit: boolean }[] {
   }
   if (hitCol < 0) return [];
 
+  // Stop at a TOTAL row or the next heading, so the Strategy A table that
+  // follows is never absorbed. Dedupe defensively.
   const out: { race: number; hit: boolean }[] = [];
+  const seen = new Set<number>();
   for (let i = headerLine + 2; i < lines.length; i++) {
-    const line = lines[i]!;
+    const line = lines[i]!.trim(); // some files indent their tables by a space
     if (line.includes("**TOTAL**")) break;
-    const rm = line.match(/^\|\s*R(\d+)\s*\|/);
+    if (/^##+\s/.test(line)) break;
+    const rm = line.match(/^\|\s*R?(\d+)\s*\|/);
     if (!rm) continue;
     const parts = line.split("|").map((s) => s.trim());
     if (parts.length <= hitCol) continue;
-    const hitCell = parts[hitCol] ?? "";
-    const hit = hitCell.startsWith("✅");
-    out.push({ race: parseInt(rm[1]!, 10), hit });
+    const race = parseInt(rm[1]!, 10);
+    if (seen.has(race)) continue;
+    seen.add(race);
+    out.push({ race, hit: (parts[hitCol] ?? "").includes("✅") });
   }
   return out;
 }
