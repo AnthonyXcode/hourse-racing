@@ -1,5 +1,49 @@
 import { describe, expect, it } from "vitest";
-import { placedFinishers, racecardFilePattern, winningCombos } from "../differentiationBacktest.js";
+import {
+  isMarketFavourite,
+  parseDifferentiationBacktestCliArgs,
+  placedFinishers,
+  racecardFilePattern,
+  winningCombos,
+} from "../differentiationBacktest.js";
+
+describe("parseDifferentiationBacktestCliArgs model/market gates", () => {
+  it("is off by default", () => {
+    const args = parseDifferentiationBacktestCliArgs([]);
+    expect(args.favOnly).toBe(false);
+    expect(args.mcMin).toBe(0);
+  });
+
+  it("reads --fav=on and --mc-min=75", () => {
+    const args = parseDifferentiationBacktestCliArgs(["--fav=on", "--mc-min=75"]);
+    expect(args.favOnly).toBe(true);
+    expect(args.mcMin).toBe(75);
+  });
+
+  it("treats --fav=off as off", () => {
+    expect(parseDifferentiationBacktestCliArgs(["--fav=off"]).favOnly).toBe(false);
+  });
+});
+
+describe("isMarketFavourite", () => {
+  const odds = new Map([
+    [1, 2.5],
+    [2, 4.0],
+    [3, 2.5],
+    [4, 0],
+  ]);
+
+  it("is true for the shortest price, including co-favourites", () => {
+    expect(isMarketFavourite(1, odds)).toBe(true);
+    expect(isMarketFavourite(3, odds)).toBe(true);
+  });
+
+  it("is false for a longer price or unknown odds", () => {
+    expect(isMarketFavourite(2, odds)).toBe(false);
+    expect(isMarketFavourite(4, odds)).toBe(false);
+    expect(isMarketFavourite(9, odds)).toBe(false);
+  });
+});
 
 const finisher = (horseCode: string, finishPosition: number) => ({ horseCode, finishPosition });
 

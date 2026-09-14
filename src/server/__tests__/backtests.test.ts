@@ -24,6 +24,8 @@ const DEFAULTS: BacktestParams = {
   ignoreDistances: [],
   maxRating: 0,
   maxAvgDiff: 0,
+  favOnly: false,
+  mcMin: 0,
   form: "all",
   ignoreAfter: null,
 };

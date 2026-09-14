@@ -11,6 +11,7 @@ import { MonteCarloSimulator } from "../simulation/monteCarlo.js";
 import {
   applyFormSourceFilter,
   computeSkipDecision,
+  isMarketFavourite,
   isSparseFormEntry,
   loadRaceCard,
   parseRaceCardFileName,
@@ -219,6 +220,15 @@ export async function runUpcomingPlaceSuggestions(
       const simulator = new MonteCarloSimulator({ runs: 5000, performanceStdDev: hvStdDev });
       const { results: simResults } = simulator.simulateRace(race);
       const topRatedMcResult = simResults.find((s) => s.horseCode === topRatedAnalysis.horseCode);
+      // Model/market agreement gates (mirror runDifferentiationBacktest).
+      if (!skipped && opts.mcMin && (topRatedMcResult?.placeProbability ?? 0) * 100 < opts.mcMin) {
+        skipped = true;
+        skipReason = `mc<${opts.mcMin}%`;
+      }
+      if (!skipped && opts.favOnly && !isMarketFavourite(topRatedHorseNum, loaded.winOddsMap)) {
+        skipped = true;
+        skipReason = "not fav";
+      }
 
       rows.push({
         raceId: `${parsed.date}_${parsed.venue === "Happy Valley" ? "HV" : "ST"}_R${parsed.raceNumber}`,
