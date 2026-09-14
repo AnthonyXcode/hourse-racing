@@ -160,6 +160,36 @@ export async function loadPlaceOdds(
   }
 }
 
+/** Finishers placed 1st–3rd, in finish order. A dead-heat for 3rd puts four horses here. */
+export function placedFinishers<T extends { finishPosition: number }>(order: T[]): T[] {
+  return order.filter((f) => f.finishPosition >= 1 && f.finishPosition <= 3);
+}
+
+/**
+ * Winning combos of `size` horses (2 = Quinella, 3 = Trio) as horse codes. Normally one;
+ * a dead-heat on the last paying spot gives more (Trio, tie for 3rd: 1st + 2nd + either 3rd).
+ * A combo wins when no finisher outside it beat its worst member.
+ */
+export function winningCombos<T extends { finishPosition: number; horseCode: string }>(
+  order: T[],
+  size: number
+): string[][] {
+  const contenders = order.filter((f) => f.finishPosition >= 1 && f.finishPosition <= size);
+  const combos: string[][] = [];
+  const pick = (start: number, chosen: T[]): void => {
+    if (chosen.length === size) {
+      const worst = Math.max(...chosen.map((f) => f.finishPosition));
+      if (contenders.every((f) => chosen.includes(f) || f.finishPosition >= worst)) {
+        combos.push(chosen.map((f) => f.horseCode));
+      }
+      return;
+    }
+    for (let i = start; i < contenders.length; i++) pick(i + 1, [...chosen, contenders[i]!]);
+  };
+  pick(0, []);
+  return combos;
+}
+
 export interface MeetingResults {
   finishOrders: Map<number, FinishEntry[]>;
   /** raceNumber → horseNumber → place dividend as multiplier (e.g. 1.2 = $12 per $10) */
@@ -186,8 +216,10 @@ export async function loadMeetingResults(dateStr: string, venue: string): Promis
 
       if (race.placeDividends && race.placeDividends.length >= 3) {
         const horseMap = new Map<number, number>();
-        for (let i = 0; i < 3 && i < order.length; i++) {
-          horseMap.set(order[i].horseNumber, race.placeDividends[i] / 10);
+        // One dividend per placed horse, in finish order (four on a dead-heat for 3rd)
+        const placed = placedFinishers(order);
+        for (let i = 0; i < placed.length && i < race.placeDividends.length; i++) {
+          horseMap.set(placed[i]!.horseNumber, race.placeDividends[i]! / 10);
         }
         placeDividendMap.set(race.raceNumber, horseMap);
       }
@@ -252,6 +284,14 @@ export function parseRaceCardFileName(name: string): { date: string; venue: stri
     venue: match[2] === "HV" ? "Happy Valley" : "Sha Tin",
     raceNumber: parseInt(match[3], 10),
   };
+}
+
+/** Racecard filename matcher for a venue (null = both); `months` (MM) match in any year. */
+export function racecardFilePattern(months: string[], venue: "ST" | "HV" | null): RegExp {
+  const venueSegment = venue ?? "ST|HV";
+  return months.length === 0
+    ? new RegExp(`racecard_\\d{8}_(${venueSegment})_R\\d+\\.json`)
+    : new RegExp(`racecard_\\d{4}(${months.join("|")})\\d{2}_(${venueSegment})_R\\d+\\.json`);
 }
 
 /**
@@ -381,11 +421,7 @@ export async function runDifferentiationBacktest(
 
   const formAnalyzer = new FormAnalyzer();
   const files = await readdir(raceCardDir);
-  const venueSegment = venue ?? "ST|HV";
-  const monthPattern =
-    months.length === 0
-      ? new RegExp(`racecard_\\d{8}_(${venueSegment})_R\\d+\\.json`)
-      : new RegExp(`racecard_2026(${months.join("|")})\\d{2}_(${venueSegment})_R\\d+\\.json`);
+  const monthPattern = racecardFilePattern(months, venue);
   const matchedFiles = files.filter((f) => monthPattern.test(f)).sort();
 
   const resultsCache = new Map<string, MeetingResults>();
@@ -466,7 +502,7 @@ export async function runDifferentiationBacktest(
     const topRatedExpectedPosition = topRatedMcResult?.expectedPosition ?? 0;
 
     const winnerCode = finishOrder[0]?.horseCode ?? "";
-    const top3Codes = finishOrder.slice(0, 3).map((f) => f.horseCode);
+    const top3Codes = placedFinishers(finishOrder).map((f) => f.horseCode);
 
     allResults.push({
       raceId: `${parsed.date}_${parsed.venue === "Happy Valley" ? "HV" : "ST"}_R${parsed.raceNumber}`,
@@ -652,11 +688,7 @@ export async function runMcAccuracyBacktest(
 
   const formAnalyzer = new FormAnalyzer();
   const files = await readdir(raceCardDir);
-  const venueSegment = venue ?? "ST|HV";
-  const monthPattern =
-    months.length === 0
-      ? new RegExp(`racecard_\\d{8}_(${venueSegment})_R\\d+\\.json`)
-      : new RegExp(`racecard_2026(${months.join("|")})\\d{2}_(${venueSegment})_R\\d+\\.json`);
+  const monthPattern = racecardFilePattern(months, venue);
   const matchedFiles = files.filter((f) => monthPattern.test(f)).sort();
 
   const resultsCache = new Map<string, MeetingResults>();
@@ -721,7 +753,7 @@ export async function runMcAccuracyBacktest(
     simResults.forEach((s, i) => mcRankByCode.set(s.horseCode, i + 1));
     const simByCode = new Map(simResults.map((s) => [s.horseCode, s]));
 
-    const top3Codes = finishOrder.slice(0, 3).map((f) => f.horseCode);
+    const top3Codes = placedFinishers(finishOrder).map((f) => f.horseCode);
     const resultPlaceOdds = meeting.placeDividendMap.get(parsed.raceNumber);
 
     const picks: McAccuracyPick[] = analyses.map((a, i) => {

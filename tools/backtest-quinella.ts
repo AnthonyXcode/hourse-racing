@@ -12,6 +12,7 @@
  * Hit:
  *   - Banker mode: banker in actual top-2 AND one leg in the other top-2 spot
  *   - Box mode: at least two of the five picks finish in actual top-2
+ *   - Dead-heat for 2nd: either winning pair counts
  *
  * CLI mirrors backtest-differentiation.ts:
  *   --sparse, --close, --avgdiff, --gap, --odds, --months, --venue, --surface,
@@ -30,7 +31,9 @@ import {
   loadRaceCard,
   parseIgnoreAfterDate,
   parseRaceCardFileName,
+  racecardFilePattern,
   SPARSE_FORM_MIN_RECORDS,
+  winningCombos,
   type FormSource,
   type MeetingResults,
 } from "../src/backtest/differentiationBacktest.js";
@@ -229,19 +232,21 @@ function mcPlacePctForCode(
 function evaluateQuinellaHit(
   mode: "banker" | "box",
   picks: QnlPick[],
-  top2Codes: string[]
+  winningPairs: string[][]
 ): { hit: boolean; bankerInTop2: boolean } {
   const pickCodes = picks.map((p) => p.code);
-  const inTop2 = pickCodes.filter((c) => top2Codes.includes(c));
 
   if (mode === "banker") {
     const bankerCode = picks[0]?.code ?? "";
-    const bankerInTop2 = top2Codes.includes(bankerCode);
-    const legHit = picks.slice(1).some((p) => top2Codes.includes(p.code));
-    return { hit: bankerInTop2 && legHit, bankerInTop2 };
+    const legCodes = pickCodes.slice(1);
+    const bankerInTop2 = winningPairs.some((pair) => pair.includes(bankerCode));
+    const hit = winningPairs.some(
+      (pair) => pair.includes(bankerCode) && pair.some((c) => c !== bankerCode && legCodes.includes(c))
+    );
+    return { hit, bankerInTop2 };
   }
 
-  return { hit: inTop2.length >= 2, bankerInTop2: false };
+  return { hit: winningPairs.some((pair) => pair.every((c) => pickCodes.includes(c))), bankerInTop2: false };
 }
 
 async function main() {
@@ -284,11 +289,7 @@ async function main() {
   const formAnalyzer = new FormAnalyzer();
   const raceCardDir = path.join(process.cwd(), "data", "racecards");
   const files = await readdir(raceCardDir);
-  const venueSegment = venue ?? "ST|HV";
-  const monthPattern =
-    months.length === 0
-      ? new RegExp(`racecard_\\d{8}_(${venueSegment})_R\\d+\\.json`)
-      : new RegExp(`racecard_2026(${months.join("|")})\\d{2}_(${venueSegment})_R\\d+\\.json`);
+  const monthPattern = racecardFilePattern(months, venue);
   const matchedFiles = files.filter((f) => monthPattern.test(f)).sort();
   const ignoreAfterYmd = parseIgnoreAfterDate(ignoreAfter ?? null);
 
@@ -382,9 +383,11 @@ async function main() {
         ? Math.max(0, picks.length - 1)
         : comb(picks.length, 2);
 
-    const top2Codes = finishOrder.slice(0, 2).map((f) => f.horseCode);
-    const top2Names = finishOrder.slice(0, 2).map((f) => f.horseName);
-    const { hit, bankerInTop2 } = evaluateQuinellaHit(mode, picks, top2Codes);
+    // Horses finishing 1st–2nd (three on a dead-heat for 2nd) and every winning pair
+    const top2 = finishOrder.filter((f) => f.finishPosition >= 1 && f.finishPosition <= 2);
+    const top2Codes = top2.map((f) => f.horseCode);
+    const top2Names = top2.map((f) => f.horseName);
+    const { hit, bankerInTop2 } = evaluateQuinellaHit(mode, picks, winningCombos(finishOrder, 2));
     const staked = combinations * BET_UNIT;
     const payout = hit && quinellaDividend > 0 ? quinellaDividend : 0;
 

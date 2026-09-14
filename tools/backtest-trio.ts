@@ -23,6 +23,9 @@ import {
   applyFormSourceFilter,
   parseRaceCardFileName,
   loadMeetingResults,
+  placedFinishers,
+  racecardFilePattern,
+  winningCombos,
   type MeetingResults,
   type FormSource,
 } from "../src/backtest/differentiationBacktest.js";
@@ -253,11 +256,7 @@ async function main() {
   const formAnalyzer = new FormAnalyzer();
   const raceCardDir = path.join(process.cwd(), "data", "racecards");
   const files = await readdir(raceCardDir);
-  const venueSegment = venue ?? "ST|HV";
-  const monthPattern =
-    months.length === 0
-      ? new RegExp(`racecard_\\d{8}_(${venueSegment})_R\\d+\\.json`)
-      : new RegExp(`racecard_2026(${months.join("|")})\\d{2}_(${venueSegment})_R\\d+\\.json`);
+  const monthPattern = racecardFilePattern(months, venue);
   const matchedFiles = files.filter((f) => monthPattern.test(f)).sort();
 
   const ignoreAfterYmd = ignoreAfter?.replace(/-/g, "") ?? null;
@@ -376,22 +375,23 @@ async function main() {
 
     const staked = combinations * 10;
 
-    // Actual results
-    const actualTop3 = finishOrder.slice(0, 3);
+    // Actual results — placed horses (four on a dead-heat for 3rd) and every winning combo
+    const actualTop3 = placedFinishers(finishOrder);
     const actualTop3Codes = actualTop3.map((f) => f.horseCode);
     const actualTop3Numbers = actualTop3.map((f) => f.horseNumber);
+    const winningSets = winningCombos(finishOrder, 3);
 
     // Hit conditions
     let trioHit: boolean;
     let bankerHit: boolean;
     if (hasBanker) {
       bankerHit = actualTop3Codes.includes(bankerCode);
-      const nonBankerActual = bankerHit ? actualTop3Codes.filter((c) => c !== bankerCode) : [];
-      const legsCoverage = nonBankerActual.filter((c) => legCodes.includes(c)).length;
-      trioHit = bankerHit && legsCoverage === 2;
+      trioHit = winningSets.some(
+        (set) => set.includes(bankerCode) && set.every((c) => c === bankerCode || legCodes.includes(c))
+      );
     } else {
       bankerHit = actualTop3Codes.includes(bankerCode);
-      trioHit = actualTop3Codes.every((c) => pickedHorseCodes.includes(c));
+      trioHit = winningSets.some((set) => set.every((c) => pickedHorseCodes.includes(c)));
     }
 
     const payout = trioHit && trioDividend > 0 ? trioDividend : 0;

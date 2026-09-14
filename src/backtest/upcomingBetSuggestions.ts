@@ -14,6 +14,7 @@ import {
   isSparseFormEntry,
   loadRaceCard,
   parseRaceCardFileName,
+  racecardFilePattern,
   type DifferentiationBacktestOptions,
 } from "./differentiationBacktest.js";
 
@@ -52,10 +53,7 @@ function formatDateYmd(ymd: string): string {
 }
 
 function raceCardFilterPattern(opts: DifferentiationBacktestOptions): RegExp {
-  const venueSegment = opts.venue ?? "ST|HV";
-  return opts.months.length === 0
-    ? new RegExp(`racecard_\\d{8}_(${venueSegment})_R\\d+\\.json`)
-    : new RegExp(`racecard_2026(${opts.months.join("|")})\\d{2}_(${venueSegment})_R\\d+\\.json`);
+  return racecardFilePattern(opts.months, opts.venue);
 }
 
 async function listUpcomingMeetings(opts: DifferentiationBacktestOptions): Promise<string[]> {

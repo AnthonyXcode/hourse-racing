@@ -21,6 +21,7 @@ import {
   applyFormSourceFilter,
   loadMeetingResults,
   parseRaceCardFileName,
+  racecardFilePattern,
   type MeetingResults,
   type DifferentiationBacktestRow,
 } from "../src/backtest/differentiationBacktest.js";
@@ -99,11 +100,7 @@ async function main() {
 
   const raceCardDir = path.join(process.cwd(), "data", "racecards");
   const files = await readdir(raceCardDir);
-  const venueSegment = opts.venue ?? "ST|HV";
-  const monthPattern =
-    opts.months.length === 0
-      ? new RegExp(`racecard_\\d{8}_(${venueSegment})_R\\d+\\.json`)
-      : new RegExp(`racecard_2026(${opts.months.join("|")})\\d{2}_(${venueSegment})_R\\d+\\.json`);
+  const monthPattern = racecardFilePattern(opts.months, opts.venue);
   const matched = files.filter((f) => monthPattern.test(f)).sort();
   const ignoreAfterYmd = opts.ignoreAfter ? opts.ignoreAfter.replace(/-/g, "") : null;
 
