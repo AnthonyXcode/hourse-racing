@@ -1,5 +1,5 @@
 ---
-title: HV Turf place bet — May/Jun/Sep losses are model/market disagreement; gate on favourite + MC place%
+title: HV Turf place bet — May/Jun/Sep losses are model/market disagreement; MC place% gate helps HV Turf only
 date: 2026-09-14
 tags: [backtest, place-bet, differentiation, market-odds, mc-ranking, seasonality]
 status: confirmed-directional
@@ -50,51 +50,57 @@ Skip-rule comparison (HV Turf; `tools/backtest-differentiation.ts`):
 | Extra flags | Bets | Placed | Hit | ROI (place) | May | Jun | Sep26 |
 |---|---|---|---|---|---|---|---|
 | — (baseline) | 62 | 42 | 67.7% | −2.8% | 3/6 | 3/8 | 1/5 |
-| `--fav=on` | 44 | 34 | 77.3% | +6.0% | 3/3 | 2/6 | 0/1 |
-| `--mc-min=75` | 31 | 26 | 83.9% | +14.5% | 3/5 | 3/3 | 1/1 |
+| **`--mc-min=75`** | **31** | **26** | **83.9%** | **+14.5%** | 3/5 | 3/3 | 1/1 |
+| `--mc-min=75` (re-run, MC unseeded) | 33 | 28 | 84.8% | +15.9% | 3/5 | 3/3 | 1/1 |
+| `--mc-min=75 --gap=4` | 31 | 26 | 83.9% | +14.5% | 3/5 | 3/3 | 1/1 |
 | `--gap=4 --odds=4` | 44 | 36 | 81.8% | +10.9% | 3/4 | 2/5 | – |
-| **`--fav=on --mc-min=75`** | **24** | **22** | **91.7%** | **+22.5%** | 3/3 | 2/2 | – |
 
 All venues and surfaces, same base flags:
 
 | Extra flags | Bets | Placed | Hit | ROI (place) |
 |---|---|---|---|---|
 | — (baseline) | 134 | 85 | 63.4% | −6.2% |
+| `--mc-min=75` | 101 | 67 | 66.3% | −3.4% |
 | `--gap=4 --odds=4` | 87 | 66 | 75.9% | +2.0% |
-| `--fav=on --mc-min=75` | 62 | 49 | 79.0% | +8.2% |
+
+Rejected: a market-favourite gate (bet only when the form #1 has the shortest win odds) scored
+22/24 (+22.5%) on HV Turf with `--mc-min=75`, and 49/62 (+8.2%) on all venues. It was added as
+`--fav=on` and then removed: odds keep moving until the off, so the favourite is not known when the
+bet is placed, and the backtest used final odds.
 
 ## Interpretation
 - The bad months are **model failure, not random racing**: the market favourite placed at a normal
   rate (78% in May 2026) while the form #1 disagreed with the market and lost.
 - Season start (Sep): form lines are 2+ months stale; the market prices barrier trials and
   trackwork the model cannot see.
-- Actionable subset: bet the form #1 only when the **market agrees** (favourite, or win odds ≤ 4)
-  **and MC agrees** (Place% ≥ 75). The gate helps every month, not just the bad ones, so it is not
-  a month filter in disguise.
-- A days-since-last-run guard (≤ 35) adds nothing once the market gate is on: the market already
-  prices the stale September horses long.
+- On HV Turf, requiring **MC agreement** (Place% ≥ 75) lifts ROI from −2.8% to about +15% using
+  only information known before the race. It helps May and June, not just the average.
+- The MC gate does **not** carry over to all venues (−6.2% → −3.4%). There, market agreement was
+  what worked, and that needs live odds.
+- A days-since-last-run guard (≤ 35) was tested and added nothing on top of the market gates.
 
 ## Caveats
 - **One season of racecards** (Sep 2025 – Sep 2026); earlier seasons have results but no racecards,
   so the model cannot be replayed on past May/Junes.
-- Thresholds (fav, 75%, odds 4, gap 4) were picked after seeing this data. `--fav=on --mc-min=75`
-  keeps only 24 HV Turf bets — expect shrinkage.
-- MC is unseeded (5,000 runs): picks near 75% Place% flip between runs (26/31 vs an earlier 24/30).
-- `--fav` uses final win odds from the results file, which are not known when the bet is placed.
-  Live use needs the odds a few minutes before the off.
+- Thresholds (75%, odds 4, gap 4) were picked after seeing this data. Expect shrinkage.
+- MC is unseeded (5,000 runs): picks near 75% Place% flip between runs (26/31 vs 28/33).
+- `--odds` has the same live-odds problem as the removed favourite gate: the backtest uses final
+  win odds, which are not known when the bet is placed.
 - Place ROI uses the result place dividend; a placed horse with no dividend returns the stake.
 
 ## Action taken
-- Added `--fav=on` and `--mc-min=N` skip gates: `src/backtest/differentiationBacktest.ts`
-  (`isMarketFavourite`, applied after the MC run in `runDifferentiationBacktest`), mirrored in
-  `src/backtest/upcomingBetSuggestions.ts` and the API (`favOnly`, `mcMin` in
-  `src/server/routes/backtests.ts`). Off by default — no change to existing results.
+- Added `--mc-min=N` (skip unless the pick's MC Place% ≥ N): `src/backtest/differentiationBacktest.ts`
+  (applied after the MC run in `runDifferentiationBacktest`), mirrored in
+  `src/backtest/upcomingBetSuggestions.ts` and the API (`mcMin` in `src/server/routes/backtests.ts`).
+  Off by default — no change to existing results.
+- `--fav=on` added then removed (odds move until the off; see Result).
 - Fixed dead-heats settled as misses and `--months` ignoring 2025 (commit c0b4e11).
   Impact on the baseline above: 41/62 → 42/62, ROI −5.1% → −2.8%.
 
 ## Recommendation (open)
-- Paper-trade `--fav=on --mc-min=75` and `--gap=4 --odds=4` through the 2026/27 season before staking.
-- Re-test with pre-race odds (not final) once odds snapshots are stored per race.
+- Paper-trade HV Turf with `--mc-min=75` through the 2026/27 season before staking.
+- Store pre-race odds snapshots per race, then re-test market gates (`--odds`, favourite) with the
+  odds known at bet time instead of final odds.
 - Seed the MC simulator in backtests so MC-threshold results are reproducible.
 - Re-run on HV Turf May/June 2027 to confirm the late-season pattern holds in a second season.
 
@@ -102,7 +108,7 @@ All venues and surfaces, same base flags:
 ```bash
 B="--sparse=3 --close=3 --avgdiff=15 --gap=1 --venue=HV --surface=Turf --form=all"
 npx tsx tools/backtest-differentiation.ts $B
-npx tsx tools/backtest-differentiation.ts $B --fav=on --mc-min=75
-npx tsx tools/backtest-differentiation.ts --sparse=3 --close=3 --avgdiff=15 --gap=4 --odds=4 --venue=HV --surface=Turf --form=all
+npx tsx tools/backtest-differentiation.ts $B --mc-min=75
+npx tsx tools/backtest-differentiation.ts --sparse=3 --close=3 --avgdiff=15 --gap=1 --form=all --mc-min=75
 ```
 (zsh: use `${=B}` so the flags split.)

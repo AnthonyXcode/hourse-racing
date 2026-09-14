@@ -12,9 +12,11 @@
  *   --form=HV       only Happy Valley lines
  *   (--form-data=… is accepted as an alias for --form)
  *
- * Model/market agreement gates (applied after the MC run):
+ * MC agreement gate (applied after the MC run):
  *   --mc-min=75     skip unless the pick's MC Place% >= 75
- *   --fav=on        skip unless the pick has the shortest win odds (co-favourites count)
+ *
+ * Trip experience (past runs in the chosen --form source):
+ *   --min-trip-runs=3   skip unless the pick has run the exact race distance >= 3 times
  *
  * Leak-free pool: `--ignore-after=YYYY-MM-DD` drops saved races on or after that day
  * (same calendar as racecard filenames). batch-analyze passes the meeting date.
@@ -35,7 +37,7 @@ import { printUpcomingPlaceSuggestions } from "../src/backtest/upcomingBetSugges
 const fixed1 = (value: number | null, fallback: string): string => (value === null ? fallback : value.toFixed(1));
 
 async function main() {
-  const { sparseMax, closeMax, avgDiffMin, gapMin, oddsMax, ratingChangeMin, months, venue, surface, ignoreClasses, ignoreDistances, maxRating, maxAvgDiff, favOnly, mcMin, form, ignoreAfter } =
+  const { sparseMax, closeMax, avgDiffMin, gapMin, oddsMax, ratingChangeMin, months, venue, surface, ignoreClasses, ignoreDistances, maxRating, maxAvgDiff, mcMin, minTripRuns, form, ignoreAfter } =
     parseDifferentiationBacktestCliArgs(process.argv.slice(2));
   const monthLabel = months.length === 0 ? "all" : months.join(",");
   const venueLabel = venue ?? "all";
@@ -49,10 +51,10 @@ async function main() {
     ratingChangeMin !== null && ratingChangeMin !== undefined ? `Rtg+/>${ratingChangeMin}` : "off";
   const maxRatingLabel = maxRating && maxRating > 0 ? `>${maxRating}` : "off";
   const maxAvgDiffLabel = maxAvgDiff && maxAvgDiff > 0 ? `>${maxAvgDiff}` : "off";
-  const favLabel = favOnly ? "on" : "off";
   const mcMinLabel = mcMin && mcMin > 0 ? `<${mcMin}%` : "off";
+  const tripLabel = minTripRuns && minTripRuns > 0 ? `<${minTripRuns}` : "off";
   console.log(
-    `Skip rules: sparse>${sparseMax}, close<8>${closeMax}, avgDiff<${avgDiffMin}, 1st-2nd gap<${gapMin}, odds ${oddsLabel}, ${rtgChangeLabel}, max-rating ${maxRatingLabel}, max-avgdiff ${maxAvgDiffLabel}, fav-only ${favLabel}, mc-min ${mcMinLabel} | months=${monthLabel} | venue=${venueLabel} | surface=${surfaceLabel} | form=${formLabel} | ignore-class=${ignoreClassLabel} | ignore-distance=${ignoreDistLabel} | ignore-after=${ignoreAfterLabel}\n`
+    `Skip rules: sparse>${sparseMax}, close<8>${closeMax}, avgDiff<${avgDiffMin}, 1st-2nd gap<${gapMin}, odds ${oddsLabel}, ${rtgChangeLabel}, max-rating ${maxRatingLabel}, max-avgdiff ${maxAvgDiffLabel}, mc-min ${mcMinLabel}, min-trip-runs ${tripLabel} | months=${monthLabel} | venue=${venueLabel} | surface=${surfaceLabel} | form=${formLabel} | ignore-class=${ignoreClassLabel} | ignore-distance=${ignoreDistLabel} | ignore-after=${ignoreAfterLabel}\n`
   );
 
   const opts: DifferentiationBacktestOptions = {
@@ -69,8 +71,8 @@ async function main() {
     ignoreDistances,
     maxRating: maxRating ?? 0,
     maxAvgDiff: maxAvgDiff ?? 0,
-    favOnly: favOnly ?? false,
     mcMin: mcMin ?? 0,
+    minTripRuns: minTripRuns ?? 0,
     form,
     ...(ignoreAfter ? { ignoreAfter } : {}),
   };
@@ -188,8 +190,9 @@ async function main() {
     `  6. Rating change: top-rated Rtg+/- <= ${ratingChangeMin !== null && ratingChangeMin !== undefined ? ratingChangeMin : "disabled"} (--ratingchange, bet when > threshold) → skip`
   );
   console.log(`  7. MC place%: top-rated MC Place% < ${mcMin && mcMin > 0 ? `${mcMin}%` : "disabled"} (--mc-min) → skip`);
-  console.log(`  8. Market favourite: top-rated not shortest win odds — ${favOnly ? "on" : "disabled"} (--fav=on) → skip`);
-  console.log("\nSkipped races this run (by reason):");
+  console.log(
+    `  8. Trip experience: top-rated past runs at race distance < ${minTripRuns && minTripRuns > 0 ? minTripRuns : "disabled"} (--min-trip-runs) → skip`
+  );  console.log("\nSkipped races this run (by reason):");
   if (report.skipReasons.length === 0) {
     console.log("  (none)");
   } else {

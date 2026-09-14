@@ -65,6 +65,7 @@ export function toRaceAnalysisJson(result: RaceAnalysisResult) {
       runs: result.simulationRuns,
       avgDifferentiation: result.avgDifferentiation,
       closeDiffCount: result.closeDiffCount,
+      sparseFormCount: result.sparseFormCount,
       horses: result.rankings.map(({ simulation: s, analysis, ratingDiff }) => ({
         horseNumber: s.horseNumber,
         horseCode: s.horseCode,

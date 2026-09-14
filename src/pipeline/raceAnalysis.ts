@@ -26,6 +26,7 @@ import { ValueCalculator, type MarketOdds } from "../betting/valueCalculator.js"
 import { HorseDataEnricher } from "../data/horseEnricher.js";
 import { JockeyEnricher } from "../data/jockeyEnricher.js";
 import { TrainerEnricher } from "../data/trainerEnricher.js";
+import { isSparseFormEntry } from "../backtest/differentiationBacktest.js";
 
 // ============================================================================
 // TYPES
@@ -135,6 +136,8 @@ export interface RaceAnalysisResult {
   readonly avgDifferentiation: number;
   /** Horses with ratingDiff < 8 */
   readonly closeDiffCount: number;
+  /** Runners with fewer than 3 past performances (the backtest's --sparse count) */
+  readonly sparseFormCount: number;
   readonly finishTimes: FinishTimeProjection;
   readonly topExotics: TopExotics;
   readonly marketEfficiency: MarketEfficiency;
@@ -442,6 +445,7 @@ export async function runRaceAnalysis(
     rankings,
     avgDifferentiation: diffs.length > 0 ? diffs.reduce((s, d) => s + d, 0) / diffs.length : 0,
     closeDiffCount: diffs.filter((d) => d < 8).length,
+    sparseFormCount: race.entries.filter(isSparseFormEntry).length,
     finishTimes: projectFinishTimes(race, analysisMap, opts.venue),
     topExotics: {
       quinella: topOutcomes(exoticProbabilities.quinella),

@@ -35,10 +35,10 @@ export interface BacktestParams {
   maxRating: number;
   /** 0 = off [--max-avgdiff] */
   maxAvgDiff: number;
-  /** Skip unless the top pick is the market favourite [--fav=on] */
-  favOnly: boolean;
   /** Skip if the top pick's MC Place% (0–100) is below this; 0 = off [--mc-min] */
   mcMin: number;
+  /** Skip unless the top pick has this many past runs at the race distance; 0 = off [--min-trip-runs] */
+  minTripRuns: number;
   form: "all" | "ST" | "HV";
   /** YYYY-MM-DD; drop races on or after this day [--ignore-after] */
   ignoreAfter: string | null;
@@ -75,8 +75,8 @@ const BacktestRequestSchema = z
       .transform((distances) => sortedUnique(distances)),
     maxRating: count(999).default(0),
     maxAvgDiff: count(999).default(0),
-    favOnly: z.boolean().default(false),
     mcMin: z.number().min(0).max(100).default(0),
+    minTripRuns: count(99).default(0),
     form: z.enum(["all", "ST", "HV"]).default("all"),
     ignoreAfter: isoDateField.nullable().default(null),
   })

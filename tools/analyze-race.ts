@@ -20,6 +20,7 @@ import {
   type RaceAnalysisOptions,
   type RaceAnalysisResult,
 } from "../src/pipeline/raceAnalysis.js";
+import { tripRunCount } from "../src/backtest/differentiationBacktest.js";
 
 // ============================================================================
 // CLI ARGUMENT PARSING
@@ -235,9 +236,13 @@ function printAnalysis(result: RaceAnalysisResult): void {
   console.log("SIMULATION SUMMARY");
   console.log("─".repeat(60));
 
-  console.log(`\nWin Probability Rankings (all ${result.rankings.length} horses, ${result.simulationRuns.toLocaleString()} iterations):`);
+  console.log(
+    `\nWin Probability Rankings (all ${result.rankings.length} horses, ${result.simulationRuns.toLocaleString()} iterations; trip = past runs at ${result.race.distance}m):`
+  );
   for (const { simulation: s, analysis, ratingDiff } of result.rankings) {
-    const recStr = s.formRecordCount !== undefined ? ` [${s.formRecordCount} form]` : "";
+    const entry = result.race.entries.find((e) => e.horseNumber === s.horseNumber);
+    const tripStr = `${tripRunCount(entry, result.race.distance)} trip`;
+    const recStr = s.formRecordCount !== undefined ? ` [${s.formRecordCount} form, ${tripStr}]` : ` [${tripStr}]`;
     const ratingStr = analysis ? ` rating: ${analysis.overallRating.toFixed(0)}` : "";
     const diffStr = analysis ? ` diff: ${ratingDiff.toFixed(0)}` : "";
     const ePosStr = ` ePos: ${s.expectedPosition.toFixed(1)}`;
@@ -249,7 +254,9 @@ function printAnalysis(result: RaceAnalysisResult): void {
     );
   }
 
-  console.log(`\n  Avg differentiation: ${result.avgDifferentiation.toFixed(0)} | Horses with diff < 8: ${result.closeDiffCount}`);
+  console.log(
+    `\n  Avg differentiation: ${result.avgDifferentiation.toFixed(0)} | Horses with diff < 8: ${result.closeDiffCount} | Sparse (<3 form): ${result.sparseFormCount}`
+  );
 
   // --- Finish-time projection (independent pass) ---
   printFinishTimeProjection(result.finishTimes);

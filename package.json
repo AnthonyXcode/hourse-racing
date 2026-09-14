@@ -16,8 +16,8 @@
     "odds": "tsx tools/fetch-odds.ts",
     "lint": "eslint src/**/*.ts",
     "test": "vitest",
-    "optimize:HV": "npx tsx tools/backtest-differentiation.ts --sparse=3 --close=2 --avgdiff=15 --gap=1 --venue=HV --surface=Turf --form=all",
-    "optimize:ST": "npx tsx tools/backtest-differentiation.ts --sparse=4 --close=4 --avgdiff=11 --gap=1 --venue=ST --surface=Turf --form=all --ignore-class=\"Griffin, 4 Year Olds\""
+    "backtest:optimize:HV": "npx tsx tools/backtest-differentiation.ts --sparse=3 --close=3 --avgdiff=15 --gap=3 --venue=HV --surface=Turf --form=all --mc-min=75",
+    "backtest:optimize:ST": "npx tsx tools/backtest-differentiation.ts --sparse=3 --close=4 --avgdiff=12 --gap=4 --venue=ST --surface=Turf --form=all --min-trip-runs=3"
   },
   "keywords": [
     "horse-racing",

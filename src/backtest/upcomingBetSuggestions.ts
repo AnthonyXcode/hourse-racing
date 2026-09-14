@@ -11,11 +11,11 @@ import { MonteCarloSimulator } from "../simulation/monteCarlo.js";
 import {
   applyFormSourceFilter,
   computeSkipDecision,
-  isMarketFavourite,
   isSparseFormEntry,
   loadRaceCard,
   parseRaceCardFileName,
   racecardFilePattern,
+  tripRunCount,
   type DifferentiationBacktestOptions,
 } from "./differentiationBacktest.js";
 
@@ -215,19 +215,19 @@ export async function runUpcomingPlaceSuggestions(
         skipped = true;
         skipReason = `avgDiff>${opts.maxAvgDiff}`;
       }
+      if (!skipped && opts.minTripRuns && tripRunCount(topRatedEntry, race.distance) < opts.minTripRuns) {
+        skipped = true;
+        skipReason = `trip runs<${opts.minTripRuns}`;
+      }
 
       const hvStdDev = parsed.venue === "Happy Valley" ? 11 : 8;
       const simulator = new MonteCarloSimulator({ runs: 5000, performanceStdDev: hvStdDev });
       const { results: simResults } = simulator.simulateRace(race);
       const topRatedMcResult = simResults.find((s) => s.horseCode === topRatedAnalysis.horseCode);
-      // Model/market agreement gates (mirror runDifferentiationBacktest).
+      // MC agreement gate (mirror runDifferentiationBacktest).
       if (!skipped && opts.mcMin && (topRatedMcResult?.placeProbability ?? 0) * 100 < opts.mcMin) {
         skipped = true;
         skipReason = `mc<${opts.mcMin}%`;
-      }
-      if (!skipped && opts.favOnly && !isMarketFavourite(topRatedHorseNum, loaded.winOddsMap)) {
-        skipped = true;
-        skipReason = "not fav";
       }
 
       rows.push({

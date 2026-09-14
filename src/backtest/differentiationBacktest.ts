@@ -17,6 +17,11 @@ export function isSparseFormEntry(entry: Pick<RaceEntry, "isScratched" | "horse"
   return (entry.horse.pastPerformances?.length ?? 0) < SPARSE_FORM_MIN_RECORDS;
 }
 
+/** Past performances at exactly `distance` metres (the --min-trip-runs count). */
+export function tripRunCount(entry: Pick<RaceEntry, "horse"> | undefined, distance: number): number {
+  return (entry?.horse.pastPerformances ?? []).filter((p) => p.distance === distance).length;
+}
+
 export interface DifferentiationBacktestRow {
   raceId: string;
   date: string;
@@ -102,10 +107,10 @@ export interface DifferentiationBacktestOptions {
   maxRating?: number;
   /** Skip if the race avgDiff (field spread) > this (0 = disabled). Cuts illusory big-gap races. */
   maxAvgDiff?: number;
-  /** Skip unless the bet pick has the shortest win odds in the field (co-favourites count). */
-  favOnly?: boolean;
   /** Skip if the bet pick's MC Place% (0–100) < this (0 = disabled). */
   mcMin?: number;
+  /** Skip if the bet pick has fewer than this many past runs at the race distance (0 = disabled). */
+  minTripRuns?: number;
   form: FormSource;
   /**
    * If set (`YYYY-MM-DD` or `YYYYMMDD`), drop races on or after that calendar day
@@ -341,17 +346,6 @@ export function computeSkipDecision(
   return { skipped: false, skipReason: "" };
 }
 
-/**
- * True when `horseNumber` has the shortest win odds in the field (co-favourites count).
- * `winOdds`: horseNumber → win odds; 0 or missing = unknown (never the favourite).
- */
-export function isMarketFavourite(horseNumber: number, winOdds: Map<number, number>): boolean {
-  const own = winOdds.get(horseNumber) ?? 0;
-  if (own <= 0) return false;
-  for (const odds of winOdds.values()) if (odds > 0 && odds < own) return false;
-  return true;
-}
-
 export function summarizeHitRate(
   rows: DifferentiationBacktestRow[],
   filter: (r: DifferentiationBacktestRow) => boolean
@@ -506,6 +500,10 @@ export async function runDifferentiationBacktest(
       skipped = true;
       skipReason = `avgDiff>${opts.maxAvgDiff}`;
     }
+    if (!skipped && opts.minTripRuns && tripRunCount(topRatedEntry, race.distance) < opts.minTripRuns) {
+      skipped = true;
+      skipReason = `trip runs<${opts.minTripRuns}`;
+    }
 
     const hvStdDev = parsed.venue === "Happy Valley" ? 11 : 8;
     const simulator = new MonteCarloSimulator({ runs: 5000, performanceStdDev: hvStdDev });
@@ -516,18 +514,10 @@ export async function runDifferentiationBacktest(
     const topRatedMcPlacePct = topRatedMcResult?.placeProbability ?? 0;
     const topRatedExpectedPosition = topRatedMcResult?.expectedPosition ?? 0;
 
-    // Opt-in model/market agreement gates (MC place% needs the simulation, so they run last).
+    // Opt-in MC agreement gate (needs the simulation, so it runs last).
     if (!skipped && opts.mcMin && topRatedMcPlacePct * 100 < opts.mcMin) {
       skipped = true;
       skipReason = `mc<${opts.mcMin}%`;
-    }
-    if (!skipped && opts.favOnly) {
-      const fieldWinOdds = new Map(winOddsMap);
-      for (const f of finishOrder) if (f.winOdds) fieldWinOdds.set(f.horseNumber, f.winOdds);
-      if (!isMarketFavourite(topRatedHorseNum, fieldWinOdds)) {
-        skipped = true;
-        skipReason = "not fav";
-      }
     }
 
     const winnerCode = finishOrder[0]?.horseCode ?? "";
@@ -595,10 +585,10 @@ export interface DifferentiationBacktestCliArgs {
   maxRating?: number;
   /** Skip if the race avgDiff (field spread) > this (0 = disabled). Cuts illusory big-gap races. */
   maxAvgDiff?: number;
-  /** Skip unless the bet pick has the shortest win odds in the field (co-favourites count). */
-  favOnly?: boolean;
   /** Skip if the bet pick's MC Place% (0–100) < this (0 = disabled). */
   mcMin?: number;
+  /** Skip if the bet pick has fewer than this many past runs at the race distance (0 = disabled). */
+  minTripRuns?: number;
   form: FormSource;
   ignoreAfter?: string;
 }
@@ -617,8 +607,8 @@ export function parseDifferentiationBacktestCliArgs(argv: string[]): Differentia
   let ignoreDistances: number[] = [];
   let maxRating = 0;
   let maxAvgDiff = 0;
-  let favOnly = false;
   let mcMin = 0;
+  let minTripRuns = 0;
   let form: FormSource = "all";
   let ignoreAfter: string | undefined;
 
@@ -642,8 +632,8 @@ export function parseDifferentiationBacktestCliArgs(argv: string[]): Differentia
     else if (key === "ignore-distance") ignoreDistances = val.split(",").map((s) => parseInt(s.trim(), 10));
     else if (key === "max-rating") maxRating = parseInt(val, 10);
     else if (key === "max-avgdiff") maxAvgDiff = parseInt(val, 10);
-    else if (key === "fav") favOnly = ["on", "1", "true", "yes"].includes(val.trim().toLowerCase());
     else if (key === "mc-min") mcMin = parseFloat(val);
+    else if (key === "min-trip-runs") minTripRuns = parseInt(val, 10);
     else if (key === "ignore-after") ignoreAfter = val.trim();
     else if (key === "form" || key === "form-data") {
       const u = val.trim().toUpperCase();
@@ -667,8 +657,8 @@ export function parseDifferentiationBacktestCliArgs(argv: string[]): Differentia
     ignoreDistances,
     maxRating,
     maxAvgDiff,
-    favOnly,
     mcMin,
+    minTripRuns,
     form,
     ignoreAfter,
   };

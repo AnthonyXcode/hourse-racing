@@ -1,47 +1,45 @@
 import { describe, expect, it } from "vitest";
 import {
-  isMarketFavourite,
   parseDifferentiationBacktestCliArgs,
   placedFinishers,
   racecardFilePattern,
+  tripRunCount,
   winningCombos,
 } from "../differentiationBacktest.js";
 
-describe("parseDifferentiationBacktestCliArgs model/market gates", () => {
+describe("parseDifferentiationBacktestCliArgs --mc-min", () => {
   it("is off by default", () => {
-    const args = parseDifferentiationBacktestCliArgs([]);
-    expect(args.favOnly).toBe(false);
-    expect(args.mcMin).toBe(0);
+    expect(parseDifferentiationBacktestCliArgs([]).mcMin).toBe(0);
   });
 
-  it("reads --fav=on and --mc-min=75", () => {
-    const args = parseDifferentiationBacktestCliArgs(["--fav=on", "--mc-min=75"]);
-    expect(args.favOnly).toBe(true);
-    expect(args.mcMin).toBe(75);
-  });
-
-  it("treats --fav=off as off", () => {
-    expect(parseDifferentiationBacktestCliArgs(["--fav=off"]).favOnly).toBe(false);
+  it("reads --mc-min=75", () => {
+    expect(parseDifferentiationBacktestCliArgs(["--mc-min=75"]).mcMin).toBe(75);
   });
 });
 
-describe("isMarketFavourite", () => {
-  const odds = new Map([
-    [1, 2.5],
-    [2, 4.0],
-    [3, 2.5],
-    [4, 0],
-  ]);
-
-  it("is true for the shortest price, including co-favourites", () => {
-    expect(isMarketFavourite(1, odds)).toBe(true);
-    expect(isMarketFavourite(3, odds)).toBe(true);
+describe("parseDifferentiationBacktestCliArgs --min-trip-runs", () => {
+  it("is off by default", () => {
+    expect(parseDifferentiationBacktestCliArgs([]).minTripRuns).toBe(0);
   });
 
-  it("is false for a longer price or unknown odds", () => {
-    expect(isMarketFavourite(2, odds)).toBe(false);
-    expect(isMarketFavourite(4, odds)).toBe(false);
-    expect(isMarketFavourite(9, odds)).toBe(false);
+  it("reads --min-trip-runs=3", () => {
+    expect(parseDifferentiationBacktestCliArgs(["--min-trip-runs=3"]).minTripRuns).toBe(3);
+  });
+});
+
+describe("tripRunCount", () => {
+  const entry = (distances: number[]) =>
+    ({ horse: { pastPerformances: distances.map((distance) => ({ distance })) } }) as unknown as Parameters<
+      typeof tripRunCount
+    >[0];
+
+  it("counts past runs at exactly the race distance", () => {
+    expect(tripRunCount(entry([1200, 1400, 1200, 1650, 1200]), 1200)).toBe(3);
+    expect(tripRunCount(entry([1200, 1400]), 1600)).toBe(0);
+  });
+
+  it("is 0 for a missing entry", () => {
+    expect(tripRunCount(undefined, 1200)).toBe(0);
   });
 });
 
