@@ -9,6 +9,7 @@ Filename: `YYYY-MM-DD-slug.md`
 ## Index
 | Date | Note | Status |
 |------|------|--------|
+| 2026-09-14 | [HV Turf place — market/MC agreement gate (May/Jun/Sep losses)](2026-09-14-hv-turf-market-agreement-gate.md) | confirmed-directional |
 | 2026-06-21 | [MC#1 place — distance debutants up vs down](2026-06-21-mc1-distance-debutant-place.md) | confirmed-directional |
 | 2026-06-21 | [Trio leg coverage by MC rank + top-half box](2026-06-21-trio-mc-rank-coverage.md) | confirmed |
 | 2026-06-21 | [Speed model — empirical pars + field shrinkage](2026-06-21-speed-model-par-calibration.md) | confirmed |
