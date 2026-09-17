@@ -623,10 +623,10 @@
     ],
     "tierceDividend": 3324,
     "trioDividend": 569,
-    "doubleTrioDividend": 5322,
+    "doubleTrioDividend": 31724,
     "doubleTrioLegs": [
       3,
-      8
+      4
     ]
   },
   {
@@ -1478,7 +1478,12 @@
       26
     ],
     "tierceDividend": 834,
-    "trioDividend": 116
+    "trioDividend": 116,
+    "doubleTrioDividend": 5322,
+    "doubleTrioLegs": [
+      7,
+      8
+    ]
   },
   {
     "id": "2025-09-10-HV-8",
@@ -1702,7 +1707,7 @@
     "trioDividend": 825,
     "doubleTrioDividend": 5322,
     "doubleTrioLegs": [
-      3,
+      7,
       8
     ]
   }

@@ -139,10 +139,12 @@ export class DataEnrichment {
       const entries = groups.get(key) || [];
 
       for (const horse of result.finishOrder) {
-        // We'd need draw data from entries, but results don't always have it
-        // For now, use horse number as proxy (not ideal)
+        // Use the real barrier draw. Saddle-cloth number was previously used as a
+        // proxy, which made this "draw bias" a weight-order bias instead — the two
+        // are unrelated. Rows with no recorded draw are skipped rather than guessed.
+        if (horse.draw === undefined || horse.draw < 1) continue;
         entries.push({
-          draw: horse.horseNumber,
+          draw: horse.draw,
           position: horse.finishPosition,
           fieldSize: result.finishOrder.length,
         });

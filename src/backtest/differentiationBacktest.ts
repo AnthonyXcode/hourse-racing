@@ -5,7 +5,7 @@
 
 import { readFile, readdir } from "fs/promises";
 import path from "path";
-import type { Race, RaceEntry, Venue } from "../types/index.js";
+import type { HorseAnalysis, Race, RaceEntry, SimulationResult, Venue } from "../types/index.js";
 import { FormAnalyzer } from "../analysis/formAnalysis.js";
 import { MonteCarloSimulator } from "../simulation/monteCarlo.js";
 
@@ -82,6 +82,7 @@ interface ResultsFile {
   finishOrder: FinishEntry[];
   winDividend?: number;
   placeDividends?: number[];
+  trioDividend?: number;
 }
 
 export type FormSource = "all" | "ST" | "HV";
@@ -203,6 +204,8 @@ export interface MeetingResults {
   finishOrders: Map<number, FinishEntry[]>;
   /** raceNumber → horseNumber → place dividend as multiplier (e.g. 1.2 = $12 per $10) */
   placeDividendMap: Map<number, Map<number, number>>;
+  /** raceNumber → Trio dividend per $10 unit */
+  trioDividendMap: Map<number, number>;
 }
 
 export async function loadResults(dateStr: string, venue: string): Promise<Map<number, FinishEntry[]>> {
@@ -216,12 +219,14 @@ export async function loadMeetingResults(dateStr: string, venue: string): Promis
 
   const finishOrders = new Map<number, FinishEntry[]>();
   const placeDividendMap = new Map<number, Map<number, number>>();
+  const trioDividendMap = new Map<number, number>();
   try {
     const raw = await readFile(filePath, "utf-8");
     const races = JSON.parse(raw) as ResultsFile[];
     for (const race of races) {
       const order = race.finishOrder ?? [];
       finishOrders.set(race.raceNumber, order);
+      if (race.trioDividend !== undefined) trioDividendMap.set(race.raceNumber, race.trioDividend);
 
       if (race.placeDividends && race.placeDividends.length >= 3) {
         const horseMap = new Map<number, number>();
@@ -234,9 +239,9 @@ export async function loadMeetingResults(dateStr: string, venue: string): Promis
       }
     }
   } catch {
-    // file not found – both maps empty
+    // file not found – all maps empty
   }
-  return { finishOrders, placeDividendMap };
+  return { finishOrders, placeDividendMap, trioDividendMap };
 }
 
 export async function loadRaceCard(filePath: string): Promise<{ race: Race; winOddsMap: Map<number, number> } | null> {
@@ -678,6 +683,8 @@ export interface McAccuracyPick {
   winOdds: number;
   placeOdds: number;
   placed: boolean;
+  /** Past runs at the race distance (the --min-trip-runs count) */
+  tripRuns: number;
 }
 
 export interface McAccuracyRaceRow {
@@ -689,6 +696,46 @@ export interface McAccuracyRaceRow {
   skipReason: string;
   numRunners: number;
   picks: McAccuracyPick[];
+}
+
+/**
+ * One pick per form-analysed runner, in form order: form + MC ranks and probabilities, win odds,
+ * trip runs and — for races already run — placed / place dividend. Shared by the MC accuracy
+ * backtest and upcoming suggestions so both rank runners the same way.
+ */
+export function buildMcAccuracyPicks(
+  race: Race,
+  analyses: HorseAnalysis[],
+  simResults: SimulationResult[],
+  winOddsMap: Map<number, number>,
+  finishOrder: { horseNumber: number; finishPosition: number; horseCode: string; winOdds?: number }[] = [],
+  placeOdds: Map<number, number> = new Map()
+): McAccuracyPick[] {
+  const mcRankByCode = new Map<string, number>();
+  simResults.forEach((s, i) => mcRankByCode.set(s.horseCode, i + 1));
+  const simByCode = new Map(simResults.map((s) => [s.horseCode, s]));
+  const top3Codes = placedFinishers(finishOrder).map((f) => f.horseCode);
+
+  return analyses.map((a, i) => {
+    const entry = race.entries.find((e) => e.horse.code === a.horseCode);
+    const horseNumber = entry?.horseNumber ?? 0;
+    const sim = simByCode.get(a.horseCode);
+    const finishEntry = finishOrder.find((f) => f.horseNumber === horseNumber);
+    return {
+      ratingRank: i + 1,
+      mcRank: mcRankByCode.get(a.horseCode) ?? analyses.length,
+      horseCode: a.horseCode,
+      horseName: a.horseName,
+      horseNumber,
+      overallRating: a.overallRating,
+      mcWinPct: sim?.winProbability ?? 0,
+      mcPlacePct: sim?.placeProbability ?? 0,
+      winOdds: finishEntry?.winOdds ?? winOddsMap.get(horseNumber) ?? 0,
+      placeOdds: placeOdds.get(horseNumber) ?? 0,
+      placed: top3Codes.includes(a.horseCode),
+      tripRuns: tripRunCount(entry, race.distance),
+    };
+  });
 }
 
 /**
@@ -778,34 +825,14 @@ export async function runMcAccuracyBacktest(
     const simulator = new MonteCarloSimulator({ runs: 5000, performanceStdDev: hvStdDev });
     const { results: simResults } = simulator.simulateRace(race);
 
-    const mcRankByCode = new Map<string, number>();
-    simResults.forEach((s, i) => mcRankByCode.set(s.horseCode, i + 1));
-    const simByCode = new Map(simResults.map((s) => [s.horseCode, s]));
-
-    const top3Codes = placedFinishers(finishOrder).map((f) => f.horseCode);
-    const resultPlaceOdds = meeting.placeDividendMap.get(parsed.raceNumber);
-
-    const picks: McAccuracyPick[] = analyses.map((a, i) => {
-      const entry = race.entries.find((e) => e.horse.code === a.horseCode);
-      const horseNumber = entry?.horseNumber ?? 0;
-      const sim = simByCode.get(a.horseCode);
-      const finishEntry = finishOrder.find((f) => f.horseNumber === horseNumber);
-      const winOdds = finishEntry?.winOdds ?? winOddsMap.get(horseNumber) ?? 0;
-      const placeOdds = resultPlaceOdds?.get(horseNumber) ?? 0;
-      return {
-        ratingRank: i + 1,
-        mcRank: mcRankByCode.get(a.horseCode) ?? analyses.length,
-        horseCode: a.horseCode,
-        horseName: a.horseName,
-        horseNumber,
-        overallRating: a.overallRating,
-        mcWinPct: sim?.winProbability ?? 0,
-        mcPlacePct: sim?.placeProbability ?? 0,
-        winOdds,
-        placeOdds,
-        placed: top3Codes.includes(a.horseCode),
-      };
-    });
+    const picks = buildMcAccuracyPicks(
+      race,
+      analyses,
+      simResults,
+      winOddsMap,
+      finishOrder,
+      meeting.placeDividendMap.get(parsed.raceNumber)
+    );
 
     allRows.push({
       raceId: `${parsed.date}_${parsed.venue === "Happy Valley" ? "HV" : "ST"}_R${parsed.raceNumber}`,

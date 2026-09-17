@@ -250,12 +250,7 @@
       425
     ],
     "tierceDividend": 6947,
-    "trioDividend": 1715,
-    "doubleTrioDividend": 505829,
-    "doubleTrioLegs": [
-      1,
-      11
-    ]
+    "trioDividend": 1715
   },
   {
     "id": "2026-02-22-ST-2",
@@ -913,10 +908,10 @@
     ],
     "tierceDividend": 349,
     "trioDividend": 81,
-    "doubleTrioDividend": 771,
+    "doubleTrioDividend": 5575,
     "doubleTrioLegs": [
       4,
-      9
+      5
     ]
   },
   {
@@ -2077,7 +2072,7 @@
     "trioDividend": 117,
     "doubleTrioDividend": 771,
     "doubleTrioLegs": [
-      4,
+      8,
       9
     ]
   },
@@ -2593,7 +2588,7 @@
     "trioDividend": 778,
     "doubleTrioDividend": 505829,
     "doubleTrioLegs": [
-      1,
+      10,
       11
     ]
   }

@@ -442,16 +442,10 @@
     "tierceDividend": 3276,
     "trioDividend": 972,
     "first4Dividend": 2842,
-    "doubleTrioDividend": 141285,
+    "doubleTrioDividend": 23844,
     "doubleTrioLegs": [
       2,
-      7
-    ],
-    "tripleTrioDividend": 1179958,
-    "tripleTrioLegs": [
-      5,
-      2,
-      7
+      3
     ]
   },
   {
@@ -675,10 +669,10 @@
     "tierceDividend": 1589,
     "trioDividend": 303,
     "first4Dividend": 343,
-    "doubleTrioDividend": 542316,
+    "doubleTrioDividend": 23844,
     "doubleTrioLegs": [
-      3,
-      9
+      2,
+      3
     ]
   },
   {
@@ -1105,7 +1099,7 @@
     "tripleTrioDividend": 1179958,
     "tripleTrioLegs": [
       5,
-      2,
+      6,
       7
     ]
   },
@@ -1314,10 +1308,16 @@
     "tierceDividend": 2390,
     "trioDividend": 678,
     "first4Dividend": 4646,
-    "doubleTrioDividend": 23844,
+    "doubleTrioDividend": 141285,
     "doubleTrioLegs": [
       6,
-      8
+      7
+    ],
+    "tripleTrioDividend": 1179958,
+    "tripleTrioLegs": [
+      5,
+      6,
+      7
     ]
   },
   {
@@ -1527,13 +1527,13 @@
     "first4Dividend": 2244,
     "doubleTrioDividend": 141285,
     "doubleTrioLegs": [
-      2,
+      6,
       7
     ],
     "tripleTrioDividend": 1179958,
     "tripleTrioLegs": [
       5,
-      2,
+      6,
       7
     ]
   },
@@ -1987,7 +1987,7 @@
     "first4Dividend": 7455,
     "doubleTrioDividend": 542316,
     "doubleTrioLegs": [
-      3,
+      8,
       9
     ]
   }

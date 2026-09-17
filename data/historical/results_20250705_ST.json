@@ -441,16 +441,10 @@
     "tierceDividend": 748,
     "trioDividend": 227,
     "first4Dividend": 1204,
-    "doubleTrioDividend": 6722,
+    "doubleTrioDividend": 22756,
     "doubleTrioLegs": [
-      4,
-      2
-    ],
-    "tripleTrioDividend": 220260,
-    "tripleTrioLegs": [
       2,
-      6,
-      7
+      3
     ]
   },
   {
@@ -936,7 +930,7 @@
     "doubleTrioDividend": 6722,
     "doubleTrioLegs": [
       4,
-      2
+      5
     ]
   },
   {
@@ -1128,10 +1122,16 @@
     "tierceDividend": 571,
     "trioDividend": 113,
     "first4Dividend": 278,
-    "doubleTrioDividend": 22756,
+    "doubleTrioDividend": 6722,
     "doubleTrioLegs": [
+      4,
+      5
+    ],
+    "tripleTrioDividend": 220260,
+    "tripleTrioLegs": [
       5,
-      3
+      6,
+      7
     ]
   },
   {
@@ -1394,7 +1394,7 @@
     ],
     "tripleTrioDividend": 220260,
     "tripleTrioLegs": [
-      2,
+      5,
       6,
       7
     ]
@@ -1627,7 +1627,7 @@
     ],
     "tripleTrioDividend": 220260,
     "tripleTrioLegs": [
-      2,
+      5,
       6,
       7
     ]

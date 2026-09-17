@@ -1302,10 +1302,10 @@
     ],
     "tierceDividend": 791,
     "trioDividend": 133,
-    "doubleTrioDividend": 12066,
+    "doubleTrioDividend": 9155,
     "doubleTrioLegs": [
       6,
-      9
+      7
     ],
     "tripleTrioDividend": 847031,
     "tripleTrioLegs": [
@@ -1754,12 +1754,6 @@
     "doubleTrioLegs": [
       8,
       9
-    ],
-    "tripleTrioDividend": 847031,
-    "tripleTrioLegs": [
-      5,
-      8,
-      7
     ]
   },
   {
@@ -1984,7 +1978,7 @@
     "trioDividend": 230,
     "doubleTrioDividend": 12066,
     "doubleTrioLegs": [
-      6,
+      8,
       9
     ]
   }

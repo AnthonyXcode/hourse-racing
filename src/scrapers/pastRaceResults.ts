@@ -243,8 +243,76 @@ export class PastRaceResultsScraper {
   // Parse the results table (runner list)
   // --------------------------------------------------------------------------
 
+  /**
+   * Locate the results table's column indices from its header row.
+   *
+   * The HKJC layout is: Pla. | Horse No. | Horse | Jockey | Trainer | Act. Wt. |
+   * Declar. Horse Wt. | Dr. | LBW | RunningPosition | Finish Time | Win Odds.
+   * Reading by header beats scanning for "the next small integer": LBW and the
+   * RunningPosition cells are also small integers and would otherwise be picked
+   * up as the barrier draw.
+   */
+  private findRunnerTableColumnIndices($: cheerio.CheerioAPI): {
+    place?: number;
+    horseNo?: number;
+    actWt?: number;
+    declarHorseWt?: number;
+    draw?: number;
+    winOdds?: number;
+  } | null {
+    for (const table of $("table").toArray()) {
+      for (const tr of $(table).find("tr").toArray()) {
+        const $ths = $(tr).find("th");
+        if ($ths.length < 8) continue;
+
+        const cols: {
+          place?: number;
+          horseNo?: number;
+          actWt?: number;
+          declarHorseWt?: number;
+          draw?: number;
+          winOdds?: number;
+        } = {};
+
+        $ths.each((i, th) => {
+          const t = $(th).text().replace(/\s+/g, " ").trim();
+          const lower = t.toLowerCase();
+
+          // Declared horse weight must be tested before Act. Wt. — both match "wt".
+          const isDeclarHorseWt =
+            (lower.includes("declar") && lower.includes("horse") && lower.includes("wt")) ||
+            (t.includes("宣佈") && t.includes("馬匹") && t.includes("體重")) ||
+            (t.includes("馬匹") && t.includes("體重") && !t.includes("實際"));
+          const isActWt =
+            !isDeclarHorseWt &&
+            ((lower.includes("act") && lower.includes("wt")) ||
+              t.includes("實際負磅") ||
+              (t.includes("實際") && t.includes("負磅")));
+
+          if (/^pla\.?$/i.test(lower) || lower === "place" || t.includes("名次")) cols.place = i;
+          if ((lower.includes("horse") && lower.includes("no")) || t.includes("馬號")) cols.horseNo = i;
+          if (isDeclarHorseWt) cols.declarHorseWt = i;
+          if (isActWt) cols.actWt = i;
+          if (/^dr\.?$/i.test(lower) || lower === "draw" || t.includes("檔位")) cols.draw = i;
+          if ((lower.includes("win") && lower.includes("odds")) || t.includes("獨贏賠率")) cols.winOdds = i;
+        });
+
+        if (cols.horseNo !== undefined) return cols;
+      }
+    }
+    return null;
+  }
+
   private parseRunners($: cheerio.CheerioAPI): PastRaceRunner[] {
     const runners: PastRaceRunner[] = [];
+
+    const tableCols = this.findRunnerTableColumnIndices($);
+    /** Standard HKJC English layout, used when the header row is missing. */
+    const placeCol = tableCols?.place ?? 0;
+    const horseNoCol = tableCols?.horseNo ?? 1;
+    const actWtCol = tableCols?.actWt ?? 5;
+    const declarHorseWtCol = tableCols?.declarHorseWt ?? 6;
+    const drawCol = tableCols?.draw ?? 7;
 
     $("table tr").each((_, row) => {
       const $row = $(row);
@@ -255,6 +323,16 @@ export class PastRaceResultsScraper {
       if (cells.length < 8) return;
 
       const cellTexts = cells.map((_, cell) => $(cell).text().trim()).get();
+
+      /** Read one column as an integer, ignoring annotations such as the "DH" dead-heat marker. */
+      const readIntCell = (idx: number, min: number, max: number): number | undefined => {
+        const raw = cellTexts[idx];
+        if (raw === undefined) return undefined;
+        const digits = raw.replace(/[^\d]/g, "");
+        if (!digits) return undefined;
+        const n = parseInt(digits, 10);
+        return n >= min && n <= max ? n : undefined;
+      };
 
       // Extract links from the row for horse / jockey / trainer codes
       let horseCode = "";
@@ -306,65 +384,35 @@ export class PastRaceResultsScraper {
         }
       }
 
-      // Parse numeric fields from cell texts
-      // Expected columns (rough order): Pla. | Horse No. | Horse | Jockey | Trainer | Act.Wt. | Declar.Horse Wt. | Dr. | LBW | RunPos | FinishTime | Win Odds
+      // Parse numeric fields by column index (see findRunnerTableColumnIndices).
+      // Columns: Pla. | Horse No. | Horse | Jockey | Trainer | Act.Wt. | Declar.Horse Wt. | Dr. | LBW | RunPos | FinishTime | Win Odds
 
-      let finishPosition = 99;
-      let horseNumber = 0;
-      let draw = 0;
-      let actualWeight = 0;
-      let horseWeight = 0;
+      // Pla. carries annotations on some rows — "1 DH" for a dead heat, and
+      // "WV"/"DISQ" for non-finishers — so strip to digits rather than requiring
+      // a bare integer. Leaving it unset used to shift every later field by one
+      // column, which put the draw into horseNumber for both dead-heaters.
+      const finishPosition = readIntCell(placeCol, 1, 20) ?? 99;
+      const horseNumber = readIntCell(horseNoCol, 1, 20) ?? 0;
+      const draw = readIntCell(drawCol, 1, 20) ?? 0;
+      const actualWeight = readIntCell(actWtCol, 100, 145) ?? 0;
+      const horseWeight = readIntCell(declarHorseWtCol, 900, 1400) ?? 0;
+
       let winOdds = 0;
-
-      // Collect all pure-integer cells to assign positional values
-      const nums: number[] = [];
-      for (const text of cellTexts) {
-        const clean = text.replace(/[^\d.]/g, "");
-        if (/^\d+$/.test(clean)) {
-          nums.push(parseInt(clean, 10));
-        }
+      const oddsCol = tableCols?.winOdds;
+      if (oddsCol !== undefined) {
+        const o = parseFloat(cellTexts[oddsCol]?.trim() ?? "");
+        if (!isNaN(o) && o >= 1.0 && o <= 999) winOdds = o;
       }
-
-      // Assign by range heuristics
-      for (const text of cellTexts) {
-        const n = parseInt(text, 10);
-        if (isNaN(n)) continue;
-
-        // Finish position: 1-14 in the first-few cells
-        if (n >= 1 && n <= 14 && finishPosition === 99 && /^\d{1,2}$/.test(text)) {
-          finishPosition = n;
-          continue;
-        }
-        // Horse number: 1-14
-        if (n >= 1 && n <= 14 && horseNumber === 0 && /^\d{1,2}$/.test(text)) {
-          horseNumber = n;
-          continue;
-        }
-        // Actual weight: 100-145
-        if (n >= 100 && n <= 145 && actualWeight === 0) {
-          actualWeight = n;
-          continue;
-        }
-        // Horse body weight: 900-1400
-        if (n >= 900 && n <= 1400 && horseWeight === 0) {
-          horseWeight = n;
-          continue;
-        }
-        // Draw: 1-14 (also appears later)
-        if (n >= 1 && n <= 14 && draw === 0) {
-          draw = n;
-          continue;
-        }
-      }
-
-      // Win odds: typically last numeric cell, may include decimal
-      for (let i = cellTexts.length - 1; i >= 0; i--) {
-        const oddsMatch = cellTexts[i]?.match(/^([\d.]+)$/);
-        if (oddsMatch) {
-          const o = parseFloat(oddsMatch[1]!);
-          if (o >= 1.0 && o <= 999) {
-            winOdds = o;
-            break;
+      if (winOdds === 0) {
+        // Fallback: win odds are the last purely numeric cell.
+        for (let i = cellTexts.length - 1; i >= 0; i--) {
+          const oddsMatch = cellTexts[i]?.match(/^([\d.]+)$/);
+          if (oddsMatch) {
+            const o = parseFloat(oddsMatch[1]!);
+            if (o >= 1.0 && o <= 999) {
+              winOdds = o;
+              break;
+            }
           }
         }
       }

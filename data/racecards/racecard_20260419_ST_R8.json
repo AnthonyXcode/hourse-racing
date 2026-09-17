@@ -245,7 +245,7 @@
           "P",
           "CP"
         ],
-        "isScratched": false
+        "isScratched": true
       },
       {
         "horse": {
@@ -827,7 +827,7 @@
           "specialties": []
         },
         "horseNumber": 4,
-        "draw": 10,
+        "draw": 9,
         "weight": 125,
         "gearChanges": [
           "B",
@@ -1030,7 +1030,7 @@
           "P",
           "TT"
         ],
-        "isScratched": false
+        "isScratched": true
       },
       {
         "horse": {
@@ -1203,7 +1203,7 @@
           "specialties": []
         },
         "horseNumber": 6,
-        "draw": 1,
+        "draw": 6,
         "weight": 117,
         "gearChanges": [
           "B",
@@ -1442,7 +1442,7 @@
           "specialties": []
         },
         "horseNumber": 7,
-        "draw": 6,
+        "draw": 5,
         "weight": 116,
         "gearChanges": [
           "H",
@@ -1706,7 +1706,7 @@
           "specialties": []
         },
         "horseNumber": 8,
-        "draw": 8,
+        "draw": 7,
         "weight": 115,
         "gearChanges": [
           "B",
@@ -2196,7 +2196,7 @@
           "specialties": []
         },
         "horseNumber": 10,
-        "draw": 9,
+        "draw": 8,
         "weight": 115,
         "gearChanges": [
           "B",

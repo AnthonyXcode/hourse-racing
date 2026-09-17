@@ -293,8 +293,8 @@
           "courseStats": [],
           "specialties": []
         },
-        "horseNumber": 11,
-        "draw": 14,
+        "horseNumber": 1,
+        "draw": 11,
         "weight": 135,
         "isScratched": false
       },
@@ -2074,6 +2074,7 @@
     ]
   },
   "winOdds": {
+    "1": 3.6,
     "2": 8.8,
     "3": 4.7,
     "4": 53,

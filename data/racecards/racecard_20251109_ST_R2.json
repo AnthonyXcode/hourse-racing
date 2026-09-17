@@ -757,8 +757,8 @@
           "courseStats": [],
           "specialties": []
         },
-        "horseNumber": 7,
-        "draw": 8,
+        "horseNumber": 8,
+        "draw": 7,
         "weight": 127,
         "isScratched": false
       },
@@ -926,8 +926,8 @@
           "courseStats": [],
           "specialties": []
         },
-        "horseNumber": 11,
-        "draw": 8,
+        "horseNumber": 10,
+        "draw": 11,
         "weight": 126,
         "isScratched": false
       },
@@ -1092,8 +1092,8 @@
           "courseStats": [],
           "specialties": []
         },
-        "horseNumber": 12,
-        "draw": 11,
+        "horseNumber": 13,
+        "draw": 12,
         "weight": 123,
         "isScratched": false
       },
@@ -1309,8 +1309,8 @@
           "courseStats": [],
           "specialties": []
         },
-        "horseNumber": 13,
-        "draw": 11,
+        "horseNumber": 14,
+        "draw": 13,
         "weight": 121,
         "isScratched": false
       },
@@ -1408,9 +1408,12 @@
     "5": 18,
     "6": 9.9,
     "7": 151,
+    "8": 151,
     "9": 56,
+    "10": 8.5,
     "11": 8.5,
     "12": 14,
-    "13": 7.4
+    "13": 7.4,
+    "14": 7.4
   }
 }

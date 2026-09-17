@@ -57,7 +57,8 @@ function raceCardFilterPattern(opts: DifferentiationBacktestOptions): RegExp {
   return racecardFilePattern(opts.months, opts.venue);
 }
 
-async function listUpcomingMeetings(opts: DifferentiationBacktestOptions): Promise<string[]> {
+/** "YYYYMMDD_<venue name>" keys of saved meetings that have no results file yet. */
+export async function listUpcomingMeetings(opts: DifferentiationBacktestOptions): Promise<string[]> {
   const raceCardDir = opts.raceCardDir ?? path.join(process.cwd(), "data", "racecards");
   const files = await readdir(raceCardDir);
   const pattern = raceCardFilterPattern(opts);
@@ -124,7 +125,8 @@ export interface UpcomingTrioRace {
   avgDiff: number;
 }
 
-async function loadMeetingRacecards(
+/** Racecard files for one meeting key, in race order. */
+export async function loadMeetingRacecards(
   meetingKey: string,
   opts: DifferentiationBacktestOptions
 ): Promise<{ file: string; parsed: NonNullable<ReturnType<typeof parseRaceCardFileName>> }[]> {

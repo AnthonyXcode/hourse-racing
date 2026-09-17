@@ -547,8 +547,8 @@
           "courseStats": [],
           "specialties": []
         },
-        "horseNumber": 1,
-        "draw": 3,
+        "horseNumber": 4,
+        "draw": 1,
         "weight": 130,
         "isScratched": false
       },
@@ -1290,7 +1290,7 @@
           "courseStats": [],
           "specialties": []
         },
-        "horseNumber": 3,
+        "horseNumber": 9,
         "draw": 3,
         "weight": 121,
         "isScratched": false
@@ -1926,10 +1926,12 @@
     "1": 8.3,
     "2": 13,
     "3": 28,
+    "4": 5.8,
     "5": 12,
     "6": 14,
     "7": 14,
     "8": 71,
+    "9": 28,
     "10": 14,
     "11": 12,
     "12": 5.6

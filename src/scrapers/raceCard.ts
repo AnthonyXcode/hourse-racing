@@ -611,6 +611,10 @@ export class RaceCardScraper {
   private parseEntries($: cheerio.CheerioAPI): RaceEntry[] {
     const entries: RaceEntry[] = [];
 
+    // Resolve the "Dr." column from the header once, so rows do not have to
+    // guess which of their small integers is the barrier draw.
+    const drawCellIdx = this.findDrawColumnIndex($);
+
     // Find all table rows and parse each one
     $("table tr").each((_, row) => {
       const $row = $(row);
@@ -621,7 +625,7 @@ export class RaceCardScraper {
       const cells = $row.find("td");
       if (cells.length < 5) return;
 
-      const entry = this.parseEntryRow($, $row);
+      const entry = this.parseEntryRow($, $row, drawCellIdx);
       if (entry) {
         entries.push(entry);
       }
@@ -634,9 +638,30 @@ export class RaceCardScraper {
    * Parse a single entry row
    * HKJC table typically has: Horse No., Horse Name (with link), Jockey, Trainer, Wt., Draw, etc.
    */
+  /**
+   * Index of the "Dr." (barrier draw) column, read from the entries table header.
+   */
+  private findDrawColumnIndex($: cheerio.CheerioAPI): number | undefined {
+    for (const table of $("table").toArray()) {
+      for (const tr of $(table).find("tr").toArray()) {
+        const $ths = $(tr).find("th");
+        if ($ths.length < 5) continue;
+        let idx: number | undefined;
+        $ths.each((i, th) => {
+          const t = $(th).text().replace(/\s+/g, " ").trim();
+          const lower = t.toLowerCase();
+          if (/^dr\.?$/i.test(lower) || lower === "draw" || t.includes("檔位")) idx = i;
+        });
+        if (idx !== undefined) return idx;
+      }
+    }
+    return undefined;
+  }
+
   private parseEntryRow(
     $: cheerio.CheerioAPI,
-    $row: cheerio.Cheerio<cheerio.Element>
+    $row: cheerio.Cheerio<cheerio.Element>,
+    drawCellIdx?: number
   ): RaceEntry | null {
     const cells = $row.find("td");
     if (cells.length < 5) return null;
@@ -657,8 +682,10 @@ export class RaceCardScraper {
     // Find horse name - usually in a link with horse ID
     let horseName = "";
     let horseCode = `H${horseNumber}`;
-    // Barrier draw; HKJC "Dr." column is often past the first few cells — do not default to horseNumber.
-    let draw = horseNumber;
+    // Barrier draw; HKJC "Dr." column is often past the first few cells.
+    // 0 means "not parsed" — never fall back to horseNumber, which silently
+    // produces a plausible-looking but wrong draw (see parse failure below).
+    let draw = 0;
     let weight = 126;
     let jockeyName = "";
     let jockeyCode = "UNK";
@@ -733,35 +760,30 @@ export class RaceCardScraper {
       }
     }
 
-    // Draw ("Dr.") — the draw cell is immediately before the trainer cell in the HKJC table.
-    // Previous heuristic (scanning for first 1-14 from col 4) picked up jockey weight claims.
-    let drawFound = false;
-    if (trainerCellIdx > 0) {
-      const drawText = cellTexts[trainerCellIdx - 1]?.trim();
-      if (drawText && /^\d{1,2}$/.test(drawText)) {
-        const d = parseInt(drawText, 10);
-        if (d >= 1 && d <= 14) {
-          draw = d;
-          drawFound = true;
-        }
-      }
-    }
+    // Draw ("Dr."). Prefer the column the header row identified; fall back to the
+    // cell immediately before the trainer cell, which is where HKJC puts it.
+    // Never scan for "the first 1-14 after column 4" — jockey weight claims,
+    // ratings and LBW are all small integers that pass that test.
+    const readDrawAt = (idx: number | undefined): number | undefined => {
+      if (idx === undefined || idx < 0) return undefined;
+      const drawText = cellTexts[idx]?.trim();
+      if (!drawText || !/^\d{1,2}$/.test(drawText)) return undefined;
+      const d = parseInt(drawText, 10);
+      return d >= 1 && d <= 14 ? d : undefined;
+    };
+
+    const parsedDraw =
+      readDrawAt(drawCellIdx) ??
+      (trainerCellIdx > 0 ? readDrawAt(trainerCellIdx - 1) : undefined);
+    const drawFound = parsedDraw !== undefined;
+    if (parsedDraw !== undefined) draw = parsedDraw;
     if (!drawFound) {
-      // Fallback: scan from index 4 onward (skip horse #, form, colour, name cells)
-      for (let i = 4; i < cellTexts.length; i++) {
-        const text = cellTexts[i]!.trim();
-        if (!/^\d{1,2}$/.test(text)) continue;
-        const d = parseInt(text, 10);
-        if (d >= 1 && d <= 14) {
-          draw = d;
-          drawFound = true;
-          break;
-        }
-      }
-    }
-    if (!drawFound) {
+      // Deliberately no positional scan here: the cells after the name include
+      // jockey weight claims, ratings and LBW, all small integers that scan as a
+      // valid-looking draw. Leave draw at 0 so the bad value is visible instead
+      // of being laundered into the saved race card.
       console.warn(
-        `Entry #${horseNumber} ${horseName || "?"}: barrier draw not parsed; using horse number as draw`
+        `Entry #${horseNumber} ${horseName || "?"}: barrier draw not parsed; leaving draw=0`
       );
     }
 

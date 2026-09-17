@@ -52,6 +52,7 @@
 | **35** | **6 Sep** | **ST** | **Turf** | **Good** | **9\*** | **30.4%** | **64.2%** | **3/9** | **33.3%** | **❌❌✅❌❌✅ SCR ✅❌❌** | **1** |
 | **36** | **9 Sep** | **HV** | **Turf** | **Good** | **8** | **33.8%** | **68.1%** | **4/8** | **50.0%** | **❌✅✅❌✅❌✅❌** | **2 (R2-R3)** |
 | **37** | **13 Sep** | **ST** | **Turf "B"** | **Good to Firm** | **10** | **34.3%** | **66.2%** | **3/10** | **30.0%** | **✅❌❌❌❌❌❌✅❌✅** | **1** |
+| **38** | **16 Sep** | **HV** | **Turf "B"** | **Good** | **8** | **33.2%** | **66.8%** | **6/8** | **75.0%** | **❌✅❌✅✅✅✅✅** | **5 (R4-R8)** |
 
 \*Meeting 8 **R1** (6 runners): MC #1 **#6** ran **3rd** but HKJC Place pool pays **two** places only → **$0** dividend; counts as **❌** for streaks and all-ups (same dividend logic as other meetings).
 
@@ -1804,3 +1805,24 @@ Place dividends (MC #1 when placed): R1=$14.50, R3=$12.00, R5=$10.50, R8=$18.00
 The meeting's structural finding is the **MC–market split**: in the 4 races where MC #1 was also the market favourite the banker placed **3 times (75%)**; in the 6 races where MC preferred a different horse it placed **0 times (0%)**, finishing 7th, 7th, 14th, 8th, 8th, 8th. Market favourites placed **7/10** against MC #1's **3/10**. Mean banker MC Place% was **66.2%** against a **30.0%** actual — a ~36pp over-statement.
 
 Flag calibration: **`+excuses` fired on 74 of ~139 runners (53% of the card) for a 20.3% top-3 rate against a 21.6% base rate** — below random, and it inflated Adj Place% sums past 300% (R6: 324%). **`+trial` went 8/24 (33.3%)**, +11.7pp over base. Two threshold misses worth logging: R7's winner #12 ABSOLUTE AWAKENED was excluded at **MC Place% 19.7%**, 0.3pp under the 20% leg bar, on a race paying **$18,953**; R8's winner #10 ALPHA STRIKE was the **market's 2nd choice** rated MC 12th of 14. R9 was the card's only Pattern A for B-trio — all three placers in the legs, banker #8 ran 8th.
+
+## Meeting 38: Happy Valley | 16 Sep 2026 (8 races)
+
+**MC #1** = raw MC Win% from trio_strategy_20260916_HV_R*.md (10,000 iterations, form=all). **Results** from data/historical/results_20260916_HV.json. Place $ = HKJC place dividend. Going: **Good** (all 8 races). Turf "B" course. Late scratching: R8 #5 HUGE WAVE (11 starters).
+
+| Race | Class | Dist (m) | MC #1 | MC Win% | MC Place% | Placed? | Place $ (if placed) |
+|------|-------|----------|-------|---------|-----------|---------|---------------------|
+| R1 | Class 5 | 1000 | #2 ALWAYS MY FOLKS | 28.9% | 65.2% | ❌ (8th) | — |
+| R2 | Class 4 | 1200 | #3 BRIGHT DAY | 41.7% | 75.1% | ✅ 1st | 18.5 |
+| R3 | Class 4 | 1800 | #8 FAMILY FORTUNE | 34.0% | 70.0% | ❌ (5th) | — |
+| R4 | Class 4 | 1200 | #3 LIVE WIRE | 34.0% | 67.8% | ✅ 1st | 16 |
+| R5 | Class 4 | 1200 | #7 WINNING MONEY | 22.3% | 52.1% | ✅ 3rd | 19.5 |
+| R6 | Class 3 | 1650 | #1 DAZZLING FIT | 27.7% | 58.1% | ✅ 2nd | 18 |
+| R7 | Class 3 | 1000 | #1 LOVE TOGETHER | 32.4% | 69.1% | ✅ 3rd | 16.5 |
+| R8 | Class 2 | 1650 | #12 LE ZONDA | 44.2% | 76.6% | ✅ 1st | 15.5 |
+
+**Placed:** 6/8 (75.0%) | **Pattern:** ❌✅❌✅✅✅✅✅ | **Max streak:** 5 (R4-R8)
+
+**Trio card note (R1–R8):** **LOSS.** Strategy A (as bet) **0/8, $850 staked, $0 returned, −$850, ROI −100.0%**; canonical MC top-6 B **0/8, −$800, −100.0%**; MC-only Place%>20 variant (B-trio, as bet) **2/8 (R4 $315, R6 $198), $910 staked, −$397, −43.6%**. The reverse of 13-Sep: **bankers placed 6/8** but **Pattern B (banker hit, pool gap) was 6/8 for Strategy A**. B-trio's two hits both came from the Win-odds < 10 add rule (R4 #11 KWAI CHUNG TALENTS 8.1→6, 2nd; R6 #2 POPE CODY 8.0→4.2, won) — horses A's Adj Place% ranked out at 15.7% and 15.3%.
+
+MC–market split, two meetings combined: **MC #1 at market rank 1–2 placed 9/10; at market rank 4+ placed 0/7** (this card: R1 #2 mkt 4th, R3 #8 mkt 8th both failed). R8 #3 SAGACIOUS LIFE (2nd, Trio $2,356) sat at Adj Place% 19.4% — 0.6pp under Rule 8 — and exactly 10 at snapshot. R5 #4 LUCKY MCQUEEN drifted from 11 at the 17:55 snapshot to 9.5 at the off and ran 2nd (stale-odds miss). B-trio's Step B *swap* cost R8: it removed #4 HELENE FEELING (MC Place 23.0%, ran 3rd) for #8 MAX QUE (ran 11th).

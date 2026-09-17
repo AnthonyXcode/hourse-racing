@@ -175,8 +175,8 @@
           "courseStats": [],
           "specialties": []
         },
-        "horseNumber": 7,
-        "draw": 1,
+        "horseNumber": 3,
+        "draw": 7,
         "weight": 128,
         "isScratched": false
       },
@@ -1204,8 +1204,8 @@
           "courseStats": [],
           "specialties": []
         },
-        "horseNumber": 9,
-        "draw": 1,
+        "horseNumber": 10,
+        "draw": 9,
         "weight": 121,
         "isScratched": false
       },
@@ -1786,12 +1786,14 @@
   "winOdds": {
     "1": 35,
     "2": 25,
+    "3": 21,
     "4": 37,
     "5": 5.9,
     "6": 7.7,
     "7": 17,
     "8": 84,
     "9": 26,
+    "10": 2.7,
     "11": 123,
     "12": 3.5,
     "13": 72

@@ -48,7 +48,9 @@
       "Bash(node /private/tmp/claude-501/-Users-anthonycyy-Documents-HR-project-hourse-racing/b2efcc77-7b2f-42bc-8fea-8a1be0ac610e/scratchpad/pl_fit_r6.mjs)",
       "Bash(node /private/tmp/claude-501/-Users-anthonycyy-Documents-HR-project-hourse-racing/b2efcc77-7b2f-42bc-8fea-8a1be0ac610e/scratchpad/pl_fit_r9.mjs)",
       "Bash(sed -e 's/^const adj = .*$/const adj = { 5: 63.8, 2: 62.8, 13: 60.0, 1: 23.2, 12: 21.7, 9: 15.9, 3: 14.0, 6: 12.2, 8: 11.9, 7: 11.2, 10: 10.0, 11: 9.2, 4: 5.6, 14: 2.5 };/' -e 's/^const raw = .*$/const raw = { 2: 62.8, 5: 61.8, 13: 57.0, 1: 23.2, 12: 19.7, 9: 13.9, 8: 11.9, 3: 11.0, 6: 10.2, 7: 9.2, 10: 8.0, 11: 7.2, 4: 3.6, 14: 0.5 };/' -e 's/R6 ST 2026-09-13/R7 ST 2026-09-13/' pl_fit_r6.mjs)",
-      "Bash(node pl_fit_r7.mjs)"
+      "Bash(node pl_fit_r7.mjs)",
+      "Bash(rg -n \"export \\(async \\)?function|export class\" src/**/monte* src/**/*simul*)",
+      "Bash(python3 /private/tmp/claude-501/-Users-anthonycyy-Documents-HR-project-hourse-racing/c21582bc-6111-4088-9f74-356db7c16e23/scratchpad/pl.py)"
     ],
     "defaultMode": "bypassPermissions"
   }

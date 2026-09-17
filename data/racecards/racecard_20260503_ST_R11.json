@@ -101,7 +101,7 @@
           "specialties": []
         },
         "horseNumber": 1,
-        "draw": 10,
+        "draw": 9,
         "weight": 135,
         "gearChanges": [
           "B",
@@ -249,7 +249,7 @@
           "specialties": []
         },
         "horseNumber": 2,
-        "draw": 14,
+        "draw": 13,
         "weight": 132,
         "gearChanges": [
           "TT"
@@ -447,7 +447,7 @@
           "specialties": []
         },
         "horseNumber": 3,
-        "draw": 7,
+        "draw": 6,
         "weight": 131,
         "gearChanges": [
           "TT"
@@ -743,7 +743,7 @@
           "CP",
           "TT"
         ],
-        "isScratched": false
+        "isScratched": true
       },
       {
         "horse": {
@@ -923,7 +923,7 @@
           "specialties": []
         },
         "horseNumber": 7,
-        "draw": 12,
+        "draw": 11,
         "weight": 124,
         "isScratched": false
       },
@@ -1150,7 +1150,7 @@
           "specialties": []
         },
         "horseNumber": 8,
-        "draw": 6,
+        "draw": 5,
         "weight": 121,
         "isScratched": false
       },
@@ -1228,7 +1228,7 @@
           "specialties": []
         },
         "horseNumber": 9,
-        "draw": 8,
+        "draw": 7,
         "weight": 120,
         "gearChanges": [
           "SR",
@@ -1290,7 +1290,7 @@
           "specialties": []
         },
         "horseNumber": 10,
-        "draw": 5,
+        "draw": 4,
         "weight": 120,
         "gearChanges": [
           "TT"
@@ -1370,7 +1370,7 @@
           "specialties": []
         },
         "horseNumber": 11,
-        "draw": 11,
+        "draw": 10,
         "weight": 120,
         "gearChanges": [
           "SR",
@@ -1448,7 +1448,7 @@
           "specialties": []
         },
         "horseNumber": 12,
-        "draw": 13,
+        "draw": 12,
         "weight": 120,
         "isScratched": false
       },
@@ -1539,7 +1539,7 @@
           "specialties": []
         },
         "horseNumber": 13,
-        "draw": 9,
+        "draw": 8,
         "weight": 118,
         "isScratched": false
       },

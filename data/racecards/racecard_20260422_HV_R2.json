@@ -1244,7 +1244,7 @@
           "P",
           "E"
         ],
-        "isScratched": false
+        "isScratched": true
       },
       {
         "horse": {
@@ -2423,7 +2423,7 @@
           "specialties": []
         },
         "horseNumber": 12,
-        "draw": 1,
+        "draw": 11,
         "weight": 115,
         "gearChanges": [
           "B",

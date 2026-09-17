@@ -905,7 +905,7 @@
         "horseNumber": 0,
         "draw": 0,
         "weight": 126,
-        "isScratched": false
+        "isScratched": true
       },
       {
         "horse": {
@@ -1797,7 +1797,7 @@
         "horseNumber": 0,
         "draw": 0,
         "weight": 115,
-        "isScratched": false
+        "isScratched": true
       }
     ]
   },
