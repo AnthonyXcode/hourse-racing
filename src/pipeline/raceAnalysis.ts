@@ -27,6 +27,7 @@ import { HorseDataEnricher } from "../data/horseEnricher.js";
 import { JockeyEnricher } from "../data/jockeyEnricher.js";
 import { TrainerEnricher } from "../data/trainerEnricher.js";
 import { isSparseFormEntry } from "../backtest/differentiationBacktest.js";
+import { carriedWeight } from "../utils/index.js";
 
 // ============================================================================
 // TYPES
@@ -323,7 +324,7 @@ function projectFinishTimes(
       race.distance,
       race.class,
       race.going,
-      entry.weight
+      carriedWeight(entry)
     );
     if (mean === null) {
       return {

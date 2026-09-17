@@ -1632,7 +1632,8 @@
         "horseNumber": 7,
         "draw": 8,
         "weight": 119,
-        "isScratched": false
+        "isScratched": false,
+        "overweight": 1
       },
       {
         "horse": {
@@ -2045,7 +2046,8 @@
         "gearChanges": [
           "TT"
         ],
-        "isScratched": false
+        "isScratched": false,
+        "overweight": 1
       },
       {
         "horse": {

@@ -1481,7 +1481,7 @@
           "code": "YHY",
           "name": "H Y Yuen (-10)",
           "nationality": "CHN",
-          "weightClaim": 0,
+          "weightClaim": 10,
           "seasonStats": {
             "wins": 5,
             "places": 10,
@@ -1845,7 +1845,7 @@
           "code": "WPN",
           "name": "P N Wong (-7)",
           "nationality": "CHN",
-          "weightClaim": 0,
+          "weightClaim": 7,
           "seasonStats": {
             "wins": 9,
             "places": 16,
@@ -2228,7 +2228,7 @@
           "code": "WEC",
           "name": "E C W Wong (-3)",
           "nationality": "CHN",
-          "weightClaim": 0,
+          "weightClaim": 2,
           "seasonStats": {
             "wins": 20,
             "places": 35,
@@ -2509,7 +2509,8 @@
         "gearChanges": [
           "CP"
         ],
-        "isScratched": false
+        "isScratched": false,
+        "overweight": 2
       }
     ]
   },

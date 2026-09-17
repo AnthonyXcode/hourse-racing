@@ -124,3 +124,15 @@ export function randomNormal(mean = 0, stdDev = 1): number {
 export function clamp(value: number, min: number, max: number): number {
   return Math.min(Math.max(value, min), max);
 }
+
+/**
+ * Weight the horse actually carries: handicap weight minus the apprentice claim,
+ * plus any declared overweight. Past performances already store this (Act. Wt.).
+ */
+export function carriedWeight(entry: {
+  weight: number;
+  overweight?: number;
+  jockey: { weightClaim?: number };
+}): number {
+  return entry.weight - (entry.jockey.weightClaim ?? 0) + (entry.overweight ?? 0);
+}

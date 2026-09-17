@@ -1397,7 +1397,8 @@
           "B",
           "TT"
         ],
-        "isScratched": false
+        "isScratched": false,
+        "overweight": 1
       },
       {
         "horse": {
@@ -1631,7 +1632,8 @@
           "CP",
           "TT"
         ],
-        "isScratched": false
+        "isScratched": false,
+        "overweight": 1
       },
       {
         "horse": {
@@ -2424,7 +2426,8 @@
           "CP",
           "TT"
         ],
-        "isScratched": false
+        "isScratched": false,
+        "overweight": 1
       }
     ]
   },

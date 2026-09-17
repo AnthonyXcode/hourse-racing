@@ -396,7 +396,7 @@
           "code": "WPN",
           "name": "P N Wong (-7)",
           "nationality": "CHN",
-          "weightClaim": 0,
+          "weightClaim": 7,
           "seasonStats": {
             "wins": 7,
             "places": 13,
@@ -2187,7 +2187,8 @@
           "XB",
           "E"
         ],
-        "isScratched": false
+        "isScratched": false,
+        "overweight": 2
       },
       {
         "horse": {

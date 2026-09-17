@@ -210,7 +210,7 @@
           "code": "WPN",
           "name": "P N Wong (-7)",
           "nationality": "CHN",
-          "weightClaim": 0,
+          "weightClaim": 7,
           "seasonStats": {
             "wins": 12,
             "places": 25,
@@ -1004,7 +1004,7 @@
           "code": "CCY",
           "name": "Y L Chung (-2)",
           "nationality": "CHN",
-          "weightClaim": 0,
+          "weightClaim": 2,
           "seasonStats": {
             "wins": 24,
             "places": 39,
@@ -1349,7 +1349,7 @@
           "code": "CJE",
           "name": "C L Chau (-2)",
           "nationality": "CHN",
-          "weightClaim": 0,
+          "weightClaim": 2,
           "seasonStats": {
             "wins": 47,
             "places": 82,
@@ -2301,7 +2301,8 @@
           "H",
           "TT"
         ],
-        "isScratched": false
+        "isScratched": false,
+        "overweight": 1
       }
     ]
   },

@@ -594,7 +594,7 @@
           "code": "YHY",
           "name": "H Y Yuen (-10)",
           "nationality": "CHN",
-          "weightClaim": 0,
+          "weightClaim": 10,
           "seasonStats": {
             "wins": 1,
             "places": 2,
@@ -1239,7 +1239,7 @@
           "code": "MHT",
           "name": "H T Mo (-2)",
           "nationality": "CHN",
-          "weightClaim": 0,
+          "weightClaim": 2,
           "seasonStats": {
             "wins": 4,
             "places": 4,
@@ -1634,7 +1634,8 @@
           "H",
           "P"
         ],
-        "isScratched": false
+        "isScratched": false,
+        "overweight": 1
       },
       {
         "horse": {

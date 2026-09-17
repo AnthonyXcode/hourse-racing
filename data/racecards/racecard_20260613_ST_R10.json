@@ -1612,7 +1612,8 @@
         "horseNumber": 9,
         "draw": 14,
         "weight": 119,
-        "isScratched": false
+        "isScratched": false,
+        "overweight": 1
       },
       {
         "horse": {
@@ -1938,7 +1939,8 @@
         "gearChanges": [
           "B"
         ],
-        "isScratched": false
+        "isScratched": false,
+        "overweight": 1
       },
       {
         "horse": {

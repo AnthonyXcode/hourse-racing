@@ -20,6 +20,7 @@ import {
   loadRaceCard, loadMeetingResults, applyFormSourceFilter,
   parseRaceCardFileName, type MeetingResults, type FormSource,
 } from "../src/backtest/differentiationBacktest.js";
+import { carriedWeight } from "../src/utils/index.js";
 
 function median(a: number[]): number {
   const s = a.slice().sort((x, y) => x - y);
@@ -60,7 +61,7 @@ async function main() {
     for (const e of active) {
       const raw = aMap.get(e.horse.code)!.averageSpeedRating;
       const shrunk = fieldMean + FIELD_TIME_SHRINK * (raw - fieldMean);
-      const t = speed.projectFinishTime(shrunk, race.venue, race.surface, race.distance, race.class, race.going, e.weight);
+      const t = speed.projectFinishTime(shrunk, race.venue, race.surface, race.distance, race.class, race.going, carriedWeight(e));
       if (t !== null && (best === null || t < best)) best = t;
     }
     if (best === null) continue;

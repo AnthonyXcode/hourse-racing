@@ -1630,7 +1630,8 @@
           "V",
           "TT"
         ],
-        "isScratched": false
+        "isScratched": false,
+        "overweight": 1
       },
       {
         "horse": {
@@ -1862,7 +1863,8 @@
         "gearChanges": [
           "XB"
         ],
-        "isScratched": false
+        "isScratched": false,
+        "overweight": 1
       },
       {
         "horse": {
@@ -2296,7 +2298,7 @@
           "code": "WPN",
           "name": "P N Wong (-7)",
           "nationality": "CHN",
-          "weightClaim": 0,
+          "weightClaim": 7,
           "seasonStats": {
             "wins": 13,
             "places": 28,

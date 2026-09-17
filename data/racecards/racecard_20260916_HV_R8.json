@@ -425,7 +425,7 @@
           "code": "CJE",
           "name": "C L Chau (-2)",
           "nationality": "CHN",
-          "weightClaim": 0,
+          "weightClaim": 2,
           "seasonStats": {
             "wins": 0,
             "places": 3,
@@ -858,7 +858,7 @@
           "code": "WEC",
           "name": "E C W Wong (-3)",
           "nationality": "CHN",
-          "weightClaim": 0,
+          "weightClaim": 3,
           "seasonStats": {
             "wins": 2,
             "places": 0,
@@ -2720,7 +2720,8 @@
         "gearChanges": [
           "TT"
         ],
-        "isScratched": false
+        "isScratched": false,
+        "overweight": 2
       }
     ]
   },

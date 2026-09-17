@@ -40,7 +40,7 @@
           "code": "LC",
           "name": "C Lemaire",
           "nationality": "FR",
-          "weightClaim": 0,
+          "weightClaim": 2,
           "seasonStats": {
             "wins": 0,
             "places": 1,
@@ -174,7 +174,7 @@
           "code": "MCJ",
           "name": "J McDonald",
           "nationality": "Hong Kong",
-          "weightClaim": 0,
+          "weightClaim": 10,
           "seasonStats": {
             "wins": 15,
             "places": 20,
@@ -287,7 +287,8 @@
           "XB",
           "E"
         ],
-        "isScratched": false
+        "isScratched": false,
+        "overweight": 4
       },
       {
         "horse": {
@@ -335,7 +336,7 @@
           "code": "GM",
           "name": "M Guyon",
           "nationality": "Hong Kong",
-          "weightClaim": 0,
+          "weightClaim": 7,
           "seasonStats": {
             "wins": 11,
             "places": 24,

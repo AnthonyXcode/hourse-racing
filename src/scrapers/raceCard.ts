@@ -611,9 +611,10 @@ export class RaceCardScraper {
   private parseEntries($: cheerio.CheerioAPI): RaceEntry[] {
     const entries: RaceEntry[] = [];
 
-    // Resolve the "Dr." column from the header once, so rows do not have to
-    // guess which of their small integers is the barrier draw.
+    // Resolve the "Dr." and "Over Wt." columns from the header once, so rows do
+    // not have to guess which of their small integers is which.
     const drawCellIdx = this.findDrawColumnIndex($);
+    const overWtCellIdx = this.findColumnIndex($, (t) => /^over\s*wt\.?$/i.test(t) || t.includes("超磅"));
 
     // Find all table rows and parse each one
     $("table tr").each((_, row) => {
@@ -625,7 +626,7 @@ export class RaceCardScraper {
       const cells = $row.find("td");
       if (cells.length < 5) return;
 
-      const entry = this.parseEntryRow($, $row, drawCellIdx);
+      const entry = this.parseEntryRow($, $row, drawCellIdx, overWtCellIdx);
       if (entry) {
         entries.push(entry);
       }
@@ -642,15 +643,21 @@ export class RaceCardScraper {
    * Index of the "Dr." (barrier draw) column, read from the entries table header.
    */
   private findDrawColumnIndex($: cheerio.CheerioAPI): number | undefined {
+    return this.findColumnIndex($, (t) => {
+      const lower = t.toLowerCase();
+      return /^dr\.?$/i.test(lower) || lower === "draw" || t.includes("檔位");
+    });
+  }
+
+  /** Index of the first entries-table header cell whose text matches. */
+  private findColumnIndex($: cheerio.CheerioAPI, matches: (headerText: string) => boolean): number | undefined {
     for (const table of $("table").toArray()) {
       for (const tr of $(table).find("tr").toArray()) {
         const $ths = $(tr).find("th");
         if ($ths.length < 5) continue;
         let idx: number | undefined;
         $ths.each((i, th) => {
-          const t = $(th).text().replace(/\s+/g, " ").trim();
-          const lower = t.toLowerCase();
-          if (/^dr\.?$/i.test(lower) || lower === "draw" || t.includes("檔位")) idx = i;
+          if (matches($(th).text().replace(/\s+/g, " ").trim())) idx = i;
         });
         if (idx !== undefined) return idx;
       }
@@ -661,7 +668,8 @@ export class RaceCardScraper {
   private parseEntryRow(
     $: cheerio.CheerioAPI,
     $row: cheerio.Cheerio<cheerio.Element>,
-    drawCellIdx?: number
+    drawCellIdx?: number,
+    overWtCellIdx?: number
   ): RaceEntry | null {
     const cells = $row.find("td");
     if (cells.length < 5) return null;
@@ -689,6 +697,7 @@ export class RaceCardScraper {
     let weight = 126;
     let jockeyName = "";
     let jockeyCode = "UNK";
+    let jockeyClaim = 0;
     let hasJockeyLink = false;
     let trainerName = "";
     let trainerCode = "UNK";
@@ -721,6 +730,10 @@ export class RaceCardScraper {
             jockeyName = parentText;
           }
         }
+        // Apprentice allowance is shown beside the name, e.g. "C L Chau (-2)"
+        const claimMatch = $link.closest("td").text().match(/\(\s*-\s*(\d{1,2})\s*\)/);
+        if (claimMatch) jockeyClaim = parseInt(claimMatch[1]!, 10);
+        jockeyName = jockeyName.replace(/\s*\(\s*-\s*\d{1,2}\s*\)\s*$/, "");
       } else if (href.includes("trainer") || href.includes("Trainer")) {
         if (text.length >= 2) {
           trainerName = text;
@@ -771,6 +784,10 @@ export class RaceCardScraper {
       const d = parseInt(drawText, 10);
       return d >= 1 && d <= 14 ? d : undefined;
     };
+
+    let overweight = 0;
+    const overWtText = overWtCellIdx !== undefined ? cellTexts[overWtCellIdx]?.trim() : undefined;
+    if (overWtText && /^\d{1,2}$/.test(overWtText)) overweight = parseInt(overWtText, 10);
 
     const parsedDraw =
       readDrawAt(drawCellIdx) ??
@@ -896,7 +913,7 @@ export class RaceCardScraper {
       code: jockeyCode,
       name: jockeyName,
       nationality: "",
-      weightClaim: 0,
+      weightClaim: jockeyClaim,
       seasonStats: {
         wins: 0,
         places: 0,
@@ -930,6 +947,7 @@ export class RaceCardScraper {
       horseNumber,
       draw,
       weight,
+      ...(overweight > 0 ? { overweight } : {}),
       gearChanges: gear.length > 0 ? gear : undefined,
       currentOdds: undefined,
       isScratched,

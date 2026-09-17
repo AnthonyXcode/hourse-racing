@@ -134,7 +134,8 @@ export interface RaceEntry {
   readonly trainer: Trainer;
   readonly horseNumber: number; // Saddle cloth number
   readonly draw: number; // Barrier position
-  readonly weight: number; // Declared weight in pounds
+  readonly weight: number; // Handicap weight in pounds (racecard Wt., before claim/overweight)
+  readonly overweight?: number; // Declared overweight in pounds (racecard Over Wt.)
   readonly gearChanges?: readonly Gear[]; // New gear for this race
   readonly priority?: number; // Ballot priority (if applicable)
   readonly currentOdds?: number; // Live odds

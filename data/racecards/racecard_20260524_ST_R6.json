@@ -512,7 +512,7 @@
           "code": "CJE",
           "name": "C L Chau (-2)",
           "nationality": "CHN",
-          "weightClaim": 0,
+          "weightClaim": 2,
           "seasonStats": {
             "wins": 38,
             "places": 66,
@@ -2413,7 +2413,8 @@
           "XB",
           "TT"
         ],
-        "isScratched": false
+        "isScratched": false,
+        "overweight": 1
       }
     ]
   },

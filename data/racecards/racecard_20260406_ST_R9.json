@@ -483,7 +483,8 @@
           "P",
           "E"
         ],
-        "isScratched": false
+        "isScratched": false,
+        "overweight": 1
       },
       {
         "horse": {
@@ -896,7 +897,8 @@
           "TT",
           "E"
         ],
-        "isScratched": false
+        "isScratched": false,
+        "overweight": 1
       },
       {
         "horse": {
@@ -1060,7 +1062,8 @@
           "TT",
           "V"
         ],
-        "isScratched": false
+        "isScratched": false,
+        "overweight": 2
       },
       {
         "horse": {

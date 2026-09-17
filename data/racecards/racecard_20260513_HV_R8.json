@@ -143,7 +143,7 @@
           "code": "WPN",
           "name": "P N Wong (-7)",
           "nationality": "CHN",
-          "weightClaim": 0,
+          "weightClaim": 7,
           "seasonStats": {
             "wins": 10,
             "places": 19,
@@ -1470,7 +1470,7 @@
           "code": "WEC",
           "name": "E C W Wong (-3)",
           "nationality": "CHN",
-          "weightClaim": 0,
+          "weightClaim": 3,
           "seasonStats": {
             "wins": 20,
             "places": 35,
@@ -1735,7 +1735,7 @@
           "code": "MHT",
           "name": "H T Mo (-2)",
           "nationality": "CHN",
-          "weightClaim": 0,
+          "weightClaim": 2,
           "seasonStats": {
             "wins": 4,
             "places": 6,
@@ -2142,7 +2142,8 @@
         "gearChanges": [
           "PC"
         ],
-        "isScratched": false
+        "isScratched": false,
+        "overweight": 2
       },
       {
         "horse": {
@@ -2542,7 +2543,8 @@
           "B",
           "TT"
         ],
-        "isScratched": false
+        "isScratched": false,
+        "overweight": 2
       }
     ]
   },

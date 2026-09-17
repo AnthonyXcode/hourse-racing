@@ -126,7 +126,7 @@
           "code": "CJE",
           "name": "C L Chau (-2)",
           "nationality": "CHN",
-          "weightClaim": 0,
+          "weightClaim": 2,
           "seasonStats": {
             "wins": 39,
             "places": 67,
@@ -900,7 +900,7 @@
           "code": "YHY",
           "name": "H Y Yuen (-10)",
           "nationality": "CHN",
-          "weightClaim": 0,
+          "weightClaim": 10,
           "seasonStats": {
             "wins": 9,
             "places": 13,
@@ -1476,7 +1476,7 @@
           "code": "WEC",
           "name": "E C W Wong (-3)",
           "nationality": "CHN",
-          "weightClaim": 0,
+          "weightClaim": 3,
           "seasonStats": {
             "wins": 20,
             "places": 35,
@@ -2092,7 +2092,8 @@
           "B",
           "XB"
         ],
-        "isScratched": false
+        "isScratched": false,
+        "overweight": 2
       },
       {
         "horse": {

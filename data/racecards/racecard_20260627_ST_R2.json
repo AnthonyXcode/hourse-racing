@@ -904,7 +904,7 @@
           "code": "WPN",
           "name": "P N Wong (-7)",
           "nationality": "CHN",
-          "weightClaim": 0,
+          "weightClaim": 7,
           "seasonStats": {
             "wins": 11,
             "places": 24,
@@ -1348,7 +1348,7 @@
           "code": "CCY",
           "name": "Y L Chung (-2)",
           "nationality": "CHN",
-          "weightClaim": 0,
+          "weightClaim": 2,
           "seasonStats": {
             "wins": 24,
             "places": 35,
@@ -3004,7 +3004,8 @@
         "gearChanges": [
           "CP"
         ],
-        "isScratched": false
+        "isScratched": false,
+        "overweight": 1
       },
       {
         "horse": {
@@ -3240,7 +3241,8 @@
           "XB",
           "TT"
         ],
-        "isScratched": false
+        "isScratched": false,
+        "overweight": 1
       }
     ]
   },

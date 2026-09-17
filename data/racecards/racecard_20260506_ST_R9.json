@@ -408,7 +408,7 @@
           "code": "YHY",
           "name": "H Y Yuen (-10)",
           "nationality": "CHN",
-          "weightClaim": 0,
+          "weightClaim": 10,
           "seasonStats": {
             "wins": 5,
             "places": 10,
@@ -572,7 +572,7 @@
           "code": "CJE",
           "name": "C L Chau (-2)",
           "nationality": "CHN",
-          "weightClaim": 0,
+          "weightClaim": 2,
           "seasonStats": {
             "wins": 35,
             "places": 62,
@@ -1796,7 +1796,8 @@
           "XB",
           "TT"
         ],
-        "isScratched": false
+        "isScratched": false,
+        "overweight": 1
       },
       {
         "horse": {
@@ -2019,7 +2020,7 @@
           "code": "MHT",
           "name": "H T Mo (-2)",
           "nationality": "CHN",
-          "weightClaim": 0,
+          "weightClaim": 2,
           "seasonStats": {
             "wins": 4,
             "places": 6,

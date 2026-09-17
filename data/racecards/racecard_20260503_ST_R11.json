@@ -1450,7 +1450,8 @@
         "horseNumber": 12,
         "draw": 12,
         "weight": 120,
-        "isScratched": false
+        "isScratched": false,
+        "overweight": 2
       },
       {
         "horse": {

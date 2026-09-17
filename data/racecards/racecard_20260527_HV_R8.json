@@ -591,7 +591,7 @@
           "code": "CCY",
           "name": "Y L Chung (-2)",
           "nationality": "CHN",
-          "weightClaim": 0,
+          "weightClaim": 2,
           "seasonStats": {
             "wins": 22,
             "places": 27,
@@ -1529,7 +1529,8 @@
           "CP",
           "TT"
         ],
-        "isScratched": false
+        "isScratched": false,
+        "overweight": 1
       },
       {
         "horse": {

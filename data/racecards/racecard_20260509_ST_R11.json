@@ -157,7 +157,7 @@
           "code": "YHY",
           "name": "H Y Yuen (-10)",
           "nationality": "CHN",
-          "weightClaim": 0,
+          "weightClaim": 10,
           "seasonStats": {
             "wins": 6,
             "places": 12,
@@ -1109,7 +1109,8 @@
           "CP",
           "TT"
         ],
-        "isScratched": false
+        "isScratched": false,
+        "overweight": 2
       },
       {
         "horse": {
@@ -1542,7 +1543,7 @@
           "code": "CCY",
           "name": "Y L Chung (-2)",
           "nationality": "CHN",
-          "weightClaim": 0,
+          "weightClaim": 2,
           "seasonStats": {
             "wins": 19,
             "places": 26,
@@ -1805,7 +1806,8 @@
         "gearChanges": [
           "B"
         ],
-        "isScratched": false
+        "isScratched": false,
+        "overweight": 1
       },
       {
         "horse": {
@@ -2040,7 +2042,7 @@
           "code": "WPN",
           "name": "P N Wong (-7)",
           "nationality": "CHN",
-          "weightClaim": 0,
+          "weightClaim": 7,
           "seasonStats": {
             "wins": 10,
             "places": 18,

@@ -295,7 +295,7 @@
           "code": "ZM",
           "name": "M Zahra",
           "nationality": "",
-          "weightClaim": 0,
+          "weightClaim": 7,
           "seasonStats": {
             "wins": 0,
             "places": 0,
@@ -506,7 +506,8 @@
           "P",
           "E"
         ],
-        "isScratched": false
+        "isScratched": false,
+        "overweight": 3
       },
       {
         "horse": {

@@ -210,7 +210,7 @@
           "code": "YHY",
           "name": "H Y Yuen (-10)",
           "nationality": "",
-          "weightClaim": 0,
+          "weightClaim": 10,
           "seasonStats": {
             "wins": 0,
             "places": 0,
@@ -1795,7 +1795,7 @@
           "code": "CCY",
           "name": "Y L Chung (-2)",
           "nationality": "",
-          "weightClaim": 0,
+          "weightClaim": 2,
           "seasonStats": {
             "wins": 0,
             "places": 0,
@@ -2050,7 +2050,8 @@
         "horseNumber": 9,
         "draw": 5,
         "weight": 116,
-        "isScratched": false
+        "isScratched": false,
+        "overweight": 1
       }
     ]
   },

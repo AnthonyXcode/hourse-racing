@@ -235,7 +235,7 @@
           "code": "MOJ",
           "name": "J Moreira",
           "nationality": "Hong Kong",
-          "weightClaim": 0,
+          "weightClaim": 7,
           "seasonStats": {
             "wins": 2,
             "places": 0,
@@ -460,7 +460,8 @@
           "P",
           "E"
         ],
-        "isScratched": false
+        "isScratched": false,
+        "overweight": 4
       },
       {
         "horse": {
@@ -675,7 +676,8 @@
           "TT",
           "E"
         ],
-        "isScratched": false
+        "isScratched": false,
+        "overweight": 4
       },
       {
         "horse": {
