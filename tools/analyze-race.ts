@@ -20,7 +20,7 @@ import {
   type RaceAnalysisOptions,
   type RaceAnalysisResult,
 } from "../src/pipeline/raceAnalysis.js";
-import { tripRunCount } from "../src/backtest/differentiationBacktest.js";
+import { loadResults, tripRunCount } from "../src/backtest/differentiationBacktest.js";
 
 // ============================================================================
 // CLI ARGUMENT PARSING
@@ -227,7 +227,25 @@ function printFinishTimeProjection(projection: FinishTimeProjection): void {
   console.log(`\n  Projected winning time: ~${fmtTime(winner.mean)} (#${winner.horseNumber} ${winner.horseName}). Times from avg speed figure + par/going/weight; SD from ±${projection.speedStd}pt figure spread.`);
 }
 
-function printAnalysis(result: RaceAnalysisResult): void {
+type FinishOrder = Awaited<ReturnType<typeof loadResults>> extends Map<number, infer T> ? T : never;
+
+/** Finish order for this race from data/historical/results_*.json, or undefined if not run / no file. */
+async function loadActualFinish(result: RaceAnalysisResult): Promise<FinishOrder | undefined> {
+  const races = await loadResults(format(result.race.date, "yyyyMMdd"), result.race.venue);
+  const order = races.get(result.race.raceNumber);
+  return order && order.length > 0 ? order : undefined;
+}
+
+/** Actual position as "3", "3=" for a dead-heat, or "-" when the horse has no placing (e.g. did not finish). */
+function fmtActualPosition(order: FinishOrder, horseCode: string, horseNumber: number): string {
+  const finish =
+    order.find((f) => f.horseCode === horseCode) ?? order.find((f) => f.horseNumber === horseNumber);
+  if (!finish || finish.finishPosition < 1) return "-";
+  const deadHeat = order.some((f) => f !== finish && f.finishPosition === finish.finishPosition);
+  return `${finish.finishPosition}${deadHeat ? "=" : ""}`;
+}
+
+function printAnalysis(result: RaceAnalysisResult, actualFinish: FinishOrder | undefined): void {
   // Print report
   console.log(formatRaceReport(result.recommendation));
 
@@ -237,7 +255,7 @@ function printAnalysis(result: RaceAnalysisResult): void {
   console.log("─".repeat(60));
 
   console.log(
-    `\nWin Probability Rankings (all ${result.rankings.length} horses, ${result.simulationRuns.toLocaleString()} iterations; trip = past runs at ${result.race.distance}m):`
+    `\nWin Probability Rankings (all ${result.rankings.length} horses, ${result.simulationRuns.toLocaleString()} iterations; trip = past runs at ${result.race.distance}m${actualFinish ? "; actual = result" : ""}):`
   );
   for (const { simulation: s, analysis, ratingDiff } of result.rankings) {
     const entry = result.race.entries.find((e) => e.horseNumber === s.horseNumber);
@@ -246,11 +264,12 @@ function printAnalysis(result: RaceAnalysisResult): void {
     const ratingStr = analysis ? ` rating: ${analysis.overallRating.toFixed(0)}` : "";
     const diffStr = analysis ? ` diff: ${ratingDiff.toFixed(0)}` : "";
     const ePosStr = ` ePos: ${s.expectedPosition.toFixed(1)}`;
+    const actualStr = actualFinish ? ` actual: ${fmtActualPosition(actualFinish, s.horseCode, s.horseNumber)}` : "";
     console.log(
       `  #${s.horseNumber.toString().padStart(2)} ${s.horseName.padEnd(15).substring(0, 15)}: ` +
         `${(s.winProbability * 100).toFixed(1).padStart(5)}% win, ` +
         `${(s.placeProbability * 100).toFixed(1).padStart(5)}% place` +
-        recStr + ratingStr + diffStr + ePosStr
+        recStr + ratingStr + diffStr + ePosStr + actualStr
     );
   }
 
@@ -328,7 +347,7 @@ async function main(args: CliArgs): Promise<void> {
   printHeader(args);
   try {
     const result = await runRaceAnalysis(args, consoleLogger);
-    printAnalysis(result);
+    printAnalysis(result, await loadActualFinish(result));
   } catch (error) {
     printFailure(error);
     process.exit(1);
