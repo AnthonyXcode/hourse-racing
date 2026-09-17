@@ -224,7 +224,7 @@ function printFinishTimeProjection(projection: FinishTimeProjection): void {
     console.log(`\n  Debut (no form, excluded from projection): ${list}`);
   }
   const winner = rows[0]!;
-  console.log(`\n  Projected winning time: ~${fmtTime(winner.mean)} (#${winner.horseNumber} ${winner.horseName}). Times from avg speed figure + par/going/weight; SD from ±${projection.speedStd}pt figure spread.`);
+  console.log(`\n  Projected winning time: ~${fmtTime(winner.mean)} (#${winner.horseNumber} ${winner.horseName}). Times from avg speed figure + par/going (no weight adjustment); SD from ±${projection.speedStd}pt figure spread.`);
 }
 
 type FinishOrder = Awaited<ReturnType<typeof loadResults>> extends Map<number, infer T> ? T : never;

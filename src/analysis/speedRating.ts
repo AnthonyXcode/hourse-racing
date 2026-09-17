@@ -258,6 +258,15 @@ const STANDARD_WEIGHT = 126; // Standard weight in pounds
 // all-months ST and HV Turf place pools: place hit rate ST 48.1%→52.6%, HV 53.2%→57.9%.
 const WEIGHT_ADJUSTMENT_PER_LB_PER_200M = 0.045;
 
+/**
+ * Weight adjustment used when projecting today's finish time (seconds per lb per
+ * 200m). Separate from the speed-figure coefficient: handicap weight tracks
+ * ability, so charging the full 0.045 undid the figures. Sweep on 893 races
+ * (offsets fitted Sep–Jan, scored Feb–Sep): projected-vs-actual order corr
+ * 0 → 0.171, 0.01 → 0.128, 0.045 → −0.028; winning-time MAE 0.80s / 0.76s / 1.47s.
+ */
+const PROJECTION_WEIGHT_PER_LB_PER_200M = 0;
+
 // ============================================================================
 // SPEED RATING CALCULATOR CLASS
 // ============================================================================
@@ -422,6 +431,7 @@ export class SpeedRatingCalculator {
    *   speedRating = base + (parTime − adjustedTime) / secPerPt
    *   adjustedTime = finishTime − goingAdj − weightAdj
    * ⇒ finishTime = parTime − (speedRating − base)·secPerPt + goingAdj + weightAdj
+   * where weightAdj uses PROJECTION_WEIGHT_PER_LB_PER_200M, not the figure coefficient.
    *
    * Returns null if no par time exists for the race configuration.
    */
@@ -437,7 +447,7 @@ export class SpeedRatingCalculator {
     const parTime = this.getParTime(venue, surface, distance, raceClass);
     if (parTime === null) return null;
     const goingAdj = this.calculateGoingAdjustment(going, distance);
-    const weightAdj = this.calculateWeightAdjustment(weight, distance);
+    const weightAdj = (distance / 200) * (weight - STANDARD_WEIGHT) * PROJECTION_WEIGHT_PER_LB_PER_200M;
     const adjustedTime = parTime - (speedRating - this.baseRating) * this.secondsPerRatingPoint;
     return adjustedTime + goingAdj + weightAdj;
   }
