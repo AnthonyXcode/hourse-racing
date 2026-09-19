@@ -102,6 +102,7 @@ export interface DifferentiationReport {
     runners: BreakdownSummary;
     mcPlacePct: BreakdownSummary;
     winOdds: BreakdownSummary;
+    marketPosition: BreakdownSummary;
     expectedPosition: BreakdownSummary;
     rating: BreakdownSummary;
     avgDiff: BreakdownSummary;
@@ -237,6 +238,17 @@ const TOP_GAP_BUCKETS: Bucket[] = [
 ];
 
 /** One bucket per integer Rtg+/- ("+3", "-1"), sorted numerically, "N/A" last */
+/** Market position of the pick, favourite first; races without odds last. */
+function marketPositionGroups(rows: Row[]): Map<string, Row[]> {
+  const groups = groupBy(rows, (r) =>
+    r.topRatedMarketPosition > 0
+      ? `${r.topRatedMarketPosition}${r.topRatedMarketPosition === 1 ? " (fav)" : ""}`
+      : "N/A"
+  );
+  const sortValue = (key: string): number => (key === "N/A" ? Infinity : parseInt(key, 10));
+  return new Map([...groups.entries()].sort((a, b) => sortValue(a[0]) - sortValue(b[0])));
+}
+
 function ratingChangeGroups(rows: Row[]): Map<string, Row[]> {
   const groups = groupBy(rows, (r) => {
     const change = r.topRatedRatingChange;
@@ -434,6 +446,7 @@ function summarizeBreakdowns(
       })
     ),
     winOdds: summarizeBreakdown(bucketGroups(rows, ODDS_BUCKETS, (r) => r.topRatedWinOdds, true)),
+    marketPosition: summarizeBreakdown(marketPositionGroups(rows), { preserveOrder: true }),
     expectedPosition: summarizeBreakdown(
       bucketGroups(rows, EXPECTED_POSITION_BUCKETS, (r) => r.topRatedExpectedPosition, true),
       { preserveOrder: true }

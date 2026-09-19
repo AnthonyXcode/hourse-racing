@@ -245,6 +245,35 @@ function fmtActualPosition(order: FinishOrder, horseCode: string, horseNumber: n
   return `${finish.finishPosition}${deadHeat ? "=" : ""}`;
 }
 
+/**
+ * Win odds per horse number, preferring the finishing SP recorded in data/historical/
+ * over the race card snapshot (which can hold stale or pre-scratching odds).
+ */
+function resolveWinOdds(
+  cardOdds: ReadonlyMap<number, number>,
+  actualFinish: FinishOrder | undefined
+): ReadonlyMap<number, number> {
+  if (!actualFinish) return cardOdds;
+  const fromResults = new Map<number, number>();
+  for (const f of actualFinish) {
+    if (f.winOdds !== undefined && f.winOdds > 0) fromResults.set(f.horseNumber, f.winOdds);
+  }
+  return fromResults.size > 0 ? fromResults : cardOdds;
+}
+
+/**
+ * Market rank per horse number from win odds (1 = favourite); equal odds share a rank.
+ * Empty when no odds are available.
+ */
+function marketRanks(winOdds: ReadonlyMap<number, number>): Map<number, number> {
+  const priced = [...winOdds].filter(([, odds]) => odds > 0);
+  const ranks = new Map<number, number>();
+  for (const [horseNumber, odds] of priced) {
+    ranks.set(horseNumber, 1 + priced.filter(([, other]) => other < odds).length);
+  }
+  return ranks;
+}
+
 function printAnalysis(result: RaceAnalysisResult, actualFinish: FinishOrder | undefined): void {
   // Print report
   console.log(formatRaceReport(result.recommendation));
@@ -254,8 +283,9 @@ function printAnalysis(result: RaceAnalysisResult, actualFinish: FinishOrder | u
   console.log("SIMULATION SUMMARY");
   console.log("─".repeat(60));
 
+  const ranks = marketRanks(resolveWinOdds(result.winOdds, actualFinish));
   console.log(
-    `\nWin Probability Rankings (all ${result.rankings.length} horses, ${result.simulationRuns.toLocaleString()} iterations; trip = past runs at ${result.race.distance}m${actualFinish ? "; actual = result" : ""}):`
+    `\nWin Probability Rankings (all ${result.rankings.length} horses, ${result.simulationRuns.toLocaleString()} iterations; trip = past runs at ${result.race.distance}m${ranks.size > 0 ? "; mkt = market rank by win odds, ★ = favourite" : ""}${actualFinish ? "; actual = result" : ""}):`
   );
   for (const { simulation: s, analysis, ratingDiff } of result.rankings) {
     const entry = result.race.entries.find((e) => e.horseNumber === s.horseNumber);
@@ -264,12 +294,14 @@ function printAnalysis(result: RaceAnalysisResult, actualFinish: FinishOrder | u
     const ratingStr = analysis ? ` rating: ${analysis.overallRating.toFixed(0)}` : "";
     const diffStr = analysis ? ` diff: ${ratingDiff.toFixed(0)}` : "";
     const ePosStr = ` ePos: ${s.expectedPosition.toFixed(1)}`;
+    const rank = ranks.get(s.horseNumber);
+    const mktStr = rank === undefined ? "" : ` mkt: ${rank}${rank === 1 ? "★" : ""}`;
     const actualStr = actualFinish ? ` actual: ${fmtActualPosition(actualFinish, s.horseCode, s.horseNumber)}` : "";
     console.log(
       `  #${s.horseNumber.toString().padStart(2)} ${s.horseName.padEnd(15).substring(0, 15)}: ` +
         `${(s.winProbability * 100).toFixed(1).padStart(5)}% win, ` +
         `${(s.placeProbability * 100).toFixed(1).padStart(5)}% place` +
-        recStr + ratingStr + diffStr + ePosStr + actualStr
+        recStr + ratingStr + diffStr + ePosStr + mktStr + actualStr
     );
   }
 

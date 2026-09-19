@@ -17,6 +17,30 @@ export function isSparseFormEntry(entry: Pick<RaceEntry, "isScratched" | "horse"
   return (entry.horse.pastPerformances?.length ?? 0) < SPARSE_FORM_MIN_RECORDS;
 }
 
+/**
+ * Market position of `horseNumber` by win odds among non-scratched runners: 1 = favourite,
+ * equal odds share a position. Prefers the result file's odds (final), falling back to the
+ * saved race card's. Returns 0 when the horse has no odds.
+ */
+export function marketPosition(
+  race: Pick<Race, "entries">,
+  finishOrder: { horseNumber: number; winOdds?: number }[],
+  winOddsMap: Map<number, number>,
+  horseNumber: number
+): number {
+  const oddsOf = (num: number): number =>
+    finishOrder.find((f) => f.horseNumber === num)?.winOdds ?? winOddsMap.get(num) ?? 0;
+  const own = oddsOf(horseNumber);
+  if (own <= 0) return 0;
+  let shorter = 0;
+  for (const entry of race.entries) {
+    if (entry.isScratched || entry.horseNumber === horseNumber) continue;
+    const odds = oddsOf(entry.horseNumber);
+    if (odds > 0 && odds < own) shorter++;
+  }
+  return shorter + 1;
+}
+
 /** Past performances at exactly `distance` metres (the --min-trip-runs count). */
 export function tripRunCount(entry: Pick<RaceEntry, "horse"> | undefined, distance: number): number {
   return (entry?.horse.pastPerformances ?? []).filter((p) => p.distance === distance).length;
@@ -62,6 +86,8 @@ export interface DifferentiationBacktestRow {
   topRatedWinOdds: number;
   /** Place odds of the top-rated horse at race time (0 if unavailable) */
   topRatedPlaceOdds: number;
+  /** Market position of the top-rated horse by win odds (1 = favourite); 0 if no odds */
+  topRatedMarketPosition: number;
   /** MC expected finishing position of the top-rated horse (e.g. 3.2 = avg 3rd) */
   topRatedExpectedPosition: number;
   /** Handicapper rating change for the top-rated horse (Rtg.+/-), if on racecard */
@@ -483,6 +509,7 @@ export async function runDifferentiationBacktest(
     const topRatedHorseNum = topRatedEntry?.horseNumber ?? 0;
     const topRatedFinish = finishOrder.find((f) => f.horseNumber === topRatedHorseNum);
     const topRatedWinOdds = topRatedFinish?.winOdds ?? winOddsMap.get(topRatedHorseNum) ?? 0;
+    const topRatedMarketPos = marketPosition(race, finishOrder, winOddsMap, topRatedHorseNum);
     const resultPlaceOdds = meeting.placeDividendMap.get(parsed.raceNumber);
     const topRatedPlaceOdds = resultPlaceOdds?.get(topRatedHorseNum) ?? 0;
     const topRatedRatingChange = topRatedEntry?.horse.ratingChange;
@@ -563,6 +590,7 @@ export async function runDifferentiationBacktest(
       topRatedMcPlacePct,
       topRatedWinOdds,
       topRatedPlaceOdds,
+      topRatedMarketPosition: topRatedMarketPos,
       topRatedExpectedPosition,
       ...(topRatedEntry?.horse.ratingChange !== undefined
         ? { topRatedRatingChange: topRatedEntry.horse.ratingChange }

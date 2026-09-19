@@ -84,7 +84,7 @@ async function main() {
 
   // --- Race-by-race table with strategy ---
   const skipReasonWidth = 22;
-  const tableWidth = 104 + skipReasonWidth + 1;
+  const tableWidth = 111 + skipReasonWidth + 1;
   console.log("═".repeat(tableWidth));
   const oddsRule = oddsMax > 0 ? ` OR odds>${oddsMax}` : "";
   console.log(
@@ -92,7 +92,7 @@ async function main() {
   );
   console.log("═".repeat(tableWidth));
   console.log(
-    `${"Race".padEnd(18)} ${"Horse".padEnd(16)} ${"#".padStart(2)} ${"Bet".padStart(4)} ${"Hit".padStart(4)} ${"WinO".padStart(6)} ${"PlcO".padStart(6)} ${"AvgDiff".padStart(7)} ${"Close<8".padStart(7)} ${"Sparse".padStart(6)} ${"Rating".padStart(6)} ${"Pos".padStart(4)} ${"SkipReason".padEnd(skipReasonWidth)}`
+    `${"Race".padEnd(18)} ${"Horse".padEnd(16)} ${"#".padStart(2)} ${"Bet".padStart(4)} ${"Hit".padStart(4)} ${"WinO".padStart(6)} ${"PlcO".padStart(6)} ${"MktPos".padStart(6)} ${"AvgDiff".padStart(7)} ${"Close<8".padStart(7)} ${"Sparse".padStart(6)} ${"Rating".padStart(6)} ${"Pos".padStart(4)} ${"SkipReason".padEnd(skipReasonWidth)}`
   );
   console.log("─".repeat(tableWidth));
   for (const r of report.races) {
@@ -100,11 +100,13 @@ async function main() {
     const hit = r.skipped ? "➖" : r.topRatedPlaced ? "✅" : "❌";
     const winO = r.topRatedWinOdds > 0 ? r.topRatedWinOdds.toFixed(1) : "-";
     const plcO = r.topRatedPlaceOdds > 0 ? r.topRatedPlaceOdds.toFixed(1) : "-";
+    // Market position of the pick by win odds: 1 = favourite
+    const mktPos = r.topRatedMarketPosition > 0 ? r.topRatedMarketPosition.toString() : "-";
     const skipReason = r.skipped ? r.skipReason.substring(0, skipReasonWidth) : "-";
     const pos =
       r.topRatedFinishPosition > 0 ? r.topRatedFinishPosition.toString() : "-";
     console.log(
-      `${r.raceId.padEnd(18)} ${r.topRatedHorseName.substring(0, 15).padEnd(16)} ${r.topRatedHorseNumber.toString().padStart(2)} ${bet.padStart(4)} ${hit.padStart(4)} ${winO.padStart(6)} ${plcO.padStart(6)} ${r.avgDiff.toString().padStart(7)} ${r.horsesWithDiffLt8.toString().padStart(7)} ${r.sparseFormCount.toString().padStart(6)} ${r.overallRating.toString().padStart(6)} ${pos.padStart(4)} ${skipReason.padEnd(skipReasonWidth)}`
+      `${r.raceId.padEnd(18)} ${r.topRatedHorseName.substring(0, 15).padEnd(16)} ${r.topRatedHorseNumber.toString().padStart(2)} ${bet.padStart(4)} ${hit.padStart(4)} ${winO.padStart(6)} ${plcO.padStart(6)} ${mktPos.padStart(6)} ${r.avgDiff.toString().padStart(7)} ${r.horsesWithDiffLt8.toString().padStart(7)} ${r.sparseFormCount.toString().padStart(6)} ${r.overallRating.toString().padStart(6)} ${pos.padStart(4)} ${skipReason.padEnd(skipReasonWidth)}`
     );
   }
   console.log("─".repeat(tableWidth));
@@ -169,6 +171,7 @@ async function main() {
   printBreakdownSummary("NUMBER OF RUNNERS", b.runners);
   printBreakdownSummary("MC PLACE% SLOT (5%)", b.mcPlacePct);
   printBreakdownSummary("WIN ODDS (top-rated)", b.winOdds);
+  printBreakdownSummary("MARKET POSITION (top-rated, 1 = favourite)", b.marketPosition);
   printBreakdownSummary("EXPECTED POSITION (top-rated)", b.expectedPosition);
   printBreakdownSummary("RATING (top-rated)", b.rating);
   printBreakdownSummary("AVG DIFF (field spread)", b.avgDiff);

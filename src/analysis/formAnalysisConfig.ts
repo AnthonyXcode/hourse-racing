@@ -210,7 +210,8 @@ const HV_TURF_1650_C4: OverallRatingWeights = {
 
 const HV_TURF_DEFAULT_MAP: WeightBiasData = mergeDistanceWeights(
   uniformDistanceWeights([1000, 1200, 1800, 2200], HV_TURF_DEFAULT),
-  { 1650: HV_TURF_1650 }
+//   { 1650: HV_TURF_1650 }
+  {}
 );
 
 /** ST Turf Class 3: competitive handicaps — official ratings bunch, jockey + momentum > raw speed. */
