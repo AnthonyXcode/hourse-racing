@@ -28,6 +28,8 @@ import { loadResults, tripRunCount } from "../src/backtest/differentiationBackte
 
 interface CliArgs extends RaceAnalysisOptions {
   help?: boolean;
+  /** Leave the actual finishing position out of the rankings (blind review) */
+  hideActual?: boolean;
 }
 
 function parseArgs(): CliArgs {
@@ -47,6 +49,7 @@ function parseArgs(): CliArgs {
   let bankroll: number | undefined;
   let kellyFraction: number | undefined;
   let minEdge: number | undefined;
+  let hideActual = false;
 
   for (let i = 0; i < args.length; i++) {
     const arg = args[i];
@@ -87,6 +90,11 @@ function parseArgs(): CliArgs {
       case "--use-saved":
       case "-s":
         useSaved = true;
+        break;
+
+      case "--hide-actual":
+      case "--no-actual":
+        hideActual = true;
         break;
 
       case "--race":
@@ -131,6 +139,7 @@ function parseArgs(): CliArgs {
   if (formData !== undefined) result.formData = formData;
   if (ignoreRecords !== undefined && ignoreRecords.length > 0) result.ignoreRecords = ignoreRecords;
   if (useSaved) result.useSaved = true;
+  if (hideActual) result.hideActual = true;
   if (bankroll !== undefined) result.bankroll = bankroll;
   if (kellyFraction !== undefined) result.kellyFraction = kellyFraction;
   if (minEdge !== undefined) result.minEdge = minEdge;
@@ -150,6 +159,7 @@ Options:
   -f, --form-data <mode>    Form data: "all" = use HV + ST records; if omitted, use --venue only
   --ignore-records <list>   Comma-separated list: skip historical files whose name contains any (e.g. 20260315,20260301,HV)
   -s, --use-saved           Use saved race card snapshot from data/racecards/ instead of live scraping
+  --hide-actual             Hide the "actual:" finishing position in the rankings (blind review)
   -r, --race <number>       Race number (default: 1)
   -b, --bankroll <amount>   Bankroll in HKD (default: 10000)
   -k, --kelly <fraction>    Kelly fraction 0-1 (default: 0.25)
@@ -274,7 +284,11 @@ function marketRanks(winOdds: ReadonlyMap<number, number>): Map<number, number> 
   return ranks;
 }
 
-function printAnalysis(result: RaceAnalysisResult, actualFinish: FinishOrder | undefined): void {
+function printAnalysis(
+  result: RaceAnalysisResult,
+  actualFinish: FinishOrder | undefined,
+  showActual: boolean
+): void {
   // Print report
   console.log(formatRaceReport(result.recommendation));
 
@@ -285,7 +299,7 @@ function printAnalysis(result: RaceAnalysisResult, actualFinish: FinishOrder | u
 
   const ranks = marketRanks(resolveWinOdds(result.winOdds, actualFinish));
   console.log(
-    `\nWin Probability Rankings (all ${result.rankings.length} horses, ${result.simulationRuns.toLocaleString()} iterations; trip = past runs at ${result.race.distance}m${ranks.size > 0 ? "; mkt = market rank by win odds, ★ = favourite" : ""}${actualFinish ? "; actual = result" : ""}):`
+    `\nWin Probability Rankings (all ${result.rankings.length} horses, ${result.simulationRuns.toLocaleString()} iterations; trip = past runs at ${result.race.distance}m${ranks.size > 0 ? "; mkt = market rank by win odds, ★ = favourite" : ""}${actualFinish && showActual ? "; actual = result" : ""}):`
   );
   for (const { simulation: s, analysis, ratingDiff } of result.rankings) {
     const entry = result.race.entries.find((e) => e.horseNumber === s.horseNumber);
@@ -296,7 +310,10 @@ function printAnalysis(result: RaceAnalysisResult, actualFinish: FinishOrder | u
     const ePosStr = ` ePos: ${s.expectedPosition.toFixed(1)}`;
     const rank = ranks.get(s.horseNumber);
     const mktStr = rank === undefined ? "" : ` mkt: ${rank}${rank === 1 ? "★" : ""}`;
-    const actualStr = actualFinish ? ` actual: ${fmtActualPosition(actualFinish, s.horseCode, s.horseNumber)}` : "";
+    const actualStr =
+      actualFinish && showActual
+        ? ` actual: ${fmtActualPosition(actualFinish, s.horseCode, s.horseNumber)}`
+        : "";
     console.log(
       `  #${s.horseNumber.toString().padStart(2)} ${s.horseName.padEnd(15).substring(0, 15)}: ` +
         `${(s.winProbability * 100).toFixed(1).padStart(5)}% win, ` +
@@ -379,7 +396,7 @@ async function main(args: CliArgs): Promise<void> {
   printHeader(args);
   try {
     const result = await runRaceAnalysis(args, consoleLogger);
-    printAnalysis(result, await loadActualFinish(result));
+    printAnalysis(result, await loadActualFinish(result), !args.hideActual);
   } catch (error) {
     printFailure(error);
     process.exit(1);
