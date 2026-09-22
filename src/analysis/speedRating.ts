@@ -11,6 +11,7 @@
 
 import fs from "fs";
 import path from "path";
+import { fileURLToPath } from "url";
 import type {
   PastPerformance,
   Horse,
@@ -281,6 +282,10 @@ const PROJECTION_WEIGHT_PER_LB_PER_200M = 0;
  */
 export const FIELD_TIME_SHRINK = 0.7;
 
+// Resolved from this module, not process.cwd(), so callers running from another
+// directory (e.g. horse-racing-training/) still get the calibration tables.
+const STATIC_DIR = fileURLToPath(new URL("../../data/static/", import.meta.url));
+
 /** Empirical par overrides: "Venue|Surface|Distance|Class" → seconds. */
 const EMPIRICAL_PARS: Record<string, number> = loadStatic("par_times_empirical.json");
 /** Per-bucket residual offset to add to a projected finish time (seconds). */
@@ -290,7 +295,7 @@ const EMPIRICAL_GOING: Record<string, number> = loadStatic("going_adjustments_em
 
 function loadStatic(file: string): Record<string, number> {
   try {
-    return JSON.parse(fs.readFileSync(path.join(process.cwd(), "data", "static", file), "utf-8"));
+    return JSON.parse(fs.readFileSync(path.join(STATIC_DIR, file), "utf-8"));
   } catch {
     return {};
   }

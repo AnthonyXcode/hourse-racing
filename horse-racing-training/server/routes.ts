@@ -2,6 +2,7 @@ import { Router } from "express";
 import { getManifest, cardPath, resultPath, readJson } from "./dataIndex";
 import { settle } from "../shared/betEngine/index";
 import { readHistory, addEntry, deleteEntry, clearHistory } from "./history";
+import { runAnalyzer } from "./analyzer";
 import type {
   RaceCard,
   RaceResult,
@@ -21,6 +22,19 @@ api.delete("/history/:id", (req, res) => res.json(deleteEntry(req.params.id)));
 api.delete("/history", (_req, res) => {
   clearHistory();
   res.json([]);
+});
+
+/** GET /api/analyzer?from=YYYY-MM-DD&to=YYYY-MM-DD → per-horse predictions vs results for the range. */
+api.get("/analyzer", async (req, res) => {
+  const { from, to } = req.query;
+  const ymd = /^\d{4}-\d{2}-\d{2}$/;
+  if (typeof from !== "string" || typeof to !== "string" || !ymd.test(from) || !ymd.test(to) || from > to)
+    return res.status(400).json({ error: "from and to must be YYYY-MM-DD with from ≤ to" });
+  try {
+    res.json(await runAnalyzer(from, to));
+  } catch (e) {
+    res.status(500).json({ error: String(e) });
+  }
 });
 
 /** GET /api/days → all meetings with saved cards, newest first. */

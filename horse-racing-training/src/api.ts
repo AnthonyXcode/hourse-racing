@@ -7,6 +7,7 @@ import type {
   SettleResult,
   HistoryEntry,
 } from "../shared/types";
+import type { AnalyzerPayload } from "../shared/analyzer/model";
 
 async function get<T>(url: string): Promise<T> {
   const r = await fetch(url);
@@ -36,6 +37,7 @@ export const api = {
   addHistory: (e: HistoryEntry) => send<HistoryEntry[]>("POST", "/api/history", e),
   deleteHistory: (id: string) => send<HistoryEntry[]>("DELETE", `/api/history/${id}`),
   clearHistory: () => send<HistoryEntry[]>("DELETE", "/api/history"),
+  analyzer: (from: string, to: string) => get<AnalyzerPayload>(`/api/analyzer?from=${from}&to=${to}`),
 };
 
 /** "20260627" → "27 Jun 2026" */

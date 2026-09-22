@@ -12,6 +12,14 @@ import type {
 } from "../shared/types";
 import { RaceCardTable, BetTypePicker, CostBar, ResultModal, ResultPanel, HistoryPage, legSummary, type Role } from "./ui";
 import type { RaceResult } from "../shared/types";
+import { AnalyzerPage } from "./analyzer/AnalyzerPage";
+
+/** false until `v` is first true, then true for good. */
+function useOnceTrue(v: boolean): boolean {
+  const [seen, setSeen] = useState(v);
+  if (v && !seen) setSeen(true);
+  return seen || v;
+}
 
 interface Picks {
   bankers: number[];
@@ -31,9 +39,10 @@ export default function App() {
   const [dtLegs, setDtLegs] = useState<number[]>([]); // chosen leg races for DT/TT
   const [result, setResult] = useState<SettleResult | null>(null);
   const [error, setError] = useState<string>("");
-  const [view, setView] = useState<"bet" | "history">("bet");
+  const [view, setView] = useState<"bet" | "history" | "win-place" | "trio">("bet");
   const [history, setHistory] = useState<HistoryEntry[]>([]);
   const [raceResult, setRaceResult] = useState<RaceResult | null>(null);
+  const analyzerOpened = useOnceTrue(view === "win-place" || view === "trio");
 
   // Load meeting list once.
   useEffect(() => {
@@ -196,6 +205,8 @@ export default function App() {
         <nav className="tabs">
           <button className={view === "bet" ? "active" : ""} onClick={() => setView("bet")}>Bet</button>
           <button className={view === "history" ? "active" : ""} onClick={() => setView("history")}>History</button>
+          <button className={view === "win-place" ? "active" : ""} onClick={() => setView("win-place")}>Win / Place</button>
+          <button className={view === "trio" ? "active" : ""} onClick={() => setView("trio")}>Trio</button>
         </nav>
         {view === "bet" && (
           <select value={meetingKey} onChange={(e) => setMeetingKey(e.target.value)}>
@@ -210,6 +221,14 @@ export default function App() {
       </header>
 
       {error && <div className="error">{error}</div>}
+
+      {/* Analyzer performance. Stays mounted once opened so the range, filters
+          and loaded analysis survive switching to other tabs and back. */}
+      {analyzerOpened && (
+        <div hidden={view !== "win-place" && view !== "trio"}>
+          <AnalyzerPage tab={view === "trio" ? "trio" : "win-place"} />
+        </div>
+      )}
 
       {view === "history" && (
         <HistoryPage

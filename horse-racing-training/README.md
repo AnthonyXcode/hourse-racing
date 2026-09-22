@@ -19,6 +19,13 @@ Open http://localhost:5173. Pick a racing day → race tab (default R1) → bet 
 click horses to pick (click again = banker 膽 for banker pools, again = clear) →
 cost updates live → Place bet → HIT/MISS modal.
 
+**Win / Place** and **Trio** tabs show how the race analyzer (form rating + Monte Carlo,
+5,000 runs, seeded per race) performed against real results. Opening either tab runs the
+analysis for the date range at the top (default: last 12 months) via `GET /api/analyzer`;
+the server imports the parent repo's `src/` engine directly. A cold 12-month run takes
+~15 s; per-race results are cached in memory until the racecard or results file changes.
+All filters, charts and tables are computed in the browser from that payload.
+
 Production (single process serving built SPA + API):
 
 ```bash
