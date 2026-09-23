@@ -1,0 +1,18 @@
+query racing($date: String, $venueCode: String, $oddsTypes: [OddsType], $raceNo: Int) {
+  raceMeetings(date: $date, venueCode: $venueCode) {
+    totalInvestment
+    poolInvs: pmPools(oddsTypes: $oddsTypes, raceNo: $raceNo) {
+      id
+      leg {
+        number
+        races
+      }
+      status
+      sellStatus
+      oddsType
+      investment
+      mergedPoolId
+      lastUpdateTime
+    }
+  }
+}

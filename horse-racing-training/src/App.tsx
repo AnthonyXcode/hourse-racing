@@ -13,6 +13,7 @@ import type {
 import { RaceCardTable, BetTypePicker, CostBar, ResultModal, ResultPanel, HistoryPage, legSummary, type Role } from "./ui";
 import type { RaceResult } from "../shared/types";
 import { AnalyzerPage } from "./analyzer/AnalyzerPage";
+import { MomentumPage } from "./momentum/MomentumPage";
 
 /** false until `v` is first true, then true for good. */
 function useOnceTrue(v: boolean): boolean {
@@ -39,7 +40,7 @@ export default function App() {
   const [dtLegs, setDtLegs] = useState<number[]>([]); // chosen leg races for DT/TT
   const [result, setResult] = useState<SettleResult | null>(null);
   const [error, setError] = useState<string>("");
-  const [view, setView] = useState<"bet" | "history" | "win-place" | "trio">("bet");
+  const [view, setView] = useState<"bet" | "history" | "win-place" | "trio" | "momentum">("bet");
   const [history, setHistory] = useState<HistoryEntry[]>([]);
   const [raceResult, setRaceResult] = useState<RaceResult | null>(null);
   const analyzerOpened = useOnceTrue(view === "win-place" || view === "trio");
@@ -207,6 +208,7 @@ export default function App() {
           <button className={view === "history" ? "active" : ""} onClick={() => setView("history")}>History</button>
           <button className={view === "win-place" ? "active" : ""} onClick={() => setView("win-place")}>Win / Place</button>
           <button className={view === "trio" ? "active" : ""} onClick={() => setView("trio")}>Trio</button>
+          <button className={view === "momentum" ? "active" : ""} onClick={() => setView("momentum")}>Momentum</button>
         </nav>
         {view === "bet" && (
           <select value={meetingKey} onChange={(e) => setMeetingKey(e.target.value)}>
@@ -229,6 +231,8 @@ export default function App() {
           <AnalyzerPage tab={view === "trio" ? "trio" : "win-place"} />
         </div>
       )}
+
+      {view === "momentum" && <MomentumPage />}
 
       {view === "history" && (
         <HistoryPage

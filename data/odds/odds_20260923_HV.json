@@ -1,0 +1,937 @@
+{
+  "date": "2026-09-23",
+  "venue": "HV",
+  "races": [
+    {
+      "raceNumber": 1,
+      "date": "2026-09-23",
+      "venue": "HV",
+      "horses": [
+        {
+          "horseNumber": 1,
+          "horseName": "SUPER SICARIO",
+          "jockey": "C Y Ho",
+          "trainer": "C Fownes",
+          "winOdds": 15,
+          "placeOdds": null
+        },
+        {
+          "horseNumber": 2,
+          "horseName": "SMILING ONE",
+          "jockey": "R Kingscote",
+          "trainer": "K H Ting",
+          "winOdds": 44,
+          "placeOdds": null
+        },
+        {
+          "horseNumber": 3,
+          "horseName": "SOARING BRONCO",
+          "jockey": "L Ferraris",
+          "trainer": "M Newnham",
+          "winOdds": 5.2,
+          "placeOdds": null
+        },
+        {
+          "horseNumber": 4,
+          "horseName": "RED BRICK WARRIOR",
+          "jockey": "C L Chau",
+          "trainer": "D Eustace",
+          "winOdds": 9,
+          "placeOdds": null
+        },
+        {
+          "horseNumber": 5,
+          "horseName": "TO INFINITY",
+          "jockey": "J Orman",
+          "trainer": "J Richards",
+          "winOdds": 21,
+          "placeOdds": null
+        },
+        {
+          "horseNumber": 6,
+          "horseName": "ALL ARE MINE",
+          "jockey": "L Hewitson",
+          "trainer": "B Crawford",
+          "winOdds": 10,
+          "placeOdds": null
+        },
+        {
+          "horseNumber": 7,
+          "horseName": "CIRCUIT DUFFY",
+          "jockey": "M L Yeung",
+          "trainer": "W Y So",
+          "winOdds": 64,
+          "placeOdds": null
+        },
+        {
+          "horseNumber": 8,
+          "horseName": "TELECOM POWER",
+          "jockey": "H Y Yuen",
+          "trainer": "Y S Tsui",
+          "winOdds": 4.3,
+          "placeOdds": null
+        },
+        {
+          "horseNumber": 9,
+          "horseName": "KOLACHI",
+          "jockey": "K C Leung",
+          "trainer": "D J Whyte",
+          "winOdds": 21,
+          "placeOdds": null
+        },
+        {
+          "horseNumber": 10,
+          "horseName": "WINDICATOR FAMILY",
+          "jockey": "K Teetan",
+          "trainer": "W K Mo",
+          "winOdds": 17,
+          "placeOdds": null
+        },
+        {
+          "horseNumber": 11,
+          "horseName": "ORIENTAL SURPRISE",
+          "jockey": "Z Purton",
+          "trainer": "D A Hayes",
+          "winOdds": 3.3,
+          "placeOdds": null
+        },
+        {
+          "horseNumber": 12,
+          "horseName": "PERFECT PAIRING",
+          "jockey": "A Atzeni",
+          "trainer": "J Size",
+          "winOdds": 33,
+          "placeOdds": null
+        }
+      ],
+      "fetchedAt": null,
+      "note": "racecard snapshot odds"
+    },
+    {
+      "raceNumber": 2,
+      "date": "2026-09-23",
+      "venue": "HV",
+      "horses": [
+        {
+          "horseNumber": 1,
+          "horseName": "FIND MY LOVE",
+          "jockey": "M L Yeung",
+          "trainer": "D J Whyte",
+          "winOdds": 19,
+          "placeOdds": null
+        },
+        {
+          "horseNumber": 2,
+          "horseName": "VIGOR HAPPINESS",
+          "jockey": "M Chadwick",
+          "trainer": "Y S Tsui",
+          "winOdds": 31,
+          "placeOdds": null
+        },
+        {
+          "horseNumber": 3,
+          "horseName": "LOOKING BRIGHT",
+          "jockey": "K Teetan",
+          "trainer": "F C Lor",
+          "winOdds": 9.2,
+          "placeOdds": null
+        },
+        {
+          "horseNumber": 4,
+          "horseName": "MATZDEN",
+          "jockey": "A Atzeni",
+          "trainer": "J Richards",
+          "winOdds": 3.9,
+          "placeOdds": null
+        },
+        {
+          "horseNumber": 5,
+          "horseName": "TOURBILLON GOLFER",
+          "jockey": "M F Poon",
+          "trainer": "P F Yiu",
+          "winOdds": 15,
+          "placeOdds": null
+        },
+        {
+          "horseNumber": 6,
+          "horseName": "GOLDEN ELITE",
+          "jockey": "R Kingscote",
+          "trainer": "D A Hayes",
+          "winOdds": 57,
+          "placeOdds": null
+        },
+        {
+          "horseNumber": 7,
+          "horseName": "SILVER SPURS",
+          "jockey": "E C W Wong",
+          "trainer": "C Fownes",
+          "winOdds": 8.5,
+          "placeOdds": null
+        },
+        {
+          "horseNumber": 8,
+          "horseName": "COUNTRY PRIDE",
+          "jockey": "B Avdulla",
+          "trainer": "J Size",
+          "winOdds": 17,
+          "placeOdds": null
+        },
+        {
+          "horseNumber": 9,
+          "horseName": "GOOD LUCK BABE",
+          "jockey": "Y L Chung",
+          "trainer": "A S Cruz",
+          "winOdds": 3.9,
+          "placeOdds": null
+        },
+        {
+          "horseNumber": 10,
+          "horseName": "BITS SUPERSTAR",
+          "jockey": "Z Purton",
+          "trainer": "D J Hall",
+          "winOdds": 5.5,
+          "placeOdds": null
+        },
+        {
+          "horseNumber": 11,
+          "horseName": "LEGEND STAR",
+          "jockey": "L Hewitson",
+          "trainer": "C S Shum",
+          "winOdds": 22,
+          "placeOdds": null
+        },
+        {
+          "horseNumber": 12,
+          "horseName": "MAJESTIC DELIGHT",
+          "jockey": "H Bentley",
+          "trainer": "D Eustace",
+          "winOdds": 33,
+          "placeOdds": null
+        }
+      ],
+      "fetchedAt": null,
+      "note": "racecard snapshot odds"
+    },
+    {
+      "raceNumber": 3,
+      "date": "2026-09-23",
+      "venue": "HV",
+      "horses": [
+        {
+          "horseNumber": 1,
+          "horseName": "EXCEED THE LIMIT",
+          "jockey": "L Hewitson",
+          "trainer": "C S Shum",
+          "winOdds": 26.0,
+          "placeOdds": 6.7
+        },
+        {
+          "horseNumber": 2,
+          "horseName": "SHOOTING TO TOP",
+          "jockey": "Z Purton",
+          "trainer": "W K Mo",
+          "winOdds": 4.8,
+          "placeOdds": 1.8
+        },
+        {
+          "horseNumber": 3,
+          "horseName": "RAINBOW SEVEN",
+          "jockey": "C Y Ho",
+          "trainer": "K W Lui",
+          "winOdds": 29.0,
+          "placeOdds": 8.3
+        },
+        {
+          "horseNumber": 4,
+          "horseName": "MEGA MASTERMIND",
+          "jockey": "B Avdulla",
+          "trainer": "J Richards",
+          "winOdds": 13.0,
+          "placeOdds": 3.4
+        },
+        {
+          "horseNumber": 5,
+          "horseName": "AMAZING GAZE",
+          "jockey": "J Orman",
+          "trainer": "D A Hayes",
+          "winOdds": 2.8,
+          "placeOdds": 1.2
+        },
+        {
+          "horseNumber": 6,
+          "horseName": "CASA ROCHESTER",
+          "jockey": "L Ferraris",
+          "trainer": "M Newnham",
+          "winOdds": 15.0,
+          "placeOdds": 4.1
+        },
+        {
+          "horseNumber": 7,
+          "horseName": "DECISION LINK",
+          "jockey": "E C W Wong",
+          "trainer": "C Fownes",
+          "winOdds": 10.0,
+          "placeOdds": 2.4
+        },
+        {
+          "horseNumber": 8,
+          "horseName": "AKERMANIS GOLD",
+          "jockey": "C L Chau",
+          "trainer": "D Eustace",
+          "winOdds": 6.0,
+          "placeOdds": 2.5
+        },
+        {
+          "horseNumber": 9,
+          "horseName": "LUCKY TOGETHER",
+          "jockey": "K C Leung",
+          "trainer": "F C Lor",
+          "winOdds": 12.0,
+          "placeOdds": 4.0
+        },
+        {
+          "horseNumber": 10,
+          "horseName": "CALIFORNIA MOXIE",
+          "jockey": "A Atzeni",
+          "trainer": "A S Cruz",
+          "winOdds": 24.0,
+          "placeOdds": 7.4
+        },
+        {
+          "horseNumber": 11,
+          "horseName": "BRIGHT INHERITANCE",
+          "jockey": "H Bentley",
+          "trainer": "C H Yip",
+          "winOdds": 52.0,
+          "placeOdds": 12.0
+        },
+        {
+          "horseNumber": 12,
+          "horseName": "SURE JOYFUL",
+          "jockey": "K Teetan",
+          "trainer": "P F Yiu",
+          "winOdds": 22.0,
+          "placeOdds": 5.5
+        }
+      ],
+      "fetchedAt": "2026-09-23T11:39:44.827Z",
+      "note": "15s before post"
+    },
+    {
+      "raceNumber": 4,
+      "date": "2026-09-23",
+      "venue": "HV",
+      "horses": [
+        {
+          "horseNumber": 1,
+          "horseName": "FRIENDS OF SHAJING",
+          "jockey": "C L Chau",
+          "trainer": "W K Mo",
+          "winOdds": 8.3,
+          "placeOdds": 2.6
+        },
+        {
+          "horseNumber": 2,
+          "horseName": "TACTICAL ACE",
+          "jockey": "M Chadwick",
+          "trainer": "W Y So",
+          "winOdds": 29.0,
+          "placeOdds": 5.9
+        },
+        {
+          "horseNumber": 4,
+          "horseName": "BROWNNEEDSFURTHER",
+          "jockey": "B Avdulla",
+          "trainer": "D J Hall",
+          "winOdds": 7.5,
+          "placeOdds": 1.8
+        },
+        {
+          "horseNumber": 5,
+          "horseName": "JOKER ORBIT",
+          "jockey": "E C W Wong",
+          "trainer": "C S Shum",
+          "winOdds": 34.0,
+          "placeOdds": 7.4
+        },
+        {
+          "horseNumber": 6,
+          "horseName": "CLOUD NINE",
+          "jockey": "Z Purton",
+          "trainer": "M Newnham",
+          "winOdds": 1.7,
+          "placeOdds": 1.1
+        },
+        {
+          "horseNumber": 8,
+          "horseName": "CHANCHENG SPARKLE",
+          "jockey": "L Hewitson",
+          "trainer": "K W Lui",
+          "winOdds": 23.0,
+          "placeOdds": 5.3
+        },
+        {
+          "horseNumber": 9,
+          "horseName": "INVICTUS",
+          "jockey": "J Orman",
+          "trainer": "D J Whyte",
+          "winOdds": 6.6,
+          "placeOdds": 1.6
+        },
+        {
+          "horseNumber": 10,
+          "horseName": "LUCKY XANDER",
+          "jockey": "M F Poon",
+          "trainer": "K H Ting",
+          "winOdds": 53.0,
+          "placeOdds": 10.0
+        },
+        {
+          "horseNumber": 11,
+          "horseName": "PODIUM",
+          "jockey": "K Teetan",
+          "trainer": "D Eustace",
+          "winOdds": 12.0,
+          "placeOdds": 2.2
+        },
+        {
+          "horseNumber": 12,
+          "horseName": "FREE PONY",
+          "jockey": "M L Yeung",
+          "trainer": "C W Chang",
+          "winOdds": 38.0,
+          "placeOdds": 6.7
+        }
+      ],
+      "fetchedAt": "2026-09-23T12:09:33.295Z",
+      "note": "27s before post"
+    },
+    {
+      "raceNumber": 5,
+      "date": "2026-09-23",
+      "venue": "HV",
+      "horses": [
+        {
+          "horseNumber": 1,
+          "horseName": "GLORIOUS JOURNEY",
+          "jockey": "C Y Ho",
+          "trainer": "F C Lor",
+          "winOdds": 12.0,
+          "placeOdds": 3.7
+        },
+        {
+          "horseNumber": 2,
+          "horseName": "CLASS",
+          "jockey": "J Orman",
+          "trainer": "P F Yiu",
+          "winOdds": 18.0,
+          "placeOdds": 5.1
+        },
+        {
+          "horseNumber": 3,
+          "horseName": "IVY LEAGUE",
+          "jockey": "R Kingscote",
+          "trainer": "D J Whyte",
+          "winOdds": 10.0,
+          "placeOdds": 3.0
+        },
+        {
+          "horseNumber": 4,
+          "horseName": "VERMILION TEMPEST",
+          "jockey": "L Ferraris",
+          "trainer": "C Fownes",
+          "winOdds": 14.0,
+          "placeOdds": 2.8
+        },
+        {
+          "horseNumber": 5,
+          "horseName": "INNO SUPER",
+          "jockey": "C L Chau",
+          "trainer": "D Eustace",
+          "winOdds": 4.0,
+          "placeOdds": 1.7
+        },
+        {
+          "horseNumber": 6,
+          "horseName": "HAPPY SMILE",
+          "jockey": "K C Leung",
+          "trainer": "J Richards",
+          "winOdds": 6.5,
+          "placeOdds": 2.2
+        },
+        {
+          "horseNumber": 7,
+          "horseName": "DASHING MAURISON",
+          "jockey": "H Bentley",
+          "trainer": "D A Hayes",
+          "winOdds": 9.0,
+          "placeOdds": 3.4
+        },
+        {
+          "horseNumber": 8,
+          "horseName": "LUCK IS BACK",
+          "jockey": "E C W Wong",
+          "trainer": "P C Ng",
+          "winOdds": 7.1,
+          "placeOdds": 2.6
+        },
+        {
+          "horseNumber": 9,
+          "horseName": "VIVA FIRECRACKER",
+          "jockey": "K Teetan",
+          "trainer": "A S Cruz",
+          "winOdds": 7.0,
+          "placeOdds": 2.7
+        },
+        {
+          "horseNumber": 10,
+          "horseName": "KING OF SELECTION",
+          "jockey": "M F Poon",
+          "trainer": "D J Hall",
+          "winOdds": 30.0,
+          "placeOdds": 8.7
+        },
+        {
+          "horseNumber": 11,
+          "horseName": "HEALTHY PONY",
+          "jockey": "M L Yeung",
+          "trainer": "C W Chang",
+          "winOdds": 68.0,
+          "placeOdds": 15.0
+        },
+        {
+          "horseNumber": 12,
+          "horseName": "GAZELEY",
+          "jockey": "M Chadwick",
+          "trainer": "K W Lui",
+          "winOdds": 13.0,
+          "placeOdds": 3.7
+        }
+      ],
+      "fetchedAt": "2026-09-23T12:39:33.366Z",
+      "note": "27s before post"
+    },
+    {
+      "raceNumber": 6,
+      "date": "2026-09-23",
+      "venue": "HV",
+      "horses": [
+        {
+          "horseNumber": 1,
+          "horseName": "JUMBO BLESSING",
+          "jockey": "C Y Ho",
+          "trainer": "C Fownes",
+          "winOdds": 3.1,
+          "placeOdds": 1.7
+        },
+        {
+          "horseNumber": 2,
+          "horseName": "COPPER CORE",
+          "jockey": "K C Leung",
+          "trainer": "W Y So",
+          "winOdds": 59.0,
+          "placeOdds": 15.0
+        },
+        {
+          "horseNumber": 3,
+          "horseName": "BLUE ILLUSION",
+          "jockey": "J Orman",
+          "trainer": "P C Ng",
+          "winOdds": 27.0,
+          "placeOdds": 6.7
+        },
+        {
+          "horseNumber": 4,
+          "horseName": "SUPERB KING",
+          "jockey": "C L Chau",
+          "trainer": "K W Lui",
+          "winOdds": 2.9,
+          "placeOdds": 1.0
+        },
+        {
+          "horseNumber": 5,
+          "horseName": "GEORGIAN SIGMA",
+          "jockey": "A Atzeni",
+          "trainer": "A S Cruz",
+          "winOdds": 7.7,
+          "placeOdds": 2.2
+        },
+        {
+          "horseNumber": 6,
+          "horseName": "DOUBLE ALPHA",
+          "jockey": "M F Poon",
+          "trainer": "C S Shum",
+          "winOdds": 28.0,
+          "placeOdds": 5.7
+        },
+        {
+          "horseNumber": 7,
+          "horseName": "SECRET INGREDIENT",
+          "jockey": "H Bentley",
+          "trainer": "D A Hayes",
+          "winOdds": 47.0,
+          "placeOdds": 9.9
+        },
+        {
+          "horseNumber": 8,
+          "horseName": "FLYING TING LOK",
+          "jockey": "H Y Yuen",
+          "trainer": "Y S Tsui",
+          "winOdds": 43.0,
+          "placeOdds": 9.0
+        },
+        {
+          "horseNumber": 9,
+          "horseName": "HARMONY FIRE",
+          "jockey": "P N Wong",
+          "trainer": "D J Whyte",
+          "winOdds": 14.0,
+          "placeOdds": 3.2
+        },
+        {
+          "horseNumber": 10,
+          "horseName": "CASA BUDDY",
+          "jockey": "H T Mo",
+          "trainer": "C W Chang",
+          "winOdds": 74.0,
+          "placeOdds": 14.0
+        },
+        {
+          "horseNumber": 11,
+          "horseName": "HAPPY UNITED",
+          "jockey": "M Chadwick",
+          "trainer": "J Richards",
+          "winOdds": 19.0,
+          "placeOdds": 4.4
+        },
+        {
+          "horseNumber": 12,
+          "horseName": "MAPOGO",
+          "jockey": "K Teetan",
+          "trainer": "K L Man",
+          "winOdds": 6.2,
+          "placeOdds": 2.2
+        }
+      ],
+      "fetchedAt": "2026-09-23T13:09:33.904Z",
+      "note": "26s before post"
+    },
+    {
+      "raceNumber": 7,
+      "date": "2026-09-23",
+      "venue": "HV",
+      "horses": [
+        {
+          "horseNumber": 1,
+          "horseName": "FLYING WROTE",
+          "jockey": "C L Chau",
+          "trainer": "A S Cruz",
+          "winOdds": 5.0,
+          "placeOdds": 1.8
+        },
+        {
+          "horseNumber": 2,
+          "horseName": "SYMBOL OF STRENGTH",
+          "jockey": "B Avdulla",
+          "trainer": "F C Lor",
+          "winOdds": 11.0,
+          "placeOdds": 3.2
+        },
+        {
+          "horseNumber": 3,
+          "horseName": "AKASHVANI",
+          "jockey": "Z Purton",
+          "trainer": "D A Hayes",
+          "winOdds": 7.2,
+          "placeOdds": 2.3
+        },
+        {
+          "horseNumber": 4,
+          "horseName": "YOUNG EMPEROR",
+          "jockey": "L Ferraris",
+          "trainer": "D Eustace",
+          "winOdds": 17.0,
+          "placeOdds": 4.4
+        },
+        {
+          "horseNumber": 5,
+          "horseName": "PASS LINE",
+          "jockey": "M F Poon",
+          "trainer": "D J Hall",
+          "winOdds": 42.0,
+          "placeOdds": 12.0
+        },
+        {
+          "horseNumber": 6,
+          "horseName": "POWER KOEPP",
+          "jockey": "K C Leung",
+          "trainer": "M Newnham",
+          "winOdds": 22.0,
+          "placeOdds": 6.7
+        },
+        {
+          "horseNumber": 7,
+          "horseName": "CALIFORNIA BLITZ",
+          "jockey": "M Chadwick",
+          "trainer": "W K Mo",
+          "winOdds": 19.0,
+          "placeOdds": 4.6
+        },
+        {
+          "horseNumber": 8,
+          "horseName": "WUKONG JEWELLERY",
+          "jockey": "A Atzeni",
+          "trainer": "J Size",
+          "winOdds": 4.2,
+          "placeOdds": 1.8
+        },
+        {
+          "horseNumber": 9,
+          "horseName": "KING MILES",
+          "jockey": "H Bentley",
+          "trainer": "K W Lui",
+          "winOdds": 16.0,
+          "placeOdds": 4.7
+        },
+        {
+          "horseNumber": 10,
+          "horseName": "ANODE",
+          "jockey": "E C W Wong",
+          "trainer": "C S Shum",
+          "winOdds": 32.0,
+          "placeOdds": 9.0
+        },
+        {
+          "horseNumber": 11,
+          "horseName": "PRESTIGE ALWAYS",
+          "jockey": "H Y Yuen",
+          "trainer": "P C Ng",
+          "winOdds": 16.0,
+          "placeOdds": 4.6
+        },
+        {
+          "horseNumber": 12,
+          "horseName": "DARYL FLASH",
+          "jockey": "Y L Chung",
+          "trainer": "Y S Tsui",
+          "winOdds": 4.4,
+          "placeOdds": 1.6
+        }
+      ],
+      "fetchedAt": "2026-09-23T13:44:49.082Z",
+      "note": "11s before post"
+    },
+    {
+      "raceNumber": 8,
+      "date": "2026-09-23",
+      "venue": "HV",
+      "horses": [
+        {
+          "horseNumber": 1,
+          "horseName": "HARMONY N BLESSED",
+          "jockey": "L Ferraris",
+          "trainer": "D A Hayes",
+          "winOdds": 17.0,
+          "placeOdds": 4.0
+        },
+        {
+          "horseNumber": 2,
+          "horseName": "STRAIGHT TO GLORY",
+          "jockey": "K C Leung",
+          "trainer": "C W Chang",
+          "winOdds": 17.0,
+          "placeOdds": 4.5
+        },
+        {
+          "horseNumber": 3,
+          "horseName": "SKY CAP",
+          "jockey": "C Y Ho",
+          "trainer": "C Fownes",
+          "winOdds": 15.0,
+          "placeOdds": 4.3
+        },
+        {
+          "horseNumber": 4,
+          "horseName": "STAR RISE",
+          "jockey": "J Orman",
+          "trainer": "D J Hall",
+          "winOdds": 4.9,
+          "placeOdds": 1.9
+        },
+        {
+          "horseNumber": 5,
+          "horseName": "PEGAS",
+          "jockey": "C L Chau",
+          "trainer": "Y S Tsui",
+          "winOdds": 37.0,
+          "placeOdds": 8.6
+        },
+        {
+          "horseNumber": 6,
+          "horseName": "THRIVING BROTHERS",
+          "jockey": "K Teetan",
+          "trainer": "C H Yip",
+          "winOdds": 17.0,
+          "placeOdds": 4.1
+        },
+        {
+          "horseNumber": 7,
+          "horseName": "STORMING DRAGON",
+          "jockey": "B Avdulla",
+          "trainer": "J Richards",
+          "winOdds": 28.0,
+          "placeOdds": 5.2
+        },
+        {
+          "horseNumber": 8,
+          "horseName": "DANICA'S CHOICE",
+          "jockey": "A Atzeni",
+          "trainer": "K L Man",
+          "winOdds": 2.6,
+          "placeOdds": 1.5
+        },
+        {
+          "horseNumber": 9,
+          "horseName": "KING LOTUS",
+          "jockey": "L Hewitson",
+          "trainer": "M Newnham",
+          "winOdds": 14.0,
+          "placeOdds": 3.5
+        },
+        {
+          "horseNumber": 10,
+          "horseName": "MEOWTH",
+          "jockey": "H Y Yuen",
+          "trainer": "W K Mo",
+          "winOdds": 23.0,
+          "placeOdds": 5.5
+        },
+        {
+          "horseNumber": 11,
+          "horseName": "LEADING AGILITY",
+          "jockey": "E C W Wong",
+          "trainer": "C S Shum",
+          "winOdds": 5.1,
+          "placeOdds": 1.6
+        },
+        {
+          "horseNumber": 12,
+          "horseName": "OUTGATE",
+          "jockey": "Y L Chung",
+          "trainer": "A S Cruz",
+          "winOdds": 40.0,
+          "placeOdds": 9.9
+        }
+      ],
+      "fetchedAt": "2026-09-23T14:14:15.798Z",
+      "note": "44s before post"
+    },
+    {
+      "raceNumber": 9,
+      "date": "2026-09-23",
+      "venue": "HV",
+      "horses": [
+        {
+          "horseNumber": 1,
+          "horseName": "KA YING GENERATION",
+          "jockey": "A Atzeni",
+          "trainer": "P C Ng",
+          "winOdds": 8.5,
+          "placeOdds": 2.8
+        },
+        {
+          "horseNumber": 2,
+          "horseName": "SERAPH GABRIEL",
+          "jockey": "Z Purton",
+          "trainer": "D Eustace",
+          "winOdds": 3.0,
+          "placeOdds": 1.6
+        },
+        {
+          "horseNumber": 3,
+          "horseName": "WITHOUT COMPARE",
+          "jockey": "J Orman",
+          "trainer": "C S Shum",
+          "winOdds": 15.0,
+          "placeOdds": 4.3
+        },
+        {
+          "horseNumber": 4,
+          "horseName": "LO RIDER",
+          "jockey": "L Ferraris",
+          "trainer": "C Fownes",
+          "winOdds": 16.0,
+          "placeOdds": 3.9
+        },
+        {
+          "horseNumber": 5,
+          "horseName": "FIVEFORTWO",
+          "jockey": "C L Chau",
+          "trainer": "K W Lui",
+          "winOdds": 20.0,
+          "placeOdds": 4.9
+        },
+        {
+          "horseNumber": 6,
+          "horseName": "FORTUNATE SON",
+          "jockey": "C Y Ho",
+          "trainer": "W K Mo",
+          "winOdds": 11.0,
+          "placeOdds": 3.1
+        },
+        {
+          "horseNumber": 7,
+          "horseName": "ROMANTIC GLADIATOR",
+          "jockey": "E C W Wong",
+          "trainer": "C S Shum",
+          "winOdds": 26.0,
+          "placeOdds": 7.4
+        },
+        {
+          "horseNumber": 8,
+          "horseName": "THE AUSPICIOUS",
+          "jockey": "K Teetan",
+          "trainer": "Y S Tsui",
+          "winOdds": 12.0,
+          "placeOdds": 3.1
+        },
+        {
+          "horseNumber": 9,
+          "horseName": "CHINA WIN",
+          "jockey": "M L Yeung",
+          "trainer": "D A Hayes",
+          "winOdds": 8.9,
+          "placeOdds": 2.8
+        },
+        {
+          "horseNumber": 10,
+          "horseName": "WINDLORD",
+          "jockey": "M Chadwick",
+          "trainer": "A S Cruz",
+          "winOdds": 5.5,
+          "placeOdds": 1.8
+        },
+        {
+          "horseNumber": 11,
+          "horseName": "KEEFY",
+          "jockey": "M F Poon",
+          "trainer": "F C Lor",
+          "winOdds": 33.0,
+          "placeOdds": 8.9
+        },
+        {
+          "horseNumber": 12,
+          "horseName": "FLYING FORTUNE",
+          "jockey": "H Bentley",
+          "trainer": "W K Mo",
+          "winOdds": 18.0,
+          "placeOdds": 5.0
+        }
+      ],
+      "fetchedAt": "2026-09-23T14:49:46.099Z",
+      "note": "14s before post"
+    }
+  ],
+  "fetchedAt": "2026-09-23T15:05:31.650973Z",
+  "source": "momentum DB: last snapshot at or before post time (R3-R9); racecard winOdds (R1-R2, no place odds)"
+}

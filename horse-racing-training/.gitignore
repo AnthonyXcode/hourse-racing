@@ -3,3 +3,4 @@ dist/
 history.json
 *.log
 .env
+data/*.sqlite*

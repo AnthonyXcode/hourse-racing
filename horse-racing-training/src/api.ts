@@ -8,6 +8,28 @@ import type {
   HistoryEntry,
 } from "../shared/types";
 import type { AnalyzerPayload } from "../shared/analyzer/model";
+import type { RaceSeries, HorseRow, ModelRank } from "../shared/momentum/model";
+
+export interface MomentumDayRef {
+  date: string;
+  venue: string;
+  races: number;
+  snapshots: number;
+}
+export interface MomentumDay {
+  date: string;
+  now: string;
+  races: {
+    race_id: string;
+    venue: string;
+    race_no: number;
+    post_time: string;
+    status: string;
+    hkjc_status: string | null;
+    snapshots: number;
+  }[];
+  poller: { lastTickAt: string | null; lastError: string | null; polling: string[] };
+}
 
 async function get<T>(url: string): Promise<T> {
   const r = await fetch(url);
@@ -38,6 +60,12 @@ export const api = {
   deleteHistory: (id: string) => send<HistoryEntry[]>("DELETE", `/api/history/${id}`),
   clearHistory: () => send<HistoryEntry[]>("DELETE", "/api/history"),
   analyzer: (from: string, to: string) => get<AnalyzerPayload>(`/api/analyzer?from=${from}&to=${to}`),
+  momentumDays: () => get<{ today: string; days: MomentumDayRef[] }>("/api/momentum/days"),
+  momentumDay: (date: string) => get<MomentumDay>(`/api/momentum/day?date=${date}`),
+  momentumRace: (raceId: string) => get<RaceSeries>(`/api/momentum/race/${raceId}`),
+  momentumPicks: (raceId: string) => get<{ raceId: string; ranks: ModelRank[] }>(`/api/momentum/picks/${raceId}`),
+  momentumAnalysis: (from: string, to: string) =>
+    get<{ from: string; to: string; races: number; rows: HorseRow[] }>(`/api/momentum/analysis?from=${from}&to=${to}`),
 };
 
 /** "20260627" → "27 Jun 2026" */

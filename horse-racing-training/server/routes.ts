@@ -3,6 +3,11 @@ import { getManifest, cardPath, resultPath, readJson } from "./dataIndex";
 import { settle } from "../shared/betEngine/index";
 import { readHistory, addEntry, deleteEntry, clearHistory } from "./history";
 import { runAnalyzer } from "./analyzer";
+import { momentum } from "./momentum/service";
+import { hkDate } from "./momentum/poller";
+import { raceSeries } from "./momentum/series";
+import { modelRanks } from "./momentum/picks";
+import { horseRows } from "../shared/momentum/model";
 import type {
   RaceCard,
   RaceResult,
@@ -149,4 +154,56 @@ api.post("/settle", (req, res) => {
 
   const out: SettleResult = settle(selection, byRace, dividendSource);
   res.json(out);
+});
+
+// ---- Market momentum (live pre-race odds, SQLite-backed) ----
+
+/** GET /api/momentum/days → every recorded meeting, newest first. */
+api.get("/momentum/days", (_req, res) => {
+  res.json({ today: hkDate(new Date()), days: momentum().repo.days() });
+});
+
+/** GET /api/momentum/day?date=YYYY-MM-DD (default today) → that day's races with snapshot counts + poller health. */
+api.get("/momentum/day", (req, res) => {
+  const { repo: r, poller } = momentum();
+  const q = req.query.date;
+  if (q != null && (typeof q !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(q)))
+    return res.status(400).json({ error: "date must be YYYY-MM-DD" });
+  const date = (q as string | undefined) ?? hkDate(new Date());
+  res.json({
+    date,
+    now: new Date().toISOString(),
+    races: r.racesOn(date).map((x) => ({ ...x, snapshots: r.snapshotCount(x.race_id) })),
+    poller: poller.state,
+  });
+});
+
+/** GET /api/momentum/race/:raceId → odds time-series for one race. */
+api.get("/momentum/race/:raceId", (req, res) => {
+  const s = raceSeries(momentum().repo, req.params.raceId);
+  if (!s) return res.status(404).json({ error: "race not tracked" });
+  res.json(s);
+});
+
+/** GET /api/momentum/picks/:raceId → analyzer ranking (analyze-race.ts --use-saved --form-data all), best first. */
+api.get("/momentum/picks/:raceId", async (req, res) => {
+  const race = momentum().repo.race(req.params.raceId);
+  if (!race) return res.status(404).json({ error: "race not tracked" });
+  try {
+    res.json({ raceId: race.race_id, ranks: await modelRanks(race.date, race.venue as "ST" | "HV", race.race_no) });
+  } catch (e) {
+    res.status(500).json({ error: String(e instanceof Error ? e.message : e) });
+  }
+});
+
+/** GET /api/momentum/analysis?from&to → one row per finisher in settled, tracked races. */
+api.get("/momentum/analysis", (req, res) => {
+  const { from, to } = req.query;
+  const ymd = /^\d{4}-\d{2}-\d{2}$/;
+  if (typeof from !== "string" || typeof to !== "string" || !ymd.test(from) || !ymd.test(to) || from > to)
+    return res.status(400).json({ error: "from and to must be YYYY-MM-DD with from ≤ to" });
+  const r = momentum().repo;
+  const races = r.settledBetween(from, to).filter((x) => r.snapshotCount(x.race_id) > 0);
+  const rows = races.flatMap((x) => horseRows(raceSeries(r, x.race_id)!));
+  res.json({ from, to, races: races.length, rows });
 });

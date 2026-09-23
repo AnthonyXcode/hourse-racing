@@ -53,6 +53,7 @@
 | **36** | **9 Sep** | **HV** | **Turf** | **Good** | **8** | **33.8%** | **68.1%** | **4/8** | **50.0%** | **❌✅✅❌✅❌✅❌** | **2 (R2-R3)** |
 | **37** | **13 Sep** | **ST** | **Turf "B"** | **Good to Firm** | **10** | **34.3%** | **66.2%** | **3/10** | **30.0%** | **✅❌❌❌❌❌❌✅❌✅** | **1** |
 | **38** | **16 Sep** | **HV** | **Turf "B"** | **Good** | **8** | **33.2%** | **66.8%** | **6/8** | **75.0%** | **❌✅❌✅✅✅✅✅** | **5 (R4-R8)** |
+| **39** | **23 Sep** | **HV** | **Turf** | **Good** | **9** | **30.3%** | **62.9%** | **5/9** | **55.6%** | **❌❌❌✅✅✅❌✅✅** | **3 (R4-R6)** |
 
 \*Meeting 8 **R1** (6 runners): MC #1 **#6** ran **3rd** but HKJC Place pool pays **two** places only → **$0** dividend; counts as **❌** for streaks and all-ups (same dividend logic as other meetings).
 
@@ -1826,3 +1827,25 @@ Flag calibration: **`+excuses` fired on 74 of ~139 runners (53% of the card) for
 **Trio card note (R1–R8):** **LOSS.** Strategy A (as bet) **0/8, $850 staked, $0 returned, −$850, ROI −100.0%**; canonical MC top-6 B **0/8, −$800, −100.0%**; MC-only Place%>20 variant (B-trio, as bet) **2/8 (R4 $315, R6 $198), $910 staked, −$397, −43.6%**. The reverse of 13-Sep: **bankers placed 6/8** but **Pattern B (banker hit, pool gap) was 6/8 for Strategy A**. B-trio's two hits both came from the Win-odds < 10 add rule (R4 #11 KWAI CHUNG TALENTS 8.1→6, 2nd; R6 #2 POPE CODY 8.0→4.2, won) — horses A's Adj Place% ranked out at 15.7% and 15.3%.
 
 MC–market split, two meetings combined: **MC #1 at market rank 1–2 placed 9/10; at market rank 4+ placed 0/7** (this card: R1 #2 mkt 4th, R3 #8 mkt 8th both failed). R8 #3 SAGACIOUS LIFE (2nd, Trio $2,356) sat at Adj Place% 19.4% — 0.6pp under Rule 8 — and exactly 10 at snapshot. R5 #4 LUCKY MCQUEEN drifted from 11 at the 17:55 snapshot to 9.5 at the off and ran 2nd (stale-odds miss). B-trio's Step B *swap* cost R8: it removed #4 HELENE FEELING (MC Place 23.0%, ran 3rd) for #8 MAX QUE (ran 11th).
+
+## Meeting 39: Happy Valley | 23 Sep 2026 (9 races)
+
+**MC #1** = raw MC Win% from trio_strategy_20260923_HV_R*.md (10,000 iterations, form=all, **blind post-meeting run, SCMP skipped**). **Results** from data/historical/results_20260923_HV.json (dividends verified against HKJC GraphQL). Place $ = HKJC place dividend per $10. Going: **Good** (all 9 races). Turf (course letter not recorded). No scratchings. Odds used by reports: R1/R2 racecard; R3–R9 last pre-off snapshot.
+
+| Race | Class | Dist (m) | MC #1 | MC Win% | MC Place% | Placed? | Place $ (if placed) |
+|------|-------|----------|-------|---------|-----------|---------|---------------------|
+| R1 | Class 5 | 1650 | #3 SOARING BRONCO | 43.3% | 77.4% | ❌ (5th) | — |
+| R2 | Class 4 | 1200 | #4 MATZDEN | 25.6% | 60.2% | ❌ (10th) | — |
+| R3 | Class 4 | 1650 | #5 AMAZING GAZE | 24.9% | 58.3% | ❌ (6th) | — |
+| R4 | Class 4 | 1200 | #6 CLOUD NINE | 34.7% | 69.1% | ✅ 2nd | 11.5 |
+| R5 | Class 4 | 1650 | #1 GLORIOUS JOURNEY | 22.6% | 56.7% | ✅ 3rd | 44 |
+| R6 | Class 4 | 1000 | #1 JUMBO BLESSING | 55.9% | 85.4% | ✅ 1st | 12.5 |
+| R7 | Class 3 | 1200 | #6 POWER KOEPP | 21.2% | 53.1% | ❌ (8th) | — |
+| R8 | Class 3 | 1200 | #11 LEADING AGILITY | 22.4% | 55.4% | ✅ 2nd | 22.5 |
+| R9 | Class 3 | 1800 | #6 FORTUNATE SON | 21.8% | 50.1% | ✅ 1st | 31 |
+
+**Placed:** 5/9 (55.6%) | **Pattern:** ❌❌❌✅✅✅❌✅✅ | **Max streak:** 3 (R4-R6)
+
+**Trio card note (R1–R9):** **WIN** (first of the season; blind run, not bet live). Strategy A (= raw MC top 6, since SCMP was skipped) **2/9 (R6 $50, R9 $1,065), $900 staked, $1,115 returned, +$215, ROI +23.9%**; canonical MC top-6 B identical to A (**+$215**); MC-only Place%>20 variant (B-trio, as bet) **2/9 (R4 $117, R6 $50), $1,230 staked, $167 returned, −$1,063, −86.4%**. B-trio's Step B **swap** removed R9 #5 FIVEFORTWO (ran 2nd) for #10 WINDLORD (5th), costing the $1,065 Trio. That is the second meeting running the swap removed a placer.
+
+MC–market split, three meetings combined: **MC #1 at market rank 1–2 placed 12/15 (80%); rank 4+ placed 2/10 (20%)**. This card broke the 0/7 rank-4+ run (R5 #1 at 15 ran 3rd, R9 #6 at 11 won) and had two failed rank-1–2 bankers (R2 #4 10th, R3 #5 6th). New calibration flag: runners with **MC Win% < 3% and SP ≤ 6 went 4/5 top 3** (R1 #4 won, R3 #8 won, R7 #12 2nd, R7 #8 3rd). R6 was a chalk trio ($50) that paid less than a 10-combo stake.

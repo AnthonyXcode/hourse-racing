@@ -236,7 +236,7 @@
           "specialties": []
         },
         "horseNumber": 1,
-        "draw": 8,
+        "draw": 7,
         "weight": 135,
         "gearChanges": [
           "TT"
@@ -383,226 +383,9 @@
           "specialties": []
         },
         "horseNumber": 2,
-        "draw": 10,
+        "draw": 9,
         "weight": 135,
         "gearChanges": [
-          "TT"
-        ],
-        "isScratched": false
-      },
-      {
-        "horse": {
-          "code": "HK_2025_L083",
-          "name": "LEADING DRAGON",
-          "age": 4,
-          "sex": "G",
-          "color": "Bay",
-          "origin": "AUS",
-          "sire": "",
-          "dam": "",
-          "currentRating": 55,
-          "seasonStarts": 0,
-          "seasonWins": 0,
-          "seasonPlaces": 0,
-          "careerStarts": 0,
-          "careerWins": 0,
-          "careerPlaces": 0,
-          "totalPrizeMoney": 0,
-          "gear": [
-            "CP",
-            "TT"
-          ],
-          "pastPerformances": [
-            {
-              "date": "2026-09-09T00:00:00.000Z",
-              "venue": "Happy Valley",
-              "raceNumber": 7,
-              "raceClass": "Class 4",
-              "distance": 1200,
-              "surface": "Turf",
-              "going": "Good",
-              "draw": 6,
-              "weight": 120,
-              "jockeyCode": "YHY",
-              "finishPosition": 4,
-              "fieldSize": 12,
-              "winningMargin": 4,
-              "finishTime": 71.45,
-              "odds": 8.6
-            },
-            {
-              "date": "2026-07-04T00:00:00.000Z",
-              "venue": "Sha Tin",
-              "raceNumber": 9,
-              "raceClass": "Class 4",
-              "distance": 1200,
-              "surface": "Turf",
-              "going": "Good to Yielding",
-              "draw": 5,
-              "weight": 131,
-              "jockeyCode": "AA",
-              "finishPosition": 4,
-              "fieldSize": 12,
-              "winningMargin": 4,
-              "finishTime": 70.07,
-              "odds": 8.2
-            },
-            {
-              "date": "2026-06-07T00:00:00.000Z",
-              "venue": "Sha Tin",
-              "raceNumber": 7,
-              "raceClass": "Class 4",
-              "distance": 1200,
-              "surface": "Turf",
-              "going": "Good",
-              "draw": 7,
-              "weight": 126,
-              "jockeyCode": "AA",
-              "finishPosition": 1,
-              "fieldSize": 11,
-              "winningMargin": 1,
-              "finishTime": 69.8,
-              "odds": 15
-            },
-            {
-              "date": "2026-05-24T00:00:00.000Z",
-              "venue": "Sha Tin",
-              "raceNumber": 4,
-              "raceClass": "Class 4",
-              "distance": 1200,
-              "surface": "Turf",
-              "going": "Good to Firm",
-              "draw": 3,
-              "weight": 120,
-              "jockeyCode": "WPN",
-              "finishPosition": 11,
-              "fieldSize": 14,
-              "winningMargin": 11,
-              "finishTime": 70.09,
-              "odds": 6
-            },
-            {
-              "date": "2026-05-03T00:00:00.000Z",
-              "venue": "Sha Tin",
-              "raceNumber": 2,
-              "raceClass": "Class 4",
-              "distance": 1200,
-              "surface": "Turf",
-              "going": "Good",
-              "draw": 5,
-              "weight": 118,
-              "jockeyCode": "YHY",
-              "finishPosition": 3,
-              "fieldSize": 14,
-              "winningMargin": 3,
-              "finishTime": 69.51,
-              "odds": 5.1
-            },
-            {
-              "date": "2026-04-11T16:00:00.000Z",
-              "venue": "Sha Tin",
-              "raceNumber": 6,
-              "raceClass": "Class 4",
-              "distance": 1200,
-              "surface": "Turf",
-              "going": "Good",
-              "draw": 1,
-              "weight": 114,
-              "jockeyCode": "YHY",
-              "finishPosition": 2,
-              "fieldSize": 12,
-              "winningMargin": 2,
-              "finishTime": 69.82,
-              "odds": 7.7
-            },
-            {
-              "date": "2026-02-22T00:00:00.000Z",
-              "venue": "Sha Tin",
-              "raceNumber": 1,
-              "raceClass": "Class 4",
-              "distance": 1000,
-              "surface": "Turf",
-              "going": "Good",
-              "draw": 11,
-              "weight": 127,
-              "jockeyCode": "TEK",
-              "finishPosition": 5,
-              "fieldSize": 14,
-              "winningMargin": 5,
-              "finishTime": 56.58,
-              "odds": 18
-            },
-            {
-              "date": "2026-02-01T00:00:00.000Z",
-              "venue": "Sha Tin",
-              "raceNumber": 1,
-              "raceClass": "Class 4",
-              "distance": 1000,
-              "surface": "Turf",
-              "going": "Good",
-              "draw": 12,
-              "weight": 127,
-              "jockeyCode": "TEK",
-              "finishPosition": 6,
-              "fieldSize": 14,
-              "winningMargin": 6,
-              "finishTime": 57.69,
-              "odds": 5.1
-            },
-            {
-              "date": "2026-01-25T00:00:00.000Z",
-              "venue": "Sha Tin",
-              "raceNumber": 1,
-              "raceClass": "Class 4",
-              "distance": 1000,
-              "surface": "Turf",
-              "going": "Good",
-              "draw": 1,
-              "weight": 127,
-              "jockeyCode": "TEK",
-              "finishPosition": 5,
-              "fieldSize": 14,
-              "winningMargin": 5,
-              "finishTime": 57.36,
-              "odds": 65
-            }
-          ],
-          "ratingChange": 0
-        },
-        "jockey": {
-          "code": "YHY",
-          "name": "H Y Yuen",
-          "nationality": "CHN",
-          "weightClaim": 10,
-          "seasonStats": {
-            "wins": 2,
-            "places": 2,
-            "rides": 17,
-            "winRate": 0.1176,
-            "placeRate": 0.23529411764705882,
-            "roi": 1
-          },
-          "courseStats": []
-        },
-        "trainer": {
-          "code": "NPC",
-          "name": "P C Ng",
-          "seasonStats": {
-            "wins": 4,
-            "places": 2,
-            "rides": 21,
-            "winRate": 0.1905,
-            "placeRate": 0.2857142857142857,
-            "roi": 1
-          },
-          "courseStats": [],
-          "specialties": []
-        },
-        "horseNumber": 3,
-        "draw": 6,
-        "weight": 132,
-        "gearChanges": [
-          "CP",
           "TT"
         ],
         "isScratched": false
@@ -833,7 +616,7 @@
           "specialties": []
         },
         "horseNumber": 4,
-        "draw": 7,
+        "draw": 6,
         "weight": 131,
         "gearChanges": [
           "V",
@@ -1198,102 +981,6 @@
         "horseNumber": 6,
         "draw": 2,
         "weight": 129,
-        "isScratched": false
-      },
-      {
-        "horse": {
-          "code": "HK_2025_L420",
-          "name": "STUNNING BUNDLE",
-          "age": 4,
-          "sex": "G",
-          "color": "Bay",
-          "origin": "AUS",
-          "sire": "",
-          "dam": "",
-          "currentRating": 52,
-          "seasonStarts": 0,
-          "seasonWins": 0,
-          "seasonPlaces": 0,
-          "careerStarts": 0,
-          "careerWins": 0,
-          "careerPlaces": 0,
-          "totalPrizeMoney": 0,
-          "gear": [
-            "B"
-          ],
-          "pastPerformances": [
-            {
-              "date": "2026-09-06T00:00:00.000Z",
-              "venue": "Sha Tin",
-              "raceNumber": 5,
-              "raceClass": "Class 4",
-              "distance": 1200,
-              "surface": "Turf",
-              "going": "Good to Firm",
-              "draw": 4,
-              "weight": 128,
-              "jockeyCode": "BH",
-              "finishPosition": 12,
-              "fieldSize": 14,
-              "winningMargin": 12,
-              "finishTime": 70.08,
-              "odds": 14
-            },
-            {
-              "date": "2026-07-01T00:00:00.000Z",
-              "venue": "Sha Tin",
-              "raceNumber": 6,
-              "raceClass": "Class 4",
-              "distance": 1200,
-              "surface": "Turf",
-              "going": "Good to Firm",
-              "draw": 1,
-              "weight": 128,
-              "jockeyCode": "BH",
-              "finishPosition": 3,
-              "fieldSize": 12,
-              "winningMargin": 3,
-              "finishTime": 69.91,
-              "odds": 4.9
-            }
-          ],
-          "ratingChange": 0
-        },
-        "jockey": {
-          "code": "AA",
-          "name": "A Atzeni",
-          "nationality": "ITY",
-          "weightClaim": 0,
-          "seasonStats": {
-            "wins": 2,
-            "places": 7,
-            "rides": 29,
-            "winRate": 0.069,
-            "placeRate": 0.3103448275862069,
-            "roi": 1
-          },
-          "courseStats": []
-        },
-        "trainer": {
-          "code": "SJJ",
-          "name": "J Size",
-          "seasonStats": {
-            "wins": 1,
-            "places": 2,
-            "rides": 11,
-            "winRate": 0.0909,
-            "placeRate": 0.2727272727272727,
-            "roi": 1
-          },
-          "courseStats": [],
-          "specialties": []
-        },
-        "horseNumber": 7,
-        "draw": 12,
-        "weight": 129,
-        "gearChanges": [
-          "B"
-        ],
         "isScratched": false
       },
       {
@@ -1750,7 +1437,7 @@
           "specialties": []
         },
         "horseNumber": 10,
-        "draw": 9,
+        "draw": 8,
         "weight": 123,
         "isScratched": false
       },
@@ -2211,24 +1898,22 @@
           "specialties": []
         },
         "horseNumber": 12,
-        "draw": 11,
+        "draw": 10,
         "weight": 120,
         "isScratched": false
       }
     ]
   },
   "winOdds": {
-    "1": 7.5,
-    "2": 23,
-    "3": 6,
-    "4": 13,
-    "5": 28,
-    "6": 2.1,
-    "7": 32,
-    "8": 21,
-    "9": 11,
-    "10": 31,
-    "11": 22,
-    "12": 24
+    "1": 7.6,
+    "2": 20,
+    "4": 9.9,
+    "5": 25,
+    "6": 1.7,
+    "8": 20,
+    "9": 7.3,
+    "10": 36,
+    "11": 15,
+    "12": 32
   }
 }

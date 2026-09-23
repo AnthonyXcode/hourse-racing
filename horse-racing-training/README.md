@@ -26,6 +26,16 @@ the server imports the parent repo's `src/` engine directly. A cold 12-month run
 ~15 s; per-race results are cached in memory until the racecard or results file changes.
 All filters, charts and tables are computed in the browser from that payload.
 
+**Momentum** tab tracks pre-race market moves. On a race day the server snapshots HKJC
+WIN/PLA odds and pool totals every 30 s, starting 30 min before each race's post time, into
+SQLite (`data/momentum.sqlite`, gitignored). After the result is posted it stores the finishing order.
+The tab shows a live odds chart and movers list for each race. Over finished races it compares
+win and place hit rates by momentum bucket against the rates implied by the final odds, split by
+final-odds band. The collector only records while the server is running, so keep it under pm2 on race days.
+Odds come from HKJC's GraphQL API (`info.cld.hkjc.com`). The API accepts only queries on its whitelist,
+so `server/momentum/queries/*.graphql` are exact copies of the queries bet.hkjc.com sends. Don't edit them.
+If HKJC changes them, capture the new ones from the browser's network tab.
+
 Production (single process serving built SPA + API):
 
 ```bash

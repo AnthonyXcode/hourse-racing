@@ -3,6 +3,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import { existsSync } from "fs";
 import { api } from "./routes";
+import { momentum } from "./momentum/service";
 
 const app = express();
 app.use(express.json());
@@ -18,4 +19,5 @@ if (existsSync(dist)) {
 const PORT = Number(process.env.PORT) || 8787;
 app.listen(PORT, () => {
   console.log(`[bet-trainer] API on http://localhost:${PORT}`);
+  if (process.env.MOMENTUM_POLLER !== "0") momentum().poller.start(Number(process.env.MOMENTUM_INTERVAL_S) || 30);
 });
