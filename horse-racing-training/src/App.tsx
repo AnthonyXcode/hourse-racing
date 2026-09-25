@@ -35,6 +35,35 @@ function useOnceTrue(v: boolean): boolean {
   return seen || v;
 }
 
+const VIEWS = ["bet", "history", "win-place", "trio", "momentum"] as const;
+type View = (typeof VIEWS)[number];
+const DEFAULT_VIEW: View = "bet";
+
+/** Tab named by ?tab= in the URL; unknown or missing → the default tab. */
+function readView(): View {
+  const t = new URLSearchParams(window.location.search).get("tab");
+  return VIEWS.find((v) => v === t) ?? DEFAULT_VIEW;
+}
+
+/** Current tab, mirrored to ?tab= so a copied link reopens it. Each switch is a history entry, so back/forward step between tabs. */
+function useViewParam(): [View, (v: View) => void] {
+  const [view, setViewState] = useState(readView);
+  useEffect(() => {
+    const onPop = () => setViewState(readView());
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+  }, []);
+  const setView = (v: View) => {
+    if (v === view) return;
+    const url = new URL(window.location.href);
+    if (v === DEFAULT_VIEW) url.searchParams.delete("tab");
+    else url.searchParams.set("tab", v);
+    window.history.pushState(null, "", url);
+    setViewState(v);
+  };
+  return [view, setView];
+}
+
 interface Picks {
   bankers: number[];
   legs: number[];
@@ -53,7 +82,7 @@ export default function App() {
   const [dtLegs, setDtLegs] = useState<number[]>([]); // chosen leg races for DT/TT
   const [result, setResult] = useState<SettleResult | null>(null);
   const [error, setError] = useState<string>("");
-  const [view, setView] = useState<"bet" | "history" | "win-place" | "trio" | "momentum">("bet");
+  const [view, setView] = useViewParam();
   const [history, setHistory] = useState<HistoryEntry[]>([]);
   const [raceResult, setRaceResult] = useState<RaceResult | null>(null);
   const analyzerOpened = useOnceTrue(view === "win-place" || view === "trio");
