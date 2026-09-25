@@ -115,7 +115,7 @@ export function AnalyzerPage({ tab }: { tab: AnalyzerTab }) {
             <button
               key={months}
               type="button"
-              className={cx(btn, on && "bg-surface-2 shadow-none ring-1 ring-ink/15")}
+              className={cx(btn, on && "bg-accent-soft! font-semibold text-accent! shadow-none ring-1 ring-accent enabled:hover:bg-accent-soft!")}
               aria-pressed={on}
               disabled={loading}
               onClick={() => {
