@@ -73,8 +73,7 @@ export const bet: Shape<typeof En> = {
     sparse: "往績不足",
     gap: "首兩名差距",
     confidence: "信心指數",
-    confidenceAria: "信心指數 {{stars}} / 5（符合 {{total}} 項策略條件中的 {{met}} 項）",
-    rulesMet: "符合{{venue}}策略 {{total}} 項中的 {{met}} 項",
+    confidenceAria: "信心指數 {{stars}} / 5",
     rule: {
       surface: "跑道：{{limit}}",
       sparse: "往績不足 ≤ {{limit}}",

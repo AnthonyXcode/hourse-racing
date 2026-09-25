@@ -5,7 +5,6 @@ import { AnimatePresence, motion } from "motion/react";
 import { useTranslation } from "react-i18next";
 import { api } from "./api";
 import { confidence, strategyChecks, type PreRaceAnalysis } from "../shared/analyzer/model";
-import { useGlossary } from "./i18n/glossary";
 import { useNames } from "./i18n/names";
 import { cx, panel, table, tablePadTight } from "./kit";
 
@@ -38,7 +37,6 @@ function Stars({ value, size = 14 }: { value: number; size?: number }) {
 
 export function RaceAnalysisPanel({ date, venue, raceNo }: { date: string; venue: string; raceNo: number }) {
   const { t } = useTranslation(["bet", "common"]);
-  const g = useGlossary();
   const name = useNames();
   const [open, setOpen] = useState(false);
   const [state, setState] = useState<{ key: string; data: PreRaceAnalysis | null; error?: boolean } | null>(null);
@@ -60,8 +58,7 @@ export function RaceAnalysisPanel({ date, venue, raceNo }: { date: string; venue
   const top = a?.horses[0];
   const checks = a ? strategyChecks(a) : [];
   const conf = confidence(checks);
-  const confLabel = t("analysis.confidenceAria", { stars: conf.stars.toFixed(1).replace(/\.0$/, ""), met: conf.met, total: conf.total });
-  const venueName = a ? g.venue(a.venue) : "";
+  const confLabel = t("analysis.confidenceAria", { stars: conf.stars.toFixed(1).replace(/\.0$/, "") });
 
   return (
     <section className={cx(panel, "mt-3 p-0 sm:p-0")}>
@@ -84,9 +81,6 @@ export function RaceAnalysisPanel({ date, venue, raceNo }: { date: string; venue
           {a && checks.length > 0 && (
             <span className="inline-flex w-fit flex-none items-center gap-1.5" role="img" aria-label={confLabel} title={confLabel}>
               <Stars value={conf.stars} />
-              <span className="text-[11px] text-ink-3 tabular-nums">
-                {conf.met}/{conf.total}
-              </span>
             </span>
           )}
         </span>
@@ -125,21 +119,11 @@ export function RaceAnalysisPanel({ date, venue, raceNo }: { date: string; venue
                 ))}
               </dl>
 
-              {/* Confidence = share of the venue's default-strategy rules met; the rules, one by one, below it */}
+              {/* Confidence = share of the venue's default-strategy rules met (the rules themselves stay private) */}
               {checks.length > 0 && (
-                <div className="mt-3 flex items-center gap-2 text-xs" role="img" aria-label={confLabel}>
+                <div className="mt-3 flex items-center gap-2 text-xs" role="img" aria-label={confLabel} title={confLabel}>
                   <span className="font-medium text-ink-2">{t("analysis.confidence")}</span>
                   <Stars value={conf.stars} size={16} />
-                  <span className="text-ink-3 tabular-nums">{t("analysis.rulesMet", { met: conf.met, total: conf.total, venue: venueName })}</span>
-                </div>
-              )}
-              {checks.length > 0 && (
-                <div className="mt-2 flex flex-wrap items-center gap-1.5 text-xs">
-                  {checks.map((c) => (
-                    <span key={c.key} className={cx("rounded-full px-2 py-0.5", c.ok ? "bg-good-soft text-good" : "bg-bad-soft text-bad")}>
-                      {c.ok ? "✓" : "✗"} {t(`analysis.rule.${c.key}`, { limit: c.key === "surface" ? g.surface(c.limit) : c.limit })}
-                    </span>
-                  ))}
                 </div>
               )}
 

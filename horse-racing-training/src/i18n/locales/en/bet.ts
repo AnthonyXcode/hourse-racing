@@ -70,8 +70,7 @@ export const bet = {
     sparse: "Sparse form",
     gap: "Top-2 gap",
     confidence: "Confidence",
-    confidenceAria: "Confidence {{stars}} of 5 ({{met}} of {{total}} strategy rules met)",
-    rulesMet: "{{met}} of {{total}} {{venue}} strategy rules met",
+    confidenceAria: "Confidence {{stars}} of 5",
     rule: {
       surface: "Surface {{limit}}",
       sparse: "Sparse form ≤ {{limit}}",
