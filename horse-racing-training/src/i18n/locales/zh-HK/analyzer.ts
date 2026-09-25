@@ -7,7 +7,7 @@ export const analyzer: Shape<typeof En> = {
     trio: "單T表現",
   },
   sub: {
-    intro: "往績分析及蒙地卡羅模型的預測與實際賽果比較。",
+    intro: "我們的模型預測與實際賽果比較。",
     winPlace: "{{races}} 場賽事（{{span}}），{{preds}} 個馬匹預測",
     trio: "{{settled}} 場已派彩賽事（{{span}}）· 其中 {{paid}} 場有單T派彩紀錄",
   },
@@ -17,7 +17,7 @@ export const analyzer: Shape<typeof En> = {
     run: "執行分析",
     running: "分析中…",
     last12: "最近 12 個月",
-    meta: "{{races}} 場賽事 · 蒙地卡羅模擬 {{runs}} 次（固定種子）· 於 {{at}} 執行",
+    meta: "{{races}} 場賽事 · 於 {{at}} 分析",
     runningFor: "正在分析 {{from}} → {{to}}… 首次執行可能需時數秒。",
   },
   filters: {
@@ -133,7 +133,7 @@ export const analyzer: Shape<typeof En> = {
     placeSeries: "位置",
     winPct: "獨贏 %",
     placePct: "位置 %",
-    rankMcNote: "按蒙地卡羅排名（1 = 模型首選）。少於 20 匹馬的排名不顯示。",
+    rankMcNote: "按模型排名（1 = 模型首選）。少於 20 匹馬的排名不顯示。",
     rankMktNote: "按市場排名（1 = 大熱），同一批賽事。",
     monthly: "每月走勢",
     monthlySub: "首選上名率對大熱",
@@ -185,7 +185,7 @@ export const analyzer: Shape<typeof En> = {
     strategies: "投注策略",
     strategiesSub: "每個組合 $10，模型排名對市場排名",
     strategiesNote:
-      "首 N 選複式 = 由首 N 選組成的所有三匹馬組合。膽拖 = 膽必須上名，其餘由腳補上。命中率計算所有有賽果的賽事；回報率只計有單T派彩紀錄的賽事。<code>模型</code> 按蒙地卡羅獨贏機率排名，<code>市場</code> 按獨贏賠率排名。",
+      "首 N 選複式 = 由首 N 選組成的所有三匹馬組合。膽拖 = 膽必須上名，其餘由腳補上。命中率計算所有有賽果的賽事；回報率只計有單T派彩紀錄的賽事。<code>模型</code> 按模型的獨贏機率排名，<code>市場</code> 按獨贏賠率排名。",
     coverage: "覆蓋率",
     coverageSub: "實際首三名落在選馬之內的頻率",
     model: "模型",

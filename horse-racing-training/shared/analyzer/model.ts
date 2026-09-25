@@ -42,7 +42,6 @@ export interface AnalyzerRace {
 
 export interface AnalyzerPayload {
   generatedAt: string;
-  mcRuns: number;
   from: string;
   to: string;
   races: AnalyzerRace[];

@@ -230,5 +230,5 @@ export async function runAnalyzer(from: string, to: string): Promise<AnalyzerPay
     }
     if (hit.race) races.push(hit.race);
   }
-  return { generatedAt: new Date().toISOString(), mcRuns: MC_RUNS, from, to, races };
+  return { generatedAt: new Date().toISOString(), from, to, races };
 }

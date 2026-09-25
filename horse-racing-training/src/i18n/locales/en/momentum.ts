@@ -45,7 +45,7 @@ export const momentum = {
     runningAnalyzer: "running analyzer…",
     needsSecond: "needs a second snapshot",
     currentOdds: "Current win odds",
-    note: "Number in brackets = current win odds; in Result, the final odds. Trio box = every 3-horse combination of the list at $10; hover Return for the net. Model = analyze-race.ts ranking (saved racecard, all-venue form, 10,000-run simulation). ★ = in both lists.",
+    note: "Number in brackets = current win odds; in Result, the final odds. Trio box = every 3-horse combination of the list at $10; hover Return for the net. Model = our ranking model (saved racecard and form at all venues). ★ = in both lists.",
   },
   ordinal: {
     "1": "1st",

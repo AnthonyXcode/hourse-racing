@@ -1,4 +1,4 @@
-// Analyzer performance: how the form analyzer + Monte Carlo model's predictions
+// Analyzer performance: how the form analyzer + model's predictions
 // held up against real results. The server runs the analysis for the chosen
 // date range; every panel below it is computed client-side from that payload.
 import { useEffect, useMemo, useState } from "react";
@@ -107,7 +107,7 @@ export function AnalyzerPage({ tab }: { tab: AnalyzerTab }) {
         </button>
         {data && !loading && (
           <span className={rangeMeta}>
-            {t("range.meta", { races: all.length.toLocaleString(), runs: data.mcRuns.toLocaleString(), at: data.generatedAt.slice(0, 16).replace("T", " ") })}
+            {t("range.meta", { races: all.length.toLocaleString(), at: data.generatedAt.slice(0, 16).replace("T", " ") })}
           </span>
         )}
       </form>
