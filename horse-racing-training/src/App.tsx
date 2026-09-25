@@ -321,11 +321,12 @@ export default function App() {
           </div>
           <MobileNav title={t("appName")} tabs={TABS.map(([v, key]) => [v, t(key)] as [View, string])} view={view} onSelect={setView} />
         </div>
+        {/* Featured Combined picks (next race, else the last one): slim strip inside the sticky header, so
+            --header-h covers it. Every app tab; not on legal pages. */}
+        {!(LEGAL_VIEWS as readonly string[]).includes(view) && <PicksBanner onSelect={selectView} linked={view !== "momentum"} />}
       </header>
 
       <main className={cx(container, "flex-1 pb-12")}>
-        {/* Featured Combined picks (next race, else the last one) on every app tab; not on legal pages. */}
-        {!(LEGAL_VIEWS as readonly string[]).includes(view) && <PicksBanner onSelect={selectView} showCta={view !== "momentum"} />}
         {error && <div className={errorBox}>{error}</div>}
 
         {/* Analyzer performance. Stays mounted once opened so the range, filters

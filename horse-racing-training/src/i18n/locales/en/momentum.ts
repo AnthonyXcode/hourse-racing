@@ -187,10 +187,5 @@ export const momentum = {
     upcoming: "Next race",
     last: "Last race",
     title: "Combined picks",
-    both: "in both lists",
-    placed: "{{n}} of the first 3 in our picks",
-    cta: "See live odds",
-    ctaLast: "See the full race",
-    aria: "Featured race picks",
   },
 } as const;
