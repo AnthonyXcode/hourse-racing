@@ -119,16 +119,17 @@ Logs: `pm2 logs horse-racing-training`
 
 Copy the local SQLite database (`data/momentum.sqlite`) to the server.
 
-**1. Back up locally** — safe while the app is running (the DB uses WAL, so don't `cp` the live file):
+**1. Back up locally** — from this folder; safe while the app is running (the DB uses WAL, so
+don't `cp` the live file). The backup lands in `data/`, which is gitignored:
 
 ```bash
-sqlite3 data/momentum.sqlite ".backup 'momentum-backup.sqlite'"
+sqlite3 data/momentum.sqlite ".backup 'data/momentum-backup.sqlite'"
 ```
 
 **2. Copy to the server:**
 
 ```bash
-scp momentum-backup.sqlite user@server:/path/to/horse-racing-training/data/
+scp data/momentum-backup.sqlite user@server:/path/to/horse-racing-training/data/
 ```
 
 **3. On the server, swap it in and restart:**
