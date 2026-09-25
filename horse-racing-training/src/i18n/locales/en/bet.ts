@@ -62,8 +62,6 @@ export const bet = {
   analysis: {
     title: "Analysis for reference",
     summary: "Model's top pick #{{n}} {{name}} · win {{win}}% · place {{place}}%",
-    fits: "Fits the {{venue}} strategy",
-    outside: "Outside the {{venue}} strategy",
     loading: "Analysing this race…",
     unavailable: "No analysis for this race.",
     runners: "Runners",
@@ -71,7 +69,9 @@ export const bet = {
     close8: "Close < 8",
     sparse: "Sparse form",
     gap: "Top-2 gap",
-    strategy: "{{venue}} strategy",
+    confidence: "Confidence",
+    confidenceAria: "Confidence {{stars}} of 5 ({{met}} of {{total}} strategy rules met)",
+    rulesMet: "{{met}} of {{total}} {{venue}} strategy rules met",
     rule: {
       surface: "Surface {{limit}}",
       sparse: "Sparse form ≤ {{limit}}",

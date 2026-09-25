@@ -65,8 +65,6 @@ export const bet: Shape<typeof En> = {
   analysis: {
     title: "分析參考",
     summary: "模型首選 {{n}}號 {{name}} · 獨贏 {{win}}% · 位置 {{place}}%",
-    fits: "符合{{venue}}策略",
-    outside: "不符合{{venue}}策略",
     loading: "正在分析此場賽事…",
     unavailable: "此場賽事暫無分析。",
     runners: "出賽馬數",
@@ -74,7 +72,9 @@ export const bet: Shape<typeof En> = {
     close8: "評分接近 < 8",
     sparse: "往績不足",
     gap: "首兩名差距",
-    strategy: "{{venue}}策略",
+    confidence: "信心指數",
+    confidenceAria: "信心指數 {{stars}} / 5（符合 {{total}} 項策略條件中的 {{met}} 項）",
+    rulesMet: "符合{{venue}}策略 {{total}} 項中的 {{met}} 項",
     rule: {
       surface: "跑道：{{limit}}",
       sparse: "往績不足 ≤ {{limit}}",

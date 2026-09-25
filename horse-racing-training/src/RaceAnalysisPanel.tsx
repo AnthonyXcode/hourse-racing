@@ -4,12 +4,37 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { useTranslation } from "react-i18next";
 import { api } from "./api";
-import { strategyChecks, type PreRaceAnalysis } from "../shared/analyzer/model";
+import { confidence, strategyChecks, type PreRaceAnalysis } from "../shared/analyzer/model";
 import { useGlossary } from "./i18n/glossary";
 import { useNames } from "./i18n/names";
 import { cx, panel, table, tablePadTight } from "./kit";
 
 const COLLAPSE = { duration: 0.24, ease: [0.2, 0, 0, 1] } as const;
+const STAR = "M10 1.6l2.6 5.3 5.8.8-4.2 4.1 1 5.8L10 14.9l-5.2 2.7 1-5.8L1.6 7.7l5.8-.8z";
+
+/** Five stars filled to `value` (0–5, fractional): grey row, gold row clipped to the exact width on top. */
+function Stars({ value, size = 14 }: { value: number; size?: number }) {
+  const row = (cls: string) => (
+    <span className={cx("flex gap-0.5", cls)}>
+      {[0, 1, 2, 3, 4].map((i) => (
+        <svg key={i} viewBox="0 0 20 20" width={size} height={size} className="flex-none fill-current">
+          <path d={STAR} />
+        </svg>
+      ))}
+    </span>
+  );
+  // Exact width: whole stars (plus the 2px gap after each), then the fraction of the next star.
+  const v = Math.max(0, Math.min(5, value)), whole = Math.floor(v);
+  const width = whole * (size + 2) + (v - whole) * size;
+  return (
+    <span aria-hidden className="relative inline-flex flex-none">
+      {row("text-surface-3")}
+      <span className="absolute inset-y-0 left-0 overflow-hidden" style={{ width }}>
+        {row("text-[#e8a317]")}
+      </span>
+    </span>
+  );
+}
 
 export function RaceAnalysisPanel({ date, venue, raceNo }: { date: string; venue: string; raceNo: number }) {
   const { t } = useTranslation(["bet", "common"]);
@@ -34,7 +59,8 @@ export function RaceAnalysisPanel({ date, venue, raceNo }: { date: string; venue
   const loading = state?.key !== key;
   const top = a?.horses[0];
   const checks = a ? strategyChecks(a) : [];
-  const fits = checks.length > 0 && checks.every((c) => c.ok);
+  const conf = confidence(checks);
+  const confLabel = t("analysis.confidenceAria", { stars: conf.stars.toFixed(1).replace(/\.0$/, ""), met: conf.met, total: conf.total });
   const venueName = a ? g.venue(a.venue) : "";
 
   return (
@@ -56,8 +82,11 @@ export function RaceAnalysisPanel({ date, venue, raceNo }: { date: string; venue
                 : t("analysis.summary", { n: top.horseNo, name: name("horse", top.code, top.name), win: top.winPct.toFixed(1), place: top.placePct.toFixed(1) })}
           </span>
           {a && checks.length > 0 && (
-            <span className={cx("w-fit flex-none rounded-full px-2 py-0.5 text-[11px] font-semibold", fits ? "bg-good-soft text-good" : "bg-surface-2 text-ink-2")}>
-              {fits ? t("analysis.fits", { venue: venueName }) : t("analysis.outside", { venue: venueName })}
+            <span className="inline-flex w-fit flex-none items-center gap-1.5" role="img" aria-label={confLabel} title={confLabel}>
+              <Stars value={conf.stars} />
+              <span className="text-[11px] text-ink-3 tabular-nums">
+                {conf.met}/{conf.total}
+              </span>
             </span>
           )}
         </span>
@@ -96,10 +125,16 @@ export function RaceAnalysisPanel({ date, venue, raceNo }: { date: string; venue
                 ))}
               </dl>
 
-              {/* The venue's default strategy, rule by rule */}
+              {/* Confidence = share of the venue's default-strategy rules met; the rules, one by one, below it */}
               {checks.length > 0 && (
-                <div className="mt-3 flex flex-wrap items-center gap-1.5 text-xs">
-                  <span className="mr-1 font-medium text-ink-2">{t("analysis.strategy", { venue: venueName })}</span>
+                <div className="mt-3 flex items-center gap-2 text-xs" role="img" aria-label={confLabel}>
+                  <span className="font-medium text-ink-2">{t("analysis.confidence")}</span>
+                  <Stars value={conf.stars} size={16} />
+                  <span className="text-ink-3 tabular-nums">{t("analysis.rulesMet", { met: conf.met, total: conf.total, venue: venueName })}</span>
+                </div>
+              )}
+              {checks.length > 0 && (
+                <div className="mt-2 flex flex-wrap items-center gap-1.5 text-xs">
                   {checks.map((c) => (
                     <span key={c.key} className={cx("rounded-full px-2 py-0.5", c.ok ? "bg-good-soft text-good" : "bg-bad-soft text-bad")}>
                       {c.ok ? "✓" : "✗"} {t(`analysis.rule.${c.key}`, { limit: c.key === "surface" ? g.surface(c.limit) : c.limit })}

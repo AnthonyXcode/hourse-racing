@@ -161,6 +161,12 @@ export function strategyChecks(a: PreRaceAnalysis): StrategyCheck[] {
   return out;
 }
 
+/** Confidence out of 5 stars = share of the venue's strategy rules met (e.g. 3 of 6 → 2.5). */
+export function confidence(checks: StrategyCheck[]): { met: number; total: number; stars: number } {
+  const met = checks.filter((c) => c.ok).length, total = checks.length;
+  return { met, total, stars: total ? (met / total) * 5 : 0 };
+}
+
 /** The venue whose defaults `F` still equals exactly (untouched), else null. */
 export function untouchedPreset(F: Filters): "HV" | "ST" | null {
   const same = (a: Filters, b: Filters) => (Object.keys(a) as (keyof Filters)[]).every((k) => a[k] === b[k]);

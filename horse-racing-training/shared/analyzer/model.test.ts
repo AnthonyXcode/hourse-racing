@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import {
   type AnalyzerRace, type HorseRow, MC, MKT, EMPTY_FILTERS,
-  applyFilters, trioCombos, trioOutcome, trioStats, foundIn, doubleTrio, metrics, SBY, VENUE_DEFAULTS, untouchedPreset, strategyChecks, type PreRaceAnalysis,
+  applyFilters, trioCombos, trioOutcome, trioStats, foundIn, doubleTrio, metrics, SBY, VENUE_DEFAULTS, untouchedPreset, strategyChecks, confidence, type PreRaceAnalysis,
 } from "./model";
 
 /** Horse by [mcRank, mktRank, finish, winOdds, placeOdds, tripRuns]; horse number = mcRank. */
@@ -143,5 +143,15 @@ describe("strategyChecks", () => {
 
   it("skips the gap rule when there is no second-rated horse", () => {
     expect(strategyChecks(pre({ gap: 999 })).some((c) => c.key === "gap")).toBe(false);
+  });
+});
+
+describe("confidence", () => {
+  const c = (oks: boolean[]) => oks.map((ok, i) => ({ key: "sparse" as const, ok, value: String(i), limit: "3" }));
+  it("is the share of rules met, out of 5 stars", () => {
+    expect(confidence(c([true, true, true, false, false, false]))).toEqual({ met: 3, total: 6, stars: 2.5 });
+    expect(confidence(c([true, true, true, true, false]))).toEqual({ met: 4, total: 5, stars: 4 });
+    expect(confidence(c([true, true, true, true, true, true])).stars).toBe(5);
+    expect(confidence([])).toEqual({ met: 0, total: 0, stars: 0 });
   });
 });
