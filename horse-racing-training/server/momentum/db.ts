@@ -80,6 +80,36 @@ const MIGRATIONS = [
   CREATE INDEX ix_entity_names_lookup ON entity_names (kind, code, fetched_at DESC);
   ALTER TABLE runners ADD COLUMN name_zh TEXT;  -- GraphQL name_ch
   `,
+  // v5: racecards + results, replacing the parent repo's data/racecards and data/historical files.
+  // `doc` is the same JSON those files held (see shared/types.ts); keys are indexed columns.
+  `
+  CREATE TABLE racecards (
+    race_id     TEXT PRIMARY KEY,           -- 2026-09-23-HV-1
+    date        TEXT NOT NULL,              -- YYYY-MM-DD (HK)
+    venue       TEXT NOT NULL CHECK (venue IN ('ST', 'HV')),
+    race_no     INTEGER NOT NULL,
+    doc         TEXT NOT NULL,              -- { race, winOdds }
+    source      TEXT NOT NULL,              -- 'file-import' | 'scrape'
+    fetched_at  TEXT NOT NULL,              -- when the source was scraped/read
+    updated_at  TEXT NOT NULL               -- when this row last changed
+  );
+  CREATE UNIQUE INDEX racecards_meeting ON racecards (date, venue, race_no);
+  CREATE TABLE meeting_results (
+    date        TEXT NOT NULL,
+    venue       TEXT NOT NULL CHECK (venue IN ('ST', 'HV')),
+    doc         TEXT NOT NULL,              -- RaceResult[] for the meeting
+    source      TEXT NOT NULL,
+    fetched_at  TEXT NOT NULL,
+    updated_at  TEXT NOT NULL,
+    PRIMARY KEY (date, venue)
+  );
+  -- Small named JSON documents (e.g. 'fixtures' = the HKJC fixture list).
+  CREATE TABLE data_docs (
+    key         TEXT PRIMARY KEY,
+    doc         TEXT NOT NULL,
+    updated_at  TEXT NOT NULL
+  );
+  `,
 ];
 
 export function openDb(file = process.env.MOMENTUM_DB || defaultPath()): DB {
