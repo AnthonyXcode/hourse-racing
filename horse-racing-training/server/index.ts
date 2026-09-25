@@ -21,13 +21,20 @@ const PORT = Number(process.env.PORT) || 8787;
 app.listen(PORT, () => {
   console.log(`[bet-trainer] API on http://localhost:${PORT}`);
   if (process.env.MOMENTUM_POLLER !== "0") momentum().poller.start(Number(process.env.MOMENTUM_INTERVAL_S) || 30);
-  // Chinese names: after boot, seed English and queue everything missing/stale (throttled, 1 page/s).
-  if (process.env.NAMES_REFRESH !== "0")
-    setTimeout(() => {
+  // Chinese names: shortly after boot and then daily, trim old records (keep 5 per code), seed English
+  // and queue everything missing or older than the TTL (throttled, 1 page/s).
+  if (process.env.NAMES_REFRESH !== "0") {
+    const maintain = () => {
       try {
-        names().refresher.sweep();
+        const n = names();
+        const removed = n.store.prune(5);
+        if (removed) console.log(`[names] pruned ${removed} old records`);
+        n.refresher.sweep();
       } catch (e) {
         console.error("[names] sweep failed:", e);
       }
-    }, 5_000);
+    };
+    setTimeout(maintain, 5_000);
+    setInterval(maintain, 24 * 60 * 60_000).unref();
+  }
 });

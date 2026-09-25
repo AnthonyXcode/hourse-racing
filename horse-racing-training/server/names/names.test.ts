@@ -104,8 +104,10 @@ describe("refresher", () => {
         },
       },
     });
+  let openedDb: ReturnType<typeof openDb>;
   beforeEach(() => {
-    store = nameStore(openDb(":memory:"));
+    openedDb = openDb(":memory:");
+    store = nameStore(openedDb);
     t = new Date("2026-09-25T00:00:00Z");
     calls = [];
   });
@@ -123,6 +125,26 @@ describe("refresher", () => {
     const got = store.latest([{ kind: "race", code: RACE }, { kind: "jockey", code: "CJE" }]);
     expect(got.get(`race:${RACE}`)!.nameZh).toBe("南風讓賽");
     expect(got.get("jockey:CJE")!.nameZh).toBe("周俊樂");
+  });
+
+  it("re-reading a page appends only for names that are new, changed or past the TTL", async () => {
+    const r = make();
+    const count = () => rowsFor("jockey", "CJE");
+    const rowsFor = (kind: string, code: string) =>
+      (openedDb.prepare("SELECT COUNT(*) AS n FROM entity_names WHERE kind = ? AND code = ?").get(kind, code) as { n: number }).n;
+    r.enqueue([{ kind: "race", code: RACE }]);
+    await r.idle();
+    expect(count()).toBe(1);
+    // Same page again a day later (e.g. another race the jockey rode in): fresh + unchanged → no new row.
+    t = new Date("2026-09-26T00:00:00Z");
+    r.enqueue([{ kind: "race", code: RACE }]);
+    await r.idle();
+    expect(count()).toBe(1);
+    // Eight days after the first fetch the record is stale → a new record is stored.
+    t = new Date("2026-10-03T00:00:00Z");
+    r.enqueue([{ kind: "race", code: RACE }]);
+    await r.idle();
+    expect(count()).toBe(2);
   });
 
   it("queues a key once and falls back to the horse profile page", async () => {

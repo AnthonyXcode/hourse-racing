@@ -5,7 +5,7 @@
 // - Fallback for a horse/trainer with no results page: its profile page title. Jockeys have no
 //   usable single page (client-rendered), so only results pages cover them.
 // - Backoff per key: 1 min, 2, 4 … capped at 1 h; after 3 failures, 24 h.
-import { keyOf, type NameKey, type NameStore, type NewName } from "./store";
+import { NAME_TTL_DAYS, keyOf, type NameKey, type NameStore, type NewName } from "./store";
 import type { NameIndex } from "./nameIndex";
 import { parseProfileTitle, parseResultsPage } from "./parse";
 import { horseUrl, resultsUrl, trainerUrl, type PageClient } from "./hkjcPages";
@@ -51,10 +51,20 @@ export function createRefresher({ store, index, pages, now = () => new Date(), l
     log(`no name for ${key} (${why}); retry in ${Math.round(backoffMs(n) / MIN)} min`);
   }
 
+  /**
+   * Append a record only when the stored one is missing, older than the TTL, or different —
+   * one results page covers ~40 codes, most of them already fresh.
+   */
   function save(rows: NewName[], source: string) {
     if (!rows.length) return;
-    store.insert(rows, source, now());
-    state.inserted += rows.length;
+    const cutoff = now().getTime() - NAME_TTL_DAYS * 86_400_000;
+    const current = store.latest(rows);
+    const changed = rows.filter((r) => {
+      const cur = current.get(keyOf(r));
+      return !cur || cur.nameZh !== r.nameZh || Date.parse(cur.fetchedAt) < cutoff;
+    });
+    if (changed.length) store.insert(changed, source, now());
+    state.inserted += changed.length;
     for (const r of rows) {
       const key = keyOf(r);
       fails.delete(key);
