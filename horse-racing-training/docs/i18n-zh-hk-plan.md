@@ -5,13 +5,13 @@ alternative. The language is part of the URL. Interface text is handled by **i18
 trainer **and race** names come from a new database table, which is refreshed in the background when a
 record is more than 7 days old.
 
-**Status:** plan, revision 2 · 2026-09-25 · branch to create: `feat/i18n-zh-hk` (off `feat/rebrand`)
+**Status:** plan, revision 3 · 2026-09-25 · branch to create: `feat/i18n-zh-hk` (off `feat/rebrand`)
 
 **Decisions (from review)**
 - Race names are translated too (§3, §4).
 - English names stay as they are in our data files (e.g. `ALABAMA STATE`). HKJC's English spelling is not fetched.
 - A package handles i18n: `i18next` + `react-i18next` + `i18next-browser-languagedetector` (§7).
-- The language lives in the URL. `/` is Chinese (the default) and `/en` is English. `?language=en` is also accepted (§7.2).
+- The language lives in the URL as **one** query parameter. No parameter means Chinese (the default), and `?language=en` means English. There is no path prefix (§7.2).
 
 ---
 
@@ -26,7 +26,7 @@ record is more than 7 days old.
 | The Chinese **jockey** profile page is rendered by client-side JavaScript; its `<title>` is generic | `…/jockeyprofile?JockeyId=AA` | A single jockey is refreshed from the results or racecard page of their latest meeting (§4.3). Phase 0 looks for a direct source. |
 | The SQLite layer already has append-only migrations (`PRAGMA user_version`) | `server/momentum/db.ts` | Add a migration. No new database file. |
 | Some payloads carry display names but no codes: the analyzer's `tn`/`tj`, Momentum `runners.name`, `FinishEntry` (drops `jockeyId`/`trainerId`), and `RaceCard` (no race `id`) | `shared/analyzer/model.ts`, `server/momentum/db.ts`, `shared/types.ts` | Phase 3 adds codes to these payloads. |
-| Both the prod server and Vite dev already fall back to `index.html` for unknown paths | `server/index.ts` `app.get("*", …)`; Vite's default `appType: "spa"` | A `/en` path prefix needs **no** server routing change. |
+| The app already keeps its state in the query string (`?tab=trio`, read and written by `useViewParam` in `App.tsx`) | `src/App.tsx` | The language becomes one more query parameter, handled the same way. No path routing and no server change. |
 
 ---
 
@@ -167,21 +167,25 @@ npm i i18next@^26 react-i18next@^17 i18next-browser-languagedetector@^8
 - **Translations are bundled in the JS**, not loaded over HTTP, so there is no flash of keys and nothing extra to load. At about 300 strings per language this costs almost nothing.
 
 ### 7.2 Language in the URL
+
+**One format only:** the query parameter `language`. The path is always `/`.
+
 | URL | Language |
 |---|---|
-| `/` · `/?tab=trio` | 繁體中文 (default) |
-| `/en` · `/en?tab=trio` | English |
-| `/?language=en` · `/?language=zh-HK` | Accepted as an alias. Normalized with `history.replaceState` to the canonical form above (`/en?tab=…` or `/?tab=…`) |
-| `/fr`, `?language=xx` | Unknown value, so default Chinese. The URL is normalized, dropping the bad value |
+| `/` · `/?tab=trio` | 繁體中文 (default, no parameter) |
+| `/?language=en` · `/?tab=trio&language=en` | English |
+| `/?language=zh-HK`, `/?language=xx`, `/?language=` | Chinese. The parameter isn't valid (Chinese is written by omitting it), so `history.replaceState` removes it from the URL |
 
-- **Detection:** `i18next-browser-languagedetector` with `order: ["path", "querystring"]`, `lookupFromPathIndex: 0`, `lookupQuerystring: "language"` and `caches: []`. The URL is the single source of truth, with no `localStorage` or `navigator.language`, so a shared link always opens in the language it names and a bare link opens in Chinese.
+Why a query parameter rather than an `/en` path prefix: the app already keeps its state in the query (`?tab=`), and `useViewParam` already reads and writes search parameters. Language is one more parameter, with no path handling, no effect on relative URLs or `/api`, and a single detection source.
+
+- **Detection:** `i18next-browser-languagedetector` with `order: ["querystring"]`, `lookupQuerystring: "language"` and `caches: []`. The URL is the single source of truth, with no `localStorage` or `navigator.language`, so a shared link always opens in the language it names and a bare link opens in Chinese.
 - **Switching** (`setLanguage(lng)`):
-  1. Build the URL: add or remove the `/en` prefix, keep `?tab=` and any other params, drop `?language`.
+  1. Build the URL: set `language=en` for English, or **delete** the parameter for Chinese. Keep `tab` and all other parameters.
   2. Call `history.replaceState`. Switching language doesn't create a back-button step.
   3. Call `i18n.changeLanguage`.
   4. Set `<html lang>` to `zh-Hant-HK` or `en`.
-- **Back/forward:** extend the existing `popstate` handler in `App.tsx` (`useViewParam`) to also re-detect the language from the path.
-- **Tab URLs:** `useViewParam` already builds URLs from `location.href` and only edits `?tab=`, so it keeps the `/en` prefix. Add a test.
+- **Back/forward:** extend the existing `popstate` handler in `App.tsx` (`useViewParam`) to also re-read `language`.
+- **Tab URLs:** `useViewParam` builds URLs from `location.href` and only edits `tab`, so switching tabs keeps `language=en`. Add a test.
 - **`index.html`:** `<html lang="zh-Hant-HK">`, matching the default.
 
 ### 7.3 Setup (`src/i18n/index.ts`)
@@ -194,7 +198,7 @@ i18n.use(LanguageDetector).use(initReactI18next).init({
   ns: ["common", "bet", "history", "analyzer", "momentum"],
   defaultNS: "common",
   interpolation: { escapeValue: false },          // React escapes already
-  detection: { order: ["path", "querystring"], lookupFromPathIndex: 0, lookupQuerystring: "language", caches: [] },
+  detection: { order: ["querystring"], lookupQuerystring: "language", caches: [] },
   returnNull: false,
 });
 ```
@@ -238,7 +242,7 @@ The parsers (§4.1) log any class or going text on HKJC pages that doesn't match
 ### 7.6 Switcher
 - **Desktop header:** a segmented control `繁 | EN` next to the tabs. Chinese comes first because it's the default.
 - **Mobile sheet:** a full-width `seg` at the bottom of the menu, in the slot where Opendoor has "Sign in".
-- It uses real links (`<a href="/en?tab=…">`) with a click handler, so middle-click or "open in new tab" works and the link is shareable.
+- It uses real links (`<a href="?tab=…&language=en">`, and the same URL without `language` for 繁) with a click handler, so middle-click or "open in new tab" works and the link is shareable.
 - Changing language keeps the current tab, filters and selection. Only strings re-render.
 
 ### 7.7 Typography
@@ -261,7 +265,7 @@ The parsers (§4.1) log any class or going text on HKJC pages that doesn't match
 | 1 | DB migration, `store.ts`, unit tests | `server/momentum/db.ts`, `server/names/store.ts` | 0.5 d |
 | 2 | Parsers including race name, with fixtures; page client; refresher queue; backfill script and coverage report | `server/names/*`, `package.json` | 1.5 d |
 | 3 | `POST /api/names/lookup`; payload codes and race ids (§6); Momentum `name_zh` | `server/routes.ts`, `server/analyzer.ts`, `shared/*`, poller | 0.5 d |
-| 4 | i18next setup: config, typed resources, URL detection and normalization, switcher (header and sheet), `<html lang>`, popstate, fonts | `src/i18n/*`, `src/App.tsx`, `src/MobileNav.tsx`, `index.html`, `index.css` | 1 d |
+| 4 | i18next setup: config, typed resources, `?language` detection and normalization, switcher (header and sheet), `<html lang>`, popstate, fonts | `src/i18n/*`, `src/App.tsx`, `src/MobileNav.tsx`, `index.html`, `index.css` | 1 d |
 | 5 | Pull out and translate every string into namespaces. Can run in parallel: (a) App + ui.tsx → `common`/`bet`/`history`, (b) analyzer, (c) momentum + charts | all `src/**` | 1.5 d |
 | 6 | Names in the UI: `<Name>` for race, horse, jockey and trainer everywhere | same | 0.5 d |
 | 7 | QA and review (§9) | — | 0.5 d |
@@ -279,21 +283,21 @@ Commit once per phase.
 - **Refresher:** a stale race name plus 14 stale runners from one race cost one request; a key is enqueued only once while queued; backoff applies after a failure. Uses a fake clock and a fake fetch.
 - **Lookup route:** returns stale rows immediately, enqueues them, lists `pending`, and validates kinds and codes (including `-` in race ids).
 - **URL and language** (pure functions in `src/i18n/url.ts`):
-  - `/` → zh-HK; `/en?tab=trio` → en
-  - `/?language=en&tab=trio` normalizes to `/en?tab=trio`
+  - `/` → zh-HK; `/?tab=trio&language=en` → en
+  - `/?language=zh-HK&tab=trio` and `/?language=xx` → zh-HK, with `language` removed and `tab` kept
   - Bad values fall back to zh-HK
   - `setLanguage` keeps `tab`
-  - Tab switching keeps the `/en` prefix
+  - Tab switching keeps `language=en`; switching to Chinese removes the parameter
 - **Resources:** the `zh-HK` and `en` key sets are identical in every namespace; interpolation and formatters produce the expected strings in both languages.
 - **Hardcoded-string guard:** a test greps `src/**/*.tsx` for JSX text nodes of plain English outside `t()`/`<Trans>`, with an allowlist for symbols and numbers.
 
 **Manual**
-- Open `/`: everything is Chinese. Switch to EN: the URL becomes `/en`, and the tab and filters are kept. Copy the URL, open it in a new window: English. Browser back and forward behave sensibly.
+- Open `/`: everything is Chinese. Switch to EN: the URL gains `language=en`, and the tab and filters are kept. Copy the URL, open it in a new window: English. Browser back and forward behave sensibly.
 - On every tab at desktop and 390px width, names switch after one lookup call (check DevTools).
 - Cold start with an empty `entity_names` table: English names show first, and Chinese fills in as the queue runs.
 - Pretend it's 8 days later (edit `fetched_at`). The page still shows the old name immediately, and a new row appears in the table.
 - With the HKJC host blocked, nothing breaks and English fallbacks show.
-- The prod build (`npm run build && npm start`) serves `/en` and `/en?tab=momentum` correctly.
+- The prod build (`npm run build && npm start`) opens `/?tab=momentum&language=en` in English on the Momentum tab.
 - A native zh-HK speaker reviews all translations.
 
 ---
@@ -307,4 +311,4 @@ Commit once per phase.
 | GraphQL codes differ from racecard codes for local meetings | Momentum stores `name_zh` on the runner itself, so it doesn't depend on the table. |
 | First backfill takes about 15 minutes, and Chinese is the default | Throttled, resumable background job. Until it finishes, users see Chinese interface text with English names, which still works. Run `npm run names:backfill` once before the first Chinese-default release. |
 | CJK web fonts on every default load | Unicode-range slicing; `display=swap`; the system CJK fonts (PingFang HK, Songti TC) come first on Apple devices, so the web fonts mostly serve other platforms. |
-| Old bookmarks with no language now open in Chinese | Intended, because Chinese is the default. English users bookmark `/en`. |
+| Old bookmarks with no language now open in Chinese | Intended, because Chinese is the default. English users bookmark a URL that includes `?language=en`. |
