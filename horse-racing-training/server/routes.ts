@@ -7,6 +7,7 @@ import { momentum } from "./momentum/service";
 import { hkDate } from "./momentum/poller";
 import { raceSeries } from "./momentum/series";
 import { modelRanks } from "./momentum/picks";
+import { highlight } from "./momentum/highlight";
 import { horseRows } from "../shared/momentum/model";
 import { names } from "./names/service";
 import { getNameIndex } from "./names/nameIndex";
@@ -188,6 +189,15 @@ api.get("/momentum/race/:raceId", (req, res) => {
   const s = raceSeries(momentum().repo, req.params.raceId);
   if (!s) return res.status(404).json({ error: "race not tracked" });
   res.json(s);
+});
+
+/** GET /api/momentum/highlight → the banner race (next to run, else last run) with its Combined picks. */
+api.get("/momentum/highlight", async (_req, res) => {
+  try {
+    res.json(await highlight(momentum().repo));
+  } catch (e) {
+    res.status(500).json({ error: String(e instanceof Error ? e.message : e) });
+  }
 });
 
 /** GET /api/momentum/picks/:raceId → analyzer ranking (analyze-race.ts --use-saved --form-data all), best first. */

@@ -200,6 +200,8 @@ export function repo(db: DB) {
         )
         .all() as { date: string; venue: string; races: number; snapshots: number }[],
     race: (id: string) => db.prepare(`SELECT * FROM races WHERE race_id = ?`).get(id) as RaceRow | undefined,
+    /** Every tracked race that runs on its own date (skips next-meeting rows filed under a non-race day). */
+    allRaces: () => db.prepare(`SELECT * FROM races WHERE substr(post_time, 1, 10) = date`).all() as RaceRow[],
 
     insertSnapshot: db.transaction(
       (

@@ -8,7 +8,7 @@ import type {
   HistoryEntry,
 } from "../shared/types";
 import type { AnalyzerPayload } from "../shared/analyzer/model";
-import type { RaceSeries, HorseRow, ModelRank } from "../shared/momentum/model";
+import type { RaceSeries, HorseRow, ModelRank, Highlight } from "../shared/momentum/model";
 
 export interface MomentumDayRef {
   date: string;
@@ -71,6 +71,8 @@ export const api = {
   momentumDays: () => get<{ today: string; days: MomentumDayRef[] }>("/api/momentum/days"),
   momentumDay: (date: string) => get<MomentumDay>(`/api/momentum/day?date=${date}`),
   momentumRace: (raceId: string) => get<RaceSeries>(`/api/momentum/race/${raceId}`),
+  /** Banner race (next to run, else last run) with its Combined picks; null when nothing is recorded. */
+  momentumHighlight: () => get<Highlight | null>("/api/momentum/highlight"),
   momentumPicks: (raceId: string) => get<{ raceId: string; ranks: ModelRank[] }>(`/api/momentum/picks/${raceId}`),
   momentumAnalysis: (from: string, to: string) =>
     get<{ from: string; to: string; races: number; rows: HorseRow[] }>(`/api/momentum/analysis?from=${from}&to=${to}`),

@@ -139,6 +139,15 @@ export function suggestPicks(model: ModelRank[], mv: Mover[]): Picks {
   return { model: top, move, combined };
 }
 
+/** Site-wide banner: the featured race (next to run, else the last run) and its Combined picks. */
+export interface Highlight {
+  mode: "upcoming" | "last";
+  race: { raceId: string; date: string; venue: "ST" | "HV"; raceNo: number; postTime: string | null; name: string | null };
+  picks: { horseNo: number; code: string | null; name: string; nameZh: string | null; both: boolean; odds: number | null; finishPos: number | null }[];
+  /** First three (dead-heats included) when mode = "last" and results are in; else []. */
+  placed: { horseNo: number; finishPos: number }[];
+}
+
 export const TRIO_UNIT = 10; // HK$ per Trio combination; dividends are quoted per $10
 
 /** Number of 3-horse combinations in a box of n horses. */

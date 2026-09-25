@@ -185,4 +185,14 @@ export const momentum: Shape<typeof En> = {
     Steam: "落飛",
     "Strong steam": "大落飛",
   },
+  banner: {
+    upcoming: "下一場",
+    last: "上一場",
+    title: "合併精選",
+    both: "同時在兩份名單",
+    placed: "頭三名中 {{n}} 匹在精選內",
+    cta: "查看即時賠率",
+    ctaLast: "查看整場賽事",
+    aria: "精選賽事推介",
+  },
 };

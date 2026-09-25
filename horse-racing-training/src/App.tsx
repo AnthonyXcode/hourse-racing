@@ -19,6 +19,7 @@ import { useGlossary } from "./i18n/glossary";
 import { LangSwitch, useFmt } from "./i18n/useLanguage";
 import { MobileNav } from "./MobileNav";
 import { Footer, LEGAL_VIEWS, LegalDoc, SiteMap } from "./LegalPages";
+import { PicksBanner } from "./momentum/PicksBanner";
 import { Display, btn, container, control, cx, errorBox, field, fieldLabel, panel, pill, pillRow } from "./kit";
 
 /** Publish the sticky header's height as --header-h so other sticky bars can sit just below it. */
@@ -323,6 +324,8 @@ export default function App() {
       </header>
 
       <main className={cx(container, "flex-1 pb-12")}>
+        {/* Featured Combined picks (next race, else the last one) on every app tab; not on legal pages. */}
+        {!(LEGAL_VIEWS as readonly string[]).includes(view) && <PicksBanner onSelect={selectView} showCta={view !== "momentum"} />}
         {error && <div className={errorBox}>{error}</div>}
 
         {/* Analyzer performance. Stays mounted once opened so the range, filters
