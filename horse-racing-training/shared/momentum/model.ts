@@ -133,9 +133,13 @@ export function suggestPicks(model: ModelRank[], mv: Mover[]): Picks {
     .slice(0, MOVE_PICKS);
   const inModel = new Set(top.map((r) => r.horseNo)), inMove = new Set(move.map((m) => m.horseNo));
   const names = new Map([...mv.map((m) => [m.horseNo, m.name] as const), ...top.map((r) => [r.horseNo, r.name] as const)]);
-  const combined = [...new Set([...top.map((r) => r.horseNo), ...move.map((m) => m.horseNo)])]
-    .map((h) => ({ horseNo: h, name: names.get(h) ?? "", inModel: inModel.has(h), inMove: inMove.has(h) }))
-    .sort((a, b) => Number(b.inModel && b.inMove) - Number(a.inModel && a.inMove));
+  // Model picks first (model rank order), then market-move picks not already listed (move order).
+  const combined = [...new Set([...top.map((r) => r.horseNo), ...move.map((m) => m.horseNo)])].map((h) => ({
+    horseNo: h,
+    name: names.get(h) ?? "",
+    inModel: inModel.has(h),
+    inMove: inMove.has(h),
+  }));
   return { model: top, move, combined };
 }
 

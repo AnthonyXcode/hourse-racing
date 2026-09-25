@@ -140,12 +140,15 @@ describe("suggestPicks", () => {
     expect(p.move.map((m) => m.horseNo)).toEqual([7, 8, 5, 1, 6]);
   });
 
-  it("combines both lists without duplicates, horses in both first", () => {
-    const p = suggestPicks([rank(1, 0.3), rank(2, 0.2)], [mover(1, 0), mover(2, 0.3), mover(3, 0.2)]);
+  it("combines both lists without duplicates: model picks first, then market-move picks", () => {
+    // Model order 1, 2, 3; move order 4, 2, 5 — #2 is in both and keeps its model position.
+    const p = suggestPicks([rank(1, 0.3), rank(2, 0.2), rank(3, 0.1)], [mover(1, null), mover(2, 0.4), mover(3, null), mover(4, 0.5), mover(5, 0.3)]);
     expect(p.combined.map((c) => [c.horseNo, c.inModel, c.inMove])).toEqual([
-      [1, true, true],
+      [1, true, false],
       [2, true, true],
-      [3, false, true],
+      [3, true, false],
+      [4, false, true],
+      [5, false, true],
     ]);
   });
 
