@@ -61,7 +61,7 @@ function useNow() {
 
 export function MomentumPage() {
   const [days, setDays] = useState<{ today: string; days: MomentumDayRef[] } | null>(null);
-  const [day, setDay] = useState(""); // "" = today
+  const [day, setDay] = useState(""); // "" = default racing day (see below)
 
   useEffect(() => {
     const load = () => api.momentumDays().then(setDays).catch(() => {});
@@ -70,8 +70,12 @@ export function MomentumPage() {
     return () => clearInterval(t);
   }, []);
 
+  // `days` lists racing days only, newest first. Default to today's meeting when there is one,
+  // else the most recent racing day.
   const options = days?.days ?? [];
-  const hasToday = options.some((d) => d.date === days?.today);
+  const today = days?.today ?? "";
+  const date = day || (options.find((d) => d.date <= today)?.date ?? "");
+  const isToday = date !== "" && date === today;
 
   return (
     <div className={page}>
@@ -81,19 +85,22 @@ export function MomentumPage() {
         </Display>
         <div className={cx(field, "w-full sm:w-auto sm:pb-2")}>
           <label htmlFor="mDay" className={fieldLabel}>Racing day</label>
-          <select id="mDay" className={cx(control, "w-full sm:w-auto sm:min-w-[300px]")} value={day} onChange={(e) => setDay(e.target.value)}>
-            <option value="">Today{days ? ` · ${fmtDay(days.today)}` : ""}</option>
-            {options
-              .filter((d) => d.date !== days?.today || !hasToday)
-              .map((d) => (
-                <option key={d.date} value={d.date}>
-                  {fmtDay(d.date)} · {d.venue} · {d.races} races · {d.snapshots.toLocaleString()} snapshots
-                </option>
-              ))}
+          <select id="mDay" className={cx(control, "w-full sm:w-auto sm:min-w-[300px]")} value={date} disabled={!options.length} onChange={(e) => setDay(e.target.value)}>
+            {!options.length && <option value="">{days ? "No racing days recorded" : "Loading…"}</option>}
+            {options.map((d) => (
+              <option key={d.date} value={d.date}>
+                {d.date === today ? "Today · " : ""}
+                {fmtDay(d.date)} · {d.venue} · {d.races} races · {d.snapshots.toLocaleString()} snapshots
+              </option>
+            ))}
           </select>
         </div>
       </div>
-      <LivePanel key={day || "today"} date={day || days?.today || ""} isToday={!day} />
+      {date ? (
+        <LivePanel key={date} date={date} isToday={isToday} />
+      ) : (
+        days && <div className={cx(panel, empty, "mt-6")}>No racing days recorded yet. Recording starts automatically on the next race day.</div>
+      )}
       <AnalysisPanel />
     </div>
   );

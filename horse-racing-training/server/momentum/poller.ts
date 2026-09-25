@@ -21,6 +21,12 @@ export function hkDate(d: Date): string {
   return new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Hong_Kong" }).format(d);
 }
 
+/** Whether an HKJC post time (ISO) falls on HK date `date`; unparseable → false. */
+function runsOn(postTime: string, date: string): boolean {
+  const t = new Date(postTime);
+  return !Number.isNaN(t.getTime()) && hkDate(t) === date;
+}
+
 export function createPoller(opts: PollerOptions) {
   const { client, repo } = opts;
   const now = opts.now ?? (() => new Date());
@@ -41,7 +47,8 @@ export function createPoller(opts: PollerOptions) {
     if (now().getTime() - lastMeetingFetch < every * 1000) return;
     lastMeetingFetch = now().getTime();
     for (const code of venue.code ? [venue.code] : VENUES) {
-      const races = await client.meeting(date, code);
+      // On a non-race day HKJC answers with the *next* meeting; keep only races that run on `date`.
+      const races = (await client.meeting(date, code)).filter((r) => runsOn(r.postTime, date));
       if (!races.length) continue;
       venue.code = code;
       for (const r of races)

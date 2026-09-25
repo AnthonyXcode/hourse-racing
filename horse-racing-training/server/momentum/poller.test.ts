@@ -51,6 +51,21 @@ describe("momentum poller", () => {
     expect(fc.calls.odds).toBe(0);
   });
 
+  it("ignores the next meeting HKJC returns on a non-race day", async () => {
+    const fc = fakeClient(); // always answers with the 2026-09-23 meeting
+    t = new Date("2026-09-21T03:00:00Z");
+    await make(fc).tick();
+    expect(r.racesOn("2026-09-21")).toHaveLength(0);
+    expect(r.days()).toEqual([]);
+  });
+
+  it("lists only days whose races run on that date", () => {
+    r.upsertRace({ race_id: "2026-09-23-HV-1", date: "2026-09-23", venue: "HV", race_no: 1, post_time: POST, hkjc_status: "RESULT" });
+    // Row a pre-fix poller filed under a non-race day (post time is days later).
+    r.upsertRace({ race_id: "2026-09-24-HV-1", date: "2026-09-24", venue: "HV", race_no: 1, post_time: "2026-09-27T12:45:00+08:00", hkjc_status: "DECLARED" });
+    expect(r.days().map((d) => d.date)).toEqual(["2026-09-23"]);
+  });
+
   it("snapshots odds inside the window with secs-to-post and runner names", async () => {
     const fc = fakeClient();
     const p = make(fc);

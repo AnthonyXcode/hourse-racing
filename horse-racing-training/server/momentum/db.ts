@@ -137,6 +137,7 @@ export function repo(db: DB) {
         .prepare(
           `SELECT r.date, r.venue, COUNT(DISTINCT r.race_id) AS races, COUNT(s.id) AS snapshots
            FROM races r LEFT JOIN snapshots s ON s.race_id = r.race_id
+           WHERE substr(r.post_time, 1, 10) = r.date -- post_time is HK-local ISO; skips next-meeting rows filed under a non-race day
            GROUP BY r.date, r.venue ORDER BY r.date DESC`
         )
         .all() as { date: string; venue: string; races: number; snapshots: number }[],
