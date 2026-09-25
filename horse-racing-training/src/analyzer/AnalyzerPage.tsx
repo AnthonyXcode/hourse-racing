@@ -6,7 +6,7 @@ import { api } from "../api";
 import { type AnalyzerPayload, type Filters, EMPTY_FILTERS, applyFilters, isSettled } from "../../shared/analyzer/model";
 import { WinPlaceTab } from "./WinPlaceTab";
 import { TrioTab } from "./TrioTab";
-import "./analyzer.css";
+import { btn, btnPrimary, code, control, cx, empty, errorBox, field, fieldLabel, note, page, panel, rangeBar, rangeMeta } from "../kit";
 
 export type AnalyzerTab = "win-place" | "trio";
 
@@ -31,6 +31,10 @@ const NUM_FIELDS: { label: string; inputs: { key: NumKey; placeholder: string }[
   { label: "Trip runs (≥)", inputs: [{ key: "trip", placeholder: "any" }] },
   { label: "Market position (≤)", inputs: [{ key: "mktPos", placeholder: "any" }] },
 ];
+
+/** Filter-grid cell and control: fill the column instead of the 104px minimum. */
+const filterField = "flex min-w-0 flex-col gap-1";
+const filterControl = "h-8 w-full min-w-0 rounded-[7px] border border-aline bg-panel px-2 py-1.5 text-[13px] text-ink";
 
 export function AnalyzerPage({ tab }: { tab: AnalyzerTab }) {
   const [range, setRange] = useState(lastYear);
@@ -64,62 +68,63 @@ export function AnalyzerPage({ tab }: { tab: AnalyzerTab }) {
   const validDraft = !!draft.from && !!draft.to && draft.from <= draft.to;
 
   return (
-    <div className="analyzer">
+    <div className={page}>
       <form
-        className="range"
+        className={rangeBar}
         onSubmit={(e) => {
           e.preventDefault();
           if (validDraft) setRange(draft);
         }}
       >
-        <div className="field">
-          <label htmlFor="aFrom">From</label>
-          <input type="date" id="aFrom" value={draft.from} max={draft.to} onChange={(e) => setDraft({ ...draft, from: e.target.value })} />
+        <div className={field}>
+          <label htmlFor="aFrom" className={fieldLabel}>From</label>
+          <input type="date" id="aFrom" className={control} value={draft.from} max={draft.to} onChange={(e) => setDraft({ ...draft, from: e.target.value })} />
         </div>
-        <div className="field">
-          <label htmlFor="aTo">To</label>
-          <input type="date" id="aTo" value={draft.to} min={draft.from} onChange={(e) => setDraft({ ...draft, to: e.target.value })} />
+        <div className={field}>
+          <label htmlFor="aTo" className={fieldLabel}>To</label>
+          <input type="date" id="aTo" className={control} value={draft.to} min={draft.from} onChange={(e) => setDraft({ ...draft, to: e.target.value })} />
         </div>
-        <button type="submit" className="primary" disabled={loading || !validDraft || (!dirty && !error)}>
+        <button type="submit" className={btnPrimary} disabled={loading || !validDraft || (!dirty && !error)}>
           {loading ? "Running…" : "Run analysis"}
         </button>
-        <button type="button" disabled={loading} onClick={() => { const r = lastYear(); setDraft(r); setRange(r); }}>
+        <button type="button" className={btn} disabled={loading} onClick={() => { const r = lastYear(); setDraft(r); setRange(r); }}>
           Last 12 months
         </button>
         {data && !loading && (
-          <span className="meta">
+          <span className={rangeMeta}>
             {all.length.toLocaleString()} races · Monte Carlo {data.mcRuns.toLocaleString()} runs, seeded · run {data.generatedAt.slice(0, 16).replace("T", " ")}
           </span>
         )}
       </form>
 
-      {error && <div className="error">{error}</div>}
-      {loading && !data && <div className="panel empty">Running analysis for {range.from} → {range.to}… this can take a few seconds the first time.</div>}
+      {error && <div className={errorBox}>{error}</div>}
+      {loading && !data && <div className={cx(panel, empty)}>Running analysis for {range.from} → {range.to}… this can take a few seconds the first time.</div>}
 
       {data && (
-        <div className={loading ? "stale" : ""}>
-          <div className="filters">
-            <div className="field">
-              <label htmlFor="fcls">Class</label>
-              <select id="fcls" value={F.cls} onChange={(e) => setF({ ...F, cls: e.target.value })}>
+        <div className={loading ? "pointer-events-none opacity-55 transition-opacity" : "transition-opacity"}>
+          <div className="sticky top-0 z-20 mt-1 grid grid-cols-6 gap-x-3 gap-y-2.5 border-b border-aline bg-page/88 pt-2.5 pb-3 backdrop-blur-md max-[820px]:grid-cols-3 max-[480px]:grid-cols-2">
+            <div className={filterField}>
+              <label htmlFor="fcls" className={fieldLabel}>Class</label>
+              <select id="fcls" className={filterControl} value={F.cls} onChange={(e) => setF({ ...F, cls: e.target.value })}>
                 {opts([["", "All"], ...classes.map((c): Opt => [c, c])])}
               </select>
             </div>
-            <div className="field">
-              <label htmlFor="fvenue">Venue</label>
-              <select id="fvenue" value={F.venue} onChange={(e) => setF({ ...F, venue: e.target.value })}>
+            <div className={filterField}>
+              <label htmlFor="fvenue" className={fieldLabel}>Venue</label>
+              <select id="fvenue" className={filterControl} value={F.venue} onChange={(e) => setF({ ...F, venue: e.target.value })}>
                 {opts([["", "All"], ["HV", "HV"], ["ST", "ST"]])}
               </select>
             </div>
             {NUM_FIELDS.map(({ label, inputs, step }) => (
-              <div className="field" key={label}>
-                <label htmlFor={`f${inputs[0]!.key}`}>{label}</label>
-                <div className="nums">
+              <div className={filterField} key={label}>
+                <label htmlFor={`f${inputs[0]!.key}`} className={fieldLabel}>{label}</label>
+                <div className="flex gap-1">
                   {inputs.map(({ key, placeholder }) => (
                     <input
                       key={key}
                       id={`f${key}`}
                       type="number"
+                      className={cx(filterControl, "tabular-nums placeholder:text-[#b3b8c0]")}
                       min={0}
                       step={step ?? 1}
                       inputMode="decimal"
@@ -132,21 +137,21 @@ export function AnalyzerPage({ tab }: { tab: AnalyzerTab }) {
                 </div>
               </div>
             ))}
-            <div className="field">
-              <label htmlFor="fmkt">Top pick is</label>
-              <select id="fmkt" value={F.mkt} onChange={(e) => setF({ ...F, mkt: e.target.value })}>
+            <div className={filterField}>
+              <label htmlFor="fmkt" className={fieldLabel}>Top pick is</label>
+              <select id="fmkt" className={filterControl} value={F.mkt} onChange={(e) => setF({ ...F, mkt: e.target.value })}>
                 {opts([["", "Any market rank"], ["fav", "Favourite"], ["nonfav", "Not favourite"], ["long", "Market rank 5+"]])}
               </select>
             </div>
-            <button type="button" onClick={() => setF(EMPTY_FILTERS)}>
+            <button type="button" className={cx(btn, "self-end justify-self-start")} onClick={() => setF(EMPTY_FILTERS)}>
               Reset
             </button>
-            <div className="status">
+            <div className="col-span-full -mt-1 justify-self-end whitespace-nowrap text-[13px] text-muted max-[480px]:justify-self-start [&_b]:text-ink [&_b]:tabular-nums">
               <b>{races.length}</b> of {all.length} races · <b>{races.reduce((s, r) => s + r.h.length, 0).toLocaleString()}</b> predictions
             </div>
           </div>
 
-          <header className="page-head">
+          <header className="block pt-[18px] pb-1 [&_h1]:mb-1 [&_h1]:text-xl [&_h1]:font-semibold [&_h1]:tracking-[-.01em] [&_h1]:text-ink [&_p]:text-[13px] [&_p]:text-muted">
             {tab === "win-place" ? (
               <>
                 <h1>Race analyzer performance</h1>
@@ -165,15 +170,15 @@ export function AnalyzerPage({ tab }: { tab: AnalyzerTab }) {
           </header>
 
           {races.length === 0 ? (
-            <div className="panel empty">No races match these filters.</div>
+            <div className={cx(panel, empty)}>No races match these filters.</div>
           ) : tab === "win-place" ? (
             <WinPlaceTab races={races} />
           ) : (
             <TrioTab races={races} />
           )}
 
-          <p className="note">
-            Every panel reflects the date range and filters. Source: saved racecards in <code>data/racecards/</code> matched to results in <code>data/historical/</code>. Odds are starting
+          <p className={note}>
+            Every panel reflects the date range and filters. Source: saved racecards in <code className={code}>data/racecards/</code> matched to results in <code className={code}>data/historical/</code>. Odds are starting
             prices where recorded; stakes are $10 flat.
           </p>
         </div>

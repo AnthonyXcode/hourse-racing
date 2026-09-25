@@ -1,32 +1,35 @@
 import { useState, type ReactNode } from "react";
+import { bad, cx, good, panel } from "../kit";
 
 export const pc = (v: number, d = 1) => (Number.isFinite(v) ? v.toFixed(d) + "%" : "–");
 export const signed = (v: number) => (Number.isFinite(v) ? (v >= 0 ? "+" : "") + pc(v) : "–");
-export const cls = (v: number) => (Number.isFinite(v) ? (v >= 0 ? "good" : "bad") : "");
-export const vs = (a: number, b: number) => (a >= b ? "good" : "bad");
+/** Tone class for a signed value: green ≥ 0, red < 0. */
+export const cls = (v: number) => (Number.isFinite(v) ? (v >= 0 ? good : bad) : "");
+export const vs = (a: number, b: number) => (a >= b ? good : bad);
 export const money = (v: number) => (Number.isFinite(v) ? "$" + Math.round(v).toLocaleString() : "–");
 
 export function Kpi({ label, value, sub, tone = "" }: { label: string; value: ReactNode; sub: ReactNode; tone?: string }) {
   return (
-    <div className="panel kpi">
-      <div className="label">{label}</div>
-      <div className={`value ${tone}`}>{value}</div>
-      <div className="sub">{sub}</div>
+    <div className={panel}>
+      <div className="text-xs uppercase tracking-[.04em] text-muted">{label}</div>
+      <div className={cx("mt-1.5 text-[26px] font-semibold tabular-nums", tone)}>{value}</div>
+      <div className="mt-1 text-xs text-muted">{sub}</div>
     </div>
   );
 }
 
-export const Bar = ({ v }: { v: number }) => (
-  <span className="bar">
-    <i style={{ width: `${Number.isFinite(v) ? v : 0}%` }} />
+/** Inline percentage meter for table cells. `narrow` for the two-up breakdown tables. */
+export const Bar = ({ v, narrow }: { v: number; narrow?: boolean }) => (
+  <span className={cx("inline-block h-2 overflow-hidden rounded-full bg-ink/10 align-middle", narrow ? "w-10" : "w-[70px]")}>
+    <i className="block h-full bg-accent" style={{ width: `${Number.isFinite(v) ? v : 0}%` }} />
   </span>
 );
 
 export const Legend = ({ items }: { items: [string, string][] }) => (
-  <div className="legend">
+  <div className="mb-2 flex flex-wrap gap-4 text-xs text-muted">
     {items.map(([color, label]) => (
       <span key={label}>
-        <i style={{ background: color }} />
+        <i className="mr-1.5 inline-block size-2.5 rounded-sm" style={{ background: color }} />
         {label}
       </span>
     ))}
@@ -51,7 +54,7 @@ export function useSort<K extends string>(initial: K, initialDir: 1 | -1 = -1) {
 
 export function SortTh<K extends string>({ k, sort, children }: { k: K; sort: { key: K; dir: 1 | -1; toggle: (k: K) => void }; children: ReactNode }) {
   return (
-    <th onClick={() => sort.toggle(k)} className="sortable">
+    <th onClick={() => sort.toggle(k)} className="cursor-pointer select-none hover:text-ink!">
       {children}
       {sort.key === k ? (sort.dir === 1 ? " ▲" : " ▼") : ""}
     </th>

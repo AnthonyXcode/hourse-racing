@@ -5,6 +5,7 @@ import { useMemo, useState } from "react";
 import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip, type TooltipProps } from "recharts";
 import { impliedProbs, type RaceSeries } from "../../shared/momentum/model";
 import { Swatch, horseStyle } from "./OddsChart";
+import { h3, note, panel, seg, segBtn, tip, tipRow } from "../kit";
 
 interface Slice {
   horseNo: number;
@@ -32,15 +33,15 @@ export function PoolDonut({ series, focus, onFocus }: { series: RaceSeries; focu
   }, [last, pool, total, series.runners]);
 
   return (
-    <div className="panel">
-      <div className="mo-head">
-        <h3>Pool split</h3>
-        <div className="seg" role="group" aria-label="Pool">
-          <button className={pool === "win" ? "on" : ""} onClick={() => setPool("win")}>Win</button>
-          <button className={pool === "pla" ? "on" : ""} onClick={() => setPool("pla")}>Place</button>
+    <div className={panel}>
+      <div className="mb-2 flex flex-wrap items-baseline gap-1.5">
+        <h3 className={`${h3} mb-0`}>Pool split</h3>
+        <div className={`${seg} ml-auto`} role="group" aria-label="Pool">
+          <button className={segBtn(pool === "win")} onClick={() => setPool("win")}>Win</button>
+          <button className={segBtn(pool === "pla")} onClick={() => setPool("pla")}>Place</button>
         </div>
       </div>
-      <div className="donut">
+      <div className="relative">
         <ResponsiveContainer width="100%" height={260}>
           <PieChart>
             <defs>
@@ -84,12 +85,12 @@ export function PoolDonut({ series, focus, onFocus }: { series: RaceSeries; focu
             <Tooltip content={<DonutTip pool={pool} />} isAnimationActive={false} />
           </PieChart>
         </ResponsiveContainer>
-        <div className="donut-center" aria-hidden>
-          <small>{pool === "win" ? "Win" : "Place"} pool</small>
-          <b>{total ? money(total) : "–"}</b>
+        <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center" aria-hidden>
+          <small className="text-[11px] uppercase tracking-[.04em] text-muted">{pool === "win" ? "Win" : "Place"} pool</small>
+          <b className="text-base tabular-nums">{total ? money(total) : "–"}</b>
         </div>
       </div>
-      <div className="note">
+      <div className={note}>
         Estimated from the latest odds: a runner's share of the pool is proportional to 1 / its odds. Striped slices are horses 9 and up.
       </div>
     </div>
@@ -100,24 +101,24 @@ function DonutTip({ active, payload, pool }: TooltipProps<number, string> & { po
   if (!active || !payload?.length) return null;
   const s = payload[0]!.payload as Slice;
   return (
-    <div className="mo-tip">
-      <div className="mo-tip-row">
+    <div className={tip}>
+      <div className={tipRow}>
         <Swatch {...horseStyle(s.horseNo)} />
-        <span className="n">{s.horseNo}</span>
-        <span className="name">{s.name}</span>
+        <span className="w-[18px] font-semibold tabular-nums">{s.horseNo}</span>
+        <span className="flex-1 text-muted">{s.name}</span>
       </div>
-      <div className="mo-tip-row">
-        <span className="name">{pool === "win" ? "Win" : "Place"} odds</span>
-        <b>{s.odds}</b>
+      <div className={tipRow}>
+        <span className="flex-1 text-muted">{pool === "win" ? "Win" : "Place"} odds</span>
+        <b className="tabular-nums">{s.odds}</b>
       </div>
-      <div className="mo-tip-row">
-        <span className="name">Share of pool</span>
-        <b>{(100 * s.share).toFixed(1)}%</b>
+      <div className={tipRow}>
+        <span className="flex-1 text-muted">Share of pool</span>
+        <b className="tabular-nums">{(100 * s.share).toFixed(1)}%</b>
       </div>
       {s.amount != null && (
-        <div className="mo-tip-row">
-          <span className="name">Est. amount</span>
-          <b>{money(s.amount)}</b>
+        <div className={tipRow}>
+          <span className="flex-1 text-muted">Est. amount</span>
+          <b className="tabular-nums">{money(s.amount)}</b>
         </div>
       )}
     </div>

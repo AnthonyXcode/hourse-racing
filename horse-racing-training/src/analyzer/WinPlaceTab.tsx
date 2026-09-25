@@ -3,10 +3,11 @@ import {
   type AnalyzerRace, MC, MKT, PWIN, PPLACE, WON, PLACED, WODDS, FIN, TRIP,
   metrics, byRank, calibration, groupBy, topOf, diffBucket, DIFF_ORDER,
 } from "../../shared/analyzer/model";
-import { CalibChart, GroupedBars, LineChart, type Series } from "./charts";
+import { C, CalibChart, GroupedBars, LineChart, type Series } from "./charts";
 import { Bar, Kpi, Legend, SortTh, cls, pc, signed, useSort, vs } from "./format";
+import { H2, code, control, cx, good, grid2, h3, kpis, note, panel, row, scroll, strong, table, tablePad, tablePadTight, tag, tall, totalRow } from "../kit";
 
-const ACCENT = "var(--accent)", ACCENT2 = "var(--accent2)", WARN = "var(--warn)";
+const ACCENT = C.accent, ACCENT2 = C.accent2, WARN = C.warn;
 
 type RowKey = "date" | "venue" | "race" | "cls" | "dist" | "runners" | "avgDiff" | "close8" | "sparse" | "gap" | "horse" | "trip" | "predWin" | "predPlace" | "mkt" | "odds" | "finish" | "jockey";
 
@@ -34,7 +35,7 @@ export function WinPlaceTab({ races }: { races: AnalyzerRace[] }) {
 
   return (
     <>
-      <div className="kpis">
+      <div className={kpis}>
         <Kpi label="Top pick wins" value={pc(M.mcTopWin)} sub={`predicted ${pc(M.predWin)} · market fav ${pc(M.favWin)}`} tone={vs(M.mcTopWin, M.favWin)} />
         <Kpi label="Top pick places" value={pc(M.mcTopPlace)} sub={`predicted ${pc(M.predPlace)} · market fav ${pc(M.favPlace)}`} tone={vs(M.mcTopPlace, M.favPlace)} />
         <Kpi label="Place ROI" value={signed(M.placeRoi)} sub="flat $10 place on top pick" tone={cls(M.placeRoi)} />
@@ -45,42 +46,36 @@ export function WinPlaceTab({ races }: { races: AnalyzerRace[] }) {
         <Kpi label="Form top-rated places" value={pc(M.ratingPlace)} sub={`rating rank 1 · MC ${pc(M.mcTopPlace)}`} />
       </div>
 
-      <h2>
-        Calibration <span>— predicted probability vs what actually happened</span>
-      </h2>
-      <div className="grid2">
-        <div className="panel">
-          <Legend items={[[ACCENT, "actual"], ["var(--muted)", "perfect calibration"]]} />
+      <H2 sub="— predicted probability vs what actually happened">Calibration</H2>
+      <div className={grid2}>
+        <div className={panel}>
+          <Legend items={[[ACCENT, "actual"], [C.muted, "perfect calibration"]]} />
           <CalibChart buckets={charts.calibWin} color={ACCENT} />
-          <div className="note">Win probability. Bars below the dashed line mean the model is over-confident.</div>
+          <div className={note}>Win probability. Bars below the dashed line mean the model is over-confident.</div>
         </div>
-        <div className="panel">
-          <Legend items={[[ACCENT2, "actual"], ["var(--muted)", "perfect calibration"]]} />
+        <div className={panel}>
+          <Legend items={[[ACCENT2, "actual"], [C.muted, "perfect calibration"]]} />
           <CalibChart buckets={charts.calibPlace} color={ACCENT2} />
-          <div className="note">Place probability (top 3).</div>
+          <div className={note}>Place probability (top 3).</div>
         </div>
       </div>
 
-      <h2>
-        Accuracy by rank <span>— model rank vs market rank</span>
-      </h2>
-      <div className="grid2">
-        <div className="panel">
+      <H2 sub="— model rank vs market rank">Accuracy by rank</H2>
+      <div className={grid2}>
+        <div className={panel}>
           <Legend items={[[ACCENT, "win %"], [ACCENT2, "place %"]]} />
           <GroupedBars rows={charts.mcRank} labelOf={(r) => r.rank} series={rankBars} max={100} />
-          <div className="note">By Monte Carlo rank (1 = model's top pick). Ranks with fewer than 20 runners are hidden.</div>
+          <div className={note}>By Monte Carlo rank (1 = model's top pick). Ranks with fewer than 20 runners are hidden.</div>
         </div>
-        <div className="panel">
+        <div className={panel}>
           <Legend items={[[ACCENT, "win %"], [ACCENT2, "place %"]]} />
           <GroupedBars rows={charts.mktRank} labelOf={(r) => r.rank} series={rankBars} max={100} />
-          <div className="note">By market rank (1 = favourite), same races.</div>
+          <div className={note}>By market rank (1 = favourite), same races.</div>
         </div>
       </div>
 
-      <h2>
-        Monthly trend <span>— top pick place rate vs the favourite</span>
-      </h2>
-      <div className="panel">
+      <H2 sub="— top pick place rate vs the favourite">Monthly trend</H2>
+      <div className={panel}>
         <Legend items={[[ACCENT, "MC top pick place %"], [WARN, "market favourite place %"]]} />
         <LineChart
           rows={charts.monthly}
@@ -92,22 +87,18 @@ export function WinPlaceTab({ races }: { races: AnalyzerRace[] }) {
         />
       </div>
 
-      <h2>Breakdowns</h2>
-      <div className="grid2">
+      <H2>Breakdowns</H2>
+      <div className={grid2}>
         <Breakdown title="By venue" head="Venue" rows={charts.venue} />
         <Breakdown title="By field spread (avgDiff)" head="avgDiff" rows={charts.diff} />
         <Breakdown title="By class" head="Class" rows={charts.cls} />
         <Breakdown title="By field size" head="Runners" rows={charts.field} />
       </div>
 
-      <h2>
-        Race by race <span>— the model's top pick in each race</span>
-      </h2>
+      <H2 sub="— the model's top pick in each race">Race by race</H2>
       <RaceTable races={races} />
 
-      <h2>
-        Month by month <span>— the model's top pick vs the market favourite</span>
-      </h2>
+      <H2 sub="— the model's top pick vs the market favourite">Month by month</H2>
       <MonthlyTable races={races} rows={charts.monthly} />
     </>
   );
@@ -115,10 +106,10 @@ export function WinPlaceTab({ races }: { races: AnalyzerRace[] }) {
 
 function Breakdown({ title, head, rows }: { title: string; head: string; rows: ({ key: string | number } & ReturnType<typeof metrics>)[] }) {
   return (
-    <div className="panel">
-      <h3>{title}</h3>
-      <div className="scroll">
-        <table>
+    <div className={panel}>
+      <h3 className={h3}>{title}</h3>
+      <div className={scroll}>
+        <table className={cx(table, tablePadTight)}>
           <thead>
             <tr>
               <th>{head}</th>
@@ -136,7 +127,7 @@ function Breakdown({ title, head, rows }: { title: string; head: string; rows: (
                 <td>{r.races}</td>
                 <td>{pc(r.mcTopWin)}</td>
                 <td>
-                  {pc(r.mcTopPlace)} <Bar v={r.mcTopPlace} />
+                  {pc(r.mcTopPlace)} <Bar v={r.mcTopPlace} narrow />
                 </td>
                 <td>{pc(r.favPlace)}</td>
                 <td className={cls(r.placeRoi)}>{signed(r.placeRoi)}</td>
@@ -169,9 +160,9 @@ function MonthlyTable({ races, rows }: { races: AnalyzerRace[]; rows: ({ key: st
     </>
   );
   return (
-    <div className="panel">
-      <div className="scroll">
-        <table>
+    <div className={panel}>
+      <div className={scroll}>
+        <table className={cx(table, tablePad)}>
           <thead>
             <tr>
               {["Month", "Races", "Win %", "Place %", "Pred place", "Fav win %", "Fav place %", "Place vs fav", "Agree", "Win ROI", "Place ROI", "Brier"].map((t) => (
@@ -188,15 +179,15 @@ function MonthlyTable({ races, rows }: { races: AnalyzerRace[]; rows: ({ key: st
             ))}
           </tbody>
           <tfoot>
-            <tr className="total">
+            <tr className={totalRow}>
               <td>All</td>
               {cells(total)}
             </tr>
           </tfoot>
         </table>
       </div>
-      <div className="note">
-        Newest month first. Win/Place % and ROI are for the model's top pick ($10 flat); <code>Fav</code> is the market favourite in the same races; <code>Agree</code> = top pick is also the
+      <div className={note}>
+        Newest month first. Win/Place % and ROI are for the model's top pick ($10 flat); <code className={code}>Fav</code> is the market favourite in the same races; <code className={code}>Agree</code> = top pick is also the
         favourite.
       </div>
     </div>
@@ -225,15 +216,15 @@ function RaceTable({ races }: { races: AnalyzerRace[] }) {
   const th = (k: RowKey, label: string) => <SortTh key={k} k={k} sort={sort}>{label}</SortTh>;
 
   return (
-    <div className="panel">
-      <div className="row">
-        <input type="search" value={q} onChange={(e) => setQ(e.target.value)} placeholder="search date, venue, class, horse, jockey…" />
-        <span className="tag">
+    <div className={panel}>
+      <div className={row}>
+        <input type="search" className={control} value={q} onChange={(e) => setQ(e.target.value)} placeholder="search date, venue, class, horse, jockey…" />
+        <span className={tag}>
           {list.length} race{list.length === 1 ? "" : "s"}
         </span>
       </div>
-      <div className="scroll tall">
-        <table>
+      <div className={cx(scroll, tall)}>
+        <table className={cx(table, tablePad)}>
           <thead>
             <tr>
               {th("date", "Date")}{th("venue", "Venue")}{th("race", "Race")}{th("cls", "Class")}
@@ -262,15 +253,15 @@ function RaceTable({ races }: { races: AnalyzerRace[] }) {
                 <td>{r.predPlace.toFixed(1)}%</td>
                 <td>{r.mkt ?? "–"}</td>
                 <td>{r.odds > 0 ? r.odds.toFixed(1) : "–"}</td>
-                <td className={r.placed ? "good strong" : ""}>{r.finish > 0 ? r.finish : "–"}</td>
+                <td className={r.placed ? cx(good, strong) : ""}>{r.finish > 0 ? r.finish : "–"}</td>
                 <td>{r.jockey || "–"}</td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
-      <div className="note">
-        Click a column to sort. <code>Trip</code> is the top pick's past runs at exactly this distance. <code>Mkt</code> is the top pick's market rank; <code>Finish</code> is its actual placing (bold = placed); <code>Jockey</code> is who rode it.
+      <div className={note}>
+        Click a column to sort. <code className={code}>Trip</code> is the top pick's past runs at exactly this distance. <code className={code}>Mkt</code> is the top pick's market rank; <code className={code}>Finish</code> is its actual placing (bold = placed); <code className={code}>Jockey</code> is who rode it.
       </div>
     </div>
   );

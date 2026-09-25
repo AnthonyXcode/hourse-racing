@@ -1,11 +1,26 @@
-// Small hand-rolled SVG charts for the analyzer tabs. All values are percents on a 0–max axis.
-import type { ReactNode } from "react";
+// Recharts wrappers for the analyzer tabs. All values are percents on a 0–max axis.
+import type { ReactElement, ReactNode } from "react";
+import {
+  Bar, BarChart, CartesianGrid, ComposedChart, Label, Line, LineChart as RLineChart, ResponsiveContainer, Tooltip, XAxis, YAxis,
+  type TooltipProps,
+} from "recharts";
 import type { CalibBucket } from "../../shared/analyzer/model";
+import { empty, tip, tipRow } from "../kit";
 import { pc } from "./format";
 
-const W = 560, HT = 260, P = { t: 14, r: 12, b: 34, l: 38 };
-const px = (i: number, n: number) => P.l + ((W - P.l - P.r) * i) / n;
-const py = (v: number, max: number) => P.t + (HT - P.t - P.b) * (1 - (Number.isFinite(v) ? v : 0) / max);
+/** Chart colors — hex mirrors of the @theme tokens in index.css (SVG attributes can't read CSS vars). */
+export const C = {
+  accent: "#2563eb",
+  accent2: "#eb6834",
+  warn: "#b45309",
+  ink: "#15181d",
+  muted: "#6b7280",
+  grid: "#e4e7ec",
+} as const;
+
+const HEIGHT = 260;
+const MARGIN = { top: 14, right: 12, bottom: 4, left: -8 };
+const TICK = { fontSize: 10, fill: C.muted };
 
 export interface Series<R> {
   name: string;
@@ -13,110 +28,164 @@ export interface Series<R> {
   get: (r: R) => number;
 }
 
-function Axis({ max, ticks = 5 }: { max: number; ticks?: number }) {
+export const NoData = ({ msg = "not enough data" }: { msg?: string }) => <div className={empty}>{msg}</div>;
+
+/** Evenly spaced y ticks 0…max. */
+const yTicks = (max: number, n = 5) => [...Array(n + 1)].map((_, i) => (max / n) * i);
+const finite = (v: number) => (Number.isFinite(v) ? v : 0);
+
+function Frame({ children }: { children: ReactElement }) {
   return (
-    <>
-      {[...Array(ticks + 1)].map((_, i) => {
-        const v = (max / ticks) * i, y = py(v, max);
-        return (
-          <g key={i}>
-            <line x1={P.l} y1={y} x2={W - P.r} y2={y} stroke="currentColor" opacity={0.12} />
-            <text x={P.l - 6} y={y + 4} textAnchor="end" fontSize={10} fill="currentColor" opacity={0.55}>
-              {Math.round(v)}
-            </text>
-          </g>
-        );
-      })}
-    </>
+    <div className="mx-auto w-full max-w-[820px]">
+      <ResponsiveContainer width="100%" height={HEIGHT}>
+        {children}
+      </ResponsiveContainer>
+    </div>
   );
 }
 
-const Svg = ({ children }: { children: ReactNode }) => (
-  <svg viewBox={`0 0 ${W} ${HT}`} role="img">
-    {children}
-  </svg>
-);
-export const NoData = ({ msg = "not enough data" }: { msg?: string }) => <div className="empty">{msg}</div>;
+function yAxis(max: number) {
+  return (
+    <YAxis
+      type="number"
+      domain={[0, max]}
+      ticks={yTicks(max)}
+      tickFormatter={(v: number) => `${Math.round(v)}`}
+      tick={TICK}
+      axisLine={false}
+      tickLine={false}
+      allowDataOverflow
+    />
+  );
+}
+
+/** Tooltip body: a heading and one swatch row per entry. */
+function Tip({ head, rows }: { head: ReactNode; rows: { color: string; label: string; value: string; dash?: boolean }[] }) {
+  return (
+    <div className={tip}>
+      <div className="mb-1 text-muted">{head}</div>
+      {rows.map((r) => (
+        <div key={r.label} className={tipRow}>
+          <i
+            className="inline-block h-2 w-3 flex-none rounded-sm"
+            style={r.dash ? { borderTop: `2px dashed ${r.color}`, height: 0 } : { background: r.color }}
+          />
+          <span className="flex-1 text-muted">{r.label}</span>
+          <b className="tabular-nums">{r.value}</b>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// ---------------- grouped bars ----------------
 
 export function GroupedBars<R extends { n: number }>({ rows, labelOf, series, max }: { rows: R[]; labelOf: (r: R) => string | number; series: Series<R>[]; max: number }) {
   if (!rows.length) return <NoData />;
-  const n = rows.length, band = (W - P.l - P.r) / n, bw = Math.min(16, (band - 6) / series.length);
+  const data = rows.map((r) => ({ label: labelOf(r), n: r.n, ...Object.fromEntries(series.map((s, j) => [`s${j}`, finite(s.get(r))])) }));
   return (
-    <Svg>
-      <Axis max={max} />
-      {rows.map((r, i) => {
-        const x0 = px(i, n) + (band - bw * series.length) / 2;
-        return (
-          <g key={i}>
-            {series.map((se, j) => {
-              const v = se.get(r), y = py(v, max);
-              return (
-                <rect key={j} x={x0 + j * bw} y={y} width={bw - 2} height={Math.max(0, py(0, max) - y)} fill={se.color} rx={2}>
-                  <title>{`${labelOf(r)} · ${se.name} ${pc(v)} (n=${r.n})`}</title>
-                </rect>
-              );
-            })}
-            <text x={px(i, n) + band / 2} y={HT - 12} textAnchor="middle" fontSize={10} fill="currentColor" opacity={0.6}>
-              {labelOf(r)}
-            </text>
-          </g>
-        );
-      })}
-    </Svg>
+    <Frame>
+      <BarChart data={data} margin={MARGIN} barGap={2} barCategoryGap="20%">
+        <CartesianGrid stroke={C.grid} vertical={false} />
+        <XAxis dataKey="label" tick={TICK} tickLine={false} axisLine={{ stroke: C.grid }} interval={0} />
+        {yAxis(max)}
+        <Tooltip
+          cursor={{ fill: C.ink, fillOpacity: 0.04 }}
+          isAnimationActive={false}
+          content={({ active, payload }: TooltipProps<number, string>) => {
+            if (!active || !payload?.length) return null;
+            const d = payload[0]!.payload as (typeof data)[number];
+            return <Tip head={`${d.label} · n=${d.n}`} rows={series.map((s, j) => ({ color: s.color, label: s.name, value: pc(Number((d as Record<string, unknown>)[`s${j}`])) }))} />;
+          }}
+        />
+        {series.map((s, j) => (
+          <Bar key={j} dataKey={`s${j}`} name={s.name} fill={s.color} maxBarSize={16} radius={[4, 4, 0, 0]} isAnimationActive={false} />
+        ))}
+      </BarChart>
+    </Frame>
   );
 }
 
+// ---------------- calibration ----------------
+
+/** Actual hit rate per predicted-probability bucket (bars) against perfect calibration (dashed line). */
 export function CalibChart({ buckets, color }: { buckets: CalibBucket[]; color: string }) {
   if (!buckets.length) return <NoData />;
-  const max = 100, n = buckets.length, band = (W - P.l - P.r) / n, bw = Math.min(30, band - 10);
-  const d = buckets.map((b, i) => `${i ? "L" : "M"}${px(i, n) + band / 2},${py(b.predicted, max)}`).join(" ");
+  const data = buckets.map((b) => ({ mid: b.mid, label: b.label, n: b.n, actual: finite(b.actual), predicted: finite(b.predicted) }));
   return (
-    <Svg>
-      <Axis max={max} />
-      <path d={d} fill="none" stroke="currentColor" opacity={0.45} strokeDasharray="5 4" strokeWidth={1.5} />
-      {buckets.map((b, i) => {
-        const x = px(i, n) + (band - bw) / 2, y = py(b.actual, max);
-        return (
-          <g key={i}>
-            <rect x={x} y={y} width={bw} height={Math.max(0, py(0, max) - y)} fill={color} rx={3} opacity={0.85}>
-              <title>{`${b.label}: predicted ${pc(b.predicted)}, actual ${pc(b.actual)} (n=${b.n})`}</title>
-            </rect>
-            <text x={x + bw / 2} y={HT - 12} textAnchor="middle" fontSize={9.5} fill="currentColor" opacity={0.6}>
-              {b.mid}
-            </text>
-          </g>
-        );
-      })}
-      <text x={W - P.r} y={HT - 1} textAnchor="end" fontSize={10} fill="currentColor" opacity={0.5}>
-        predicted % (bucket midpoint)
-      </text>
-    </Svg>
+    <Frame>
+      <ComposedChart data={data} margin={{ ...MARGIN, bottom: 18 }}>
+        <CartesianGrid stroke={C.grid} vertical={false} />
+        <XAxis dataKey="mid" tick={TICK} tickLine={false} axisLine={{ stroke: C.grid }} interval={0}>
+          <Label value="predicted % (bucket midpoint)" position="insideBottom" offset={-14} style={{ fontSize: 10, fill: C.muted }} />
+        </XAxis>
+        {yAxis(100)}
+        <Tooltip
+          cursor={{ fill: C.ink, fillOpacity: 0.04 }}
+          isAnimationActive={false}
+          content={({ active, payload }: TooltipProps<number, string>) => {
+            if (!active || !payload?.length) return null;
+            const d = payload[0]!.payload as (typeof data)[number];
+            return (
+              <Tip
+                head={`${d.label} · n=${d.n}`}
+                rows={[
+                  { color, label: "actual", value: pc(d.actual) },
+                  { color: C.muted, label: "predicted", value: pc(d.predicted), dash: true },
+                ]}
+              />
+            );
+          }}
+        />
+        <Bar dataKey="actual" fill={color} maxBarSize={24} radius={[4, 4, 0, 0]} isAnimationActive={false} />
+        <Line dataKey="predicted" stroke={C.muted} strokeWidth={1.5} strokeDasharray="5 4" dot={false} activeDot={false} isAnimationActive={false} />
+      </ComposedChart>
+    </Frame>
   );
 }
+
+// ---------------- monthly lines ----------------
 
 export function LineChart<R extends { key: string; races: number }>({ rows, series, max }: { rows: R[]; series: Series<R>[]; max: number }) {
   if (rows.length < 2) return <NoData msg="need at least two months" />;
-  const n = rows.length, step = (W - P.l - P.r) / (n - 1);
+  const data = rows.map((r) => ({ key: r.key, races: r.races, ...Object.fromEntries(series.map((s, j) => [`s${j}`, finite(s.get(r))])) }));
   return (
-    <Svg>
-      <Axis max={max} />
-      {series.map((se, j) => (
-        <g key={j}>
-          <path d={`M${rows.map((r, i) => `${P.l + i * step},${py(se.get(r), max)}`).join(" L")}`} fill="none" stroke={se.color} strokeWidth={2.2} strokeLinejoin="round" />
-          {rows.map((r, i) => (
-            <circle key={i} cx={P.l + i * step} cy={py(se.get(r), max)} r={3} fill={se.color}>
-              <title>{`${r.key} · ${se.name} ${pc(se.get(r))} (n=${r.races})`}</title>
-            </circle>
-          ))}
-        </g>
-      ))}
-      {rows.map((r, i) =>
-        n <= 14 || i % 2 === 0 ? (
-          <text key={i} x={P.l + i * step} y={HT - 12} textAnchor="middle" fontSize={9.5} fill="currentColor" opacity={0.6}>
-            {r.key.slice(2)}
-          </text>
-        ) : null
-      )}
-    </Svg>
+    <Frame>
+      <RLineChart data={data} margin={{ ...MARGIN, right: 18 }}>
+        <CartesianGrid stroke={C.grid} vertical={false} />
+        <XAxis
+          dataKey="key"
+          tick={TICK}
+          tickLine={false}
+          axisLine={{ stroke: C.grid }}
+          tickFormatter={(k: string) => k.slice(2)}
+          interval={rows.length <= 14 ? 0 : 1}
+        />
+        {yAxis(max)}
+        <Tooltip
+          cursor={{ stroke: C.muted, strokeWidth: 1 }}
+          isAnimationActive={false}
+          content={({ active, payload }: TooltipProps<number, string>) => {
+            if (!active || !payload?.length) return null;
+            const d = payload[0]!.payload as (typeof data)[number];
+            return <Tip head={`${d.key} · n=${d.races}`} rows={series.map((s, j) => ({ color: s.color, label: s.name, value: pc(Number((d as Record<string, unknown>)[`s${j}`])) }))} />;
+          }}
+        />
+        {series.map((s, j) => (
+          <Line
+            key={j}
+            dataKey={`s${j}`}
+            name={s.name}
+            stroke={s.color}
+            strokeWidth={2}
+            strokeLinejoin="round"
+            strokeLinecap="round"
+            dot={{ r: 3, fill: s.color, stroke: "#fff", strokeWidth: 1 }}
+            activeDot={{ r: 5, fill: s.color, stroke: "#fff", strokeWidth: 2 }}
+            isAnimationActive={false}
+          />
+        ))}
+      </RLineChart>
+    </Frame>
   );
 }

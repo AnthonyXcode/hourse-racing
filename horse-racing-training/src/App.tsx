@@ -14,6 +14,19 @@ import { RaceCardTable, BetTypePicker, CostBar, ResultModal, ResultPanel, Histor
 import type { RaceResult } from "../shared/types";
 import { AnalyzerPage } from "./analyzer/AnalyzerPage";
 import { MomentumPage } from "./momentum/MomentumPage";
+import { cx, errorBox } from "./kit";
+
+// Unstyled buttons default to 13.33px; preflight makes them inherit, so pin it to keep the old size.
+const tabBtn = (on: boolean) =>
+  cx(
+    "cursor-pointer rounded border px-4 py-1.5 text-[13.33px] font-semibold",
+    on ? "border-hkjc-red bg-hkjc-red text-white" : "border-line bg-white"
+  );
+const raceBtn = (on: boolean) =>
+  cx(
+    "min-w-10 cursor-pointer rounded-[3px] border px-2.5 py-1.5 text-[13.33px] font-semibold",
+    on ? "border-hkjc-red bg-hkjc-red text-white" : "border-line bg-white"
+  );
 
 /** false until `v` is first true, then true for good. */
 function useOnceTrue(v: boolean): boolean {
@@ -200,18 +213,18 @@ export default function App() {
   const card = cards[editRace];
 
   return (
-    <div className="app">
-      <header>
-        <h1>HKJC Bet Trainer</h1>
-        <nav className="tabs">
-          <button className={view === "bet" ? "active" : ""} onClick={() => setView("bet")}>Bet</button>
-          <button className={view === "history" ? "active" : ""} onClick={() => setView("history")}>History</button>
-          <button className={view === "win-place" ? "active" : ""} onClick={() => setView("win-place")}>Win / Place</button>
-          <button className={view === "trio" ? "active" : ""} onClick={() => setView("trio")}>Trio</button>
-          <button className={view === "momentum" ? "active" : ""} onClick={() => setView("momentum")}>Momentum</button>
+    <div className="mx-auto w-4/5 py-4 max-[1000px]:w-auto max-[1000px]:p-4">
+      <header className="flex flex-wrap items-center gap-x-4 gap-y-3 border-b-[3px] border-hkjc-red pb-2.5">
+        <h1 className="m-0 flex-none text-[22px] font-bold text-hkjc-red">HKJC Bet Trainer</h1>
+        <nav className="flex flex-wrap gap-1">
+          <button className={tabBtn(view === "bet")} onClick={() => setView("bet")}>Bet</button>
+          <button className={tabBtn(view === "history")} onClick={() => setView("history")}>History</button>
+          <button className={tabBtn(view === "win-place")} onClick={() => setView("win-place")}>Win / Place</button>
+          <button className={tabBtn(view === "trio")} onClick={() => setView("trio")}>Trio</button>
+          <button className={tabBtn(view === "momentum")} onClick={() => setView("momentum")}>Momentum</button>
         </nav>
         {view === "bet" && (
-          <select value={meetingKey} onChange={(e) => setMeetingKey(e.target.value)}>
+          <select className="ml-auto rounded border border-line bg-white px-2.5 py-2 text-sm" value={meetingKey} onChange={(e) => setMeetingKey(e.target.value)}>
             <option value="">Select a racing day…</option>
             {days.map((m) => (
               <option key={`${m.date}_${m.venue}`} value={`${m.date}_${m.venue}`}>
@@ -222,7 +235,7 @@ export default function App() {
         )}
       </header>
 
-      {error && <div className="error">{error}</div>}
+      {error && <div className={errorBox}>{error}</div>}
 
       {/* Analyzer performance. Stays mounted once opened so the range, filters
           and loaded analysis survive switching to other tabs and back. */}
@@ -245,11 +258,11 @@ export default function App() {
       {view === "bet" && meeting && (
         <>
           {/* Race tabs (browse + single-race selection) */}
-          <nav className="racetabs">
+          <nav className="my-3 flex flex-wrap gap-1">
             {meeting.races.map((rn) => (
               <button
                 key={rn}
-                className={rn === activeRace ? "active" : ""}
+                className={raceBtn(rn === activeRace)}
                 onClick={() => {
                   setActiveRace(rn);
                   if (legRaces.length <= 1) setEditRace(rn);
@@ -269,16 +282,19 @@ export default function App() {
 
           {/* Multi-race leg chooser */}
           {legCount > 1 && (
-            <div className="legchooser">
+            <div className="my-2.5 flex flex-col gap-1.5 rounded-md border border-leg-bd bg-white px-3 py-2.5">
               {officialPools.length > 0 && (
-                <div className="lc-pools">
-                  <span className="lc-label">{BET_TYPES[betType].label} pools:</span>
+                <div className="flex flex-wrap items-center gap-1.5">
+                  <span className="text-[13px] font-semibold">{BET_TYPES[betType].label} pools:</span>
                   {officialPools.map((pool) => {
                     const active = [...dtLegs].sort((a, b) => a - b).join() === [...pool].sort((a, b) => a - b).join();
                     return (
                       <button
                         key={pool.join()}
-                        className={`lc-pool ${active ? "active" : ""}`}
+                        className={cx(
+                          "cursor-pointer rounded-[14px] border border-banker-bd px-2.5 py-[5px] text-xs font-semibold",
+                          active ? "bg-banker" : "bg-white"
+                        )}
                         onClick={() => { setDtLegs(pool); setEditRace(pool[0]!); }}
                       >
                         R{pool.join("-R")}
@@ -287,17 +303,20 @@ export default function App() {
                   })}
                 </div>
               )}
-              <span className="lc-label">
+              <span className="text-[13px] font-semibold">
                 Or pick any {legCount} races ({dtLegs.length}/{legCount}):
               </span>
-              <div className="lc-races">
+              <div className="flex flex-wrap gap-1">
                 {meeting.races.map((rn) => {
                   const picked = dtLegs.includes(rn);
                   const isEdit = rn === editRace && picked;
                   return (
                     <button
                       key={rn}
-                      className={`lc-race ${picked ? "picked" : ""} ${isEdit ? "editing" : ""}`}
+                      className={cx(
+                        "min-w-10 cursor-pointer rounded-[3px] border px-2.5 py-1.5 text-[13.33px] font-semibold disabled:cursor-not-allowed disabled:opacity-35",
+                        isEdit ? "border-leg-bd bg-leg-bd text-white" : picked ? "border-leg-bd bg-leg" : "border-line bg-white"
+                      )}
                       disabled={!picked && dtLegs.length >= legCount}
                       onClick={() => toggleLeg(rn)}
                     >
@@ -306,25 +325,29 @@ export default function App() {
                   );
                 })}
               </div>
-              <span className="lc-note">Only an official pool pays a dividend; a custom combo still grades hit/miss.</span>
+              <span className="text-xs text-[#888]">Only an official pool pays a dividend; a custom combo still grades hit/miss.</span>
             </div>
           )}
 
           {/* Edit which leg's picks you're entering. */}
           {legCount > 1 && legRaces.length > 0 && (
-            <div className="legtabs">
+            <div className="my-2 flex items-center gap-2 text-[13px]">
               <span>Editing:</span>
               {legRaces.map((rn) => (
-                <button key={rn} className={rn === editRace ? "active" : ""} onClick={() => setEditRace(rn)}>
-                  R{rn} <em>{legSummary(selection.raceLegs.find((l) => l.raceNumber === rn) ?? { raceNumber: rn, bankers: [], legs: [] })}</em>
+                <button
+                  key={rn}
+                  className={cx("cursor-pointer rounded border border-leg-bd px-2.5 py-1.5 text-[13.33px]", rn === editRace ? "bg-leg" : "bg-white")}
+                  onClick={() => setEditRace(rn)}
+                >
+                  R{rn} <em className="ml-1 text-[#555] not-italic">{legSummary(selection.raceLegs.find((l) => l.raceNumber === rn) ?? { raceNumber: rn, bankers: [], legs: [] })}</em>
                 </button>
               ))}
             </div>
           )}
 
-          <div className="cardbar">
+          <div className="my-1.5 flex justify-end">
             <button
-              className="showresult"
+              className="cursor-pointer rounded border border-hkjc-dark bg-white px-3.5 py-[7px] text-[13.33px] font-semibold text-hkjc-dark disabled:cursor-not-allowed disabled:opacity-40"
               disabled={!meeting.hasResults}
               title={meeting.hasResults ? "" : "No results for this meeting"}
               onClick={() =>
@@ -343,11 +366,11 @@ export default function App() {
               bankerEnabled={bankerEnabled}
             />
           ) : (
-            <div className="loading">Loading race {editRace}…</div>
+            <div className="p-[30px] text-center text-[#888]">Loading race {editRace}…</div>
           )}
 
           <CostBar combos={combos} cost={totalCost} canSubmit={canSubmit} onSubmit={submit} />
-          {!meeting.hasResults && <p className="warn">No results saved for this meeting — settlement disabled.</p>}
+          {!meeting.hasResults && <p className="my-[13px] text-[13px] text-[#8a6d00]">No results saved for this meeting — settlement disabled.</p>}
         </>
       )}
 

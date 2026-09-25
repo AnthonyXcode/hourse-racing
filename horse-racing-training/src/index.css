@@ -1,0 +1,37 @@
+@import "tailwindcss";
+
+/* Design tokens. Each --color-* becomes bg-*, text-*, border-* etc.
+   Chart colors are mirrored as hex in src/analyzer/charts.tsx (SVG attributes can't read CSS vars). */
+@theme {
+  --font-sans: "Helvetica Neue", Arial, "PingFang HK", sans-serif;
+
+  /* trainer */
+  --color-hkjc-red: #c8102e;
+  --color-hkjc-dark: #1a1a1a;
+  --color-line: #d8d8d8;
+  --color-page: #f4f4f4;
+  --color-leg: #e8f1ff;
+  --color-leg-bd: #2f6fd0;
+  --color-banker: #fff2cc;
+  --color-banker-bd: #d6a400;
+  --color-hit: #137333;
+  --color-miss: #c8102e;
+
+  /* analyzer + momentum */
+  --color-panel: #fff;
+  --color-ink: #15181d;
+  --color-muted: #6b7280;
+  --color-aline: #e4e7ec;
+  --color-good: #0f7b4f;
+  --color-bad: #b4232c;
+  --color-accent: #2563eb;
+  --color-accent2: #eb6834;
+  --color-warn: #b45309;
+  --shadow-panel: 0 1px 2px rgba(16, 24, 40, 0.06), 0 1px 3px rgba(16, 24, 40, 0.1);
+}
+
+@layer base {
+  body {
+    @apply bg-page text-hkjc-dark;
+  }
+}

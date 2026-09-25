@@ -6,7 +6,8 @@ import {
   type TooltipProps,
 } from "recharts";
 import { impliedProbs, pointAt, RECENT_SECS, type RaceSeries } from "../../shared/momentum/model";
-import { NoData } from "../analyzer/charts";
+import { C, NoData } from "../analyzer/charts";
+import { bad, cx, good, tip, tipRow } from "../kit";
 
 // Validated categorical palette (dataviz reference, light). Fixed order, never cycled:
 // horses 9+ reuse a hue with a dashed stroke, so identity is hue + dash, stable per horse.
@@ -17,7 +18,7 @@ export function horseStyle(n: number): { color: string; dash?: string } {
 }
 
 const TICKS = [1, 1.5, 2, 3, 5, 8, 12, 20, 35, 60, 99, 200, 500, 999];
-const INK = "#15181d", MUTED = "#6b7280", GRID = "#e4e7ec";
+const { ink: INK, muted: MUTED, grid: GRID } = C;
 
 type Row = { m: number } & Record<string, number>; // m = minutes before post (negative)
 
@@ -132,8 +133,8 @@ function OddsTooltip({ active, payload, label, names, focus }: TooltipProps<numb
     });
   const m = Number(label);
   return (
-    <div className="mo-tip">
-      <div className="mo-tip-head">
+    <div className={tip}>
+      <div className="mb-1 flex justify-between gap-3 text-muted">
         <span>{m >= 0 ? (m === 0 ? "at the off" : `${m.toFixed(1)} min after post`) : `${(-m).toFixed(1)} min to post`}</span>
         <span>odds · last 5m</span>
       </div>
@@ -141,12 +142,12 @@ function OddsTooltip({ active, payload, label, names, focus }: TooltipProps<numb
         const h = Number(p.name);
         const { color, dash } = horseStyle(h);
         return (
-          <div key={h} className={`mo-tip-row${focus === h ? " on" : ""}`}>
+          <div key={h} className={cx(tipRow, focus === h && "rounded bg-accent/10")}>
             <Swatch color={color} dash={dash} />
-            <span className="n">{h}</span>
-            <span className="name">{names.get(h) ?? ""}</span>
-            <b>{p.value}</b>
-            <span className={`mv ${move(h) == null ? "" : move(h)! >= 0 ? "good" : "bad"}`}>
+            <span className="w-[18px] font-semibold tabular-nums">{h}</span>
+            <span className="flex-1 text-muted">{names.get(h) ?? ""}</span>
+            <b className="tabular-nums">{p.value}</b>
+            <span className={cx("w-[58px] text-right tabular-nums", move(h) != null && (move(h)! >= 0 ? good : bad))}>
               {move(h) == null ? "–" : `${move(h)! >= 0 ? "+" : ""}${(100 * move(h)!).toFixed(1)}%`}
             </span>
           </div>
@@ -157,9 +158,9 @@ function OddsTooltip({ active, payload, label, names, focus }: TooltipProps<numb
 }
 
 /** Line-sample key: hue + dash, matching the chart stroke. */
-export function Swatch({ color, dash }: { color: string; dash?: string }) {
+export function Swatch({ color, dash, className = "mr-1.5 w-[18px]" }: { color: string; dash?: string; className?: string }) {
   return (
-    <svg width={18} height={8} className="swatch" aria-hidden>
+    <svg width={18} height={8} viewBox="0 0 18 8" className={cx("inline-block h-2 flex-none align-middle", className)} aria-hidden>
       <line x1={1} y1={4} x2={17} y2={4} stroke={color} strokeWidth={2.5} strokeDasharray={dash ? "4 3" : undefined} strokeLinecap={dash ? "butt" : "round"} />
     </svg>
   );
