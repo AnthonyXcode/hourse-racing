@@ -18,6 +18,37 @@ const dayRace = (date: string, raceNo: number, lang: string) => {
   return lang === "en" ? `${d} ${MONTHS[m - 1]}(${raceNo})` : `${m}月${d}日(${raceNo})`;
 };
 const EASE = [0.2, 0, 0, 1] as const;
+/**
+ * Two layered sine waves drifting sideways behind the strip. Each SVG is 200% wide and holds two
+ * identical periods, so sliding it by -50% loops seamlessly. Transform-only, so MotionConfig's
+ * reducedMotion="user" stills it.
+ */
+const WAVE = "M0 20 Q150 10 300 20 T600 20 T900 20 T1200 20 V40 H0 Z";
+function Waves() {
+  return (
+    <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+      {(
+        [
+          { fill: "fill-accent/12", dur: 14, y: 2 },
+          { fill: "fill-accent/8", dur: 22, y: -3 },
+        ] as const
+      ).map((w, i) => (
+        <motion.svg
+          key={i}
+          viewBox="0 0 1200 40"
+          preserveAspectRatio="none"
+          className={cx("absolute inset-y-0 left-0 h-full w-[200%]", w.fill)}
+          style={{ y: w.y }}
+          animate={{ x: ["0%", "-50%"] }}
+          transition={{ duration: w.dur, repeat: Infinity, ease: "linear" }}
+        >
+          <path d={WAVE} />
+        </motion.svg>
+      ))}
+    </div>
+  );
+}
+
 const list = { hidden: {}, show: { transition: { staggerChildren: 0.04, delayChildren: 0.1 } } };
 const item = { hidden: { opacity: 0, y: 4 }, show: { opacity: 1, y: 0, transition: { duration: 0.22, ease: EASE } } };
 
@@ -50,22 +81,23 @@ export function PicksBanner({ onSelect, linked }: { onSelect: (v: string) => voi
       {h && h.picks.length > 0 && (
         <motion.div
           key="picks-strip"
-          className="overflow-hidden border-t border-edge bg-accent-soft/70"
+          className="relative overflow-hidden border-t border-edge bg-accent-soft/60"
           initial={{ height: 0, opacity: 0 }}
           animate={{ height: "auto", opacity: 1 }}
           exit={{ height: 0, opacity: 0 }}
           transition={{ duration: 0.3, ease: EASE }}
         >
+          <Waves />
           <a
             href={linked ? viewHref("momentum") : undefined}
             onClick={open}
             aria-label={`${upcoming ? t("banner.upcoming") : t("banner.last")} · ${t("banner.title")}`}
-            className={cx(container, "flex h-8 items-center gap-3 text-xs text-ink-2", linked && "cursor-pointer hover:text-ink")}
+            className={cx(container, "relative flex h-8 items-center gap-3 text-xs text-ink-2", linked && "cursor-pointer hover:text-ink")}
           >
             <AnimatePresence mode="wait" initial={false}>
               <motion.span
                 key={h.race.raceId}
-                className="flex min-w-0 items-center gap-3"
+                className="flex w-full min-w-0 items-center gap-3"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
@@ -78,7 +110,7 @@ export function PicksBanner({ onSelect, linked }: { onSelect: (v: string) => voi
                   </span>
                 )}
                 <span className="flex-none font-semibold text-ink tabular-nums">{dayRace(h.race.date, h.race.raceNo, lang)}</span>
-                <motion.span className="flex min-w-0 items-center gap-1 overflow-hidden p-0.5" variants={list} initial="hidden" animate="show">
+                <motion.span className="ml-auto flex min-w-0 items-center gap-1 overflow-hidden p-0.5 sm:ml-0" variants={list} initial="hidden" animate="show">
                   {h.picks.map((p) => {
                     const placed = p.finishPos != null && p.finishPos <= 3;
                     return (
