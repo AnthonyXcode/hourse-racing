@@ -5,9 +5,12 @@ import { existsSync } from "fs";
 import { api } from "./routes";
 import { momentum } from "./momentum/service";
 import { names } from "./names/service";
+import { dataApi } from "./data/routes";
+import { dataService } from "./data/service";
 
 const app = express();
 app.use(express.json());
+app.use("/api/data", dataApi);
 app.use("/api", api);
 
 // Serve the built SPA in production (npm run build → dist/).
@@ -37,4 +40,7 @@ app.listen(PORT, () => {
     setTimeout(maintain, 5_000);
     setInterval(maintain, 24 * 60 * 60_000).unref();
   }
+  // Racecards + results: every 2 h from 08:00 to 00:00 HKT (catch-up run on boot if the last one is stale).
+  // Opt-in for now (DATA_FETCH=1): it drives Playwright scrapes of HKJC.
+  if (process.env.DATA_FETCH === "1") dataService().scheduler.start();
 });

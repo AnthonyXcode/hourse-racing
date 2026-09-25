@@ -110,6 +110,19 @@ const MIGRATIONS = [
     updated_at  TEXT NOT NULL
   );
   `,
+  // v6: one row per racecard/results fetch run (scheduler, startup catch-up or manual CLI).
+  `
+  CREATE TABLE fetch_runs (
+    id           INTEGER PRIMARY KEY,
+    started_at   TEXT NOT NULL,
+    finished_at  TEXT,
+    trigger      TEXT NOT NULL CHECK (trigger IN ('schedule', 'startup', 'manual')),
+    ok           INTEGER,                   -- NULL while running
+    summary      TEXT,                      -- JSON
+    error        TEXT
+  );
+  CREATE INDEX fetch_runs_started ON fetch_runs (started_at DESC);
+  `,
 ];
 
 export function openDb(file = process.env.MOMENTUM_DB || defaultPath()): DB {
