@@ -84,11 +84,14 @@ interface PoolNode {
 
 export const hkjcClient: HkjcClient = {
   async meeting(date, venue) {
-    const d = await post<{ raceMeetings: { races: { no: number; postTime: string; status: string }[] }[] | null }>(
+    const d = await post<{ raceMeetings: { venueCode?: string; races: { no: number; postTime: string; status: string }[] }[] | null }>(
       "meeting",
       { date, venueCode: venue }
     );
-    return (d.raceMeetings?.[0]?.races ?? []).map((r) => ({ raceNo: r.no, postTime: r.postTime, status: r.status }));
+    // HKJC ignores venueCode and returns whatever meeting is current — including overseas simulcasts
+    // (venueCode "S1", "S2", …). Only the venue we asked for (ST / HV) counts.
+    const m = (d.raceMeetings ?? []).find((x) => x.venueCode === venue);
+    return (m?.races ?? []).map((r) => ({ raceNo: r.no, postTime: r.postTime, status: r.status }));
   },
 
   async runners(date, venue) {

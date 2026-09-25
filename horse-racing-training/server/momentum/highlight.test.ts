@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import { openDb, repo, type Repo } from "./db";
 import { raceStore, type RaceStore } from "../data/raceStore";
 import { useRaceStore } from "../dataIndex";
-import { chooseRace } from "./highlight";
+import { chooseRace, raceCandidates } from "./highlight";
 
 const card = (id: string) => ({ race: { id, date: `${id.slice(0, 10)}T00:00:00.000Z`, raceNumber: Number(id.split("-").pop()) } });
 
@@ -38,5 +38,18 @@ describe("banner race choice", () => {
     store.putCard({ date: "2026-09-23", venue: "HV", raceNo: 9 }, card("2026-09-23-HV-9"), "test");
     const got = chooseRace(r, new Date("2026-09-28T09:00:00+08:00"));
     expect(got).toMatchObject({ mode: "last", date: "2026-09-23", raceNo: 9 });
+  });
+
+  it("lists fallbacks in order so the banner can skip races with no picks", () => {
+    store.putCard({ date: "2026-10-01", venue: "HV", raceNo: 1 }, card("2026-10-01-HV-1"), "test");
+    store.putCard({ date: "2026-10-01", venue: "HV", raceNo: 2 }, card("2026-10-01-HV-2"), "test");
+    store.putCard({ date: "2026-09-23", venue: "HV", raceNo: 9 }, card("2026-09-23-HV-9"), "test");
+    const ids = raceCandidates(r, new Date("2026-09-27T12:50:00+08:00")).map((c) => `${c.mode}:${c.date}-${c.venue}-${c.raceNo}`);
+    expect(ids).toEqual([
+      "upcoming:2026-09-27-ST-2", // tracked, still to run (no card: the banner will skip it)
+      "upcoming:2026-10-01-HV-1", // next racecard meeting
+      "upcoming:2026-10-01-HV-2",
+      "last:2026-09-23-HV-9", // latest racecard meeting already run
+    ]);
   });
 });
