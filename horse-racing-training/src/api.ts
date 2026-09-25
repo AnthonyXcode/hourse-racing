@@ -15,6 +15,8 @@ export interface MomentumDayRef {
   venue: string;
   races: number;
   snapshots: number;
+  /** racecards saved, not tracked by the odds poller yet */
+  upcoming?: boolean;
 }
 export interface MomentumDay {
   date: string;
@@ -23,7 +25,8 @@ export interface MomentumDay {
     race_id: string;
     venue: string;
     race_no: number;
-    post_time: string;
+    /** null for an upcoming day known only from its racecards */
+    post_time: string | null;
     status: string;
     hkjc_status: string | null;
     snapshots: number;

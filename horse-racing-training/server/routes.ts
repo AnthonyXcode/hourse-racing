@@ -8,6 +8,7 @@ import { hkDate } from "./momentum/poller";
 import { raceSeries } from "./momentum/series";
 import { modelRanks } from "./momentum/picks";
 import { highlight } from "./momentum/highlight";
+import { cardRaces, cardSeries, parseRaceId, upcomingDays } from "./momentum/upcoming";
 import { horseRows } from "../shared/momentum/model";
 import { names } from "./names/service";
 import { getNameIndex } from "./names/nameIndex";
@@ -166,7 +167,11 @@ api.post("/settle", (req, res) => {
 
 /** GET /api/momentum/days → every recorded meeting, newest first. */
 api.get("/momentum/days", (_req, res) => {
-  res.json({ today: hkDate(new Date()), days: momentum().repo.days() });
+  const today = hkDate(new Date());
+  const tracked = momentum().repo.days();
+  // + upcoming racecard meetings the poller hasn't picked up yet (it only learns races on race day)
+  const days = [...upcomingDays(today, new Set(tracked.map((d) => d.date))), ...tracked].sort((a, b) => b.date.localeCompare(a.date));
+  res.json({ today, days });
 });
 
 /** GET /api/momentum/day?date=YYYY-MM-DD (default today) → that day's races with snapshot counts + poller health. */
@@ -179,14 +184,17 @@ api.get("/momentum/day", (req, res) => {
   res.json({
     date,
     now: new Date().toISOString(),
-    races: r.racesOn(date).map((x) => ({ ...x, snapshots: r.snapshotCount(x.race_id) })),
+    races: (() => {
+      const tracked = r.racesOn(date).filter((x) => x.post_time.slice(0, 10) === date); // skip next-meeting rows filed under a non-race day
+      return tracked.length ? tracked.map((x) => ({ ...x, snapshots: r.snapshotCount(x.race_id) })) : cardRaces(date);
+    })(),
     poller: poller.state,
   });
 });
 
 /** GET /api/momentum/race/:raceId → odds time-series for one race. */
 api.get("/momentum/race/:raceId", (req, res) => {
-  const s = raceSeries(momentum().repo, req.params.raceId);
+  const s = raceSeries(momentum().repo, req.params.raceId) ?? cardSeries(req.params.raceId);
   if (!s) return res.status(404).json({ error: "race not tracked" });
   res.json(s);
 });
@@ -215,10 +223,12 @@ api.get("/momentum/highlight", async (_req, res) => {
 
 /** GET /api/momentum/picks/:raceId → analyzer ranking (analyze-race.ts --use-saved --form-data all), best first. */
 api.get("/momentum/picks/:raceId", async (req, res) => {
-  const race = momentum().repo.race(req.params.raceId);
-  if (!race) return res.status(404).json({ error: "race not tracked" });
+  const tracked = momentum().repo.race(req.params.raceId);
+  // Untracked (upcoming) races are ranked straight from their saved racecard.
+  const k = tracked ? { date: tracked.date, venue: tracked.venue as "ST" | "HV", raceNo: tracked.race_no } : parseRaceId(req.params.raceId);
+  if (!k) return res.status(404).json({ error: "race not tracked" });
   try {
-    res.json({ raceId: race.race_id, ranks: await modelRanks(race.date, race.venue as "ST" | "HV", race.race_no) });
+    res.json({ raceId: req.params.raceId, ranks: await modelRanks(k.date, k.venue, k.raceNo) });
   } catch (e) {
     res.status(500).json({ error: String(e instanceof Error ? e.message : e) });
   }

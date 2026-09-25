@@ -46,7 +46,8 @@ export interface RaceSeries {
   date: string;
   venue: string;
   raceNo: number;
-  postTime: string;
+  /** null for an upcoming race known only from its racecard (post times arrive on race day) */
+  postTime: string | null;
   status: string;
   /** nameZh = HKJC Traditional Chinese name (GraphQL name_ch); null when not recorded. */
   runners: { horseNo: number; name: string; nameZh: string | null }[];

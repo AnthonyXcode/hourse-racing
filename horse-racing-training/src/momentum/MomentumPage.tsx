@@ -108,7 +108,9 @@ export function MomentumPage() {
           <select id="mDay" className={cx(control, "w-full sm:w-auto sm:min-w-[300px]")} value={date} disabled={!options.length} onChange={(e) => setDay(e.target.value)}>
             {!options.length && <option value="">{days ? t("noDays") : tc("state.loading")}</option>}
             {options.map((d) => {
-              const label = t("dayOption", { day: f.day(d.date), venue: g.venue(d.venue), races: tc("races", { count: d.races }), snapshots: d.snapshots.toLocaleString() });
+              const label = d.upcoming
+                ? t("dayOptionUpcoming", { day: f.day(d.date), venue: g.venue(d.venue), races: tc("races", { count: d.races }) })
+                : t("dayOption", { day: f.day(d.date), venue: g.venue(d.venue), races: tc("races", { count: d.races }), snapshots: d.snapshots.toLocaleString() });
               return (
                 <option key={d.date} value={d.date}>
                   {d.date === today ? t("today", { day: label }) : label}
@@ -163,7 +165,8 @@ function LivePanel({ date, isToday }: { date: string; isToday: boolean }) {
 
   // Default to the next race still to run (or the last race of the day).
   const races = today?.races ?? [];
-  const next = races.find((r) => Date.parse(r.post_time) > now - 5 * 60_000) ?? races[races.length - 1];
+  // Unknown post time (upcoming day, from racecards) counts as still to run, so race 1 is the default there.
+  const next = races.find((r) => !r.post_time || Date.parse(r.post_time) > now - 5 * 60_000) ?? races[races.length - 1];
   const selected = raceId || next?.race_id || "";
 
   useEffect(() => {
@@ -195,12 +198,13 @@ function LivePanel({ date, isToday }: { date: string; isToday: boolean }) {
   const modelHere = model?.raceId === selected ? model : null;
 
   const race = races.find((r) => r.race_id === selected);
-  const secsToPost = race ? (Date.parse(race.post_time) - now) / 1000 : NaN;
+  const secsToPost = race?.post_time ? (Date.parse(race.post_time) - now) / 1000 : NaN;
+  const upcomingDay = races.length > 0 && races.every((r) => !r.post_time);
   const lastPt = series?.points[series.points.length - 1];
 
   return (
     <>
-      <H2 sub={today ? `${f.day(today.date)} · ${races[0] ? g.venue(races[0].venue) : t("noMeeting")}` : t("common:state.loading")}>{isToday ? t("live") : t("replay")}</H2>
+      <H2 sub={today ? `${f.day(today.date)} · ${races[0] ? g.venue(races[0].venue) : t("noMeeting")}` : t("common:state.loading")}>{upcomingDay ? t("upcoming") : isToday ? t("live") : t("replay")}</H2>
       {error && <div className={errorBox}>{error}</div>}
       {isToday && today?.poller.lastError && <div className={errorBox}>{t("poller", { error: today.poller.lastError })}</div>}
 
@@ -211,7 +215,7 @@ function LivePanel({ date, isToday }: { date: string; isToday: boolean }) {
             const sel = r.race_id === selected;
             return (
               <button key={r.race_id} className={cx(pill(sel), "flex-none")} onClick={() => setRaceId(r.race_id)} title={t("snapshots", { count: r.snapshots })}>
-                {t("common:raceShort", { n: r.race_no })} <small className={sel ? "text-xs font-normal text-white/70" : "text-xs font-normal text-ink-3"}>{f.hm(r.post_time)}</small>
+                {t("common:raceShort", { n: r.race_no })} <small className={sel ? "text-xs font-normal text-white/70" : "text-xs font-normal text-ink-3"}>{r.post_time ? f.hm(r.post_time) : ""}</small>
                 {on && <i className="size-[7px] animate-pulse rounded-full bg-good motion-reduce:animate-none" aria-label={t("polling")} />}
                 {r.status === "settled" && <small className={cx(dim, "text-xs")}>✓</small>}
               </button>
@@ -227,7 +231,7 @@ function LivePanel({ date, isToday }: { date: string; isToday: boolean }) {
           <div className={panel}>
             <div className={moHead}>
               <h3 className={cx(h3, "mb-0")}>{t("common:race", { n: race.race_no })}</h3>
-              <span className="text-ink-2">{t("off", { time: f.hm(race.post_time) })} ·</span>
+              {race.post_time ? <span className="text-ink-2">{t("off", { time: f.hm(race.post_time) })} ·</span> : <span className="text-ink-2">{t("postTimeTbc")}</span>}
               {secsToPost > 0 ? <span className={strong}>{t("toGo", { time: mmss(secsToPost) })}</span> : <span className={dim}>{race.hkjc_status ? t(`status.${race.hkjc_status}` as "status.RESULT", { defaultValue: race.hkjc_status.toLowerCase() }) : ""}</span>}
               <span className={moMeta}>
                 {t("snapshots", { count: series.points.length })}
@@ -357,7 +361,7 @@ function SuggestedPicks({ model, series, focus, onFocus, className }: {
   const picks = suggestPicks(model?.ranks ?? [], mv);
   const result = pickResults(picks, series.results, series.dividends);
   const divOf = (pool: string) => result?.dividends.filter((d) => d.pool === pool) ?? [];
-  const off = Date.parse(series.postTime) <= Date.now();
+  const off = series.postTime != null && Date.parse(series.postTime) <= Date.now();
   const odds = new Map(mv.map((m) => [m.horseNo, m.now]));
   const chip = { focus, onFocus };
   const f = (h: number) => (fin.size ? fin.get(h) ?? null : undefined);
