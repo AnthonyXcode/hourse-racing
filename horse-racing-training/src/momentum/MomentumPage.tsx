@@ -11,37 +11,29 @@ import { Kpi, Legend, SortTh, cls, pc, signed, useSort } from "../analyzer/forma
 import { OddsChart, Swatch, horseStyle } from "./OddsChart";
 import { PoolDonut } from "./PoolDonut";
 import {
-  H2, btn, btnPrimary, control, cx, dim, empty, errorBox, field, fieldLabel, grid2, h3, kpis, note, page, panel, rangeBar, rangeMeta,
-  scroll, seg, segBtn, strong, table, tablePad, tablePadTight,
+  Display, H2, btn, btnPrimary, control, cx, dim, empty, errorBox, field, fieldLabel, figure, grid2, h3, kpis, modal, modalBg, note, page, panel,
+  pill, pillRow, rangeBar, rangeMeta, scroll, seg, segBtn, strong, table, tablePad, tablePadTight,
 } from "../kit";
 
 const REFRESH_MS = 30_000;
 
 // Local class strings for patterns only this page uses.
 /** Panel header row: title left, meta/controls pushed right. */
-const moHead = "mb-2 flex flex-wrap items-baseline gap-1.5";
-const moMeta = "ml-auto text-[12.5px] text-muted";
-const gridLive = "grid grid-cols-[minmax(0,1.45fr)_minmax(0,1.1fr)] items-start gap-4 max-[1000px]:grid-cols-1";
-const pickRow = "flex items-baseline gap-2.5 py-1";
-const pickLbl = "w-[118px] flex-none text-xs text-muted";
+/** Panel header row: title left, meta/controls pushed right (own line on phones). */
+const moHead = "mb-3 flex flex-wrap items-center gap-x-2 gap-y-1";
+const moMeta = "basis-full text-xs text-ink-3 sm:ml-auto sm:basis-auto";
+/** Chart + donut stack beside the movers from `lg`; one column below. */
+const gridLive = "grid grid-cols-1 items-start gap-4 lg:grid-cols-[minmax(0,1.45fr)_minmax(0,1.1fr)]";
+/** Suggested-pick row: label above the chips on phones, beside them from `sm`. */
+const pickRow = "flex flex-col gap-1.5 py-1.5 sm:flex-row sm:items-baseline sm:gap-3";
+const pickLbl = "text-xs text-ink-2 sm:w-[118px] sm:flex-none";
 const chips = "flex flex-wrap gap-1.5";
-const chipBase = "inline-flex cursor-default items-center gap-[5px] rounded-full border py-[3px] pr-[9px] pl-[7px] text-[12.5px]";
+const chipBase = "inline-flex cursor-default items-center gap-[5px] rounded-full py-1 pr-2.5 pl-2 text-[12.5px] shadow-btn";
 /** Pick chip: `on` (hovered horse) beats `both` (in both lists). */
 const chipCls = (both: boolean, on: boolean) =>
-  cx(
-    chipBase,
-    on
-      ? "border-accent bg-accent/12 shadow-[inset_0_0_0_1px_var(--color-accent)]"
-      : both
-        ? "border-ink bg-panel shadow-[inset_0_0_0_1px_var(--color-ink)]"
-        : "border-aline bg-panel"
-  );
-const chipOdds = "-ml-[3px] text-muted tabular-nums";
-const chipDetail = "text-muted tabular-nums";
-const raceTab = (active: boolean) =>
-  active
-    ? "inline-flex min-w-10 cursor-pointer items-center gap-1.5 rounded-[7px] border border-hkjc-red bg-hkjc-red px-3 py-[7px] text-[13px] font-semibold text-white"
-    : cx(btn, "inline-flex min-w-10 items-center gap-1.5 font-semibold");
+  cx(chipBase, on ? "bg-accent-soft ring-1 ring-accent" : both ? "bg-surface ring-1 ring-ink" : "bg-surface");
+const chipOdds = "-ml-[3px] text-ink-3 tabular-nums";
+const chipDetail = "text-ink-2 tabular-nums";
 const MIN_N = 30; // below this a bucket's hit rate is noise — shown greyed
 
 const hkTime = (iso: string) => new Date(iso).toLocaleTimeString("en-GB", { timeZone: "Asia/Hong_Kong", hour: "2-digit", minute: "2-digit" });
@@ -83,14 +75,13 @@ export function MomentumPage() {
 
   return (
     <div className={page}>
-      <div className="flex flex-wrap items-end justify-between gap-4 pt-[18px] pb-1">
-        <div>
-          <h1 className="mb-1 text-xl font-bold tracking-[-.01em] text-ink">Market momentum</h1>
-          <p className="text-[13px] text-muted">Win and place odds are recorded every 30 s from 30 minutes before each race. Races that have finished feed the hit-rate analysis below.</p>
-        </div>
-        <div className={field}>
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+        <Display sub="Win and place odds are recorded every 30 s from 30 minutes before each race. Races that have finished feed the hit-rate analysis below.">
+          Market momentum
+        </Display>
+        <div className={cx(field, "w-full sm:w-auto sm:pb-2")}>
           <label htmlFor="mDay" className={fieldLabel}>Racing day</label>
-          <select id="mDay" className={cx(control, "min-w-[300px]")} value={day} onChange={(e) => setDay(e.target.value)}>
+          <select id="mDay" className={cx(control, "w-full sm:w-auto sm:min-w-[300px]")} value={day} onChange={(e) => setDay(e.target.value)}>
             <option value="">Today{days ? ` · ${fmtDay(days.today)}` : ""}</option>
             {options
               .filter((d) => d.date !== days?.today || !hasToday)
@@ -182,14 +173,15 @@ function LivePanel({ date, isToday }: { date: string; isToday: boolean }) {
       {isToday && today?.poller.lastError && <div className={errorBox}>Poller: {today.poller.lastError}</div>}
 
       {races.length > 0 && (
-        <nav className="my-3 flex flex-wrap gap-1.5">
+        <nav className={cx(pillRow, "my-4")}>
           {races.map((r) => {
             const on = today!.poller.polling.includes(r.race_id);
+            const sel = r.race_id === selected;
             return (
-              <button key={r.race_id} className={raceTab(r.race_id === selected)} onClick={() => setRaceId(r.race_id)} title={`${r.snapshots} snapshots`}>
-                R{r.race_no} <small className={r.race_id === selected ? "text-white/80" : "font-normal text-muted"}>{hkTime(r.post_time)}</small>
+              <button key={r.race_id} className={cx(pill(sel), "flex-none")} onClick={() => setRaceId(r.race_id)} title={`${r.snapshots} snapshots`}>
+                R{r.race_no} <small className={sel ? "text-xs font-normal text-white/70" : "text-xs font-normal text-ink-3"}>{hkTime(r.post_time)}</small>
                 {on && <i className="size-[7px] animate-pulse rounded-full bg-good motion-reduce:animate-none" aria-label="polling" />}
-                {r.status === "settled" && <small className={cx(dim, r.race_id === selected ? "text-white/80" : "font-normal text-muted")}> ✓</small>}
+                {r.status === "settled" && <small className={cx(dim, "text-xs")}>✓</small>}
               </button>
             );
           })}
@@ -201,7 +193,8 @@ function LivePanel({ date, isToday }: { date: string; isToday: boolean }) {
           <div className="flex min-w-0 flex-col gap-4">
           <div className={panel}>
             <div className={moHead}>
-              <b>R{race.race_no}</b> · off {hkTime(race.post_time)} ·{" "}
+              <h3 className={cx(h3, "mb-0")}>Race {race.race_no}</h3>
+              <span className="text-ink-2">off {hkTime(race.post_time)} ·</span>
               {secsToPost > 0 ? <span className={strong}>{mmss(secsToPost)} to go</span> : <span className={dim}>{race.hkjc_status?.toLowerCase()}</span>}
               <span className={moMeta}>
                 {series.points.length} snapshots
@@ -248,15 +241,17 @@ function MoversTable({ series, model, focus, onFocus, stamp }: { series: RaceSer
   );
 
   return (
-    <div className={cx(panel, scroll)}>
+    <div className={panel}>
       <div className={moHead}>
         <h3 className={cx(h3, "mb-0")}>Movers</h3>
         {stamp && <span className={moMeta}>{stamp}</span>}
       </div>
+      <div className={scroll}>
       <table
         className={cx(
           table,
-          "[&_td]:px-1.5 [&_td]:py-[7px] [&_th]:px-1.5 [&_th]:py-[7px] [&_td:first-child]:pr-2.5 [&_td:nth-child(2)]:max-w-[170px] [&_td:nth-child(2)]:truncate [&_td:nth-child(2)]:pl-3 [&_td:nth-child(2)]:text-left [&_th:nth-child(2)]:pl-3 [&_th:nth-child(2)]:text-left"
+          tablePadTight,
+          "[&_td:first-child]:pr-2.5 [&_td:nth-child(2)]:max-w-[170px] [&_td:nth-child(2)]:truncate [&_td:nth-child(2)]:pl-3 [&_td:nth-child(2)]:text-left [&_th:nth-child(2)]:pl-3 [&_th:nth-child(2)]:text-left"
         )}
       >
         <thead>
@@ -272,7 +267,7 @@ function MoversTable({ series, model, focus, onFocus, stamp }: { series: RaceSer
         </thead>
         <tbody>
           {mv.map((m) => (
-            <tr key={m.horseNo} onMouseEnter={() => onFocus(m.horseNo)} onMouseLeave={() => onFocus(null)} className={focus === m.horseNo ? "[&_td]:bg-accent/8" : ""}>
+            <tr key={m.horseNo} onMouseEnter={() => onFocus(m.horseNo)} onMouseLeave={() => onFocus(null)} className={focus === m.horseNo ? "[&_td]:bg-accent-soft" : ""}>
               <td><Swatch {...horseStyle(m.horseNo)} />{m.horseNo}</td>
               <td>{m.name}</td>
               <td>{m.start ?? "–"}</td>
@@ -286,6 +281,7 @@ function MoversTable({ series, model, focus, onFocus, stamp }: { series: RaceSer
           ))}
         </tbody>
       </table>
+      </div>
       <div className={note}>Move = change in the horse's share of the market (implied win probability) since the first snapshot. Last 5m = the same change over the last 5 minutes only. Click a column title to sort.</div>
       <SuggestedPicks model={model} series={series} mv={all} fin={fin} focus={focus} onFocus={onFocus} />
     </div>
@@ -308,7 +304,7 @@ function PickChip({ horseNo, name, odds, detail, both, fin, focus, onFocus }: {
       <b>{horseNo}</b>
       {odds != null && <span className={chipOdds} title="Current win odds">({odds})</span>}
       {detail && <span className={chipDetail}>{detail}</span>}
-      {fin != null && <span className={cx("border-l border-aline pl-[5px] text-[11px]", fin <= 3 ? "font-semibold text-good" : "text-muted")}>{fin === 1 ? "1st" : fin === 2 ? "2nd" : fin === 3 ? "3rd" : `${fin}th`}</span>}
+      {fin != null && <span className={cx("border-l border-edge pl-[5px] text-[11px]", fin <= 3 ? "font-semibold text-good" : "text-ink-3")}>{fin === 1 ? "1st" : fin === 2 ? "2nd" : fin === 3 ? "3rd" : `${fin}th`}</span>}
     </span>
   );
 }
@@ -326,7 +322,7 @@ function SuggestedPicks({ model, series, mv, fin, focus, onFocus }: {
   const f = (h: number) => (fin.size ? fin.get(h) ?? null : undefined);
 
   return (
-    <div className="mt-4 border-t border-aline pt-3.5">
+    <div className="mt-5 border-t border-edge pt-4">
       <h3 className={cx(h3, "mb-2")}>Suggested picks</h3>
       <div className={pickRow}>
         <span className={pickLbl}>Model top {MODEL_PICKS}</span>
@@ -362,14 +358,14 @@ function SuggestedPicks({ model, series, mv, fin, focus, onFocus }: {
       </div>
       {picks.combined.length >= 3 && (
         <div className={pickRow}>
-          <span className={pickLbl} />
-          <span className="text-[12.5px] text-muted tabular-nums" title="Trio box: every 3-horse combination of the combined picks">
+          <span className={cx(pickLbl, "hidden sm:block")} />
+          <span className="text-[12.5px] text-ink-2 tabular-nums" title="Trio box: every 3-horse combination of the combined picks">
             Trio box: {choose3(picks.combined.length)} combinations × ${TRIO_UNIT} = <b className="text-ink">${(choose3(picks.combined.length) * TRIO_UNIT).toLocaleString()}</b>
           </span>
         </div>
       )}
-      <div className="mt-3 border-t border-dashed border-aline pt-3">
-        <h3 className={cx(h3, "mb-1.5")}>Result</h3>
+      <div className="mt-4 border-t border-edge pt-4">
+        <h3 className={cx(h3, "mb-2")}>Result</h3>
         {!result ? (
           <span className={dim}>{off ? "waiting for HKJC to post the result…" : "after the race"}</span>
         ) : (
@@ -394,20 +390,21 @@ function SuggestedPicks({ model, series, mv, fin, focus, onFocus }: {
                 {divOf("TRI").length ? (
                   divOf("TRI").map((d) => (
                     <span key={d.comb} className="text-[13px]">
-                      Trio <b>{d.comb.replaceAll(",", "-")}</b> <b className="ml-0.5 text-[15px] text-ink">${d.div.toLocaleString()}</b>
+                      Trio <b>{d.comb.replaceAll(",", "-")}</b> <b className={cx(figure, "ml-1 text-[20px] font-normal text-ink")}>${d.div.toLocaleString()}</b>
                     </span>
                   ))
                 ) : (
                   <span className={dim}>Trio: waiting for official dividend…</span>
                 )}
-                {divOf("WIN").map((d) => <span key={`w${d.comb}`} className="text-xs text-muted tabular-nums">Win {d.comb} ${d.div}</span>)}
-                {divOf("QIN").map((d) => <span key={`q${d.comb}`} className="text-xs text-muted tabular-nums">Quinella {d.comb.replaceAll(",", "-")} ${d.div}</span>)}
+                {divOf("WIN").map((d) => <span key={`w${d.comb}`} className="text-xs text-ink-2 tabular-nums">Win {d.comb} ${d.div}</span>)}
+                {divOf("QIN").map((d) => <span key={`q${d.comb}`} className="text-xs text-ink-2 tabular-nums">Quinella {d.comb.replaceAll(",", "-")} ${d.div}</span>)}
               </div>
             </div>
+            <div className={scroll}>
             <table
               className={cx(
                 table,
-                "mt-1.5 text-[12.5px] [&_td]:px-[5px] [&_td]:py-[5px] [&_td]:text-center! [&_th]:px-[5px] [&_th]:py-[5px] [&_th]:text-center! [&_td:first-child]:text-left! [&_th:first-child]:text-left!"
+                "mt-2 text-[12.5px] [&_td]:px-2 [&_td]:py-2 [&_td]:text-center! [&_th]:px-2 [&_th]:py-2 [&_th]:text-center! [&_td:first-child]:text-left! [&_th:first-child]:text-left!"
               )}
             >
               <thead>
@@ -437,6 +434,7 @@ function SuggestedPicks({ model, series, mv, fin, focus, onFocus }: {
                 ))}
               </tbody>
             </table>
+            </div>
           </>
         )}
       </div>
@@ -465,14 +463,15 @@ function SnapshotModal({ series, model, index, onIndex, onClose }: { series: Rac
   }, [index, n, onIndex, onClose]);
 
   return (
-    <div className="fixed inset-0 z-100 flex items-center justify-center bg-[rgba(15,18,24,.55)] p-4" onClick={onClose}>
+    <div className={modalBg} onClick={onClose}>
       <div
-        className="max-h-[calc(100vh-32px)] w-[min(1320px,100%)] overflow-auto rounded-xl bg-page px-[18px] pt-4 pb-[18px] shadow-[0_20px_60px_rgba(0,0,0,.35)]" role="dialog" aria-modal="true" aria-label={`R${series.raceNo} at ${hkClock(p.fetchedAt)}`} onClick={(e) => e.stopPropagation()}>
-        <div className={cx(moHead, "mb-3")}>
+        className={cx(modal, "sm:w-[min(1320px,100%)] sm:max-w-none")} role="dialog" aria-modal="true" aria-label={`R${series.raceNo} at ${hkClock(p.fetchedAt)}`} onClick={(e) => e.stopPropagation()}>
+        <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center">
           <h3 className={cx(h3, "mb-0")}>
-            R{series.raceNo} at {hkClock(p.fetchedAt)} <span className={cx(dim, "font-normal")}>· {mmss(p.secsToPost)} to post · snapshot {index + 1} of {n}</span>
+            Race {series.raceNo} at {hkClock(p.fetchedAt)}
+            <span className="block font-sans text-sm text-ink-3 sm:ml-2 sm:inline">{mmss(p.secsToPost)} to post · snapshot {index + 1} of {n}</span>
           </h3>
-          <div className="ml-auto flex gap-1.5">
+          <div className="flex flex-wrap gap-2 sm:ml-auto">
             <button className={btn} onClick={() => onIndex(index - 1)} disabled={index === 0} title="Earlier snapshot (←)">← Earlier</button>
             <button className={btn} onClick={() => onIndex(index + 1)} disabled={index === n - 1} title="Later snapshot (→)">Later →</button>
             <button className={btn} onClick={onClose} title="Close (Esc)" aria-label="Close">✕</button>
@@ -501,21 +500,21 @@ function RecordsTable({ series, model }: { series: RaceSeries; model: ModelState
 
   return (
     <>
-      <H2 sub={`— ${pts.length} snapshots for R${series.raceNo}, newest first`}>Records</H2>
+      <H2 sub={`${pts.length} snapshots for R${series.raceNo}, newest first`}>Records</H2>
       <div className={panel}>
-        <div className={moHead}>
-          <div className={cx(seg, "ml-auto")} role="group" aria-label="Odds shown">
+        <div className={cx(moHead, "gap-y-2")}>
+          <div className={seg} role="group" aria-label="Odds shown">
             <button className={segBtn(pool === "win")} onClick={() => setPool("win")}>Win</button>
             <button className={segBtn(pool === "pla")} onClick={() => setPool("pla")}>Place</button>
           </div>
-          <span className={moMeta}>Green means the price shortened since the previous snapshot; red means it drifted. Click a row to see the chart and movers at that moment.</span>
+          <span className={cx(moMeta, "sm:max-w-[60%] sm:text-right")}>Green means the price shortened since the previous snapshot; red means it drifted. Click a row to see the chart and movers at that moment.</span>
         </div>
         <div className="max-h-[460px] overflow-auto">
           <table
             className={cx(
               table,
               tablePad,
-              "whitespace-nowrap [&_thead_th]:z-[1] [&_thead_th]:shadow-[inset_0_-1px_0_var(--color-aline)] [&_th:nth-child(-n+6)]:text-left [&_td:nth-child(-n+6)]:text-left [&_td:nth-child(-n+4)]:text-muted [&_td:nth-child(6)]:text-muted"
+              "whitespace-nowrap [&_thead_th]:z-[1] [&_thead_th]:shadow-[inset_0_-1px_0_var(--color-edge)] [&_th:nth-child(-n+6)]:text-left [&_td:nth-child(-n+6)]:text-left [&_td:nth-child(-n+4)]:text-ink-2 [&_td:nth-child(6)]:text-ink-2"
             )}
           >
             <thead>
@@ -609,7 +608,7 @@ function AnalysisPanel() {
 
   return (
     <>
-      <H2 sub="— do horses that shorten late win more often than their final price suggests?">Momentum vs hit rate</H2>
+      <H2 sub="do horses that shorten late win more often than their final price suggests?">Momentum vs hit rate</H2>
       <form className={rangeBar} onSubmit={(e) => { e.preventDefault(); if (draft.from && draft.to && draft.from <= draft.to) setRange(draft); }}>
         <div className={field}>
           <label htmlFor="mFrom" className={fieldLabel}>From</label>
@@ -619,7 +618,7 @@ function AnalysisPanel() {
           <label htmlFor="mTo" className={fieldLabel}>To</label>
           <input type="date" id="mTo" className={control} value={draft.to} onChange={(e) => setDraft({ ...draft, to: e.target.value })} />
         </div>
-        <button type="submit" className={btnPrimary}>Apply</button>
+        <button type="submit" className={cx(btnPrimary, "col-span-2 sm:col-span-1")}>Apply</button>
         <div className={field}>
           <label htmlFor="mWin" className={fieldLabel}>Measure from</label>
           <select id="mWin" className={control} value={w} onChange={(e) => setW(Number(e.target.value) as Window)}>
@@ -654,7 +653,8 @@ function AnalysisPanel() {
               <GroupedBars rows={buckets} labelOf={(b) => b.key} series={bars} max={max} />
               <div className={note}>A bar above its grey partner means that bucket beat its final odds. Steam or drift is a change of 10% or more in implied probability; strong is 25% or more.</div>
             </div>
-            <div className={cx(panel, scroll)}>
+            <div className={panel}>
+              <div className={scroll}>
               <table className={cx(table, tablePadTight)}>
                 <thead>
                   <tr><th>Bucket</th><th>N</th><th>Hit</th><th>Implied</th><th>Edge</th><th>Win ROI</th></tr>
@@ -672,12 +672,14 @@ function AnalysisPanel() {
                   ))}
                 </tbody>
               </table>
+              </div>
               <div className={note}>Greyed rows have fewer than {MIN_N} runners, which is too few to trust.</div>
             </div>
           </div>
 
-          <H2 sub="— edge (actual − implied) per bucket, so favourite bias doesn't masquerade as momentum">By final odds</H2>
-          <div className={cx(panel, scroll)}>
+          <H2 sub="edge (actual − implied) per bucket, so favourite bias doesn't masquerade as momentum">By final odds</H2>
+          <div className={panel}>
+            <div className={scroll}>
             <table className={cx(table, tablePad)}>
               <thead>
                 <tr><th>Final odds</th>{BUCKETS.map((b) => <th key={b}>{b}</th>)}</tr>
@@ -695,6 +697,7 @@ function AnalysisPanel() {
                 ))}
               </tbody>
             </table>
+            </div>
           </div>
         </>
       )}

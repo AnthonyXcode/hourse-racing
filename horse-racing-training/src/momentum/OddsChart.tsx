@@ -1,6 +1,6 @@
 // Win-odds time-series for one race (Recharts). x = minutes to post (left → right toward
 // the off), y = win odds on an inverted log scale, so a shortening price (money coming) rises.
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   CartesianGrid, Label, Line, LineChart, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis,
   type TooltipProps,
@@ -22,7 +22,20 @@ const { ink: INK, muted: MUTED, grid: GRID } = C;
 
 type Row = { m: number } & Record<string, number>; // m = minutes before post (negative)
 
+/** True while the media query matches (re-renders on change). */
+export function useMediaQuery(q: string): boolean {
+  const [on, setOn] = useState(() => window.matchMedia(q).matches);
+  useEffect(() => {
+    const mq = window.matchMedia(q);
+    const onChange = () => setOn(mq.matches);
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, [q]);
+  return on;
+}
+
 export function OddsChart({ series, focus, onFocus }: { series: RaceSeries; focus: number | null; onFocus: (h: number | null) => void }) {
+  const wide = useMediaQuery("(min-width: 640px)");
   const { rows, lo, hi, xMin } = useMemo(() => {
     // h<N> = win odds; r<N> = last-5-min move at that moment (for the tooltip).
     const rows: Row[] = series.points.map((p) => {
@@ -51,8 +64,12 @@ export function OddsChart({ series, focus, onFocus }: { series: RaceSeries; focu
   const xMax = Math.max(0, Math.ceil(rows[last]!.m));
 
   return (
-    <ResponsiveContainer width="100%" height={380}>
-      <LineChart data={rows} margin={{ top: 12, right: 36, bottom: 28, left: 16 }} onMouseLeave={() => onFocus(null)}>
+    <ResponsiveContainer width="100%" height={wide ? 380 : 300}>
+      <LineChart
+        data={rows}
+        margin={wide ? { top: 12, right: 36, bottom: 28, left: 16 } : { top: 8, right: 26, bottom: 24, left: -8 }}
+        onMouseLeave={() => onFocus(null)}
+      >
         <CartesianGrid stroke={GRID} vertical={false} />
         <XAxis
           dataKey="m"
@@ -62,8 +79,9 @@ export function OddsChart({ series, focus, onFocus }: { series: RaceSeries; focu
           tickFormatter={(m: number) => (m === 0 ? "off" : `${m}`)}
           tick={{ fontSize: 11, fill: MUTED }}
           stroke={GRID}
+          tickLine={false}
         >
-          <Label value="Minutes to post time" position="bottom" offset={10} style={{ fontSize: 12, fill: INK, fontWeight: 600 }} />
+          <Label value="Minutes to post time" position="bottom" offset={10} style={{ fontSize: 12, fill: MUTED, fontWeight: 500 }} />
         </XAxis>
         <YAxis
           scale="log"
@@ -73,9 +91,9 @@ export function OddsChart({ series, focus, onFocus }: { series: RaceSeries; focu
           ticks={TICKS.filter((t) => t >= lo && t <= hi)}
           tick={{ fontSize: 11, fill: MUTED }}
           stroke={GRID}
-          width={44}
+          width={wide ? 44 : 36}
         >
-          <Label value="Win odds (log scale)" angle={-90} position="insideLeft" offset={-4} style={{ fontSize: 12, fill: INK, fontWeight: 600, textAnchor: "middle" }} />
+          {wide && <Label value="Win odds (log scale)" angle={-90} position="insideLeft" offset={-4} style={{ fontSize: 12, fill: MUTED, fontWeight: 500, textAnchor: "middle" }} />}
         </YAxis>
         <ReferenceLine x={0} stroke={MUTED} strokeDasharray="4 3" />
         <Tooltip content={<OddsTooltip names={names} focus={focus} />} cursor={{ stroke: MUTED, strokeWidth: 1 }} isAnimationActive={false} />
@@ -134,7 +152,7 @@ function OddsTooltip({ active, payload, label, names, focus }: TooltipProps<numb
   const m = Number(label);
   return (
     <div className={tip}>
-      <div className="mb-1 flex justify-between gap-3 text-muted">
+      <div className="mb-1 flex justify-between gap-3 text-ink-2">
         <span>{m >= 0 ? (m === 0 ? "at the off" : `${m.toFixed(1)} min after post`) : `${(-m).toFixed(1)} min to post`}</span>
         <span>odds · last 5m</span>
       </div>
@@ -142,10 +160,10 @@ function OddsTooltip({ active, payload, label, names, focus }: TooltipProps<numb
         const h = Number(p.name);
         const { color, dash } = horseStyle(h);
         return (
-          <div key={h} className={cx(tipRow, focus === h && "rounded bg-accent/10")}>
+          <div key={h} className={cx(tipRow, focus === h && "rounded bg-accent-soft")}>
             <Swatch color={color} dash={dash} />
             <span className="w-[18px] font-semibold tabular-nums">{h}</span>
-            <span className="flex-1 text-muted">{names.get(h) ?? ""}</span>
+            <span className="flex-1 text-ink-2">{names.get(h) ?? ""}</span>
             <b className="tabular-nums">{p.value}</b>
             <span className={cx("w-[58px] text-right tabular-nums", move(h) != null && (move(h)! >= 0 ? good : bad))}>
               {move(h) == null ? "–" : `${move(h)! >= 0 ? "+" : ""}${(100 * move(h)!).toFixed(1)}%`}

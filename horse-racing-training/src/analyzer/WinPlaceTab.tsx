@@ -46,7 +46,7 @@ export function WinPlaceTab({ races }: { races: AnalyzerRace[] }) {
         <Kpi label="Form top-rated places" value={pc(M.ratingPlace)} sub={`rating rank 1 · MC ${pc(M.mcTopPlace)}`} />
       </div>
 
-      <H2 sub="— predicted probability vs what actually happened">Calibration</H2>
+      <H2 sub="predicted probability vs what actually happened">Calibration</H2>
       <div className={grid2}>
         <div className={panel}>
           <Legend items={[[ACCENT, "actual"], [C.muted, "perfect calibration"]]} />
@@ -60,7 +60,7 @@ export function WinPlaceTab({ races }: { races: AnalyzerRace[] }) {
         </div>
       </div>
 
-      <H2 sub="— model rank vs market rank">Accuracy by rank</H2>
+      <H2 sub="model rank vs market rank">Accuracy by rank</H2>
       <div className={grid2}>
         <div className={panel}>
           <Legend items={[[ACCENT, "win %"], [ACCENT2, "place %"]]} />
@@ -74,7 +74,7 @@ export function WinPlaceTab({ races }: { races: AnalyzerRace[] }) {
         </div>
       </div>
 
-      <H2 sub="— top pick place rate vs the favourite">Monthly trend</H2>
+      <H2 sub="top pick place rate vs the favourite">Monthly trend</H2>
       <div className={panel}>
         <Legend items={[[ACCENT, "MC top pick place %"], [WARN, "market favourite place %"]]} />
         <LineChart
@@ -95,10 +95,10 @@ export function WinPlaceTab({ races }: { races: AnalyzerRace[] }) {
         <Breakdown title="By field size" head="Runners" rows={charts.field} />
       </div>
 
-      <H2 sub="— the model's top pick in each race">Race by race</H2>
+      <H2 sub="the model's top pick in each race">Race by race</H2>
       <RaceTable races={races} />
 
-      <H2 sub="— the model's top pick vs the market favourite">Month by month</H2>
+      <H2 sub="the model's top pick vs the market favourite">Month by month</H2>
       <MonthlyTable races={races} rows={charts.monthly} />
     </>
   );
@@ -218,8 +218,8 @@ function RaceTable({ races }: { races: AnalyzerRace[] }) {
   return (
     <div className={panel}>
       <div className={row}>
-        <input type="search" className={control} value={q} onChange={(e) => setQ(e.target.value)} placeholder="search date, venue, class, horse, jockey…" />
-        <span className={tag}>
+        <input type="search" className={cx(control, "w-full flex-1 sm:w-auto sm:min-w-[260px]")} value={q} onChange={(e) => setQ(e.target.value)} placeholder="search date, venue, class, horse, jockey…" />
+        <span className={cx(tag, "whitespace-normal")}>
           {list.length} race{list.length === 1 ? "" : "s"}
         </span>
       </div>

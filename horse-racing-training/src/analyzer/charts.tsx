@@ -10,17 +10,17 @@ import { pc } from "./format";
 
 /** Chart colors — hex mirrors of the @theme tokens in index.css (SVG attributes can't read CSS vars). */
 export const C = {
-  accent: "#2563eb",
+  accent: "#0042e6",
   accent2: "#eb6834",
   warn: "#b45309",
-  ink: "#15181d",
-  muted: "#6b7280",
-  grid: "#e4e7ec",
+  ink: "#23201d",
+  muted: "#806d63",
+  grid: "#ede8e8",
 } as const;
 
 const HEIGHT = 260;
 const MARGIN = { top: 14, right: 12, bottom: 4, left: -8 };
-const TICK = { fontSize: 10, fill: C.muted };
+const TICK = { fontSize: 11, fill: C.muted };
 
 export interface Series<R> {
   name: string;
@@ -63,14 +63,14 @@ function yAxis(max: number) {
 function Tip({ head, rows }: { head: ReactNode; rows: { color: string; label: string; value: string; dash?: boolean }[] }) {
   return (
     <div className={tip}>
-      <div className="mb-1 text-muted">{head}</div>
+      <div className="mb-1 text-ink-2">{head}</div>
       {rows.map((r) => (
         <div key={r.label} className={tipRow}>
           <i
             className="inline-block h-2 w-3 flex-none rounded-sm"
             style={r.dash ? { borderTop: `2px dashed ${r.color}`, height: 0 } : { background: r.color }}
           />
-          <span className="flex-1 text-muted">{r.label}</span>
+          <span className="flex-1 text-ink-2">{r.label}</span>
           <b className="tabular-nums">{r.value}</b>
         </div>
       ))}
@@ -117,7 +117,7 @@ export function CalibChart({ buckets, color }: { buckets: CalibBucket[]; color: 
       <ComposedChart data={data} margin={{ ...MARGIN, bottom: 18 }}>
         <CartesianGrid stroke={C.grid} vertical={false} />
         <XAxis dataKey="mid" tick={TICK} tickLine={false} axisLine={{ stroke: C.grid }} interval={0}>
-          <Label value="predicted % (bucket midpoint)" position="insideBottom" offset={-14} style={{ fontSize: 10, fill: C.muted }} />
+          <Label value="predicted % (bucket midpoint)" position="insideBottom" offset={-14} style={{ fontSize: 11, fill: C.muted }} />
         </XAxis>
         {yAxis(100)}
         <Tooltip

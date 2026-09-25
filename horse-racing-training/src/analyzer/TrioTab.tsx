@@ -67,7 +67,7 @@ function TrioBody({ settled }: { settled: AnalyzerRace[] }) {
         <Kpi label="Trio dividend" value={money(median(d.paid))} sub={`median per $10 · mean ${money(mean(d.paid))} · ${d.paid.length} paid`} />
       </div>
 
-      <H2 sub="— $10 per combination, model rank vs market rank">Strategies</H2>
+      <H2 sub="$10 per combination, model rank vs market rank">Strategies</H2>
       <div className={panel}>
         <div className={scroll}>
           <table className={cx(table, tablePad)}>
@@ -105,7 +105,7 @@ function TrioBody({ settled }: { settled: AnalyzerRace[] }) {
         </div>
       </div>
 
-      <H2 sub="— how often the actual top 3 land inside the picks">Coverage</H2>
+      <H2 sub="how often the actual top 3 land inside the picks">Coverage</H2>
       <div className={grid2}>
         <div className={panel}>
           <Legend items={[[ACCENT, "model"], [WARN, "market"]]} />
@@ -119,7 +119,7 @@ function TrioBody({ settled }: { settled: AnalyzerRace[] }) {
         </div>
       </div>
 
-      <H2 sub="— box top 4 hit rate, model vs market">Monthly trend</H2>
+      <H2 sub="box top 4 hit rate, model vs market">Monthly trend</H2>
       <div className={panel}>
         <Legend items={[[ACCENT, "model box 4 hit %"], [WARN, "market box 4 hit %"]]} />
         <LineChart rows={d.monthly} series={PAIR} max={100} />
@@ -133,10 +133,10 @@ function TrioBody({ settled }: { settled: AnalyzerRace[] }) {
         <Breakdown title="By field size" head="Runners" groups={d.field} />
       </div>
 
-      <H2 sub="— the chosen strategy's picks against the result">Race by race</H2>
+      <H2 sub="the chosen strategy's picks against the result">Race by race</H2>
       <RaceTable settled={settled} />
 
-      <H2 sub="— model ranks, $10 per combination">Month by month</H2>
+      <H2 sub="model ranks, $10 per combination">Month by month</H2>
       <MonthlyTable settled={settled} />
     </>
   );
@@ -301,15 +301,15 @@ function RaceTable({ settled }: { settled: AnalyzerRace[] }) {
   return (
     <div className={panel}>
       <div className={row}>
-        <input type="search" className={control} value={q} onChange={(e) => setQ(e.target.value)} placeholder="search date, venue, class, horse no…" />
-        <select className={control} value={sk} onChange={(e) => setSk(e.target.value)} aria-label="Strategy">
+        <input type="search" className={cx(control, "w-full flex-1 sm:w-auto sm:min-w-[260px]")} value={q} onChange={(e) => setQ(e.target.value)} placeholder="search date, venue, class, horse no…" />
+        <select className={cx(control, "w-full sm:w-auto")} value={sk} onChange={(e) => setSk(e.target.value)} aria-label="Strategy">
           {TRIO_STRATS.map((s) => (
             <option key={s.key} value={s.key}>
               {s.name}
             </option>
           ))}
         </select>
-        <span className={tag}>
+        <span className={cx(tag, "whitespace-normal")}>
           {list.length} race{list.length === 1 ? "" : "s"} · {hits} hit{hits === 1 ? "" : "s"} ({pc(rate(hits, list.length))})
           {st.B ? ` · banker hit ${bankHits} (${pc(rate(bankHits, list.length))})` : ""} · ROI <b className={cls(roi)}>{signed(roi)}</b> · Double Trio {dt.hits}/{dt.pools} (
           {pc(rate(dt.hits, dt.pools))}) ROI <b className={cls(dt.roi)}>{signed(dt.roi)}</b>

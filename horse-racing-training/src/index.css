@@ -1,37 +1,60 @@
 @import "tailwindcss";
 
 /* Design tokens. Each --color-* becomes bg-*, text-*, border-* etc.
-   Chart colors are mirrored as hex in src/analyzer/charts.tsx (SVG attributes can't read CSS vars). */
+   Chart colors are mirrored as hex in src/analyzer/charts.tsx (SVG attributes can't read CSS vars).
+   Fonts load from Google Fonts in index.html. */
 @theme {
-  --font-sans: "Helvetica Neue", Arial, "PingFang HK", sans-serif;
+  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", "PingFang HK", sans-serif;
+  --font-display: "DM Serif Display", Georgia, "Times New Roman", serif;
 
-  /* trainer */
-  --color-hkjc-red: #c8102e;
-  --color-hkjc-dark: #1a1a1a;
-  --color-line: #d8d8d8;
-  --color-page: #f4f4f4;
-  --color-leg: #e8f1ff;
-  --color-leg-bd: #2f6fd0;
-  --color-banker: #fff2cc;
-  --color-banker-bd: #d6a400;
-  --color-hit: #137333;
-  --color-miss: #c8102e;
+  /* surfaces (warm) */
+  --color-canvas: #fbf9f9;
+  --color-surface: #ffffff;
+  --color-surface-2: #f1eded;
+  --color-surface-3: #e7e1e0;
+  /* hairline for dividers and outlines */
+  --color-edge: rgb(88 64 50 / 0.16);
 
-  /* analyzer + momentum */
-  --color-panel: #fff;
-  --color-ink: #15181d;
-  --color-muted: #6b7280;
-  --color-aline: #e4e7ec;
-  --color-good: #0f7b4f;
+  /* text */
+  --color-ink: #23201d;
+  --color-ink-2: #5e564e;
+  --color-ink-3: #806d63;
+
+  /* the one brand accent */
+  --color-accent: #0042e6;
+  --color-accent-hover: #0036bd;
+  --color-accent-soft: #e8eefd;
+
+  /* status: profit/hit vs loss/miss only */
+  --color-good: #1d7a47;
+  --color-good-soft: #e9f4ee;
   --color-bad: #b4232c;
-  --color-accent: #2563eb;
+  --color-bad-soft: #fbeceb;
+
+  /* chart series (see C in charts.tsx) */
   --color-accent2: #eb6834;
   --color-warn: #b45309;
-  --shadow-panel: 0 1px 2px rgba(16, 24, 40, 0.06), 0 1px 3px rgba(16, 24, 40, 0.1);
+
+  /* bet-slip roles */
+  --color-leg: #e8eefd;
+  --color-leg-bd: #0042e6;
+  --color-banker: #fbf0d9;
+  --color-banker-bd: #a86a12;
+
+  --radius-card: 20px;
+  --radius-control: 12px;
+
+  --shadow-card: 0 0 0 1px rgb(88 64 50 / 0.12), 0 1px 2px rgb(88 64 50 / 0.06);
+  --shadow-pop: 0 0 0 1px rgb(88 64 50 / 0.12), 0 16px 40px rgb(35 32 29 / 0.14);
+  --shadow-btn: 0 0 0 1px rgb(88 64 50 / 0.16), 0 1px 1px rgb(88 64 50 / 0.06);
 }
 
 @layer base {
   body {
-    @apply bg-page text-hkjc-dark;
+    @apply bg-canvas font-sans text-ink antialiased;
+    letter-spacing: -0.01em;
+  }
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-accent;
   }
 }

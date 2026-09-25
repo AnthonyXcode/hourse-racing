@@ -1,5 +1,5 @@
 import { useState, type ReactNode } from "react";
-import { bad, cx, good, panel } from "../kit";
+import { bad, cx, figure, good, panel } from "../kit";
 
 export const pc = (v: number, d = 1) => (Number.isFinite(v) ? v.toFixed(d) + "%" : "–");
 export const signed = (v: number) => (Number.isFinite(v) ? (v >= 0 ? "+" : "") + pc(v) : "–");
@@ -11,25 +11,25 @@ export const money = (v: number) => (Number.isFinite(v) ? "$" + Math.round(v).to
 export function Kpi({ label, value, sub, tone = "" }: { label: string; value: ReactNode; sub: ReactNode; tone?: string }) {
   return (
     <div className={panel}>
-      <div className="text-xs uppercase tracking-[.04em] text-muted">{label}</div>
-      <div className={cx("mt-1.5 text-[26px] font-semibold tabular-nums", tone)}>{value}</div>
-      <div className="mt-1 text-xs text-muted">{sub}</div>
+      <div className="text-xs font-medium text-ink-2">{label}</div>
+      <div className={cx(figure, "mt-3 text-[30px] sm:text-[36px]", tone)}>{value}</div>
+      <div className="mt-2 text-xs leading-snug text-ink-3">{sub}</div>
     </div>
   );
 }
 
 /** Inline percentage meter for table cells. `narrow` for the two-up breakdown tables. */
 export const Bar = ({ v, narrow }: { v: number; narrow?: boolean }) => (
-  <span className={cx("inline-block h-2 overflow-hidden rounded-full bg-ink/10 align-middle", narrow ? "w-10" : "w-[70px]")}>
+  <span className={cx("inline-block h-1.5 overflow-hidden rounded-full bg-surface-3 align-middle", narrow ? "w-10" : "w-[70px]")}>
     <i className="block h-full bg-accent" style={{ width: `${Number.isFinite(v) ? v : 0}%` }} />
   </span>
 );
 
 export const Legend = ({ items }: { items: [string, string][] }) => (
-  <div className="mb-2 flex flex-wrap gap-4 text-xs text-muted">
+  <div className="mb-3 flex flex-wrap gap-x-4 gap-y-1 text-xs text-ink-2">
     {items.map(([color, label]) => (
       <span key={label}>
-        <i className="mr-1.5 inline-block size-2.5 rounded-sm" style={{ background: color }} />
+        <i className="mr-1.5 inline-block size-2.5 rounded-full" style={{ background: color }} />
         {label}
       </span>
     ))}

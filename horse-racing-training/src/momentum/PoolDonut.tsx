@@ -4,8 +4,8 @@
 import { useMemo, useState } from "react";
 import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip, type TooltipProps } from "recharts";
 import { impliedProbs, type RaceSeries } from "../../shared/momentum/model";
-import { Swatch, horseStyle } from "./OddsChart";
-import { h3, note, panel, seg, segBtn, tip, tipRow } from "../kit";
+import { Swatch, horseStyle, useMediaQuery } from "./OddsChart";
+import { cx, figure, h3, note, panel, seg, segBtn, tip, tipRow } from "../kit";
 
 interface Slice {
   horseNo: number;
@@ -19,6 +19,7 @@ const money = (v: number) => "$" + Math.round(v).toLocaleString();
 
 export function PoolDonut({ series, focus, onFocus }: { series: RaceSeries; focus: number | null; onFocus: (h: number | null) => void }) {
   const [pool, setPool] = useState<"win" | "pla">("win");
+  const wide = useMediaQuery("(min-width: 640px)");
   const last = series.points[series.points.length - 1]!;
   const total = pool === "win" ? last.winPool : last.plaPool;
 
@@ -34,15 +35,15 @@ export function PoolDonut({ series, focus, onFocus }: { series: RaceSeries; focu
 
   return (
     <div className={panel}>
-      <div className="mb-2 flex flex-wrap items-baseline gap-1.5">
-        <h3 className={`${h3} mb-0`}>Pool split</h3>
-        <div className={`${seg} ml-auto`} role="group" aria-label="Pool">
+      <div className="mb-2 flex flex-wrap items-center gap-2">
+        <h3 className={cx(h3, "mb-0")}>Pool split</h3>
+        <div className={cx(seg, "ml-auto")} role="group" aria-label="Pool">
           <button className={segBtn(pool === "win")} onClick={() => setPool("win")}>Win</button>
           <button className={segBtn(pool === "pla")} onClick={() => setPool("pla")}>Place</button>
         </div>
       </div>
       <div className="relative">
-        <ResponsiveContainer width="100%" height={260}>
+        <ResponsiveContainer width="100%" height={wide ? 260 : 240}>
           <PieChart>
             <defs>
               {slices.filter((s) => horseStyle(s.horseNo).dash).map((s) => (
@@ -86,8 +87,8 @@ export function PoolDonut({ series, focus, onFocus }: { series: RaceSeries; focu
           </PieChart>
         </ResponsiveContainer>
         <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center" aria-hidden>
-          <small className="text-[11px] uppercase tracking-[.04em] text-muted">{pool === "win" ? "Win" : "Place"} pool</small>
-          <b className="text-base tabular-nums">{total ? money(total) : "–"}</b>
+          <small className="text-xs text-ink-3">{pool === "win" ? "Win" : "Place"} pool</small>
+          <b className={cx(figure, "mt-1 text-[20px] font-normal sm:text-[22px]")}>{total ? money(total) : "–"}</b>
         </div>
       </div>
       <div className={note}>
@@ -105,19 +106,19 @@ function DonutTip({ active, payload, pool }: TooltipProps<number, string> & { po
       <div className={tipRow}>
         <Swatch {...horseStyle(s.horseNo)} />
         <span className="w-[18px] font-semibold tabular-nums">{s.horseNo}</span>
-        <span className="flex-1 text-muted">{s.name}</span>
+        <span className="flex-1 text-ink-2">{s.name}</span>
       </div>
       <div className={tipRow}>
-        <span className="flex-1 text-muted">{pool === "win" ? "Win" : "Place"} odds</span>
+        <span className="flex-1 text-ink-2">{pool === "win" ? "Win" : "Place"} odds</span>
         <b className="tabular-nums">{s.odds}</b>
       </div>
       <div className={tipRow}>
-        <span className="flex-1 text-muted">Share of pool</span>
+        <span className="flex-1 text-ink-2">Share of pool</span>
         <b className="tabular-nums">{(100 * s.share).toFixed(1)}%</b>
       </div>
       {s.amount != null && (
         <div className={tipRow}>
-          <span className="flex-1 text-muted">Est. amount</span>
+          <span className="flex-1 text-ink-2">Est. amount</span>
           <b className="tabular-nums">{money(s.amount)}</b>
         </div>
       )}

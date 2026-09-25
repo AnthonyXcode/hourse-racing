@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { api, fmtDate } from "./api";
 import { BET_TYPES, countCombos, cost } from "../shared/betEngine/index";
 import type {
@@ -14,19 +14,22 @@ import { RaceCardTable, BetTypePicker, CostBar, ResultModal, ResultPanel, Histor
 import type { RaceResult } from "../shared/types";
 import { AnalyzerPage } from "./analyzer/AnalyzerPage";
 import { MomentumPage } from "./momentum/MomentumPage";
-import { cx, errorBox } from "./kit";
+import { Display, btn, container, control, cx, errorBox, panel, pill, pillRow } from "./kit";
 
-// Unstyled buttons default to 13.33px; preflight makes them inherit, so pin it to keep the old size.
-const tabBtn = (on: boolean) =>
-  cx(
-    "cursor-pointer rounded border px-4 py-1.5 text-[13.33px] font-semibold",
-    on ? "border-hkjc-red bg-hkjc-red text-white" : "border-line bg-white"
-  );
-const raceBtn = (on: boolean) =>
-  cx(
-    "min-w-10 cursor-pointer rounded-[3px] border px-2.5 py-1.5 text-[13.33px] font-semibold",
-    on ? "border-hkjc-red bg-hkjc-red text-white" : "border-line bg-white"
-  );
+/** Publish the sticky header's height as --header-h so other sticky bars can sit just below it. */
+function useHeaderHeightVar() {
+  const ref = useRef<HTMLElement>(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const publish = () => document.documentElement.style.setProperty("--header-h", `${el.offsetHeight}px`);
+    publish();
+    const ro = new ResizeObserver(publish);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+  return ref;
+}
 
 /** false until `v` is first true, then true for good. */
 function useOnceTrue(v: boolean): boolean {
@@ -38,6 +41,20 @@ function useOnceTrue(v: boolean): boolean {
 const VIEWS = ["bet", "history", "win-place", "trio", "momentum"] as const;
 type View = (typeof VIEWS)[number];
 const DEFAULT_VIEW: View = "bet";
+const TABS: [View, string][] = [
+  ["bet", "Bet"],
+  ["history", "History"],
+  ["win-place", "Win / Place"],
+  ["trio", "Trio"],
+  ["momentum", "Momentum"],
+];
+const navBtn = (on: boolean) =>
+  on
+    ? "inline-flex h-9 flex-none cursor-pointer items-center rounded-full bg-surface-2 px-3.5 text-sm font-medium whitespace-nowrap text-ink"
+    : "inline-flex h-9 flex-none cursor-pointer items-center rounded-full px-3.5 text-sm font-medium whitespace-nowrap text-ink-2 transition-colors hover:text-ink";
+/** A race picked as a DT/TT leg but not the one being edited. */
+const pickedLeg =
+  "inline-flex h-9 flex-none cursor-pointer items-center justify-center rounded-full bg-accent-soft px-3.5 text-sm font-medium whitespace-nowrap text-accent";
 
 /** Tab named by ?tab= in the URL; unknown or missing → the default tab. */
 function readView(): View {
@@ -83,6 +100,7 @@ export default function App() {
   const [result, setResult] = useState<SettleResult | null>(null);
   const [error, setError] = useState<string>("");
   const [view, setView] = useViewParam();
+  const headerRef = useHeaderHeightVar();
   const [history, setHistory] = useState<HistoryEntry[]>([]);
   const [raceResult, setRaceResult] = useState<RaceResult | null>(null);
   const analyzerOpened = useOnceTrue(view === "win-place" || view === "trio");
@@ -241,167 +259,184 @@ export default function App() {
 
   const card = cards[editRace];
 
+  const meetingSelect = (
+    <select className={cx(control, "w-full sm:w-auto sm:max-w-[340px]")} aria-label="Racing day" value={meetingKey} onChange={(e) => setMeetingKey(e.target.value)}>
+      <option value="">Select a racing day…</option>
+      {days.map((m) => (
+        <option key={`${m.date}_${m.venue}`} value={`${m.date}_${m.venue}`}>
+          {fmtDate(m.date)} · {m.venue} · {m.races.length} races{m.hasResults ? "" : " (no results)"}
+        </option>
+      ))}
+    </select>
+  );
+
   return (
-    <div className="mx-auto w-4/5 py-4 max-[1000px]:w-auto max-[1000px]:p-4">
-      <header className="flex flex-wrap items-center gap-x-4 gap-y-3 border-b-[3px] border-hkjc-red pb-2.5">
-        <h1 className="m-0 flex-none text-[22px] font-bold text-hkjc-red">HKJC Bet Trainer</h1>
-        <nav className="flex flex-wrap gap-1">
-          <button className={tabBtn(view === "bet")} onClick={() => setView("bet")}>Bet</button>
-          <button className={tabBtn(view === "history")} onClick={() => setView("history")}>History</button>
-          <button className={tabBtn(view === "win-place")} onClick={() => setView("win-place")}>Win / Place</button>
-          <button className={tabBtn(view === "trio")} onClick={() => setView("trio")}>Trio</button>
-          <button className={tabBtn(view === "momentum")} onClick={() => setView("momentum")}>Momentum</button>
-        </nav>
-        {view === "bet" && (
-          <select className="ml-auto rounded border border-line bg-white px-2.5 py-2 text-sm" value={meetingKey} onChange={(e) => setMeetingKey(e.target.value)}>
-            <option value="">Select a racing day…</option>
-            {days.map((m) => (
-              <option key={`${m.date}_${m.venue}`} value={`${m.date}_${m.venue}`}>
-                {fmtDate(m.date)} · {m.venue} · {m.races.length} races{m.hasResults ? "" : " (no results)"}
-              </option>
-            ))}
-          </select>
-        )}
-      </header>
-
-      {error && <div className={errorBox}>{error}</div>}
-
-      {/* Analyzer performance. Stays mounted once opened so the range, filters
-          and loaded analysis survive switching to other tabs and back. */}
-      {analyzerOpened && (
-        <div hidden={view !== "win-place" && view !== "trio"}>
-          <AnalyzerPage tab={view === "trio" ? "trio" : "win-place"} />
-        </div>
-      )}
-
-      {view === "momentum" && <MomentumPage />}
-
-      {view === "history" && (
-        <HistoryPage
-          entries={history}
-          onDelete={(id) => api.deleteHistory(id).then(setHistory).catch((e) => setError(String(e)))}
-          onClear={() => api.clearHistory().then(setHistory).catch((e) => setError(String(e)))}
-        />
-      )}
-
-      {view === "bet" && meeting && (
-        <>
-          {/* Race tabs (browse + single-race selection) */}
-          <nav className="my-3 flex flex-wrap gap-1">
-            {meeting.races.map((rn) => (
-              <button
-                key={rn}
-                className={raceBtn(rn === activeRace)}
-                onClick={() => {
-                  setActiveRace(rn);
-                  if (legRaces.length <= 1) setEditRace(rn);
-                }}
-              >
-                R{rn}
+    <div className="min-h-dvh">
+      <header ref={headerRef} className="sticky top-0 z-40 border-b border-edge bg-canvas/80 backdrop-blur-md">
+        <div className={cx(container, "flex flex-col gap-2 py-3 sm:flex-row sm:items-center sm:gap-6")}>
+          <h1 className="flex-none font-display text-[22px] leading-none tracking-[-0.01em] text-ink">HKJC Bet Trainer</h1>
+          <nav aria-label="Sections" className="-mx-4 flex gap-1 overflow-x-auto px-4 sm:mx-0 sm:overflow-visible sm:px-0">
+            {TABS.map(([v, label]) => (
+              <button key={v} className={navBtn(view === v)} aria-current={view === v ? "page" : undefined} onClick={() => setView(v)}>
+                {label}
               </button>
             ))}
           </nav>
+          {view === "bet" && <div className="hidden sm:ml-auto sm:block">{meetingSelect}</div>}
+        </div>
+      </header>
 
-          <BetTypePicker
-            value={betType}
-            onChange={setBetType}
-            dtAvailable={dtPools.length > 0}
-            ttAvailable={ttPools.length > 0}
+      <main className={cx(container, "pb-12")}>
+        {error && <div className={errorBox}>{error}</div>}
+
+        {/* Analyzer performance. Stays mounted once opened so the range, filters
+            and loaded analysis survive switching to other tabs and back. */}
+        {analyzerOpened && (
+          <div hidden={view !== "win-place" && view !== "trio"}>
+            <AnalyzerPage tab={view === "trio" ? "trio" : "win-place"} />
+          </div>
+        )}
+
+        {view === "momentum" && <MomentumPage />}
+
+        {view === "history" && (
+          <HistoryPage
+            entries={history}
+            onDelete={(id) => api.deleteHistory(id).then(setHistory).catch((e) => setError(String(e)))}
+            onClear={() => api.clearHistory().then(setHistory).catch((e) => setError(String(e)))}
           />
+        )}
 
-          {/* Multi-race leg chooser */}
-          {legCount > 1 && (
-            <div className="my-2.5 flex flex-col gap-1.5 rounded-md border border-leg-bd bg-white px-3 py-2.5">
-              {officialPools.length > 0 && (
-                <div className="flex flex-wrap items-center gap-1.5">
-                  <span className="text-[13px] font-semibold">{BET_TYPES[betType].label} pools:</span>
-                  {officialPools.map((pool) => {
-                    const active = [...dtLegs].sort((a, b) => a - b).join() === [...pool].sort((a, b) => a - b).join();
-                    return (
-                      <button
-                        key={pool.join()}
-                        className={cx(
-                          "cursor-pointer rounded-[14px] border border-banker-bd px-2.5 py-[5px] text-xs font-semibold",
-                          active ? "bg-banker" : "bg-white"
-                        )}
-                        onClick={() => { setDtLegs(pool); setEditRace(pool[0]!); }}
-                      >
-                        R{pool.join("-R")}
-                      </button>
-                    );
-                  })}
-                </div>
-              )}
-              <span className="text-[13px] font-semibold">
-                Or pick any {legCount} races ({dtLegs.length}/{legCount}):
-              </span>
-              <div className="flex flex-wrap gap-1">
-                {meeting.races.map((rn) => {
-                  const picked = dtLegs.includes(rn);
-                  const isEdit = rn === editRace && picked;
-                  return (
-                    <button
-                      key={rn}
-                      className={cx(
-                        "min-w-10 cursor-pointer rounded-[3px] border px-2.5 py-1.5 text-[13.33px] font-semibold disabled:cursor-not-allowed disabled:opacity-35",
-                        isEdit ? "border-leg-bd bg-leg-bd text-white" : picked ? "border-leg-bd bg-leg" : "border-line bg-white"
-                      )}
-                      disabled={!picked && dtLegs.length >= legCount}
-                      onClick={() => toggleLeg(rn)}
-                    >
-                      R{rn}
-                    </button>
-                  );
-                })}
-              </div>
-              <span className="text-xs text-[#888]">Only an official pool pays a dividend; a custom combo still grades hit/miss.</span>
-            </div>
-          )}
+        {view === "bet" && (
+          <>
+            <Display sub={meeting ? `${fmtDate(meeting.date)} · ${meeting.venue} · ${meeting.races.length} races` : "Pick a racing day to load its race cards, build a bet, then settle it against the real result."}>
+              Practice a bet
+            </Display>
+            <div className="mt-3 sm:hidden">{meetingSelect}</div>
+          </>
+        )}
 
-          {/* Edit which leg's picks you're entering. */}
-          {legCount > 1 && legRaces.length > 0 && (
-            <div className="my-2 flex items-center gap-2 text-[13px]">
-              <span>Editing:</span>
-              {legRaces.map((rn) => (
+        {view === "bet" && meeting && (
+          <>
+            {/* Race tabs (browse + single-race selection) */}
+            <nav aria-label="Races" className={cx(pillRow, "mt-5")}>
+              {meeting.races.map((rn) => (
                 <button
                   key={rn}
-                  className={cx("cursor-pointer rounded border border-leg-bd px-2.5 py-1.5 text-[13.33px]", rn === editRace ? "bg-leg" : "bg-white")}
-                  onClick={() => setEditRace(rn)}
+                  className={cx(pill(rn === activeRace), "min-w-12 flex-none")}
+                  aria-current={rn === activeRace ? "true" : undefined}
+                  onClick={() => {
+                    setActiveRace(rn);
+                    if (legRaces.length <= 1) setEditRace(rn);
+                  }}
                 >
-                  R{rn} <em className="ml-1 text-[#555] not-italic">{legSummary(selection.raceLegs.find((l) => l.raceNumber === rn) ?? { raceNumber: rn, bankers: [], legs: [] })}</em>
+                  R{rn}
                 </button>
               ))}
-            </div>
-          )}
+            </nav>
 
-          <div className="my-1.5 flex justify-end">
-            <button
-              className="cursor-pointer rounded border border-hkjc-dark bg-white px-3.5 py-[7px] text-[13.33px] font-semibold text-hkjc-dark disabled:cursor-not-allowed disabled:opacity-40"
-              disabled={!meeting.hasResults}
-              title={meeting.hasResults ? "" : "No results for this meeting"}
-              onClick={() =>
-                date && venue && api.result(date, venue, editRace).then(setRaceResult).catch((e) => setError(String(e)))
-              }
-            >
-              Show result (R{editRace})
-            </button>
-          </div>
-
-          {card ? (
-            <RaceCardTable
-              card={card}
-              roleOf={(h) => roleOf(editRace, h)}
-              onCycle={(h) => cycle(editRace, h)}
-              bankerEnabled={bankerEnabled}
+            <BetTypePicker
+              value={betType}
+              onChange={setBetType}
+              dtAvailable={dtPools.length > 0}
+              ttAvailable={ttPools.length > 0}
             />
-          ) : (
-            <div className="p-[30px] text-center text-[#888]">Loading race {editRace}…</div>
-          )}
 
-          <CostBar combos={combos} cost={totalCost} canSubmit={canSubmit} onSubmit={submit} />
-          {!meeting.hasResults && <p className="my-[13px] text-[13px] text-[#8a6d00]">No results saved for this meeting — settlement disabled.</p>}
-        </>
-      )}
+            {/* Multi-race leg chooser */}
+            {legCount > 1 && (
+              <div className={cx(panel, "mt-4 flex flex-col gap-4")}>
+                {officialPools.length > 0 && (
+                  <div>
+                    <div className="mb-2 text-xs font-medium text-ink-2">{BET_TYPES[betType].label} pools</div>
+                    <div className={pillRow}>
+                      {officialPools.map((pool) => {
+                        const active = [...dtLegs].sort((a, b) => a - b).join() === [...pool].sort((a, b) => a - b).join();
+                        return (
+                          <button
+                            key={pool.join()}
+                            className={cx(pill(active), "flex-none")}
+                            aria-pressed={active}
+                            onClick={() => { setDtLegs(pool); setEditRace(pool[0]!); }}
+                          >
+                            R{pool.join("-R")}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+                <div>
+                  <div className="mb-2 text-xs font-medium text-ink-2">
+                    Or pick any {legCount} races ({dtLegs.length}/{legCount})
+                  </div>
+                  <div className={pillRow}>
+                    {meeting.races.map((rn) => {
+                      const picked = dtLegs.includes(rn);
+                      const isEdit = rn === editRace && picked;
+                      return (
+                        <button
+                          key={rn}
+                          className={cx(isEdit ? pill(true) : picked ? pickedLeg : pill(false), "min-w-12 flex-none")}
+                          aria-pressed={picked}
+                          disabled={!picked && dtLegs.length >= legCount}
+                          onClick={() => toggleLeg(rn)}
+                        >
+                          R{rn}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+                <p className="text-xs text-ink-3">Only an official pool pays a dividend; a custom combo still grades hit/miss.</p>
+              </div>
+            )}
+
+            {/* Edit which leg's picks you're entering. */}
+            {legCount > 1 && legRaces.length > 0 && (
+              <div className="mt-4">
+                <div className="mb-2 text-xs font-medium text-ink-2">Editing</div>
+                <div className={pillRow}>
+                  {legRaces.map((rn) => (
+                    <button key={rn} className={cx(pill(rn === editRace), "flex-none")} aria-pressed={rn === editRace} onClick={() => setEditRace(rn)}>
+                      R{rn}
+                      <em className={cx("not-italic", rn === editRace ? "text-white/70" : "text-ink-3")}>
+                        {legSummary(selection.raceLegs.find((l) => l.raceNumber === rn) ?? { raceNumber: rn, bankers: [], legs: [] })}
+                      </em>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <div className="mt-5 flex justify-end">
+              <button
+                className={btn}
+                disabled={!meeting.hasResults}
+                title={meeting.hasResults ? "" : "No results for this meeting"}
+                onClick={() =>
+                  date && venue && api.result(date, venue, editRace).then(setRaceResult).catch((e) => setError(String(e)))
+                }
+              >
+                Show result (R{editRace})
+              </button>
+            </div>
+
+            {card ? (
+              <RaceCardTable
+                card={card}
+                roleOf={(h) => roleOf(editRace, h)}
+                onCycle={(h) => cycle(editRace, h)}
+                bankerEnabled={bankerEnabled}
+              />
+            ) : (
+              <div className={cx(panel, "mt-3 text-center text-ink-3")}>Loading race {editRace}…</div>
+            )}
+
+            <CostBar combos={combos} cost={totalCost} canSubmit={canSubmit} onSubmit={submit} />
+            {!meeting.hasResults && <p className="mt-3 text-[13px] text-warn">No results saved for this meeting — settlement disabled.</p>}
+          </>
+        )}
+      </main>
 
       {result && <ResultModal result={result} onClose={() => setResult(null)} />}
       {raceResult && <ResultPanel result={raceResult} onClose={() => setRaceResult(null)} />}
