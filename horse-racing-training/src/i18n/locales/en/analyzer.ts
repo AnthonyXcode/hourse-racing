@@ -14,6 +14,7 @@ export const analyzer = {
     to: "To",
     run: "Run analysis",
     running: "Running…",
+    last3: "Last 3 months",
     last12: "Last 12 months",
     meta: "{{races}} races · analysed {{at}}",
     runningFor: "Running analysis for {{from}} → {{to}}… this can take a few seconds the first time.",

@@ -13,11 +13,17 @@ import { Display, btn, btnPrimary, code, control, cx, empty, errorBox, field, fi
 export type AnalyzerTab = "win-place" | "trio";
 
 const ymd = (d: Date) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
-function lastYear(): { from: string; to: string } {
+/** The last `n` months up to today. */
+function lastMonths(n: number): { from: string; to: string } {
   const to = new Date(), from = new Date(to);
-  from.setFullYear(from.getFullYear() - 1);
+  from.setMonth(from.getMonth() - n);
   return { from: ymd(from), to: ymd(to) };
 }
+// Presets beside Run. The first is the default: a short range keeps the first analysis quick.
+const PRESETS = [
+  { months: 3, key: "range.last3" },
+  { months: 12, key: "range.last12" },
+] as const;
 
 type Opt = [string, string];
 const opts = (xs: Opt[]) => xs.map(([v, l]) => <option key={v} value={v}>{l}</option>);
@@ -41,7 +47,7 @@ export function AnalyzerPage({ tab }: { tab: AnalyzerTab }) {
   const { t } = useTranslation("analyzer");
   const { t: tc } = useTranslation();
   const g = useGlossary();
-  const [range, setRange] = useState(lastYear);
+  const [range, setRange] = useState(() => lastMonths(PRESETS[0].months));
   const [draft, setDraft] = useState(range);
   const [data, setData] = useState<AnalyzerPayload | null>(null);
   const [loading, setLoading] = useState(false);
@@ -99,12 +105,28 @@ export function AnalyzerPage({ tab }: { tab: AnalyzerTab }) {
           <label htmlFor="aTo" className={fieldLabel}>{t("range.to")}</label>
           <input type="date" id="aTo" className={cx(control, "w-full")} value={draft.to} min={draft.from} onChange={(e) => setDraft({ ...draft, to: e.target.value })} />
         </div>
-        <button type="submit" className={btnPrimary} disabled={loading || !validDraft || (!dirty && !error)}>
+        <button type="submit" className={cx(btnPrimary, "col-span-2 sm:col-span-1")} disabled={loading || !validDraft || (!dirty && !error)}>
           {loading ? t("range.running") : t("range.run")}
         </button>
-        <button type="button" className={btn} disabled={loading} onClick={() => { const r = lastYear(); setDraft(r); setRange(r); }}>
-          {t("range.last12")}
-        </button>
+        {PRESETS.map(({ months, key }) => {
+          const r = lastMonths(months);
+          const on = range.from === r.from && range.to === r.to;
+          return (
+            <button
+              key={months}
+              type="button"
+              className={cx(btn, on && "bg-surface-2 shadow-none ring-1 ring-ink/15")}
+              aria-pressed={on}
+              disabled={loading}
+              onClick={() => {
+                setDraft(r);
+                if (!on || error) setRange(r); // already showing it: no re-run unless the last run failed
+              }}
+            >
+              {t(key)}
+            </button>
+          );
+        })}
         {data && !loading && (
           <span className={rangeMeta}>
             {t("range.meta", { races: all.length.toLocaleString(), at: data.generatedAt.slice(0, 16).replace("T", " ") })}

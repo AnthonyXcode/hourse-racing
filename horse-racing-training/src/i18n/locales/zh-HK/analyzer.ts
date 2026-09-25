@@ -16,6 +16,7 @@ export const analyzer: Shape<typeof En> = {
     to: "至",
     run: "執行分析",
     running: "分析中…",
+    last3: "最近 3 個月",
     last12: "最近 12 個月",
     meta: "{{races}} 場賽事 · 於 {{at}} 分析",
     runningFor: "正在分析 {{from}} → {{to}}… 首次執行可能需時數秒。",
