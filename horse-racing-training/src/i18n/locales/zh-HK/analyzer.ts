@@ -24,6 +24,7 @@ export const analyzer: Shape<typeof En> = {
   filters: {
     toggle: "篩選",
     surface: "跑道",
+    clearT: "移除所有篩選，顯示全部賽事",
     resetT: "還原為此場地的預設策略",
     toggleActive: "篩選（{{n}} 項）",
     fieldMin: "出賽馬數（≥）",

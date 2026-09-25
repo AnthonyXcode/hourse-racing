@@ -22,6 +22,7 @@ export const analyzer = {
   filters: {
     toggle: "Filters",
     surface: "Surface",
+    clearT: "Remove every filter and show all races",
     resetT: "Back to the default strategy for this venue",
     toggleActive: "Filters ({{n}} active)",
     fieldMin: "Field size (≥)",

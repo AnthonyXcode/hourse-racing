@@ -263,9 +263,14 @@ export function AnalyzerPage({ tab }: { tab: AnalyzerTab }) {
                   {opts([["", t("filters.mktAny")], ["fav", t("filters.mktFav")], ["nonfav", t("filters.mktNonFav")], ["long", t("filters.mktLong")]])}
                 </select>
               </div>
-              <button type="button" className={cx(btn, "self-end justify-self-start")} onClick={() => setF(homeVenue ? VENUE_DEFAULTS[homeVenue] : EMPTY_FILTERS)} title={t("filters.resetT")}>
-                {tc("action.reset")}
-              </button>
+              <div className="flex items-end gap-2">
+                <button type="button" className={btn} onClick={() => setF(homeVenue ? VENUE_DEFAULTS[homeVenue] : EMPTY_FILTERS)} title={t("filters.resetT")}>
+                  {tc("action.reset")}
+                </button>
+                <button type="button" className={btn} onClick={() => setF(EMPTY_FILTERS)} disabled={activeFilters === 0} title={t("filters.clearT")}>
+                  {tc("action.clearAll")}
+                </button>
+              </div>
             </div>
             </motion.div>
               )}
