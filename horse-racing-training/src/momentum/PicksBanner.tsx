@@ -19,32 +19,18 @@ const dayRace = (date: string, raceNo: number, lang: string) => {
 };
 const EASE = [0.2, 0, 0, 1] as const;
 /**
- * Two layered sine waves drifting sideways behind the strip. Each SVG is 200% wide and holds two
- * identical periods, so sliding it by -50% loops seamlessly. Transform-only, so MotionConfig's
- * reducedMotion="user" stills it.
+ * Slowly drifting blue gradient behind the strip. The layer is 200% wide and its gradient repeats
+ * twice (light → deep → light → deep → light), so sliding it by -50% loops seamlessly.
+ * Transform-only, so MotionConfig's reducedMotion="user" stills it.
  */
-const WAVE = "M0 20 Q150 10 300 20 T600 20 T900 20 T1200 20 V40 H0 Z";
-function Waves() {
+function GradientFlow() {
   return (
     <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
-      {(
-        [
-          { fill: "fill-accent/12", dur: 14, y: 2 },
-          { fill: "fill-accent/8", dur: 22, y: -3 },
-        ] as const
-      ).map((w, i) => (
-        <motion.svg
-          key={i}
-          viewBox="0 0 1200 40"
-          preserveAspectRatio="none"
-          className={cx("absolute inset-y-0 left-0 h-full w-[200%]", w.fill)}
-          style={{ y: w.y }}
-          animate={{ x: ["0%", "-50%"] }}
-          transition={{ duration: w.dur, repeat: Infinity, ease: "linear" }}
-        >
-          <path d={WAVE} />
-        </motion.svg>
-      ))}
+      <motion.div
+        className="absolute inset-y-0 left-0 w-[200%] bg-[linear-gradient(90deg,#d6e2fc_0%,#a9c1f7_25%,#d6e2fc_50%,#a9c1f7_75%,#d6e2fc_100%)]"
+        animate={{ x: ["0%", "-50%"] }}
+        transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
+      />
     </div>
   );
 }
@@ -81,13 +67,13 @@ export function PicksBanner({ onSelect, linked }: { onSelect: (v: string) => voi
       {h && h.picks.length > 0 && (
         <motion.div
           key="picks-strip"
-          className="relative overflow-hidden border-t border-edge bg-accent-soft/60"
+          className="relative overflow-hidden border-t border-edge bg-[#d6e2fc]"
           initial={{ height: 0, opacity: 0 }}
           animate={{ height: "auto", opacity: 1 }}
           exit={{ height: 0, opacity: 0 }}
           transition={{ duration: 0.3, ease: EASE }}
         >
-          <Waves />
+          <GradientFlow />
           <a
             href={linked ? viewHref("momentum") : undefined}
             onClick={open}
