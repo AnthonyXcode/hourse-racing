@@ -18,7 +18,7 @@ import { useTranslation } from "react-i18next";
 import { useGlossary } from "./i18n/glossary";
 import { LangSwitch, useFmt } from "./i18n/useLanguage";
 import { MobileNav } from "./MobileNav";
-import { Display, btn, container, control, cx, errorBox, panel, pill, pillRow } from "./kit";
+import { Display, btn, container, control, cx, errorBox, field, fieldLabel, panel, pill, pillRow } from "./kit";
 
 /** Publish the sticky header's height as --header-h so other sticky bars can sit just below it. */
 function useHeaderHeightVar() {
@@ -112,9 +112,17 @@ export default function App() {
   const [raceResult, setRaceResult] = useState<RaceResult | null>(null);
   const analyzerOpened = useOnceTrue(view === "win-place" || view === "trio");
 
-  // Load meeting list once.
+  // Load meeting list once, and open the last racing day (newest meeting on or before today, HK time).
   useEffect(() => {
-    api.days().then(setDays).catch((e) => setError(String(e)));
+    api
+      .days()
+      .then((ds) => {
+        setDays(ds);
+        const today = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Hong_Kong" }).format(new Date()).replaceAll("-", "");
+        const last = ds.find((m) => m.date <= today) ?? ds[ds.length - 1]; // newest first; else the earliest upcoming
+        if (last) setMeetingKey((k) => k || `${last.date}_${last.venue}`);
+      })
+      .catch((e) => setError(String(e)));
   }, []);
 
   // Refresh history whenever the History tab is opened.
@@ -277,8 +285,8 @@ export default function App() {
   };
 
   const meetingSelect = (
-    <select className={cx(control, "w-full lg:w-auto lg:max-w-[340px]")} aria-label={t("bet:racingDay")} value={meetingKey} onChange={(e) => setMeetingKey(e.target.value)}>
-      <option value="">{t("bet:selectDay")}</option>
+    <select id="bDay" className={cx(control, "w-full sm:w-auto sm:min-w-[300px]")} value={meetingKey} disabled={!days.length} onChange={(e) => setMeetingKey(e.target.value)}>
+      {!meetingKey && <option value="">{days.length ? t("bet:selectDay") : t("state.loading")}</option>}
       {days.map((m) => (
         <option key={`${m.date}_${m.venue}`} value={`${m.date}_${m.venue}`}>
           {t("bet:dayOption", { date: fmt.date(ymd(m.date)), venue: g.venue(m.venue), races: t("races", { count: m.races.length }) })}
@@ -301,8 +309,7 @@ export default function App() {
               </button>
             ))}
           </nav>
-          <div className="hidden items-center gap-3 lg:ml-auto lg:flex">
-            {view === "bet" && meetingSelect}
+          <div className="hidden lg:ml-auto lg:block">
             <LangSwitch />
           </div>
           <MobileNav title={t("appName")} tabs={TABS.map(([v, key]) => [v, t(key)] as [View, string])} view={view} onSelect={setView} />
@@ -331,7 +338,8 @@ export default function App() {
         )}
 
         {view === "bet" && (
-          <>
+          // Page head: title left, racing-day picker right (stacked on phones) — same as Momentum.
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <Display
               sub={
                 meeting
@@ -341,8 +349,13 @@ export default function App() {
             >
               {t("bet:title")}
             </Display>
-            <div className="mt-3 lg:hidden">{meetingSelect}</div>
-          </>
+            <div className={cx(field, "w-full sm:w-auto sm:pb-2")}>
+              <label htmlFor="bDay" className={fieldLabel}>
+                {t("bet:racingDay")}
+              </label>
+              {meetingSelect}
+            </div>
+          </div>
         )}
 
         {view === "bet" && meeting && (
