@@ -41,10 +41,11 @@ function TrioBody({ settled }: { settled: AnalyzerRace[] }) {
     const byKey = <K extends string | number>(keyOf: (r: AnalyzerRace) => K, sorter?: (a: K, b: K) => number) => groupBy(settled, keyOf, sorter);
     return {
       mc, mk,
-      paid: settled.filter((r) => r.td > 0).map((r) => r.td),
+      // Biggest Trio dividend the model's picks won (box top 7 — any banker #1 + 2–7 hit is also a box-7 hit).
+      bestDiv: settled
+        .filter((r) => r.td > 0 && trioOutcome(r, MC, SBY.b7!).hit)
+        .reduce<AnalyzerRace | null>((top, r) => (!top || r.td > top.td ? r : top), null),
       best: TRIO_STRATS.filter((s) => Number.isFinite(mc[s.key]!.roi)).sort((a, b) => mc[b.key]!.roi - mc[a.key]!.roi)[0],
-      foundMc: mean(settled.map((r) => foundIn(r, MC))),
-      foundMk: mean(priced.map((r) => foundIn(r, MKT))),
       cover: [3, 4, 5, 6, 7, 8].map((L) => {
         const a = trioStats(settled, MC, { B: 0, L }), b = trioStats(settled, MKT, { B: 0, L });
         return { rank: L, n: a.races, mc: a.hit, mk: b.hit };
@@ -67,14 +68,15 @@ function TrioBody({ settled }: { settled: AnalyzerRace[] }) {
   return (
     <>
       <div className={kpis}>
-        <Kpi label={t("trio.kpi.top3")} value={pc(mc.b3!.hit)} sub={t("trio.kpi.top3Sub", { m: pc(mk.b3!.hit) })} tone={vs(mc.b3!.hit, mk.b3!.hit)} />
-        <Kpi label={t("trio.kpi.box4")} value={pc(mc.b4!.hit)} sub={t("trio.kpi.box4Sub", { m: pc(mk.b4!.hit) })} tone={vs(mc.b4!.hit, mk.b4!.hit)} />
-        <Kpi label={t("trio.kpi.box5")} value={pc(mc.b5!.hit)} sub={t("trio.kpi.box5Sub", { m: pc(mk.b5!.hit) })} tone={vs(mc.b5!.hit, mk.b5!.hit)} />
-        <Kpi label={t("trio.kpi.box5Roi")} value={signed(mc.b5!.roi)} sub={t("trio.kpi.box5RoiSub", { stake: money(mc.b5!.stake), m: signed(mk.b5!.roi) })} tone={cls(mc.b5!.roi)} />
-        <Kpi label={t("trio.kpi.bankRoi")} value={signed(mc.k16!.roi)} sub={t("trio.kpi.bankRoiSub", { hit: pc(mc.k16!.hit), m: signed(mk.k16!.roi) })} tone={cls(mc.k16!.roi)} />
-        <Kpi label={t("trio.kpi.found")} value={`${d.foundMc.toFixed(2)} / 3`} sub={t("trio.kpi.foundSub", { m: d.foundMk.toFixed(2) })} tone={vs(d.foundMc, d.foundMk)} />
+        <Kpi label={t("trio.kpi.box7")} value={pc(mc.b7!.hit)} sub={t("trio.kpi.box7Sub", { m: pc(mk.b7!.hit) })} tone={vs(mc.b7!.hit, mk.b7!.hit)} />
+        <Kpi label={t("trio.kpi.bank7")} value={pc(mc.k17!.hit)} sub={t("trio.kpi.bank7Sub", { m: pc(mk.k17!.hit) })} tone={vs(mc.k17!.hit, mk.k17!.hit)} />
         <Kpi label={t("trio.kpi.best")} value={best ? signed(mc[best.key]!.roi) : "–"} sub={best ? t(stratKey(best.key)) : t("trio.kpi.bestNone")} tone={best ? cls(mc[best.key]!.roi) : ""} />
-        <Kpi label={t("trio.kpi.div")} value={money(median(d.paid))} sub={t("trio.kpi.divSub", { mean: money(mean(d.paid)), n: d.paid.length })} />
+        <Kpi
+          label={t("trio.kpi.bestDiv")}
+          value={d.bestDiv ? money(d.bestDiv.td) : "–"}
+          sub={d.bestDiv ? t("trio.kpi.bestDivSub", { date: d.bestDiv.d, venue: g.venue(d.bestDiv.v), race: t("common:raceShort", { n: d.bestDiv.r }) }) : t("trio.kpi.bestDivNone")}
+          tone={d.bestDiv ? "text-good" : ""}
+        />
       </div>
 
       <H2 sub={t("trio.strategiesSub")}>{t("trio.strategies")}</H2>
