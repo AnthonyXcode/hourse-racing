@@ -7,7 +7,7 @@ import type {
   SettleResult,
   HistoryEntry,
 } from "../shared/types";
-import type { AnalyzerPayload } from "../shared/analyzer/model";
+import type { AnalyzerPayload, PreRaceAnalysis } from "../shared/analyzer/model";
 import type { RaceSeries, HorseRow, ModelRank, Highlight } from "../shared/momentum/model";
 
 export interface MomentumDayRef {
@@ -67,6 +67,8 @@ export const api = {
   addHistory: (e: HistoryEntry) => send<HistoryEntry[]>("POST", "/api/history", e),
   deleteHistory: (id: string) => send<HistoryEntry[]>("DELETE", `/api/history/${id}`),
   clearHistory: () => send<HistoryEntry[]>("DELETE", "/api/history"),
+  /** Pre-race model analysis of one racecard (date YYYYMMDD); never includes results. */
+  raceAnalysis: (date: string, venue: string, race: number) => get<PreRaceAnalysis>(`/api/race-analysis?date=${date}&venue=${venue}&race=${race}`),
   analyzer: (from: string, to: string) => get<AnalyzerPayload>(`/api/analyzer?from=${from}&to=${to}`),
   momentumDays: () => get<{ today: string; days: MomentumDayRef[] }>("/api/momentum/days"),
   momentumDay: (date: string) => get<MomentumDay>(`/api/momentum/day?date=${date}`),

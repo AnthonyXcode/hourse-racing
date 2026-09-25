@@ -107,6 +107,60 @@ export const VENUE_DEFAULTS: Record<"HV" | "ST", Filters> = {
   ST: { ...EMPTY_FILTERS, venue: "ST", surface: "Turf", sparse: "3", close: "4", diffMin: "12", gap: "4", trip: "3" },
 };
 
+/** Pre-race analysis of one racecard (Bet page reference): no finishing data, so it can't spoil the result. */
+export interface PreRaceAnalysis {
+  raceId: string;
+  venue: "ST" | "HV";
+  surface: string;
+  runners: number;
+  /** same meanings as AnalyzerRace ad / c8 / sp / gp */
+  avgDiff: number;
+  close8: number;
+  sparse: number;
+  gap: number;
+  /** model order, best first */
+  horses: {
+    horseNo: number;
+    code: string;
+    name: string;
+    modelRank: number;
+    ratingRank: number;
+    /** by the odds saved on the card; 0 = unpriced */
+    marketRank: number;
+    odds: number;
+    winPct: number;
+    placePct: number;
+    tripRuns: number;
+  }[];
+}
+
+export interface StrategyCheck {
+  key: "surface" | "sparse" | "close" | "diffMin" | "gap" | "mcPlace" | "trip";
+  ok: boolean;
+  value: string;
+  limit: string;
+}
+
+/** Each rule of the venue's default strategy, checked against a pre-race analysis. */
+export function strategyChecks(a: PreRaceAnalysis): StrategyCheck[] {
+  const F = VENUE_DEFAULTS[a.venue];
+  const top = a.horses[0];
+  const out: StrategyCheck[] = [];
+  if (F.surface) out.push({ key: "surface", ok: a.surface === F.surface, value: a.surface, limit: F.surface });
+  const rule = (key: StrategyCheck["key"], v: number, lim: string, cmp: "max" | "min") => {
+    if (lim.trim() === "") return;
+    const n = Number(lim);
+    out.push({ key, ok: cmp === "max" ? v <= n : v >= n, value: String(v), limit: lim });
+  };
+  rule("sparse", a.sparse, F.sparse, "max");
+  rule("close", a.close8, F.close, "max");
+  rule("diffMin", a.avgDiff, F.diffMin, "min");
+  if (a.gap < 999) rule("gap", a.gap, F.gap, "min");
+  if (top) rule("mcPlace", Math.round(top.placePct), F.mcPlace, "min");
+  if (top) rule("trip", top.tripRuns, F.trip, "min");
+  return out;
+}
+
 /** The venue whose defaults `F` still equals exactly (untouched), else null. */
 export function untouchedPreset(F: Filters): "HV" | "ST" | null {
   const same = (a: Filters, b: Filters) => (Object.keys(a) as (keyof Filters)[]).every((k) => a[k] === b[k]);

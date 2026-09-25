@@ -10,7 +10,7 @@ import { races as raceDb } from "./dataIndex";
 import { buildRace } from "./data/raceBuilder";
 import type { CardDoc } from "./data/raceStore";
 import type { RaceResult } from "../shared/types";
-import type { AnalyzerPayload, AnalyzerRace, HorseRow } from "../shared/analyzer/model";
+import type { AnalyzerPayload, AnalyzerRace, HorseRow, PreRaceAnalysis } from "../shared/analyzer/model";
 
 export const MC_RUNS = 5000;
 const MIN_RUNNERS = 6;
@@ -21,7 +21,7 @@ const MIN_RUNNERS = 6;
 interface Entry {
   horseNumber: number;
   isScratched?: boolean;
-  horse: { code: string };
+  horse: { code: string; name?: string };
   jockey?: { name?: string; code?: string };
 }
 interface Race {
@@ -223,4 +223,71 @@ export async function runAnalyzer(from: string, to: string): Promise<AnalyzerPay
     if (hit.race) races.push(hit.race);
   }
   return { generatedAt: new Date().toISOString(), from, to, races };
+}
+
+const preCache = new Map<string, { stamp: string; value: PreRaceAnalysis | null }>();
+
+/**
+ * Pre-race analysis of one racecard for the Bet page: model order with win/place %, form-rating rank,
+ * market rank (odds saved on the card) and trip runs, plus the race-level metrics. Uses no results or
+ * starting prices, so it never reveals the outcome. Same engine and seed as runAnalyzer, so the numbers
+ * match the Win/Place tab.
+ */
+export async function analyzeCard(date: string, venue: "ST" | "HV", rn: number): Promise<PreRaceAnalysis | null> {
+  const iso = `${date.slice(0, 4)}-${date.slice(4, 6)}-${date.slice(6, 8)}`;
+  const row = raceDb().cardsInRange(iso, iso).find((c) => c.key.venue === venue && c.key.raceNo === rn);
+  if (!row) return null;
+  const seedKey = `racecard_${date}_${venue}_R${rn}.json`;
+  const hit = preCache.get(seedKey);
+  if (hit && hit.stamp === row.updatedAt) return hit.value;
+
+  const eng = await engine();
+  const loaded = buildRace<Race & { surface?: string }>(row.doc);
+  let value: PreRaceAnalysis | null = null;
+  if (loaded) {
+    const { race, winOddsMap } = loaded;
+    const active = race.entries.filter((e) => !e.isScratched && e.horseNumber > 0);
+    const { analyses, mc } = withSeed(seedKey, () => ({
+      analyses: eng.analyzeRace(race),
+      mc: eng.simulateRace(race, venue).filter((r) => r.horseNumber > 0),
+    }));
+    if (analyses.length && mc.length) {
+      const topRating = analyses[0]!.overallRating;
+      const diffs = analyses.map((a) => Math.abs(topRating - a.overallRating));
+      const second = analyses[1];
+      const ratingRank = new Map(analyses.map((a, i) => [a.horseCode, i + 1]));
+      const odds = (n: number) => winOddsMap.get(n) ?? 0;
+      const mktRank = new Map(
+        active
+          .filter((e) => odds(e.horseNumber) > 0)
+          .sort((a, b) => odds(a.horseNumber) - odds(b.horseNumber))
+          .map((e, i) => [e.horseNumber, i + 1])
+      );
+      const entryByNum = new Map(active.map((e) => [e.horseNumber, e]));
+      value = {
+        raceId: `${iso}-${venue}-${rn}`,
+        venue,
+        surface: String(race.surface ?? ""),
+        runners: active.length,
+        avgDiff: Math.round(diffs.reduce((t, d) => t + d, 0) / diffs.length),
+        close8: diffs.filter((d) => d < 8).length,
+        sparse: active.filter((e) => eng.isSparseFormEntry(e)).length,
+        gap: second ? Math.abs(topRating - second.overallRating) : 999,
+        horses: mc.map((r, i) => ({
+          horseNo: r.horseNumber,
+          code: r.horseCode,
+          name: r.horseName,
+          modelRank: i + 1,
+          ratingRank: ratingRank.get(r.horseCode) ?? 0,
+          marketRank: mktRank.get(r.horseNumber) ?? 0,
+          odds: r2(odds(r.horseNumber)),
+          winPct: Math.round(r.winProbability * 1000) / 10,
+          placePct: Math.round(r.placeProbability * 1000) / 10,
+          tripRuns: eng.tripRunCount(entryByNum.get(r.horseNumber), race.distance),
+        })),
+      };
+    }
+  }
+  preCache.set(seedKey, { stamp: row.updatedAt, value });
+  return value;
 }

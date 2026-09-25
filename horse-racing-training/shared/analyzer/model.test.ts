@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import {
   type AnalyzerRace, type HorseRow, MC, MKT, EMPTY_FILTERS,
-  applyFilters, trioCombos, trioOutcome, trioStats, foundIn, doubleTrio, metrics, SBY, VENUE_DEFAULTS, untouchedPreset,
+  applyFilters, trioCombos, trioOutcome, trioStats, foundIn, doubleTrio, metrics, SBY, VENUE_DEFAULTS, untouchedPreset, strategyChecks, type PreRaceAnalysis,
 } from "./model";
 
 /** Horse by [mcRank, mktRank, finish, winOdds, placeOdds, tripRuns]; horse number = mcRank. */
@@ -123,5 +123,25 @@ describe("venue default filters", () => {
     expect(untouchedPreset(VENUE_DEFAULTS.HV)).toBe("HV");
     expect(untouchedPreset({ ...VENUE_DEFAULTS.ST, gap: "5" })).toBeNull();
     expect(untouchedPreset(EMPTY_FILTERS)).toBeNull();
+  });
+});
+
+describe("strategyChecks", () => {
+  const pre = (over: Partial<PreRaceAnalysis> = {}, top: Partial<PreRaceAnalysis["horses"][number]> = {}): PreRaceAnalysis => ({
+    raceId: "2026-09-23-HV-1", venue: "HV", surface: "Turf", runners: 12, avgDiff: 18, close8: 1, sparse: 0, gap: 8,
+    horses: [{ horseNo: 3, code: "C", name: "N", modelRank: 1, ratingRank: 1, marketRank: 3, odds: 5.2, winPct: 43, placePct: 77.1, tripRuns: 5, ...top }],
+    ...over,
+  });
+
+  it("checks every rule of the venue's defaults", () => {
+    const hv = strategyChecks(pre());
+    expect(hv.map((c) => c.key)).toEqual(["surface", "sparse", "close", "diffMin", "gap", "mcPlace"]);
+    expect(hv.every((c) => c.ok)).toBe(true);
+    const st = strategyChecks(pre({ venue: "ST", avgDiff: 10 }, { tripRuns: 1 }));
+    expect(st.filter((c) => !c.ok).map((c) => c.key)).toEqual(["diffMin", "trip"]);
+  });
+
+  it("skips the gap rule when there is no second-rated horse", () => {
+    expect(strategyChecks(pre({ gap: 999 })).some((c) => c.key === "gap")).toBe(false);
   });
 });

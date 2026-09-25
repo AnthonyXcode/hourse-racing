@@ -20,6 +20,7 @@ import { LangSwitch, useFmt } from "./i18n/useLanguage";
 import { MobileNav } from "./MobileNav";
 import { Footer, LEGAL_VIEWS, LegalDoc, SiteMap } from "./LegalPages";
 import { PicksBanner } from "./momentum/PicksBanner";
+import { RaceAnalysisPanel } from "./RaceAnalysisPanel";
 import { Display, btn, container, control, cx, errorBox, field, fieldLabel, panel, pill, pillRow } from "./kit";
 
 /** Publish the sticky header's height as --header-h so other sticky bars can sit just below it. */
@@ -472,6 +473,8 @@ export default function App() {
                 {t("bet:showResult", { race: t("raceShort", { n: editRace }) })}
               </button>
             </div>
+
+            {date && venue && <RaceAnalysisPanel date={date} venue={venue} raceNo={editRace} />}
 
             {card ? (
               <RaceCardTable

@@ -2,7 +2,7 @@ import { Router } from "express";
 import { getManifest, readCard, readResults } from "./dataIndex";
 import { settle } from "../shared/betEngine/index";
 import { readHistory, addEntry, deleteEntry, clearHistory } from "./history";
-import { runAnalyzer } from "./analyzer";
+import { analyzeCard, runAnalyzer } from "./analyzer";
 import { momentum } from "./momentum/service";
 import { hkDate } from "./momentum/poller";
 import { raceSeries } from "./momentum/series";
@@ -189,6 +189,19 @@ api.get("/momentum/race/:raceId", (req, res) => {
   const s = raceSeries(momentum().repo, req.params.raceId);
   if (!s) return res.status(404).json({ error: "race not tracked" });
   res.json(s);
+});
+
+/** GET /api/race-analysis?date=YYYYMMDD&venue=ST|HV&race=N → pre-race model analysis of one card (no results). */
+api.get("/race-analysis", async (req, res) => {
+  const date = String(req.query.date ?? ""), venue = String(req.query.venue ?? ""), rn = Number(req.query.race);
+  if (!/^\d{8}$/.test(date) || (venue !== "ST" && venue !== "HV") || !Number.isInteger(rn) || rn < 1) return res.status(400).json({ error: "date=YYYYMMDD, venue=ST|HV, race=N" });
+  try {
+    const a = await analyzeCard(date, venue, rn);
+    if (!a) return res.status(404).json({ error: "no racecard" });
+    res.json(a);
+  } catch (e) {
+    res.status(500).json({ error: String(e instanceof Error ? e.message : e) });
+  }
 });
 
 /** GET /api/momentum/highlight → the banner race (next to run, else last run) with its Combined picks. */
