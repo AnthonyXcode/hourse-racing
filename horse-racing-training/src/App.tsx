@@ -14,6 +14,7 @@ import { RaceCardTable, BetTypePicker, CostBar, ResultModal, ResultPanel, Histor
 import type { RaceResult } from "../shared/types";
 import { AnalyzerPage } from "./analyzer/AnalyzerPage";
 import { MomentumPage } from "./momentum/MomentumPage";
+import { MobileNav } from "./MobileNav";
 import { Display, btn, container, control, cx, errorBox, panel, pill, pillRow } from "./kit";
 
 /** Publish the sticky header's height as --header-h so other sticky bars can sit just below it. */
@@ -260,7 +261,7 @@ export default function App() {
   const card = cards[editRace];
 
   const meetingSelect = (
-    <select className={cx(control, "w-full sm:w-auto sm:max-w-[340px]")} aria-label="Racing day" value={meetingKey} onChange={(e) => setMeetingKey(e.target.value)}>
+    <select className={cx(control, "w-full lg:w-auto lg:max-w-[340px]")} aria-label="Racing day" value={meetingKey} onChange={(e) => setMeetingKey(e.target.value)}>
       <option value="">Select a racing day…</option>
       {days.map((m) => (
         <option key={`${m.date}_${m.venue}`} value={`${m.date}_${m.venue}`}>
@@ -273,16 +274,18 @@ export default function App() {
   return (
     <div className="min-h-dvh">
       <header ref={headerRef} className="sticky top-0 z-40 border-b border-edge bg-canvas/80 backdrop-blur-md">
-        <div className={cx(container, "flex flex-col gap-2 py-3 sm:flex-row sm:items-center sm:gap-6")}>
-          <h1 className="flex-none font-display text-[22px] leading-none tracking-[-0.01em] text-ink">HKJC Bet Trainer</h1>
-          <nav aria-label="Sections" className="-mx-4 flex gap-1 overflow-x-auto px-4 sm:mx-0 sm:overflow-visible sm:px-0">
+        <div className={cx(container, "flex h-16 items-center gap-6")}>
+          <h1 className="flex-none font-display text-xl leading-none tracking-[-0.01em] text-ink lg:text-[22px]">HKJC Bet Trainer</h1>
+          {/* Desktop: inline tabs (+ meeting picker on Bet). Below lg: menu button → MobileNav sheet. */}
+          <nav aria-label="Sections" className="hidden gap-1 lg:flex">
             {TABS.map(([v, label]) => (
               <button key={v} className={navBtn(view === v)} aria-current={view === v ? "page" : undefined} onClick={() => setView(v)}>
                 {label}
               </button>
             ))}
           </nav>
-          {view === "bet" && <div className="hidden sm:ml-auto sm:block">{meetingSelect}</div>}
+          <div className="hidden lg:ml-auto lg:block">{view === "bet" && meetingSelect}</div>
+          <MobileNav title="HKJC Bet Trainer" tabs={TABS} view={view} onSelect={setView} />
         </div>
       </header>
 
@@ -312,7 +315,7 @@ export default function App() {
             <Display sub={meeting ? `${fmtDate(meeting.date)} · ${meeting.venue} · ${meeting.races.length} races` : "Pick a racing day to load its race cards, build a bet, then settle it against the real result."}>
               Practice a bet
             </Display>
-            <div className="mt-3 sm:hidden">{meetingSelect}</div>
+            <div className="mt-3 lg:hidden">{meetingSelect}</div>
           </>
         )}
 
