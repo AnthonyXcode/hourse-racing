@@ -87,7 +87,6 @@ export const bet: Shape<typeof En> = {
       model: "排名",
       win: "獨贏 %",
       place: "位置 %",
-      rating: "評分排名",
       market: "市場",
       odds: "賠率",
       trip: "同程次數",

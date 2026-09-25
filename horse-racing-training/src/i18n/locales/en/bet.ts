@@ -84,7 +84,6 @@ export const bet = {
       model: "Rank",
       win: "Win %",
       place: "Place %",
-      rating: "Form rank",
       market: "Market",
       odds: "Odds",
       trip: "Trip runs",

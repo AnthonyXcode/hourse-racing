@@ -137,7 +137,6 @@ export function RaceAnalysisPanel({ date, venue, raceNo }: { date: string; venue
                       <th>{t("common:word.horse")}</th>
                       <th>{t("analysis.col.win")}</th>
                       <th>{t("analysis.col.place")}</th>
-                      <th>{t("analysis.col.rating")}</th>
                       <th>{t("analysis.col.market")}</th>
                       <th>{t("analysis.col.odds")}</th>
                       <th>{t("analysis.col.trip")}</th>
@@ -151,7 +150,6 @@ export function RaceAnalysisPanel({ date, venue, raceNo }: { date: string; venue
                         <td className="max-w-[180px] truncate">{name("horse", h.code, h.name)}</td>
                         <td>{h.winPct.toFixed(1)}</td>
                         <td>{h.placePct.toFixed(1)}</td>
-                        <td>{h.ratingRank || "–"}</td>
                         <td>{h.marketRank || "–"}</td>
                         <td>{h.odds > 0 ? h.odds : "–"}</td>
                         <td>{h.tripRuns}</td>
