@@ -2,6 +2,7 @@
 // held up against real results. The server runs the analysis for the chosen
 // date range; every panel below it is computed client-side from that payload.
 import { useEffect, useMemo, useState } from "react";
+import { AnimatePresence, motion } from "motion/react";
 import { Trans, useTranslation } from "react-i18next";
 import { useGlossary } from "../i18n/glossary";
 import { api } from "../api";
@@ -42,6 +43,8 @@ const NUM_FIELDS = [
 
 /** Filter-grid cell and control: fill the column. */
 const filterControl = cx(control, "w-full");
+/** Open/close of the filter grid: quick, eased out, height + fade. */
+const COLLAPSE = { duration: 0.24, ease: [0.2, 0, 0, 1] } as const;
 
 export function AnalyzerPage({ tab }: { tab: AnalyzerTab }) {
   const { t } = useTranslation("analyzer");
@@ -165,8 +168,8 @@ export function AnalyzerPage({ tab }: { tab: AnalyzerTab }) {
       {data && (
         <div className={loading ? "pointer-events-none opacity-55 transition-opacity" : "transition-opacity"}>
           {/* Sticky under the app header (h-16 on phones, 72px from sm). */}
-          <div className="sticky top-(--header-h,64px) z-20 -mx-4 mt-4 border-b border-edge bg-canvas/85 px-4 pt-3 pb-3 backdrop-blur-md sm:mx-0 sm:px-0">
-            <div className={cx("flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3", filtersOpen && "mb-3")}>
+          <div className="sticky top-(--header-h,64px) z-20 -mx-4 mt-4 border-b border-edge bg-canvas/85 px-4 pt-3 pb-3 backdrop-blur-md sm:mx-0 sm:px-5">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
               <button
                 type="button"
                 className={cx(btn, "h-9 w-full flex-none justify-between gap-3 sm:w-auto")}
@@ -175,15 +178,39 @@ export function AnalyzerPage({ tab }: { tab: AnalyzerTab }) {
                 onClick={() => setFiltersOpen((o) => !o)}
               >
                 <span>{activeFilters ? t("filters.toggleActive", { n: activeFilters }) : t("filters.toggle")}</span>
-                <span aria-hidden className="text-ink-3">{filtersOpen ? "▲" : "▼"}</span>
+                <motion.span aria-hidden className="inline-block text-ink-3" animate={{ rotate: filtersOpen ? 180 : 0 }} transition={COLLAPSE}>
+                  ▼
+                </motion.span>
               </button>
-              {!filtersOpen && filterSummary && (
-                <p className="min-w-0 truncate text-xs text-ink-2" title={filterSummary}>
-                  {filterSummary}
-                </p>
-              )}
+              <AnimatePresence initial={false}>
+                {!filtersOpen && filterSummary && (
+                  <motion.p
+                    key="summary"
+                    className="min-w-0 truncate text-xs text-ink-2"
+                    title={filterSummary}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.15 }}
+                  >
+                    {filterSummary}
+                  </motion.p>
+                )}
+              </AnimatePresence>
             </div>
-            <div id="analyzer-filters" className={cx(filtersOpen ? "grid" : "hidden", "grid-cols-2 gap-x-3 gap-y-3 sm:grid-cols-3 lg:grid-cols-6")}>
+            <AnimatePresence initial={false}>
+              {filtersOpen && (
+            <motion.div
+              key="filters"
+              id="analyzer-filters"
+              className="overflow-hidden"
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={COLLAPSE}
+            >
+            {/* inner padding keeps focus rings from being clipped by overflow-hidden */}
+            <div className="grid grid-cols-2 gap-x-3 gap-y-3 px-0.5 pt-3 pb-0.5 sm:grid-cols-3 lg:grid-cols-6">
               <div className={field}>
                 <label htmlFor="fcls" className={fieldLabel}>{tc("word.class")}</label>
                 <select id="fcls" className={filterControl} value={F.cls} onChange={(e) => setF({ ...F, cls: e.target.value })}>
@@ -238,6 +265,9 @@ export function AnalyzerPage({ tab }: { tab: AnalyzerTab }) {
                 {tc("action.reset")}
               </button>
             </div>
+            </motion.div>
+              )}
+            </AnimatePresence>
             <div className="mt-2 text-[13px] text-ink-2 sm:text-right [&_b]:font-semibold [&_b]:text-ink [&_b]:tabular-nums">
               <Trans
                 t={t}
