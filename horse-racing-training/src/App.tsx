@@ -18,6 +18,7 @@ import { useTranslation } from "react-i18next";
 import { useGlossary } from "./i18n/glossary";
 import { LangSwitch, useFmt } from "./i18n/useLanguage";
 import { MobileNav } from "./MobileNav";
+import { Footer, LEGAL_VIEWS, LegalDoc, SiteMap } from "./LegalPages";
 import { Display, btn, container, control, cx, errorBox, field, fieldLabel, panel, pill, pillRow } from "./kit";
 
 /** Publish the sticky header's height as --header-h so other sticky bars can sit just below it. */
@@ -42,7 +43,7 @@ function useOnceTrue(v: boolean): boolean {
   return seen || v;
 }
 
-const VIEWS = ["bet", "history", "win-place", "trio", "momentum"] as const;
+const VIEWS = ["bet", "history", "win-place", "trio", "momentum", ...LEGAL_VIEWS] as const;
 type View = (typeof VIEWS)[number];
 const DEFAULT_VIEW: View = "bet";
 const TABS = [
@@ -108,6 +109,11 @@ export default function App() {
   const fmt = useFmt();
   const [view, setView] = useViewParam();
   const headerRef = useHeaderHeightVar();
+  /** For links that carry a view name as a string (footer, site map). */
+  const selectView = (v: string) => {
+    const known = VIEWS.find((x) => x === v);
+    if (known) setView(known);
+  };
   const [history, setHistory] = useState<HistoryEntry[]>([]);
   const [raceResult, setRaceResult] = useState<RaceResult | null>(null);
   const analyzerOpened = useOnceTrue(view === "win-place" || view === "trio");
@@ -297,7 +303,7 @@ export default function App() {
   );
 
   return (
-    <div className="min-h-dvh">
+    <div className="flex min-h-dvh flex-col">
       <header ref={headerRef} className="sticky top-0 z-40 border-b border-edge bg-canvas/80 backdrop-blur-md">
         <div className={cx(container, "flex h-16 items-center gap-6")}>
           <h1 className="flex-none font-display text-xl leading-none tracking-[-0.01em] text-ink lg:text-[22px]">{t("appName")}</h1>
@@ -316,7 +322,7 @@ export default function App() {
         </div>
       </header>
 
-      <main className={cx(container, "pb-12")}>
+      <main className={cx(container, "flex-1 pb-12")}>
         {error && <div className={errorBox}>{error}</div>}
 
         {/* Analyzer performance. Stays mounted once opened so the range, filters
@@ -478,7 +484,12 @@ export default function App() {
             {!meeting.hasResults && <p className="mt-3 text-[13px] text-warn">{t("bet:settlementDisabled")}</p>}
           </>
         )}
+
+        {(view === "privacy" || view === "terms" || view === "sales" || view === "legal") && <LegalDoc view={view} />}
+        {view === "sitemap" && <SiteMap tools={TABS.map(([v, key]) => [v, t(key)])} onSelect={selectView} />}
       </main>
+
+      <Footer onSelect={selectView} />
 
       {result && <ResultModal result={result} onClose={() => setResult(null)} />}
       {raceResult && <ResultPanel result={raceResult} onClose={() => setRaceResult(null)} />}
