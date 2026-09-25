@@ -190,5 +190,7 @@ export const momentum: Shape<typeof En> = {
     last: "上一場",
     title: "合併精選",
     both: "同時在兩份名單",
+    toPost: "距開跑 {{time}}",
+    toPostLabel: "距開跑",
   },
 };

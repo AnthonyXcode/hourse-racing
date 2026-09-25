@@ -19,21 +19,39 @@ const dayRace = (date: string, raceNo: number, lang: string) => {
 };
 const EASE = [0.2, 0, 0, 1] as const;
 /**
- * Slowly drifting blue gradient behind the strip. The layer is 200% wide and its gradient repeats
- * twice (light → deep → light → deep → light), so sliding it by -50% loops seamlessly.
- * Transform-only, so MotionConfig's reducedMotion="user" stills it.
+ * A soft band of light sweeping across the strip every few seconds. Transform-only, so
+ * MotionConfig's reducedMotion="user" leaves it parked off-screen.
  */
-function GradientFlow() {
+function Shine() {
   return (
     <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
       <motion.div
-        className="absolute inset-y-0 left-0 w-[200%] bg-[linear-gradient(90deg,#d6e2fc_0%,#a9c1f7_25%,#d6e2fc_50%,#a9c1f7_75%,#d6e2fc_100%)]"
-        animate={{ x: ["0%", "-50%"] }}
-        transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
+        className="absolute inset-y-0 left-0 w-1/3 -skew-x-12 bg-linear-to-r from-transparent via-white/30 to-transparent"
+        initial={{ x: "-120%" }}
+        animate={{ x: ["-120%", "420%"] }}
+        transition={{ duration: 1.4, ease: "easeInOut", repeat: Infinity, repeatDelay: 6 }}
       />
     </div>
   );
 }
+
+/** Ticks every second while `on`. */
+function useNow(on: boolean) {
+  const [now, setNow] = useState(() => Date.now());
+  useEffect(() => {
+    if (!on) return;
+    const timer = setInterval(() => setNow(Date.now()), 1000);
+    return () => clearInterval(timer);
+  }, [on]);
+  return now;
+}
+
+/** "12:34" or "1:02:03". */
+const clock = (secs: number) => {
+  const s = Math.max(0, Math.floor(secs)), h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), r = s % 60;
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return h ? `${h}:${pad(m)}:${pad(r)}` : `${m}:${pad(r)}`;
+};
 
 const list = { hidden: {}, show: { transition: { staggerChildren: 0.04, delayChildren: 0.1 } } };
 const item = { hidden: { opacity: 0, y: 4 }, show: { opacity: 1, y: 0, transition: { duration: 0.22, ease: EASE } } };
@@ -61,42 +79,59 @@ export function PicksBanner({ onSelect, linked }: { onSelect: (v: string) => voi
     window.scrollTo(0, 0);
   };
   const upcoming = h?.mode === "upcoming";
+  const postMs = upcoming && h?.race.postTime ? Date.parse(h.race.postTime) : NaN;
+  const now = useNow(Number.isFinite(postMs));
+  const toPost = Number.isFinite(postMs) ? (postMs - now) / 1000 : NaN;
 
   return (
     <AnimatePresence initial={false}>
       {h && h.picks.length > 0 && (
         <motion.div
           key="picks-strip"
-          className="relative overflow-hidden border-t border-edge bg-[#d6e2fc]"
+          className="relative overflow-hidden bg-accent"
           initial={{ height: 0, opacity: 0 }}
           animate={{ height: "auto", opacity: 1 }}
           exit={{ height: 0, opacity: 0 }}
           transition={{ duration: 0.3, ease: EASE }}
         >
-          <GradientFlow />
+          <Shine />
           <a
             href={linked ? viewHref("momentum") : undefined}
             onClick={open}
             aria-label={`${upcoming ? t("banner.upcoming") : t("banner.last")} · ${t("banner.title")}`}
-            className={cx(container, "relative flex h-8 items-center gap-3 text-xs text-ink-2", linked && "cursor-pointer hover:text-ink")}
+            className={cx(container, "relative flex h-8 items-center gap-3 text-xs text-white/85", linked && "cursor-pointer hover:text-white")}
           >
             <AnimatePresence mode="wait" initial={false}>
               <motion.span
                 key={h.race.raceId}
-                className="flex w-full min-w-0 items-center gap-3"
+                className="flex w-full min-w-0 items-center gap-2 sm:gap-3"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.2 }}
               >
                 {upcoming && (
-                  <span className="relative flex size-1.5 flex-none" aria-hidden>
-                    <motion.span className="absolute inset-0 rounded-full bg-accent" animate={{ scale: [1, 2.4], opacity: [0.6, 0] }} transition={{ duration: 1.6, repeat: Infinity, ease: "easeOut" }} />
-                    <span className="relative size-1.5 rounded-full bg-accent" />
+                  <span className={cx("relative size-1.5 flex-none", toPost > 0 ? "hidden sm:flex" : "flex")} aria-hidden>
+                    <motion.span className="absolute inset-0 rounded-full bg-white" animate={{ scale: [1, 2.4], opacity: [0.7, 0] }} transition={{ duration: 1.6, repeat: Infinity, ease: "easeOut" }} />
+                    <span className="relative size-1.5 rounded-full bg-white" />
                   </span>
                 )}
-                <span className="flex-none font-semibold text-ink tabular-nums">{dayRace(h.race.date, h.race.raceNo, lang)}</span>
-                <motion.span className="ml-auto flex min-w-0 items-center gap-1 overflow-hidden p-0.5 sm:ml-0" variants={list} initial="hidden" animate="show">
+                <span className="flex-none font-semibold text-white tabular-nums">{dayRace(h.race.date, h.race.raceNo, lang)}</span>
+                {toPost > 0 && (
+                  <span
+                    className="inline-flex flex-none items-center gap-1 rounded-full bg-white/15 px-1.5 py-0.5 font-semibold text-white tabular-nums sm:px-2"
+                    aria-label={t("banner.toPost", { time: clock(toPost) })}
+                    role="timer"
+                  >
+                    <svg aria-hidden viewBox="0 0 16 16" className="size-3 sm:hidden" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round">
+                      <circle cx="8" cy="9" r="5.5" />
+                      <path d="M8 6v3l2 1.5M6.5 1.5h3" />
+                    </svg>
+                    <span className="hidden sm:inline">{t("banner.toPostLabel")}</span>
+                    {clock(toPost)}
+                  </span>
+                )}
+                <motion.span className="ml-auto flex min-w-0 items-center gap-0.5 overflow-x-auto p-0.5 [scrollbar-width:none] sm:ml-0 sm:gap-1 [&::-webkit-scrollbar]:hidden" variants={list} initial="hidden" animate="show">
                   {h.picks.map((p) => {
                     const placed = p.finishPos != null && p.finishPos <= 3;
                     return (
@@ -106,8 +141,8 @@ export function PicksBanner({ onSelect, linked }: { onSelect: (v: string) => voi
                         title={p.both ? t("banner.both") : undefined}
                         className={cx(
                           "inline-flex h-5 min-w-5 flex-none items-center justify-center gap-px rounded-full px-1 text-[11px] font-semibold tabular-nums",
-                          placed ? "bg-good text-white" : "bg-surface text-ink shadow-btn",
-                          p.both && "px-1.5 ring-1 ring-accent"
+                          placed ? "bg-good text-white ring-1 ring-white/70" : "bg-white text-accent",
+                          p.both && "px-1.5 ring-2 ring-white/45"
                         )}
                       >
                         {p.horseNo}
