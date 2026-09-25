@@ -6,7 +6,9 @@ import {
   type TooltipProps,
 } from "recharts";
 import { impliedProbs, pointAt, RECENT_SECS, type RaceSeries } from "../../shared/momentum/model";
+import { useTranslation } from "react-i18next";
 import { C, NoData } from "../analyzer/charts";
+import { useLanguage } from "../i18n/useLanguage";
 import { bad, cx, good, tip, tipRow } from "../kit";
 
 // Validated categorical palette (dataviz reference, light). Fixed order, never cycled:
@@ -22,6 +24,15 @@ const { ink: INK, muted: MUTED, grid: GRID } = C;
 
 type Row = { m: number } & Record<string, number>; // m = minutes before post (negative)
 
+/** Runner display names: HKJC's Chinese name (GraphQL name_ch) in zh-HK when recorded, else English. */
+export function useRunnerNames(series: RaceSeries) {
+  const { lang } = useLanguage();
+  return useMemo(() => {
+    const m = new Map(series.runners.map((r) => [r.horseNo, lang === "zh-HK" && r.nameZh ? r.nameZh : r.name]));
+    return (horseNo: number, fallback = "") => m.get(horseNo) ?? fallback;
+  }, [series.runners, lang]);
+}
+
 /** True while the media query matches (re-renders on change). */
 export function useMediaQuery(q: string): boolean {
   const [on, setOn] = useState(() => window.matchMedia(q).matches);
@@ -35,6 +46,8 @@ export function useMediaQuery(q: string): boolean {
 }
 
 export function OddsChart({ series, focus, onFocus }: { series: RaceSeries; focus: number | null; onFocus: (h: number | null) => void }) {
+  const { t } = useTranslation("momentum");
+  const nameOf = useRunnerNames(series);
   const wide = useMediaQuery("(min-width: 640px)");
   const { rows, lo, hi, xMin } = useMemo(() => {
     // h<N> = win odds; r<N> = last-5-min move at that moment (for the tooltip).
@@ -58,8 +71,8 @@ export function OddsChart({ series, focus, onFocus }: { series: RaceSeries; focu
     };
   }, [series]);
 
-  if (rows.length < 2) return <NoData msg={rows.length ? "waiting for a second snapshot…" : "no snapshots yet"} />;
-  const names = new Map(series.runners.map((r) => [r.horseNo, r.name]));
+  if (rows.length < 2) return <NoData msg={rows.length ? t("chart.waitingSecond") : t("chart.noSnapshots")} />;
+  const names = new Map(series.runners.map((r) => [r.horseNo, nameOf(r.horseNo, r.name)]));
   const last = rows.length - 1;
   const xMax = Math.max(0, Math.ceil(rows[last]!.m));
 
@@ -76,12 +89,12 @@ export function OddsChart({ series, focus, onFocus }: { series: RaceSeries; focu
           type="number"
           domain={[xMin, xMax]}
           ticks={range(xMin, xMax, 5)}
-          tickFormatter={(m: number) => (m === 0 ? "off" : `${m}`)}
+          tickFormatter={(m: number) => (m === 0 ? t("chart.off") : `${m}`)}
           tick={{ fontSize: 11, fill: MUTED }}
           stroke={GRID}
           tickLine={false}
         >
-          <Label value="Minutes to post time" position="bottom" offset={10} style={{ fontSize: 12, fill: MUTED, fontWeight: 500 }} />
+          <Label value={t("chart.xLabel")} position="bottom" offset={10} style={{ fontSize: 12, fill: MUTED, fontWeight: 500 }} />
         </XAxis>
         <YAxis
           scale="log"
@@ -93,7 +106,7 @@ export function OddsChart({ series, focus, onFocus }: { series: RaceSeries; focu
           stroke={GRID}
           width={wide ? 44 : 36}
         >
-          {wide && <Label value="Win odds (log scale)" angle={-90} position="insideLeft" offset={-4} style={{ fontSize: 12, fill: MUTED, fontWeight: 500, textAnchor: "middle" }} />}
+          {wide && <Label value={t("chart.yLabel")} angle={-90} position="insideLeft" offset={-4} style={{ fontSize: 12, fill: MUTED, fontWeight: 500, textAnchor: "middle" }} />}
         </YAxis>
         <ReferenceLine x={0} stroke={MUTED} strokeDasharray="4 3" />
         <Tooltip content={<OddsTooltip names={names} focus={focus} />} cursor={{ stroke: MUTED, strokeWidth: 1 }} isAnimationActive={false} />
@@ -138,6 +151,7 @@ function range(from: number, to: number, step: number): number[] {
 }
 
 function OddsTooltip({ active, payload, label, names, focus }: TooltipProps<number, string> & { names: Map<number, string>; focus: number | null }) {
+  const { t } = useTranslation("momentum");
   if (!active || !payload?.length) return null;
   const row = payload[0]!.payload as Row;
   const move = (h: number): number | undefined => row[`r${h}`];
@@ -153,8 +167,8 @@ function OddsTooltip({ active, payload, label, names, focus }: TooltipProps<numb
   return (
     <div className={tip}>
       <div className="mb-1 flex justify-between gap-3 text-ink-2">
-        <span>{m >= 0 ? (m === 0 ? "at the off" : `${m.toFixed(1)} min after post`) : `${(-m).toFixed(1)} min to post`}</span>
-        <span>odds · last 5m</span>
+        <span>{m >= 0 ? (m === 0 ? t("chart.atOff") : t("chart.minAfter", { m: m.toFixed(1) })) : t("chart.minTo", { m: (-m).toFixed(1) })}</span>
+        <span>{t("chart.tipHead")}</span>
       </div>
       {items.map((p) => {
         const h = Number(p.name);

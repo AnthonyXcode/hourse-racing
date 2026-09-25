@@ -1,4 +1,7 @@
 import { useMemo, useState } from "react";
+import { Trans, useTranslation } from "react-i18next";
+import { useGlossary } from "../i18n/glossary";
+import { useNames } from "../i18n/names";
 import {
   type AnalyzerRace, MC, MKT, PWIN, PPLACE, WON, PLACED, WODDS, FIN, TRIP,
   metrics, byRank, calibration, groupBy, topOf, diffBucket, DIFF_ORDER,
@@ -12,6 +15,8 @@ const ACCENT = C.accent, ACCENT2 = C.accent2, WARN = C.warn;
 type RowKey = "date" | "venue" | "race" | "cls" | "dist" | "runners" | "avgDiff" | "close8" | "sparse" | "gap" | "horse" | "trip" | "predWin" | "predPlace" | "mkt" | "odds" | "finish" | "jockey";
 
 export function WinPlaceTab({ races }: { races: AnalyzerRace[] }) {
+  const { t } = useTranslation(["analyzer", "common"]);
+  const g = useGlossary();
   const M = useMemo(() => metrics(races), [races]);
   const charts = useMemo(() => {
     const withMetrics = <K extends string | number>(g: { key: K; rs: AnalyzerRace[] }[]) => g.map(({ key, rs }) => ({ key, ...metrics(rs) }));
@@ -29,82 +34,83 @@ export function WinPlaceTab({ races }: { races: AnalyzerRace[] }) {
   }, [races]);
 
   const rankBars: Series<{ win: number; place: number }>[] = [
-    { name: "win", color: ACCENT, get: (r) => r.win },
-    { name: "place", color: ACCENT2, get: (r) => r.place },
+    { name: t("wp.winSeries"), color: ACCENT, get: (r) => r.win },
+    { name: t("wp.placeSeries"), color: ACCENT2, get: (r) => r.place },
   ];
 
   return (
     <>
       <div className={kpis}>
-        <Kpi label="Top pick wins" value={pc(M.mcTopWin)} sub={`predicted ${pc(M.predWin)} · market fav ${pc(M.favWin)}`} tone={vs(M.mcTopWin, M.favWin)} />
-        <Kpi label="Top pick places" value={pc(M.mcTopPlace)} sub={`predicted ${pc(M.predPlace)} · market fav ${pc(M.favPlace)}`} tone={vs(M.mcTopPlace, M.favPlace)} />
-        <Kpi label="Place ROI" value={signed(M.placeRoi)} sub="flat $10 place on top pick" tone={cls(M.placeRoi)} />
-        <Kpi label="Win ROI" value={signed(M.winRoi)} sub="flat $10 win on top pick" tone={cls(M.winRoi)} />
-        <Kpi label="Brier score" value={M.brier.toFixed(3)} sub={`place ${M.brierPlace.toFixed(3)} · lower is better`} />
-        <Kpi label="Finish position error" value={M.ePosErr.toFixed(2)} sub="mean abs. error of expected position" />
-        <Kpi label="Agrees with market" value={pc(M.agree)} sub="top pick is also the favourite" />
-        <Kpi label="Form top-rated places" value={pc(M.ratingPlace)} sub={`rating rank 1 · MC ${pc(M.mcTopPlace)}`} />
+        <Kpi label={t("wp.kpi.topWin")} value={pc(M.mcTopWin)} sub={t("wp.kpi.topWinSub", { pred: pc(M.predWin), fav: pc(M.favWin) })} tone={vs(M.mcTopWin, M.favWin)} />
+        <Kpi label={t("wp.kpi.topPlace")} value={pc(M.mcTopPlace)} sub={t("wp.kpi.topPlaceSub", { pred: pc(M.predPlace), fav: pc(M.favPlace) })} tone={vs(M.mcTopPlace, M.favPlace)} />
+        <Kpi label={t("wp.kpi.placeRoi")} value={signed(M.placeRoi)} sub={t("wp.kpi.placeRoiSub")} tone={cls(M.placeRoi)} />
+        <Kpi label={t("wp.kpi.winRoi")} value={signed(M.winRoi)} sub={t("wp.kpi.winRoiSub")} tone={cls(M.winRoi)} />
+        <Kpi label={t("wp.kpi.brier")} value={M.brier.toFixed(3)} sub={t("wp.kpi.brierSub", { v: M.brierPlace.toFixed(3) })} />
+        <Kpi label={t("wp.kpi.posErr")} value={M.ePosErr.toFixed(2)} sub={t("wp.kpi.posErrSub")} />
+        <Kpi label={t("wp.kpi.agree")} value={pc(M.agree)} sub={t("wp.kpi.agreeSub")} />
+        <Kpi label={t("wp.kpi.formTop")} value={pc(M.ratingPlace)} sub={t("wp.kpi.formTopSub", { v: pc(M.mcTopPlace) })} />
       </div>
 
-      <H2 sub="predicted probability vs what actually happened">Calibration</H2>
+      <H2 sub={t("wp.calibrationSub")}>{t("wp.calibration")}</H2>
       <div className={grid2}>
         <div className={panel}>
-          <Legend items={[[ACCENT, "actual"], [C.muted, "perfect calibration"]]} />
+          <Legend items={[[ACCENT, t("chart.actual")], [C.muted, t("wp.perfectCalib")]]} />
           <CalibChart buckets={charts.calibWin} color={ACCENT} />
-          <div className={note}>Win probability. Bars below the dashed line mean the model is over-confident.</div>
+          <div className={note}>{t("wp.calibWinNote")}</div>
         </div>
         <div className={panel}>
-          <Legend items={[[ACCENT2, "actual"], [C.muted, "perfect calibration"]]} />
+          <Legend items={[[ACCENT2, t("chart.actual")], [C.muted, t("wp.perfectCalib")]]} />
           <CalibChart buckets={charts.calibPlace} color={ACCENT2} />
-          <div className={note}>Place probability (top 3).</div>
+          <div className={note}>{t("wp.calibPlaceNote")}</div>
         </div>
       </div>
 
-      <H2 sub="model rank vs market rank">Accuracy by rank</H2>
+      <H2 sub={t("wp.rankSub")}>{t("wp.rank")}</H2>
       <div className={grid2}>
         <div className={panel}>
-          <Legend items={[[ACCENT, "win %"], [ACCENT2, "place %"]]} />
+          <Legend items={[[ACCENT, t("wp.winPct")], [ACCENT2, t("wp.placePct")]]} />
           <GroupedBars rows={charts.mcRank} labelOf={(r) => r.rank} series={rankBars} max={100} />
-          <div className={note}>By Monte Carlo rank (1 = model's top pick). Ranks with fewer than 20 runners are hidden.</div>
+          <div className={note}>{t("wp.rankMcNote")}</div>
         </div>
         <div className={panel}>
-          <Legend items={[[ACCENT, "win %"], [ACCENT2, "place %"]]} />
+          <Legend items={[[ACCENT, t("wp.winPct")], [ACCENT2, t("wp.placePct")]]} />
           <GroupedBars rows={charts.mktRank} labelOf={(r) => r.rank} series={rankBars} max={100} />
-          <div className={note}>By market rank (1 = favourite), same races.</div>
+          <div className={note}>{t("wp.rankMktNote")}</div>
         </div>
       </div>
 
-      <H2 sub="top pick place rate vs the favourite">Monthly trend</H2>
+      <H2 sub={t("wp.monthlySub")}>{t("wp.monthly")}</H2>
       <div className={panel}>
-        <Legend items={[[ACCENT, "MC top pick place %"], [WARN, "market favourite place %"]]} />
+        <Legend items={[[ACCENT, t("wp.mcTopPlaceLegend")], [WARN, t("wp.favPlaceLegend")]]} />
         <LineChart
           rows={charts.monthly}
           series={[
-            { name: "MC top pick", color: ACCENT, get: (r) => r.mcTopPlace },
-            { name: "market favourite", color: WARN, get: (r) => r.favPlace },
+            { name: t("wp.mcTopSeries"), color: ACCENT, get: (r) => r.mcTopPlace },
+            { name: t("wp.favSeries"), color: WARN, get: (r) => r.favPlace },
           ]}
           max={100}
         />
       </div>
 
-      <H2>Breakdowns</H2>
+      <H2>{t("breakdowns")}</H2>
       <div className={grid2}>
-        <Breakdown title="By venue" head="Venue" rows={charts.venue} />
-        <Breakdown title="By field spread (avgDiff)" head="avgDiff" rows={charts.diff} />
-        <Breakdown title="By class" head="Class" rows={charts.cls} />
-        <Breakdown title="By field size" head="Runners" rows={charts.field} />
+        <Breakdown title={t("byVenue")} head={t("common:word.venue")} rows={charts.venue} label={g.venue} />
+        <Breakdown title={t("byDiff")} head={t("col.avgDiff")} rows={charts.diff} />
+        <Breakdown title={t("byClass")} head={t("common:word.class")} rows={charts.cls} label={g.raceClass} />
+        <Breakdown title={t("byField")} head={t("col.runners")} rows={charts.field} />
       </div>
 
-      <H2 sub="the model's top pick in each race">Race by race</H2>
+      <H2 sub={t("wp.raceByRaceSub")}>{t("wp.raceByRace")}</H2>
       <RaceTable races={races} />
 
-      <H2 sub="the model's top pick vs the market favourite">Month by month</H2>
+      <H2 sub={t("wp.monthByMonthSub")}>{t("wp.monthByMonth")}</H2>
       <MonthlyTable races={races} rows={charts.monthly} />
     </>
   );
 }
 
-function Breakdown({ title, head, rows }: { title: string; head: string; rows: ({ key: string | number } & ReturnType<typeof metrics>)[] }) {
+function Breakdown({ title, head, rows, label = String }: { title: string; head: string; rows: ({ key: string | number } & ReturnType<typeof metrics>)[]; label?: (k: string) => string }) {
+  const { t } = useTranslation(["analyzer", "common"]);
   return (
     <div className={panel}>
       <h3 className={h3}>{title}</h3>
@@ -113,17 +119,17 @@ function Breakdown({ title, head, rows }: { title: string; head: string; rows: (
           <thead>
             <tr>
               <th>{head}</th>
-              <th>Races</th>
-              <th>Win %</th>
-              <th>Place %</th>
-              <th>Fav place %</th>
-              <th>Place ROI</th>
+              <th>{t("col.races")}</th>
+              <th>{t("col.winPct")}</th>
+              <th>{t("col.placePct")}</th>
+              <th>{t("col.favPlacePct")}</th>
+              <th>{t("col.placeRoi")}</th>
             </tr>
           </thead>
           <tbody>
             {rows.map((r) => (
               <tr key={r.key}>
-                <td>{r.key}</td>
+                <td>{label(String(r.key))}</td>
                 <td>{r.races}</td>
                 <td>{pc(r.mcTopWin)}</td>
                 <td>
@@ -141,6 +147,7 @@ function Breakdown({ title, head, rows }: { title: string; head: string; rows: (
 }
 
 function MonthlyTable({ races, rows }: { races: AnalyzerRace[]; rows: ({ key: string } & ReturnType<typeof metrics>)[] }) {
+  const { t } = useTranslation(["analyzer", "common"]);
   const total = useMemo(() => metrics(races), [races]);
   const cells = (m: ReturnType<typeof metrics>) => (
     <>
@@ -152,7 +159,7 @@ function MonthlyTable({ races, rows }: { races: AnalyzerRace[]; rows: ({ key: st
       <td>{pc(m.predPlace)}</td>
       <td>{pc(m.favWin)}</td>
       <td>{pc(m.favPlace)}</td>
-      <td className={cls(m.mcTopPlace - m.favPlace)}>{Number.isFinite(m.mcTopPlace - m.favPlace) ? (m.mcTopPlace >= m.favPlace ? "+" : "") + (m.mcTopPlace - m.favPlace).toFixed(1) + " pts" : "–"}</td>
+      <td className={cls(m.mcTopPlace - m.favPlace)}>{Number.isFinite(m.mcTopPlace - m.favPlace) ? t("pts", { v: (m.mcTopPlace >= m.favPlace ? "+" : "") + (m.mcTopPlace - m.favPlace).toFixed(1) }) : "–"}</td>
       <td>{pc(m.agree)}</td>
       <td className={cls(m.winRoi)}>{signed(m.winRoi)}</td>
       <td className={cls(m.placeRoi)}>{signed(m.placeRoi)}</td>
@@ -165,8 +172,8 @@ function MonthlyTable({ races, rows }: { races: AnalyzerRace[]; rows: ({ key: st
         <table className={cx(table, tablePad)}>
           <thead>
             <tr>
-              {["Month", "Races", "Win %", "Place %", "Pred place", "Fav win %", "Fav place %", "Place vs fav", "Agree", "Win ROI", "Place ROI", "Brier"].map((t) => (
-                <th key={t}>{t}</th>
+              {[t("common:word.month"), t("col.races"), t("col.winPct"), t("col.placePct"), t("col.predPlace"), t("col.favWinPct"), t("col.favPlacePct"), t("col.placeVsFav"), t("col.agree"), t("col.winRoi"), t("col.placeRoi"), t("col.brier")].map((h) => (
+                <th key={h}>{h}</th>
               ))}
             </tr>
           </thead>
@@ -180,21 +187,23 @@ function MonthlyTable({ races, rows }: { races: AnalyzerRace[]; rows: ({ key: st
           </tbody>
           <tfoot>
             <tr className={totalRow}>
-              <td>All</td>
+              <td>{t("common:word.all")}</td>
               {cells(total)}
             </tr>
           </tfoot>
         </table>
       </div>
       <div className={note}>
-        Newest month first. Win/Place % and ROI are for the model's top pick ($10 flat); <code className={code}>Fav</code> is the market favourite in the same races; <code className={code}>Agree</code> = top pick is also the
-        favourite.
+        <Trans t={t} i18nKey="wp.monthlyNote" components={{ code: <code className={code} /> }} />
       </div>
     </div>
   );
 }
 
 function RaceTable({ races }: { races: AnalyzerRace[] }) {
+  const { t } = useTranslation(["analyzer", "common"]);
+  const g = useGlossary();
+  const name = useNames();
   const [q, setQ] = useState("");
   const sort = useSort<RowKey>("date");
   const rows = useMemo(
@@ -205,63 +214,74 @@ function RaceTable({ races }: { races: AnalyzerRace[] }) {
           id: `${r.d}_${r.v}_${r.r}`,
           date: r.d, venue: r.v, race: r.r, cls: r.c, dist: r.dist, runners: r.n, avgDiff: r.ad,
           close8: r.c8, sparse: r.sp, gap: r.gp,
-          horse: `#${r.tnum} ${r.tn}`, trip: t[TRIP], predWin: t[PWIN] * 100, predPlace: t[PPLACE] * 100,
-          mkt: t[MKT] || null, odds: t[WODDS], finish: t[FIN], placed: !!t[PLACED], jockey: r.tj,
+          horse: `#${r.tnum} ${r.tn}`, horseNo: r.tnum, horseName: r.tn, horseCode: r.tc, trip: t[TRIP], predWin: t[PWIN] * 100, predPlace: t[PPLACE] * 100,
+          mkt: t[MKT] || null, odds: t[WODDS], finish: t[FIN], placed: !!t[PLACED], jockey: r.tj, jockeyCode: r.tjc,
         };
       }),
     [races]
   );
+  // Display names in the current language; search matches both English and the shown text.
+  const shown = (r: (typeof rows)[number]) => ({
+    horse: `#${r.horseNo} ${name("horse", r.horseCode, r.horseName)}`,
+    jockey: r.jockey ? name("jockey", r.jockeyCode, r.jockey) : "",
+  });
   const needle = q.trim().toLowerCase();
-  const list = sort.sort(rows.filter((r) => !needle || `${r.date} ${r.venue} r${r.race} ${r.cls} ${r.horse} ${r.jockey}`.toLowerCase().includes(needle)));
+  const list = sort.sort(
+    rows.filter((r) => {
+      if (!needle) return true;
+      const s = shown(r);
+      return `${r.date} ${r.venue} ${g.venue(r.venue)} r${r.race} ${r.cls} ${g.raceClass(r.cls)} ${r.horse} ${r.jockey} ${s.horse} ${s.jockey}`.toLowerCase().includes(needle);
+    })
+  );
   const th = (k: RowKey, label: string) => <SortTh key={k} k={k} sort={sort}>{label}</SortTh>;
 
   return (
     <div className={panel}>
       <div className={row}>
-        <input type="search" className={cx(control, "w-full flex-1 sm:w-auto sm:min-w-[260px]")} value={q} onChange={(e) => setQ(e.target.value)} placeholder="search date, venue, class, horse, jockey…" />
+        <input type="search" className={cx(control, "w-full flex-1 sm:w-auto sm:min-w-[260px]")} value={q} onChange={(e) => setQ(e.target.value)} placeholder={t("wp.search")} />
         <span className={cx(tag, "whitespace-normal")}>
-          {list.length} race{list.length === 1 ? "" : "s"}
+          {t("common:races", { count: list.length })}
         </span>
       </div>
       <div className={cx(scroll, tall)}>
         <table className={cx(table, tablePad)}>
           <thead>
             <tr>
-              {th("date", "Date")}{th("venue", "Venue")}{th("race", "Race")}{th("cls", "Class")}
-              {th("dist", "Dist")}{th("runners", "Run")}{th("avgDiff", "AvgDiff")}
-              {th("close8", "Close<8")}{th("sparse", "Sparse")}{th("gap", "Gap")}
-              {th("horse", "Top pick")}{th("trip", "Trip")}{th("predWin", "Pred win")}{th("predPlace", "Pred place")}
-              {th("mkt", "Mkt")}{th("odds", "Odds")}{th("finish", "Finish")}{th("jockey", "Jockey")}
+              {th("date", t("common:word.date"))}{th("venue", t("common:word.venue"))}{th("race", t("col.race"))}{th("cls", t("common:word.class"))}
+              {th("dist", t("col.dist"))}{th("runners", t("col.run"))}{th("avgDiff", t("col.avgDiff"))}
+              {th("close8", t("col.close8"))}{th("sparse", t("col.sparse"))}{th("gap", t("col.gap"))}
+              {th("horse", t("col.topPick"))}{th("trip", t("col.trip"))}{th("predWin", t("col.predWin"))}{th("predPlace", t("col.predPlace"))}
+              {th("mkt", t("col.mkt"))}{th("odds", t("common:word.odds"))}{th("finish", t("col.finish"))}{th("jockey", t("common:word.jockey"))}
             </tr>
           </thead>
           <tbody>
             {list.map((r) => (
               <tr key={r.id}>
                 <td>{r.date}</td>
-                <td>{r.venue}</td>
-                <td>R{r.race}</td>
-                <td>{r.cls}</td>
-                <td>{r.dist}m</td>
+                <td>{g.venue(r.venue)}</td>
+                <td>{t("common:raceShort", { n: r.race })}</td>
+                <td>{g.raceClass(r.cls)}</td>
+                <td>{t("common:metres", { n: r.dist })}</td>
                 <td>{r.runners}</td>
                 <td>{r.avgDiff}</td>
                 <td>{r.close8}</td>
                 <td>{r.sparse}</td>
                 <td>{r.gap >= 999 ? "–" : r.gap}</td>
-                <td>{r.horse}</td>
+                <td>{shown(r).horse}</td>
                 <td>{r.trip}</td>
                 <td>{r.predWin.toFixed(1)}%</td>
                 <td>{r.predPlace.toFixed(1)}%</td>
                 <td>{r.mkt ?? "–"}</td>
                 <td>{r.odds > 0 ? r.odds.toFixed(1) : "–"}</td>
                 <td className={r.placed ? cx(good, strong) : ""}>{r.finish > 0 ? r.finish : "–"}</td>
-                <td>{r.jockey || "–"}</td>
+                <td>{shown(r).jockey || "–"}</td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
       <div className={note}>
-        Click a column to sort. <code className={code}>Trip</code> is the top pick's past runs at exactly this distance. <code className={code}>Mkt</code> is the top pick's market rank; <code className={code}>Finish</code> is its actual placing (bold = placed); <code className={code}>Jockey</code> is who rode it.
+        <Trans t={t} i18nKey="wp.raceNote" components={{ code: <code className={code} /> }} />
       </div>
     </div>
   );

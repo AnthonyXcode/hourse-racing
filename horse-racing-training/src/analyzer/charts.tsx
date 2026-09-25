@@ -4,6 +4,7 @@ import {
   Bar, BarChart, CartesianGrid, ComposedChart, Label, Line, LineChart as RLineChart, ResponsiveContainer, Tooltip, XAxis, YAxis,
   type TooltipProps,
 } from "recharts";
+import { useTranslation } from "react-i18next";
 import type { CalibBucket } from "../../shared/analyzer/model";
 import { empty, tip, tipRow } from "../kit";
 import { pc } from "./format";
@@ -28,7 +29,10 @@ export interface Series<R> {
   get: (r: R) => number;
 }
 
-export const NoData = ({ msg = "not enough data" }: { msg?: string }) => <div className={empty}>{msg}</div>;
+export function NoData({ msg }: { msg?: string }) {
+  const { t } = useTranslation();
+  return <div className={empty}>{msg ?? t("state.notEnoughData")}</div>;
+}
 
 /** Evenly spaced y ticks 0…max. */
 const yTicks = (max: number, n = 5) => [...Array(n + 1)].map((_, i) => (max / n) * i);
@@ -81,6 +85,7 @@ function Tip({ head, rows }: { head: ReactNode; rows: { color: string; label: st
 // ---------------- grouped bars ----------------
 
 export function GroupedBars<R extends { n: number }>({ rows, labelOf, series, max }: { rows: R[]; labelOf: (r: R) => string | number; series: Series<R>[]; max: number }) {
+  const { t } = useTranslation();
   if (!rows.length) return <NoData />;
   const data = rows.map((r) => ({ label: labelOf(r), n: r.n, ...Object.fromEntries(series.map((s, j) => [`s${j}`, finite(s.get(r))])) }));
   return (
@@ -95,7 +100,7 @@ export function GroupedBars<R extends { n: number }>({ rows, labelOf, series, ma
           content={({ active, payload }: TooltipProps<number, string>) => {
             if (!active || !payload?.length) return null;
             const d = payload[0]!.payload as (typeof data)[number];
-            return <Tip head={`${d.label} · n=${d.n}`} rows={series.map((s, j) => ({ color: s.color, label: s.name, value: pc(Number((d as Record<string, unknown>)[`s${j}`])) }))} />;
+            return <Tip head={`${d.label} · ${t("unit.n", { n: d.n })}`} rows={series.map((s, j) => ({ color: s.color, label: s.name, value: pc(Number((d as Record<string, unknown>)[`s${j}`])) }))} />;
           }}
         />
         {series.map((s, j) => (
@@ -110,6 +115,7 @@ export function GroupedBars<R extends { n: number }>({ rows, labelOf, series, ma
 
 /** Actual hit rate per predicted-probability bucket (bars) against perfect calibration (dashed line). */
 export function CalibChart({ buckets, color }: { buckets: CalibBucket[]; color: string }) {
+  const { t } = useTranslation(["common", "analyzer"]);
   if (!buckets.length) return <NoData />;
   const data = buckets.map((b) => ({ mid: b.mid, label: b.label, n: b.n, actual: finite(b.actual), predicted: finite(b.predicted) }));
   return (
@@ -117,7 +123,7 @@ export function CalibChart({ buckets, color }: { buckets: CalibBucket[]; color: 
       <ComposedChart data={data} margin={{ ...MARGIN, bottom: 18 }}>
         <CartesianGrid stroke={C.grid} vertical={false} />
         <XAxis dataKey="mid" tick={TICK} tickLine={false} axisLine={{ stroke: C.grid }} interval={0}>
-          <Label value="predicted % (bucket midpoint)" position="insideBottom" offset={-14} style={{ fontSize: 11, fill: C.muted }} />
+          <Label value={t("analyzer:chart.calibAxis")} position="insideBottom" offset={-14} style={{ fontSize: 11, fill: C.muted }} />
         </XAxis>
         {yAxis(100)}
         <Tooltip
@@ -128,10 +134,10 @@ export function CalibChart({ buckets, color }: { buckets: CalibBucket[]; color: 
             const d = payload[0]!.payload as (typeof data)[number];
             return (
               <Tip
-                head={`${d.label} · n=${d.n}`}
+                head={`${d.label} · ${t("unit.n", { n: d.n })}`}
                 rows={[
-                  { color, label: "actual", value: pc(d.actual) },
-                  { color: C.muted, label: "predicted", value: pc(d.predicted), dash: true },
+                  { color, label: t("analyzer:chart.actual"), value: pc(d.actual) },
+                  { color: C.muted, label: t("analyzer:chart.predicted"), value: pc(d.predicted), dash: true },
                 ]}
               />
             );
@@ -147,7 +153,8 @@ export function CalibChart({ buckets, color }: { buckets: CalibBucket[]; color: 
 // ---------------- monthly lines ----------------
 
 export function LineChart<R extends { key: string; races: number }>({ rows, series, max }: { rows: R[]; series: Series<R>[]; max: number }) {
-  if (rows.length < 2) return <NoData msg="need at least two months" />;
+  const { t } = useTranslation();
+  if (rows.length < 2) return <NoData msg={t("state.needTwoMonths")} />;
   const data = rows.map((r) => ({ key: r.key, races: r.races, ...Object.fromEntries(series.map((s, j) => [`s${j}`, finite(s.get(r))])) }));
   return (
     <Frame>
@@ -168,7 +175,7 @@ export function LineChart<R extends { key: string; races: number }>({ rows, seri
           content={({ active, payload }: TooltipProps<number, string>) => {
             if (!active || !payload?.length) return null;
             const d = payload[0]!.payload as (typeof data)[number];
-            return <Tip head={`${d.key} · n=${d.races}`} rows={series.map((s, j) => ({ color: s.color, label: s.name, value: pc(Number((d as Record<string, unknown>)[`s${j}`])) }))} />;
+            return <Tip head={`${d.key} · ${t("unit.n", { n: d.races })}`} rows={series.map((s, j) => ({ color: s.color, label: s.name, value: pc(Number((d as Record<string, unknown>)[`s${j}`])) }))} />;
           }}
         />
         {series.map((s, j) => (

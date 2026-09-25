@@ -7,6 +7,7 @@ import type {
   RaceLeg,
   RaceResult,
   SettleResult,
+  SettleDetail,
   LegResult,
 } from "../types";
 import { choose, perm, bankerLegCombos, subsets } from "./combinatorics";
@@ -42,7 +43,7 @@ function legResult(res: RaceResult, depth: number, covered: boolean): LegResult 
   const finishers = res.finishOrder
     .filter((f) => f.finishPosition <= depth)
     .sort((a, b) => a.finishPosition - b.finishPosition)
-    .map((f) => ({ position: f.finishPosition, horseNumber: f.horseNumber, horseName: f.horseName }));
+    .map((f) => ({ position: f.finishPosition, horseNumber: f.horseNumber, horseName: f.horseName, horseCode: f.horseCode }));
   return { raceNumber: res.raceNumber, finishers, covered };
 }
 
@@ -149,6 +150,23 @@ function dividend(type: BetTypeId, res: RaceResult, leg: RaceLeg): number | null
   }
 }
 
+/** English rendering of a settle explanation (kept for history/tests; the UI translates `detailInfo`). */
+export function describe(d: SettleDetail): string {
+  switch (d.code) {
+    case "invalid": return "Invalid selection (need more horses).";
+    case "noResult": return `No result for race ${d.race}.`;
+    case "missNoneInTop": return `Miss — none of [${d.horses.join(",")}] in top ${d.depth}.`;
+    case "hitPlaced": return `Hit — #${d.horses.join(",#")} placed (top ${d.depth}).`;
+    case "missNoPair": return `Miss — no covered pair among top 3 (${d.top3.join("-")}).`;
+    case "hitPairs": return `Hit — ${d.pairs} of 3 placing pairs covered.`;
+    case "missRace": return `Miss — race ${d.race} not covered.`;
+    case "hitLegs": {
+      const legs = d.legs.map((l) => `R${l.race}${l.bankers.length ? ` 膽${l.bankers.join(",")}` : ""}`).join(" + ");
+      return `Hit — ${legs}.${d.deadHeat > 1 ? ` ${d.deadHeat}× (dead-heat)` : ""}`;
+    }
+  }
+}
+
 /**
  * Settle a selection against the meeting's results (one RaceResult per leg race).
  * `resultsByRace` maps raceNumber -> RaceResult.
@@ -173,7 +191,7 @@ export function settle(
     hit: boolean,
     combosWon: number,
     payout: number | null,
-    detail: string,
+    info: SettleDetail,
     legResults: LegResult[]
   ): SettleResult => ({
     hit,
@@ -182,33 +200,34 @@ export function settle(
     cost: costAmt,
     payout: hit ? payout : 0,
     net: hit ? (payout === null ? null : payout - costAmt) : -costAmt,
-    detail,
+    detail: describe(info),
+    detailInfo: info,
     legResults,
     poolDividend: head.value,
     poolDividendText: head.text,
   });
 
-  if (combos === 0) return base(false, 0, 0, "Invalid selection (need more horses).", []);
+  if (combos === 0) return base(false, 0, 0, { code: "invalid" }, []);
 
   // Win / Place: hit if any selected horse occupies a paying placing.
   if (sel.type === "win" || sel.type === "place") {
     const leg = sel.raceLegs[0]!;
     const res = resultsByRace.get(leg.raceNumber);
-    if (!res) return base(false, 0, 0, `No result for race ${leg.raceNumber}.`, []);
+    if (!res) return base(false, 0, 0, { code: "noResult", race: leg.raceNumber }, []);
     const depth = sel.type === "win" ? 1 : res.placeDividends?.length ?? 3;
     const placed = new Set(placedHorses(res.finishOrder, depth));
     const winners = leg.legs.filter((h) => placed.has(h));
     const lr = [legResult(res, Math.max(showDepth, depth), winners.length > 0)];
-    if (winners.length === 0) return base(false, 0, 0, `Miss — none of [${leg.legs.join(",")}] in top ${depth}.`, lr);
+    if (winners.length === 0) return base(false, 0, 0, { code: "missNoneInTop", horses: leg.legs, depth }, lr);
     const div = dividend(sel.type, res, leg);
-    return base(true, winners.length, div, `Hit — #${winners.join(",#")} placed (top ${depth}).`, lr);
+    return base(true, winners.length, div, { code: "hitPlaced", horses: winners, depth }, lr);
   }
 
   // Quinella Place: any TWO of the top three. Up to 3 winning pairs.
   if (sel.type === "qpl") {
     const leg = sel.raceLegs[0]!;
     const res = resultsByRace.get(leg.raceNumber);
-    if (!res) return base(false, 0, 0, `No result for race ${leg.raceNumber}.`, []);
+    if (!res) return base(false, 0, 0, { code: "noResult", race: leg.raceNumber }, []);
     const top3 = placedHorses(res.finishOrder, 3);
     const p = new Set([...leg.bankers, ...leg.legs]);
     const bset = new Set(leg.bankers);
@@ -217,9 +236,9 @@ export function settle(
       if (pair.every((h) => p.has(h)) && [...bset].every((b) => pair.includes(b))) combosWon++;
     }
     const lr = [legResult(res, 3, combosWon > 0)];
-    if (combosWon === 0) return base(false, 0, 0, `Miss — no covered pair among top 3 (${top3.join("-")}).`, lr);
+    if (combosWon === 0) return base(false, 0, 0, { code: "missNoPair", top3 }, lr);
     const div = dividend("qpl", res, leg);
-    return base(true, combosWon, div, `Hit — ${combosWon} of 3 placing pairs covered.`, lr);
+    return base(true, combosWon, div, { code: "hitPairs", pairs: combosWon }, lr);
   }
 
   // Trio / Tierce / First4 / Double Trio / Triple Trio:
@@ -229,7 +248,7 @@ export function settle(
   let missRace = -1;
   for (const leg of sel.raceLegs) {
     const res = resultsByRace.get(leg.raceNumber);
-    if (!res) return base(false, 0, 0, `No result for race ${leg.raceNumber}.`, legResults);
+    if (!res) return base(false, 0, 0, { code: "noResult", race: leg.raceNumber }, legResults);
     const n = coverCount(leg.bankers, leg.legs, res.finishOrder, def.depth);
     legResults.push(legResult(res, showDepth, n > 0));
     if (n === 0) {
@@ -241,12 +260,10 @@ export function settle(
   }
 
   if (combosWon === 0) {
-    return base(false, 0, 0, `Miss — race ${missRace} not covered.`, legResults);
+    return base(false, 0, 0, { code: "missRace", race: missRace }, legResults);
   }
   const div = dividend(sel.type, dividendSource, sel.raceLegs[0]!);
   const payout = div === null ? null : div * combosWon;
-  const legsDesc = sel.raceLegs
-    .map((l) => `R${l.raceNumber}${l.bankers.length ? ` 膽${l.bankers.join(",")}` : ""}`)
-    .join(" + ");
-  return base(true, combosWon, payout, `Hit — ${legsDesc}.${combosWon > 1 ? ` ${combosWon}× (dead-heat)` : ""}`, legResults);
+  const legs = sel.raceLegs.map((l) => ({ race: l.raceNumber, bankers: l.bankers }));
+  return base(true, combosWon, payout, { code: "hitLegs", legs, deadHeat: combosWon }, legResults);
 }

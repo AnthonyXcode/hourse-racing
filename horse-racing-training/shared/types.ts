@@ -116,10 +116,21 @@ export interface BetSelection {
 export interface LegResult {
   raceNumber: number;
   /** finishers shown for context, ascending position (incl dead-heats). */
-  finishers: { position: number; horseNumber: number; horseName: string }[];
+  finishers: { position: number; horseNumber: number; horseName: string; horseCode: string }[];
   /** did this leg race cover a winning combo from the selection? */
   covered: boolean;
 }
+
+/** Why a bet hit or missed; `detail` is the English rendering of this. */
+export type SettleDetail =
+  | { code: "invalid" }
+  | { code: "noResult"; race: number }
+  | { code: "missNoneInTop"; horses: number[]; depth: number }
+  | { code: "hitPlaced"; horses: number[]; depth: number }
+  | { code: "missNoPair"; top3: number[] }
+  | { code: "hitPairs"; pairs: number }
+  | { code: "missRace"; race: number }
+  | { code: "hitLegs"; legs: { race: number; bankers: number[] }[]; deadHeat: number };
 
 export interface SettleResult {
   hit: boolean;
@@ -132,8 +143,10 @@ export interface SettleResult {
   payout: number | null;
   /** net = payout - cost; null when payout unknown. */
   net: number | null;
-  /** human-readable explanation (which combo won / why it missed). */
+  /** human-readable explanation (which combo won / why it missed), English. */
   detail: string;
+  /** the same explanation as data, so the client can render it in any language. */
+  detailInfo: SettleDetail;
   /** per leg-race finish order + cover status (always populated). */
   legResults: LegResult[];
   /** the pool's actual winning dividend (what a correct $10 bet paid), shown

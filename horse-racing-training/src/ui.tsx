@@ -1,7 +1,11 @@
 // Presentational components for the bet trainer.
-import type { RaceCard, RaceLeg, RaceResult, SettleResult, BetTypeId, HistoryEntry } from "../shared/types";
+import type { RaceCard, RaceLeg, RaceResult, SettleResult, SettleDetail, BetTypeId, HistoryEntry } from "../shared/types";
 import type { ReactNode } from "react";
-import { fmtDate } from "./api";
+import { useTranslation } from "react-i18next";
+import type { TFunction } from "i18next";
+import { useGlossary } from "./i18n/glossary";
+import { Name } from "./i18n/names";
+import { useFmt } from "./i18n/useLanguage";
 import { Display, btn, btnPrimary, cx, empty, figure, h3, modal, modalBg, panel, pill, pillRow, table, tablePad } from "./kit";
 
 /** Left-aligned card table: sentence-case headers, hairline rows. Tighter cell padding on phones. */
@@ -25,29 +29,33 @@ export function RaceCardTable({
   onCycle: (horseNumber: number) => void;
   bankerEnabled: boolean;
 }) {
+  const { t } = useTranslation(["bet", "common"]);
+  const g = useGlossary();
   return (
     <div className="mt-3 overflow-hidden rounded-card bg-surface shadow-card">
       <div className="flex flex-col gap-1 border-b border-edge px-4 pt-4 pb-3 sm:flex-row sm:items-end sm:gap-4 sm:px-5 sm:pt-5">
         <div className="min-w-0">
-          <div className="text-xs font-medium text-ink-3">Race {card.raceNumber}</div>
-          <h2 className="mt-0.5 font-display text-2xl leading-tight tracking-[-0.01em]">{card.name}</h2>
+          <div className="text-xs font-medium text-ink-3">{t("common:race", { n: card.raceNumber })}</div>
+          <h2 className="mt-0.5 font-display text-2xl leading-tight tracking-[-0.01em]">
+            <Name kind="race" code={card.id} en={card.name} />
+          </h2>
         </div>
         <div className="text-sm text-ink-2 sm:ml-auto sm:pb-0.5">
-          {card.class} · {card.distance}m · {card.surface} · {card.going}
+          {g.raceClass(card.class)} · {t("common:metres", { n: card.distance })} · {g.surface(card.surface)} · {g.going(card.going)}
         </div>
       </div>
       <div className="overflow-x-auto">
         <table className={cardTable}>
           <thead>
             <tr>
-              <th>No.</th>
-              <th>Horse</th>
-              <th className="hidden sm:table-cell">Draw</th>
-              <th className="hidden sm:table-cell">Wt.</th>
-              <th className="hidden sm:table-cell">Jockey</th>
-              <th className="hidden sm:table-cell">Trainer</th>
-              <th className="text-right!">Win</th>
-              <th className="text-center!">Pick</th>
+              <th>{t("common:word.number")}</th>
+              <th>{t("common:word.horse")}</th>
+              <th className="hidden sm:table-cell">{t("common:word.draw")}</th>
+              <th className="hidden sm:table-cell">{t("common:word.weight")}</th>
+              <th className="hidden sm:table-cell">{t("common:word.jockey")}</th>
+              <th className="hidden sm:table-cell">{t("common:word.trainer")}</th>
+              <th className="text-right!">{t("card.win")}</th>
+              <th className="text-center!">{t("card.pick")}</th>
             </tr>
           </thead>
           <tbody>
@@ -67,22 +75,28 @@ export function RaceCardTable({
                 >
                   <td className="w-9 font-semibold tabular-nums">{e.horseNumber}</td>
                   <td>
-                    <span className="font-medium">{e.horse.name}</span>
+                    <span className="font-medium">
+                      <Name kind="horse" code={e.horse.code} en={e.horse.name} />
+                    </span>
                     {e.horse.origin ? <span className="text-ink-3"> ({e.horse.origin})</span> : null}
-                    {e.jockey?.name && <div className="mt-0.5 text-xs text-ink-3 sm:hidden">{e.jockey.name}</div>}
+                    {e.jockey?.name && (
+                      <div className="mt-0.5 text-xs text-ink-3 sm:hidden">
+                        <Name kind="jockey" code={e.jockey.code} en={e.jockey.name} />
+                      </div>
+                    )}
                   </td>
                   <td className="hidden tabular-nums sm:table-cell">{e.draw}</td>
                   <td className="hidden tabular-nums sm:table-cell">{e.weight}</td>
-                  <td className="hidden sm:table-cell">{e.jockey?.name}</td>
-                  <td className="hidden text-ink-2 sm:table-cell">{e.trainer?.name}</td>
+                  <td className="hidden sm:table-cell">{e.jockey && <Name kind="jockey" code={e.jockey.code} en={e.jockey.name} />}</td>
+                  <td className="hidden text-ink-2 sm:table-cell">{e.trainer && <Name kind="trainer" code={e.trainer.code} en={e.trainer.name} />}</td>
                   <td className="text-right tabular-nums">{card.winOdds[String(e.horseNumber)] ?? "-"}</td>
                   <td className="text-center">
                     {scratched ? (
-                      <span className={cx(chip, "bg-surface-3 text-ink-3")}>SCR</span>
+                      <span className={cx(chip, "bg-surface-3 text-ink-3")}>{t("common:word.scratchedShort")}</span>
                     ) : role === "banker" ? (
-                      <span className={cx(chip, "bg-banker-bd text-white")}>膽</span>
+                      <span className={cx(chip, "bg-banker-bd text-white")}>{t("common:role.bankerShort")}</span>
                     ) : role === "leg" ? (
-                      <span className={cx(chip, "bg-accent text-white")}>腳</span>
+                      <span className={cx(chip, "bg-accent text-white")}>{t("common:role.legShort")}</span>
                     ) : (
                       <span className={cx(chip, "bg-surface-2 text-ink-3")}>+</span>
                     )}
@@ -94,24 +108,13 @@ export function RaceCardTable({
         </table>
       </div>
       <p className="border-t border-edge px-4 py-3 text-xs text-ink-3 sm:px-5">
-        Tap a row to pick. {bankerEnabled ? "Tap again to make it a banker (膽), again to clear." : "Tap again to clear."}
+        {t("card.hint")} {bankerEnabled ? t("card.hintBanker") : t("card.hintClear")}
       </p>
     </div>
   );
 }
 
 // ---- Bet type picker ----
-const BET_LABELS: Record<BetTypeId, string> = {
-  win: "Win",
-  place: "Place",
-  quinella: "Quinella",
-  qpl: "Quinella Place",
-  trio: "Trio",
-  tierce: "Tierce",
-  first4: "First 4",
-  doubleTrio: "Double Trio",
-  tripleTrio: "Triple Trio",
-};
 
 export function BetTypePicker({
   value,
@@ -124,9 +127,11 @@ export function BetTypePicker({
   dtAvailable: boolean;
   ttAvailable: boolean;
 }) {
+  const { t } = useTranslation(["bet", "common"]);
+  const g = useGlossary();
   const all: BetTypeId[] = ["win", "place", "quinella", "qpl", "trio", "tierce", "first4", "doubleTrio", "tripleTrio"];
   return (
-    <div className={cx(pillRow, "mt-3")} role="group" aria-label="Bet type">
+    <div className={cx(pillRow, "mt-3")} role="group" aria-label={t("betTypeGroup")}>
       {all.map((b) => {
         const disabled = (b === "doubleTrio" && !dtAvailable) || (b === "tripleTrio" && !ttAvailable);
         return (
@@ -135,10 +140,10 @@ export function BetTypePicker({
             className={cx(pill(value === b), "flex-none")}
             aria-pressed={value === b}
             disabled={disabled}
-            title={disabled ? "Not offered this meeting" : ""}
+            title={disabled ? t("notOffered") : ""}
             onClick={() => onChange(b)}
           >
-            {BET_LABELS[b]}
+            {g.betType(b)}
           </button>
         );
       })}
@@ -158,32 +163,56 @@ export function CostBar({
   onSubmit: () => void;
   canSubmit: boolean;
 }) {
+  const { t } = useTranslation(["bet", "common"]);
+  const fmt = useFmt();
   return (
     <div className="sticky bottom-3 z-30 mt-4 flex items-center gap-3 rounded-card bg-surface/95 p-3 shadow-pop backdrop-blur sm:gap-4 sm:p-4">
       <div className="text-sm text-ink-2">
-        <span className="font-semibold text-ink tabular-nums">{combos}</span>
-        <span className="hidden sm:inline"> combinations</span> × $10
+        <span className="font-semibold text-ink tabular-nums">{fmt.num(combos)}</span>
+        <span className="hidden sm:inline">{t("cost.combinations")}</span> {t("cost.perUnit")}
       </div>
-      <div className={cx(figure, "ml-auto text-[26px] text-ink sm:text-[28px]")}>${cost.toLocaleString()}</div>
+      <div className={cx(figure, "ml-auto text-[26px] text-ink sm:text-[28px]")}>{fmt.money(cost)}</div>
       <button className={btnPrimary} disabled={!canSubmit} onClick={onSubmit}>
-        Place bet
+        {t("cost.placeBet")}
       </button>
     </div>
   );
 }
 
+/** Translated explanation of a settle result (falls back to nothing for unknown codes). */
+function settleText(d: SettleDetail | undefined, t: TFunction<["bet", "common"]>): string {
+  if (!d) return "";
+  const nums = (hs: number[]) => hs.map((h) => `#${h}`).join(", ");
+  switch (d.code) {
+    case "invalid": return t("detail.invalid");
+    case "noResult": return t("detail.noResult", { race: d.race });
+    case "missNoneInTop": return t("detail.missNoneInTop", { horses: nums(d.horses), depth: d.depth });
+    case "hitPlaced": return t("detail.hitPlaced", { horses: nums(d.horses), depth: d.depth });
+    case "missNoPair": return t("detail.missNoPair", { top3: d.top3.join("-") });
+    case "hitPairs": return t("detail.hitPairs", { pairs: d.pairs });
+    case "missRace": return t("detail.missRace", { race: d.race });
+    case "hitLegs": {
+      const legs = d.legs
+        .map((l) => (l.bankers.length ? t("detail.legBankers", { race: l.race, bankers: l.bankers.join(",") }) : t("common:raceShort", { n: l.race })))
+        .join(" + ");
+      return t("detail.hitLegs", { legs }) + (d.deadHeat > 1 ? " " + t("detail.deadHeat", { n: d.deadHeat }) : "");
+    }
+  }
+}
+
 // ---- Result modal ----
 export function ResultModal({ result, onClose }: { result: SettleResult; onClose: () => void }) {
-  const payoutStr =
-    result.payout === null ? "unknown (dividend missing from data)" : `$${result.payout.toLocaleString()}`;
-  const netStr = result.net === null ? "—" : `${result.net >= 0 ? "+" : ""}$${result.net.toLocaleString()}`;
+  const { t } = useTranslation(["bet", "common"]);
+  const fmt = useFmt();
+  const payoutStr = result.payout === null ? t("result.payoutUnknown") : fmt.money(result.payout);
+  const netStr = result.net === null ? "—" : `${result.net >= 0 ? "+" : ""}${fmt.money(result.net)}`;
   return (
     <div className={modalBg} onClick={onClose}>
-      <div className={modal} role="dialog" aria-modal="true" aria-label={result.hit ? "Hit" : "Miss"} onClick={(e) => e.stopPropagation()}>
+      <div className={modal} role="dialog" aria-modal="true" aria-label={result.hit ? t("result.hit") : t("result.miss")} onClick={(e) => e.stopPropagation()}>
         <h2 className={cx("font-display text-[40px] leading-none tracking-[-0.02em]", result.hit ? "text-good" : "text-bad")}>
-          {result.hit ? "Hit" : "Miss"}
+          {result.hit ? t("result.hit") : t("result.miss")}
         </h2>
-        <p className="mt-3 text-sm text-ink-2">{result.detail}</p>
+        <p className="mt-3 text-sm text-ink-2">{settleText(result.detailInfo, t)}</p>
 
         {/* Finish order of every leg race — always shown, hit or miss. */}
         <div className="mt-5 flex flex-wrap gap-3">
@@ -196,15 +225,17 @@ export function ResultModal({ result, onClose }: { result: SettleResult; onClose
               )}
             >
               <div className="mb-2 flex items-baseline justify-between">
-                <span className="font-display text-lg leading-none">Race {lr.raceNumber}</span>
-                <span className={cx("text-sm font-semibold", lr.covered ? "text-good" : "text-bad")}>{lr.covered ? "✓ covered" : "✗ missed"}</span>
+                <span className="font-display text-lg leading-none">{t("common:race", { n: lr.raceNumber })}</span>
+                <span className={cx("text-sm font-semibold", lr.covered ? "text-good" : "text-bad")}>{lr.covered ? t("result.covered") : t("result.missed")}</span>
               </div>
               <ol className="text-[13px]">
                 {lr.finishers.map((f) => (
                   <li key={`${f.position}-${f.horseNumber}`} className="flex gap-2 py-px">
                     <span className="w-4 text-ink-3 tabular-nums">{f.position}</span>
                     <span className="min-w-7 font-semibold tabular-nums">#{f.horseNumber}</span>
-                    <span className="truncate text-ink-2">{f.horseName}</span>
+                    <span className="truncate text-ink-2">
+                      <Name kind="horse" code={f.horseCode} en={f.horseName} />
+                    </span>
                   </li>
                 ))}
               </ol>
@@ -214,62 +245,71 @@ export function ResultModal({ result, onClose }: { result: SettleResult; onClose
 
         <table className="mt-5 w-full border-collapse text-sm [&_td]:border-b [&_td]:border-edge [&_td]:py-2.5 [&_td:first-child]:text-ink-2 [&_td:last-child]:text-right [&_td:last-child]:font-medium [&_td:last-child]:tabular-nums [&_tr:last-child_td]:border-b-0">
           <tbody>
-            <tr><td>Pool dividend</td><td>{result.poolDividendText}</td></tr>
-            <tr><td>Combinations won</td><td>{result.combosWon} / {result.combos}</td></tr>
-            <tr><td>Cost</td><td>${result.cost.toLocaleString()}</td></tr>
-            <tr><td>Payout</td><td>{payoutStr}</td></tr>
+            <tr><td>{t("result.poolDividend")}</td><td>{result.poolDividendText}</td></tr>
+            <tr><td>{t("result.combosWon")}</td><td>{result.combosWon} / {result.combos}</td></tr>
+            <tr><td>{t("result.cost")}</td><td>{fmt.money(result.cost)}</td></tr>
+            <tr><td>{t("result.payout")}</td><td>{payoutStr}</td></tr>
             <tr>
-              <td className="border-t border-t-ink/25 pt-3.5">Net</td>
+              <td className="border-t border-t-ink/25 pt-3.5">{t("result.net")}</td>
               <td className={cx("border-t border-t-ink/25 pt-3.5")}>
                 <span className={cx(figure, "text-[28px]", result.net === null ? "text-ink" : result.net >= 0 ? "text-good" : "text-bad")}>{netStr}</span>
               </td>
             </tr>
           </tbody>
         </table>
-        <button className={cx(btn, "mt-5 w-full sm:w-auto")} onClick={onClose}>Close</button>
+        <button className={cx(btn, "mt-5 w-full sm:w-auto")} onClick={onClose}>{t("common:action.close")}</button>
       </div>
     </div>
   );
 }
 
 // ---- Official result + dividends (HKJC local-results style) ----
-const money = (n: number) => `$${n.toLocaleString()}`;
 const fmtT = (s?: number) => (s == null ? "" : s >= 60 ? `${Math.floor(s / 60)}:${(s % 60).toFixed(2).padStart(5, "0")}` : s.toFixed(2));
 
 export function ResultPanel({ result, onClose }: { result: RaceResult; onClose: () => void }) {
+  const { t } = useTranslation(["bet", "common"]);
+  const g = useGlossary();
+  const fmt = useFmt();
   const fo = [...result.finishOrder].sort((a, b) => a.finishPosition - b.finishPosition);
   const at = (pos: number) => fo.filter((f) => f.finishPosition === pos).map((f) => f.horseNumber);
   const top = (n: number) => fo.filter((f) => f.finishPosition <= n).map((f) => f.horseNumber);
 
-  type Row = { pool: string; combo: string; div: number };
+  type Row = { pool: BetTypeId; combo: string; div: number };
   const rows: Row[] = [];
-  const add = (pool: string, combo: string, div?: number) => {
+  const add = (pool: BetTypeId, combo: string, div?: number) => {
     if (div != null) rows.push({ pool, combo, div });
   };
-  add("Win", at(1).join(","), result.winDividend);
-  (result.placeDividends ?? []).forEach((d, i) => add("Place", at(i + 1).join(","), d));
-  add("Quinella", top(2).join("-"), result.quinellaDividend);
+  add("win", at(1).join(","), result.winDividend);
+  (result.placeDividends ?? []).forEach((d, i) => add("place", at(i + 1).join(","), d));
+  add("quinella", top(2).join("-"), result.quinellaDividend);
   const qp = result.quinellaPlaceDividends ?? [];
   const t3 = top(3);
   if (qp.length === 3 && t3.length >= 3) {
-    add("Quinella Place", `${t3[0]}-${t3[1]}`, qp[0]);
-    add("Quinella Place", `${t3[0]}-${t3[2]}`, qp[1]);
-    add("Quinella Place", `${t3[1]}-${t3[2]}`, qp[2]);
+    add("qpl", `${t3[0]}-${t3[1]}`, qp[0]);
+    add("qpl", `${t3[0]}-${t3[2]}`, qp[1]);
+    add("qpl", `${t3[1]}-${t3[2]}`, qp[2]);
   }
-  add("Tierce", top(3).join("-"), result.tierceDividend);
-  add("Trio", top(3).join(","), result.trioDividend);
-  add("First 4", top(4).join(","), result.first4Dividend);
-  if (result.doubleTrioLegs) add("Double Trio", `Races ${result.doubleTrioLegs.join(",")}`, result.doubleTrioDividend);
-  if (result.tripleTrioLegs) add("Triple Trio", `Races ${result.tripleTrioLegs.join(",")}`, result.tripleTrioDividend);
+  add("tierce", top(3).join("-"), result.tierceDividend);
+  add("trio", top(3).join(","), result.trioDividend);
+  add("first4", top(4).join(","), result.first4Dividend);
+  if (result.doubleTrioLegs) add("doubleTrio", t("panel.legRaces", { list: result.doubleTrioLegs.join(",") }), result.doubleTrioDividend);
+  if (result.tripleTrioLegs) add("tripleTrio", t("panel.legRaces", { list: result.tripleTrioLegs.join(",") }), result.tripleTrioDividend);
 
   return (
     <div className={modalBg} onClick={onClose}>
-      <div className={modal} role="dialog" aria-modal="true" aria-label={`Race ${result.raceNumber} result`} onClick={(e) => e.stopPropagation()}>
-        <h2 className={modalTitle}>Race {result.raceNumber} result</h2>
+      <div className={modal} role="dialog" aria-modal="true" aria-label={t("panel.title", { n: result.raceNumber })} onClick={(e) => e.stopPropagation()}>
+        <h2 className={modalTitle}>{t("panel.title", { n: result.raceNumber })}</h2>
         <div className="mt-4 overflow-x-auto">
           <table className={cardTable}>
             <thead>
-              <tr><th>Pl.</th><th>No.</th><th>Horse</th><th className="hidden sm:table-cell">Jockey</th><th className="text-right!">Odds</th><th className="text-right!">Time</th></tr>
+              <tr>
+                <th>{t("common:word.placing")}</th>
+                <th>{t("common:word.number")}</th>
+                <th>{t("common:word.horse")}</th>
+                <th className="hidden sm:table-cell">{t("common:word.jockey")}</th>
+                <th className="text-right!">{t("common:word.odds")}</th>
+                <th className="text-right!">{t("common:word.time")}</th>
+              </tr>
             </thead>
             <tbody>
               {fo.map((f) => (
@@ -277,10 +317,16 @@ export function ResultPanel({ result, onClose }: { result: RaceResult; onClose: 
                   <td className="w-8 font-semibold tabular-nums">{f.finishPosition}</td>
                   <td className="w-9 tabular-nums text-ink-2">{f.horseNumber}</td>
                   <td>
-                    <span className="font-medium">{f.horseName}</span>
-                    {f.jockeyName && <div className="mt-0.5 text-xs text-ink-3 sm:hidden">{f.jockeyName}</div>}
+                    <span className="font-medium">
+                      <Name kind="horse" code={f.horseCode} en={f.horseName} />
+                    </span>
+                    {f.jockeyName && (
+                      <div className="mt-0.5 text-xs text-ink-3 sm:hidden">
+                        <Name kind="jockey" code={f.jockeyCode} en={f.jockeyName} />
+                      </div>
+                    )}
                   </td>
-                  <td className="hidden sm:table-cell">{f.jockeyName ?? ""}</td>
+                  <td className="hidden sm:table-cell">{f.jockeyName ? <Name kind="jockey" code={f.jockeyCode} en={f.jockeyName} /> : ""}</td>
                   <td className="text-right tabular-nums">{f.winOdds}</td>
                   <td className="text-right tabular-nums">{fmtT(f.finishTime)}</td>
                 </tr>
@@ -289,24 +335,28 @@ export function ResultPanel({ result, onClose }: { result: RaceResult; onClose: 
           </table>
         </div>
 
-        <h3 className={cx(h3, "mt-6")}>Dividends</h3>
+        <h3 className={cx(h3, "mt-6")}>{t("panel.dividends")}</h3>
         <div className="overflow-x-auto">
           <table className={cardTable}>
             <thead>
-              <tr><th>Pool</th><th>Combination</th><th className="text-right!">Per $10</th></tr>
+              <tr>
+                <th>{t("common:word.pool")}</th>
+                <th>{t("common:word.combination")}</th>
+                <th className="text-right!">{t("panel.per10")}</th>
+              </tr>
             </thead>
             <tbody>
               {rows.map((r, i) => (
                 <tr key={i}>
-                  <td>{r.pool}</td>
+                  <td>{g.betType(r.pool)}</td>
                   <td className="tabular-nums">{r.combo}</td>
-                  <td className="text-right font-medium tabular-nums">{money(r.div)}</td>
+                  <td className="text-right font-medium tabular-nums">{fmt.money(r.div)}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
-        <button className={cx(btn, "mt-5 w-full sm:w-auto")} onClick={onClose}>Close</button>
+        <button className={cx(btn, "mt-5 w-full sm:w-auto")} onClick={onClose}>{t("common:action.close")}</button>
       </div>
     </div>
   );
@@ -323,6 +373,11 @@ export function HistoryPage({
   onDelete: (id: string) => void;
   onClear: () => void;
 }) {
+  const { t } = useTranslation(["history", "common"]);
+  const g = useGlossary();
+  const fmt = useFmt();
+  const money = fmt.money;
+  const when = (ts: string) => fmt.date(ts, { dateStyle: "short", timeStyle: "short" });
   const totalCost = entries.reduce((s, e) => s + e.cost, 0);
   // Treat unknown payouts (missing dividend) as 0 for the running total.
   const totalReturn = entries.reduce((s, e) => s + (e.payout ?? 0), 0);
@@ -335,25 +390,25 @@ export function HistoryPage({
   return (
     <div className="mt-2">
       <div className="flex flex-wrap items-end justify-between gap-3">
-        <Display sub="Every practice bet you've settled, newest first.">History</Display>
+        <Display sub={t("sub")}>{t("title")}</Display>
         {entries.length > 0 && (
           <button className={cx(btn, "mb-2 text-bad")} onClick={onClear}>
-            Clear all
+            {t("common:action.clearAll")}
           </button>
         )}
       </div>
 
       <div className={cx(panel, "mt-4 grid grid-cols-2 gap-x-4 gap-y-5 sm:grid-cols-[repeat(auto-fit,minmax(150px,1fr))]")}>
-        <Stat label="Net P&L" big tone={tone(net)}>{net >= 0 ? "+" : ""}{money(net)}</Stat>
-        <Stat label="ROI" tone={tone(roi)}>{roi >= 0 ? "+" : ""}{roi.toFixed(1)}%</Stat>
-        <Stat label="Bets">{entries.length}</Stat>
-        <Stat label="Hits">{hits}{entries.length ? <span className="text-lg text-ink-3"> {((100 * hits) / entries.length).toFixed(0)}%</span> : ""}</Stat>
-        <Stat label="Total staked">{money(totalCost)}</Stat>
-        <Stat label="Total return">{money(totalReturn)}</Stat>
+        <Stat label={t("stat.net")} big tone={tone(net)}>{net >= 0 ? "+" : ""}{money(net)}</Stat>
+        <Stat label={t("stat.roi")} tone={tone(roi)}>{roi >= 0 ? "+" : ""}{roi.toFixed(1)}%</Stat>
+        <Stat label={t("stat.bets")}>{fmt.num(entries.length)}</Stat>
+        <Stat label={t("stat.hits")}>{fmt.num(hits)}{entries.length ? <span className="text-lg text-ink-3"> {((100 * hits) / entries.length).toFixed(0)}%</span> : ""}</Stat>
+        <Stat label={t("stat.staked")}>{money(totalCost)}</Stat>
+        <Stat label={t("stat.returned")}>{money(totalReturn)}</Stat>
       </div>
 
       {entries.length === 0 ? (
-        <div className={cx(panel, empty, "mt-4")}>No bets yet. Place one from the Bet tab.</div>
+        <div className={cx(panel, empty, "mt-4")}>{t("empty")}</div>
       ) : (
         <div className="mt-4 overflow-x-auto rounded-card bg-surface shadow-card">
           <table
@@ -365,16 +420,18 @@ export function HistoryPage({
           >
             <thead>
               <tr>
-                <th>Placed</th><th>Meeting</th><th>Bet</th><th>Picks</th>
-                <th>Combos</th><th>Cost</th><th>Hit</th><th>Result</th><th>Dividend</th><th>Payout</th><th>Net</th><th><span className="sr-only">Delete</span></th>
+                <th>{t("col.placed")}</th><th>{t("col.meeting")}</th><th>{t("col.bet")}</th><th>{t("col.picks")}</th>
+                <th>{t("col.combos")}</th><th>{t("col.cost")}</th><th>{t("col.hit")}</th><th>{t("col.result")}</th>
+                <th>{t("col.dividend")}</th><th>{t("col.payout")}</th><th>{t("col.net")}</th>
+                <th><span className="sr-only">{t("col.delete")}</span></th>
               </tr>
             </thead>
             <tbody>
               {entries.map((e) => (
                 <tr key={e.id}>
-                  <td className="text-ink-3">{new Date(e.ts).toLocaleString()}</td>
-                  <td>{fmtDate(e.date)} {e.venue}</td>
-                  <td>{e.betLabel}</td>
+                  <td className="text-ink-3">{when(e.ts)}</td>
+                  <td>{fmt.date(ymd(e.date))} {g.venue(e.venue)}</td>
+                  <td>{g.betType(e.betType)}</td>
                   <td className="text-xs text-ink-2">{e.picks}</td>
                   <td>{e.combos}</td>
                   <td>{money(e.cost)}</td>
@@ -388,7 +445,7 @@ export function HistoryPage({
                   <td>
                     <button
                       className="inline-flex size-8 cursor-pointer items-center justify-center rounded-full text-sm text-ink-3 transition-colors hover:bg-bad-soft hover:text-bad"
-                      aria-label={`Delete bet placed ${new Date(e.ts).toLocaleString()}`}
+                      aria-label={t("deleteAria", { when: when(e.ts) })}
                       onClick={() => onDelete(e.id)}
                     >
                       ✕
@@ -413,7 +470,10 @@ function Stat({ label, big, tone, children }: { label: string; big?: boolean; to
   );
 }
 
-/** Compact summary of one leg's picks. */
+/** "20260923" → Date at noon HK time (safe to format in any timezone). */
+export const ymd = (d: string) => new Date(`${d.slice(0, 4)}-${d.slice(4, 6)}-${d.slice(6, 8)}T12:00:00+08:00`);
+
+/** Compact summary of one leg's picks. Stored in history as-is — keep the 膽/腳 format. */
 export function legSummary(leg: RaceLeg): string {
   const b = leg.bankers.length ? `膽 ${leg.bankers.join(",")}` : "";
   const l = leg.legs.length ? `腳 ${leg.legs.join(",")}` : "";

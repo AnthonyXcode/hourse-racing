@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { api, fmtDate } from "./api";
+import { api } from "./api";
 import { BET_TYPES, countCombos, cost } from "../shared/betEngine/index";
 import type {
   MeetingRef,
@@ -10,12 +10,13 @@ import type {
   SettleResult,
   HistoryEntry,
 } from "../shared/types";
-import { RaceCardTable, BetTypePicker, CostBar, ResultModal, ResultPanel, HistoryPage, legSummary, type Role } from "./ui";
+import { RaceCardTable, BetTypePicker, CostBar, ResultModal, ResultPanel, HistoryPage, legSummary, ymd, type Role } from "./ui";
 import type { RaceResult } from "../shared/types";
 import { AnalyzerPage } from "./analyzer/AnalyzerPage";
 import { MomentumPage } from "./momentum/MomentumPage";
 import { useTranslation } from "react-i18next";
-import { LangSwitch } from "./i18n/useLanguage";
+import { useGlossary } from "./i18n/glossary";
+import { LangSwitch, useFmt } from "./i18n/useLanguage";
 import { MobileNav } from "./MobileNav";
 import { Display, btn, container, control, cx, errorBox, panel, pill, pillRow } from "./kit";
 
@@ -102,7 +103,9 @@ export default function App() {
   const [dtLegs, setDtLegs] = useState<number[]>([]); // chosen leg races for DT/TT
   const [result, setResult] = useState<SettleResult | null>(null);
   const [error, setError] = useState<string>("");
-  const { t } = useTranslation();
+  const { t } = useTranslation(["common", "bet"]);
+  const g = useGlossary();
+  const fmt = useFmt();
   const [view, setView] = useViewParam();
   const headerRef = useHeaderHeightVar();
   const [history, setHistory] = useState<HistoryEntry[]>([]);
@@ -263,12 +266,23 @@ export default function App() {
 
   const card = cards[editRace];
 
+  /** Display-only leg summary ("膽 1,2  腳 3" / "B 1,2  L 3"); history keeps legSummary's stored format. */
+  const legLabel = (leg: { bankers: number[]; legs: number[] } | undefined) => {
+    if (!leg) return "—";
+    const parts = [
+      leg.bankers.length ? `${t("role.bankerShort")} ${leg.bankers.join(",")}` : "",
+      leg.legs.length ? `${t("role.legShort")} ${leg.legs.join(",")}` : "",
+    ].filter(Boolean);
+    return parts.join("  ") || "—";
+  };
+
   const meetingSelect = (
-    <select className={cx(control, "w-full lg:w-auto lg:max-w-[340px]")} aria-label="Racing day" value={meetingKey} onChange={(e) => setMeetingKey(e.target.value)}>
-      <option value="">Select a racing day…</option>
+    <select className={cx(control, "w-full lg:w-auto lg:max-w-[340px]")} aria-label={t("bet:racingDay")} value={meetingKey} onChange={(e) => setMeetingKey(e.target.value)}>
+      <option value="">{t("bet:selectDay")}</option>
       {days.map((m) => (
         <option key={`${m.date}_${m.venue}`} value={`${m.date}_${m.venue}`}>
-          {fmtDate(m.date)} · {m.venue} · {m.races.length} races{m.hasResults ? "" : " (no results)"}
+          {t("bet:dayOption", { date: fmt.date(ymd(m.date)), venue: g.venue(m.venue), races: t("races", { count: m.races.length }) })}
+          {m.hasResults ? "" : t("bet:noResultsSuffix")}
         </option>
       ))}
     </select>
@@ -318,8 +332,14 @@ export default function App() {
 
         {view === "bet" && (
           <>
-            <Display sub={meeting ? `${fmtDate(meeting.date)} · ${meeting.venue} · ${meeting.races.length} races` : "Pick a racing day to load its race cards, build a bet, then settle it against the real result."}>
-              Practice a bet
+            <Display
+              sub={
+                meeting
+                  ? t("bet:subMeeting", { date: fmt.date(ymd(meeting.date)), venue: g.venue(meeting.venue), races: t("races", { count: meeting.races.length }) })
+                  : t("bet:subEmpty")
+              }
+            >
+              {t("bet:title")}
             </Display>
             <div className="mt-3 lg:hidden">{meetingSelect}</div>
           </>
@@ -328,7 +348,7 @@ export default function App() {
         {view === "bet" && meeting && (
           <>
             {/* Race tabs (browse + single-race selection) */}
-            <nav aria-label="Races" className={cx(pillRow, "mt-5")}>
+            <nav aria-label={t("bet:racesNav")} className={cx(pillRow, "mt-5")}>
               {meeting.races.map((rn) => (
                 <button
                   key={rn}
@@ -339,7 +359,7 @@ export default function App() {
                     if (legRaces.length <= 1) setEditRace(rn);
                   }}
                 >
-                  R{rn}
+                  {t("raceShort", { n: rn })}
                 </button>
               ))}
             </nav>
@@ -356,7 +376,7 @@ export default function App() {
               <div className={cx(panel, "mt-4 flex flex-col gap-4")}>
                 {officialPools.length > 0 && (
                   <div>
-                    <div className="mb-2 text-xs font-medium text-ink-2">{BET_TYPES[betType].label} pools</div>
+                    <div className="mb-2 text-xs font-medium text-ink-2">{t("bet:pools", { type: g.betType(betType) })}</div>
                     <div className={pillRow}>
                       {officialPools.map((pool) => {
                         const active = [...dtLegs].sort((a, b) => a - b).join() === [...pool].sort((a, b) => a - b).join();
@@ -367,7 +387,7 @@ export default function App() {
                             aria-pressed={active}
                             onClick={() => { setDtLegs(pool); setEditRace(pool[0]!); }}
                           >
-                            R{pool.join("-R")}
+                            {pool.map((rn) => t("raceShort", { n: rn })).join(" · ")}
                           </button>
                         );
                       })}
@@ -376,7 +396,7 @@ export default function App() {
                 )}
                 <div>
                   <div className="mb-2 text-xs font-medium text-ink-2">
-                    Or pick any {legCount} races ({dtLegs.length}/{legCount})
+                    {t("bet:pickAny", { n: legCount, picked: dtLegs.length })}
                   </div>
                   <div className={pillRow}>
                     {meeting.races.map((rn) => {
@@ -390,26 +410,26 @@ export default function App() {
                           disabled={!picked && dtLegs.length >= legCount}
                           onClick={() => toggleLeg(rn)}
                         >
-                          R{rn}
+                          {t("raceShort", { n: rn })}
                         </button>
                       );
                     })}
                   </div>
                 </div>
-                <p className="text-xs text-ink-3">Only an official pool pays a dividend; a custom combo still grades hit/miss.</p>
+                <p className="text-xs text-ink-3">{t("bet:customNote")}</p>
               </div>
             )}
 
             {/* Edit which leg's picks you're entering. */}
             {legCount > 1 && legRaces.length > 0 && (
               <div className="mt-4">
-                <div className="mb-2 text-xs font-medium text-ink-2">Editing</div>
+                <div className="mb-2 text-xs font-medium text-ink-2">{t("bet:editing")}</div>
                 <div className={pillRow}>
                   {legRaces.map((rn) => (
                     <button key={rn} className={cx(pill(rn === editRace), "flex-none")} aria-pressed={rn === editRace} onClick={() => setEditRace(rn)}>
-                      R{rn}
+                      {t("raceShort", { n: rn })}
                       <em className={cx("not-italic", rn === editRace ? "text-white/70" : "text-ink-3")}>
-                        {legSummary(selection.raceLegs.find((l) => l.raceNumber === rn) ?? { raceNumber: rn, bankers: [], legs: [] })}
+                        {legLabel(selection.raceLegs.find((l) => l.raceNumber === rn))}
                       </em>
                     </button>
                   ))}
@@ -421,12 +441,12 @@ export default function App() {
               <button
                 className={btn}
                 disabled={!meeting.hasResults}
-                title={meeting.hasResults ? "" : "No results for this meeting"}
+                title={meeting.hasResults ? "" : t("bet:noResultsMeeting")}
                 onClick={() =>
                   date && venue && api.result(date, venue, editRace).then(setRaceResult).catch((e) => setError(String(e)))
                 }
               >
-                Show result (R{editRace})
+                {t("bet:showResult", { race: t("raceShort", { n: editRace }) })}
               </button>
             </div>
 
@@ -438,11 +458,11 @@ export default function App() {
                 bankerEnabled={bankerEnabled}
               />
             ) : (
-              <div className={cx(panel, "mt-3 text-center text-ink-3")}>Loading race {editRace}…</div>
+              <div className={cx(panel, "mt-3 text-center text-ink-3")}>{t("bet:loadingRace", { n: editRace })}</div>
             )}
 
             <CostBar combos={combos} cost={totalCost} canSubmit={canSubmit} onSubmit={submit} />
-            {!meeting.hasResults && <p className="mt-3 text-[13px] text-warn">No results saved for this meeting — settlement disabled.</p>}
+            {!meeting.hasResults && <p className="mt-3 text-[13px] text-warn">{t("bet:settlementDisabled")}</p>}
           </>
         )}
       </main>

@@ -4,7 +4,8 @@
 import { useMemo, useState } from "react";
 import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip, type TooltipProps } from "recharts";
 import { impliedProbs, type RaceSeries } from "../../shared/momentum/model";
-import { Swatch, horseStyle, useMediaQuery } from "./OddsChart";
+import { useTranslation } from "react-i18next";
+import { Swatch, horseStyle, useMediaQuery, useRunnerNames } from "./OddsChart";
 import { cx, figure, h3, note, panel, seg, segBtn, tip, tipRow } from "../kit";
 
 interface Slice {
@@ -18,6 +19,8 @@ interface Slice {
 const money = (v: number) => "$" + Math.round(v).toLocaleString();
 
 export function PoolDonut({ series, focus, onFocus }: { series: RaceSeries; focus: number | null; onFocus: (h: number | null) => void }) {
+  const { t } = useTranslation("momentum");
+  const nameOf = useRunnerNames(series);
   const [pool, setPool] = useState<"win" | "pla">("win");
   const wide = useMediaQuery("(min-width: 640px)");
   const last = series.points[series.points.length - 1]!;
@@ -26,20 +29,19 @@ export function PoolDonut({ series, focus, onFocus }: { series: RaceSeries; focu
   const slices = useMemo<Slice[]>(() => {
     const odds = last[pool];
     const share = impliedProbs(odds);
-    const names = new Map(series.runners.map((r) => [r.horseNo, r.name]));
     return Object.keys(share)
       .map(Number)
       .sort((a, b) => a - b) // fixed order round the ring, so slices don't jump between refreshes
-      .map((h) => ({ horseNo: h, name: names.get(h) ?? "", odds: odds[h]!, share: share[h]!, amount: total ? share[h]! * total : null }));
-  }, [last, pool, total, series.runners]);
+      .map((h) => ({ horseNo: h, name: nameOf(h), odds: odds[h]!, share: share[h]!, amount: total ? share[h]! * total : null }));
+  }, [last, pool, total, nameOf]);
 
   return (
     <div className={panel}>
       <div className="mb-2 flex flex-wrap items-center gap-2">
-        <h3 className={cx(h3, "mb-0")}>Pool split</h3>
-        <div className={cx(seg, "ml-auto")} role="group" aria-label="Pool">
-          <button className={segBtn(pool === "win")} onClick={() => setPool("win")}>Win</button>
-          <button className={segBtn(pool === "pla")} onClick={() => setPool("pla")}>Place</button>
+        <h3 className={cx(h3, "mb-0")}>{t("pool.title")}</h3>
+        <div className={cx(seg, "ml-auto")} role="group" aria-label={t("pool.pool")}>
+          <button className={segBtn(pool === "win")} onClick={() => setPool("win")}>{t("pool.win")}</button>
+          <button className={segBtn(pool === "pla")} onClick={() => setPool("pla")}>{t("pool.place")}</button>
         </div>
       </div>
       <div className="relative">
@@ -87,18 +89,19 @@ export function PoolDonut({ series, focus, onFocus }: { series: RaceSeries; focu
           </PieChart>
         </ResponsiveContainer>
         <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center" aria-hidden>
-          <small className="text-xs text-ink-3">{pool === "win" ? "Win" : "Place"} pool</small>
+          <small className="text-xs text-ink-3">{pool === "win" ? t("pool.winPool") : t("pool.placePool")}</small>
           <b className={cx(figure, "mt-1 text-[20px] font-normal sm:text-[22px]")}>{total ? money(total) : "–"}</b>
         </div>
       </div>
       <div className={note}>
-        Estimated from the latest odds: a runner's share of the pool is proportional to 1 / its odds. Striped slices are horses 9 and up.
+        {t("pool.note")}
       </div>
     </div>
   );
 }
 
 function DonutTip({ active, payload, pool }: TooltipProps<number, string> & { pool: "win" | "pla" }) {
+  const { t } = useTranslation("momentum");
   if (!active || !payload?.length) return null;
   const s = payload[0]!.payload as Slice;
   return (
@@ -109,16 +112,16 @@ function DonutTip({ active, payload, pool }: TooltipProps<number, string> & { po
         <span className="flex-1 text-ink-2">{s.name}</span>
       </div>
       <div className={tipRow}>
-        <span className="flex-1 text-ink-2">{pool === "win" ? "Win" : "Place"} odds</span>
+        <span className="flex-1 text-ink-2">{pool === "win" ? t("pool.winOdds") : t("pool.placeOdds")}</span>
         <b className="tabular-nums">{s.odds}</b>
       </div>
       <div className={tipRow}>
-        <span className="flex-1 text-ink-2">Share of pool</span>
+        <span className="flex-1 text-ink-2">{t("pool.share")}</span>
         <b className="tabular-nums">{(100 * s.share).toFixed(1)}%</b>
       </div>
       {s.amount != null && (
         <div className={tipRow}>
-          <span className="flex-1 text-ink-2">Est. amount</span>
+          <span className="flex-1 text-ink-2">{t("pool.est")}</span>
           <b className="tabular-nums">{money(s.amount)}</b>
         </div>
       )}

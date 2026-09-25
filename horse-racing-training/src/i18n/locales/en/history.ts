@@ -1,1 +1,28 @@
-export const history = {} as const;
+export const history = {
+  title: "History",
+  sub: "Every practice bet you've settled, newest first.",
+  stat: {
+    net: "Net P&L",
+    roi: "ROI",
+    bets: "Bets",
+    hits: "Hits",
+    staked: "Total staked",
+    returned: "Total return",
+  },
+  empty: "No bets yet. Place one from the Bet tab.",
+  col: {
+    placed: "Placed",
+    meeting: "Meeting",
+    bet: "Bet",
+    picks: "Picks",
+    combos: "Combos",
+    cost: "Cost",
+    hit: "Hit",
+    result: "Result",
+    dividend: "Dividend",
+    payout: "Payout",
+    net: "Net",
+    delete: "Delete",
+  },
+  deleteAria: "Delete bet placed {{when}}",
+} as const;

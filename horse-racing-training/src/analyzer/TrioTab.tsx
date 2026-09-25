@@ -1,4 +1,7 @@
 import { useMemo, useState } from "react";
+import { Trans, useTranslation } from "react-i18next";
+import { useGlossary } from "../i18n/glossary";
+import type { analyzer as EnAnalyzer } from "../i18n/locales/en/analyzer";
 import {
   type AnalyzerRace, type HorseRow, type TrioStrat, MC, MKT, FIN, HNUM, UNIT,
   TRIO_STRATS, SBY, trioOutcome, trioStats, foundIn, isSettled, groupBy, diffBucket, DIFF_ORDER,
@@ -9,22 +12,29 @@ import { Bar, Kpi, Legend, SortTh, cls, money, pc, signed, useSort, vs } from ".
 import { H2, code, control, cx, dim, empty, good, grid2, grid2Wide, h3, kpis, note, panel, row, scroll, strong, table, tablePad, tablePadTight, tag, tall, totalRow } from "../kit";
 
 const ACCENT = C.accent, WARN = C.warn;
-const PAIR: Series<{ mc: number; mk: number }>[] = [
-  { name: "model", color: ACCENT, get: (r) => r.mc },
-  { name: "market", color: WARN, get: (r) => r.mk },
+type Pair = { mc: number; mk: number };
+const pair = (model: string, market: string): Series<Pair>[] => [
+  { name: model, color: ACCENT, get: (r) => r.mc },
+  { name: market, color: WARN, get: (r) => r.mk },
 ];
+/** Strategy display name (the shared model keeps English names; translate by key). */
+const stratKey = (k: string) => `trio.strat.${k}` as `trio.strat.${keyof typeof EnAnalyzer.trio.strat}`;
 const statsBy = (races: AnalyzerRace[]) => ({
   mc: Object.fromEntries(TRIO_STRATS.map((s) => [s.key, trioStats(races, MC, s)])),
   mk: Object.fromEntries(TRIO_STRATS.map((s) => [s.key, trioStats(races, MKT, s)])),
 });
 
 export function TrioTab({ races }: { races: AnalyzerRace[] }) {
+  const { t } = useTranslation(["analyzer", "common"]);
   const settled = useMemo(() => races.filter(isSettled), [races]);
-  if (!settled.length) return <div className={cx(panel, empty)}>No settled races match these filters.</div>;
+  if (!settled.length) return <div className={cx(panel, empty)}>{t("filters.noSettled")}</div>;
   return <TrioBody settled={settled} />;
 }
 
 function TrioBody({ settled }: { settled: AnalyzerRace[] }) {
+  const { t } = useTranslation(["analyzer", "common"]);
+  const g = useGlossary();
+  const PAIR = pair(t("trio.model"), t("trio.market"));
   const d = useMemo(() => {
     const { mc, mk } = statsBy(settled);
     const priced = settled.filter((r) => r.h.some((h) => h[MKT] > 0));
@@ -57,24 +67,24 @@ function TrioBody({ settled }: { settled: AnalyzerRace[] }) {
   return (
     <>
       <div className={kpis}>
-        <Kpi label="Top 3 = trio" value={pc(mc.b3!.hit)} sub={`1 combo · market ${pc(mk.b3!.hit)}`} tone={vs(mc.b3!.hit, mk.b3!.hit)} />
-        <Kpi label="Box 4 hits" value={pc(mc.b4!.hit)} sub={`4 combos · market ${pc(mk.b4!.hit)}`} tone={vs(mc.b4!.hit, mk.b4!.hit)} />
-        <Kpi label="Box 5 hits" value={pc(mc.b5!.hit)} sub={`10 combos · market ${pc(mk.b5!.hit)}`} tone={vs(mc.b5!.hit, mk.b5!.hit)} />
-        <Kpi label="Box 5 ROI" value={signed(mc.b5!.roi)} sub={`${money(mc.b5!.stake)} staked · market ${signed(mk.b5!.roi)}`} tone={cls(mc.b5!.roi)} />
-        <Kpi label="Banker #1 + 2–6 ROI" value={signed(mc.k16!.roi)} sub={`hit ${pc(mc.k16!.hit)} · market ${signed(mk.k16!.roi)}`} tone={cls(mc.k16!.roi)} />
-        <Kpi label="Placegetters found" value={`${d.foundMc.toFixed(2)} / 3`} sub={`in model top 3 · market ${d.foundMk.toFixed(2)}`} tone={vs(d.foundMc, d.foundMk)} />
-        <Kpi label="Best model strategy" value={best ? signed(mc[best.key]!.roi) : "–"} sub={best ? best.name : "no priced races"} tone={best ? cls(mc[best.key]!.roi) : ""} />
-        <Kpi label="Trio dividend" value={money(median(d.paid))} sub={`median per $10 · mean ${money(mean(d.paid))} · ${d.paid.length} paid`} />
+        <Kpi label={t("trio.kpi.top3")} value={pc(mc.b3!.hit)} sub={t("trio.kpi.top3Sub", { m: pc(mk.b3!.hit) })} tone={vs(mc.b3!.hit, mk.b3!.hit)} />
+        <Kpi label={t("trio.kpi.box4")} value={pc(mc.b4!.hit)} sub={t("trio.kpi.box4Sub", { m: pc(mk.b4!.hit) })} tone={vs(mc.b4!.hit, mk.b4!.hit)} />
+        <Kpi label={t("trio.kpi.box5")} value={pc(mc.b5!.hit)} sub={t("trio.kpi.box5Sub", { m: pc(mk.b5!.hit) })} tone={vs(mc.b5!.hit, mk.b5!.hit)} />
+        <Kpi label={t("trio.kpi.box5Roi")} value={signed(mc.b5!.roi)} sub={t("trio.kpi.box5RoiSub", { stake: money(mc.b5!.stake), m: signed(mk.b5!.roi) })} tone={cls(mc.b5!.roi)} />
+        <Kpi label={t("trio.kpi.bankRoi")} value={signed(mc.k16!.roi)} sub={t("trio.kpi.bankRoiSub", { hit: pc(mc.k16!.hit), m: signed(mk.k16!.roi) })} tone={cls(mc.k16!.roi)} />
+        <Kpi label={t("trio.kpi.found")} value={`${d.foundMc.toFixed(2)} / 3`} sub={t("trio.kpi.foundSub", { m: d.foundMk.toFixed(2) })} tone={vs(d.foundMc, d.foundMk)} />
+        <Kpi label={t("trio.kpi.best")} value={best ? signed(mc[best.key]!.roi) : "–"} sub={best ? t(stratKey(best.key)) : t("trio.kpi.bestNone")} tone={best ? cls(mc[best.key]!.roi) : ""} />
+        <Kpi label={t("trio.kpi.div")} value={money(median(d.paid))} sub={t("trio.kpi.divSub", { mean: money(mean(d.paid)), n: d.paid.length })} />
       </div>
 
-      <H2 sub="$10 per combination, model rank vs market rank">Strategies</H2>
+      <H2 sub={t("trio.strategiesSub")}>{t("trio.strategies")}</H2>
       <div className={panel}>
         <div className={scroll}>
           <table className={cx(table, tablePad)}>
             <thead>
               <tr>
-                {["Strategy", "Combos", "Model hit %", "Model ROI", "Model avg div", "Market hit %", "Market ROI", "Model − market"].map((t) => (
-                  <th key={t}>{t}</th>
+                {[t("col.strategy"), t("col.combos"), t("col.modelHit"), t("col.modelRoi"), t("col.modelAvgDiv"), t("col.marketHit"), t("col.marketRoi"), t("col.modelMinusMarket")].map((h) => (
+                  <th key={h}>{h}</th>
                 ))}
               </tr>
             </thead>
@@ -83,7 +93,7 @@ function TrioBody({ settled }: { settled: AnalyzerRace[] }) {
                 const a = mc[s.key]!, b = mk[s.key]!, diff = a.hit - b.hit;
                 return (
                   <tr key={s.key}>
-                    <td>{s.name}</td>
+                    <td>{t(stratKey(s.key))}</td>
                     <td>{a.combos.toFixed(1)}</td>
                     <td>
                       {pc(a.hit)} <Bar v={a.hit} />
@@ -92,7 +102,7 @@ function TrioBody({ settled }: { settled: AnalyzerRace[] }) {
                     <td>{money(a.avgDiv)}</td>
                     <td>{pc(b.hit)}</td>
                     <td className={cls(b.roi)}>{signed(b.roi)}</td>
-                    <td className={cls(diff)}>{Number.isFinite(diff) ? (diff >= 0 ? "+" : "") + diff.toFixed(1) + " pts" : "–"}</td>
+                    <td className={cls(diff)}>{Number.isFinite(diff) ? t("pts", { v: (diff >= 0 ? "+" : "") + diff.toFixed(1) }) : "–"}</td>
                   </tr>
                 );
               })}
@@ -100,49 +110,49 @@ function TrioBody({ settled }: { settled: AnalyzerRace[] }) {
           </table>
         </div>
         <div className={note}>
-          Box top N = every 3-horse combination from the top N. Banker = the banked horse(s) must place, the rest come from the legs. Hit % counts every race with a result; ROI only races
-          with a recorded Trio dividend. <code className={code}>Model</code> ranks by Monte Carlo win probability, <code className={code}>Market</code> by win odds.
+          <Trans t={t} i18nKey="trio.strategiesNote" components={{ code: <code className={code} /> }} />
         </div>
       </div>
 
-      <H2 sub="how often the actual top 3 land inside the picks">Coverage</H2>
+      <H2 sub={t("trio.coverageSub")}>{t("trio.coverage")}</H2>
       <div className={grid2}>
         <div className={panel}>
-          <Legend items={[[ACCENT, "model"], [WARN, "market"]]} />
+          <Legend items={[[ACCENT, t("trio.model")], [WARN, t("trio.market")]]} />
           <GroupedBars rows={d.cover} labelOf={(r) => r.rank} series={PAIR} max={100} />
-          <div className={note}>Box-N hit rate: all three placegetters inside the top N (x-axis = N).</div>
+          <div className={note}>{t("trio.coverBoxNote")}</div>
         </div>
         <div className={panel}>
-          <Legend items={[[ACCENT, "model"], [WARN, "market"]]} />
+          <Legend items={[[ACCENT, t("trio.model")], [WARN, t("trio.market")]]} />
           <GroupedBars rows={d.found} labelOf={(r) => r.rank} series={PAIR} max={100} />
-          <div className={note}>Share of races by how many of the actual top 3 are among the top-3 picks (x-axis = placegetters found).</div>
+          <div className={note}>{t("trio.coverFoundNote")}</div>
         </div>
       </div>
 
-      <H2 sub="box top 4 hit rate, model vs market">Monthly trend</H2>
+      <H2 sub={t("trio.monthlySub")}>{t("trio.monthly")}</H2>
       <div className={panel}>
-        <Legend items={[[ACCENT, "model box 4 hit %"], [WARN, "market box 4 hit %"]]} />
+        <Legend items={[[ACCENT, t("trio.modelBox4")], [WARN, t("trio.marketBox4")]]} />
         <LineChart rows={d.monthly} series={PAIR} max={100} />
       </div>
 
-      <H2>Breakdowns</H2>
+      <H2>{t("breakdowns")}</H2>
       <div className={grid2Wide}>
-        <Breakdown title="By venue" head="Venue" groups={d.venue} />
-        <Breakdown title="By field spread (avgDiff)" head="avgDiff" groups={d.diff} />
-        <Breakdown title="By class" head="Class" groups={d.cls} />
-        <Breakdown title="By field size" head="Runners" groups={d.field} />
+        <Breakdown title={t("byVenue")} head={t("common:word.venue")} groups={d.venue} label={g.venue} />
+        <Breakdown title={t("byDiff")} head={t("col.avgDiff")} groups={d.diff} />
+        <Breakdown title={t("byClass")} head={t("common:word.class")} groups={d.cls} label={g.raceClass} />
+        <Breakdown title={t("byField")} head={t("col.runners")} groups={d.field} />
       </div>
 
-      <H2 sub="the chosen strategy's picks against the result">Race by race</H2>
+      <H2 sub={t("trio.raceByRaceSub")}>{t("trio.raceByRace")}</H2>
       <RaceTable settled={settled} />
 
-      <H2 sub="model ranks, $10 per combination">Month by month</H2>
+      <H2 sub={t("trio.monthByMonthSub")}>{t("trio.monthByMonth")}</H2>
       <MonthlyTable settled={settled} />
     </>
   );
 }
 
-function Breakdown({ title, head, groups }: { title: string; head: string; groups: { key: string | number; rs: AnalyzerRace[] }[] }) {
+function Breakdown({ title, head, groups, label = String }: { title: string; head: string; groups: { key: string | number; rs: AnalyzerRace[] }[]; label?: (k: string) => string }) {
+  const { t } = useTranslation(["analyzer", "common"]);
   return (
     <div className={panel}>
       <h3 className={h3}>{title}</h3>
@@ -150,8 +160,8 @@ function Breakdown({ title, head, groups }: { title: string; head: string; group
         <table className={cx(table, tablePadTight)}>
           <thead>
             <tr>
-              {[head, "Races", "Top 3", "Box 4", "Box 5", "Mkt box 4", "Box 5 ROI", "Bank ROI"].map((t) => (
-                <th key={t}>{t}</th>
+              {[head, t("col.races"), t("col.top3"), t("col.box4"), t("col.box5"), t("col.mktBox4"), t("col.box5Roi"), t("col.bankRoi")].map((h) => (
+                <th key={h}>{h}</th>
               ))}
             </tr>
           </thead>
@@ -161,7 +171,7 @@ function Breakdown({ title, head, groups }: { title: string; head: string; group
               const m4 = trioStats(rs, MKT, SBY.b4!), k = trioStats(rs, MC, SBY.k16!);
               return (
                 <tr key={key}>
-                  <td>{key}</td>
+                  <td>{label(String(key))}</td>
                   <td>{rs.length}</td>
                   <td>{pc(b3.hit)}</td>
                   <td>
@@ -182,6 +192,7 @@ function Breakdown({ title, head, groups }: { title: string; head: string; group
 }
 
 function MonthlyTable({ settled }: { settled: AnalyzerRace[] }) {
+  const { t } = useTranslation(["analyzer", "common"]);
   const rows = useMemo(() => {
     const row = (key: string, rs: AnalyzerRace[]) => {
       const b4 = SBY.b4!;
@@ -208,7 +219,7 @@ function MonthlyTable({ settled }: { settled: AnalyzerRace[] }) {
   }, [settled]);
   const tr = (m: (typeof rows)["total"], className?: string) => (
     <tr key={m.key} className={className}>
-      <td>{m.key}</td>
+      <td>{m.key === "All" ? t("common:word.all") : m.key}</td>
       <td>{m.races}</td>
       <td>{pc(m.b3.hit)}</td>
       <td>
@@ -232,8 +243,8 @@ function MonthlyTable({ settled }: { settled: AnalyzerRace[] }) {
         <table className={cx(table, tablePad)}>
           <thead>
             <tr>
-              {["Month", "Races", "Top 3", "Box 4", "Box 5", "Mkt box 4", "Found", "Box 4 ROI", "Box 5 ROI", "Bank ROI", "DT box 4", "Med. div"].map((t) => (
-                <th key={t}>{t}</th>
+              {[t("common:word.month"), t("col.races"), t("col.top3"), t("col.box4"), t("col.box5"), t("col.mktBox4"), t("col.found"), t("col.box4Roi"), t("col.box5Roi"), t("col.bankRoi"), t("col.dtBox4"), t("col.medDiv")].map((h) => (
+                <th key={h}>{h}</th>
               ))}
             </tr>
           </thead>
@@ -242,8 +253,7 @@ function MonthlyTable({ settled }: { settled: AnalyzerRace[] }) {
         </table>
       </div>
       <div className={note}>
-        Newest month first. Hit rates use model ranks except <code className={code}>Mkt box 4</code>. <code className={code}>Found</code> = mean placegetters in the model's top 3. <code className={code}>Bank ROI</code> = Banker #1 + 2–6.
-        <code className={code}>DT box 4</code> = Double Trio playing box 4 in both legs: pools hit / pools with both legs in that month, then ROI. <code className={code}>Med. div</code> = median Trio dividend per $10.
+        <Trans t={t} i18nKey="trio.monthlyNote" components={{ code: <code className={code} /> }} />
       </div>
     </div>
   );
@@ -262,6 +272,8 @@ const joinDots = (hs: HorseRow[]) => hs.map((h, i) => (
 ));
 
 function RaceTable({ settled }: { settled: AnalyzerRace[] }) {
+  const { t } = useTranslation(["analyzer", "common"]);
+  const g = useGlossary();
   const [q, setQ] = useState("");
   const [sk, setSk] = useState("b4");
   const sort = useSort<RowKey>("date");
@@ -290,7 +302,9 @@ function RaceTable({ settled }: { settled: AnalyzerRace[] }) {
   );
 
   const needle = q.trim().toLowerCase();
-  const list = sort.sort(rows.filter((r) => !needle || `${r.date} ${r.venue} r${r.race} ${r.cls} ${r.picks} ${r.result}`.toLowerCase().includes(needle)));
+  const list = sort.sort(
+    rows.filter((r) => !needle || `${r.date} ${r.venue} ${g.venue(r.venue)} r${r.race} ${r.cls} ${g.raceClass(r.cls)} ${r.picks} ${r.result}`.toLowerCase().includes(needle))
+  );
   const hits = list.filter((r) => r.hit).length, bankHits = list.filter((r) => r.bankHit === 1).length;
   const paid = list.filter((r) => r.td > 0);
   const stake = paid.reduce((t, r) => t + r.combos * UNIT, 0), ret = paid.reduce((t, r) => t + (r.hit ? r.td : 0), 0);
@@ -301,34 +315,34 @@ function RaceTable({ settled }: { settled: AnalyzerRace[] }) {
   return (
     <div className={panel}>
       <div className={row}>
-        <input type="search" className={cx(control, "w-full flex-1 sm:w-auto sm:min-w-[260px]")} value={q} onChange={(e) => setQ(e.target.value)} placeholder="search date, venue, class, horse no…" />
-        <select className={cx(control, "w-full sm:w-auto")} value={sk} onChange={(e) => setSk(e.target.value)} aria-label="Strategy">
+        <input type="search" className={cx(control, "w-full flex-1 sm:w-auto sm:min-w-[260px]")} value={q} onChange={(e) => setQ(e.target.value)} placeholder={t("trio.search")} />
+        <select className={cx(control, "w-full sm:w-auto")} value={sk} onChange={(e) => setSk(e.target.value)} aria-label={t("col.strategy")}>
           {TRIO_STRATS.map((s) => (
             <option key={s.key} value={s.key}>
-              {s.name}
+              {t(stratKey(s.key))}
             </option>
           ))}
         </select>
         <span className={cx(tag, "whitespace-normal")}>
-          {list.length} race{list.length === 1 ? "" : "s"} · {hits} hit{hits === 1 ? "" : "s"} ({pc(rate(hits, list.length))})
-          {st.B ? ` · banker hit ${bankHits} (${pc(rate(bankHits, list.length))})` : ""} · ROI <b className={cls(roi)}>{signed(roi)}</b> · Double Trio {dt.hits}/{dt.pools} (
-          {pc(rate(dt.hits, dt.pools))}) ROI <b className={cls(dt.roi)}>{signed(dt.roi)}</b>
+          {t("common:races", { count: list.length })} · {t("trio.hits", { count: hits })} ({pc(rate(hits, list.length))})
+          {st.B ? ` · ${t("trio.bankerHitSummary", { n: bankHits, p: pc(rate(bankHits, list.length)) })}` : ""} · {t("trio.roi")} <b className={cls(roi)}>{signed(roi)}</b> · {t("col.doubleTrio")} {dt.hits}/
+          {dt.pools} ({pc(rate(dt.hits, dt.pools))}) {t("trio.roi")} <b className={cls(dt.roi)}>{signed(dt.roi)}</b>
         </span>
       </div>
       <div className={cx(scroll, tall)}>
         <table className={cx(table, tablePad)}>
           <thead>
             <tr>
-              {th("date", "Date")}{th("venue", "Venue")}{th("race", "Race")}{th("gap", "Top-2 gap")}{th("close8", "Close < 8")}{th("sparse", "Sparse")}{th("avgDiff", "avgDiff")}
-              {th("picks", "Picks")}{th("result", "Result")}{th("found", "Found")}{th("combos", "Combos")}{th("bankHit", "Banker hit")}{th("hit", "Hit")}{th("td", "Dividend")}{th("dd", "Double Trio")}
+              {th("date", t("common:word.date"))}{th("venue", t("common:word.venue"))}{th("race", t("col.race"))}{th("gap", t("col.topGap"))}{th("close8", t("col.close8"))}{th("sparse", t("col.sparse"))}{th("avgDiff", t("col.avgDiff"))}
+              {th("picks", t("col.picks"))}{th("result", t("common:word.result"))}{th("found", t("col.found"))}{th("combos", t("col.combos"))}{th("bankHit", t("col.bankerHit"))}{th("hit", t("col.hit"))}{th("td", t("common:word.dividend"))}{th("dd", t("col.doubleTrio"))}
             </tr>
           </thead>
           <tbody>
             {list.map((r) => (
               <tr key={r.id}>
                 <td>{r.date}</td>
-                <td>{r.venue}</td>
-                <td>R{r.race}</td>
+                <td>{g.venue(r.venue)}</td>
+                <td>{t("common:raceShort", { n: r.race })}</td>
                 <td>{r.gap >= 999 ? "–" : r.gap}</td>
                 <td>{r.close8}</td>
                 <td>{r.sparse}</td>
@@ -344,7 +358,7 @@ function RaceTable({ settled }: { settled: AnalyzerRace[] }) {
                 <td>{r.result.replaceAll("-", " · ")}</td>
                 <td>{r.found}/3</td>
                 <td>{r.combos}</td>
-                <td>{r.bankHit < 0 ? <span className={dim}>n/a</span> : <Tick v={r.bankHit === 1} />}</td>
+                <td>{r.bankHit < 0 ? <span className={dim}>{t("na")}</span> : <Tick v={r.bankHit === 1} />}</td>
                 <td>
                   <Tick v={r.hit === 1} />
                 </td>
@@ -352,7 +366,7 @@ function RaceTable({ settled }: { settled: AnalyzerRace[] }) {
                 <td>
                   {r.dd > 0 ? (
                     <>
-                      {money(r.dd)} <span className={dim}>R{r.ddl.join("+R")}</span>
+                      {money(r.dd)} <span className={dim}>{r.ddl.map((n) => t("common:raceShort", { n })).join("+")}</span>
                     </>
                   ) : (
                     "–"
@@ -364,11 +378,7 @@ function RaceTable({ settled }: { settled: AnalyzerRace[] }) {
         </table>
       </div>
       <div className={note}>
-        Click a column to sort. <code className={code}>Picks</code> are the horses the chosen strategy covers, in model rank order; bankers sit before the <code className={code}>/</code>. <b className={good}>Bold green</b> picks
-        finished in the top 3. <code className={code}>Found</code> = placegetters among the model's top 3. <code className={code}>Combos</code>, <code className={code}>Banker hit</code> and <code className={code}>Hit</code> are for the strategy picked in the
-        selector, using model ranks; <code className={code}>Banker hit</code> means every banker finished in the top 3 (n/a for box strategies). ROI in the summary counts only races with a recorded dividend.
-        Double Trio plays the same strategy in both legs (leg 1 combos × leg 2 combos tickets at $10) and counts a pool only when both leg races are in the list. <code className={code}>Dividend</code> is the
-        Trio payout per $10; <code className={code}>Double Trio</code> is the Double Trio payout per $10 for the pool this race is a leg of, with its leg races.
+        <Trans t={t} i18nKey="trio.raceNote" components={{ code: <code className={code} />, b: <b className={good} /> }} />
       </div>
     </div>
   );
