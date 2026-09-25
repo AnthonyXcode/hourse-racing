@@ -68,7 +68,7 @@ export function AnalyzerPage({ tab }: { tab: AnalyzerTab }) {
       })
       .catch(() => {}); // no meetings list: stay unfiltered
   }, []);
-  // Phones only: the 10-field filter grid collapses behind a toggle (always shown from `sm`).
+  // The filter grid is collapsed behind a toggle (all widths); a one-line summary shows what's applied.
   const [filtersOpen, setFiltersOpen] = useState(false);
 
   // Run the analysis whenever the applied range changes (and on first open).
@@ -94,6 +94,16 @@ export function AnalyzerPage({ tab }: { tab: AnalyzerTab }) {
   const dirty = draft.from !== range.from || draft.to !== range.to;
   const validDraft = !!draft.from && !!draft.to && draft.from <= draft.to;
   const activeFilters = Object.values(F).filter((v) => v !== "").length;
+  /** "Happy Valley · Turf · Sparse form ≤ 3 · …" — labels carry their comparison, e.g. "Sparse form (≤)". */
+  const filterSummary = [
+    F.venue && g.venue(F.venue),
+    F.surface && g.surface(F.surface),
+    F.cls && g.raceClass(F.cls),
+    ...NUM_FIELDS.filter((f) => F[f.key].trim() !== "").map((f) => `${t(f.label).replace(/\s*[(（]\s*([≥≤])\s*[)）]\s*$/, " $1")} ${F[f.key]}`),
+    F.mkt && { fav: t("filters.mktFav"), nonfav: t("filters.mktNonFav"), long: t("filters.mktLong") }[F.mkt],
+  ]
+    .filter(Boolean)
+    .join(" · ");
 
   const sub = !data
     ? t("sub.intro")
@@ -156,17 +166,24 @@ export function AnalyzerPage({ tab }: { tab: AnalyzerTab }) {
         <div className={loading ? "pointer-events-none opacity-55 transition-opacity" : "transition-opacity"}>
           {/* Sticky under the app header (h-16 on phones, 72px from sm). */}
           <div className="sticky top-(--header-h,64px) z-20 -mx-4 mt-4 border-b border-edge bg-canvas/85 px-4 pt-3 pb-3 backdrop-blur-md sm:mx-0 sm:px-0">
-            <button
-              type="button"
-              className={cx(btn, "mb-3 h-9 w-full justify-between sm:hidden")}
-              aria-expanded={filtersOpen}
-              aria-controls="analyzer-filters"
-              onClick={() => setFiltersOpen((o) => !o)}
-            >
-              <span>{activeFilters ? t("filters.toggleActive", { n: activeFilters }) : t("filters.toggle")}</span>
-              <span aria-hidden className="text-ink-3">{filtersOpen ? "▲" : "▼"}</span>
-            </button>
-            <div id="analyzer-filters" className={cx(filtersOpen ? "grid" : "hidden", "grid-cols-2 gap-x-3 gap-y-3 sm:grid sm:grid-cols-3 lg:grid-cols-6")}>
+            <div className={cx("flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3", filtersOpen && "mb-3")}>
+              <button
+                type="button"
+                className={cx(btn, "h-9 w-full flex-none justify-between gap-3 sm:w-auto")}
+                aria-expanded={filtersOpen}
+                aria-controls="analyzer-filters"
+                onClick={() => setFiltersOpen((o) => !o)}
+              >
+                <span>{activeFilters ? t("filters.toggleActive", { n: activeFilters }) : t("filters.toggle")}</span>
+                <span aria-hidden className="text-ink-3">{filtersOpen ? "▲" : "▼"}</span>
+              </button>
+              {!filtersOpen && filterSummary && (
+                <p className="min-w-0 truncate text-xs text-ink-2" title={filterSummary}>
+                  {filterSummary}
+                </p>
+              )}
+            </div>
+            <div id="analyzer-filters" className={cx(filtersOpen ? "grid" : "hidden", "grid-cols-2 gap-x-3 gap-y-3 sm:grid-cols-3 lg:grid-cols-6")}>
               <div className={field}>
                 <label htmlFor="fcls" className={fieldLabel}>{tc("word.class")}</label>
                 <select id="fcls" className={filterControl} value={F.cls} onChange={(e) => setF({ ...F, cls: e.target.value })}>
