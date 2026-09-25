@@ -21,6 +21,8 @@ export const analyzer = {
   },
   filters: {
     toggle: "Filters",
+    surface: "Surface",
+    resetT: "Back to the default strategy for this venue",
     toggleActive: "Filters ({{n}} active)",
     fieldMin: "Field size (≥)",
     diffMin: "avgDiff (≥)",

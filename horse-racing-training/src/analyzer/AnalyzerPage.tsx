@@ -5,7 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useGlossary } from "../i18n/glossary";
 import { api } from "../api";
-import { type AnalyzerPayload, type Filters, EMPTY_FILTERS, applyFilters, isSettled } from "../../shared/analyzer/model";
+import { type AnalyzerPayload, type Filters, EMPTY_FILTERS, VENUE_DEFAULTS, applyFilters, isSettled, untouchedPreset } from "../../shared/analyzer/model";
 import { WinPlaceTab } from "./WinPlaceTab";
 import { TrioTab } from "./TrioTab";
 import { Display, btn, btnPrimary, code, control, cx, empty, errorBox, field, fieldLabel, note, page, panel, rangeBar, rangeMeta } from "../kit";
@@ -53,6 +53,21 @@ export function AnalyzerPage({ tab }: { tab: AnalyzerTab }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [F, setF] = useState<Filters>(EMPTY_FILTERS);
+  // Default filters = the tuned strategy for the venue of the next meeting (else the last one).
+  const [homeVenue, setHomeVenue] = useState<"HV" | "ST" | null>(null);
+  useEffect(() => {
+    api
+      .days()
+      .then((days) => {
+        const today = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Hong_Kong" }).format(new Date()).replaceAll("-", "");
+        const next = [...days].filter((m) => m.date >= today).sort((a, b) => a.date.localeCompare(b.date))[0];
+        const v = (next ?? days[0])?.venue; // days: newest first
+        if (v !== "HV" && v !== "ST") return;
+        setHomeVenue(v);
+        setF((cur) => (cur === EMPTY_FILTERS ? VENUE_DEFAULTS[v] : cur)); // unless the user already changed something
+      })
+      .catch(() => {}); // no meetings list: stay unfiltered
+  }, []);
   // Phones only: the 10-field filter grid collapses behind a toggle (always shown from `sm`).
   const [filtersOpen, setFiltersOpen] = useState(false);
 
@@ -160,8 +175,24 @@ export function AnalyzerPage({ tab }: { tab: AnalyzerTab }) {
               </div>
               <div className={field}>
                 <label htmlFor="fvenue" className={fieldLabel}>{tc("word.venue")}</label>
-                <select id="fvenue" className={filterControl} value={F.venue} onChange={(e) => setF({ ...F, venue: e.target.value })}>
+                <select
+                  id="fvenue"
+                  className={filterControl}
+                  value={F.venue}
+                  onChange={(e) => {
+                    const v = e.target.value;
+                    // Untouched defaults follow the venue (each venue has its own strategy); edited filters are kept.
+                    if ((v === "HV" || v === "ST") && untouchedPreset(F)) setF(VENUE_DEFAULTS[v]);
+                    else setF({ ...F, venue: v });
+                  }}
+                >
                   {opts([["", tc("word.all")], ["HV", g.venue("HV")], ["ST", g.venue("ST")]])}
+                </select>
+              </div>
+              <div className={field}>
+                <label htmlFor="fsurface" className={fieldLabel}>{t("filters.surface")}</label>
+                <select id="fsurface" className={filterControl} value={F.surface} onChange={(e) => setF({ ...F, surface: e.target.value })}>
+                  {opts([["", tc("word.all")], ["Turf", g.surface("Turf")], ["AWT", g.surface("AWT")]])}
                 </select>
               </div>
               {NUM_FIELDS.map((f) => (
@@ -186,7 +217,7 @@ export function AnalyzerPage({ tab }: { tab: AnalyzerTab }) {
                   {opts([["", t("filters.mktAny")], ["fav", t("filters.mktFav")], ["nonfav", t("filters.mktNonFav")], ["long", t("filters.mktLong")]])}
                 </select>
               </div>
-              <button type="button" className={cx(btn, "self-end justify-self-start")} onClick={() => setF(EMPTY_FILTERS)}>
+              <button type="button" className={cx(btn, "self-end justify-self-start")} onClick={() => setF(homeVenue ? VENUE_DEFAULTS[homeVenue] : EMPTY_FILTERS)} title={t("filters.resetT")}>
                 {tc("action.reset")}
               </button>
             </div>

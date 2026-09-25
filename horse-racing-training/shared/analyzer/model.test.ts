@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import {
   type AnalyzerRace, type HorseRow, MC, MKT, EMPTY_FILTERS,
-  applyFilters, trioCombos, trioOutcome, trioStats, foundIn, doubleTrio, metrics, SBY,
+  applyFilters, trioCombos, trioOutcome, trioStats, foundIn, doubleTrio, metrics, SBY, VENUE_DEFAULTS, untouchedPreset,
 } from "./model";
 
 /** Horse by [mcRank, mktRank, finish, winOdds, placeOdds, tripRuns]; horse number = mcRank. */
@@ -9,7 +9,7 @@ const horse = (mc: number, mkt: number, fin: number, wOdds = 0, pOdds = 0, trip 
   [mc, mc, mkt, 0.1, 0.3, mc, fin, fin === 1 ? 1 : 0, fin >= 1 && fin <= 3 ? 1 : 0, wOdds, pOdds, mc, trip];
 
 const race = (h: HorseRow[], extra: Partial<AnalyzerRace> = {}): AnalyzerRace => ({
-  d: "2026-01-01", v: "ST", r: 1, c: "Class 4", dist: 1200, n: h.length, ad: 10, c8: 3, sp: 0, gp: 2,
+  d: "2026-01-01", v: "ST", r: 1, c: "Class 4", dist: 1200, sf: "Turf", n: h.length, ad: 10, c8: 3, sp: 0, gp: 2,
   tn: "A", tnum: 1, tc: "HK_2020_A001", tj: "", tjc: "", td: 0, dd: 0, ddl: [], h, ...extra,
 });
 
@@ -108,5 +108,20 @@ describe("applyFilters + metrics", () => {
     expect(m.winRoi).toBe(((35 - 20) / 20) * 100);
     expect(m.placeRoi).toBe(((15 - 20) / 20) * 100);
     expect(m.favWin).toBe(100);
+  });
+});
+
+describe("venue default filters", () => {
+  it("match the tuned backtest settings and filter by surface", () => {
+    expect(VENUE_DEFAULTS.HV).toMatchObject({ venue: "HV", surface: "Turf", sparse: "3", close: "3", diffMin: "15", gap: "3", mcPlace: "75", trip: "" });
+    expect(VENUE_DEFAULTS.ST).toMatchObject({ venue: "ST", surface: "Turf", sparse: "3", close: "4", diffMin: "12", gap: "4", trip: "3", mcPlace: "" });
+    const turf = race([horse(1, 1, 1)], { sf: "Turf" }), awt = race([horse(1, 1, 1)], { sf: "AWT" });
+    expect(applyFilters([turf, awt], { ...EMPTY_FILTERS, surface: "Turf" })).toEqual([turf]);
+  });
+
+  it("knows when filters are still an untouched preset", () => {
+    expect(untouchedPreset(VENUE_DEFAULTS.HV)).toBe("HV");
+    expect(untouchedPreset({ ...VENUE_DEFAULTS.ST, gap: "5" })).toBeNull();
+    expect(untouchedPreset(EMPTY_FILTERS)).toBeNull();
   });
 });

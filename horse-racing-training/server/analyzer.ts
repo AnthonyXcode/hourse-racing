@@ -27,6 +27,7 @@ interface Entry {
 interface Race {
   class: string | number;
   distance: number;
+  surface?: string;
   entries: Entry[];
 }
 interface Engine {
@@ -173,6 +174,7 @@ async function analyzeOne(
     r: rn,
     c: String(race.class),
     dist: race.distance,
+    sf: String(race.surface),
     n: active.length,
     ad: Math.round(diffs.reduce((s, d) => s + d, 0) / diffs.length),
     c8: diffs.filter((d) => d < 8).length,

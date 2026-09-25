@@ -15,6 +15,8 @@ export interface AnalyzerRace {
   /** class */
   c: string;
   dist: number;
+  /** surface: "Turf" | "AWT" */
+  sf: string;
   /** runners */
   n: number;
   /** avgDiff: mean rating gap to the top-rated horse */
@@ -69,6 +71,8 @@ export const topOf = (race: AnalyzerRace): HorseRow => race.h.find((h) => h[MC] 
 // Numeric filters hold the raw number-input text; "" (or anything non-numeric) = off.
 export interface Filters {
   venue: string;
+  /** "Turf" | "AWT" | "" */
+  surface: string;
   cls: string;
   /** runners ≥ */
   fieldMin: string;
@@ -89,8 +93,25 @@ export interface Filters {
   mkt: string;
 }
 export const EMPTY_FILTERS: Filters = {
-  venue: "", cls: "", fieldMin: "", diffMin: "", sparse: "", close: "", gap: "", mcPlace: "", trip: "", mktPos: "", mkt: "",
+  venue: "", surface: "", cls: "", fieldMin: "", diffMin: "", sparse: "", close: "", gap: "", mcPlace: "", trip: "", mktPos: "", mkt: "",
 };
+
+/**
+ * Default filters per venue — the tuned backtest settings (parent package.json backtest:optimize:*):
+ *   HV: --sparse=3 --close=3 --avgdiff=15 --gap=3 --surface=Turf --form=all --mc-min=75
+ *   ST: --sparse=3 --close=4 --avgdiff=12 --gap=4 --surface=Turf --form=all --min-trip-runs=3
+ * (--form=all needs no filter: the analysis always uses form from both venues.)
+ */
+export const VENUE_DEFAULTS: Record<"HV" | "ST", Filters> = {
+  HV: { ...EMPTY_FILTERS, venue: "HV", surface: "Turf", sparse: "3", close: "3", diffMin: "15", gap: "3", mcPlace: "75" },
+  ST: { ...EMPTY_FILTERS, venue: "ST", surface: "Turf", sparse: "3", close: "4", diffMin: "12", gap: "4", trip: "3" },
+};
+
+/** The venue whose defaults `F` still equals exactly (untouched), else null. */
+export function untouchedPreset(F: Filters): "HV" | "ST" | null {
+  const same = (a: Filters, b: Filters) => (Object.keys(a) as (keyof Filters)[]).every((k) => a[k] === b[k]);
+  return same(F, VENUE_DEFAULTS.HV) ? "HV" : same(F, VENUE_DEFAULTS.ST) ? "ST" : null;
+}
 
 const num = (s: string) => (s.trim() === "" ? NaN : Number(s));
 /** v passes unless the limit is set and v is on the wrong side of it. */
@@ -100,6 +121,7 @@ const atMost = (v: number, s: string) => !(v > num(s));
 export function applyFilters(races: AnalyzerRace[], F: Filters): AnalyzerRace[] {
   return races.filter((r) => {
     if (F.venue && r.v !== F.venue) return false;
+    if (F.surface && r.sf !== F.surface) return false;
     if (F.cls && r.c !== F.cls) return false;
     if (!atLeast(r.n, F.fieldMin) || !atLeast(r.ad, F.diffMin)) return false;
     if (!atMost(r.sp, F.sparse) || !atMost(r.c8, F.close) || !atLeast(r.gp, F.gap)) return false;
