@@ -4,8 +4,8 @@
    Chart colors are mirrored as hex in src/analyzer/charts.tsx (SVG attributes can't read CSS vars).
    Fonts load from Google Fonts in index.html. */
 @theme {
-  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", "PingFang HK", sans-serif;
-  --font-display: "DM Serif Display", Georgia, "Times New Roman", serif;
+  --font-sans: "Inter", "PingFang HK", "Noto Sans TC", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "DM Serif Display", "Songti TC", "Noto Serif TC", Georgia, "Times New Roman", serif;
 
   /* surfaces (warm) */
   --color-canvas: #fbf9f9;
@@ -57,4 +57,14 @@
   :focus-visible {
     @apply outline-2 outline-offset-2 outline-accent;
   }
+}
+
+/* CJK: no negative tracking (tracking-* utilities included), a little more leading.
+   Unlayered on purpose: beats the utilities layer without !important. */
+body:lang(zh-Hant-HK),
+:lang(zh-Hant-HK) :is(h1, h2, h3, [class*="tracking-"]) {
+  letter-spacing: 0;
+}
+body:lang(zh-Hant-HK) {
+  line-height: 1.6;
 }

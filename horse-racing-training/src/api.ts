@@ -31,6 +31,12 @@ export interface MomentumDay {
   poller: { lastTickAt: string | null; lastError: string | null; polling: string[] };
 }
 
+export type NameKind = "horse" | "jockey" | "trainer" | "race";
+export interface NameLookup {
+  names: Record<string, { en: string | null; zh: string | null; fetchedAt: string }>;
+  pending: string[];
+}
+
 async function get<T>(url: string): Promise<T> {
   const r = await fetch(url);
   if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || r.statusText);
@@ -48,6 +54,8 @@ async function send<T>(method: string, url: string, body?: unknown): Promise<T> 
 }
 
 export const api = {
+  /** Latest stored names for `kind:code` keys; stale/missing ones are refreshed server-side. */
+  names: (keys: { kind: NameKind; code: string }[]) => send<NameLookup>("POST", "/api/names/lookup", { keys }),
   days: () => get<MeetingRef[]>("/api/days"),
   meeting: (date: string, venue: string) => get<MeetingDetail>(`/api/meeting/${date}/${venue}`),
   race: (date: string, venue: string, rn: number) =>

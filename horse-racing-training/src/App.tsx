@@ -14,6 +14,8 @@ import { RaceCardTable, BetTypePicker, CostBar, ResultModal, ResultPanel, Histor
 import type { RaceResult } from "../shared/types";
 import { AnalyzerPage } from "./analyzer/AnalyzerPage";
 import { MomentumPage } from "./momentum/MomentumPage";
+import { useTranslation } from "react-i18next";
+import { LangSwitch } from "./i18n/useLanguage";
 import { MobileNav } from "./MobileNav";
 import { Display, btn, container, control, cx, errorBox, panel, pill, pillRow } from "./kit";
 
@@ -42,13 +44,13 @@ function useOnceTrue(v: boolean): boolean {
 const VIEWS = ["bet", "history", "win-place", "trio", "momentum"] as const;
 type View = (typeof VIEWS)[number];
 const DEFAULT_VIEW: View = "bet";
-const TABS: [View, string][] = [
-  ["bet", "Bet"],
-  ["history", "History"],
-  ["win-place", "Win / Place"],
-  ["trio", "Trio"],
-  ["momentum", "Momentum"],
-];
+const TABS = [
+  ["bet", "nav.bet"],
+  ["history", "nav.history"],
+  ["win-place", "nav.winPlace"],
+  ["trio", "nav.trio"],
+  ["momentum", "nav.momentum"],
+] as const satisfies readonly (readonly [View, `nav.${string}`])[];
 const navBtn = (on: boolean) =>
   on
     ? "inline-flex h-9 flex-none cursor-pointer items-center rounded-full bg-surface-2 px-3.5 text-sm font-medium whitespace-nowrap text-ink"
@@ -100,6 +102,7 @@ export default function App() {
   const [dtLegs, setDtLegs] = useState<number[]>([]); // chosen leg races for DT/TT
   const [result, setResult] = useState<SettleResult | null>(null);
   const [error, setError] = useState<string>("");
+  const { t } = useTranslation();
   const [view, setView] = useViewParam();
   const headerRef = useHeaderHeightVar();
   const [history, setHistory] = useState<HistoryEntry[]>([]);
@@ -275,17 +278,20 @@ export default function App() {
     <div className="min-h-dvh">
       <header ref={headerRef} className="sticky top-0 z-40 border-b border-edge bg-canvas/80 backdrop-blur-md">
         <div className={cx(container, "flex h-16 items-center gap-6")}>
-          <h1 className="flex-none font-display text-xl leading-none tracking-[-0.01em] text-ink lg:text-[22px]">HKJC Bet Trainer</h1>
+          <h1 className="flex-none font-display text-xl leading-none tracking-[-0.01em] text-ink lg:text-[22px]">{t("appName")}</h1>
           {/* Desktop: inline tabs (+ meeting picker on Bet). Below lg: menu button → MobileNav sheet. */}
-          <nav aria-label="Sections" className="hidden gap-1 lg:flex">
-            {TABS.map(([v, label]) => (
+          <nav aria-label={t("nav.sections")} className="hidden gap-1 lg:flex">
+            {TABS.map(([v, key]) => (
               <button key={v} className={navBtn(view === v)} aria-current={view === v ? "page" : undefined} onClick={() => setView(v)}>
-                {label}
+                {t(key)}
               </button>
             ))}
           </nav>
-          <div className="hidden lg:ml-auto lg:block">{view === "bet" && meetingSelect}</div>
-          <MobileNav title="HKJC Bet Trainer" tabs={TABS} view={view} onSelect={setView} />
+          <div className="hidden items-center gap-3 lg:ml-auto lg:flex">
+            {view === "bet" && meetingSelect}
+            <LangSwitch />
+          </div>
+          <MobileNav title={t("appName")} tabs={TABS.map(([v, key]) => [v, t(key)] as [View, string])} view={view} onSelect={setView} />
         </div>
       </header>
 

@@ -2,11 +2,14 @@
 // of the screen (below `lg`; desktop shows inline tabs instead).
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import { useTranslation } from "react-i18next";
+import { LangSwitch } from "./i18n/useLanguage";
 import { cx } from "./kit";
 
 const iconBtn = "inline-flex size-11 flex-none cursor-pointer items-center justify-center rounded-[10px] text-ink transition-colors";
 
 export function MobileNav<V extends string>({ title, tabs, view, onSelect }: { title: string; tabs: [V, string][]; view: V; onSelect: (v: V) => void }) {
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const openRef = useRef<HTMLButtonElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
@@ -43,7 +46,7 @@ export function MobileNav<V extends string>({ title, tabs, view, onSelect }: { t
         ref={openRef}
         type="button"
         className={cx(iconBtn, "-mr-2 ml-auto hover:bg-surface-2 lg:hidden")}
-        aria-label="Open navigation menu"
+        aria-label={t("nav.openMenu")}
         aria-expanded={open}
         aria-controls="mobile-nav"
         onClick={() => setOpen(true)}
@@ -63,7 +66,7 @@ export function MobileNav<V extends string>({ title, tabs, view, onSelect }: { t
             id="mobile-nav"
             role="dialog"
             aria-modal="true"
-            aria-label="Navigation"
+            aria-label={t("nav.navigation")}
             className={cx(
               "absolute inset-x-0 top-0 rounded-b-3xl bg-canvas px-5 pt-4 pb-5 shadow-pop transition-transform duration-200 ease-out motion-reduce:transition-none",
               open ? "translate-y-0" : "-translate-y-full"
@@ -71,13 +74,13 @@ export function MobileNav<V extends string>({ title, tabs, view, onSelect }: { t
           >
             <div className="flex items-center justify-between">
               <span className="font-display text-xl leading-none tracking-[-0.01em] text-ink">{title}</span>
-              <button ref={closeRef} type="button" className={cx(iconBtn, "bg-surface-3 hover:bg-surface-3/70")} aria-label="Close menu" onClick={() => setOpen(false)}>
+              <button ref={closeRef} type="button" className={cx(iconBtn, "bg-surface-3 hover:bg-surface-3/70")} aria-label={t("nav.closeMenu")} onClick={() => setOpen(false)}>
                 <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round">
                   <path d="M3.5 3.5l9 9M12.5 3.5l-9 9" />
                 </svg>
               </button>
             </div>
-            <nav aria-label="Sections" className="mt-2">
+            <nav aria-label={t("nav.sections")} className="mt-2">
               <ul className="divide-y divide-edge">
                 {tabs.map(([v, label]) => (
                   <li key={v}>
@@ -97,6 +100,7 @@ export function MobileNav<V extends string>({ title, tabs, view, onSelect }: { t
                 ))}
               </ul>
             </nav>
+            <LangSwitch full className="mt-4 flex w-full" />
           </div>
         </div>,
         document.body
