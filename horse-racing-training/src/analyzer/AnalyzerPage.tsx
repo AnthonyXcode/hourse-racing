@@ -168,7 +168,9 @@ export function AnalyzerPage({ tab }: { tab: AnalyzerTab }) {
       {data && (
         <div className={loading ? "pointer-events-none opacity-55 transition-opacity" : "transition-opacity"}>
           {/* Sticky under the app header (h-16 on phones, 72px from sm). */}
-          <div className="sticky top-(--header-h,64px) z-20 -mx-4 mt-4 border-b border-edge bg-canvas/85 px-4 pt-3 pb-3 backdrop-blur-md sm:mx-0 sm:px-5">
+          {/* Opaque, and on sm+ its background bleeds to the viewport edges (shadow + clip-path, no layout change),
+              so cards scrolling underneath never peek out at the sides. Phones already bleed via -mx-4. */}
+          <div className="sticky top-(--header-h,64px) z-20 -mx-4 mt-4 border-b border-edge bg-canvas px-4 pt-3 pb-3 sm:mx-0 sm:px-0 sm:shadow-[0_0_0_100vmax_var(--color-canvas)] sm:[clip-path:inset(0_-100vmax)]">
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
               <button
                 type="button"
