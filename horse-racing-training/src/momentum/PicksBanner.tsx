@@ -20,14 +20,14 @@ const dayRace = (date: string, raceNo: number, lang: string) => {
 const EASE = [0.2, 0, 0, 1] as const;
 /**
  * Slowly drifting blue gradient behind the strip. The layer is 200% wide and its gradient repeats
- * twice (light → deep → light → deep → light), so sliding it by -50% loops seamlessly.
+ * twice (white → blue → white → blue → white), so sliding it by -50% loops seamlessly.
  * Transform-only, so MotionConfig's reducedMotion="user" stills it.
  */
 function GradientFlow() {
   return (
     <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
       <motion.div
-        className="absolute inset-y-0 left-0 w-[200%] bg-[linear-gradient(90deg,#d6e2fc_0%,#a9c1f7_25%,#d6e2fc_50%,#a9c1f7_75%,#d6e2fc_100%)]"
+        className="absolute inset-y-0 left-0 w-[200%] bg-[linear-gradient(90deg,#ffffff_0%,#86a6f2_25%,#ffffff_50%,#86a6f2_75%,#ffffff_100%)]"
         animate={{ x: ["0%", "-50%"] }}
         transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
       />
@@ -67,7 +67,7 @@ export function PicksBanner({ onSelect, linked }: { onSelect: (v: string) => voi
       {h && h.picks.length > 0 && (
         <motion.div
           key="picks-strip"
-          className="relative overflow-hidden border-t border-edge bg-[#d6e2fc]"
+          className="relative overflow-hidden border-t border-edge bg-white"
           initial={{ height: 0, opacity: 0 }}
           animate={{ height: "auto", opacity: 1 }}
           exit={{ height: 0, opacity: 0 }}
