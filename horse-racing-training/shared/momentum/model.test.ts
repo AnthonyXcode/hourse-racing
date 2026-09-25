@@ -17,7 +17,7 @@ const race = (points: SeriesPoint[], results: RaceSeries["results"]): RaceSeries
   raceNo: 1,
   postTime: "2026-09-23T18:40:00+08:00",
   status: "settled",
-  runners: results.map((r) => ({ horseNo: r.horseNo, name: `H${r.horseNo}` })),
+  runners: results.map((r) => ({ horseNo: r.horseNo, name: `H${r.horseNo}`, nameZh: null })),
   points,
   results,
 });

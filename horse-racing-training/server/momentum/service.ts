@@ -1,14 +1,16 @@
 // Lazily-opened singleton (DB + poller) shared by the server entry and the API routes.
-import { openDb, repo, type Repo } from "./db";
+import { openDb, repo, type DB, type Repo } from "./db";
 import { createPoller, type Poller } from "./poller";
 import { hkjcClient } from "./hkjcClient";
 
-let inst: { repo: Repo; poller: Poller } | null = null;
+let inst: { db: DB; repo: Repo; poller: Poller } | null = null;
 
 export function momentum() {
   if (!inst) {
-    const r = repo(openDb());
+    const db = openDb();
+    const r = repo(db);
     inst = {
+      db,
       repo: r,
       poller: createPoller({
         client: hkjcClient,

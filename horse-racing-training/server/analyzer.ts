@@ -23,7 +23,7 @@ interface Entry {
   horseNumber: number;
   isScratched?: boolean;
   horse: { code: string };
-  jockey?: { name?: string };
+  jockey?: { name?: string; code?: string };
 }
 interface Race {
   class: string | number;
@@ -174,6 +174,7 @@ async function analyzeOne(
     ];
   });
 
+  const topRun = order.find((f) => f.horseNumber === mc[0]!.horseNumber);
   const dt = result!.doubleTrioLegs?.length === 2 && result!.doubleTrioDividend ? result! : null;
   return {
     d: `${date.slice(0, 4)}-${date.slice(4, 6)}-${date.slice(6, 8)}`,
@@ -188,8 +189,10 @@ async function analyzeOne(
     gp: second ? Math.abs(topRating - second.overallRating) : 999,
     tn: mc[0]!.horseName,
     tnum: mc[0]!.horseNumber,
+    tc: mc[0]!.horseCode,
     // Actual rider from the result (catches late jockey changes), else the card's.
-    tj: order.find((f) => f.horseNumber === mc[0]!.horseNumber)?.jockeyName || entryByNum.get(mc[0]!.horseNumber)?.jockey?.name || "",
+    tj: topRun?.jockeyName || entryByNum.get(mc[0]!.horseNumber)?.jockey?.name || "",
+    tjc: (topRun?.jockeyName ? topRun.jockeyId : entryByNum.get(mc[0]!.horseNumber)?.jockey?.code) || "",
     td: result!.trioDividend ?? 0,
     dd: dt?.doubleTrioDividend ?? 0,
     ddl: dt?.doubleTrioLegs ?? [],

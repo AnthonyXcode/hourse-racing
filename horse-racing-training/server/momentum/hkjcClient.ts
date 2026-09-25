@@ -23,6 +23,8 @@ export interface Runner {
   raceNo: number;
   horseNo: number;
   name: string;
+  /** Traditional Chinese name (name_ch); null when HKJC sends none. */
+  nameZh?: string | null;
   status: string; // Declared | Ran | Scratched | ...
   finalPosition: number | null;
   winOdds: number | null;
@@ -90,7 +92,7 @@ export const hkjcClient: HkjcClient = {
   },
 
   async runners(date, venue) {
-    type R = { no: string; status: string; name_en: string; finalPosition: number | null; winOdds: string };
+    type R = { no: string; status: string; name_en: string; name_ch: string | null; finalPosition: number | null; winOdds: string };
     const d = await post<{ raceMeetings: { races: { no: number; runners: R[] }[] }[] | null }>("runners", {
       date,
       venueCode: venue,
@@ -102,6 +104,7 @@ export const hkjcClient: HkjcClient = {
           raceNo: race.no,
           horseNo: Number(r.no),
           name: r.name_en,
+          nameZh: r.name_ch?.trim() || null,
           status: r.status,
           finalPosition: typeof r.finalPosition === "number" && r.finalPosition > 0 ? r.finalPosition : null,
           winOdds: num(r.winOdds),

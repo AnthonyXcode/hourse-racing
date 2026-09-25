@@ -10,6 +10,7 @@
     "dev:web": "vite",
     "build": "vite build",
     "start": "NODE_ENV=production tsx --env-file-if-exists=.env server/index.ts",
+    "names:backfill": "tsx --env-file-if-exists=.env server/names/backfill.ts",
     "test": "vitest run",
     "test:watch": "vitest",
     "typecheck": "tsc --noEmit"

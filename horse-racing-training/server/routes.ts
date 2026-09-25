@@ -8,6 +8,9 @@ import { hkDate } from "./momentum/poller";
 import { raceSeries } from "./momentum/series";
 import { modelRanks } from "./momentum/picks";
 import { horseRows } from "../shared/momentum/model";
+import { names } from "./names/service";
+import { getNameIndex } from "./names/nameIndex";
+import { lookupNames, parseLookupBody } from "./names/lookup";
 import type {
   RaceCard,
   RaceResult,
@@ -19,6 +22,9 @@ import type {
 } from "../shared/types";
 
 export const api = Router();
+
+/** date YYYYMMDD → race id "2026-09-23-HV-1" (same format as the momentum DB and the names table). */
+const raceKey = (date: string, venue: string, rn: number) => `${date.slice(0, 4)}-${date.slice(4, 6)}-${date.slice(6, 8)}-${venue}-${rn}`;
 
 // ---- Pick history ----
 api.get("/history", (_req, res) => res.json(readHistory()));
@@ -91,7 +97,7 @@ api.get("/race/:date/:venue/:rn", (req, res) => {
     }
   }
 
-  const card: RaceCard = { ...raw.race, winOdds };
+  const card: RaceCard = { ...raw.race, id: raceKey(date!, venue!, Number(rn)), winOdds };
   res.json(card);
 });
 
@@ -109,6 +115,8 @@ api.get("/result/:date/:venue/:rn", (req, res) => {
   const ttHere = results.find((r) => r.tripleTrioDividend != null && r.tripleTrioLegs?.includes(Number(rn)));
   const merged: RaceResult = {
     ...race,
+    id: raceKey(date!, venue!, Number(rn)),
+    finishOrder: race.finishOrder.map((f) => ({ ...f, jockeyCode: f.jockeyId, trainerCode: f.trainerId })),
     doubleTrioLegs: dtHere?.doubleTrioLegs,
     doubleTrioDividend: dtHere?.doubleTrioDividend,
     tripleTrioLegs: ttHere?.tripleTrioLegs,
@@ -206,4 +214,14 @@ api.get("/momentum/analysis", (req, res) => {
   const races = r.settledBetween(from, to).filter((x) => r.snapshotCount(x.race_id) > 0);
   const rows = races.flatMap((x) => horseRows(raceSeries(r, x.race_id)!));
   res.json({ from, to, races: races.length, rows });
+});
+
+// ---- Display names (Traditional Chinese) ----
+
+/** POST /api/names/lookup { keys: [{ kind, code }] } → stored names now; stale/missing ones refresh in the background. */
+api.post("/names/lookup", (req, res) => {
+  const parsed = parseLookupBody(req.body);
+  if ("error" in parsed) return res.status(400).json({ error: parsed.error });
+  const { store, refresher } = names();
+  res.json(lookupNames(parsed.keys, { store, index: getNameIndex, enqueue: (k) => refresher.enqueue(k) }));
 });

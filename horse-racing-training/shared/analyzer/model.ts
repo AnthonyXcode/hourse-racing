@@ -25,11 +25,13 @@ export interface AnalyzerRace {
   sp: number;
   /** rating gap between top two (999 = no second) */
   gp: number;
-  /** model top pick name / number */
+  /** model top pick name / number / HKJC horse code */
   tn: string;
   tnum: number;
-  /** model top pick's jockey */
+  tc: string;
+  /** model top pick's jockey name / HKJC jockey code ("" when unknown) */
   tj: string;
+  tjc: string;
   /** Trio dividend per $10, 0 = not recorded */
   td: number;
   /** Double Trio dividend per $10 (0 = none) and its two legs */

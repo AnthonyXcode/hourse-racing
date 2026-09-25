@@ -48,7 +48,8 @@ export interface RaceSeries {
   raceNo: number;
   postTime: string;
   status: string;
-  runners: { horseNo: number; name: string }[];
+  /** nameZh = HKJC Traditional Chinese name (GraphQL name_ch); null when not recorded. */
+  runners: { horseNo: number; name: string; nameZh: string | null }[];
   points: SeriesPoint[];
   results: { horseNo: number; finishPos: number | null; sp: number | null }[];
   dividends?: { pool: string; comb: string; div: number }[]; // official, HK$ per $10

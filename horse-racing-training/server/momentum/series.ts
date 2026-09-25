@@ -26,7 +26,7 @@ export function raceSeries(repo: Repo, raceId: string): RaceSeries | null {
     raceNo: race.race_no,
     postTime: race.post_time,
     status: race.status,
-    runners: repo.runners(raceId).map((r) => ({ horseNo: r.horse_no, name: r.name })),
+    runners: repo.runners(raceId).map((r) => ({ horseNo: r.horse_no, name: r.name, nameZh: r.name_zh })),
     points,
     results: repo.results(raceId).map((r) => ({ horseNo: r.horse_no, finishPos: r.finish_pos, sp: r.sp_win })),
     dividends: repo.dividends(raceId).map((d) => ({ pool: d.pool, comb: d.win_comb, div: d.dividend })),

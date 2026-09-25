@@ -10,7 +10,7 @@ const horse = (mc: number, mkt: number, fin: number, wOdds = 0, pOdds = 0, trip 
 
 const race = (h: HorseRow[], extra: Partial<AnalyzerRace> = {}): AnalyzerRace => ({
   d: "2026-01-01", v: "ST", r: 1, c: "Class 4", dist: 1200, n: h.length, ad: 10, c8: 3, sp: 0, gp: 2,
-  tn: "A", tnum: 1, tj: "", td: 0, dd: 0, ddl: [], h, ...extra,
+  tn: "A", tnum: 1, tc: "HK_2020_A001", tj: "", tjc: "", td: 0, dd: 0, ddl: [], h, ...extra,
 });
 
 describe("trioCombos", () => {

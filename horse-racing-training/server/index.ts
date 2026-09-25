@@ -4,6 +4,7 @@ import { fileURLToPath } from "url";
 import { existsSync } from "fs";
 import { api } from "./routes";
 import { momentum } from "./momentum/service";
+import { names } from "./names/service";
 
 const app = express();
 app.use(express.json());
@@ -20,4 +21,13 @@ const PORT = Number(process.env.PORT) || 8787;
 app.listen(PORT, () => {
   console.log(`[bet-trainer] API on http://localhost:${PORT}`);
   if (process.env.MOMENTUM_POLLER !== "0") momentum().poller.start(Number(process.env.MOMENTUM_INTERVAL_S) || 30);
+  // Chinese names: after boot, seed English and queue everything missing/stale (throttled, 1 page/s).
+  if (process.env.NAMES_REFRESH !== "0")
+    setTimeout(() => {
+      try {
+        names().refresher.sweep();
+      } catch (e) {
+        console.error("[names] sweep failed:", e);
+      }
+    }, 5_000);
 });

@@ -13,9 +13,13 @@ export interface CardHorse {
   currentRating?: number;
 }
 export interface CardJockey {
+  /** HKJC jockey id, e.g. "CJE" */
+  code: string;
   name: string;
 }
 export interface CardTrainer {
+  /** HKJC trainer id, e.g. "EDJ" */
+  code: string;
   name: string;
 }
 export interface CardEntry {
@@ -28,6 +32,8 @@ export interface CardEntry {
   trainer: CardTrainer;
 }
 export interface RaceCard {
+  /** "2026-09-23-HV-1" — the key for this race's display name (/api/names/lookup, kind "race"). */
+  id: string;
   date: string;
   venue: string;
   raceNumber: number;
@@ -50,10 +56,18 @@ export interface FinishEntry {
   winOdds: number;
   jockeyName?: string;
   trainerName?: string;
+  /** On-disk HKJC ids (data/historical). */
+  jockeyId?: string;
+  trainerId?: string;
+  /** Same ids, as sent by GET /api/result (name lookup keys). */
+  jockeyCode?: string;
+  trainerCode?: string;
   draw?: number;
   finishTime?: number;
 }
 export interface RaceResult {
+  /** "2026-09-23-HV-1"; always set by GET /api/result. */
+  id?: string;
   raceNumber: number;
   class: string;
   distance: number;
