@@ -65,6 +65,21 @@ const MIGRATIONS = [
     PRIMARY KEY (race_id, pool, win_comb)
   ) WITHOUT ROWID;
   `,
+  // v4: display names in Traditional Chinese (see server/names). Append-only: one row per fetch,
+  // the newest row per (kind, code) is current.
+  `
+  CREATE TABLE entity_names (
+    id         INTEGER PRIMARY KEY,
+    kind       TEXT NOT NULL CHECK (kind IN ('horse', 'jockey', 'trainer', 'race')),
+    code       TEXT NOT NULL,              -- HK_2024_K580 | CJE | EDJ | 2026-09-23-HV-1
+    name_en    TEXT,
+    name_zh    TEXT,
+    source     TEXT NOT NULL,              -- results-page | profile-page | data-file
+    fetched_at TEXT NOT NULL               -- ISO-8601 UTC
+  );
+  CREATE INDEX ix_entity_names_lookup ON entity_names (kind, code, fetched_at DESC);
+  ALTER TABLE runners ADD COLUMN name_zh TEXT;  -- GraphQL name_ch
+  `,
 ];
 
 export function openDb(file = process.env.MOMENTUM_DB || defaultPath()): DB {
@@ -105,8 +120,8 @@ export function repo(db: DB) {
     VALUES (@race_id, @date, @venue, @race_no, @post_time, @hkjc_status)
     ON CONFLICT(race_id) DO UPDATE SET post_time = excluded.post_time, hkjc_status = excluded.hkjc_status`);
   const upsertRunner = db.prepare(`
-    INSERT INTO runners (race_id, horse_no, name) VALUES (?, ?, ?)
-    ON CONFLICT DO UPDATE SET name = excluded.name`);
+    INSERT INTO runners (race_id, horse_no, name, name_zh) VALUES (?, ?, ?, ?)
+    ON CONFLICT DO UPDATE SET name = excluded.name, name_zh = COALESCE(excluded.name_zh, name_zh)`);
   const insSnap = db.prepare(`
     INSERT INTO snapshots (race_id, fetched_at, responded_at, hkjc_updated_at, secs_to_post, win_pool, pla_pool)
     VALUES (?, ?, ?, ?, ?, ?, ?)`);
@@ -117,8 +132,8 @@ export function repo(db: DB) {
 
   return {
     upsertRace: (r: Omit<RaceRow, "status" | "settled_at">) => upsertRace.run(r),
-    upsertRunners: db.transaction((id: string, rs: { horseNo: number; name: string }[]) => {
-      for (const r of rs) upsertRunner.run(id, r.horseNo, r.name);
+    upsertRunners: db.transaction((id: string, rs: { horseNo: number; name: string; nameZh?: string | null }[]) => {
+      for (const r of rs) upsertRunner.run(id, r.horseNo, r.name, r.nameZh ?? null);
     }),
     setStatus: (id: string, status: RaceRow["status"]) =>
       db
@@ -195,9 +210,10 @@ export function repo(db: DB) {
         pla_odds: number | null;
       }[],
     runners: (id: string) =>
-      db.prepare(`SELECT horse_no, name FROM runners WHERE race_id = ? ORDER BY horse_no`).all(id) as {
+      db.prepare(`SELECT horse_no, name, name_zh FROM runners WHERE race_id = ? ORDER BY horse_no`).all(id) as {
         horse_no: number;
         name: string;
+        name_zh: string | null;
       }[],
     results: (id: string) =>
       db.prepare(`SELECT horse_no, finish_pos, sp_win FROM results WHERE race_id = ?`).all(id) as {
