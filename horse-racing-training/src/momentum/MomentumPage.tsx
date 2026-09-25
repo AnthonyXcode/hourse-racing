@@ -220,6 +220,7 @@ function LivePanel({ date, isToday }: { date: string; isToday: boolean }) {
         </nav>
       )}
 
+      {race && series && <SuggestedPicks model={modelHere} series={series} focus={focus} onFocus={setFocus} className="mb-4" />}
       {race && series && (
         <div className={gridLive}>
           <div className="flex min-w-0 flex-col gap-4">
@@ -247,7 +248,6 @@ function LivePanel({ date, isToday }: { date: string; isToday: boolean }) {
           />
         </div>
       )}
-      {race && series && <SuggestedPicks model={modelHere} series={series} focus={focus} onFocus={setFocus} />}
       {race && series && series.points.length > 0 && <RecordsTable series={series} model={modelHere} />}
       {today && !races.length && (
         <div className={cx(panel, empty)}>
@@ -346,7 +346,7 @@ function PickChip({ horseNo, name, odds, detail, both, fin, focus, onFocus }: {
   );
 }
 
-/** Full-width section under the chart + movers: the picks (left) and how they did (right on lg). */
+/** Full-width section above the chart + movers: the picks (left) and how they did (right on lg). */
 function SuggestedPicks({ model, series, focus, onFocus, className }: {
   model: ModelState; series: RaceSeries; focus: number | null; onFocus: (h: number | null) => void; className?: string;
 }) {
@@ -363,7 +363,7 @@ function SuggestedPicks({ model, series, focus, onFocus, className }: {
   const f = (h: number) => (fin.size ? fin.get(h) ?? null : undefined);
 
   return (
-    <section className={cx(panel, "mt-4 grid gap-x-8 lg:grid-cols-2", className)}>
+    <section className={cx(panel, "grid gap-x-8 lg:grid-cols-2", className)}>
       <div className="min-w-0">
       <h3 className={cx(h3, "mb-2")}>{t("picks.title")}</h3>
       <div className={pickRow}>
@@ -522,13 +522,14 @@ function SnapshotModal({ series, model, index, onIndex, onClose }: { series: Rac
             <button className={btn} onClick={onClose} title={t("modal.closeT")} aria-label={t("common:action.close")}>✕</button>
           </div>
         </div>
+        <SuggestedPicks model={model} series={at} focus={focus} onFocus={setFocus} className="mb-4" />
         <div className={gridLive}>
           <div className={panel}>
             <OddsChart series={at} focus={focus} onFocus={setFocus} />
           </div>
           <MoversTable series={at} focus={focus} onFocus={setFocus} stamp={p.winPool ? t("winPoolMeta", { amount: `$${Math.round(p.winPool).toLocaleString()}` }) : undefined} />
         </div>
-        <SuggestedPicks model={model} series={at} focus={focus} onFocus={setFocus} />
+
       </div>
     </div>
   );
