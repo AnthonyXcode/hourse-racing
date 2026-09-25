@@ -188,7 +188,5 @@ export const momentum = {
     last: "Last race",
     title: "Combined picks",
     both: "In both lists",
-    toPost: "{{time}} to post",
-    toPostLabel: "To post",
   },
 } as const;
