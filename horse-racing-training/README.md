@@ -117,99 +117,31 @@ Logs: `pm2 logs horse-racing-training`
 
 ## Data transfer
 
-How data gets into the app, how it stays current, and how to move it to another machine.
+Copy the local SQLite database (`data/momentum.sqlite`) to the server.
 
-### Where it lives
-
-Everything the app serves is in one SQLite file, **`data/momentum.sqlite`** (gitignored).
-Practice-bet history is the one exception: **`history.json`** in this folder.
-
-| Table | Contents | Filled by |
-|-------|----------|-----------|
-| `racecards` | one row per race: the race card JSON (`{ race, winOdds }`) | import, racecard fetch |
-| `meeting_results` | one row per meeting: results + dividends JSON | import, results fetch |
-| `data_docs` | small documents, e.g. `fixtures` (HKJC fixture list) | import, fetch |
-| `races`, `runners`, `snapshots`, `ticks`, `results`, `dividends` | Momentum: race-day odds snapshots and outcomes | odds poller (race days) |
-| `entity_names` | Chinese names of horses, jockeys, trainers and races | names refresher |
-| `fetch_runs` | log of every scheduled / manual fetch | fetch job |
-
-The schema is created and migrated automatically on first start (`PRAGMA user_version`).
-The JSON in `racecards` / `meeting_results` has exactly the shape of the old files (see
-`shared/types.ts`), so nothing downstream depends on where it came from.
-
-### 1. One-time import from the parent repo's files
-
-Copies `../data/racecards/*.json`, `../data/historical/results_*.json` and
-`../data/historical/fixtures.json` into the database:
+**1. Back up locally** — safe while the app is running (the DB uses WAL, so don't `cp` the live file):
 
 ```bash
-npm run data:import                      # from ../data (default)
-npm run data:import -- --dir /path/to/data   # any folder with racecards/ and historical/
-```
-
-It is idempotent — re-running only rewrites documents whose content changed — so it is also
-the way to push in files produced by the parent repo's own CLI tools. After the import the app
-no longer reads those folders.
-
-### 2. Keeping it current: the scheduled fetch
-
-With **`DATA_FETCH=1`** in `.env` the server fetches from HKJC every 2 hours between
-**08:00 and 00:00 Hong Kong time** (08, 10, … 22, 00). If it starts inside that window and the
-last successful run is over 2 hours old, it runs once immediately. Runs never overlap.
-
-Each run:
-- **Results** — meetings from the last 14 days with no results yet (and today's / yesterday's
-  if incomplete), scraped with the parent repo's `HistoricalScraper` plus Double/Triple Trio
-  dividends, written straight to `meeting_results`.
-- **Race cards** — local meetings (ST / HV) from today to 2 days ahead, races not yet started,
-  scraped with the parent repo's race card scraper and enrichers, written to `racecards`.
-  Upcoming meetings come from HKJC's live meeting list; overseas simulcasts are ignored.
-
-Requirements: the parent repo checked out at `..` (its `src/` scrapers are imported) and
-Playwright's Chromium installed there (`cd .. && npx playwright install chromium`).
-`DATA_FETCH` is read at startup, so restart the server after changing it. Leave it off on
-development copies — `npm run dev` restarts on every save and would interrupt scrapes.
-
-Manual runs (same code path, logged in `fetch_runs`):
-
-```bash
-npm run data:fetch -- --dry-run --discover     # show what would be fetched; no scraping
-npm run data:fetch                             # results + race cards now
-npm run data:fetch -- --cards-only --date=2026-09-27 --venue=ST   # one meeting's race cards
-npm run data:fetch -- --results-only --since=2026-09-01           # widen the results window
-```
-
-Status: `GET /api/data/status` → whether a run is in progress, the next run time, the last 10 runs.
-
-### 3. Other background data
-
-- **Odds (Momentum)** — on race days the server polls HKJC every 30 s from 30 min before each
-  race (`MOMENTUM_POLLER`, `MOMENTUM_INTERVAL_S`, `MOMENTUM_WINDOW_MIN`). Only while the server runs.
-- **Chinese names** — refreshed in the background, one HKJC page per second, and again when a
-  record is over 7 days old (`NAMES_REFRESH=0` turns it off, `NAME_TTL_DAYS` changes the age).
-  First fill on a new database: `npm run names:backfill` (about 15 min; resumable;
-  `-- --limit N` for a trial run).
-
-### 4. Moving the data to another machine
-
-The database runs in WAL mode, so a plain copy of `momentum.sqlite` while the server is running
-can miss recent writes. Either stop the server first and copy all three files
-(`momentum.sqlite`, `-wal`, `-shm`), or take an online backup:
-
-```bash
-# on the old machine (server may keep running)
 sqlite3 data/momentum.sqlite ".backup 'momentum-backup.sqlite'"
-cp history.json history-backup.json
-
-# on the new machine, with the server stopped
-cp momentum-backup.sqlite data/momentum.sqlite
-cp history-backup.json history.json
 ```
 
-Then start the server as usual; missing migrations are applied on start. Alternatively start
-from an empty database and rebuild it: `npm run data:import` (race cards + results from the
-parent repo's files), `npm run names:backfill` (Chinese names) and `DATA_FETCH=1` for anything
-newer. Momentum odds history can't be rebuilt — it only exists in the database it was recorded in.
+**2. Copy to the server:**
+
+```bash
+scp momentum-backup.sqlite user@server:/path/to/horse-racing-training/data/
+```
+
+**3. On the server, swap it in and restart:**
+
+```bash
+cd /path/to/horse-racing-training
+pm2 stop horse-racing-training
+mv data/momentum-backup.sqlite data/momentum.sqlite
+rm -f data/momentum.sqlite-wal data/momentum.sqlite-shm
+pm2 start horse-racing-training
+```
+
+Missing schema migrations are applied automatically on start.
 
 ## Bet types
 
