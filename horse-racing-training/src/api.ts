@@ -33,7 +33,7 @@ export interface MomentumDay {
 
 export type NameKind = "horse" | "jockey" | "trainer" | "race";
 export interface NameLookup {
-  names: Record<string, { en: string | null; zh: string | null; fetchedAt: string }>;
+  names: Record<string, { en: string | null; zh: string | null; fetchedAt: string | null }>;
   pending: string[];
 }
 
