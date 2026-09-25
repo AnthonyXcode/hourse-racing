@@ -27,7 +27,8 @@ const REFRESH_MS = 30_000;
 const moHead = "mb-3 flex flex-wrap items-center gap-x-2 gap-y-1";
 const moMeta = "basis-full text-xs text-ink-3 sm:ml-auto sm:basis-auto";
 /** Chart + donut stack beside the movers from `lg`; one column below. */
-const gridLive = "grid grid-cols-1 items-start gap-4 lg:grid-cols-[minmax(0,1.45fr)_minmax(0,1.1fr)]";
+// Row height comes from the left column; the movers panel (right) fills it and scrolls inside.
+const gridLive = "grid grid-cols-1 items-stretch gap-4 lg:grid-cols-[minmax(0,1.45fr)_minmax(0,1.1fr)]";
 /** Suggested-pick row: label above the chips on phones, beside them from `sm`. */
 const pickRow = "flex flex-col gap-1.5 py-1.5 sm:flex-row sm:items-baseline sm:gap-3";
 const pickLbl = "text-xs text-ink-2 sm:w-[118px] sm:flex-none";
@@ -240,13 +241,13 @@ function LivePanel({ date, isToday }: { date: string; isToday: boolean }) {
 
           <MoversTable
             series={series}
-            model={modelHere}
             focus={focus}
             onFocus={setFocus}
             stamp={lastPt && <span title={lastPt.fetchedAt}>{t("lastUpdate", { time: f.clock(lastPt.fetchedAt), ago: f.ago(lastPt.fetchedAt, now) })}</span>}
           />
         </div>
       )}
+      {race && series && <SuggestedPicks model={modelHere} series={series} focus={focus} onFocus={setFocus} />}
       {race && series && series.points.length > 0 && <RecordsTable series={series} model={modelHere} />}
       {today && !races.length && (
         <div className={cx(panel, empty)}>
@@ -262,7 +263,8 @@ function LivePanel({ date, isToday }: { date: string; isToday: boolean }) {
 /** Per-horse moves up to the series' last snapshot. Click a header to sort. */
 type ModelState = { ranks: ModelRank[] | null; error?: string } | null;
 
-function MoversTable({ series, model, focus, onFocus, stamp }: { series: RaceSeries; model: ModelState; focus: number | null; onFocus: (h: number | null) => void; stamp?: ReactNode }) {
+/** On lg the panel is pinned to its grid cell, so it is exactly as tall as the chart column and the table scrolls. */
+function MoversTable({ series, focus, onFocus, stamp }: { series: RaceSeries; focus: number | null; onFocus: (h: number | null) => void; stamp?: ReactNode }) {
   const { t } = useTranslation(["momentum", "common"]);
   const nameOf = useRunnerNames(series);
   const sort = useSort<MoverKey>("momentum", -1);
@@ -274,12 +276,13 @@ function MoversTable({ series, model, focus, onFocus, stamp }: { series: RaceSer
   );
 
   return (
-    <div className={panel}>
+    <div className="min-w-0 lg:relative">
+    <div className={cx(panel, "flex flex-col lg:absolute lg:inset-0")}>
       <div className={moHead}>
         <h3 className={cx(h3, "mb-0")}>{t("movers.title")}</h3>
         {stamp && <span className={moMeta}>{stamp}</span>}
       </div>
-      <div className={scroll}>
+      <div className="min-h-0 flex-1 overflow-auto">
       <table
         className={cx(
           table,
@@ -316,7 +319,7 @@ function MoversTable({ series, model, focus, onFocus, stamp }: { series: RaceSer
       </table>
       </div>
       <div className={note}>{t("movers.note")}</div>
-      <SuggestedPicks model={model} series={series} mv={all} fin={fin} focus={focus} onFocus={onFocus} />
+    </div>
     </div>
   );
 }
@@ -343,10 +346,13 @@ function PickChip({ horseNo, name, odds, detail, both, fin, focus, onFocus }: {
   );
 }
 
-function SuggestedPicks({ model, series, mv, fin, focus, onFocus }: {
-  model: ModelState; series: RaceSeries; mv: Mover[]; fin: Map<number, number | null>; focus: number | null; onFocus: (h: number | null) => void;
+/** Full-width section under the chart + movers: the picks (left) and how they did (right on lg). */
+function SuggestedPicks({ model, series, focus, onFocus, className }: {
+  model: ModelState; series: RaceSeries; focus: number | null; onFocus: (h: number | null) => void; className?: string;
 }) {
   const { t } = useTranslation(["momentum", "common"]);
+  const mv = useMemo(() => movers(series), [series]);
+  const fin = useMemo(() => new Map(series.results.map((r) => [r.horseNo, r.finishPos])), [series.results]);
   const nameOf = useRunnerNames(series);
   const picks = suggestPicks(model?.ranks ?? [], mv);
   const result = pickResults(picks, series.results, series.dividends);
@@ -357,7 +363,8 @@ function SuggestedPicks({ model, series, mv, fin, focus, onFocus }: {
   const f = (h: number) => (fin.size ? fin.get(h) ?? null : undefined);
 
   return (
-    <div className="mt-5 border-t border-edge pt-4">
+    <section className={cx(panel, "mt-4 grid gap-x-8 lg:grid-cols-2", className)}>
+      <div className="min-w-0">
       <h3 className={cx(h3, "mb-2")}>{t("picks.title")}</h3>
       <div className={pickRow}>
         <span className={pickLbl}>{t("picks.modelTop", { n: MODEL_PICKS })}</span>
@@ -399,7 +406,8 @@ function SuggestedPicks({ model, series, mv, fin, focus, onFocus }: {
           </span>
         </div>
       )}
-      <div className="mt-4 border-t border-edge pt-4">
+      </div>
+      <div className="mt-4 min-w-0 border-t border-edge pt-4 lg:mt-0 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-8">
         <h3 className={cx(h3, "mb-2")}>{t("result.title")}</h3>
         {!result ? (
           <span className={dim}>{off ? t("result.waiting") : t("result.after")}</span>
@@ -473,8 +481,8 @@ function SuggestedPicks({ model, series, mv, fin, focus, onFocus }: {
           </>
         )}
       </div>
-      <div className={note}>{t("picks.note")}</div>
-    </div>
+      <div className={cx(note, "lg:col-span-2")}>{t("picks.note")}</div>
+    </section>
   );
 }
 
@@ -518,8 +526,9 @@ function SnapshotModal({ series, model, index, onIndex, onClose }: { series: Rac
           <div className={panel}>
             <OddsChart series={at} focus={focus} onFocus={setFocus} />
           </div>
-          <MoversTable series={at} model={model} focus={focus} onFocus={setFocus} stamp={p.winPool ? t("winPoolMeta", { amount: `$${Math.round(p.winPool).toLocaleString()}` }) : undefined} />
+          <MoversTable series={at} focus={focus} onFocus={setFocus} stamp={p.winPool ? t("winPoolMeta", { amount: `$${Math.round(p.winPool).toLocaleString()}` }) : undefined} />
         </div>
+        <SuggestedPicks model={model} series={at} focus={focus} onFocus={setFocus} />
       </div>
     </div>
   );
