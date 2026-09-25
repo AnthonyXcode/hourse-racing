@@ -2,7 +2,7 @@
 // TODO before launch: replace every [placeholder] with the real legal entity and contacts.
 export const SITE = {
   /** Registered legal entity that operates the service. */
-  company: "[Company Name] Limited",
+  company: "9.31 PLATFORM Company",
   /** Support / privacy / refund contact. */
   email: "[support@your-domain.com]",
   /** Registered office address. */
