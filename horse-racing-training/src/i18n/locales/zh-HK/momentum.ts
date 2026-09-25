@@ -189,5 +189,6 @@ export const momentum: Shape<typeof En> = {
     upcoming: "下一場",
     last: "上一場",
     title: "合併精選",
+    both: "同時在兩份名單",
   },
 };

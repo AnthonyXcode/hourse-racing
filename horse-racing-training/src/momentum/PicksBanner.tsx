@@ -6,18 +6,24 @@ import { AnimatePresence, motion } from "motion/react";
 import { useTranslation } from "react-i18next";
 import { api } from "../api";
 import type { Highlight } from "../../shared/momentum/model";
-import { useFmt } from "../i18n/useLanguage";
+import { useLanguage } from "../i18n/useLanguage";
 import { container, cx } from "../kit";
 import { viewHref } from "../LegalPages";
 
 const REFRESH_MS = 60_000;
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+/** "23 Sep(9)" / "9月23日(9)" — date (YYYY-MM-DD) and race number in one token. */
+const dayRace = (date: string, raceNo: number, lang: string) => {
+  const m = Number(date.slice(5, 7)), d = Number(date.slice(8, 10));
+  return lang === "en" ? `${d} ${MONTHS[m - 1]}(${raceNo})` : `${m}月${d}日(${raceNo})`;
+};
 const EASE = [0.2, 0, 0, 1] as const;
 const list = { hidden: {}, show: { transition: { staggerChildren: 0.04, delayChildren: 0.1 } } };
 const item = { hidden: { opacity: 0, y: 4 }, show: { opacity: 1, y: 0, transition: { duration: 0.22, ease: EASE } } };
 
 export function PicksBanner({ onSelect, linked }: { onSelect: (v: string) => void; linked: boolean }) {
   const { t } = useTranslation(["momentum", "common"]);
-  const fmt = useFmt();
+  const { lang } = useLanguage();
   const [h, setH] = useState<Highlight | null>(null);
 
   useEffect(() => {
@@ -71,21 +77,31 @@ export function PicksBanner({ onSelect, linked }: { onSelect: (v: string) => voi
                     <span className="relative size-1.5 rounded-full bg-accent" />
                   </span>
                 )}
-                <span className="flex-none tabular-nums">{fmt.date(`${h.race.date}T12:00:00+08:00`, { month: "short", day: "numeric" })}</span>
-                <span className="flex-none font-semibold text-ink">{t("common:race", { n: h.race.raceNo })}</span>
-                <motion.span className="flex min-w-0 items-center gap-1 overflow-hidden" variants={list} initial="hidden" animate="show">
-                  {h.picks.map((p) => (
-                    <motion.span
-                      key={p.horseNo}
-                      variants={item}
-                      className={cx(
-                        "inline-flex h-5 min-w-5 flex-none items-center justify-center rounded-full px-1 text-[11px] font-semibold tabular-nums",
-                        p.finishPos != null && p.finishPos <= 3 ? "bg-good text-white" : "bg-surface text-ink shadow-btn"
-                      )}
-                    >
-                      {p.horseNo}
-                    </motion.span>
-                  ))}
+                <span className="flex-none font-semibold text-ink tabular-nums">{dayRace(h.race.date, h.race.raceNo, lang)}</span>
+                <motion.span className="flex min-w-0 items-center gap-1 overflow-hidden p-0.5" variants={list} initial="hidden" animate="show">
+                  {h.picks.map((p) => {
+                    const placed = p.finishPos != null && p.finishPos <= 3;
+                    return (
+                      <motion.span
+                        key={p.horseNo}
+                        variants={item}
+                        title={p.both ? t("banner.both") : undefined}
+                        className={cx(
+                          "inline-flex h-5 min-w-5 flex-none items-center justify-center gap-px rounded-full px-1 text-[11px] font-semibold tabular-nums",
+                          placed ? "bg-good text-white" : "bg-surface text-ink shadow-btn",
+                          p.both && "px-1.5 ring-1 ring-accent"
+                        )}
+                      >
+                        {p.horseNo}
+                        {/* ★ = in both the model and the market-move lists, as on the Momentum page */}
+                        {p.both && (
+                          <span aria-label={t("banner.both")} className={cx("text-[9px] leading-none", placed ? "text-white" : "text-accent")}>
+                            ★
+                          </span>
+                        )}
+                      </motion.span>
+                    );
+                  })}
                 </motion.span>
               </motion.span>
             </AnimatePresence>

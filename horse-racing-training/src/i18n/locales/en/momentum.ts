@@ -187,5 +187,6 @@ export const momentum = {
     upcoming: "Next race",
     last: "Last race",
     title: "Combined picks",
+    both: "In both lists",
   },
 } as const;
