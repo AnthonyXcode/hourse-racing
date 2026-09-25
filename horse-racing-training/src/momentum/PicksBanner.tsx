@@ -29,7 +29,7 @@ function GradientFlow() {
       <motion.div
         className="absolute inset-y-0 left-0 w-[200%] bg-[linear-gradient(90deg,#ffffff_0%,#86a6f2_25%,#ffffff_50%,#86a6f2_75%,#ffffff_100%)]"
         animate={{ x: ["0%", "-50%"] }}
-        transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
+        transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
       />
     </div>
   );
