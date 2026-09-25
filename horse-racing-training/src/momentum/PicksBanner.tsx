@@ -88,7 +88,7 @@ export function PicksBanner({ onSelect, linked }: { onSelect: (v: string) => voi
       {h && h.picks.length > 0 && (
         <motion.div
           key="picks-strip"
-          className="relative overflow-hidden bg-accent"
+          className="relative overflow-hidden bg-[#2f6bef]"
           initial={{ height: 0, opacity: 0 }}
           animate={{ height: "auto", opacity: 1 }}
           exit={{ height: 0, opacity: 0 }}
