@@ -2,18 +2,17 @@
 // simulator over every saved racecard in a date range and pairs each horse's
 // prediction with its actual result. Aggregation happens client-side.
 //
-// Per-race output is cached in memory, keyed by racecard + results mtimes, so
-// widening or re-running a range only simulates races not seen before.
-import { readdirSync, statSync } from "fs";
+// Racecards and results come from the DB. Per-race output is cached in memory, keyed by the card and
+// results rows' updated_at, so widening or re-running a range only simulates races not seen before.
 import path from "path";
 import { fileURLToPath } from "url";
-import { DATA_DIR, cardPath, resultPath, readJson } from "./dataIndex";
+import { races as raceDb } from "./dataIndex";
+import { buildRace } from "./data/raceBuilder";
+import type { CardDoc } from "./data/raceStore";
 import type { RaceResult } from "../shared/types";
 import type { AnalyzerPayload, AnalyzerRace, HorseRow } from "../shared/analyzer/model";
 
 export const MC_RUNS = 5000;
-const CARD_DIR = path.join(DATA_DIR, "racecards");
-const CARD_RE = /^racecard_(\d{8})_(ST|HV)_R(\d+)\.json$/;
 const MIN_RUNNERS = 6;
 
 // ---- Parent-repo engine, loaded at runtime ----
@@ -31,7 +30,6 @@ interface Race {
   entries: Entry[];
 }
 interface Engine {
-  loadRaceCard(file: string): Promise<{ race: Race; winOddsMap: Map<number, number> } | null>;
   isSparseFormEntry(e: Entry): boolean;
   tripRunCount(e: Entry | undefined, distance: number): number;
   analyzeRace(race: Race): { horseCode: string; overallRating: number }[];
@@ -52,7 +50,6 @@ function engine(): Promise<Engine> {
       load("simulation/monteCarlo.ts"),
     ]);
     return {
-      loadRaceCard: bt.loadRaceCard,
       isSparseFormEntry: bt.isSparseFormEntry,
       tripRunCount: bt.tripRunCount,
       analyzeRace: (race) => new fa.FormAnalyzer().analyzeRace(race),
@@ -92,18 +89,12 @@ function withSeed<T>(key: string, fn: () => T): T {
 
 const r2 = (n: number) => Math.round(n * 100) / 100;
 const r4 = (n: number) => Math.round(n * 10000) / 10000;
-const mtime = (p: string) => {
-  try {
-    return statSync(p).mtimeMs;
-  } catch {
-    return 0;
-  }
-};
 
 // ---- One race ----
 async function analyzeOne(
   eng: Engine,
-  file: string,
+  seedKey: string,
+  doc: CardDoc,
   date: string,
   venue: "ST" | "HV",
   rn: number,
@@ -113,13 +104,13 @@ async function analyzeOne(
   const order = result?.finishOrder ?? [];
   if (order.length === 0) return null;
 
-  const loaded = await eng.loadRaceCard(path.join(CARD_DIR, file));
+  const loaded = buildRace<Race>(doc);
   if (!loaded) return null;
   const { race, winOddsMap } = loaded;
   const active = race.entries.filter((e) => !e.isScratched && e.horseNumber > 0);
   if (active.length < MIN_RUNNERS) return null;
 
-  const { analyses, mc } = withSeed(file, () => ({
+  const { analyses, mc } = withSeed(seedKey, () => ({
     analyses: eng.analyzeRace(race),
     mc: eng.simulateRace(race, venue).filter((r) => r.horseNumber > 0),
   }));
@@ -206,25 +197,24 @@ const cache = new Map<string, { stamp: string; race: AnalyzerRace | null }>();
 /** from/to are YYYY-MM-DD, inclusive. */
 export async function runAnalyzer(from: string, to: string): Promise<AnalyzerPayload> {
   const eng = await engine();
-  const lo = from.replaceAll("-", ""), hi = to.replaceAll("-", "");
-  const files = readdirSync(CARD_DIR)
-    .map((f) => ({ f, m: CARD_RE.exec(f) }))
-    .filter((x): x is { f: string; m: RegExpExecArray } => !!x.m && x.m[1]! >= lo && x.m[1]! <= hi)
-    .sort((a, b) => a.m[1]!.localeCompare(b.m[1]!) || a.m[2]!.localeCompare(b.m[2]!) || Number(a.m[3]) - Number(b.m[3]));
+  const db = raceDb();
+  const cards = db.cardsInRange(from, to); // date, venue, race order
+  const resultStamp = new Map(db.resultMeetings().map((m) => [`${m.date}_${m.venue}`, m.updatedAt]));
 
   const resultsByMeeting = new Map<string, RaceResult[]>();
   const races: AnalyzerRace[] = [];
   let computed = 0;
-  for (const { f, m } of files) {
-    const [, date, venue, rn] = m as unknown as [string, string, "ST" | "HV", string];
-    const rp = resultPath(date, venue);
-    const stamp = `${mtime(cardPath(date, venue, Number(rn)))}:${mtime(rp)}`;
-    let hit = cache.get(f);
+  for (const { key, doc, updatedAt } of cards) {
+    const date = key.date.replaceAll("-", ""); // YYYYMMDD, as the per-race output and seed expect
+    // Seed = the old racecard file name, so predictions stay identical to the file-based version.
+    const seedKey = `racecard_${date}_${key.venue}_R${key.raceNo}.json`;
+    const meeting = `${key.date}_${key.venue}`;
+    const stamp = `${updatedAt}:${resultStamp.get(meeting) ?? ""}`;
+    let hit = cache.get(seedKey);
     if (!hit || hit.stamp !== stamp) {
-      const key = `${date}_${venue}`;
-      if (!resultsByMeeting.has(key)) resultsByMeeting.set(key, readJson<RaceResult[]>(rp) ?? []);
-      hit = { stamp, race: await analyzeOne(eng, f, date, venue, Number(rn), resultsByMeeting.get(key)!) };
-      cache.set(f, hit);
+      if (!resultsByMeeting.has(meeting)) resultsByMeeting.set(meeting, db.results<RaceResult>({ date: key.date, venue: key.venue }) ?? []);
+      hit = { stamp, race: await analyzeOne(eng, seedKey, doc, date, key.venue, key.raceNo, resultsByMeeting.get(meeting)!) };
+      cache.set(seedKey, hit);
       // Yield between simulations so the server stays responsive during a long run.
       if (++computed % 10 === 0) await new Promise((r) => setImmediate(r));
     }

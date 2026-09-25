@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getManifest, cardPath, resultPath, readJson } from "./dataIndex";
+import { getManifest, readCard, readResults } from "./dataIndex";
 import { settle } from "../shared/betEngine/index";
 import { readHistory, addEntry, deleteEntry, clearHistory } from "./history";
 import { runAnalyzer } from "./analyzer";
@@ -18,7 +18,6 @@ import type {
   SettleRequest,
   SettleResult,
   HistoryEntry,
-  Venue,
 } from "../shared/types";
 
 export const api = Router();
@@ -61,7 +60,7 @@ api.get("/meeting/:date/:venue", (req, res) => {
 
   // Collect ALL distinct DT/TT pools (each pool is stored on every one of its legs).
   const uniquePools = (legsOf: (r: RaceResult) => number[] | undefined): number[][] => {
-    const results = readJson<RaceResult[]>(resultPath(date!, venue!)) ?? [];
+    const results = readResults(date!, venue!) ?? [];
     const seen = new Map<string, number[]>();
     for (const r of results) {
       const legs = legsOf(r);
@@ -83,13 +82,11 @@ api.get("/meeting/:date/:venue", (req, res) => {
  *  falling back to the race card's forecast odds. */
 api.get("/race/:date/:venue/:rn", (req, res) => {
   const { date, venue, rn } = req.params;
-  const raw = readJson<{ race: Omit<RaceCard, "winOdds">; winOdds: Record<string, number> }>(
-    cardPath(date!, venue!, Number(rn))
-  );
+  const raw = readCard(date!, venue!, Number(rn)) as { race: Omit<RaceCard, "winOdds">; winOdds?: Record<string, number> } | null;
   if (!raw) return res.status(404).json({ error: "race card not found" });
 
   const winOdds: Record<string, number> = { ...(raw.winOdds ?? {}) };
-  const results = readJson<RaceResult[]>(resultPath(date!, venue!));
+  const results = readResults(date!, venue!);
   const finish = results?.find((r) => r.raceNumber === Number(rn))?.finishOrder;
   if (finish) {
     for (const f of finish) {
@@ -105,7 +102,7 @@ api.get("/race/:date/:venue/:rn", (req, res) => {
  *  with the meeting's Double/Triple Trio legs+dividend merged on. */
 api.get("/result/:date/:venue/:rn", (req, res) => {
   const { date, venue, rn } = req.params;
-  const results = readJson<RaceResult[]>(resultPath(date!, venue!));
+  const results = readResults(date!, venue!);
   if (!results) return res.status(404).json({ error: "no results for this meeting yet" });
   const race = results.find((r) => r.raceNumber === Number(rn));
   if (!race) return res.status(404).json({ error: "race result not found" });
@@ -130,7 +127,7 @@ api.post("/settle", (req, res) => {
   const { date, venue, selection } = req.body as SettleRequest;
   if (!date || !venue || !selection) return res.status(400).json({ error: "missing fields" });
 
-  const results = readJson<RaceResult[]>(resultPath(date, venue as Venue));
+  const results = readResults(date, venue);
   if (!results) return res.status(404).json({ error: "no results for this meeting yet" });
 
   const byRace = new Map<number, RaceResult>(results.map((r) => [r.raceNumber, r]));

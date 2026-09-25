@@ -1,15 +1,10 @@
 // Every race / horse / jockey / trainer code the app can show, with its English name and the newest
 // race (with a results page) it appears in — which is the page the refresher reads to get its
-// Chinese name. Built from the parent repo's data files, rebuilt when either data dir changes.
+// Chinese name. Built from the racecards / meeting_results tables, rebuilt when either changes.
 // Only meetings with saved racecards count: those are the only ones the app displays.
-import { readdirSync, statSync } from "fs";
-import path from "path";
-import { DATA_DIR, readJson } from "../dataIndex";
+import { races } from "../dataIndex";
+import type { RaceStore } from "../data/raceStore";
 import { keyOf, type Kind, type NameKey } from "./store";
-
-const CARD_DIR = path.join(DATA_DIR, "racecards");
-const RESULT_DIR = path.join(DATA_DIR, "historical");
-const CARD_RE = /^racecard_(\d{4})(\d{2})(\d{2})_(ST|HV)_R(\d+)\.json$/;
 
 interface CardFile {
   race: {
@@ -34,24 +29,17 @@ export interface NameIndex {
   keys: NameKey[];
 }
 
-let cache: { mtime: number; index: NameIndex } | null = null;
-
-const mtimeOf = (dir: string) => {
-  try {
-    return statSync(dir).mtimeMs;
-  } catch {
-    return 0;
-  }
-};
+let cache: { version: string; index: NameIndex } | null = null;
 
 export function getNameIndex(): NameIndex {
-  const mtime = mtimeOf(CARD_DIR) + mtimeOf(RESULT_DIR);
-  if (cache && cache.mtime === mtime) return cache.index;
-  cache = { mtime, index: buildNameIndex(CARD_DIR, RESULT_DIR) };
+  const store = races();
+  const version = store.version();
+  if (cache && cache.version === version) return cache.index;
+  cache = { version, index: buildNameIndex(store) };
   return cache.index;
 }
 
-export function buildNameIndex(cardDir: string, resultDir: string): NameIndex {
+export function buildNameIndex(store: RaceStore): NameIndex {
   const en = new Map<string, string>();
   const lastRace = new Map<string, string>();
   const raceKeys = new Map<string, NameKey[]>(); // race id → keys (races with results only)
@@ -69,20 +57,19 @@ export function buildNameIndex(cardDir: string, resultDir: string): NameIndex {
   };
 
   // Newest first, so "first seen" = newest for both English names and lastRace.
-  const cards = readdirSync(cardDir)
-    .map((f) => CARD_RE.exec(f))
-    .filter((m): m is RegExpExecArray => !!m)
-    .map((m) => ({ file: m[0], date: `${m[1]}-${m[2]}-${m[3]}`, ymd: `${m[1]}${m[2]}${m[3]}`, venue: m[4]!, rn: Number(m[5]) }))
+  const cards = store
+    .cardsInRange("0000-00-00", "9999-99-99")
+    .map(({ key, doc }) => ({ doc: doc as unknown as CardFile, date: key.date, venue: key.venue, rn: key.raceNo }))
     .sort((a, b) => b.date.localeCompare(a.date) || a.venue.localeCompare(b.venue) || a.rn - b.rn);
 
   const results = new Map<string, ResultFile[] | null>();
   const raceOrder: string[] = [];
   for (const c of cards) {
     const raceId = `${c.date}-${c.venue}-${c.rn}`;
-    const meeting = `${c.ymd}_${c.venue}`;
-    if (!results.has(meeting)) results.set(meeting, readJson<ResultFile[]>(path.join(resultDir, `results_${meeting}.json`)));
+    const meeting = `${c.date}_${c.venue}`;
+    if (!results.has(meeting)) results.set(meeting, store.results<ResultFile>({ date: c.date, venue: c.venue }));
     const result = results.get(meeting)?.find((r) => r.raceNumber === c.rn) ?? null;
-    const card = readJson<CardFile>(path.join(cardDir, c.file));
+    const card = c.doc;
     const onPage = result ? raceId : null; // only races with results have a zh-HK page to read
 
     const covered: NameKey[] = [note("race", raceId, card?.race.name ?? result?.name, null)!];

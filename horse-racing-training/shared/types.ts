@@ -1,5 +1,6 @@
 // Shared types imported by BOTH the Express server and the React client.
-// Mirrors the on-disk shapes in ../../data/racecards and ../../data/historical.
+// Mirrors the racecard / results JSON documents (DB tables racecards and meeting_results — originally
+// the parent repo's data/racecards and data/historical files).
 
 export type Venue = "ST" | "HV";
 
