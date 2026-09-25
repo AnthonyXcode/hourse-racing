@@ -52,8 +52,11 @@ export const pill = (on: boolean) =>
   on
     ? "inline-flex h-9 cursor-pointer items-center justify-center gap-1.5 rounded-full bg-ink px-3.5 text-sm font-medium whitespace-nowrap text-white"
     : "inline-flex h-9 cursor-pointer items-center justify-center gap-1.5 rounded-full bg-surface px-3.5 text-sm font-medium whitespace-nowrap text-ink shadow-btn transition-colors enabled:hover:bg-surface-2 disabled:cursor-not-allowed disabled:opacity-40";
-/** Horizontal strip of pills: wraps on desktop, scrolls sideways on phones. */
-export const pillRow = "-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0 sm:pb-0";
+/**
+ * Horizontal strip of pills: wraps on desktop, scrolls sideways on phones.
+ * The scroll container clips vertically too, so pad it (pt/pb) to keep the pills' 1px outline visible.
+ */
+export const pillRow = "-mx-4 flex gap-2 overflow-x-auto px-4 pt-0.5 pb-1 sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0 sm:pt-0 sm:pb-0";
 /** Date-range / controls bar at the top of a section. */
 export const rangeBar = "grid grid-cols-2 items-end gap-3 rounded-card bg-surface p-4 shadow-card sm:flex sm:flex-wrap sm:p-5";
 /** Meta text inside rangeBar: own row on phones, right-aligned after. */
