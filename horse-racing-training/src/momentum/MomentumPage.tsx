@@ -110,7 +110,7 @@ export function MomentumPage() {
             {options.map((d) => {
               const label = d.upcoming
                 ? t("dayOptionUpcoming", { day: f.day(d.date), venue: g.venue(d.venue), races: tc("races", { count: d.races }) })
-                : t("dayOption", { day: f.day(d.date), venue: g.venue(d.venue), races: tc("races", { count: d.races }), snapshots: d.snapshots.toLocaleString() });
+                : t("dayOption", { day: f.day(d.date), venue: g.venue(d.venue), races: tc("races", { count: d.races }) });
               return (
                 <option key={d.date} value={d.date}>
                   {d.date === today ? t("today", { day: label }) : label}

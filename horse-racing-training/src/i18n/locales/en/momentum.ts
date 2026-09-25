@@ -6,7 +6,7 @@ export const momentum = {
   upcoming: "Upcoming",
   postTimeTbc: "post time on race day",
   dayOptionUpcoming: "{{day}} · {{venue}} · {{races}} · upcoming",
-  dayOption: "{{day}} · {{venue}} · {{races}} · {{snapshots}} snapshots",
+  dayOption: "{{day}} · {{venue}} · {{races}}",
   noDays: "No racing days recorded",
   noDaysYet: "No racing days recorded yet. Recording starts automatically on the next race day.",
   live: "Live",

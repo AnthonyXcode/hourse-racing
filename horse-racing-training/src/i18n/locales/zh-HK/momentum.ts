@@ -9,7 +9,7 @@ export const momentum: Shape<typeof En> = {
   upcoming: "即將舉行",
   postTimeTbc: "開跑時間於賽馬日公佈",
   dayOptionUpcoming: "{{day}} · {{venue}} · {{races}} · 即將舉行",
-  dayOption: "{{day}} · {{venue}} · {{races}} · {{snapshots}} 次快照",
+  dayOption: "{{day}} · {{venue}} · {{races}}",
   noDays: "未有賽馬日紀錄",
   noDaysYet: "暫時未有賽馬日紀錄。下一個賽馬日會自動開始記錄。",
   live: "即時",
