@@ -84,7 +84,7 @@ export const bet: Shape<typeof En> = {
       trip: "首選同程次數 ≥ {{limit}}",
     },
     col: {
-      model: "模型",
+      model: "排名",
       win: "獨贏 %",
       place: "位置 %",
       rating: "評分排名",

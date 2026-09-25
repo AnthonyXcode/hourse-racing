@@ -81,7 +81,7 @@ export const bet = {
       trip: "Top pick trip runs ≥ {{limit}}",
     },
     col: {
-      model: "Model",
+      model: "Rank",
       win: "Win %",
       place: "Place %",
       rating: "Form rank",
