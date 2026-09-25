@@ -9,7 +9,7 @@ import { api } from "../api";
 import { type AnalyzerPayload, type Filters, EMPTY_FILTERS, VENUE_DEFAULTS, applyFilters, isSettled, untouchedPreset } from "../../shared/analyzer/model";
 import { WinPlaceTab } from "./WinPlaceTab";
 import { TrioTab } from "./TrioTab";
-import { Display, btn, btnPrimary, code, control, cx, empty, errorBox, field, fieldLabel, note, page, panel, rangeBar, rangeMeta } from "../kit";
+import { Display, btn, btnPrimary, code, control, dateControl, cx, empty, errorBox, field, fieldLabel, note, page, panel, rangeBar, rangeMeta } from "../kit";
 
 export type AnalyzerTab = "win-place" | "trio";
 
@@ -127,11 +127,11 @@ export function AnalyzerPage({ tab }: { tab: AnalyzerTab }) {
       >
         <div className={field}>
           <label htmlFor="aFrom" className={fieldLabel}>{t("range.from")}</label>
-          <input type="date" id="aFrom" className={cx(control, "w-full")} value={draft.from} max={draft.to} onChange={(e) => setDraft({ ...draft, from: e.target.value })} />
+          <input type="date" id="aFrom" className={dateControl} value={draft.from} max={draft.to} onChange={(e) => setDraft({ ...draft, from: e.target.value })} />
         </div>
         <div className={field}>
           <label htmlFor="aTo" className={fieldLabel}>{t("range.to")}</label>
-          <input type="date" id="aTo" className={cx(control, "w-full")} value={draft.to} min={draft.from} onChange={(e) => setDraft({ ...draft, to: e.target.value })} />
+          <input type="date" id="aTo" className={dateControl} value={draft.to} min={draft.from} onChange={(e) => setDraft({ ...draft, to: e.target.value })} />
         </div>
         <button type="submit" className={cx(btnPrimary, "col-span-2 sm:col-span-1")} disabled={loading || !validDraft || (!dirty && !error)}>
           {loading ? t("range.running") : t("range.run")}

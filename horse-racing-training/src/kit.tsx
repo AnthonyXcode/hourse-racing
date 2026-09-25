@@ -42,7 +42,14 @@ export const field = "flex min-w-0 flex-col gap-1.5";
 export const fieldLabel = "text-xs font-medium text-ink-2";
 /** select / date / search / number input: filled, borderless, 40px tall. */
 export const control =
-  "h-10 min-w-0 rounded-control border-0 bg-surface-2 px-3 text-sm text-ink placeholder:text-ink-3 focus-visible:outline-2 focus-visible:outline-accent";
+  "h-10 min-w-0 rounded-control border-0 bg-surface-2 px-3 text-base text-ink placeholder:text-ink-3 focus-visible:outline-2 focus-visible:outline-accent sm:text-sm"; // 16px on phones: iOS zooms into smaller inputs
+/**
+ * Date input that behaves on iPhone Safari: `appearance-none` so our height/padding/background apply,
+ * block + w-full + min-w-0 so it fits its column, value left-aligned (iOS centres it), and 16px text on
+ * phones so tapping it doesn't zoom the page (iOS zooms any input under 16px).
+ */
+export const dateControl =
+  "block h-10 w-full min-w-0 appearance-none rounded-control border-0 bg-surface-2 px-3 text-base leading-10 text-ink focus-visible:outline-2 focus-visible:outline-accent sm:text-sm [&::-webkit-date-and-time-value]:text-left [&::-webkit-date-and-time-value]:leading-10";
 export const btn =
   "inline-flex h-10 cursor-pointer items-center justify-center gap-1.5 rounded-full bg-surface px-4 text-sm font-medium whitespace-nowrap text-ink shadow-btn transition-colors enabled:hover:bg-surface-2 disabled:cursor-default disabled:opacity-45";
 export const btnPrimary =

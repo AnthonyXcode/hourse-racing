@@ -15,7 +15,7 @@ import { useFmt } from "../i18n/useLanguage";
 import { OddsChart, Swatch, horseStyle, useRunnerNames } from "./OddsChart";
 import { PoolDonut } from "./PoolDonut";
 import {
-  Display, H2, btn, btnPrimary, control, cx, dim, empty, errorBox, field, fieldLabel, figure, grid2, h3, kpis, modal, modalBg, note, page, panel,
+  Display, H2, btn, dateControl, btnPrimary, control, cx, dim, empty, errorBox, field, fieldLabel, figure, grid2, h3, kpis, modal, modalBg, note, page, panel,
   pill, pillRow, rangeBar, rangeMeta, scroll, seg, segBtn, strong, table, tablePad, tablePadTight,
 } from "../kit";
 
@@ -668,11 +668,11 @@ function AnalysisPanel() {
       <form className={rangeBar} onSubmit={(e) => { e.preventDefault(); if (draft.from && draft.to && draft.from <= draft.to) setRange(draft); }}>
         <div className={field}>
           <label htmlFor="mFrom" className={fieldLabel}>{t("analysis.from")}</label>
-          <input type="date" id="mFrom" className={control} value={draft.from} onChange={(e) => setDraft({ ...draft, from: e.target.value })} />
+          <input type="date" id="mFrom" className={dateControl} value={draft.from} onChange={(e) => setDraft({ ...draft, from: e.target.value })} />
         </div>
         <div className={field}>
           <label htmlFor="mTo" className={fieldLabel}>{t("analysis.to")}</label>
-          <input type="date" id="mTo" className={control} value={draft.to} onChange={(e) => setDraft({ ...draft, to: e.target.value })} />
+          <input type="date" id="mTo" className={dateControl} value={draft.to} onChange={(e) => setDraft({ ...draft, to: e.target.value })} />
         </div>
         <button type="submit" className={cx(btnPrimary, "col-span-2 sm:col-span-1")}>{t("common:action.apply")}</button>
         <div className={field}>
