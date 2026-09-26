@@ -102,7 +102,7 @@ export function MomentumPage() {
   return (
     <div className={page}>
       <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-        <Display sub={t("sub")}>{t("title")}</Display>
+        <Display>{t("title")}</Display>
         <div className={cx(field, "w-full sm:w-auto sm:pb-2")}>
           <label htmlFor="mDay" className={fieldLabel}>{t("racingDay")}</label>
           <select id="mDay" className={cx(control, "w-full sm:w-auto sm:min-w-[300px]")} value={date} disabled={!options.length} onChange={(e) => setDay(e.target.value)}>

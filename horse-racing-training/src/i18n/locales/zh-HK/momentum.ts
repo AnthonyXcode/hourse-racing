@@ -3,7 +3,6 @@ import type { momentum as En } from "../en/momentum";
 
 export const momentum: Shape<typeof En> = {
   title: "賠率走勢",
-  sub: "每場賽事開跑前 30 分鐘起，每 30 秒記錄一次獨贏及位置賠率。已完成的賽事會納入下方的命中率分析。",
   racingDay: "賽馬日",
   today: "今日 · {{day}}",
   upcoming: "即將舉行",

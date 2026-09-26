@@ -1,6 +1,5 @@
 export const momentum = {
   title: "Market momentum",
-  sub: "Win and place odds are recorded every 30 s from 30 minutes before each race. Races that have finished feed the hit-rate analysis below.",
   racingDay: "Racing day",
   today: "Today · {{day}}",
   upcoming: "Upcoming",
