@@ -14,12 +14,15 @@ import { useGlossary } from "../i18n/glossary";
 import { useFmt } from "../i18n/useLanguage";
 import { OddsChart, Swatch, horseStyle, useRunnerNames } from "./OddsChart";
 import { PoolDonut } from "./PoolDonut";
+import { DaySummary } from "./DaySummary";
 import {
   Display, H2, btn, dateControl, btnPrimary, control, cx, dim, empty, errorBox, field, fieldLabel, figure, grid2, h3, kpis, modal, modalBg, note, page, panel,
   pill, pillRow, rangeBar, rangeMeta, scroll, seg, segBtn, strong, table, tablePad, tablePadTight,
 } from "../kit";
 
 const REFRESH_MS = 30_000;
+/** Pseudo race id for the racing-day review tab. */
+const SUMMARY = "summary";
 
 // Local class strings for patterns only this page uses.
 /** Panel header row: title left, meta/controls pushed right. */
@@ -168,33 +171,35 @@ function LivePanel({ date, isToday }: { date: string; isToday: boolean }) {
   // Unknown post time (upcoming day, from racecards) counts as still to run, so race 1 is the default there.
   const next = races.find((r) => !r.post_time || Date.parse(r.post_time) > now - 5 * 60_000) ?? races[races.length - 1];
   const selected = raceId || next?.race_id || "";
+  const summary = selected === SUMMARY;
+  const raceSel = summary ? "" : selected; // race-specific loads skip the Summary view
 
   useEffect(() => {
-    if (!selected) return;
+    if (!raceSel) return;
     let live = true;
-    const load = () => api.momentumRace(selected).then((s) => live && setSeries(s)).catch((e) => live && setError(String(e)));
+    const load = () => api.momentumRace(raceSel).then((s) => live && setSeries(s)).catch((e) => live && setError(String(e)));
     load();
     const t = isToday ? setInterval(load, REFRESH_MS) : undefined;
     return () => {
       live = false;
       clearInterval(t);
     };
-  }, [selected, isToday]);
+  }, [raceSel, isToday]);
 
   // Analyzer ranking for the selected race (computed once per race server-side).
   const [model, setModel] = useState<{ raceId: string; ranks: ModelRank[] | null; error?: string } | null>(null);
   useEffect(() => {
-    if (!selected) return;
+    if (!raceSel) return;
     let live = true;
-    setModel({ raceId: selected, ranks: null });
+    setModel({ raceId: raceSel, ranks: null });
     api
-      .momentumPicks(selected)
-      .then((r) => live && setModel({ raceId: selected, ranks: r.ranks }))
-      .catch((e) => live && setModel({ raceId: selected, ranks: null, error: String(e instanceof Error ? e.message : e) }));
+      .momentumPicks(raceSel)
+      .then((r) => live && setModel({ raceId: raceSel, ranks: r.ranks }))
+      .catch((e) => live && setModel({ raceId: raceSel, ranks: null, error: String(e instanceof Error ? e.message : e) }));
     return () => {
       live = false;
     };
-  }, [selected]);
+  }, [raceSel]);
   const modelHere = model?.raceId === selected ? model : null;
 
   const race = races.find((r) => r.race_id === selected);
@@ -221,8 +226,12 @@ function LivePanel({ date, isToday }: { date: string; isToday: boolean }) {
               </button>
             );
           })}
+          <button className={cx(pill(summary), "flex-none")} onClick={() => setRaceId(SUMMARY)} aria-pressed={summary}>
+            {t("summary.tab")}
+          </button>
         </nav>
       )}
+      {summary && <DaySummary date={date} live={isToday} onOpenRace={(id) => setRaceId(id)} />}
 
       {race && series && <SuggestedPicks model={modelHere} series={series} focus={focus} onFocus={setFocus} className="mb-4" />}
       {race && series && (

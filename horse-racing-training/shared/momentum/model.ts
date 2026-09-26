@@ -153,6 +153,30 @@ export interface Highlight {
   placed: { horseNo: number; finishPos: number }[];
 }
 
+/** One race in the racing-day review (Momentum → Summary). */
+export interface DaySummaryRace {
+  raceId: string;
+  raceNo: number;
+  postTime: string | null;
+  /** "result" once a winner is known */
+  status: "pending" | "result";
+  /** first three (dead-heats included) */
+  placed: { horseNo: number; finishPos: number; code: string | null; name: string; nameZh: string | null }[];
+  /** Combined picks (model top N, then market-move picks), as on the race page */
+  picks: { horseNo: number; both: boolean; code: string | null; name: string; nameZh: string | null }[];
+  /** how the Combined list did; null until there is a result */
+  combined: PickHits | null;
+  /** the model's top pick and where it finished (null = no result yet / no ranking) */
+  modelTop: { horseNo: number; finishPos: number | null } | null;
+  /** official Trio dividend per $10 (first one on a dead-heat); null if not posted */
+  trioDiv: number | null;
+}
+export interface DaySummary {
+  date: string;
+  venue: string;
+  races: DaySummaryRace[];
+}
+
 export const TRIO_UNIT = 10; // HK$ per Trio combination; dividends are quoted per $10
 
 /** Number of 3-horse combinations in a box of n horses. */

@@ -6,7 +6,7 @@ export const signed = (v: number) => (Number.isFinite(v) ? (v >= 0 ? "+" : "") +
 /** Tone class for a signed value: green ≥ 0, red < 0. */
 export const cls = (v: number) => (Number.isFinite(v) ? (v >= 0 ? good : bad) : "");
 export const vs = (a: number, b: number) => (a >= b ? good : bad);
-export const money = (v: number) => (Number.isFinite(v) ? "$" + Math.round(v).toLocaleString() : "–");
+export const money = (v: number) => (Number.isFinite(v) ? (v < 0 ? "−$" : "$") + Math.abs(Math.round(v)).toLocaleString() : "–");
 
 export function Kpi({ label, value, sub, tone = "" }: { label: string; value: ReactNode; sub: ReactNode; tone?: string }) {
   return (

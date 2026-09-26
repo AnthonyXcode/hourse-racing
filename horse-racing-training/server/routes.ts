@@ -8,6 +8,7 @@ import { hkDate } from "./momentum/poller";
 import { raceSeries } from "./momentum/series";
 import { modelRanks } from "./momentum/picks";
 import { highlight } from "./momentum/highlight";
+import { daySummary } from "./momentum/daySummary";
 import { cardRaces, cardSeries, parseRaceId, upcomingDays } from "./momentum/upcoming";
 import { horseRows } from "../shared/momentum/model";
 import { names } from "./names/service";
@@ -190,6 +191,19 @@ api.get("/momentum/day", (req, res) => {
     })(),
     poller: poller.state,
   });
+});
+
+/** GET /api/momentum/summary?date=YYYY-MM-DD → racing-day review: each race's Combined picks and how they did. */
+api.get("/momentum/summary", async (req, res) => {
+  const date = String(req.query.date ?? "");
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return res.status(400).json({ error: "date must be YYYY-MM-DD" });
+  try {
+    const s = await daySummary(momentum().repo, date);
+    if (!s) return res.status(404).json({ error: "no races on this day" });
+    res.json(s);
+  } catch (e) {
+    res.status(500).json({ error: String(e instanceof Error ? e.message : e) });
+  }
 });
 
 /** GET /api/momentum/race/:raceId → odds time-series for one race. */
