@@ -12,6 +12,26 @@ export interface CardHorse {
   sex?: string;
   origin?: string;
   currentRating?: number;
+  /** Runs before this race, newest first (the racecard keeps up to 10). */
+  pastPerformances?: PastPerformance[];
+}
+export interface PastPerformance {
+  /** ISO timestamp, e.g. "2026-09-06T00:00:00.000Z" */
+  date: string;
+  /** "Sha Tin" | "Happy Valley" */
+  venue: string;
+  raceNumber: number;
+  raceClass: string;
+  distance: number;
+  surface?: string;
+  going?: string;
+  draw?: number;
+  weight?: number;
+  jockeyCode?: string;
+  finishPosition: number;
+  fieldSize?: number;
+  finishTime?: number;
+  odds?: number;
 }
 export interface CardJockey {
   /** HKJC jockey id, e.g. "CJE" */

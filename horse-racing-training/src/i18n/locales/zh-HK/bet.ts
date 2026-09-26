@@ -56,6 +56,15 @@ export const bet: Shape<typeof En> = {
     deadHeat: "{{n}}倍（平頭馬）",
     legBankers: "第{{race}}場（膽 {{bankers}}）",
   },
+  form: {
+    title: "往績",
+    open: "查看往績",
+    note: "此賽事之前的出賽紀錄，由新至舊。",
+    empty: "沒有往績紀錄。",
+    race: "第{{n}}場",
+    distance: "路程",
+    going: "場地狀況",
+  },
   panel: {
     title: "第{{n}}場賽果",
     dividends: "派彩",

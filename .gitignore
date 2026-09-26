@@ -40,3 +40,4 @@ data/temp/
 # API analysis cache — regenerated on every request
 data/analysis/
 .serena/
+.gstack/

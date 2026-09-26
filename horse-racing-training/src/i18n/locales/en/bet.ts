@@ -53,6 +53,15 @@ export const bet = {
     deadHeat: "{{n}}× (dead-heat)",
     legBankers: "R{{race}} (banker {{bankers}})",
   },
+  form: {
+    title: "Past runs",
+    open: "Show past runs",
+    note: "Runs before this race, newest first.",
+    empty: "No past runs on record.",
+    race: "R{{n}}",
+    distance: "Dist.",
+    going: "Going",
+  },
   panel: {
     title: "Race {{n}} result",
     dividends: "Dividends",

@@ -1,6 +1,6 @@
 // Presentational components for the bet trainer.
-import type { RaceCard, RaceLeg, RaceResult, SettleResult, SettleDetail, BetTypeId, HistoryEntry } from "../shared/types";
-import type { ReactNode } from "react";
+import type { CardHorse, RaceCard, RaceLeg, RaceResult, SettleResult, SettleDetail, BetTypeId, HistoryEntry } from "../shared/types";
+import { useState, type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import type { TFunction } from "i18next";
 import { useGlossary } from "./i18n/glossary";
@@ -31,6 +31,7 @@ export function RaceCardTable({
 }) {
   const { t } = useTranslation(["bet", "common"]);
   const g = useGlossary();
+  const [formOf, setFormOf] = useState<CardHorse | null>(null);
   return (
     <div className="mt-3 overflow-hidden rounded-card bg-surface shadow-card">
       <div className="flex flex-col gap-1 border-b border-edge px-4 pt-4 pb-3 sm:flex-row sm:items-end sm:gap-4 sm:px-5 sm:pt-5">
@@ -75,10 +76,18 @@ export function RaceCardTable({
                 >
                   <td className="w-9 font-semibold tabular-nums">{e.horseNumber}</td>
                   <td>
-                    <span className="font-medium">
+                    {/* own click: opens past runs instead of cycling the pick */}
+                    <button
+                      type="button"
+                      className="cursor-pointer text-left font-medium underline decoration-ink/25 underline-offset-2 hover:decoration-ink"
+                      title={t("form.open")}
+                      onClick={(ev) => {
+                        ev.stopPropagation();
+                        setFormOf(e.horse);
+                      }}
+                    >
                       <Name kind="horse" code={e.horse.code} en={e.horse.name} />
-                    </span>
-                    {e.horse.origin ? <span className="text-ink-3"> ({e.horse.origin})</span> : null}
+                    </button>
                     {e.jockey?.name && (
                       <div className="mt-0.5 text-xs text-ink-3 sm:hidden">
                         <Name kind="jockey" code={e.jockey.code} en={e.jockey.name} />
@@ -110,6 +119,73 @@ export function RaceCardTable({
       <p className="border-t border-edge px-4 py-3 text-xs text-ink-3 sm:px-5">
         {t("card.hint")} {bankerEnabled ? t("card.hintBanker") : t("card.hintClear")}
       </p>
+      {formOf && <HorseFormModal horse={formOf} onClose={() => setFormOf(null)} />}
+    </div>
+  );
+}
+
+// ---- A horse's past runs (from the racecard) ----
+function HorseFormModal({ horse, onClose }: { horse: CardHorse; onClose: () => void }) {
+  const { t } = useTranslation(["bet", "common"]);
+  const g = useGlossary();
+  const fmt = useFmt();
+  const runs = horse.pastPerformances ?? [];
+  return (
+    <div className={modalBg} onClick={onClose}>
+      {/* wider than the default modal so all ten columns fit without scrolling */}
+      <div className={modal} style={{ maxWidth: "min(860px, 100%)" }} role="dialog" aria-modal="true" aria-label={t("form.title")} onClick={(e) => e.stopPropagation()}>
+        <div className="text-xs font-medium text-ink-3">{t("form.title")}</div>
+        <h2 className={modalTitle}>
+          <Name kind="horse" code={horse.code} en={horse.name} />
+        </h2>
+        {runs.length === 0 ? (
+          <p className={cx(empty, "px-0")}>{t("form.empty")}</p>
+        ) : (
+          <>
+            <p className="mt-2 text-xs text-ink-3">{t("form.note")}</p>
+            <div className="mt-3 overflow-x-auto">
+              <table className={cardTable}>
+                <thead>
+                  <tr>
+                    <th>{t("common:word.date")}</th>
+                    <th>{t("common:word.venue")}</th>
+                    <th className="hidden sm:table-cell">{t("common:word.class")}</th>
+                    <th className="text-right!">{t("form.distance")}</th>
+                    <th className="hidden sm:table-cell">{t("form.going")}</th>
+                    <th className="hidden text-right! sm:table-cell">{t("common:word.draw")}</th>
+                    <th className="hidden text-right! sm:table-cell">{t("common:word.weight")}</th>
+                    <th className="text-right!">{t("common:word.placing")}</th>
+                    <th className="hidden text-right! sm:table-cell">{t("common:word.time")}</th>
+                    <th className="text-right!">{t("common:word.odds")}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {runs.map((r) => (
+                    <tr key={`${r.date}-${r.raceNumber}`}>
+                      <td className="whitespace-nowrap tabular-nums">{fmt.date(r.date, { year: "2-digit", month: "numeric", day: "numeric" })}</td>
+                      <td className="whitespace-nowrap">
+                        {g.venue(r.venue)} <span className="text-ink-3">{t("form.race", { n: r.raceNumber })}</span>
+                      </td>
+                      <td className="hidden whitespace-nowrap sm:table-cell">{g.raceClass(r.raceClass)}</td>
+                      <td className="text-right tabular-nums">{r.distance}</td>
+                      <td className="hidden whitespace-nowrap text-ink-2 sm:table-cell">{g.going(r.going)}</td>
+                      <td className="hidden text-right tabular-nums sm:table-cell">{r.draw ?? "-"}</td>
+                      <td className="hidden text-right tabular-nums sm:table-cell">{r.weight ?? "-"}</td>
+                      <td className={cx("text-right tabular-nums whitespace-nowrap", r.finishPosition > 0 && r.finishPosition <= 3 && "font-semibold text-good")}>
+                        {r.finishPosition > 0 ? r.finishPosition : "-"}
+                        {r.fieldSize ? <span className="font-normal text-ink-3">/{r.fieldSize}</span> : null}
+                      </td>
+                      <td className="hidden text-right tabular-nums sm:table-cell">{fmtT(r.finishTime) || "-"}</td>
+                      <td className="text-right tabular-nums">{r.odds ?? "-"}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </>
+        )}
+        <button className={cx(btn, "mt-5 w-full sm:w-auto")} onClick={onClose}>{t("common:action.close")}</button>
+      </div>
     </div>
   );
 }
