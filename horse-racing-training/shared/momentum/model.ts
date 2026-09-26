@@ -50,7 +50,8 @@ export interface RaceSeries {
   postTime: string | null;
   status: string;
   /** nameZh = HKJC Traditional Chinese name (GraphQL name_ch); null when not recorded. */
-  runners: { horseNo: number; name: string; nameZh: string | null }[];
+  /** `code` = HKJC horse code from the racecard, for the names store when the feed has no Chinese name. */
+  runners: { horseNo: number; name: string; nameZh: string | null; code?: string | null }[];
   points: SeriesPoint[];
   results: { horseNo: number; finishPos: number | null; sp: number | null }[];
   dividends?: { pool: string; comb: string; div: number }[]; // official, HK$ per $10

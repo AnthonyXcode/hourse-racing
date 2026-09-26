@@ -45,7 +45,7 @@ export function cardSeries(raceId: string): RaceSeries | null {
   if (!k) return null;
   const card = races().card(k);
   if (!card) return null;
-  const entries = (card.race.entries ?? []) as { horseNumber: number; isScratched?: boolean; horse?: { name?: string } }[];
+  const entries = (card.race.entries ?? []) as { horseNumber: number; isScratched?: boolean; horse?: { code?: string; name?: string } }[];
   return {
     raceId,
     date: k.date,
@@ -56,7 +56,7 @@ export function cardSeries(raceId: string): RaceSeries | null {
     runners: entries
       .filter((e) => e.horseNumber > 0 && !e.isScratched)
       .sort((a, b) => a.horseNumber - b.horseNumber)
-      .map((e) => ({ horseNo: e.horseNumber, name: e.horse?.name ?? "", nameZh: null })),
+      .map((e) => ({ horseNo: e.horseNumber, name: e.horse?.name ?? "", nameZh: null, code: e.horse?.code ?? null })),
     points: [],
     results: [],
     dividends: [],

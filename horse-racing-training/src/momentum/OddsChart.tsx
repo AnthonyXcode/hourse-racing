@@ -8,6 +8,7 @@ import {
 import { impliedProbs, pointAt, RECENT_SECS, type RaceSeries } from "../../shared/momentum/model";
 import { useTranslation } from "react-i18next";
 import { C, NoData } from "../analyzer/charts";
+import { useNames } from "../i18n/names";
 import { useLanguage } from "../i18n/useLanguage";
 import { bad, cx, good, tip, tipRow } from "../kit";
 
@@ -27,10 +28,11 @@ type Row = { m: number } & Record<string, number>; // m = minutes before post (n
 /** Runner display names: HKJC's Chinese name (GraphQL name_ch) in zh-HK when recorded, else English. */
 export function useRunnerNames(series: RaceSeries) {
   const { lang } = useLanguage();
+  const name = useNames();
   return useMemo(() => {
-    const m = new Map(series.runners.map((r) => [r.horseNo, lang === "zh-HK" && r.nameZh ? r.nameZh : r.name]));
+    const m = new Map(series.runners.map((r) => [r.horseNo, lang === "zh-HK" && r.nameZh ? r.nameZh : name("horse", r.code, r.name)]));
     return (horseNo: number, fallback = "") => m.get(horseNo) ?? fallback;
-  }, [series.runners, lang]);
+  }, [series.runners, lang, name]);
 }
 
 /** True while the media query matches (re-renders on change). */
