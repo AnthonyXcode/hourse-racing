@@ -210,6 +210,10 @@ export const momentum: Shape<typeof En> = {
       moveOverall: "落飛頭 5 名 · 上名率 {{pct}}",
       pos: "第{{n}}選",
       note: "已完成賽事中，各選位的馬匹跑入頭三名的比率（第1選 = 模型首選／落飛最多的馬）。模型：{{n}} 場；落飛需有賠率紀錄：{{n}} 場中的 {{m}} 場。",
+      clickHint: "按柱形可查看組成該結果的賽事。",
+      breakdown: "{{n}} 場中 {{hits}} 場上名（{{pct}}%）",
+      finish: "名次",
+      placed: "上名",
     },
     kpi: {
       winner: "頭馬在精選內",

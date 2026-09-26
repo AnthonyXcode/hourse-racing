@@ -208,6 +208,10 @@ export const momentum = {
       moveOverall: "Move top 5 · {{pct}} placed",
       pos: "#{{n}}",
       note: "Share of finished races in which the pick at each position finished in the first three (#1 = the model's top pick / the biggest market mover). Model: {{n}} races; market moves need recorded odds: {{m}} of {{n}} races.",
+      clickHint: "Click a bar to see the races behind it.",
+      breakdown: "{{hits}}/{{n}} placed ({{pct}}%)",
+      finish: "Finish",
+      placed: "Placed",
     },
     kpi: {
       winner: "Winner in picks",

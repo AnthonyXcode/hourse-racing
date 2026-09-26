@@ -1,7 +1,7 @@
 // Recharts wrappers for the analyzer tabs. All values are percents on a 0–max axis.
 import type { ReactElement, ReactNode } from "react";
 import {
-  Bar, BarChart, CartesianGrid, ComposedChart, Label, Line, LineChart as RLineChart, ResponsiveContainer, Tooltip, XAxis, YAxis,
+  Bar, BarChart, CartesianGrid, Cell, ComposedChart, Label, Line, LineChart as RLineChart, ResponsiveContainer, Tooltip, XAxis, YAxis,
   type TooltipProps,
 } from "recharts";
 import { useTranslation } from "react-i18next";
@@ -84,7 +84,16 @@ function Tip({ head, rows }: { head: ReactNode; rows: { color: string; label: st
 
 // ---------------- grouped bars ----------------
 
-export function GroupedBars<R extends { n: number }>({ rows, labelOf, series, max }: { rows: R[]; labelOf: (r: R) => string | number; series: Series<R>[]; max: number }) {
+/** Grouped bars. Optional drill-down: `onSelect(rowIndex, seriesIndex)` on bar click; `selected` keeps that bar
+ *  at full strength and dims the others. */
+export function GroupedBars<R extends { n: number }>({ rows, labelOf, series, max, onSelect, selected }: {
+  rows: R[];
+  labelOf: (r: R) => string | number;
+  series: Series<R>[];
+  max: number;
+  onSelect?: (row: number, series: number) => void;
+  selected?: { row: number; series: number } | null;
+}) {
   const { t } = useTranslation();
   if (!rows.length) return <NoData />;
   const data = rows.map((r) => ({ label: labelOf(r), n: r.n, ...Object.fromEntries(series.map((s, j) => [`s${j}`, finite(s.get(r))])) }));
@@ -104,7 +113,20 @@ export function GroupedBars<R extends { n: number }>({ rows, labelOf, series, ma
           }}
         />
         {series.map((s, j) => (
-          <Bar key={j} dataKey={`s${j}`} name={s.name} fill={s.color} maxBarSize={16} radius={[4, 4, 0, 0]} isAnimationActive={false} />
+          <Bar
+            key={j}
+            dataKey={`s${j}`}
+            name={s.name}
+            fill={s.color}
+            maxBarSize={16}
+            radius={[4, 4, 0, 0]}
+            isAnimationActive={false}
+            cursor={onSelect ? "pointer" : undefined}
+            onClick={onSelect ? (_: unknown, i: number) => onSelect(i, j) : undefined}
+          >
+            {selected &&
+              data.map((_, i) => <Cell key={i} fillOpacity={selected.row === i && selected.series === j ? 1 : 0.3} />)}
+          </Bar>
         ))}
       </BarChart>
     </Frame>

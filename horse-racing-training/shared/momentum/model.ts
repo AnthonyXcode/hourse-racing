@@ -167,6 +167,8 @@ export interface DaySummaryRace {
   /** the two source lists, best first (horse numbers): model top N and market-move top N */
   modelList: number[];
   moveList: number[];
+  /** finishing position of every runner with a result, by horse number */
+  finishPos: Record<number, number>;
   /** how the Combined list did; null until there is a result */
   combined: PickHits | null;
   /** the model's top pick and where it finished (null = no result yet / no ranking) */
