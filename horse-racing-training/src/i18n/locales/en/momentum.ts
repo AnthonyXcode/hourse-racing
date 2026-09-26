@@ -200,6 +200,15 @@ export const momentum = {
     noneRun: "No races have been run yet — the review fills in as results come in.",
     pending: "pending",
     openRace: "Open this race",
+    chart: {
+      title: "Place hit rate by pick position",
+      model: "Model top 5",
+      move: "Move top 5",
+      modelOverall: "Model top 5 · {{pct}} placed",
+      moveOverall: "Move top 5 · {{pct}} placed",
+      pos: "#{{n}}",
+      note: "Share of finished races in which the pick at each position finished in the first three (#1 = the model's top pick / the biggest market mover). Model: {{n}} races; market moves need recorded odds: {{m}} of {{n}} races.",
+    },
     kpi: {
       winner: "Winner in picks",
       winnerSub: "races whose winner was in the Combined picks",

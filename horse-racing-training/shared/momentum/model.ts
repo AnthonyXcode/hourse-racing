@@ -164,6 +164,9 @@ export interface DaySummaryRace {
   placed: { horseNo: number; finishPos: number; code: string | null; name: string; nameZh: string | null }[];
   /** Combined picks (model top N, then market-move picks), as on the race page */
   picks: { horseNo: number; both: boolean; marketOnly: boolean; code: string | null; name: string; nameZh: string | null }[];
+  /** the two source lists, best first (horse numbers): model top N and market-move top N */
+  modelList: number[];
+  moveList: number[];
   /** how the Combined list did; null until there is a result */
   combined: PickHits | null;
   /** the model's top pick and where it finished (null = no result yet / no ranking) */

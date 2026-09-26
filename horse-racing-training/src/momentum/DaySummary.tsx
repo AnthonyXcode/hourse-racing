@@ -3,10 +3,11 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { api } from "../api";
 import type { DaySummary as Summary } from "../../shared/momentum/model";
-import { Kpi, cls, money } from "../analyzer/format";
+import { C, GroupedBars, type Series } from "../analyzer/charts";
+import { Kpi, Legend, cls, money, pc } from "../analyzer/format";
 import { useNames } from "../i18n/names";
 import { useLanguage } from "../i18n/useLanguage";
-import { cx, dim, empty, errorBox, kpis, note, panel, scroll, table, tablePad } from "../kit";
+import { cx, dim, empty, errorBox, h3, kpis, note, panel, scroll, table, tablePad } from "../kit";
 
 const REFRESH_MS = 60_000;
 
@@ -46,6 +47,26 @@ export function DaySummary({ date, live, onOpenRace }: { date: string; live: boo
   const ret = priced.reduce((a, r) => a + (r.combined!.trioReturn ?? 0), 0);
   const topPlaced = run.filter((r) => r.modelTop?.finishPos != null && r.modelTop.finishPos <= 3).length;
   const best = run.reduce<(typeof run)[number] | null>((b, r) => ((r.combined!.trioReturn ?? 0) > (b?.combined!.trioReturn ?? 0) ? r : b), null);
+  // Place hit rate by pick position: for position k, the share of finished races whose k-th model /
+  // market-move pick finished in the first three.
+  type PosRow = { pos: number; n: number; model: number; move: number };
+  const byPos: PosRow[] = [0, 1, 2, 3, 4].map((k) => {
+    const rate = (list: (r: (typeof run)[number]) => number[]) => {
+      const withPick = run.filter((r) => list(r).length > k);
+      const hits = withPick.filter((r) => r.placed.some((p) => p.horseNo === list(r)[k])).length;
+      return { n: withPick.length, pct: withPick.length ? (hits / withPick.length) * 100 : NaN };
+    };
+    const m = rate((r) => r.modelList), v = rate((r) => r.moveList);
+    return { pos: k + 1, n: m.n, model: m.pct, move: v.pct };
+  });
+  const overall = (list: (r: (typeof run)[number]) => number[]) => {
+    const all = run.flatMap((r) => list(r).map((h) => r.placed.some((p) => p.horseNo === h)));
+    return all.length ? (all.filter(Boolean).length / all.length) * 100 : NaN;
+  };
+  const posSeries: Series<PosRow>[] = [
+    { name: t("summary.chart.model"), color: C.accent, get: (r) => r.model },
+    { name: t("summary.chart.move"), color: C.accent2, get: (r) => r.move },
+  ];
   const horse = (h: { code: string | null; name: string; nameZh: string | null }) => (lang === "zh-HK" && h.nameZh ? h.nameZh : name("horse", h.code, h.name));
   const of = (a: number, b: number) => (b ? `${a}/${b}` : "–");
 
@@ -72,6 +93,20 @@ export function DaySummary({ date, live, onOpenRace }: { date: string; live: boo
         </div>
       ) : (
         <div className={cx(panel, empty)}>{t("summary.noneRun")}</div>
+      )}
+
+      {run.length > 0 && (
+        <div className={cx(panel, "mt-4")}>
+          <h3 className={h3}>{t("summary.chart.title")}</h3>
+          <Legend
+            items={[
+              [C.accent, t("summary.chart.modelOverall", { pct: pc(overall((r) => r.modelList)) })],
+              [C.accent2, t("summary.chart.moveOverall", { pct: pc(overall((r) => r.moveList)) })],
+            ]}
+          />
+          <GroupedBars rows={byPos} labelOf={(r) => t("summary.chart.pos", { n: r.pos })} series={posSeries} max={100} />
+          <p className={note}>{t("summary.chart.note", { n: run.length, m: run.filter((r) => r.moveList.length > 0).length })}</p>
+        </div>
       )}
 
       <div className={cx(panel, scroll, "mt-4")}>

@@ -202,6 +202,15 @@ export const momentum: Shape<typeof En> = {
     noneRun: "暫未有賽事完成，賽果公佈後會陸續更新。",
     pending: "待賽",
     openRace: "開啟此場賽事",
+    chart: {
+      title: "各選位的上名率",
+      model: "模型頭 5 名",
+      move: "落飛頭 5 名",
+      modelOverall: "模型頭 5 名 · 上名率 {{pct}}",
+      moveOverall: "落飛頭 5 名 · 上名率 {{pct}}",
+      pos: "第{{n}}選",
+      note: "已完成賽事中，各選位的馬匹跑入頭三名的比率（第1選 = 模型首選／落飛最多的馬）。模型：{{n}} 場；落飛需有賠率紀錄：{{n}} 場中的 {{m}} 場。",
+    },
     kpi: {
       winner: "頭馬在精選內",
       winnerSub: "頭馬在合併精選內的場數",
