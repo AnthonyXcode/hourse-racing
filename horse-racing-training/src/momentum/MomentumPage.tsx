@@ -15,6 +15,7 @@ import { useFmt } from "../i18n/useLanguage";
 import { OddsChart, Swatch, horseStyle, useRunnerNames } from "./OddsChart";
 import { PoolDonut } from "./PoolDonut";
 import { DaySummary } from "./DaySummary";
+import { track } from "../analytics";
 import {
   Display, H2, btn, dateControl, btnPrimary, control, cx, dim, empty, errorBox, field, fieldLabel, figure, grid2, h3, kpis, modal, modalBg, note, page, panel,
   pill, pillRow, rangeBar, rangeMeta, scroll, seg, segBtn, strong, table, tablePad, tablePadTight,
@@ -226,7 +227,7 @@ function LivePanel({ date, isToday }: { date: string; isToday: boolean }) {
               </button>
             );
           })}
-          <button className={cx(pill(summary), "flex-none")} onClick={() => setRaceId(SUMMARY)} aria-pressed={summary}>
+          <button className={cx(pill(summary), "flex-none")} onClick={() => { track("open_day_summary", { date }); setRaceId(SUMMARY); }} aria-pressed={summary}>
             {t("summary.tab")}
           </button>
         </nav>

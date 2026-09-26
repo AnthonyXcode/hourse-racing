@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { useTranslation } from "react-i18next";
 import { api } from "./api";
+import { track } from "./analytics";
 import { confidence, strategyChecks, type PreRaceAnalysis } from "../shared/analyzer/model";
 import { useNames } from "./i18n/names";
 import { cx, panel, table, tablePadTight } from "./kit";
@@ -67,7 +68,10 @@ export function RaceAnalysisPanel({ date, venue, raceNo }: { date: string; venue
         className="flex w-full cursor-pointer items-center gap-3 px-4 py-3 text-left sm:px-5"
         aria-expanded={open}
         aria-controls="race-analysis"
-        onClick={() => setOpen((o) => !o)}
+        onClick={() => {
+          if (!open) track("open_race_analysis", { race_id: `${date}-${venue}-${raceNo}` });
+          setOpen((o) => !o);
+        }}
       >
         <span className="flex min-w-0 flex-1 flex-col gap-0.5 sm:flex-row sm:items-center sm:gap-3">
           <span className="flex-none text-sm font-semibold text-ink">{t("analysis.title")}</span>

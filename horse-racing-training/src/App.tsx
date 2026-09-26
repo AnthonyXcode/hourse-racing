@@ -18,6 +18,7 @@ import { useTranslation } from "react-i18next";
 import { useGlossary } from "./i18n/glossary";
 import { LangSwitch, useFmt } from "./i18n/useLanguage";
 import { MobileNav } from "./MobileNav";
+import { track } from "./analytics";
 import { Footer, LEGAL_VIEWS, LegalDoc, SiteMap } from "./LegalPages";
 import { PicksBanner } from "./momentum/PicksBanner";
 import { RaceAnalysisPanel } from "./RaceAnalysisPanel";
@@ -249,6 +250,7 @@ export default function App() {
     try {
       const r = await api.settle({ date, venue: venue as MeetingRef["venue"], selection });
       setResult(r);
+      track("practice_bet", { bet_type: betType, combos, hit: r.hit });
       // Record the settled bet to history.
       const picks = selection.raceLegs.map((l) => `R${l.raceNumber} ${legSummary(l)}`).join("  |  ");
       const multi = r.legResults.length > 1;

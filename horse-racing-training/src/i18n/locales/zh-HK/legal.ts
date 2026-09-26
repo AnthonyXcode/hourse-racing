@@ -29,7 +29,8 @@ export const legal: Shape<typeof En> = {
       {
         heading: "Cookies 及本機儲存",
         body: [
-          "{{appName}} 目前只使用網站運作所必需的 cookies 或類似技術。你選擇的語言保存在網址內，而非 cookie。如我們日後加入分析或其他非必要的 cookies，會更新本政策，並在需要時徵求你的同意。",
+          "我們使用 Google Analytics for Firebase 了解 {{appName}} 的使用情況，例如瀏覽了哪些頁面、裝置及瀏覽器類型、大約位置（國家／城市），以及切換語言或模擬投注等操作。它會在你的瀏覽器設置 cookies 及類似識別碼（例如 _ga）。我們只以匯總形式使用這些資料以改善服務，不會用來識別你的身分。",
+          "你可以在瀏覽器設定中封鎖或刪除這些 cookies，或使用 Google Analytics 停用瀏覽器外掛程式；即使停用，網站仍可正常使用。你選擇的語言保存在網址內，而非 cookie。",
         ],
       },
       {
@@ -52,6 +53,7 @@ export const legal: Shape<typeof En> = {
         body: [
           "我們不會出售你的個人資料，只會在以下情況分享：",
           "• 我們的付款處理商，用於收取款項及防止欺詐。",
+          "• Google：提供 Google Analytics for Firebase，代我們處理使用數據以製作統計。",
           "• 代表我們並按我們指示處理資料的主機、資訊科技及電郵服務供應商。",
           "• 執法機關、監管機構或法院，而法律要求或准許我們披露資料。",
         ],

@@ -29,7 +29,8 @@ export const legal = {
       {
         heading: "Cookies and local storage",
         body: [
-          "{{appName}} currently uses only cookies or similar technologies that are strictly necessary for the site to work. Your language choice is kept in the page address (URL), not in a cookie. If we introduce analytics or other non-essential cookies, we will update this policy and ask for your consent where required.",
+          "We use Google Analytics for Firebase to understand how {{appName}} is used — for example which pages are viewed, the type of device and browser, approximate location (country / city) and actions such as switching language or placing a practice bet. It sets cookies and similar identifiers (such as _ga) in your browser. We use this information only in aggregate to improve the service, and we do not use it to identify you.",
+          "You can block or delete these cookies in your browser settings, or use Google's Analytics opt-out browser add-on; the site keeps working without them. Your language choice is kept in the page address (URL), not in a cookie.",
         ],
       },
       {
@@ -52,6 +53,7 @@ export const legal = {
         body: [
           "We do not sell your personal data. We share it only with:",
           "• Our payment processor, to take payments and prevent fraud.",
+          "• Google, which provides Google Analytics for Firebase and processes usage data on our behalf to produce statistics.",
           "• Hosting, IT and email providers who process data on our behalf and under our instructions.",
           "• Law enforcement, regulators or courts, where we are required or permitted by law to do so.",
         ],

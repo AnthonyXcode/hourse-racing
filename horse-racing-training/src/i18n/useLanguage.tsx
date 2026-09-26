@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import { track } from "../analytics";
 import { cx, seg, segBtn } from "../kit";
 import { LANGS, readLang, withLang, type Lang } from "./url";
 
@@ -13,6 +14,7 @@ export function useLanguage() {
       /** URL of the current page in `l`, for real links (open in new tab, copy). */
       hrefFor: (l: Lang) => withLang(window.location.href, l),
       setLang: (l: Lang) => {
+        track("change_language", { language: l });
         window.history.replaceState(window.history.state, "", withLang(window.location.href, l));
         if (readLang(window.location.search) !== i18n.language) void i18n.changeLanguage(l);
       },
