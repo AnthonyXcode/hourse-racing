@@ -99,7 +99,7 @@ export default function App() {
   const [meetingKey, setMeetingKey] = useState<string>(""); // "date_venue"
   const [meeting, setMeeting] = useState<MeetingDetail | null>(null);
   const [activeRace, setActiveRace] = useState(1);
-  const [betType, setBetType] = useState<BetTypeId>("trio");
+  const [betType, setBetType] = useState<BetTypeId>("place");
   const [cards, setCards] = useState<Record<number, RaceCard>>({});
   const [picks, setPicks] = useState<Record<number, Picks>>({});
   const [editRace, setEditRace] = useState(1);
