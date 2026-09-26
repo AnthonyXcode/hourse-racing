@@ -1,6 +1,30 @@
 // Shared strings + racing glossary. zh-HK/common.ts must have exactly the same keys (enforced by type).
 export const common = {
-  appName: "HKJC Bet Trainer",
+  appName: "Post Time",
+  // <title> and meta description per page (src/seo.ts). Keep descriptions under ~155 characters.
+  seo: {
+    brand: "Post Time",
+    separator: " | ",
+    homeTitle: "Post Time — Hong Kong horse racing bet practice & race analysis",
+    description:
+      "Practise bets on past Sha Tin and Happy Valley races, risk-free. Win, Place, Quinella, Trio, Tierce with bankers, real payouts and live odds moves.",
+    legal: "{{title}} for Post Time, the Hong Kong horse racing bet practice and analysis site.",
+    pages: {
+      history: { title: "Your practice bets", description: "Every practice bet you have placed on Post Time, with hit or miss and the real payout." },
+      winPlace: {
+        title: "Win & Place model results",
+        description: "How a form-rating and Monte Carlo model's Win and Place picks performed against real Hong Kong race results.",
+      },
+      trio: {
+        title: "Trio model results",
+        description: "Trio (top three, any order) hit rate, ticket cost and return of a form-rating and Monte Carlo model on real Hong Kong races.",
+      },
+      momentum: {
+        title: "Odds momentum before post time",
+        description: "Live Win and Place odds and pool totals for Hong Kong races, recorded every 30 seconds before the off, and how market movers finished.",
+      },
+    },
+  },
   nav: {
     sections: "Sections",
     bet: "Bet",

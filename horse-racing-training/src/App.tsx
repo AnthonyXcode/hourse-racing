@@ -22,6 +22,7 @@ import { track } from "./analytics";
 import { Footer, LEGAL_VIEWS, LegalDoc, SiteMap } from "./LegalPages";
 import { PicksBanner } from "./momentum/PicksBanner";
 import { RaceAnalysisPanel } from "./RaceAnalysisPanel";
+import { useSeo } from "./seo";
 import { Display, btn, container, control, cx, errorBox, field, fieldLabel, panel, pill, pillRow } from "./kit";
 
 /** Publish the sticky header's height as --header-h so other sticky bars can sit just below it. */
@@ -111,6 +112,7 @@ export default function App() {
   const g = useGlossary();
   const fmt = useFmt();
   const [view, setView] = useViewParam();
+  useSeo(view);
   const headerRef = useHeaderHeightVar();
   /** For links that carry a view name as a string (footer, site map). */
   const selectView = (v: string) => {

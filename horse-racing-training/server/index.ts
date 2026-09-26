@@ -7,9 +7,11 @@ import { momentum } from "./momentum/service";
 import { names } from "./names/service";
 import { dataApi } from "./data/routes";
 import { dataService } from "./data/service";
+import { seo } from "./seo";
 
 const app = express();
 app.use(express.json());
+app.use(seo);
 app.use("/api/data", dataApi);
 app.use("/api", api);
 
@@ -22,7 +24,7 @@ if (existsSync(dist)) {
 
 const PORT = Number(process.env.PORT) || 8787;
 app.listen(PORT, () => {
-  console.log(`[bet-trainer] API on http://localhost:${PORT}`);
+  console.log(`[post-time] API on http://localhost:${PORT}`);
   if (process.env.MOMENTUM_POLLER !== "0") momentum().poller.start(Number(process.env.MOMENTUM_INTERVAL_S) || 30);
   // Chinese names: shortly after boot and then daily, trim old records (keep 5 per code), seed English
   // and queue everything missing or older than the TTL (throttled, 1 page/s).

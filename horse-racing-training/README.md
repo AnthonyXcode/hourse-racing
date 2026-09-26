@@ -1,4 +1,4 @@
-# HKJC Bet Trainer
+# Post Time (開跑前)
 
 Local practice tool. Pick a past HKJC meeting, build a bet (any pool, with 膽拖 bankers),
 see the cost, submit, and get graded HIT/MISS + payout against the real historical result.

@@ -2,7 +2,30 @@ import type { Shape } from "../../shape";
 import type { common as En } from "../en/common";
 
 export const common: Shape<typeof En> = {
-  appName: "HKJC 投注練習",
+  appName: "開跑前",
+  seo: {
+    brand: "開跑前 Post Time",
+    separator: "｜",
+    homeTitle: "開跑前 Post Time｜香港賽馬模擬投注・賽果分析",
+    description:
+      "以過往沙田及跑馬地賽事模擬投注，無需真金白銀。支援獨贏、位置、連贏、單T、三重彩及膽拖，即計成本及真實派彩，開跑前追蹤即時賠率走勢。",
+    legal: "開跑前 Post Time 香港賽馬模擬投注及分析網站的{{title}}。",
+    pages: {
+      history: { title: "我的模擬投注紀錄", description: "你在開跑前的所有模擬投注，連同中／不中及真實派彩。" },
+      winPlace: {
+        title: "獨贏及位置模型成績",
+        description: "以狀態評分及蒙地卡羅模擬選出的獨贏、位置馬匹，對比香港賽馬真實賽果的命中率。",
+      },
+      trio: {
+        title: "單T模型成績",
+        description: "狀態評分加蒙地卡羅模型在香港賽事的單T（頭三名不分次序）命中率、投注成本及回報。",
+      },
+      momentum: {
+        title: "開跑前賠率走勢",
+        description: "開跑前每30秒記錄香港賽事獨贏、位置即時賠率及彩池，並分析落飛馬匹的實際賽果。",
+      },
+    },
+  },
   nav: {
     sections: "版面",
     bet: "投注",
