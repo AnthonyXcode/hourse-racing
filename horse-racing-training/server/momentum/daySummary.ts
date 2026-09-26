@@ -38,7 +38,7 @@ async function summarise(series: RaceSeries): Promise<DaySummaryRace> {
     postTime: series.postTime,
     status: res ? "result" : "pending",
     placed: (res?.placed ?? []).map((p) => ({ horseNo: p.horseNo, finishPos: p.finishPos!, ...who(p.horseNo) })),
-    picks: picks.combined.map((c) => ({ horseNo: c.horseNo, both: c.inModel && c.inMove, ...who(c.horseNo) })),
+    picks: picks.combined.map((c) => ({ horseNo: c.horseNo, both: c.inModel && c.inMove, marketOnly: c.inMove && !c.inModel, ...who(c.horseNo) })),
     combined: res?.lists[2] ?? null,
     modelTop: top ? { horseNo: top.horseNo, finishPos: res ? (fin.get(top.horseNo) ?? null) : null } : null,
     trioDiv: series.dividends?.find((d) => d.pool === "TRI")?.div ?? null,

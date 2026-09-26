@@ -42,6 +42,7 @@ export const momentum: Shape<typeof En> = {
     moveTop: "落飛頭 {{n}} 名",
     combined: "合併（{{n}}）",
     combinedList: "合併",
+    marketOnly: "↑ 只在落飛",
     both: "★ 兩者皆選",
     trioBox: "單T 複式：{{combos}} 注 × ${{unit}} =",
     trioBoxTitle: "單T 複式：合併選擇中每一個三匹馬組合",
@@ -49,7 +50,7 @@ export const momentum: Shape<typeof En> = {
     runningAnalyzer: "分析中…",
     needsSecond: "需要第二次快照",
     currentOdds: "現時獨贏賠率",
-    note: "括號內為現時獨贏賠率；賽果部分則為最終賠率。單T 複式 = 名單中每一個三匹馬組合，每注 $10；將滑鼠移到「回報」可查看淨額。模型 = 我們的排名模型（已儲存排位表及所有場地往績）。★ = 同時在兩份名單。",
+    note: "括號內為現時獨贏賠率；賽果部分則為最終賠率。單T 複式 = 名單中每一個三匹馬組合，每注 $10；將滑鼠移到「回報」可查看淨額。模型 = 我們的排名模型（已儲存排位表及所有場地往績）。★ = 同時在兩份名單 · ↑ = 只在落飛名單。",
   },
   ordinal: {
     "1": "第1名",
@@ -192,6 +193,7 @@ export const momentum: Shape<typeof En> = {
     last: "上一場",
     title: "合併精選",
     both: "同時在兩份名單",
+    marketOnly: "只在落飛名單（不在模型首選內）",
   },
   summary: {
     tab: "總結",
@@ -224,7 +226,7 @@ export const momentum: Shape<typeof En> = {
       cost: "複式成本",
       return: "回報",
     },
-    note: "綠色 = 跑入頭三名 · ★ = 同時在模型及落飛名單 · 單T 複式 = 合併精選中每一個三匹馬組合，每注 $10。按場次可開啟該場。",
-    notePending: "尚有 {{n}} 場未跑或等待賽果。綠色 = 跑入頭三名 · ★ = 同時在兩份名單。按場次可開啟該場。",
+    note: "綠色 = 跑入頭三名 · ★ = 同時在模型及落飛名單 · ↑ = 只在落飛名單 · 單T 複式 = 合併精選中每一個三匹馬組合，每注 $10。按場次可開啟該場。",
+    notePending: "尚有 {{n}} 場未跑或等待賽果。綠色 = 跑入頭三名 · ★ = 同時在兩份名單 · ↑ = 只在落飛名單。按場次可開啟該場。",
   },
 };

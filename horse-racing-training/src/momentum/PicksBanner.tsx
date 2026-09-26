@@ -103,11 +103,12 @@ export function PicksBanner({ onSelect, linked }: { onSelect: (v: string) => voi
                       <motion.span
                         key={p.horseNo}
                         variants={item}
-                        title={p.both ? t("banner.both") : undefined}
+                        title={p.both ? t("banner.both") : p.marketOnly ? t("banner.marketOnly") : undefined}
                         className={cx(
                           "inline-flex h-5 min-w-5 flex-none items-center justify-center gap-px rounded-full px-1 text-[11px] font-semibold tabular-nums",
                           placed ? "bg-good text-white" : "bg-surface text-ink shadow-btn",
-                          p.both && "px-1.5 ring-1 ring-accent"
+                          p.both && "px-1.5 ring-1 ring-accent",
+                          p.marketOnly && "px-1.5 ring-1 ring-warn"
                         )}
                       >
                         {p.horseNo}
@@ -115,6 +116,12 @@ export function PicksBanner({ onSelect, linked }: { onSelect: (v: string) => voi
                         {p.both && (
                           <span aria-label={t("banner.both")} className={cx("text-[9px] leading-none", placed ? "text-white" : "text-accent")}>
                             ★
+                          </span>
+                        )}
+                        {/* ↑ = in the market-move list only (money coming), not the model's top picks */}
+                        {p.marketOnly && (
+                          <span aria-label={t("banner.marketOnly")} className={cx("text-[10px] leading-none", placed ? "text-white" : "text-warn")}>
+                            ↑
                           </span>
                         )}
                       </motion.span>

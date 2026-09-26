@@ -117,11 +117,13 @@ export function DaySummary({ date, live, onOpenRace }: { date: string; live: boo
                           className={cx(
                             "inline-flex min-w-6 items-center justify-center gap-px rounded-full px-1.5 text-xs font-semibold tabular-nums",
                             placedNos.has(p.horseNo) ? "bg-good text-white" : "bg-surface text-ink shadow-btn",
-                            p.both && "ring-1 ring-accent"
+                            p.both && "ring-1 ring-accent",
+                            p.marketOnly && "ring-1 ring-warn"
                           )}
                         >
                           {p.horseNo}
                           {p.both && <span className={cx("text-[9px]", placedNos.has(p.horseNo) ? "text-white" : "text-accent")}>★</span>}
+                          {p.marketOnly && <span className={cx("text-[10px]", placedNos.has(p.horseNo) ? "text-white" : "text-warn")}>↑</span>}
                         </span>
                       ))}
                     </span>

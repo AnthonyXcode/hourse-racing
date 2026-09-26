@@ -39,8 +39,9 @@ const pickLbl = "text-xs text-ink-2 sm:w-[118px] sm:flex-none";
 const chips = "flex flex-wrap gap-1.5";
 const chipBase = "inline-flex cursor-default items-center gap-[5px] rounded-full py-1 pr-2.5 pl-2 text-[12.5px] shadow-btn";
 /** Pick chip: `on` (hovered horse) beats `both` (in both lists). */
-const chipCls = (both: boolean, on: boolean) =>
-  cx(chipBase, on ? "bg-accent-soft ring-1 ring-accent" : both ? "bg-surface ring-1 ring-ink" : "bg-surface");
+/** both = in the model and market-move lists; marketOnly = market-move list only (not the model's top N). */
+const chipCls = (both: boolean, on: boolean, marketOnly = false) =>
+  cx(chipBase, on ? "bg-accent-soft ring-1 ring-accent" : both ? "bg-surface ring-1 ring-ink" : marketOnly ? "bg-surface ring-1 ring-warn" : "bg-surface");
 const chipOdds = "-ml-[3px] text-ink-3 tabular-nums";
 const chipDetail = "text-ink-2 tabular-nums";
 const MIN_N = 30; // below this a bucket's hit rate is noise — shown greyed
@@ -340,13 +341,13 @@ function MoversTable({ series, focus, onFocus, stamp }: { series: RaceSeries; fo
 
 // ---------------- Suggested picks ----------------
 
-function PickChip({ horseNo, name, odds, detail, both, fin, focus, onFocus }: {
-  horseNo: number; name: string; odds?: number | null; detail?: ReactNode; both?: boolean; fin?: number | null; focus: number | null; onFocus: (h: number | null) => void;
+function PickChip({ horseNo, name, odds, detail, both, marketOnly, fin, focus, onFocus }: {
+  horseNo: number; name: string; odds?: number | null; detail?: ReactNode; both?: boolean; marketOnly?: boolean; fin?: number | null; focus: number | null; onFocus: (h: number | null) => void;
 }) {
   const { t } = useTranslation(["momentum", "common"]);
   return (
     <span
-      className={chipCls(!!both, focus === horseNo)}
+      className={chipCls(!!both, focus === horseNo, !!marketOnly)}
       title={name}
       onMouseEnter={() => onFocus(horseNo)}
       onMouseLeave={() => onFocus(null)}
@@ -408,7 +409,7 @@ function SuggestedPicks({ model, series, focus, onFocus, className }: {
         <span className={cx(pickLbl, "font-semibold text-ink")}>{t("picks.combined", { n: picks.combined.length })}</span>
         <div className={chips}>
           {picks.combined.map((c) => (
-            <PickChip key={c.horseNo} horseNo={c.horseNo} name={nameOf(c.horseNo, c.name)} odds={odds.get(c.horseNo)} both={c.inModel && c.inMove} detail={c.inModel && c.inMove ? t("picks.both") : undefined} fin={f(c.horseNo)} {...chip} />
+            <PickChip key={c.horseNo} horseNo={c.horseNo} name={nameOf(c.horseNo, c.name)} odds={odds.get(c.horseNo)} both={c.inModel && c.inMove} marketOnly={c.inMove && !c.inModel} detail={c.inModel && c.inMove ? t("picks.both") : c.inMove && !c.inModel ? <span className="text-warn">{t("picks.marketOnly")}</span> : undefined} fin={f(c.horseNo)} {...chip} />
           ))}
         </div>
       </div>

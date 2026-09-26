@@ -88,6 +88,7 @@ export async function highlight(repo: Repo, now = new Date()): Promise<Highlight
         name: c.name,
         nameZh: zh.get(c.horseNo) ?? null,
         both: c.inModel && c.inMove,
+        marketOnly: c.inMove && !c.inModel,
         odds: odds.get(c.horseNo) ?? null,
         finishPos: fin.get(c.horseNo) ?? null,
       })),

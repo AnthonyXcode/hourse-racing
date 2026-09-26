@@ -148,7 +148,7 @@ export function suggestPicks(model: ModelRank[], mv: Mover[]): Picks {
 export interface Highlight {
   mode: "upcoming" | "last";
   race: { raceId: string; date: string; venue: "ST" | "HV"; raceNo: number; postTime: string | null; name: string | null };
-  picks: { horseNo: number; code: string | null; name: string; nameZh: string | null; both: boolean; odds: number | null; finishPos: number | null }[];
+  picks: { horseNo: number; code: string | null; name: string; nameZh: string | null; both: boolean; marketOnly: boolean; odds: number | null; finishPos: number | null }[];
   /** First three (dead-heats included) when mode = "last" and results are in; else []. */
   placed: { horseNo: number; finishPos: number }[];
 }
@@ -163,7 +163,7 @@ export interface DaySummaryRace {
   /** first three (dead-heats included) */
   placed: { horseNo: number; finishPos: number; code: string | null; name: string; nameZh: string | null }[];
   /** Combined picks (model top N, then market-move picks), as on the race page */
-  picks: { horseNo: number; both: boolean; code: string | null; name: string; nameZh: string | null }[];
+  picks: { horseNo: number; both: boolean; marketOnly: boolean; code: string | null; name: string; nameZh: string | null }[];
   /** how the Combined list did; null until there is a result */
   combined: PickHits | null;
   /** the model's top pick and where it finished (null = no result yet / no ranking) */

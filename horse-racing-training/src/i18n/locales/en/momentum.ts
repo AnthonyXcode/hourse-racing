@@ -40,6 +40,7 @@ export const momentum = {
     moveTop: "Move top {{n}}",
     combined: "Combined ({{n}})",
     combinedList: "Combined",
+    marketOnly: "↑ market only",
     both: "★ both",
     trioBox: "Trio box: {{combos}} combinations × ${{unit}} =",
     trioBoxTitle: "Trio box: every 3-horse combination of the combined picks",
@@ -47,7 +48,7 @@ export const momentum = {
     runningAnalyzer: "running analyzer…",
     needsSecond: "needs a second snapshot",
     currentOdds: "Current win odds",
-    note: "Number in brackets = current win odds; in Result, the final odds. Trio box = every 3-horse combination of the list at $10; hover Return for the net. Model = our ranking model (saved racecard and form at all venues). ★ = in both lists.",
+    note: "Number in brackets = current win odds; in Result, the final odds. Trio box = every 3-horse combination of the list at $10; hover Return for the net. Model = our ranking model (saved racecard and form at all venues). ★ = in both lists · ↑ = in the market-move list only.",
   },
   ordinal: {
     "1": "1st",
@@ -190,6 +191,7 @@ export const momentum = {
     last: "Last race",
     title: "Combined picks",
     both: "In both lists",
+    marketOnly: "Market move only (not in the model's top picks)",
   },
   summary: {
     tab: "Summary",
@@ -222,7 +224,7 @@ export const momentum = {
       cost: "Box cost",
       return: "Return",
     },
-    note: "Green = finished in the first three · ★ = in both the model and market-move lists · Trio box = every 3-horse combination of the Combined picks at $10. Click a race to open it.",
-    notePending: "{{n}} race(s) still to run or waiting for results. Green = finished in the first three · ★ = in both lists. Click a race to open it.",
+    note: "Green = finished in the first three · ★ = in both the model and market-move lists · ↑ = market-move list only · Trio box = every 3-horse combination of the Combined picks at $10. Click a race to open it.",
+    notePending: "{{n}} race(s) still to run or waiting for results. Green = finished in the first three · ★ = in both lists · ↑ = market-move list only. Click a race to open it.",
   },
 } as const;
