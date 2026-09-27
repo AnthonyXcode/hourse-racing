@@ -248,6 +248,8 @@ export const momentum = {
       place: "Place bets net",
       placeSub: "{{hits}}/{{n}} placed · cost {{cost}} · return {{ret}}",
       placeNone: "no settled Place picks yet",
+      roi: "ROI {{v}}",
+      roiT: "Return on investment: net ÷ amount staked",
       modelTop: "Model's top pick placed",
       modelTopSub: "finished in the first three",
       best: "Best Trio hit",

@@ -250,6 +250,8 @@ export const momentum: Shape<typeof En> = {
       place: "位置投注淨額",
       placeSub: "{{hits}}/{{n}} 上名 · 成本 {{cost}} · 回報 {{ret}}",
       placeNone: "暫未有已結算的位置選擇",
+      roi: "回報率 {{v}}",
+      roiT: "投資回報率：淨額 ÷ 投注額",
       modelTop: "模型首選上名",
       modelTopSub: "跑入頭三名",
       best: "最高單T 命中",

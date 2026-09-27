@@ -79,6 +79,13 @@ export function DaySummary({ date, live, onOpenRace }: { date: string; live: boo
   ];
   const horse = (h: { code: string | null; name: string; nameZh: string | null }) => (lang === "zh-HK" && h.nameZh ? h.nameZh : name("horse", h.code, h.name));
   const of = (a: number, b: number) => (b ? `${a}/${b}` : "–");
+  /** Net money with ROI (net ÷ stake) beside it in smaller type. */
+  const netRoi = (net: number, stake: number) => (
+    <>
+      {money(net)}
+      {stake > 0 && <span className="ml-2 inline-block font-sans text-sm font-semibold whitespace-nowrap tabular-nums" title={t("summary.kpi.roiT")}>{t("summary.kpi.roi", { v: signed((100 * net) / stake) })}</span>}
+    </>
+  );
 
   return (
     <section className="mt-4">
@@ -89,13 +96,13 @@ export function DaySummary({ date, live, onOpenRace }: { date: string; live: boo
           <Kpi label={t("summary.kpi.trio")} value={of(trioHits, run.length)} sub={t("summary.kpi.trioSub")} />
           <Kpi
             label={t("summary.kpi.net")}
-            value={priced.length ? money(ret - cost) : "–"}
+            value={priced.length ? netRoi(ret - cost, cost) : "–"}
             sub={t("summary.kpi.netSub", { cost: money(cost), ret: money(ret) })}
             tone={priced.length ? cls(ret - cost) : ""}
           />
           <Kpi
             label={t("summary.kpi.place")}
-            value={placeRun.length ? money(placeRet - placeCost) : "–"}
+            value={placeRun.length ? netRoi(placeRet - placeCost, placeCost) : "–"}
             sub={placeRun.length ? t("summary.kpi.placeSub", { hits: placeHits, n: placePicks, cost: money(placeCost), ret: money(placeRet) }) : t("summary.kpi.placeNone")}
             tone={placeRun.length ? cls(placeRet - placeCost) : ""}
           />
