@@ -125,7 +125,7 @@ export function RaceCardTable({
 }
 
 // ---- A horse's past runs (from the racecard) ----
-function HorseFormModal({ horse, onClose }: { horse: CardHorse; onClose: () => void }) {
+export function HorseFormModal({ horse, onClose }: { horse: CardHorse; onClose: () => void }) {
   const { t } = useTranslation(["bet", "common"]);
   const g = useGlossary();
   const fmt = useFmt();

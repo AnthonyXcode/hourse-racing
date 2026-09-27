@@ -1,10 +1,10 @@
 // Market momentum: live pre-race odds movement (server polls HKJC every 30 s inside the
 // 30-min window) and, over settled races, whether that movement predicts the result.
-import { useEffect, useMemo, useState, type ReactNode } from "react";
+import { Fragment, useEffect, useMemo, useState, type ReactNode } from "react";
 import { api, type MomentumDay, type MomentumDayRef } from "../api";
 import {
   type RaceSeries, type HorseRow, type Window, type BucketStats, type Mover, type ModelRank, type Bucket,
-  WINDOWS, BUCKETS, MODEL_PICKS, MOVE_PICKS, TRIO_UNIT, choose3, movers, suggestPicks, pickResults, byBucket, byBandAndBucket, stats,
+  WINDOWS, BUCKETS, MODEL_PICKS, MOVE_PICKS, TRIO_UNIT, PLACE_SURGE, RECENT_SECS, choose3, movers, placeResult, placeSurges, suggestPicks, pickResults, byBucket, byBandAndBucket, stats,
 } from "../../shared/momentum/model";
 import { C, GroupedBars, type Series } from "../analyzer/charts";
 import { Kpi, Legend, SortTh, cls, pc, signed, useSort } from "../analyzer/format";
@@ -15,6 +15,7 @@ import { useFmt } from "../i18n/useLanguage";
 import { OddsChart, Swatch, horseStyle, useRunnerNames } from "./OddsChart";
 import { PoolDonut } from "./PoolDonut";
 import { DaySummary } from "./DaySummary";
+import { HorseLink } from "./HorseRecord";
 import { track } from "../analytics";
 import {
   Display, H2, btn, dateControl, btnPrimary, control, cx, dim, empty, errorBox, field, fieldLabel, figure, grid2, h3, kpis, modal, modalBg, note, page, panel,
@@ -44,6 +45,9 @@ const chipCls = (both: boolean, on: boolean, marketOnly = false) =>
   cx(chipBase, on ? "bg-accent-soft ring-1 ring-accent" : both ? "bg-surface ring-1 ring-ink" : marketOnly ? "bg-surface ring-1 ring-warn" : "bg-surface");
 const chipOdds = "-ml-[3px] text-ink-3 tabular-nums";
 const chipDetail = "text-ink-2 tabular-nums";
+/** Dividend pools in HKJC results-page order; ordered pools print their combination with ">". */
+const POOL_ORDER = ["WIN", "PLA", "QIN", "QPL", "FCT", "TCE", "TRI", "FF", "QTT"] as const;
+const ORDERED_POOLS = new Set<string>(["FCT", "TCE", "QTT"]);
 const MIN_N = 30; // below this a bucket's hit rate is noise — shown greyed
 
 /** Display formats for the active language, in HK time. */
@@ -285,6 +289,7 @@ function MoversTable({ series, focus, onFocus, stamp }: { series: RaceSeries; fo
   const sort = useSort<MoverKey>("momentum", -1);
   const fin = useMemo(() => new Map(series.results.map((r) => [r.horseNo, r.finishPos])), [series.results]);
   const all = useMemo(() => movers(series), [series]);
+  const codes = useMemo(() => new Map(series.runners.map((r) => [r.horseNo, r.code ?? null])), [series.runners]);
   const mv = useMemo(
     () => sortMovers(all.map((m) => ({ ...m, fin: fin.get(m.horseNo) ?? null })), sort.key, sort.dir),
     [all, fin, sort.key, sort.dir]
@@ -320,7 +325,7 @@ function MoversTable({ series, focus, onFocus, stamp }: { series: RaceSeries; fo
           {mv.map((m) => (
             <tr key={m.horseNo} onMouseEnter={() => onFocus(m.horseNo)} onMouseLeave={() => onFocus(null)} className={focus === m.horseNo ? "[&_td]:bg-accent-soft" : ""}>
               <td><Swatch {...horseStyle(m.horseNo)} />{m.horseNo}</td>
-              <td>{nameOf(m.horseNo, m.name)}</td>
+              <td><HorseLink raceId={series.raceId} horseNo={m.horseNo} code={codes.get(m.horseNo)} name={nameOf(m.horseNo, m.name)} /></td>
               <td>{m.start ?? "–"}</td>
               <td>{m.now ?? "–"}</td>
               <td className={m.momentum == null ? "" : cls(m.momentum)} title={m.bucket ? t(`bucket.${m.bucket}`) : ""}>
@@ -341,8 +346,8 @@ function MoversTable({ series, focus, onFocus, stamp }: { series: RaceSeries; fo
 
 // ---------------- Suggested picks ----------------
 
-function PickChip({ horseNo, name, odds, detail, both, marketOnly, fin, focus, onFocus }: {
-  horseNo: number; name: string; odds?: number | null; detail?: ReactNode; both?: boolean; marketOnly?: boolean; fin?: number | null; focus: number | null; onFocus: (h: number | null) => void;
+function PickChip({ horseNo, name, odds, oddsTitle, detail, both, marketOnly, fin, focus, onFocus }: {
+  horseNo: number; name: string; odds?: number | null; oddsTitle?: string; detail?: ReactNode; both?: boolean; marketOnly?: boolean; fin?: number | null; focus: number | null; onFocus: (h: number | null) => void;
 }) {
   const { t } = useTranslation(["momentum", "common"]);
   return (
@@ -354,7 +359,7 @@ function PickChip({ horseNo, name, odds, detail, both, marketOnly, fin, focus, o
     >
       <Swatch {...horseStyle(horseNo)} className="w-3.5" />
       <b>{horseNo}</b>
-      {odds != null && <span className={chipOdds} title={t("picks.currentOdds")}>({odds})</span>}
+      {odds != null && <span className={chipOdds} title={oddsTitle ?? t("picks.currentOdds")}>({odds})</span>}
       {detail && <span className={chipDetail}>{detail}</span>}
       {fin != null && <span className={cx("border-l border-edge pl-[5px] text-[11px]", fin <= 3 ? "font-semibold text-good" : "text-ink-3")}>{ordinal(t, fin)}</span>}
     </span>
@@ -370,8 +375,23 @@ function SuggestedPicks({ model, series, focus, onFocus, className }: {
   const fin = useMemo(() => new Map(series.results.map((r) => [r.horseNo, r.finishPos])), [series.results]);
   const nameOf = useRunnerNames(series);
   const picks = suggestPicks(model?.ranks ?? [], mv);
+  const place = useMemo(() => placeSurges(series), [series]);
   const result = pickResults(picks, series.results, series.dividends);
   const divOf = (pool: string) => result?.dividends.filter((d) => d.pool === pool) ?? [];
+  // Place picks at $10 each: cost, and the PLA dividends of the ones that placed (null until paid).
+  const { cost: placeCost, return: placeReturn } = placeResult(place.map((p) => p.horseNo), series.dividends);
+  const span = series.points.length ? series.points[0]!.secsToPost - series.points[series.points.length - 1]!.secsToPost : 0;
+  // Every runner in finishing order; scratched / did not finish (no position) last.
+  const order = [...series.results].sort((a, b) => (a.finishPos ?? 99) - (b.finishPos ?? 99) || a.horseNo - b.horseNo);
+  // Collapsed: first three only (dead-heats included). Collapses again when the race changes.
+  const [allRunners, setAllRunners] = useState(false);
+  useEffect(() => setAllRunners(false), [series.raceId]);
+  const shown = allRunners ? order : order.filter((r) => r.finishPos != null && r.finishPos <= 3);
+  const pools = POOL_ORDER.filter((p) => divOf(p).length);
+  // Within a pool, combinations in finishing order (e.g. Place: 1st, 2nd, 3rd).
+  const posOf = new Map(series.results.map((r) => [String(r.horseNo), r.finishPos ?? 99]));
+  const combRank = (comb: string) => comb.split(",").reduce((a, h) => a + (posOf.get(h) ?? 99), 0);
+  const divsOf = (pool: string) => [...divOf(pool)].sort((a, b) => combRank(a.comb) - combRank(b.comb));
   const off = series.postTime != null && Date.parse(series.postTime) <= Date.now();
   const odds = new Map(mv.map((m) => [m.horseNo, m.now]));
   const chip = { focus, onFocus };
@@ -421,6 +441,32 @@ function SuggestedPicks({ model, series, focus, onFocus, className }: {
           </span>
         </div>
       )}
+      <div className={cx(pickRow, "mt-1 border-t border-edge pt-3")}>
+        <span className={cx(pickLbl, "font-semibold text-ink")} title={t("picks.placeT", { pct: 100 * PLACE_SURGE })}>{t("picks.place", { pct: 100 * PLACE_SURGE })}</span>
+        <div className={chips}>
+          {place.length ? (
+            place.map((p) => (
+              <PickChip key={p.horseNo} horseNo={p.horseNo} name={nameOf(p.horseNo, p.name)} odds={p.now} detail={<span className="text-good" title={t("picks.placeFrom", { before: p.before, now: p.now, pla: p.placeNow ?? "–" })}>{signed(100 * p.change)}</span>} fin={f(p.horseNo)} {...chip} />
+            ))
+          ) : (
+            <span className={dim}>{span < RECENT_SECS ? t("picks.placeNeeds5") : t("picks.placeNone", { pct: 100 * PLACE_SURGE })}</span>
+          )}
+        </div>
+      </div>
+      {place.length > 0 && (
+        <div className={pickRow}>
+          <span className={cx(pickLbl, "hidden sm:block")} />
+          <span className="text-[12.5px] text-ink-2 tabular-nums">
+            {t("picks.placeBet", { n: place.length, unit: TRIO_UNIT })} <b className="text-ink">${placeCost.toLocaleString()}</b>
+            {placeReturn != null && (
+              <>
+                {" · "}{t("picks.placeReturn")}{" "}
+                <b className={placeReturn > placeCost ? "text-good" : "text-bad"}>${placeReturn.toLocaleString()}</b>
+              </>
+            )}
+          </span>
+        </div>
+      )}
       </div>
       <div className="mt-4 min-w-0 border-t border-edge pt-4 lg:mt-0 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-8">
         <h3 className={cx(h3, "mb-2")}>{t("result.title")}</h3>
@@ -428,36 +474,63 @@ function SuggestedPicks({ model, series, focus, onFocus, className }: {
           <span className={dim}>{off ? t("result.waiting") : t("result.after")}</span>
         ) : (
           <>
-            <div className={pickRow}>
-              <span className={pickLbl}>{result.complete ? t("result.placings") : t("result.placingsSoFar")}</span>
-              <div className={chips}>
-                {result.placed.map((r) => (
-                  <span key={r.horseNo} className={chipCls(false, focus === r.horseNo)} title={nameOf(r.horseNo)} onMouseEnter={() => onFocus(r.horseNo)} onMouseLeave={() => onFocus(null)}>
-                    <span className="text-[11px] font-bold text-good">{ordinal(t, r.finishPos ?? 3)}</span>
-                    <Swatch {...horseStyle(r.horseNo)} className="w-3.5" />
-                    <b>{r.horseNo}</b>
-                    {r.sp != null && <span className={chipOdds}>({r.sp})</span>}
-                    <span className={chipDetail}>{nameOf(r.horseNo)}</span>
-                  </span>
+            {!result.complete && <div className="text-xs text-ink-2">{t("result.placingsSoFar")}</div>}
+            <div className={cx(scroll, "mt-1")}>
+              <table className={cx(table, "text-[12.5px] [&_td]:px-2 [&_td]:py-1.5 [&_th]:px-2 [&_th]:py-1.5 [&_td:nth-child(3)]:text-left [&_th:nth-child(3)]:text-left")}>
+                <thead>
+                  <tr>
+                    <th>{t("common:word.placing")}</th>
+                    <th>#</th>
+                    <th>{t("common:word.horse")}</th>
+                    <th title={t("result.finalOddsT")}>{t("result.finalOdds")}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {shown.map((r) => {
+                    const top = r.finishPos != null && r.finishPos <= 3;
+                    return (
+                      <tr
+                        key={r.horseNo}
+                        onMouseEnter={() => onFocus(r.horseNo)}
+                        onMouseLeave={() => onFocus(null)}
+                        className={cx(top && "font-semibold", focus === r.horseNo ? "[&_td]:bg-accent-soft" : top && "[&_td]:bg-good-soft", r.finishPos == null && dim)}
+                      >
+                        <td className={top ? "text-good" : "text-ink-2"}>{r.finishPos == null ? "–" : top ? ordinal(t, r.finishPos) : r.finishPos}</td>
+                        <td className="tabular-nums"><Swatch {...horseStyle(r.horseNo)} className="w-3.5" />{r.horseNo}</td>
+                        <td className="max-w-[180px] truncate">{nameOf(r.horseNo)}</td>
+                        <td className="tabular-nums">{r.sp ?? "–"}</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+            {order.length > shown.length || allRunners ? (
+              <button type="button" className="mt-1.5 cursor-pointer text-xs text-accent hover:underline" onClick={() => setAllRunners((v) => !v)} aria-expanded={allRunners}>
+                {allRunners ? t("result.showTop3") : t("result.showAll", { n: order.length })}
+              </button>
+            ) : null}
+            <div className="mt-3 text-xs text-ink-2">{t("result.dividends")} <span className={dim}>{t("result.per10")}</span></div>
+            {pools.length ? (
+              <dl className="mt-1.5 grid grid-cols-[auto_1fr] gap-x-4 gap-y-1 text-[12.5px]">
+                {pools.map((pool) => (
+                  <Fragment key={pool}>
+                    <dt className={cx("text-ink-2", pool === "TRI" && "font-semibold text-ink")}>{t(`result.pool.${pool}`)}</dt>
+                    <dd className="flex flex-wrap gap-x-3 gap-y-0.5 tabular-nums">
+                      {divsOf(pool).map((d) => (
+                        <span key={d.comb}>
+                          <b>{d.comb.replaceAll(",", ORDERED_POOLS.has(pool) ? ">" : "-")}</b>{" "}
+                          <span className={pool === "TRI" ? cx(figure, "ml-0.5 text-[18px] text-ink") : "text-ink-2"}>${d.div.toLocaleString()}</span>
+                        </span>
+                      ))}
+                    </dd>
+                  </Fragment>
                 ))}
-              </div>
-            </div>
-            <div className={pickRow}>
-              <span className={pickLbl}>{t("result.dividends")} <span className={dim}>{t("result.per10")}</span></span>
-              <div className="flex flex-wrap items-baseline gap-x-3.5 gap-y-1.5">
-                {divOf("TRI").length ? (
-                  divOf("TRI").map((d) => (
-                    <span key={d.comb} className="text-[13px]">
-                      {t("result.trio")} <b>{d.comb.replaceAll(",", "-")}</b> <b className={cx(figure, "ml-1 text-[20px] font-normal text-ink")}>${d.div.toLocaleString()}</b>
-                    </span>
-                  ))
-                ) : (
-                  <span className={dim}>{t("result.trioWaiting")}</span>
-                )}
-                {divOf("WIN").map((d) => <span key={`w${d.comb}`} className="text-xs text-ink-2 tabular-nums">{t("result.win")} {d.comb} ${d.div}</span>)}
-                {divOf("QIN").map((d) => <span key={`q${d.comb}`} className="text-xs text-ink-2 tabular-nums">{t("result.quinella")} {d.comb.replaceAll(",", "-")} ${d.div}</span>)}
-              </div>
-            </div>
+              </dl>
+            ) : (
+              <p className={cx(dim, "mt-1.5 text-[12.5px]")}>{t("result.divWaiting")}</p>
+            )}
+            {!divOf("TRI").length && pools.length > 0 && <p className={cx(dim, "mt-1 text-[12.5px]")}>{t("result.trioWaiting")}</p>}
             <div className={scroll}>
             <table
               className={cx(

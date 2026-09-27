@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { impliedProbs, bucketOf, pointAt, movers, suggestPicks, pickResults, horseRows, byBucket, stats, oddsBand, type RaceSeries, type SeriesPoint, type Mover } from "./model";
+import { impliedProbs, bucketOf, pointAt, movers, placeSurges, suggestPicks, pickResults, horseRows, byBucket, stats, oddsBand, type RaceSeries, type SeriesPoint, type Mover } from "./model";
 
 const pt = (secsToPost: number, win: Record<number, number>, pla: Record<number, number> = {}): SeriesPoint => ({
   secsToPost,
@@ -79,6 +79,24 @@ describe("movers", () => {
   });
 });
 
+describe("placeSurges", () => {
+  const runners = [1, 2, 3].map((h) => ({ horseNo: h, finishPos: null, sp: null }));
+  it("keeps horses whose win-market move over the last 5 min is above +50%", () => {
+    const s = race(
+      [pt(1200, { 1: 6, 2: 3, 3: 3 }, { 1: 2, 2: 1.5, 3: 1.5 }), pt(360, { 1: 6, 2: 3, 3: 3 }, { 1: 2, 2: 1.5, 3: 1.5 }), pt(60, { 1: 2.4, 2: 4, 3: 4 }, { 1: 1.2, 2: 1.6, 3: 1.6 })],
+      runners
+    );
+    // win implied #1: 0.2/(0.2+⅓+⅓)=0.2 → (1/2.4)/(1/2.4+¼+¼)=0.4545 → +127%; #2/#3 drifted
+    const p = placeSurges(s);
+    expect(p.map((x) => x.horseNo)).toEqual([1]);
+    expect(p[0]!.change).toBeCloseTo(movers(s).find((m) => m.horseNo === 1)!.recent!);
+    expect([p[0]!.before, p[0]!.now, p[0]!.placeNow]).toEqual([6, 2.4, 1.2]);
+  });
+  it("is empty without a snapshot ~5 min before the latest", () => {
+    expect(placeSurges(race([pt(1800, { 1: 4 }), pt(60, { 1: 1.5 })], runners))).toEqual([]);
+  });
+});
+
 describe("horseRows", () => {
   // Horse 1 steams 4 → 2, horse 2 drifts 4 → 8; horse 3 scratched.
   const s = race(
@@ -149,6 +167,23 @@ describe("suggestPicks", () => {
       [3, true, false],
       [4, false, true],
       [5, false, true],
+    ]);
+  });
+
+  it("adds only the Move top 3 to Combined", () => {
+    // Move order 6, 7, 1, 8, 9 — #1 is a model pick; #8 and #9 (Move 4th/5th) stay out of Combined.
+    const p = suggestPicks([rank(1, 0.3), rank(2, 0.2)], [mover(6, 0.5), mover(7, 0.4), mover(1, 0.3), mover(8, 0.2), mover(9, 0.1), mover(2, null)]);
+    expect(p.move.map((m) => m.horseNo)).toEqual([6, 7, 1, 8, 9]);
+    expect(p.combined.map((c) => c.horseNo)).toEqual([1, 2, 6, 7]);
+  });
+
+  it("marks a model pick in the Move top 5 as in both, even outside the Move top 3", () => {
+    const p = suggestPicks([rank(1, 0.3)], [mover(6, 0.5), mover(7, 0.4), mover(8, 0.3), mover(1, 0.2)]);
+    expect(p.combined.map((c) => [c.horseNo, c.inModel, c.inMove])).toEqual([
+      [1, true, true],
+      [6, false, true],
+      [7, false, true],
+      [8, false, true],
     ]);
   });
 

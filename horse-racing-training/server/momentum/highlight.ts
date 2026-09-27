@@ -7,7 +7,7 @@ import { modelRanks } from "./picks";
 import { hkDate } from "./poller";
 import { raceSeries } from "./series";
 
-const TTL_MS = 30_000;
+const TTL_MS = 15_000; // banner polls every 30s; keep odds fresh between poller ticks
 let cache: { at: number; value: Highlight | null } | null = null;
 
 type Candidate = { mode: Highlight["mode"]; date: string; venue: "ST" | "HV"; raceNo: number; postTime: string | null; tracked: RaceRow | null };

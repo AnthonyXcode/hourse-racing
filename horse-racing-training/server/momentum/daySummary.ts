@@ -1,7 +1,7 @@
 // Racing-day review for Momentum → Summary: every race's Combined picks and how they did.
 // Uses the same pick logic as the race page (suggestPicks + pickResults), computed server-side so the
 // page makes one request instead of two per race. Upcoming days come from the racecards (all pending).
-import { movers, pickResults, suggestPicks, type DaySummary, type DaySummaryRace, type ModelRank, type RaceSeries } from "../../shared/momentum/model";
+import { movers, pickResults, placeResult, placeSurges, suggestPicks, type DaySummary, type DaySummaryRace, type ModelRank, type RaceSeries } from "../../shared/momentum/model";
 import { races } from "../dataIndex";
 import type { Repo } from "./db";
 import { modelRanks } from "./picks";
@@ -32,6 +32,8 @@ async function summarise(series: RaceSeries): Promise<DaySummaryRace> {
   const res = pickResults(picks, series.results, series.dividends);
   const fin = new Map(series.results.map((r) => [r.horseNo, r.finishPos]));
   const top = ranks[0];
+  const place = placeSurges(series);
+  const pr = placeResult(place.map((p) => p.horseNo), series.dividends);
   return {
     raceId: series.raceId,
     raceNo: series.raceNo,
@@ -45,6 +47,9 @@ async function summarise(series: RaceSeries): Promise<DaySummaryRace> {
     combined: res?.lists[2] ?? null,
     modelTop: top ? { horseNo: top.horseNo, finishPos: res ? (fin.get(top.horseNo) ?? null) : null } : null,
     trioDiv: series.dividends?.find((d) => d.pool === "TRI")?.div ?? null,
+    place: place.map((p) => ({ horseNo: p.horseNo, change: p.change, ...who(p.horseNo) })),
+    placeCost: pr.cost,
+    placeReturn: pr.return,
   };
 }
 

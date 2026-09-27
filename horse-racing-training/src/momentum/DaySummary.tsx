@@ -5,10 +5,11 @@ import { useTranslation } from "react-i18next";
 import { api } from "../api";
 import type { DaySummary as Summary } from "../../shared/momentum/model";
 import { C, GroupedBars, type Series } from "../analyzer/charts";
-import { Kpi, Legend, cls, money, pc } from "../analyzer/format";
+import { Kpi, Legend, cls, money, pc, signed } from "../analyzer/format";
 import { useNames } from "../i18n/names";
 import { useLanguage } from "../i18n/useLanguage";
 import { cx, dim, empty, errorBox, h3, kpis, note, panel, scroll, table, tablePad } from "../kit";
+import { HorseLink } from "./HorseRecord";
 
 const REFRESH_MS = 60_000;
 
@@ -48,6 +49,12 @@ export function DaySummary({ date, live, onOpenRace }: { date: string; live: boo
   const priced = run.filter((r) => r.combined!.trioReturn != null);
   const cost = priced.reduce((a, r) => a + r.combined!.trioCost, 0);
   const ret = priced.reduce((a, r) => a + (r.combined!.trioReturn ?? 0), 0);
+  // Place picks: races with a result and posted Place dividends.
+  const placeRun = run.filter((r) => r.place.length && r.placeReturn != null);
+  const placePicks = placeRun.reduce((a, r) => a + r.place.length, 0);
+  const placeHits = placeRun.reduce((a, r) => a + r.place.filter((p) => r.placed.some((x) => x.horseNo === p.horseNo)).length, 0);
+  const placeCost = placeRun.reduce((a, r) => a + r.placeCost, 0);
+  const placeRet = placeRun.reduce((a, r) => a + (r.placeReturn ?? 0), 0);
   const topPlaced = run.filter((r) => r.modelTop?.finishPos != null && r.modelTop.finishPos <= 3).length;
   const best = run.reduce<(typeof run)[number] | null>((b, r) => ((r.combined!.trioReturn ?? 0) > (b?.combined!.trioReturn ?? 0) ? r : b), null);
   // Place hit rate by pick position: for position k, the share of finished races whose k-th model /
@@ -85,6 +92,12 @@ export function DaySummary({ date, live, onOpenRace }: { date: string; live: boo
             value={priced.length ? money(ret - cost) : "–"}
             sub={t("summary.kpi.netSub", { cost: money(cost), ret: money(ret) })}
             tone={priced.length ? cls(ret - cost) : ""}
+          />
+          <Kpi
+            label={t("summary.kpi.place")}
+            value={placeRun.length ? money(placeRet - placeCost) : "–"}
+            sub={placeRun.length ? t("summary.kpi.placeSub", { hits: placeHits, n: placePicks, cost: money(placeCost), ret: money(placeRet) }) : t("summary.kpi.placeNone")}
+            tone={placeRun.length ? cls(placeRet - placeCost) : ""}
           />
           <Kpi label={t("summary.kpi.modelTop")} value={of(topPlaced, run.length)} sub={t("summary.kpi.modelTopSub")} />
           <Kpi
@@ -155,6 +168,8 @@ export function DaySummary({ date, live, onOpenRace }: { date: string; live: boo
               <th>{t("summary.col.trio")}</th>
               <th>{t("summary.col.cost")}</th>
               <th>{t("summary.col.return")}</th>
+              <th className="border-l border-edge">{t("summary.col.place")}</th>
+              <th>{t("summary.col.placeReturn")}</th>
             </tr>
           </thead>
           <tbody>
@@ -202,6 +217,29 @@ export function DaySummary({ date, live, onOpenRace }: { date: string; live: boo
                   <td className={c ? (c.trio ? "text-good" : "text-bad") : ""}>{c ? (c.trio ? "✓" : "✗") : "–"}</td>
                   <td>{c ? money(c.trioCost) : "–"}</td>
                   <td className={c?.trioReturn != null ? (c.trioReturn > c.trioCost ? "text-good" : "text-bad") : dim}>{c?.trioReturn != null ? money(c.trioReturn) : "–"}</td>
+                  <td className="border-l border-edge">
+                    {r.place.length ? (
+                      <span className="inline-flex flex-wrap gap-1">
+                        {r.place.map((p) => (
+                          <span
+                            key={p.horseNo}
+                            title={`${horse(p)} · ${signed(100 * p.change)}`}
+                            className={cx(
+                              "inline-flex min-w-6 items-center justify-center rounded-full px-1.5 text-xs font-semibold tabular-nums",
+                              placedNos.has(p.horseNo) ? "bg-good text-white" : "bg-surface text-ink shadow-btn"
+                            )}
+                          >
+                            {p.horseNo}
+                          </span>
+                        ))}
+                      </span>
+                    ) : (
+                      <span className={dim}>–</span>
+                    )}
+                  </td>
+                  <td className={r.place.length && r.placeReturn != null ? (r.placeReturn > r.placeCost ? "text-good" : "text-bad") : dim}>
+                    {r.place.length ? (r.placeReturn != null ? `${money(r.placeReturn)} / ${money(r.placeCost)}` : money(r.placeCost)) : "–"}
+                  </td>
                 </tr>
               );
             })}
@@ -230,7 +268,7 @@ function PositionBreakdown({ pos, list, label, races, horse, onOpenRace, onClose
       if (no == null) return null;
       const p = r.picks.find((x) => x.horseNo === no);
       const fin = r.finishPos[no] ?? null;
-      return { race: r, no, name: p ? horse(p) : "", fin, placed: fin != null && fin <= 3 };
+      return { race: r, no, name: p ? horse(p) : "", code: p?.code ?? null, fin, placed: fin != null && fin <= 3 };
     })
     .filter((x): x is NonNullable<typeof x> => x != null);
   const hits = rows.filter((r) => r.placed).length;
@@ -262,7 +300,7 @@ function PositionBreakdown({ pos, list, label, races, horse, onOpenRace, onClose
               <tr key={r.race.raceId} className="cursor-pointer" onClick={() => onOpenRace(r.race.raceId)} title={t("summary.openRace")}>
                 <td className="font-semibold">{t("common:raceShort", { n: r.race.raceNo })}</td>
                 <td>
-                  <b className="tabular-nums">{r.no}</b> <span className="text-ink-2">{r.name}</span>
+                  <b className="tabular-nums">{r.no}</b> <HorseLink raceId={r.race.raceId} horseNo={r.no} code={r.code} name={r.name} className="text-ink-2" />
                 </td>
                 <td className="tabular-nums">{r.fin ?? "–"}</td>
                 <td className={r.placed ? "text-good" : "text-bad"}>{r.placed ? "✓" : "✗"}</td>

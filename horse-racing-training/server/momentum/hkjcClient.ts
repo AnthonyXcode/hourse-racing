@@ -53,7 +53,7 @@ export interface HkjcClient {
   dividends(date: string, venue: string): Promise<Dividend[]>;
 }
 
-const DIVIDEND_POOLS = new Set(["WIN", "PLA", "QIN", "QPL", "TRI"]);
+const DIVIDEND_POOLS = new Set(["WIN", "PLA", "QIN", "QPL", "FCT", "TCE", "TRI", "FF", "QTT"]);
 
 async function post<T>(key: keyof typeof QUERIES, variables: Record<string, unknown>): Promise<T> {
   const { op, text } = QUERIES[key];

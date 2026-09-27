@@ -108,6 +108,45 @@ export function movers(s: RaceSeries): Mover[] {
 
 // ---- Suggested picks ----
 
+export const PLACE_SURGE = 0.5; // Place pick: win-market move over the last RECENT_SECS above +50%
+
+export interface PlaceSurge {
+  horseNo: number;
+  name: string;
+  before: number; // win odds ~5 min before the latest snapshot
+  now: number; // latest win odds
+  change: number; // Mover.recent: relative rise in normalised win implied chance (the movers table's last-5-min figure)
+  placeNow: number | null; // latest place odds (what the bet is struck at)
+}
+
+/**
+ * Place picks: horses whose win-market move over the last RECENT_SECS (Mover.recent) is above
+ * PLACE_SURGE, biggest first — the market is backing them to win, we bet them to place.
+ * Empty until ~5 min of snapshots exist.
+ */
+export function placeSurges(s: RaceSeries): PlaceSurge[] {
+  const last = s.points[s.points.length - 1];
+  const earlier = last ? pointAt(s.points, last.secsToPost + RECENT_SECS) : null;
+  if (!last || !earlier || earlier === last) return [];
+  return movers(s)
+    .flatMap((m) => {
+      const before = earlier.win[m.horseNo], now = last.win[m.horseNo];
+      if (m.recent == null || !(m.recent > PLACE_SURGE) || !before || !now) return [];
+      return [{ horseNo: m.horseNo, name: m.name, before, now, change: m.recent, placeNow: last.pla[m.horseNo] ?? null }];
+    })
+    .sort((a, b) => b.change - a.change);
+}
+
+/** Place picks at TRIO_UNIT each: cost, and the PLA dividends collected (null until Place dividends are posted). */
+export function placeResult(horses: number[], dividends?: RaceSeries["dividends"]) {
+  const pla = (dividends ?? []).filter((d) => d.pool === "PLA");
+  const set = new Set(horses.map(String));
+  return {
+    cost: horses.length * TRIO_UNIT,
+    return: pla.length ? pla.filter((d) => set.has(d.comb)).reduce((a, d) => a + d.div, 0) : null,
+  };
+}
+
 /** One row of the analyzer's ranking (tools/analyze-race.ts), best first. */
 export interface ModelRank {
   horseNo: number;
@@ -118,6 +157,7 @@ export interface ModelRank {
 
 export const MODEL_PICKS = 5; // analyzer's top N by win probability
 export const MOVE_PICKS = 5; // top N by Move (first snapshot → latest)
+export const COMBINED_MOVE_PICKS = 3; // Combined (Trio box) takes only the Move top 3, to keep the box small
 
 export interface Picks {
   model: ModelRank[]; // analyzer top MODEL_PICKS still in the race
@@ -125,7 +165,10 @@ export interface Picks {
   combined: { horseNo: number; name: string; inModel: boolean; inMove: boolean }[]; // union: both first
 }
 
-/** Analyzer top 5 + Move top 5. Horses no longer priced (scratched) are skipped. */
+/**
+ * Analyzer top 5 + Move top 5; Combined = model top 5 ∪ Move top 3. Horses no longer priced (scratched)
+ * are skipped. `inMove` = in the Move top 5 (so ★ marks a model pick the market is also backing).
+ */
 export function suggestPicks(model: ModelRank[], mv: Mover[]): Picks {
   const running = new Set(mv.filter((m) => m.now != null).map((m) => m.horseNo));
   const top = model.filter((r) => running.size === 0 || running.has(r.horseNo)).slice(0, MODEL_PICKS);
@@ -136,7 +179,7 @@ export function suggestPicks(model: ModelRank[], mv: Mover[]): Picks {
   const inModel = new Set(top.map((r) => r.horseNo)), inMove = new Set(move.map((m) => m.horseNo));
   const names = new Map([...mv.map((m) => [m.horseNo, m.name] as const), ...top.map((r) => [r.horseNo, r.name] as const)]);
   // Model picks first (model rank order), then market-move picks not already listed (move order).
-  const combined = [...new Set([...top.map((r) => r.horseNo), ...move.map((m) => m.horseNo)])].map((h) => ({
+  const combined = [...new Set([...top.map((r) => r.horseNo), ...move.slice(0, COMBINED_MOVE_PICKS).map((m) => m.horseNo)])].map((h) => ({
     horseNo: h,
     name: names.get(h) ?? "",
     inModel: inModel.has(h),
@@ -176,6 +219,11 @@ export interface DaySummaryRace {
   modelTop: { horseNo: number; finishPos: number | null } | null;
   /** official Trio dividend per $10 (first one on a dead-heat); null if not posted */
   trioDiv: number | null;
+  /** Place picks (win-market move > PLACE_SURGE in the last 5 min), biggest move first */
+  place: { horseNo: number; change: number; code: string | null; name: string; nameZh: string | null }[];
+  /** $10 each to place; return = PLA dividends collected, null until posted */
+  placeCost: number;
+  placeReturn: number | null;
 }
 export interface DaySummary {
   date: string;
