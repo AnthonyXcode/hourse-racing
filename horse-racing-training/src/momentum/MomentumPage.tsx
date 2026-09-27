@@ -1,6 +1,7 @@
 // Market momentum: live pre-race odds movement (server polls HKJC every 30 s inside the
 // 30-min window) and, over settled races, whether that movement predicts the result.
 import { Fragment, useEffect, useMemo, useState, type ReactNode } from "react";
+import { motion, useReducedMotion } from "motion/react";
 import { api, type MomentumDay, type MomentumDayRef } from "../api";
 import {
   type RaceSeries, type HorseRow, type Window, type BucketStats, type Mover, type ModelRank, type Bucket,
@@ -411,6 +412,39 @@ function PickChip({ horseNo, name, odds, oddsTitle, detail, both, marketOnly, fi
   );
 }
 
+/**
+ * "Suggested picks" from the cut-off onwards (and for good after): the text burns with a moving
+ * fire gradient and a flickering 🔥. With reduced motion: static fire colours, no movement.
+ */
+function FireTitle({ children }: { children: ReactNode }) {
+  const still = useReducedMotion();
+  return (
+    <span className="relative isolate inline-flex items-baseline gap-1">
+      <motion.span
+        aria-hidden
+        className="inline-block"
+        animate={still ? undefined : { scale: [1, 1.25, 0.95, 1.15, 1], rotate: [0, -8, 6, -4, 0], opacity: [1, 0.85, 1, 0.9, 1] }}
+        transition={{ duration: 0.9, repeat: Infinity, ease: "easeInOut" }}
+      >
+        🔥
+      </motion.span>
+      <motion.span
+        className="bg-[linear-gradient(90deg,#c92a2a,#f76707,#fcc419,#f76707,#c92a2a)] bg-[length:200%_100%] bg-clip-text text-transparent"
+        animate={still ? undefined : { backgroundPosition: ["0% 50%", "200% 50%"] }}
+        transition={{ duration: 1.6, repeat: Infinity, ease: "linear" }}
+      >
+        {children}
+      </motion.span>
+      <motion.span
+        aria-hidden
+        className="pointer-events-none absolute -inset-x-1 -inset-y-0.5 -z-10 rounded-md bg-[#ff922b]/25 blur-md"
+        animate={still ? undefined : { opacity: [0.2, 0.7, 0.3, 0.6, 0.2] }}
+        transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut" }}
+      />
+    </span>
+  );
+}
+
 /** Full-width section above the chart + movers: the picks (left) and how they did (right on lg). */
 function SuggestedPicks({ model, series, focus, onFocus, className }: {
   model: ModelState; series: RaceSeries; focus: number | null; onFocus: (h: number | null) => void; className?: string;
@@ -424,6 +458,10 @@ function SuggestedPicks({ model, series, focus, onFocus, className }: {
   const nameOf = useRunnerNames(series);
   const picks = suggestPicks(model?.ranks ?? [], mv);
   const place = useMemo(() => placeSurges(cut), [cut]);
+  // Ready to bet: from the cut-off onwards the picks are final. Lights up at the cut-off and stays lit.
+  const now = useNow();
+  const post = series.postTime ? Date.parse(series.postTime) : NaN;
+  const ready = now >= post + cutoff * 60_000;
   const result = pickResults(picks, series.results, series.dividends);
   const divOf = (pool: string) => result?.dividends.filter((d) => d.pool === pool) ?? [];
   // Place picks at $10 each: cost, and the PLA dividends of the ones that placed (null until paid).
@@ -449,7 +487,8 @@ function SuggestedPicks({ model, series, focus, onFocus, className }: {
     <section className={cx(panel, "grid gap-x-8 lg:grid-cols-2", className)}>
       <div className="min-w-0">
       <h3 className={cx(h3, "mb-2")}>
-        {t("picks.title")} <span className="font-sans text-xs text-ink-3">{t("cutoff.asOf", { when: cutoffLabel(t, cutoff) })}</span>
+        {ready ? <FireTitle>{t("picks.title")}</FireTitle> : t("picks.title")}{" "}
+        <span className="font-sans text-xs text-ink-3">{t("cutoff.asOf", { when: cutoffLabel(t, cutoff) })}</span>
       </h3>
       <div className={pickRow}>
         <span className={pickLbl}>{t("picks.modelTop", { n: MODEL_PICKS })}</span>
