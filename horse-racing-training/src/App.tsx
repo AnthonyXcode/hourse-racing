@@ -84,6 +84,7 @@ function useViewParam(): [View, (v: View) => void] {
     const url = new URL(window.location.href);
     if (v === DEFAULT_VIEW) url.searchParams.delete("tab");
     else url.searchParams.set("tab", v);
+    if (v !== "momentum") for (const k of ["day", "race", "cutoff"]) url.searchParams.delete(k); // Momentum-only state
     window.history.pushState(null, "", url);
     setViewState(v);
   };

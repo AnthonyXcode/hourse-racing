@@ -14,7 +14,6 @@ import type { TFunction } from "i18next";
 import { useGlossary } from "../i18n/glossary";
 import { useFmt } from "../i18n/useLanguage";
 import { OddsChart, Swatch, horseStyle, useRunnerNames } from "./OddsChart";
-import { PoolDonut } from "./PoolDonut";
 import { DaySummary } from "./DaySummary";
 import { HorseLink } from "./HorseRecord";
 import { CutoffContext, cutoffLabel, useCutoff, useStoredCutoff } from "./cutoff";
@@ -88,13 +87,33 @@ function useNow() {
   return now;
 }
 
+/**
+ * Shareable state in the URL: ?tab=momentum&day=YYYY-MM-DD&race=N|summary&cutoff=−5…5.
+ * Read once on load; kept in sync with replaceState (switching races doesn't add history entries).
+ */
+const urlParams = () => new URLSearchParams(window.location.search);
+const URL_DAY = (() => {
+  const d = urlParams().get("day");
+  return d && /^\d{4}-\d{2}-\d{2}$/.test(d) ? d : "";
+})();
+const URL_RACE = urlParams().get("race") ?? "";
+function writeUrl(day: string, race: string, cutoff: number) {
+  const url = new URL(window.location.href);
+  if (url.searchParams.get("tab") !== "momentum") return; // page left meanwhile
+  url.searchParams.set("day", day);
+  if (race) url.searchParams.set("race", race);
+  else url.searchParams.delete("race");
+  url.searchParams.set("cutoff", String(cutoff));
+  if (url.href !== window.location.href) window.history.replaceState(window.history.state, "", url);
+}
+
 export function MomentumPage() {
   const { t } = useTranslation(["momentum", "common"]);
   const { t: tc } = useTranslation();
   const f = useMoFmt();
   const g = useGlossary();
   const [days, setDays] = useState<{ today: string; days: MomentumDayRef[] } | null>(null);
-  const [day, setDay] = useState(""); // "" = default racing day (see below)
+  const [day, setDay] = useState(URL_DAY); // "" = default racing day (see below)
   const [cutoff, setCutoff] = useStoredCutoff();
 
   useEffect(() => {
@@ -153,12 +172,11 @@ export function MomentumPage() {
       </div>
       <CutoffContext.Provider value={cutoff}>
       {date ? (
-        <LivePanel key={date} date={date} isToday={isToday} />
+        <LivePanel key={date} date={date} isToday={isToday} initialRace={date === URL_DAY ? URL_RACE : ""} />
       ) : (
         days && <div className={cx(panel, empty, "mt-6")}>{t("noDaysYet")}</div>
       )}
       </CutoffContext.Provider>
-      <AnalysisPanel />
     </div>
   );
 }
@@ -176,7 +194,7 @@ function sortMovers(rows: (Mover & { fin: number | null })[], key: MoverKey, dir
   });
 }
 
-function LivePanel({ date, isToday }: { date: string; isToday: boolean }) {
+function LivePanel({ date, isToday, initialRace }: { date: string; isToday: boolean; initialRace: string }) {
   const { t } = useTranslation(["momentum", "common"]);
   const f = useMoFmt();
   const g = useGlossary();
@@ -200,7 +218,9 @@ function LivePanel({ date, isToday }: { date: string; isToday: boolean }) {
   const races = today?.races ?? [];
   // Unknown post time (upcoming day, from racecards) counts as still to run, so race 1 is the default there.
   const next = races.find((r) => !r.post_time || Date.parse(r.post_time) > now - 5 * 60_000) ?? races[races.length - 1];
-  const selected = raceId || next?.race_id || "";
+  // ?race= from a shared link (number or "summary"), then: today's meeting → next race; any other day → Summary.
+  const fromUrl = initialRace === SUMMARY ? SUMMARY : races.find((r) => String(r.race_no) === initialRace)?.race_id;
+  const selected = raceId || fromUrl || (isToday ? next?.race_id : races.length ? SUMMARY : "") || "";
   const summary = selected === SUMMARY;
   const raceSel = summary ? "" : selected; // race-specific loads skip the Summary view
 
@@ -235,6 +255,10 @@ function LivePanel({ date, isToday }: { date: string; isToday: boolean }) {
   // Per-race outcome of the suggestions (same cut-off as the picks) for the race pills: ★ gold = Trio box hit,
   // ★ green = Place picks returned more than they cost.
   const cutoff = useCutoff();
+  useEffect(() => {
+    if (!selected) return;
+    writeUrl(date, selected === SUMMARY ? SUMMARY : String(races.find((r) => r.race_id === selected)?.race_no ?? ""), cutoff);
+  }, [date, selected, cutoff, races]);
   const [outcome, setOutcome] = useState<Map<string, { trio: boolean; place: boolean }>>(new Map());
   useEffect(() => {
     let live = true;
@@ -254,7 +278,11 @@ function LivePanel({ date, isToday }: { date: string; isToday: boolean }) {
   const race = races.find((r) => r.race_id === selected);
   const secsToPost = race?.post_time ? (Date.parse(race.post_time) - now) / 1000 : NaN;
   const upcomingDay = races.length > 0 && races.every((r) => !r.post_time);
-  const lastPt = series?.points[series.points.length - 1];
+  // Chart + movers show the race as of the cut-off (same odds the picks use); Records still lists every
+  // snapshot, and clicking one opens the race as it stood then.
+  const view = useMemo(() => (series ? cutAt(series, cutoff) : null), [series, cutoff]);
+  const lastPt = view?.points[view.points.length - 1];
+  const truncated = !!series && !!view && view.points.length < series.points.length;
 
   return (
     <>
@@ -284,6 +312,8 @@ function LivePanel({ date, isToday }: { date: string; isToday: boolean }) {
         </nav>
       )}
       {summary && <DaySummary date={date} live={isToday} onOpenRace={(id) => setRaceId(id)} />}
+      {/* cross-day momentum vs hit-rate study: Summary tab only, not on each race */}
+      {summary && <AnalysisPanel />}
 
       {race && series && <SuggestedPicks model={modelHere} series={series} focus={focus} onFocus={setFocus} className="mb-4" />}
       {race && series && (
@@ -295,18 +325,18 @@ function LivePanel({ date, isToday }: { date: string; isToday: boolean }) {
               {race.post_time ? <span className="text-ink-2">{t("off", { time: f.hm(race.post_time) })} ·</span> : <span className="text-ink-2">{t("postTimeTbc")}</span>}
               {secsToPost > 0 ? <span className={strong}>{t("toGo", { time: mmss(secsToPost) })}</span> : <span className={dim}>{race.hkjc_status ? t(`status.${race.hkjc_status}` as "status.RESULT", { defaultValue: race.hkjc_status.toLowerCase() }) : ""}</span>}
               <span className={moMeta}>
-                {t("snapshots", { count: series.points.length })}
+                {truncated ? t("snapshotsOf", { n: view!.points.length, count: series.points.length }) : t("snapshots", { count: series.points.length })}
+                {truncated ? ` · ${t("cutoff.asOf", { when: cutoffLabel(t, cutoff) }).replace(/^·\s*/, "")}` : ""}
                 {lastPt?.winPool ? ` · ${t("winPoolMeta", { amount: `$${Math.round(lastPt.winPool).toLocaleString()}` })}` : ""}
               </span>
             </div>
-            <OddsChart series={series} focus={focus} onFocus={setFocus} />
+            <OddsChart series={view!} focus={focus} onFocus={setFocus} />
             <div className={note}>{t("chartNote")}</div>
           </div>
-          {lastPt && <PoolDonut series={series} focus={focus} onFocus={setFocus} />}
           </div>
 
           <MoversTable
-            series={series}
+            series={view!}
             focus={focus}
             onFocus={setFocus}
             stamp={lastPt && <span title={lastPt.fetchedAt}>{t("lastUpdate", { time: f.clock(lastPt.fetchedAt), ago: f.ago(lastPt.fetchedAt, now) })}</span>}
@@ -348,11 +378,13 @@ function MoversTable({ series, focus, onFocus, stamp }: { series: RaceSeries; fo
         <h3 className={cx(h3, "mb-0")}>{t("movers.title")}</h3>
         {stamp && <span className={moMeta}>{stamp}</span>}
       </div>
-      <div className="min-h-0 flex-1 overflow-auto">
+      {/* scrolls inside the panel (as tall as the race chart on lg; capped on phones), header stays put */}
+      <div className="max-h-[420px] min-h-0 flex-1 overflow-auto lg:max-h-none">
       <table
         className={cx(
           table,
           tablePadTight,
+          "[&_th]:z-10",
           "[&_td:first-child]:pr-2.5 [&_td:nth-child(2)]:max-w-[170px] [&_td:nth-child(2)]:truncate [&_td:nth-child(2)]:pl-3 [&_td:nth-child(2)]:text-left [&_th:nth-child(2)]:pl-3 [&_th:nth-child(2)]:text-left"
         )}
       >
@@ -392,21 +424,24 @@ function MoversTable({ series, focus, onFocus, stamp }: { series: RaceSeries; fo
 
 // ---------------- Suggested picks ----------------
 
-function PickChip({ horseNo, name, odds, oddsTitle, detail, both, marketOnly, fin, focus, onFocus }: {
-  horseNo: number; name: string; odds?: number | null; oddsTitle?: string; detail?: ReactNode; both?: boolean; marketOnly?: boolean; fin?: number | null; focus: number | null; onFocus: (h: number | null) => void;
+function PickChip({ horseNo, name, odds, oddsTitle, detail, both, marketOnly, struck, fin, focus, onFocus }: {
+  horseNo: number; name: string; odds?: number | null; oddsTitle?: string; detail?: ReactNode; struck?: boolean; both?: boolean; marketOnly?: boolean; fin?: number | null; focus: number | null; onFocus: (h: number | null) => void;
 }) {
   const { t } = useTranslation(["momentum", "common"]);
   return (
     <span
-      className={chipCls(!!both, focus === horseNo, !!marketOnly)}
-      title={name}
+      className={cx(chipCls(!!both, focus === horseNo, !!marketOnly), struck && "text-ink-3")}
+      title={struck ? `${name} · ${t("picks.drifted")}` : name}
       onMouseEnter={() => onFocus(horseNo)}
       onMouseLeave={() => onFocus(null)}
     >
       <Swatch {...horseStyle(horseNo)} className="w-3.5" />
-      <b>{horseNo}</b>
-      {odds != null && <span className={chipOdds} title={oddsTitle ?? t("picks.currentOdds")}>({odds})</span>}
-      {detail && <span className={chipDetail}>{detail}</span>}
+      {/* struck = Strong drift: shown, but left out of Combined */}
+      <span className={cx("inline-flex items-center gap-[inherit]", struck && "line-through decoration-bad decoration-2")}>
+        <b>{horseNo}</b>
+        {odds != null && <span className={chipOdds} title={oddsTitle ?? t("picks.currentOdds")}>({odds})</span>}
+        {detail && <span className={chipDetail}>{detail}</span>}
+      </span>
       {fin != null && <span className={cx("border-l border-edge pl-[5px] text-[11px]", fin <= 3 ? "font-semibold text-good" : "text-ink-3")}>{ordinal(t, fin)}</span>}
     </span>
   );
@@ -498,7 +533,7 @@ function SuggestedPicks({ model, series, focus, onFocus, className }: {
           ) : !model?.ranks ? (
             <span className={dim}>{t("picks.runningAnalyzer")}</span>
           ) : (
-            picks.model.map((r) => <PickChip key={r.horseNo} horseNo={r.horseNo} name={nameOf(r.horseNo, r.name)} odds={odds.get(r.horseNo)} detail={pc(100 * r.winProb)} fin={f(r.horseNo)} {...chip} />)
+            picks.model.map((r) => <PickChip key={r.horseNo} horseNo={r.horseNo} name={nameOf(r.horseNo, r.name)} odds={odds.get(r.horseNo)} detail={pc(100 * r.winProb)} struck={picks.drifted.includes(r.horseNo)} fin={f(r.horseNo)} {...chip} />)
           )}
         </div>
       </div>
@@ -515,10 +550,14 @@ function SuggestedPicks({ model, series, focus, onFocus, className }: {
         </div>
       </div>
       <div className={pickRow}>
-        <span className={cx(pickLbl, "font-semibold text-ink")}>{t("picks.combined", { n: picks.combined.length })}</span>
+        <span className={cx(pickLbl, "font-semibold text-ink")}>
+          {t("picks.combined", { n: picks.combined.length })}
+          {/* same stars as the race pills: gold = Trio box hit */}
+          {result?.lists[2]?.trio && <span className="ml-1 text-[#c99300]" title={t("pillTrio")} aria-label={t("pillTrio")}>★</span>}
+        </span>
         <div className={chips}>
           {picks.combined.map((c) => (
-            <PickChip key={c.horseNo} horseNo={c.horseNo} name={nameOf(c.horseNo, c.name)} odds={odds.get(c.horseNo)} both={c.inModel && c.inMove} marketOnly={c.inMove && !c.inModel} detail={c.inModel && c.inMove ? t("picks.both") : c.inMove && !c.inModel ? <span className="text-warn">{t("picks.marketOnly")}</span> : undefined} fin={f(c.horseNo)} {...chip} />
+            <PickChip key={c.horseNo} horseNo={c.horseNo} name={nameOf(c.horseNo, c.name)} odds={odds.get(c.horseNo)} both={c.inModel && c.inMove} marketOnly={c.inMove && !c.inModel} fin={f(c.horseNo)} {...chip} />
           ))}
         </div>
       </div>
@@ -531,7 +570,11 @@ function SuggestedPicks({ model, series, focus, onFocus, className }: {
         </div>
       )}
       <div className={cx(pickRow, "mt-1 border-t border-edge pt-3")}>
-        <span className={cx(pickLbl, "font-semibold text-ink")} title={t("picks.placeT", { pct: 100 * PLACE_SURGE, max: PLACE_MAX })}>{t("picks.place", { pct: 100 * PLACE_SURGE, max: PLACE_MAX })}</span>
+        <span className={cx(pickLbl, "font-semibold text-ink")} title={t("picks.placeT", { pct: 100 * PLACE_SURGE, max: PLACE_MAX })}>
+          {t("picks.place", { pct: 100 * PLACE_SURGE, max: PLACE_MAX })}
+          {/* green = Place picks returned more than they cost */}
+          {place.length > 0 && placeReturn != null && placeReturn > placeCost && <span className="ml-1 text-good" title={t("pillPlace")} aria-label={t("pillPlace")}>★</span>}
+        </span>
         <div className={chips}>
           {place.length ? (
             place.map((p) => (

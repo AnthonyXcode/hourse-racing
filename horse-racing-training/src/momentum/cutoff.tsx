@@ -14,6 +14,9 @@ export const cutoffLabel = (t: TFunction<["momentum", "common"]>, m: number) => 
 
 export function useStoredCutoff() {
   const [cutoff, setCutoff] = useState<Cutoff>(() => {
+    // A shared link's ?cutoff= wins over this browser's remembered choice.
+    const fromUrl = new URLSearchParams(window.location.search).get("cutoff");
+    if (fromUrl != null && isCutoff(Number(fromUrl))) return Number(fromUrl) as Cutoff;
     try {
       const v = Number(localStorage.getItem(KEY));
       return isCutoff(v) ? v : DEFAULT_CUTOFF;

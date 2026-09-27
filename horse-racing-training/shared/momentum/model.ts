@@ -183,10 +183,12 @@ export interface Picks {
   model: ModelRank[]; // analyzer top MODEL_PICKS still in the race
   move: Mover[]; // biggest steamers by Move
   combined: { horseNo: number; name: string; inModel: boolean; inMove: boolean }[]; // union: both first
+  /** model picks left out of Combined because the market is strongly against them (bucket "Strong drift") */
+  drifted: number[];
 }
 
 /**
- * Analyzer top 5 + Move top 5; Combined = model top 5 ∪ Move top 3. Horses no longer priced (scratched)
+ * Analyzer top 5 + Move top 5; Combined = model top 5 (minus Strong drift) ∪ Move top 3. Horses no longer priced (scratched)
  * are skipped. `inMove` = in the Move top 5 (so ★ marks a model pick the market is also backing).
  */
 export function suggestPicks(model: ModelRank[], mv: Mover[]): Picks {
@@ -196,16 +198,19 @@ export function suggestPicks(model: ModelRank[], mv: Mover[]): Picks {
     .filter((m) => m.momentum != null)
     .sort((a, b) => b.momentum! - a.momentum!)
     .slice(0, MOVE_PICKS);
-  const inModel = new Set(top.map((r) => r.horseNo)), inMove = new Set(move.map((m) => m.horseNo));
+  // A model pick in Strong drift (market share down ≥25%) stays in the model list but is left out of Combined.
+  const drifted = top.filter((r) => mv.find((m) => m.horseNo === r.horseNo)?.bucket === "Strong drift").map((r) => r.horseNo);
+  const keep = top.filter((r) => !drifted.includes(r.horseNo));
+  const inModel = new Set(keep.map((r) => r.horseNo)), inMove = new Set(move.map((m) => m.horseNo));
   const names = new Map([...mv.map((m) => [m.horseNo, m.name] as const), ...top.map((r) => [r.horseNo, r.name] as const)]);
   // Model picks first (model rank order), then market-move picks not already listed (move order).
-  const combined = [...new Set([...top.map((r) => r.horseNo), ...move.slice(0, COMBINED_MOVE_PICKS).map((m) => m.horseNo)])].map((h) => ({
+  const combined = [...new Set([...keep.map((r) => r.horseNo), ...move.slice(0, COMBINED_MOVE_PICKS).map((m) => m.horseNo)])].map((h) => ({
     horseNo: h,
     name: names.get(h) ?? "",
     inModel: inModel.has(h),
     inMove: inMove.has(h),
   }));
-  return { model: top, move, combined };
+  return { model: top, move, combined, drifted };
 }
 
 /** Site-wide banner: the featured race (next to run, else the last run) and its Combined picks. */

@@ -34,6 +34,7 @@ export const momentum = {
     fin: "Fin",
     note: "Move = change in the horse's share of the market (implied win probability) since the first snapshot. Last 5m = the same change over the last 5 minutes only. Click a column title to sort.",
   },
+  snapshotsOf: "{{n}} of {{count}} snapshots",
   pillTrio: "Trio box hit",
   pillPlace: "Place picks made money",
   cutoff: {
@@ -45,12 +46,11 @@ export const momentum = {
   },
   picks: {
     title: "Suggested picks",
+    drifted: "Strong drift (market share down 25%+): left out of Combined",
     modelTop: "Model top {{n}}",
     moveTop: "Move top {{n}}",
     combined: "Combined ({{n}})",
     combinedList: "Combined",
-    marketOnly: "↑ market only",
-    both: "★ both",
     trioBox: "Trio box: {{combos}} combinations × ${{unit}} =",
     trioBoxTitle: "Trio box: every 3-horse combination of the combined picks",
     analyzerUnavailable: "analyzer unavailable",
@@ -64,7 +64,7 @@ export const momentum = {
     placeFrom: "win odds {{before}} → {{now}} in the last 5 min · place odds now {{pla}}",
     placeBet: "Place: {{n}} × ${{unit}} =",
     placeReturn: "return",
-    note: "Number in brackets = current win odds; in Result, the final odds. Combined = model top 5 + Move top 3. Trio box = every 3-horse combination of the list at $10; hover Return for the net. Model = our ranking model (saved racecard and form at all venues). ★ = in both lists · ↑ = in the market-move list only. Place = bet $10 to place on horses whose win-market move in the last 5 minutes is positive (Last 5m above 0%), the 5 biggest at most.",
+    note: "Number in brackets = current win odds; in Result, the final odds. Combined = model top 5 (struck-through Strong drift picks left out) + Move top 3. Trio box = every 3-horse combination of the list at $10; hover Return for the net. Model = our ranking model (saved racecard and form at all venues). In Combined: dark border = in both lists · orange border = market-move list only. Place = bet $10 to place on horses whose win-market move in the last 5 minutes is positive (Last 5m above 0%), the 5 biggest at most.",
   },
   ordinal: {
     "1": "1st",

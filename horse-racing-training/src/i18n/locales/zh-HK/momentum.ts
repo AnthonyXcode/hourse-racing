@@ -36,6 +36,7 @@ export const momentum: Shape<typeof En> = {
     fin: "名次",
     note: "變化 = 該馬的市場佔有率（隱含勝出機會）自第一次快照以來的變化。近 5 分鐘 = 只計最近 5 分鐘的同一變化。按欄位標題可排序。",
   },
+  snapshotsOf: "{{count}} 次快照中的 {{n}} 次",
   pillTrio: "單T 複式中獎",
   pillPlace: "位置選擇有盈利",
   cutoff: {
@@ -47,12 +48,11 @@ export const momentum: Shape<typeof En> = {
   },
   picks: {
     title: "建議選擇",
+    drifted: "大回飛（市場佔有率跌 25% 或以上）：不計入合併",
     modelTop: "模型頭 {{n}} 名",
     moveTop: "落飛頭 {{n}} 名",
     combined: "合併（{{n}}）",
     combinedList: "合併",
-    marketOnly: "↑ 只在落飛",
-    both: "★ 兩者皆選",
     trioBox: "單T 複式：{{combos}} 注 × ${{unit}} =",
     trioBoxTitle: "單T 複式：合併選擇中每一個三匹馬組合",
     analyzerUnavailable: "分析程式未能使用",
@@ -66,7 +66,7 @@ export const momentum: Shape<typeof En> = {
     placeFrom: "最近 5 分鐘獨贏賠率 {{before}} → {{now}} · 現時位置賠率 {{pla}}",
     placeBet: "位置：{{n}} × ${{unit}} =",
     placeReturn: "回報",
-    note: "括號內為現時獨贏賠率；賽果部分則為最終賠率。合併 = 模型頭 5 名 + 落飛頭 3 名。單T 複式 = 名單中每一個三匹馬組合，每注 $10；將滑鼠移到「回報」可查看淨額。模型 = 我們的排名模型（已儲存排位表及所有場地往績）。★ = 同時在兩份名單 · ↑ = 只在落飛名單。位置 = 最近 5 分鐘獨贏落飛為正數的馬匹（最多取落飛最大的 5 匹），每匹買位置 $10。",
+    note: "括號內為現時獨贏賠率；賽果部分則為最終賠率。合併 = 模型頭 5 名（劃線的大回飛馬除外）+ 落飛頭 3 名。單T 複式 = 名單中每一個三匹馬組合，每注 $10；將滑鼠移到「回報」可查看淨額。模型 = 我們的排名模型（已儲存排位表及所有場地往績）。合併中：深色框 = 同時在兩份名單 · 橙色框 = 只在落飛名單。位置 = 最近 5 分鐘獨贏落飛為正數的馬匹（最多取落飛最大的 5 匹），每匹買位置 $10。",
   },
   ordinal: {
     "1": "第1名",

@@ -216,6 +216,14 @@ describe("suggestPicks", () => {
     ]);
   });
 
+  it("leaves Strong drift model picks out of Combined but keeps them in the model list", () => {
+    const drift = { ...mover(2, -0.3), bucket: "Strong drift" as const };
+    const p = suggestPicks([rank(1, 0.3), rank(2, 0.2), rank(3, 0.1)], [mover(1, 0.05), drift, mover(3, 0), mover(4, 0.5)]);
+    expect(p.model.map((r) => r.horseNo)).toEqual([1, 2, 3]);
+    expect(p.drifted).toEqual([2]);
+    expect(p.combined.map((c) => c.horseNo)).toEqual([1, 3, 4]);
+  });
+
   it("works with no model ranking yet", () => {
     const p = suggestPicks([], [mover(1, 0.1)]);
     expect(p.model).toEqual([]);
@@ -228,6 +236,7 @@ describe("pickResults", () => {
     model: [1, 2, 3, 4, 5].map((h) => ({ horseNo: h, name: "", winProb: 0.1, placeProb: 0.3 })),
     move: [6, 1].map((h) => ({ horseNo: h, name: "", start: 5, now: 5, momentum: 0.1, recent: 0.1, bucket: null })),
     combined: [1, 2, 3, 4, 5, 6].map((h) => ({ horseNo: h, name: "", inModel: h <= 5, inMove: h === 1 || h === 6 })),
+    drifted: [],
   };
   const res = (order: number[]) => order.map((h, i) => ({ horseNo: h, finishPos: i + 1, sp: 5 }));
 
