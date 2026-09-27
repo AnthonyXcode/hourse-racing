@@ -10,7 +10,7 @@ import { modelRanks } from "./momentum/picks";
 import { highlight } from "./momentum/highlight";
 import { daySummary } from "./momentum/daySummary";
 import { cardRaces, cardSeries, parseRaceId, upcomingDays } from "./momentum/upcoming";
-import { horseRows } from "../shared/momentum/model";
+import { DEFAULT_CUTOFF, horseRows, isCutoff } from "../shared/momentum/model";
 import { names } from "./names/service";
 import { getNameIndex } from "./names/nameIndex";
 import { lookupNames, parseLookupBody } from "./names/lookup";
@@ -193,12 +193,14 @@ api.get("/momentum/day", (req, res) => {
   });
 });
 
-/** GET /api/momentum/summary?date=YYYY-MM-DD → racing-day review: each race's Combined picks and how they did. */
+/** GET /api/momentum/summary?date=YYYY-MM-DD[&cutoff=-5…5] → racing-day review: each race's picks (as of the cut-off, minutes from post) and how they did. */
 api.get("/momentum/summary", async (req, res) => {
   const date = String(req.query.date ?? "");
   if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return res.status(400).json({ error: "date must be YYYY-MM-DD" });
   try {
-    const s = await daySummary(momentum().repo, date);
+    const cutoff = req.query.cutoff == null ? DEFAULT_CUTOFF : Number(req.query.cutoff);
+    if (!isCutoff(cutoff)) return res.status(400).json({ error: "cutoff must be one of ±1…±5" });
+    const s = await daySummary(momentum().repo, date, cutoff);
     if (!s) return res.status(404).json({ error: "no races on this day" });
     res.json(s);
   } catch (e) {

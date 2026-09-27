@@ -10,6 +10,7 @@ import { useNames } from "../i18n/names";
 import { useLanguage } from "../i18n/useLanguage";
 import { cx, dim, empty, errorBox, h3, kpis, note, panel, scroll, table, tablePad } from "../kit";
 import { HorseLink } from "./HorseRecord";
+import { cutoffLabel, useCutoff } from "./cutoff";
 
 const REFRESH_MS = 60_000;
 
@@ -17,7 +18,9 @@ export function DaySummary({ date, live, onOpenRace }: { date: string; live: boo
   const { t } = useTranslation(["momentum", "common"]);
   const { lang } = useLanguage();
   const name = useNames();
-  const [data, setData] = useState<{ date: string; s: Summary | null; error?: string } | null>(null);
+  const cutoff = useCutoff();
+  const [data, setData] = useState<{ key: string; s: Summary | null; error?: string } | null>(null);
+  const key = `${date}|${cutoff}`;
   /** Drill-down: which bar of the position chart is open (row = pick position index, series 0 = model, 1 = move). */
   const [sel, setSel] = useState<{ row: number; series: number } | null>(null);
 
@@ -25,19 +28,19 @@ export function DaySummary({ date, live, onOpenRace }: { date: string; live: boo
     let on = true;
     const load = () =>
       api
-        .momentumSummary(date)
-        .then((s) => on && setData({ date, s }))
-        .catch((e) => on && setData({ date, s: null, error: String(e instanceof Error ? e.message : e) }));
+        .momentumSummary(date, cutoff)
+        .then((s) => on && setData({ key, s }))
+        .catch((e) => on && setData({ key, s: null, error: String(e instanceof Error ? e.message : e) }));
     load();
     const timer = live ? setInterval(load, REFRESH_MS) : undefined; // today: results come in during the day
     return () => {
       on = false;
       clearInterval(timer);
     };
-  }, [date, live]);
+  }, [date, cutoff, key, live]);
 
-  const s = data?.date === date ? data.s : null;
-  if (!data || data.date !== date) return <div className={cx(panel, empty, "mt-4")}>{t("summary.loading")}</div>;
+  const s = data?.key === key ? data.s : null;
+  if (!data || data.key !== key) return <div className={cx(panel, empty, "mt-4")}>{t("summary.loading")}</div>;
   if (data.error || !s) return <div className={errorBox}>{data.error ?? t("summary.none")}</div>;
 
   const run = s.races.filter((r) => r.status === "result" && r.combined);
@@ -50,11 +53,10 @@ export function DaySummary({ date, live, onOpenRace }: { date: string; live: boo
   const cost = priced.reduce((a, r) => a + r.combined!.trioCost, 0);
   const ret = priced.reduce((a, r) => a + (r.combined!.trioReturn ?? 0), 0);
   // Place picks: races with a result and posted Place dividends.
-  const placeRun = run.filter((r) => r.place.length && r.placeReturn != null);
-  const placePicks = placeRun.reduce((a, r) => a + r.place.length, 0);
-  const placeHits = placeRun.reduce((a, r) => a + r.place.filter((p) => r.placed.some((x) => x.horseNo === p.horseNo)).length, 0);
-  const placeCost = placeRun.reduce((a, r) => a + r.placeCost, 0);
-  const placeRet = placeRun.reduce((a, r) => a + (r.placeReturn ?? 0), 0);
+  // Place picks: races with a result and posted Place dividends. Two views: as of the last snapshot,
+  // and as they stood 5 min before post (still bettable).
+  const pl = placeTotals(run.map((r) => ({ r, picks: r.place, cost: r.placeCost, ret: r.placeReturn })));
+  const when = cutoffLabel(t, cutoff);
   const topPlaced = run.filter((r) => r.modelTop?.finishPos != null && r.modelTop.finishPos <= 3).length;
   const best = run.reduce<(typeof run)[number] | null>((b, r) => ((r.combined!.trioReturn ?? 0) > (b?.combined!.trioReturn ?? 0) ? r : b), null);
   // Place hit rate by pick position: for position k, the share of finished races whose k-th model /
@@ -101,10 +103,10 @@ export function DaySummary({ date, live, onOpenRace }: { date: string; live: boo
             tone={priced.length ? cls(ret - cost) : ""}
           />
           <Kpi
-            label={t("summary.kpi.place")}
-            value={placeRun.length ? netRoi(placeRet - placeCost, placeCost) : "–"}
-            sub={placeRun.length ? t("summary.kpi.placeSub", { hits: placeHits, n: placePicks, cost: money(placeCost), ret: money(placeRet) }) : t("summary.kpi.placeNone")}
-            tone={placeRun.length ? cls(placeRet - placeCost) : ""}
+            label={t("summary.kpi.place", { when })}
+            value={pl.races ? netRoi(pl.ret - pl.cost, pl.cost) : "–"}
+            sub={pl.races ? t("summary.kpi.placeSub", { hits: pl.hits, n: pl.picks, cost: money(pl.cost), ret: money(pl.ret) }) : t("summary.kpi.placeZero", { n: run.length })}
+            tone={pl.races ? cls(pl.ret - pl.cost) : ""}
           />
           <Kpi label={t("summary.kpi.modelTop")} value={of(topPlaced, run.length)} sub={t("summary.kpi.modelTopSub")} />
           <Kpi
@@ -163,6 +165,8 @@ export function DaySummary({ date, live, onOpenRace }: { date: string; live: boo
         </div>
       )}
 
+      {run.length > 0 && <PlaceByMinute run={run} />}
+
       <div className={cx(panel, scroll, "mt-4")}>
         <table className={cx(table, tablePad, "[&_td:nth-child(2)]:text-left [&_td:nth-child(3)]:text-left [&_th:nth-child(2)]:text-left [&_th:nth-child(3)]:text-left")}>
           <thead>
@@ -175,8 +179,7 @@ export function DaySummary({ date, live, onOpenRace }: { date: string; live: boo
               <th>{t("summary.col.trio")}</th>
               <th>{t("summary.col.cost")}</th>
               <th>{t("summary.col.return")}</th>
-              <th className="border-l border-edge">{t("summary.col.place")}</th>
-              <th>{t("summary.col.placeReturn")}</th>
+              <th className="border-l border-edge text-left!" title={t("summary.col.placeT")}>{t("summary.col.place")}</th>
             </tr>
           </thead>
           <tbody>
@@ -224,28 +227,8 @@ export function DaySummary({ date, live, onOpenRace }: { date: string; live: boo
                   <td className={c ? (c.trio ? "text-good" : "text-bad") : ""}>{c ? (c.trio ? "✓" : "✗") : "–"}</td>
                   <td>{c ? money(c.trioCost) : "–"}</td>
                   <td className={c?.trioReturn != null ? (c.trioReturn > c.trioCost ? "text-good" : "text-bad") : dim}>{c?.trioReturn != null ? money(c.trioReturn) : "–"}</td>
-                  <td className="border-l border-edge">
-                    {r.place.length ? (
-                      <span className="inline-flex flex-wrap gap-1">
-                        {r.place.map((p) => (
-                          <span
-                            key={p.horseNo}
-                            title={`${horse(p)} · ${signed(100 * p.change)}`}
-                            className={cx(
-                              "inline-flex min-w-6 items-center justify-center rounded-full px-1.5 text-xs font-semibold tabular-nums",
-                              placedNos.has(p.horseNo) ? "bg-good text-white" : "bg-surface text-ink shadow-btn"
-                            )}
-                          >
-                            {p.horseNo}
-                          </span>
-                        ))}
-                      </span>
-                    ) : (
-                      <span className={dim}>–</span>
-                    )}
-                  </td>
-                  <td className={r.place.length && r.placeReturn != null ? (r.placeReturn > r.placeCost ? "text-good" : "text-bad") : dim}>
-                    {r.place.length ? (r.placeReturn != null ? `${money(r.placeReturn)} / ${money(r.placeCost)}` : money(r.placeCost)) : "–"}
+                  <td className="border-l border-edge text-left">
+                    <PlaceCell picks={r.place} cost={r.placeCost} ret={r.placeReturn} placed={placedNos} horse={horse} />
                   </td>
                 </tr>
               );
@@ -316,6 +299,100 @@ function PositionBreakdown({ pos, list, label, races, horse, onOpenRace, onClose
           </tbody>
         </table>
       </div>
+    </div>
+  );
+}
+
+type PlacePick = Summary["races"][number]["place"][number];
+
+/** Day totals for one Place view, over races with a result and posted Place dividends. */
+function placeTotals(rows: { r: Summary["races"][number]; picks: PlacePick[]; cost: number; ret: number | null }[]) {
+  const settled = rows.filter((x) => x.picks.length && x.ret != null);
+  return {
+    races: settled.length,
+    picks: settled.reduce((a, x) => a + x.picks.length, 0),
+    hits: settled.reduce((a, x) => a + x.picks.filter((p) => x.r.placed.some((y) => y.horseNo === p.horseNo)).length, 0),
+    cost: settled.reduce((a, x) => a + x.cost, 0),
+    ret: settled.reduce((a, x) => a + (x.ret ?? 0), 0),
+  };
+}
+
+/** A race's Place picks (green = placed) and return / cost. */
+function PlaceCell({ picks, cost, ret, placed, horse }: {
+  picks: PlacePick[]; cost: number; ret: number | null; placed: Set<number>; horse: (h: PlacePick) => string;
+}) {
+  if (!picks.length) return <span className={dim}>–</span>;
+  return (
+    <span className="inline-flex flex-wrap items-center gap-1">
+      {picks.map((p) => (
+        <span
+          key={p.horseNo}
+          title={`${horse(p)} · ${signed(100 * p.change)}`}
+          className={cx(
+            "inline-flex min-w-6 items-center justify-center rounded-full px-1.5 text-xs font-semibold tabular-nums",
+            placed.has(p.horseNo) ? "bg-good text-white" : "bg-surface text-ink shadow-btn"
+          )}
+        >
+          {p.horseNo}
+        </span>
+      ))}
+      <span className={cx("ml-1 text-xs whitespace-nowrap tabular-nums", ret == null ? dim : ret > cost ? "text-good" : "text-bad")}>
+        {ret != null ? `${money(ret)} / ${money(cost)}` : money(cost)}
+      </span>
+    </span>
+  );
+}
+
+/** Place rule judged at each minute from T−5 to T+5: how many picks, how many placed, and the money. */
+function PlaceByMinute({ run }: { run: Summary["races"] }) {
+  const { t } = useTranslation(["momentum", "common"]);
+  const mins = run[0]?.placeByMinute.map((m) => m.min) ?? [];
+  const rows = mins.map((min) => {
+    const at = run.map((r) => ({ r, m: r.placeByMinute.find((x) => x.min === min)! }));
+    const settled = at.filter(({ m }) => m.picks.length && m.return != null);
+    const picks = settled.reduce((a, { m }) => a + m.picks.length, 0);
+    const hits = settled.reduce((a, { r, m }) => a + m.picks.filter((h) => r.placed.some((p) => p.horseNo === h)).length, 0);
+    const cost = settled.reduce((a, { m }) => a + m.cost, 0);
+    const ret = settled.reduce((a, { m }) => a + (m.return ?? 0), 0);
+    const detail = settled.map(({ r, m }) => `${t("common:raceShort", { n: r.raceNo })} #${m.picks.join(", #")}`).join(" · ");
+    return { min, races: settled.length, picks, hits, cost, ret, detail };
+  });
+  const label = (min: number) => (min < 0 ? t("summary.byMin.before", { n: -min }) : t("summary.byMin.after", { n: min }));
+
+  return (
+    <div className={cx(panel, scroll, "mt-4")}>
+      <h3 className={h3}>{t("summary.byMin.title")}</h3>
+      <table className={cx(table, tablePad, "[&_td:first-child]:text-left [&_th:first-child]:text-left [&_td:last-child]:text-left [&_th:last-child]:text-left")}>
+        <thead>
+          <tr>
+            <th>{t("summary.byMin.when")}</th>
+            <th>{t("summary.byMin.races")}</th>
+            <th>{t("summary.byMin.picks")}</th>
+            <th>{t("summary.byMin.placed")}</th>
+            <th>{t("summary.byMin.cost")}</th>
+            <th>{t("summary.col.return")}</th>
+            <th>{t("summary.byMin.net")}</th>
+            <th>{t("summary.byMin.roi")}</th>
+            <th>{t("summary.byMin.detail")}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((x) => (
+            <tr key={x.min} className={cx(x.min === 1 && "[&_td]:border-t-2 [&_td]:border-t-ink/25", x.min > 0 && "[&_td]:text-ink-3")}>
+              <td className="font-semibold whitespace-nowrap">{label(x.min)}</td>
+              <td>{x.races ? `${x.races}/${run.length}` : <span className={dim}>0/{run.length}</span>}</td>
+              <td>{x.picks || <span className={dim}>0</span>}</td>
+              <td>{x.picks ? `${x.hits}/${x.picks} (${pc((100 * x.hits) / x.picks, 0)})` : "–"}</td>
+              <td>{x.picks ? money(x.cost) : "–"}</td>
+              <td>{x.picks ? money(x.ret) : "–"}</td>
+              <td className={x.picks ? cls(x.ret - x.cost) : ""}>{x.picks ? money(x.ret - x.cost) : "–"}</td>
+              <td className={x.picks ? cls(x.ret - x.cost) : ""}>{x.picks ? signed((100 * (x.ret - x.cost)) / x.cost) : "–"}</td>
+              <td className="max-w-[320px] truncate text-xs" title={x.detail}>{x.detail || "–"}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <p className={note}>{t("summary.byMin.note")}</p>
     </div>
   );
 }

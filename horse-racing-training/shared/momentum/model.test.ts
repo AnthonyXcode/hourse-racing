@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { impliedProbs, bucketOf, pointAt, movers, placeSurges, suggestPicks, pickResults, horseRows, byBucket, stats, oddsBand, type RaceSeries, type SeriesPoint, type Mover } from "./model";
+import { impliedProbs, bucketOf, pointAt, movers, placeSurges, cutAt, suggestPicks, pickResults, horseRows, byBucket, stats, oddsBand, type RaceSeries, type SeriesPoint, type Mover } from "./model";
 
 const pt = (secsToPost: number, win: Record<number, number>, pla: Record<number, number> = {}): SeriesPoint => ({
   secsToPost,
@@ -79,9 +79,18 @@ describe("movers", () => {
   });
 });
 
+describe("cutAt", () => {
+  it("keeps only snapshots up to the cut-off (minutes from post, + = after)", () => {
+    const s = race([pt(600, {}), pt(120, {}), pt(60, {}), pt(-30, {}), pt(-200, {})], []);
+    expect(cutAt(s, -1).points.map((p) => p.secsToPost)).toEqual([600, 120, 60]);
+    expect(cutAt(s, 1).points.map((p) => p.secsToPost)).toEqual([600, 120, 60, -30]);
+    expect(cutAt(s, -5).points.map((p) => p.secsToPost)).toEqual([600]);
+  });
+});
+
 describe("placeSurges", () => {
   const runners = [1, 2, 3].map((h) => ({ horseNo: h, finishPos: null, sp: null }));
-  it("keeps horses whose win-market move over the last 5 min is above +50%", () => {
+  it("keeps horses whose win-market move over the last 5 min is positive", () => {
     const s = race(
       [pt(1200, { 1: 6, 2: 3, 3: 3 }, { 1: 2, 2: 1.5, 3: 1.5 }), pt(360, { 1: 6, 2: 3, 3: 3 }, { 1: 2, 2: 1.5, 3: 1.5 }), pt(60, { 1: 2.4, 2: 4, 3: 4 }, { 1: 1.2, 2: 1.6, 3: 1.6 })],
       runners
@@ -94,6 +103,26 @@ describe("placeSurges", () => {
   });
   it("is empty without a snapshot ~5 min before the latest", () => {
     expect(placeSurges(race([pt(1800, { 1: 4 }), pt(60, { 1: 1.5 })], runners))).toEqual([]);
+  });
+  it("keeps at most the 5 biggest moves", () => {
+    const seven = [1, 2, 3, 4, 5, 6, 7, 8].map((h) => ({ horseNo: h, finishPos: null, sp: null }));
+    const flat = { 1: 10, 2: 10, 3: 10, 4: 10, 5: 10, 6: 10, 7: 10, 8: 2 };
+    // #1…#7 shorten by different amounts (#1 most); #8 drifts
+    const late = { 1: 4, 2: 4.5, 3: 5, 4: 5.5, 5: 6, 6: 7, 7: 8, 8: 3 };
+    const p = placeSurges(race([pt(1200, flat), pt(360, flat), pt(60, late)], seven));
+    expect(p.map((x) => x.horseNo)).toEqual([1, 2, 3, 4, 5]);
+  });
+  it("judges the race as of 5 min before post when asked", () => {
+    // #1 steams between T−10 and T−5 (6 → 2.4); #2 only after T−5 (6 → 2.4 at T−1)
+    const s = race(
+      [pt(900, { 1: 6, 2: 6, 3: 2 }), pt(600, { 1: 6, 2: 6, 3: 2 }), pt(300, { 1: 2.4, 2: 6, 3: 2 }), pt(60, { 1: 2.4, 2: 2.4, 3: 3 })],
+      runners
+    );
+    expect(placeSurges(s, 300).map((x) => x.horseNo)).toEqual([1]);
+    expect(placeSurges(s).map((x) => x.horseNo)).toContain(2);
+  });
+  it("has no as-of picks when no snapshot is near that moment", () => {
+    expect(placeSurges(race([pt(1800, { 1: 4 }), pt(1500, { 1: 2 })], runners), 300)).toEqual([]);
   });
 });
 

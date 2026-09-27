@@ -78,7 +78,7 @@ export const api = {
   momentumRace: (raceId: string) => get<RaceSeries>(`/api/momentum/race/${raceId}`),
   /** Banner race (next to run, else last run) with its Combined picks; null when nothing is recorded. */
   /** Racing-day review: every race's Combined picks and how they did. */
-  momentumSummary: (date: string) => get<DaySummary>(`/api/momentum/summary?date=${date}`),
+  momentumSummary: (date: string, cutoff: number) => get<DaySummary>(`/api/momentum/summary?date=${date}&cutoff=${cutoff}`),
   momentumHighlight: () => get<Highlight | null>("/api/momentum/highlight"),
   momentumPicks: (raceId: string) => get<{ raceId: string; ranks: ModelRank[] }>(`/api/momentum/picks/${raceId}`),
   momentumAnalysis: (from: string, to: string) =>

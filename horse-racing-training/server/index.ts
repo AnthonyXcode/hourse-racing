@@ -25,7 +25,7 @@ if (existsSync(dist)) {
 const PORT = Number(process.env.PORT) || 8787;
 app.listen(PORT, () => {
   console.log(`[post-time] API on http://localhost:${PORT}`);
-  if (process.env.MOMENTUM_POLLER !== "0") momentum().poller.start(Number(process.env.MOMENTUM_INTERVAL_S) || 30);
+  if (process.env.MOMENTUM_POLLER !== "0") momentum().poller.start(Number(process.env.MOMENTUM_INTERVAL_S) || 10);
   // Chinese names: shortly after boot and then daily, trim old records (keep 5 per code), seed English
   // and queue everything missing or older than the TTL (throttled, 1 page/s).
   if (process.env.NAMES_REFRESH !== "0") {

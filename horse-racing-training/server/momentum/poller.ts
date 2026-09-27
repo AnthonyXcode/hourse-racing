@@ -159,7 +159,7 @@ export function createPoller(opts: PollerOptions) {
   return {
     tick,
     state,
-    start(intervalSecs = 30) {
+    start(intervalSecs = 10) {
       if (timer) return;
       void tick();
       timer = setInterval(() => void tick(), intervalSecs * 1000);

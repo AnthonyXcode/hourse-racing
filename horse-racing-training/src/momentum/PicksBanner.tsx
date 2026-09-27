@@ -15,10 +15,10 @@ import { viewHref } from "../LegalPages";
 const REFRESH_MS = 30_000; // same cadence as the Momentum page
 const TICK_HOLD_MS = 4_000; // how long an odds change stays coloured
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-/** "23 Sep(9)" / "9月23日(9)" — date (YYYY-MM-DD) and race number in one token. */
+/** "23 Sep(R9)" / "9月23日(R9)" — date (YYYY-MM-DD) and race number in one token. */
 const dayRace = (date: string, raceNo: number, lang: string) => {
   const m = Number(date.slice(5, 7)), d = Number(date.slice(8, 10));
-  return lang === "en" ? `${d} ${MONTHS[m - 1]}(${raceNo})` : `${m}月${d}日(${raceNo})`;
+  return lang === "en" ? `${d} ${MONTHS[m - 1]}(R${raceNo})` : `${m}月${d}日(R${raceNo})`;
 };
 const EASE = [0.2, 0, 0, 1] as const;
 /**

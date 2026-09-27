@@ -1,7 +1,7 @@
 // Racing-day review for Momentum → Summary: every race's Combined picks and how they did.
 // Uses the same pick logic as the race page (suggestPicks + pickResults), computed server-side so the
 // page makes one request instead of two per race. Upcoming days come from the racecards (all pending).
-import { movers, pickResults, placeResult, placeSurges, suggestPicks, type DaySummary, type DaySummaryRace, type ModelRank, type RaceSeries } from "../../shared/momentum/model";
+import { DEFAULT_CUTOFF, PLACE_MINUTES, cutAt, movers, pickResults, placeResult, placeSurges, suggestPicks, type DaySummary, type DaySummaryRace, type ModelRank, type RaceSeries } from "../../shared/momentum/model";
 import { races } from "../dataIndex";
 import type { Repo } from "./db";
 import { modelRanks } from "./picks";
@@ -11,7 +11,9 @@ import { cardRaces, cardSeries } from "./upcoming";
 const TTL_MS = 30_000;
 const cache = new Map<string, { at: number; value: DaySummary | null }>();
 
-async function summarise(series: RaceSeries): Promise<DaySummaryRace> {
+/** Picks use the odds as they stood `cutoff` minutes from post; results and dividends are the final ones. */
+async function summarise(series: RaceSeries, cutoff: number): Promise<DaySummaryRace> {
+  const cut = cutAt(series, cutoff);
   const card = races().card({ date: series.date, venue: series.venue as "ST" | "HV", raceNo: series.raceNo });
   const entries = (card?.race.entries ?? []) as { horseNumber: number; horse?: { code?: string; name?: string } }[];
   const codeOf = new Map(entries.map((e) => [e.horseNumber, e.horse?.code ?? null]));
@@ -28,11 +30,11 @@ async function summarise(series: RaceSeries): Promise<DaySummaryRace> {
   } catch {
     // no saved racecard: market moves only
   }
-  const picks = suggestPicks(ranks, movers(series));
+  const picks = suggestPicks(ranks, movers(cut));
   const res = pickResults(picks, series.results, series.dividends);
   const fin = new Map(series.results.map((r) => [r.horseNo, r.finishPos]));
   const top = ranks[0];
-  const place = placeSurges(series);
+  const place = placeSurges(cut);
   const pr = placeResult(place.map((p) => p.horseNo), series.dividends);
   return {
     raceId: series.raceId,
@@ -50,22 +52,27 @@ async function summarise(series: RaceSeries): Promise<DaySummaryRace> {
     place: place.map((p) => ({ horseNo: p.horseNo, change: p.change, ...who(p.horseNo) })),
     placeCost: pr.cost,
     placeReturn: pr.return,
+    placeByMinute: PLACE_MINUTES.map((min) => {
+      const picks = placeSurges(series, -min * 60).map((p) => p.horseNo);
+      return { min, picks, ...placeResult(picks, series.dividends) };
+    }),
   };
 }
 
-export async function daySummary(repo: Repo, date: string, now = Date.now()): Promise<DaySummary | null> {
-  const hit = cache.get(date);
+export async function daySummary(repo: Repo, date: string, cutoff: number = DEFAULT_CUTOFF, now = Date.now()): Promise<DaySummary | null> {
+  const key = `${date}|${cutoff}`;
+  const hit = cache.get(key);
   if (hit && now - hit.at < TTL_MS) return hit.value;
   const tracked = repo.racesOn(date).filter((r) => r.post_time.slice(0, 10) === date);
   const ids = tracked.length ? tracked.map((r) => r.race_id) : cardRaces(date).map((r) => r.race_id);
   const out: DaySummaryRace[] = [];
   for (const id of ids) {
     const s = raceSeries(repo, id) ?? cardSeries(id);
-    if (s) out.push(await summarise(s));
+    if (s) out.push(await summarise(s, cutoff));
   }
   out.sort((a, b) => a.raceNo - b.raceNo);
   const venue = tracked[0]?.venue ?? cardRaces(date)[0]?.venue ?? "";
   const value = out.length ? { date, venue, races: out } : null;
-  cache.set(date, { at: now, value });
+  cache.set(key, { at: now, value });
   return value;
 }

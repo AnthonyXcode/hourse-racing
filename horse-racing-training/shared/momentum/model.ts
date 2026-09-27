@@ -108,7 +108,18 @@ export function movers(s: RaceSeries): Mover[] {
 
 // ---- Suggested picks ----
 
-export const PLACE_SURGE = 0.5; // Place pick: win-market move over the last RECENT_SECS above +50%
+export const PLACE_SURGE = 0; // Place pick: any positive win-market move over the last RECENT_SECS (the movers table's Last 5m)
+export const PLACE_MAX = 5; // at most this many Place picks per race: the biggest moves
+/** Cut-off choices for the suggestions, in minutes from post (+ = after post): T+5 … T+1, T−1 … T−5. */
+export const CUTOFF_MINUTES = [5, 4, 3, 2, 1, -1, -2, -3, -4, -5] as const;
+export type Cutoff = (typeof CUTOFF_MINUTES)[number];
+export const DEFAULT_CUTOFF: Cutoff = -1;
+export const isCutoff = (v: unknown): v is Cutoff => (CUTOFF_MINUTES as readonly number[]).includes(v as number);
+/** The series as it stood `min` minutes from post: only snapshots taken up to then (a live race before then is unchanged). */
+export const cutAt = (s: RaceSeries, min: number): RaceSeries => ({ ...s, points: s.points.filter((p) => p.secsToPost >= -min * 60) });
+
+/** Checkpoints for the Place rule around post time, in minutes (− = before post): T−5 … T−1, T+1 … T+5. */
+export const PLACE_MINUTES = [-5, -4, -3, -2, -1, 1, 2, 3, 4, 5] as const;
 
 export interface PlaceSurge {
   horseNo: number;
@@ -121,10 +132,18 @@ export interface PlaceSurge {
 
 /**
  * Place picks: horses whose win-market move over the last RECENT_SECS (Mover.recent) is above
- * PLACE_SURGE, biggest first — the market is backing them to win, we bet them to place.
+ * PLACE_SURGE, biggest first, at most PLACE_MAX — the market is backing them to win, we bet them to place.
  * Empty until ~5 min of snapshots exist.
+ * `asOfSecs`: judge the race as it stood at that many seconds before post (only snapshots up to then);
+ * empty when no snapshot lies within CHECKPOINT_TOLERANCE_S of that moment.
  */
-export function placeSurges(s: RaceSeries): PlaceSurge[] {
+export function placeSurges(s: RaceSeries, asOfSecs?: number): PlaceSurge[] {
+  if (asOfSecs != null) {
+    const points = s.points.filter((p) => p.secsToPost >= asOfSecs);
+    const at = points[points.length - 1];
+    if (!at || at.secsToPost - asOfSecs > CHECKPOINT_TOLERANCE_S) return [];
+    s = { ...s, points };
+  }
   const last = s.points[s.points.length - 1];
   const earlier = last ? pointAt(s.points, last.secsToPost + RECENT_SECS) : null;
   if (!last || !earlier || earlier === last) return [];
@@ -134,7 +153,8 @@ export function placeSurges(s: RaceSeries): PlaceSurge[] {
       if (m.recent == null || !(m.recent > PLACE_SURGE) || !before || !now) return [];
       return [{ horseNo: m.horseNo, name: m.name, before, now, change: m.recent, placeNow: last.pla[m.horseNo] ?? null }];
     })
-    .sort((a, b) => b.change - a.change);
+    .sort((a, b) => b.change - a.change)
+    .slice(0, PLACE_MAX);
 }
 
 /** Place picks at TRIO_UNIT each: cost, and the PLA dividends collected (null until Place dividends are posted). */
@@ -206,7 +226,7 @@ export interface DaySummaryRace {
   status: "pending" | "result";
   /** first three (dead-heats included) */
   placed: { horseNo: number; finishPos: number; code: string | null; name: string; nameZh: string | null }[];
-  /** Combined picks (model top N, then market-move picks), as on the race page */
+  /** Combined picks (model top N, then market-move picks) as of the cut-off, as on the race page */
   picks: { horseNo: number; both: boolean; marketOnly: boolean; code: string | null; name: string; nameZh: string | null }[];
   /** the two source lists, best first (horse numbers): model top N and market-move top N */
   modelList: number[];
@@ -219,11 +239,13 @@ export interface DaySummaryRace {
   modelTop: { horseNo: number; finishPos: number | null } | null;
   /** official Trio dividend per $10 (first one on a dead-heat); null if not posted */
   trioDiv: number | null;
-  /** Place picks (win-market move > PLACE_SURGE in the last 5 min), biggest move first */
+  /** Place picks (win-market move > PLACE_SURGE in the 5 min up to the cut-off), biggest move first */
   place: { horseNo: number; change: number; code: string | null; name: string; nameZh: string | null }[];
   /** $10 each to place; return = PLA dividends collected, null until posted */
   placeCost: number;
   placeReturn: number | null;
+  /** Place rule judged at each PLACE_MINUTES checkpoint; picks empty when nothing qualified or no snapshot then */
+  placeByMinute: { min: number; picks: number[]; cost: number; return: number | null }[];
 }
 export interface DaySummary {
   date: string;
