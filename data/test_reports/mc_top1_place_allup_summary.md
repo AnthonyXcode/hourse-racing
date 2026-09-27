@@ -54,6 +54,7 @@
 | **37** | **13 Sep** | **ST** | **Turf "B"** | **Good to Firm** | **10** | **34.3%** | **66.2%** | **3/10** | **30.0%** | **✅❌❌❌❌❌❌✅❌✅** | **1** |
 | **38** | **16 Sep** | **HV** | **Turf "B"** | **Good** | **8** | **33.2%** | **66.8%** | **6/8** | **75.0%** | **❌✅❌✅✅✅✅✅** | **5 (R4-R8)** |
 | **39** | **23 Sep** | **HV** | **Turf** | **Good** | **9** | **30.3%** | **62.9%** | **5/9** | **55.6%** | **❌❌❌✅✅✅❌✅✅** | **3 (R4-R6)** |
+| **40** | **27 Sep** | **ST** | **Mixed (AWT+Turf)** | **Good / G-F** | **11** | **36.5%** | **70.2%** | **5/11** | **45.5%** | **❌❌❌❌✅✅✅❌✅❌✅** | **3 (R5-R7)** |
 
 \*Meeting 8 **R1** (6 runners): MC #1 **#6** ran **3rd** but HKJC Place pool pays **two** places only → **$0** dividend; counts as **❌** for streaks and all-ups (same dividend logic as other meetings).
 
@@ -1849,3 +1850,25 @@ MC–market split, two meetings combined: **MC #1 at market rank 1–2 placed 9/
 **Trio card note (R1–R9):** **WIN** (first of the season; blind run, not bet live). Strategy A (= raw MC top 6, since SCMP was skipped) **2/9 (R6 $50, R9 $1,065), $900 staked, $1,115 returned, +$215, ROI +23.9%**; canonical MC top-6 B identical to A (**+$215**); MC-only Place%>20 variant (B-trio, as bet) **2/9 (R4 $117, R6 $50), $1,230 staked, $167 returned, −$1,063, −86.4%**. B-trio's Step B **swap** removed R9 #5 FIVEFORTWO (ran 2nd) for #10 WINDLORD (5th), costing the $1,065 Trio. That is the second meeting running the swap removed a placer.
 
 MC–market split, three meetings combined: **MC #1 at market rank 1–2 placed 12/15 (80%); rank 4+ placed 2/10 (20%)**. This card broke the 0/7 rank-4+ run (R5 #1 at 15 ran 3rd, R9 #6 at 11 won) and had two failed rank-1–2 bankers (R2 #4 10th, R3 #5 6th). New calibration flag: runners with **MC Win% < 3% and SP ≤ 6 went 4/5 top 3** (R1 #4 won, R3 #8 won, R7 #12 2nd, R7 #8 3rd). R6 was a chalk trio ($50) that paid less than a 10-combo stake.
+
+## Meeting 40: Sha Tin | 27 Sep 2026 (11 races)
+
+**MC #1** = raw MC Win% from trio_strategy_20260927_ST_R*.md (10,000 iterations, form=all). **Results** from data/historical/results_20260927_ST.json (all 11 Trio and Place dividends cross-checked against the momentum API; R1/R6 Quinella truncations corrected). Place $ = HKJC place dividend per $10. Going: **Good to Firm** (Turf R2–R4, R6, R8–R11), **Good** (AWT R1, R5, R7). No scratchings. Odds used by reports: HKJC early pool 09:03 HKT; **R6 SCMP race-card odds** (HKJC unavailable).
+
+| Race | Class | Dist (m) | MC #1 | MC Win% | MC Place% | Placed? | Place $ (if placed) |
+|------|-------|----------|-------|---------|-----------|---------|---------------------|
+| R1 | Class 5 | 1200 | #6 ONLY U | 30.7% | 64.3% | ❌ (4th) | — |
+| R2 | Class 4 | 1200 | #12 GLACIATED | 25.6% | 55.7% | ❌ (12th) | — |
+| R3 | Class 5 | 1400 | #11 DRACO | 27.2% | 60.3% | ❌ (5th) | — |
+| R4 | Class 4 | 1000 | #2 RUN RUN SUNRISE | 36.6% | 68.9% | ❌ (12th) | — |
+| R5 | Class 4 | 1200 | #5 ARMOUR WAR EAGLE | 51.1% | 84.0% | ✅ 2nd | 18 |
+| R6 | Class 4 | 1400 | #13 SUPER LOVE | 28.9% | 62.5% | ✅ 2nd | 32.5 |
+| R7 | Class 3 | 1200 | #1 AURORA PATCH | 48.7% | 84.1% | ✅ 3rd | 13.5 |
+| R8 | Group 3 | 1400 | #6 LITTLE PARADISE | 30.6% | 63.7% | ❌ (6th) | — |
+| R9 | Class 3 | 1600 | #8 PACKING FIGHTER | 35.7% | 73.0% | ✅ 1st | 10.1 |
+| R10 | Class 2 | 1200 | #3 RISING FORCE | 38.9% | 72.3% | ❌ (7th) | — |
+| R11 | Class 3 | 1400 | #6 CIRCUIT CHAMPION | 47.3% | 83.6% | ✅ 2nd | 11 |
+
+**Placed:** 5/11 (45.5%) | **Pattern:** ❌❌❌❌✅✅✅❌✅❌✅ | **Max streak:** 3 (R5-R7)
+
+**Trio card note (R1–R11):** **LOSS.** Strategy A (as bet) **2/11 (R7 $137, R11 $246), $950 staked, $383 returned, −$567, ROI −59.7%**; canonical MC top-6 B **2/11, $1,100 staked, −$717, −65.2%**; MC-only Place%>20 variant (B-trio, as bet) **2/11, $1,390 staked, −$1,007, −72.4%**. All HIGH/Dominant races: A 2/6, +$43; MEDIUM/Competitive 0/5, −$610. MC #1 bankers ≥ 45% Win% placed 3/3 (R5, R7, R11), 25–40% only 2/8. Market rank 1–2 bankers (SP) went just 3/7 (R3 fav 5th, R8 fav 1.9 6th, R10 7th, R1 4th); four-meeting combined 15/22 (68.2%), rank 4+ 3/13. Three of the six failed bankers had drifted ≥ 1.6× from the 09:03 odds (R1 2.7→4.9, R2 5.2→9.9, R4 10→22). MC blind spot persists: MC Win% < 3% and SP ≤ 6 went 3/4 top 3 (R4 #11, R5 #1 won, R6 #9); 7/9 over two meetings. Every Trio ≥ $720 (R1, R3, R4, R5, R6, R10) had a placer rated ≤ 3.9% MC win. B-trio's Step B swap removed a placer for the third meeting running (R10 #7 VICTOR THE WINNER swapped out for #8, won).
