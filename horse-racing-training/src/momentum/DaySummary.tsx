@@ -21,7 +21,7 @@ export function DaySummary({ date, live, onOpenRace }: { date: string; live: boo
   const cutoff = useCutoff();
   const [data, setData] = useState<{ key: string; s: Summary | null; error?: string } | null>(null);
   const key = `${date}|${cutoff}`;
-  /** Drill-down: which bar of the position chart is open (row = pick position index, series 0 = model, 1 = move). */
+  /** Drill-down: which bar of the position chart is open (row = pick position index, series index into POS_LISTS). */
   const [sel, setSel] = useState<{ row: number; series: number } | null>(null);
 
   useEffect(() => {
@@ -60,16 +60,16 @@ export function DaySummary({ date, live, onOpenRace }: { date: string; live: boo
   const topPlaced = run.filter((r) => r.modelTop?.finishPos != null && r.modelTop.finishPos <= 3).length;
   const best = run.reduce<(typeof run)[number] | null>((b, r) => ((r.combined!.trioReturn ?? 0) > (b?.combined!.trioReturn ?? 0) ? r : b), null);
   // Place hit rate by pick position: for position k, the share of finished races whose k-th model /
-  // market-move pick finished in the first three.
-  type PosRow = { pos: number; n: number; model: number; move: number };
+  // market-move / last-5-min-move pick finished in the first three.
+  type PosRow = { pos: number; n: number; model: number; move: number; recent: number };
   const byPos: PosRow[] = [0, 1, 2, 3, 4].map((k) => {
     const rate = (list: (r: (typeof run)[number]) => number[]) => {
       const withPick = run.filter((r) => list(r).length > k);
       const hits = withPick.filter((r) => r.placed.some((p) => p.horseNo === list(r)[k])).length;
       return { n: withPick.length, pct: withPick.length ? (hits / withPick.length) * 100 : NaN };
     };
-    const m = rate((r) => r.modelList), v = rate((r) => r.moveList);
-    return { pos: k + 1, n: m.n, model: m.pct, move: v.pct };
+    const m = rate((r) => r.modelList), v = rate((r) => r.moveList), rc = rate((r) => r.recentList);
+    return { pos: k + 1, n: m.n, model: m.pct, move: v.pct, recent: rc.pct };
   });
   const overall = (list: (r: (typeof run)[number]) => number[]) => {
     const all = run.flatMap((r) => list(r).map((h) => r.placed.some((p) => p.horseNo === h)));
@@ -78,6 +78,7 @@ export function DaySummary({ date, live, onOpenRace }: { date: string; live: boo
   const posSeries: Series<PosRow>[] = [
     { name: t("summary.chart.model"), color: C.accent, get: (r) => r.model },
     { name: t("summary.chart.move"), color: C.accent2, get: (r) => r.move },
+    { name: t("summary.chart.recent"), color: C.warn, get: (r) => r.recent },
   ];
   const horse = (h: { code: string | null; name: string; nameZh: string | null }) => (lang === "zh-HK" && h.nameZh ? h.nameZh : name("horse", h.code, h.name));
   const of = (a: number, b: number) => (b ? `${a}/${b}` : "–");
@@ -127,6 +128,7 @@ export function DaySummary({ date, live, onOpenRace }: { date: string; live: boo
             items={[
               [C.accent, t("summary.chart.modelOverall", { pct: pc(overall((r) => r.modelList)) })],
               [C.accent2, t("summary.chart.moveOverall", { pct: pc(overall((r) => r.moveList)) })],
+              [C.warn, t("summary.chart.recentOverall", { pct: pc(overall((r) => r.recentList)) })],
             ]}
           />
           <GroupedBars
@@ -149,7 +151,7 @@ export function DaySummary({ date, live, onOpenRace }: { date: string; live: boo
               >
                 <PositionBreakdown
                   pos={sel.row}
-                  list={sel.series === 0 ? "model" : "move"}
+                  list={POS_LISTS[sel.series]!}
                   label={posSeries[sel.series]!.name}
                   races={run}
                   horse={horse}
@@ -160,7 +162,8 @@ export function DaySummary({ date, live, onOpenRace }: { date: string; live: boo
             )}
           </AnimatePresence>
           <p className={note}>
-            {t("summary.chart.note", { n: run.length, m: run.filter((r) => r.moveList.length > 0).length })} {t("summary.chart.clickHint")}
+            {t("summary.chart.note", { n: run.length, m: run.filter((r) => r.moveList.length > 0).length, k: run.filter((r) => r.recentList.length > 0).length })}{" "}
+            {t("summary.chart.clickHint")}
           </p>
         </div>
       )}
@@ -241,10 +244,15 @@ export function DaySummary({ date, live, onOpenRace }: { date: string; live: boo
   );
 }
 
+/** The chart's series, in order: which pick list each bar reads. */
+const POS_LISTS = ["model", "move", "recent"] as const;
+const listOf = (r: Summary["races"][number], list: (typeof POS_LISTS)[number]) =>
+  list === "model" ? r.modelList : list === "move" ? r.moveList : r.recentList;
+
 /** The races behind one bar: the horse at pick position `pos` of the chosen list, and where it finished. */
 function PositionBreakdown({ pos, list, label, races, horse, onOpenRace, onClose }: {
   pos: number;
-  list: "model" | "move";
+  list: (typeof POS_LISTS)[number];
   label: string;
   races: Summary["races"];
   horse: (h: { code: string | null; name: string; nameZh: string | null }) => string;
@@ -254,7 +262,7 @@ function PositionBreakdown({ pos, list, label, races, horse, onOpenRace, onClose
   const { t } = useTranslation(["momentum", "common"]);
   const rows = races
     .map((r) => {
-      const no = (list === "model" ? r.modelList : r.moveList)[pos];
+      const no = listOf(r, list)[pos];
       if (no == null) return null;
       const p = r.picks.find((x) => x.horseNo === no);
       const fin = r.finishPos[no] ?? null;

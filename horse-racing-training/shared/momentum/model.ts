@@ -179,6 +179,13 @@ export const MODEL_PICKS = 5; // analyzer's top N by win probability
 export const MOVE_PICKS = 5; // top N by Move (first snapshot → latest)
 export const COMBINED_MOVE_PICKS = 3; // Combined (Trio box) takes only the Move top 3, to keep the box small
 
+/** Top MOVE_PICKS by the last-RECENT_SECS move (Mover.recent), biggest first; empty until ~5 min of snapshots exist. */
+export const recentTop = (mv: Mover[]): Mover[] =>
+  mv
+    .filter((m) => m.recent != null)
+    .sort((a, b) => b.recent! - a.recent!)
+    .slice(0, MOVE_PICKS);
+
 export interface Picks {
   model: ModelRank[]; // analyzer top MODEL_PICKS still in the race
   move: Mover[]; // biggest steamers by Move
@@ -236,6 +243,8 @@ export interface DaySummaryRace {
   /** the two source lists, best first (horse numbers): model top N and market-move top N */
   modelList: number[];
   moveList: number[];
+  /** market-move top N over the last 5 min up to the cut-off only (Mover.recent), best first */
+  recentList: number[];
   /** finishing position of every runner with a result, by horse number */
   finishPos: Record<number, number>;
   /** how the Combined list did; null until there is a result */

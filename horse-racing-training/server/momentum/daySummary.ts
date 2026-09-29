@@ -1,7 +1,7 @@
 // Racing-day review for Momentum → Summary: every race's Combined picks and how they did.
 // Uses the same pick logic as the race page (suggestPicks + pickResults), computed server-side so the
 // page makes one request instead of two per race. Upcoming days come from the racecards (all pending).
-import { DEFAULT_CUTOFF, PLACE_MINUTES, cutAt, movers, pickResults, placeResult, placeSurges, suggestPicks, type DaySummary, type DaySummaryRace, type ModelRank, type RaceSeries } from "../../shared/momentum/model";
+import { DEFAULT_CUTOFF, PLACE_MINUTES, cutAt, movers, pickResults, placeResult, placeSurges, recentTop, suggestPicks, type DaySummary, type DaySummaryRace, type ModelRank, type RaceSeries } from "../../shared/momentum/model";
 import { races } from "../dataIndex";
 import type { Repo } from "./db";
 import { modelRanks } from "./picks";
@@ -30,7 +30,8 @@ async function summarise(series: RaceSeries, cutoff: number): Promise<DaySummary
   } catch {
     // no saved racecard: market moves only
   }
-  const picks = suggestPicks(ranks, movers(cut));
+  const mv = movers(cut);
+  const picks = suggestPicks(ranks, mv);
   const res = pickResults(picks, series.results, series.dividends);
   const fin = new Map(series.results.map((r) => [r.horseNo, r.finishPos]));
   const top = ranks[0];
@@ -45,6 +46,7 @@ async function summarise(series: RaceSeries, cutoff: number): Promise<DaySummary
     picks: picks.combined.map((c) => ({ horseNo: c.horseNo, both: c.inModel && c.inMove, marketOnly: c.inMove && !c.inModel, ...who(c.horseNo) })),
     modelList: picks.model.map((r) => r.horseNo),
     moveList: picks.move.map((m) => m.horseNo),
+    recentList: recentTop(mv).map((m) => m.horseNo),
     finishPos: Object.fromEntries(series.results.filter((r) => r.finishPos != null).map((r) => [r.horseNo, r.finishPos!])),
     combined: res?.lists[2] ?? null,
     modelTop: top ? { horseNo: top.horseNo, finishPos: res ? (fin.get(top.horseNo) ?? null) : null } : null,
