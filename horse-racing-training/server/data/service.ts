@@ -1,10 +1,10 @@
-// Lazily-created singleton: race store + run log + 2-hourly fetch scheduler (on the momentum DB).
+// Lazily-created singleton: race store + run log + 5-minute fetch scheduler (on the momentum DB).
 import { momentum } from "../momentum/service";
 import { raceStore, type RaceStore } from "./raceStore";
 import { runLog, type RunLog } from "./runLog";
 import { createScheduler, type Scheduler, type Trigger } from "./scheduler";
 import { runFetch, type FetchDeps } from "./fetchJobs";
-import { discoverMeetings, openCardsSession, openResultsSession } from "./parent";
+import { discoverMeetings, fetchWinOdds, openCardsSession, openResultsSession } from "./parent";
 
 let inst: { store: RaceStore; runs: RunLog; deps: FetchDeps; scheduler: Scheduler } | null = null;
 
@@ -20,6 +20,7 @@ export function dataService() {
       discover: discoverMeetings,
       openResults: openResultsSession,
       openCards: () => openCardsSession(store),
+      odds: fetchWinOdds,
     };
     const scheduler = createScheduler({ run: (t: Trigger) => runFetch(deps, t), lastSuccess: () => runs.lastSuccess() });
     inst = { store, runs, deps, scheduler };

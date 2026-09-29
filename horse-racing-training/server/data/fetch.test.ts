@@ -3,7 +3,7 @@ import { openDb } from "../momentum/db";
 import { raceStore, type RaceStore, type CardDoc } from "./raceStore";
 import { runLog, type RunLog } from "./runLog";
 import { createScheduler, inWindow, nextSlot } from "./scheduler";
-import { planCards, planResults, mergeFixtures, runFetch, resultsIncomplete, type UpcomingMeeting, type FetchDeps } from "./fetchJobs";
+import { planCards, planOdds, planResults, mergeFixtures, runFetch, resultsIncomplete, attemptKey, type UpcomingMeeting, type FetchDeps } from "./fetchJobs";
 
 /** A Date for an HK wall-clock time. */
 const hk = (s: string) => new Date(`${s}+08:00`);
@@ -11,32 +11,34 @@ const hkStr = (d: Date) => new Date(d.getTime() + 8 * 3_600_000).toISOString().s
 
 describe("schedule (HKT)", () => {
   it.each([
-    ["2026-09-25T07:59", "2026-09-25 08:00"],
-    ["2026-09-25T08:00", "2026-09-25 10:00"], // exact slot → the next one
-    ["2026-09-25T08:00:01", "2026-09-25 10:00"],
-    ["2026-09-25T13:40", "2026-09-25 14:00"],
-    ["2026-09-25T22:00", "2026-09-26 00:00"],
-    ["2026-09-25T23:30", "2026-09-26 00:00"],
-    ["2026-09-26T00:00", "2026-09-26 08:00"],
-    ["2026-09-26T00:30", "2026-09-26 08:00"],
+    ["2026-09-25T07:59", "2026-09-25 12:00"],
+    ["2026-09-25T11:59", "2026-09-25 12:00"],
+    ["2026-09-25T12:00", "2026-09-25 12:05"], // exact slot → the next one
+    ["2026-09-25T12:00:01", "2026-09-25 12:05"],
+    ["2026-09-25T13:42", "2026-09-25 13:45"],
+    ["2026-09-25T23:55", "2026-09-26 00:00"], // midnight closes the window
+    ["2026-09-26T00:00", "2026-09-26 12:00"],
+    ["2026-09-26T00:30", "2026-09-26 12:00"],
     ["2026-12-31T23:59", "2027-01-01 00:00"],
   ])("%s → %s", (now, want) => {
     expect(hkStr(nextSlot(hk(now)))).toBe(want);
   });
 
-  it("has nine runs a day: 08, 10 … 22 and 00", () => {
+  it("has 145 runs a day: every 5 min 12:00–23:55, then 00:00", () => {
     let t = hk("2026-09-25T00:30");
     const got: string[] = [];
-    for (let i = 0; i < 9; i++) {
+    for (let i = 0; i < 145; i++) {
       t = nextSlot(t);
       got.push(hkStr(t).slice(11));
     }
-    expect(got).toEqual(["08:00", "10:00", "12:00", "14:00", "16:00", "18:00", "20:00", "22:00", "00:00"]);
+    expect(got.slice(0, 3)).toEqual(["12:00", "12:05", "12:10"]);
+    expect(got.slice(-2)).toEqual(["23:55", "00:00"]);
+    expect(hkStr(nextSlot(t))).toBe("2026-09-26 12:00");
   });
 
-  it("window is 08:00–24:00", () => {
-    expect(inWindow(hk("2026-09-25T07:59"))).toBe(false);
-    expect(inWindow(hk("2026-09-25T08:00"))).toBe(true);
+  it("window is 12:00–24:00", () => {
+    expect(inWindow(hk("2026-09-25T11:59"))).toBe(false);
+    expect(inWindow(hk("2026-09-25T12:00"))).toBe(true);
     expect(inWindow(hk("2026-09-25T23:59"))).toBe(true);
     expect(inWindow(hk("2026-09-26T00:30"))).toBe(false);
   });
@@ -63,33 +65,33 @@ describe("scheduler", () => {
   };
 
   it("catches up on boot inside the window when the last run is stale, then arms the next slot", () => {
-    const h = harness("2026-09-25T13:40", hk("2026-09-25T10:05"));
+    const h = harness("2026-09-25T13:42", hk("2026-09-25T13:30"));
     h.s.start();
     expect(h.runs).toEqual(["startup"]);
-    expect(h.timers[0]!.ms).toBe(20 * 60_000);
+    expect(h.timers[0]!.ms).toBe(3 * 60_000);
   });
 
   it("no catch-up when the last run is recent, or outside the window", () => {
-    const a = harness("2026-09-25T13:40", hk("2026-09-25T12:01"));
+    const a = harness("2026-09-25T13:42", hk("2026-09-25T13:40"));
     a.s.start();
     expect(a.runs).toEqual([]);
     const b = harness("2026-09-26T02:00", null);
     b.s.start();
     expect(b.runs).toEqual([]);
-    expect(b.timers[0]!.ms).toBe(6 * 3_600_000);
+    expect(b.timers[0]!.ms).toBe(10 * 3_600_000);
   });
 
   it("never overlaps: a slot firing during a run is skipped", async () => {
     const h = harness("2026-09-25T13:40", null);
     h.s.start(); // startup run in progress
-    h.advance("2026-09-25T14:00");
-    h.timers[0]!.fn(); // 14:00 slot fires while startup is still running
+    h.advance("2026-09-25T13:45");
+    h.timers[0]!.fn(); // 13:45 slot fires while startup is still running
     expect(h.runs).toEqual(["startup"]);
     expect(h.s.runExclusive("manual")).toBeNull();
     h.finish();
     await new Promise((r) => setTimeout(r, 0));
     expect(h.s.running).toBe(false);
-    expect(h.timers).toHaveLength(2); // re-armed for 16:00
+    expect(h.timers).toHaveLength(2); // re-armed for 13:50
   });
 });
 
@@ -138,18 +140,70 @@ describe("meeting selection", () => {
     expect(resultsIncomplete([result(1), result(2, false)], 0)).toBe(true);
   });
 
-  it("cards: listed meetings today..+2 with races not yet started; unlisted fixtures are probed (not today)", () => {
+  it("cards: listed meetings today..+3 with races not yet started; unlisted fixtures are probed (not today)", () => {
     const up: UpcomingMeeting[] = [
       { date: "2026-09-25", venue: "HV", races: [{ raceNo: 1, postTime: "2026-09-25T13:00:00+08:00" }, { raceNo: 2, postTime: "2026-09-25T14:00:00+08:00" }] },
       { date: "2026-09-27", venue: "ST", races: [{ raceNo: 1, postTime: null }, { raceNo: 2, postTime: null }] },
-      { date: "2026-09-30", venue: "HV", races: [{ raceNo: 1, postTime: null }] }, // beyond +2 days
+      { date: "2026-09-28", venue: "HV", races: [{ raceNo: 1, postTime: null }] }, // +3 days: in range
+      { date: "2026-09-29", venue: "ST", races: [{ raceNo: 1, postTime: null }] }, // beyond +3 days
     ];
     const fixtures = { meetings: [{ date: "2026-09-26", venue: "ST" as const }, { date: "2026-09-25", venue: "ST" as const }] };
-    expect(planCards(fixtures, up, now)).toEqual([
+    expect(planCards(store, fixtures, up, now)).toEqual([
       { date: "2026-09-25", venue: "HV", races: [2] },
       { date: "2026-09-26", venue: "ST", races: null },
       { date: "2026-09-27", venue: "ST", races: [1, 2] },
+      { date: "2026-09-28", venue: "HV", races: [1] },
     ]);
+  });
+
+  it("results on race day: fetched once a race is 5 min past post without a complete result", () => {
+    const up: UpcomingMeeting[] = [
+      { date: "2026-09-25", venue: "HV", races: [{ raceNo: 1, postTime: "2026-09-25T13:00:00+08:00" }, { raceNo: 2, postTime: "2026-09-25T13:30:00+08:00" }] },
+    ];
+    const recent = { [attemptKey.results({ date: "2026-09-25", venue: "HV" })]: hk("2026-09-25T13:39").toISOString() };
+    // R1 due, nothing stored → fetch, even though it was attempted a minute ago
+    expect(planResults(store, null, up, now, {}, recent)).toEqual([{ date: "2026-09-25", venue: "HV", reason: "missing" }]);
+    store.putResults({ date: "2026-09-25", venue: "HV" }, [result(1)], "t");
+    expect(planResults(store, null, up, hk("2026-09-25T13:34"))).toEqual([]); // R1 complete, R2 not due until 13:35
+    expect(planResults(store, null, up, now)).toEqual([{ date: "2026-09-25", venue: "HV", reason: "incomplete" }]);
+    store.putResults({ date: "2026-09-25", venue: "HV" }, [result(1), result(2, false)], "t"); // R2 placings, no dividend yet
+    expect(planResults(store, null, up, now)).toEqual([{ date: "2026-09-25", venue: "HV", reason: "incomplete" }]);
+    store.putResults({ date: "2026-09-25", venue: "HV" }, [result(1), result(2)], "t");
+    expect(planResults(store, null, up, now)).toEqual([]);
+  });
+
+  it("results off race day: retried at most hourly", () => {
+    const m = { date: "2026-09-24", venue: "HV" as const };
+    const fixtures = { meetings: [m] };
+    expect(planResults(store, fixtures, [], now, {}, { [attemptKey.results(m)]: hk("2026-09-25T13:00").toISOString() })).toEqual([]);
+    expect(planResults(store, fixtures, [], now, {}, { [attemptKey.results(m)]: hk("2026-09-25T12:40").toISOString() })).toEqual([{ ...m, reason: "missing" }]);
+  });
+
+  it("cards: saved races are re-scraped hourly, new races at once; the rest get an odds refresh", () => {
+    const m = { date: "2026-09-27", venue: "ST" as const };
+    const up: UpcomingMeeting[] = [{ ...m, races: [1, 2, 3].map((raceNo) => ({ raceNo, postTime: null })) }];
+    store.putCard({ ...m, raceNo: 1 }, card("1"), "t");
+    store.putCard({ ...m, raceNo: 2 }, card("2"), "t");
+    const attempts = {
+      [attemptKey.card(m, 1)]: hk("2026-09-25T13:00").toISOString(), // 40 min ago: fresh
+      [attemptKey.card(m, 2)]: hk("2026-09-25T12:30").toISOString(), // 70 min ago: stale
+    };
+    const cards = planCards(store, null, up, now, {}, attempts);
+    expect(cards).toEqual([{ ...m, races: [2, 3] }]);
+    expect(planOdds(store, up, cards, now)).toEqual([{ ...m, races: [1] }]);
+  });
+
+  it("cards: unlisted fixtures with saved races refresh those; without, probing is hourly", () => {
+    const a = { date: "2026-09-26", venue: "ST" as const };
+    const b = { date: "2026-09-27", venue: "HV" as const };
+    store.putCard({ ...a, raceNo: 1 }, card("1"), "t");
+    store.putCard({ ...a, raceNo: 2 }, card("2"), "t");
+    const fresh = hk("2026-09-25T13:30").toISOString();
+    expect(planCards(store, { meetings: [a, b] }, [], now, {}, { [attemptKey.card(a, 1)]: fresh })).toEqual([
+      { ...a, races: [2] },
+      { ...b, races: null },
+    ]);
+    expect(planCards(store, { meetings: [b] }, [], now, {}, { [attemptKey.probe(b)]: fresh })).toEqual([]);
   });
 
   it("fixtures: newly listed meetings are merged in, once", () => {
@@ -180,6 +234,7 @@ describe("runFetch", () => {
     discover: async () => [{ date: "2026-09-27", venue: "ST", races: [{ raceNo: 1, postTime: null }, { raceNo: 2, postTime: null }] }],
     openResults: async () => ({ scrape: async (m) => ({ venue: m.venue, races: [result(1), result(2)] }), close: async () => {} }),
     openCards: async () => ({ scrapeRace: async (m, n) => card(`${m.date}-${m.venue}-${n}`), close: async () => {} }),
+    odds: async (_m, n) => ({ "1": 2.5 + n, "2": 4 }),
     ...over,
   });
 
@@ -193,10 +248,14 @@ describe("runFetch", () => {
     const [run] = log.recent(1);
     expect(run).toMatchObject({ trigger: "schedule", ok: true, error: null });
     expect(log.lastSuccess()).not.toBeNull();
-    // Second run: nothing missing, cards unchanged.
+    // Next tick: nothing missing, cards scraped just now → odds refresh only.
     const again = await runFetch(deps(), "schedule");
     expect(again.plan.results).toEqual([]);
-    expect(again.cards[0]).toMatchObject({ saved: 2, changed: 0 });
+    expect(again.plan.cards).toEqual([]);
+    expect(again.odds).toEqual([{ meeting: "2026-09-27 ST", refreshed: 2, changed: 2 }]);
+    expect(store.card({ date: "2026-09-27", venue: "ST", raceNo: 2 })!.winOdds).toEqual({ "1": 4.5, "2": 4 });
+    const third = await runFetch(deps(), "schedule");
+    expect(third.odds[0]).toMatchObject({ refreshed: 2, changed: 0 });
   });
 
   it("dry run plans without scraping, writing or discovering", async () => {

@@ -1,31 +1,34 @@
-// When racecards/results are fetched: every 2 hours from 08:00 to 24:00 Hong Kong time, i.e.
-// 08:00, 10:00, 12:00, 14:00, 16:00, 18:00, 20:00, 22:00 and 00:00 HKT. Runs never overlap.
+// When racecards/odds/results are fetched: every 5 minutes from 12:00 to 24:00 Hong Kong time
+// (12:00, 12:05 … 23:55 and the 00:00 run that closes the window). Runs never overlap: a tick that
+// fires while a slow run (full racecard scrape) is still going is skipped. What each tick actually
+// scrapes is decided by the planners in ./fetchJobs.ts — most ticks are a few cheap requests.
 // Hong Kong has no DST, so HKT is always UTC+8 and the slot maths is plain arithmetic.
 
 const HKT_MS = 8 * 3_600_000;
 const HOUR = 3_600_000;
-/** Slot hours in HKT, ascending. 0 = the midnight run that closes the window. */
-export const SLOT_HOURS = [0, 8, 10, 12, 14, 16, 18, 20, 22] as const;
+/** Minutes between ticks. */
+export const TICK_MIN = 5;
+/** First tick of the day, HKT hour. */
+export const WINDOW_START_HOUR = 12;
 /** Minimum age of the last successful run before a startup catch-up run. */
-export const CATCH_UP_MS = 2 * HOUR;
+export const CATCH_UP_MS = TICK_MIN * 60_000;
 
-/** The next slot strictly after `now` (a run at exactly 10:00 schedules 12:00). */
+/** The next slot strictly after `now` (a run at exactly 12:00 schedules 12:05). */
 export function nextSlot(now: Date): Date {
   const hk = now.getTime() + HKT_MS; // HKT wall clock expressed as a UTC timestamp
-  const dayStart = Math.floor(hk / (24 * HOUR)) * 24 * HOUR;
-  for (const dayOffset of [0, 1]) {
-    for (const h of SLOT_HOURS) {
-      const slot = dayStart + dayOffset * 24 * HOUR + h * HOUR;
-      if (slot > hk) return new Date(slot - HKT_MS);
-    }
-  }
-  throw new Error("unreachable"); // tomorrow 00:00 is always after now
+  const step = TICK_MIN * 60_000;
+  const slot = (Math.floor(hk / step) + 1) * step;
+  const dayStart = Math.floor(slot / (24 * HOUR)) * 24 * HOUR;
+  const hour = (slot - dayStart) / HOUR;
+  // 00:00 closes the previous day's window; anything else before 12:00 waits for 12:00.
+  const at = slot === dayStart || hour >= WINDOW_START_HOUR ? slot : dayStart + WINDOW_START_HOUR * HOUR;
+  return new Date(at - HKT_MS);
 }
 
-/** True from 08:00 until midnight HKT — the hours the schedule covers. */
+/** True from 12:00 until midnight HKT — the hours the schedule covers. */
 export function inWindow(now: Date): boolean {
   const hour = new Date(now.getTime() + HKT_MS).getUTCHours();
-  return hour >= 8;
+  return hour >= WINDOW_START_HOUR;
 }
 
 export type Trigger = "schedule" | "startup" | "manual";

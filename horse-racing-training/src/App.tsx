@@ -50,6 +50,8 @@ function useOnceTrue(v: boolean): boolean {
 const VIEWS = ["bet", "history", "win-place", "trio", "momentum", ...LEGAL_VIEWS] as const;
 type View = (typeof VIEWS)[number];
 const DEFAULT_VIEW: View = "bet";
+/** How often the bet page re-polls the meeting list while visible. */
+const DAYS_REFRESH_MS = 5 * 60_000;
 const TABS = [
   ["bet", "nav.bet"],
   ["history", "nav.history"],
@@ -124,17 +126,33 @@ export default function App() {
   const [raceResult, setRaceResult] = useState<RaceResult | null>(null);
   const analyzerOpened = useOnceTrue(view === "win-place" || view === "trio");
 
-  // Load meeting list once, and open the last racing day (newest meeting on or before today, HK time).
+  // Load the meeting list and open the last racing day (newest meeting on or before today, HK time).
+  // Re-poll while the tab is visible and on returning to it: the server fetches new racecards/results
+  // every 5 min, so a tab left open would otherwise never see them.
   useEffect(() => {
-    api
-      .days()
-      .then((ds) => {
-        setDays(ds);
-        const today = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Hong_Kong" }).format(new Date()).replaceAll("-", "");
-        const last = ds.find((m) => m.date <= today) ?? ds[ds.length - 1]; // newest first; else the earliest upcoming
-        if (last) setMeetingKey((k) => k || `${last.date}_${last.venue}`);
-      })
-      .catch((e) => setError(String(e)));
+    let live = true;
+    let first = true;
+    const load = () =>
+      api
+        .days()
+        .then((ds) => {
+          if (!live) return;
+          setDays(ds);
+          const today = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Hong_Kong" }).format(new Date()).replaceAll("-", "");
+          const last = ds.find((m) => m.date <= today) ?? ds[ds.length - 1]; // newest first; else the earliest upcoming
+          if (last) setMeetingKey((k) => k || `${last.date}_${last.venue}`);
+        })
+        .catch((e) => first && setError(String(e))) // background refresh failures stay quiet
+        .finally(() => (first = false));
+    load();
+    const onShow = () => document.visibilityState === "visible" && load();
+    const timer = setInterval(onShow, DAYS_REFRESH_MS);
+    document.addEventListener("visibilitychange", onShow);
+    return () => {
+      live = false;
+      clearInterval(timer);
+      document.removeEventListener("visibilitychange", onShow);
+    };
   }, []);
 
   // Refresh history whenever the History tab is opened.
@@ -159,6 +177,22 @@ export default function App() {
       })
       .catch((e) => setError(String(e)));
   }, [meetingKey]);
+
+  // A refresh changed the open meeting (results posted, races added): reload its detail and cards
+  // (cards pick up final odds from results), keeping the user's picks.
+  const openRef = days.find((m) => m.date === date && m.venue === venue);
+  const openSig = openRef ? `${openRef.races.join(",")}|${openRef.hasResults}` : "";
+  useEffect(() => {
+    if (!meeting || meeting.date !== date || meeting.venue !== venue) return; // still loading this meeting
+    if (!openSig || openSig === `${meeting.races.join(",")}|${meeting.hasResults}`) return;
+    api
+      .meeting(date, venue)
+      .then((m) => {
+        setMeeting(m);
+        setCards({});
+      })
+      .catch((e) => setError(String(e)));
+  }, [openSig]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const legCount = BET_TYPES[betType].legRaces; // 1, 2 (DT), or 3 (TT)
 

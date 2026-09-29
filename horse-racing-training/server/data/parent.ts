@@ -6,6 +6,7 @@ import { fileURLToPath } from "url";
 import type { CardDoc, MeetingKey, RaceStore, Venue } from "./raceStore";
 import type { CardsSession, ResultsSession, UpcomingMeeting } from "./fetchJobs";
 import { fixDividends, parseDividendRows } from "./dividends";
+import { hkjcClient } from "../momentum/hkjcClient";
 
 const PARENT = fileURLToPath(new URL("../../../", import.meta.url));
 // Computed paths: the parent code isn't part of this package's tsconfig.
@@ -147,4 +148,10 @@ export async function discoverMeetings(): Promise<UpcomingMeeting[]> {
       venue: m.venueCode as Venue,
       races: (m.races ?? []).map((r) => ({ raceNo: Number(r.no), postTime: r.postTime ?? null })).sort((a, b) => a.raceNo - b.raceNo),
     }));
+}
+
+/** Current win odds for a race via HKJC's GraphQL API (no browser), horse number → odds. */
+export async function fetchWinOdds(m: MeetingKey, raceNo: number): Promise<Record<string, number>> {
+  const { win } = await hkjcClient.odds(m.date, m.venue, raceNo);
+  return Object.fromEntries([...win].map(([n, o]) => [String(n), o]));
 }

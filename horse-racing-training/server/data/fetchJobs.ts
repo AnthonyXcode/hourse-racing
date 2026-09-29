@@ -1,11 +1,23 @@
-// One fetch run: decide which meetings need results / racecards, scrape them, store them.
-// Planning is pure (tested with fakes); scraping goes through injected sessions (see ./parent.ts).
+// One fetch run (a 5-minute tick, see ./scheduler.ts): decide what needs results / racecards / odds,
+// scrape it, store it. Planning is pure (tested with fakes); scraping goes through injected sessions
+// (see ./parent.ts). Heavy scrapes are rationed with per-item attempt times (the "fetchAttempts" doc):
+//   results  — race day: as soon as a race is RESULT_DELAY past post time without a complete result;
+//              otherwise (missing / yesterday incomplete) at most every RETRY_MS
+//   racecards — new races at once; races already saved re-scraped every CARD_REFRESH_MS
+//   odds     — every tick, a cheap GraphQL call per saved race that hasn't started
 import type { RaceStore, Venue, MeetingKey, CardDoc } from "./raceStore";
 import type { RunLog } from "./runLog";
 import type { Trigger } from "./scheduler";
 
 const DAY = 86_400_000;
 const HKT_MS = 8 * 3_600_000;
+const MIN = 60_000;
+/** A race's result is expected this long after its post time. */
+export const RESULT_DELAY_MS = 5 * MIN;
+/** Full re-scrape of an already-saved racecard (scratchings, jockey changes). */
+export const CARD_REFRESH_MS = 60 * MIN;
+/** Retry for results outside the race-day rule, and for probing unlisted fixtures. */
+export const RETRY_MS = 60 * MIN;
 
 /** A local (ST/HV) meeting HKJC currently lists, with post times when known. */
 export interface UpcomingMeeting extends MeetingKey {
@@ -27,13 +39,27 @@ export interface FetchOptions {
   /** Oldest results date to consider (default: today − lookbackDays). */
   since?: string;
   lookbackDays?: number;
-  /** Racecards for meetings from today to today + aheadDays. */
+  /** Racecards for meetings from today to today + aheadDays (default 3: HKJC posts cards ~3 days ahead). */
   aheadDays?: number;
 }
 
 /** HK calendar date (YYYY-MM-DD) of `now` shifted by `days`. */
 export const hkDay = (now: Date, days = 0) => new Date(now.getTime() + HKT_MS + days * DAY).toISOString().slice(0, 10);
 const keyOf = (m: MeetingKey) => `${m.date}_${m.venue}`;
+
+/** Last attempt time (ISO) per item: "results:<date>_<venue>", "card:<date>_<venue>_<raceNo>", "probe:<date>_<venue>". */
+export type Attempts = Record<string, string>;
+export const ATTEMPTS_DOC = "fetchAttempts";
+export const attemptKey = {
+  results: (m: MeetingKey) => `results:${keyOf(m)}`,
+  card: (m: MeetingKey, raceNo: number) => `card:${keyOf(m)}_${raceNo}`,
+  probe: (m: MeetingKey) => `probe:${keyOf(m)}`,
+};
+/** Never attempted, or the last attempt is at least `ms` old. */
+const dueAfter = (attempts: Attempts, key: string, now: Date, ms: number) => {
+  const t = attempts[key];
+  return !t || now.getTime() - Date.parse(t) >= ms;
+};
 
 // ---------------------------------------------------------------- planning
 
@@ -48,12 +74,19 @@ export interface ResultsPlanItem extends MeetingKey {
   reason: "missing" | "incomplete" | "requested";
 }
 
-export function planResults(store: Pick<RaceStore, "meetings" | "results">, fixtures: Fixtures | null, upcoming: UpcomingMeeting[], now: Date, opts: FetchOptions = {}): ResultsPlanItem[] {
+export function planResults(
+  store: Pick<RaceStore, "meetings" | "results">,
+  fixtures: Fixtures | null,
+  upcoming: UpcomingMeeting[],
+  now: Date,
+  opts: FetchOptions = {},
+  attempts: Attempts = {}
+): ResultsPlanItem[] {
   const today = hkDay(now);
   const yesterday = hkDay(now, -1);
   const from = opts.since ?? hkDay(now, -(opts.lookbackDays ?? 14));
   const cards = new Map(store.meetings().map((m) => [keyOf(m), m.races.length]));
-  const firstPost = new Map(upcoming.map((m) => [keyOf(m), m.races.map((r) => r.postTime).filter((t): t is string => !!t).sort()[0] ?? null]));
+  const posts = new Map(upcoming.map((m) => [keyOf(m), m.races.filter((r): r is { raceNo: number; postTime: string } => !!r.postTime)]));
 
   if (opts.only) return [{ ...opts.only, reason: "requested" }];
 
@@ -65,10 +98,16 @@ export function planResults(store: Pick<RaceStore, "meetings" | "results">, fixt
   }
   const plan: ResultsPlanItem[] = [];
   for (const m of cands.values()) {
-    // Today's meeting before its first race: nothing to scrape yet.
-    const first = firstPost.get(keyOf(m));
-    if (m.date === today && first && now.getTime() < Date.parse(first)) continue;
     const res = store.results<ResultLike>(m);
+    const racePosts = m.date === today ? (posts.get(keyOf(m)) ?? []) : [];
+    if (racePosts.length) {
+      // Race day: fetch once a race is RESULT_DELAY past its post time without a complete result.
+      const done = new Set((res ?? []).filter((r) => r.finishOrder?.length && r.winDividend != null).map((r) => r.raceNumber));
+      if (racePosts.some((r) => Date.parse(r.postTime) + RESULT_DELAY_MS <= now.getTime() && !done.has(r.raceNo)))
+        plan.push({ ...m, reason: res ? "incomplete" : "missing" });
+      continue;
+    }
+    if (!dueAfter(attempts, attemptKey.results(m), now, RETRY_MS)) continue;
     if (!res) plan.push({ ...m, reason: "missing" });
     else if (m.date >= yesterday && resultsIncomplete(res, cards.get(keyOf(m)) ?? 0)) plan.push({ ...m, reason: "incomplete" });
   }
@@ -80,12 +119,26 @@ export interface CardsPlanItem extends MeetingKey {
   races: number[] | null;
 }
 
-/** Upcoming meetings (today … today + aheadDays): every race that hasn't started yet. */
-export function planCards(fixtures: Fixtures | null, upcoming: UpcomingMeeting[], now: Date, opts: FetchOptions = {}): CardsPlanItem[] {
+const notStartedAt = (m: UpcomingMeeting, now: Date) => m.races.filter((r) => !r.postTime || now.getTime() < Date.parse(r.postTime)).map((r) => r.raceNo);
+
+/**
+ * Full racecard scrapes for upcoming meetings (today … today + aheadDays), races not started yet:
+ * races we don't have, plus saved ones last scraped CARD_REFRESH_MS ago.
+ */
+export function planCards(
+  store: Pick<RaceStore, "meetings">,
+  fixtures: Fixtures | null,
+  upcoming: UpcomingMeeting[],
+  now: Date,
+  opts: FetchOptions = {},
+  attempts: Attempts = {}
+): CardsPlanItem[] {
   const today = hkDay(now);
-  const until = hkDay(now, opts.aheadDays ?? 2);
+  const until = hkDay(now, opts.aheadDays ?? 3);
   const byKey = new Map(upcoming.map((m) => [keyOf(m), m]));
-  const notStarted = (m: UpcomingMeeting) => m.races.filter((r) => !r.postTime || now.getTime() < Date.parse(r.postTime)).map((r) => r.raceNo);
+  const notStarted = (m: UpcomingMeeting) => notStartedAt(m, now);
+  const saved = new Map(store.meetings().map((m) => [keyOf(m), new Set(m.races)]));
+  const needs = (m: MeetingKey, raceNo: number) => !saved.get(keyOf(m))?.has(raceNo) || dueAfter(attempts, attemptKey.card(m, raceNo), now, CARD_REFRESH_MS);
 
   if (opts.only) {
     const up = byKey.get(keyOf(opts.only));
@@ -95,15 +148,41 @@ export function planCards(fixtures: Fixtures | null, upcoming: UpcomingMeeting[]
   const seen = new Set<string>();
   for (const m of upcoming) {
     if (m.date < today || m.date > until) continue;
-    const races = notStarted(m);
+    const races = notStarted(m).filter((n) => needs(m, n));
     if (races.length) plan.push({ date: m.date, venue: m.venue, races });
     seen.add(keyOf(m));
   }
-  // Fixture meetings HKJC doesn't list (yet): race count unknown, so probe. Not today — without
-  // post times we can't tell which races have already started.
+  // Fixture meetings HKJC doesn't list (yet). Not today — without post times we can't tell which
+  // races have already started. Saved races are refreshed like listed ones; with none saved the
+  // race count is unknown, so probe (at most every RETRY_MS).
   for (const m of fixtures?.meetings ?? []) {
     if (seen.has(keyOf(m)) || m.date <= today || m.date > until) continue;
-    plan.push({ date: m.date, venue: m.venue, races: null });
+    const have = saved.get(keyOf(m));
+    if (have?.size) {
+      const races = [...have].filter((n) => needs(m, n)).sort((a, b) => a - b);
+      if (races.length) plan.push({ date: m.date, venue: m.venue, races });
+    } else if (dueAfter(attempts, attemptKey.probe(m), now, RETRY_MS)) plan.push({ date: m.date, venue: m.venue, races: null });
+  }
+  return plan.sort((a, b) => a.date.localeCompare(b.date) || a.venue.localeCompare(b.venue));
+}
+
+export interface OddsPlanItem extends MeetingKey {
+  races: number[];
+}
+
+/** Win-odds refresh (cheap): HKJC-listed meetings in range, saved races not started and not being fully scraped. */
+export function planOdds(store: Pick<RaceStore, "meetings">, upcoming: UpcomingMeeting[], cards: CardsPlanItem[], now: Date, opts: FetchOptions = {}): OddsPlanItem[] {
+  const today = hkDay(now);
+  const until = hkDay(now, opts.aheadDays ?? 3);
+  const saved = new Map(store.meetings().map((m) => [keyOf(m), new Set(m.races)]));
+  const scraping = new Map(cards.map((c) => [keyOf(c), c.races]));
+  const plan: OddsPlanItem[] = [];
+  for (const m of upcoming) {
+    if (m.date < today || m.date > until || (opts.only && keyOf(opts.only) !== keyOf(m))) continue;
+    const full = scraping.get(keyOf(m));
+    if (full === null) continue; // probing the whole card
+    const races = notStartedAt(m, now).filter((n) => saved.get(keyOf(m))?.has(n) && !full?.includes(n));
+    if (races.length) plan.push({ date: m.date, venue: m.venue, races });
   }
   return plan.sort((a, b) => a.date.localeCompare(b.date) || a.venue.localeCompare(b.venue));
 }
@@ -139,6 +218,8 @@ export interface FetchDeps {
   discover(): Promise<UpcomingMeeting[]>;
   openResults(): Promise<ResultsSession>;
   openCards(): Promise<CardsSession>;
+  /** Current win odds for a race, horse number → odds; empty when HKJC has none yet. */
+  odds(m: MeetingKey, raceNo: number): Promise<Record<string, number>>;
   now?: () => Date;
   log?: (msg: string) => void;
 }
@@ -147,9 +228,10 @@ export interface FetchSummary {
   discovered: MeetingKey[];
   discoverError?: string;
   fixturesAdded: number;
-  plan: { results: ResultsPlanItem[]; cards: CardsPlanItem[] };
+  plan: { results: ResultsPlanItem[]; cards: CardsPlanItem[]; odds: OddsPlanItem[] };
   results: { meeting: string; races: number; changed: boolean; note?: string }[];
   cards: { meeting: string; saved: number; changed: number; empty: number[] }[];
+  odds: { meeting: string; refreshed: number; changed: number }[];
   failures: { what: string; error: string }[];
 }
 
@@ -160,7 +242,15 @@ export async function runFetch(deps: FetchDeps, trigger: Trigger, opts: FetchOpt
   const log = deps.log ?? ((m) => console.log(`[data] ${m}`));
   const { store } = deps;
   const id = opts.dryRun ? null : deps.runLog.start(trigger);
-  const sum: FetchSummary = { discovered: [], fixturesAdded: 0, plan: { results: [], cards: [] }, results: [], cards: [], failures: [] };
+  const sum: FetchSummary = { discovered: [], fixturesAdded: 0, plan: { results: [], cards: [], odds: [] }, results: [], cards: [], odds: [], failures: [] };
+  // Attempt times ration the heavy scrapes; saved after each one so a stopped process keeps them.
+  const attempts: Attempts = { ...(store.doc<Attempts>(ATTEMPTS_DOC) ?? {}) };
+  const attempted = (key: string) => {
+    attempts[key] = now().toISOString();
+    const cutoff = now().getTime() - 30 * DAY;
+    for (const [k, t] of Object.entries(attempts)) if (Date.parse(t) < cutoff) delete attempts[k];
+    store.putDoc(ATTEMPTS_DOC, attempts);
+  };
   const fail = (what: string, e: unknown) => {
     const error = e instanceof Error ? e.message : String(e);
     sum.failures.push({ what, error });
@@ -185,8 +275,9 @@ export async function runFetch(deps: FetchDeps, trigger: Trigger, opts: FetchOpt
       if (!opts.dryRun) store.putDoc("fixtures", merged);
       fixtures = merged;
     }
-    sum.plan.results = opts.cardsOnly ? [] : planResults(store, fixtures, upcoming, now(), opts);
-    sum.plan.cards = opts.resultsOnly ? [] : planCards(fixtures, upcoming, now(), opts);
+    sum.plan.results = opts.cardsOnly ? [] : planResults(store, fixtures, upcoming, now(), opts, attempts);
+    sum.plan.cards = opts.resultsOnly ? [] : planCards(store, fixtures, upcoming, now(), opts, attempts);
+    sum.plan.odds = opts.resultsOnly ? [] : planOdds(store, upcoming, sum.plan.cards, now(), opts);
     if (opts.dryRun) return sum;
 
     if (sum.plan.results.length) {
@@ -194,6 +285,7 @@ export async function runFetch(deps: FetchDeps, trigger: Trigger, opts: FetchOpt
       try {
         for (const m of sum.plan.results) {
           const label = `${m.date} ${m.venue}`;
+          attempted(attemptKey.results(m));
           try {
             const got = await s.scrape(m);
             if (!got.races.length) {
@@ -218,7 +310,9 @@ export async function runFetch(deps: FetchDeps, trigger: Trigger, opts: FetchOpt
         for (const m of sum.plan.cards) {
           const row = { meeting: `${m.date} ${m.venue}`, saved: 0, changed: 0, empty: [] as number[] };
           const races = m.races ?? Array.from({ length: MAX_PROBE }, (_, i) => i + 1);
+          if (m.races === null) attempted(attemptKey.probe(m));
           for (const raceNo of races) {
+            attempted(attemptKey.card(m, raceNo));
             try {
               const doc = await s.scrapeRace(m, raceNo);
               if (!doc) {
@@ -238,6 +332,21 @@ export async function runFetch(deps: FetchDeps, trigger: Trigger, opts: FetchOpt
       } finally {
         await s.close().catch(() => {});
       }
+    }
+    for (const m of sum.plan.odds) {
+      const row = { meeting: `${m.date} ${m.venue}`, refreshed: 0, changed: 0 };
+      for (const raceNo of m.races) {
+        try {
+          const odds = await deps.odds(m, raceNo);
+          if (!Object.keys(odds).length) continue; // pool not open yet
+          row.refreshed++;
+          if (store.setCardOdds({ ...m, raceNo }, odds)) row.changed++;
+        } catch (e) {
+          fail(`odds ${m.date} ${m.venue} R${raceNo}`, e);
+        }
+      }
+      sum.odds.push(row);
+      if (row.changed) log(`odds ${row.meeting}: ${row.changed} race(s) updated`);
     }
     deps.runLog.finish(id!, sum.failures.length === 0, sum);
     return sum;

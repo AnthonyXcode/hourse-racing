@@ -40,6 +40,14 @@ export function raceStore(db: DB) {
           .changes > 0
       );
     },
+    /** Replace just the win odds on a stored racecard; returns true when they changed (false: no card). */
+    setCardOdds(key: MeetingKey & { raceNo: number }, winOdds: Record<string, number>): boolean {
+      const raceId = `${key.date}-${key.venue}-${key.raceNo}`;
+      const row = db.prepare(`SELECT doc FROM racecards WHERE race_id = ?`).get(raceId) as { doc: string } | undefined;
+      if (!row) return false;
+      const doc = JSON.stringify({ ...(JSON.parse(row.doc) as CardDoc), winOdds });
+      return db.prepare(`UPDATE racecards SET doc = ?, updated_at = ? WHERE race_id = ? AND doc <> ?`).run(doc, now(), raceId, doc).changes > 0;
+    },
     /** Insert or replace a meeting's results; returns true when the stored document changed. */
     putResults(key: MeetingKey, races: unknown[], source: string, fetchedAt = now()): boolean {
       return upResults.run({ date: key.date, venue: key.venue, doc: JSON.stringify(races), source, fetchedAt, updatedAt: now() }).changes > 0;
