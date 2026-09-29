@@ -5,7 +5,7 @@ import { motion, useReducedMotion } from "motion/react";
 import { api, type MomentumDay, type MomentumDayRef } from "../api";
 import {
   type RaceSeries, type HorseRow, type Window, type BucketStats, type Mover, type ModelRank, type Bucket,
-  WINDOWS, bucketRange, byMoveRange, bettableSteamers, moveBetween, MODEL_PICKS, MOVE_PICKS, TRIO_UNIT, PLACE_SURGE, PLACE_MAX, RECENT_SECS, CUTOFF_MINUTES, cutAt, isCutoff, choose3, movers, placeResult, placeSurges, suggestPicks, pickResults, byBucket, stats,
+  WINDOWS, bucketOf, bucketRange, byMoveRange, bettableSteamers, moveBetween, MODEL_PICKS, MOVE_PICKS, TRIO_UNIT, PLACE_SURGE, PLACE_MAX, RECENT_SECS, CUTOFF_MINUTES, cutAt, isCutoff, choose3, movers, placeResult, placeSurges, suggestPicks, pickResults, byBucket, stats,
 } from "../../shared/momentum/model";
 import { C, EdgeChart, GroupedBars, type Series } from "../analyzer/charts";
 import { Kpi, Legend, SortTh, cls, pc, signed, useSort } from "../analyzer/format";
@@ -42,8 +42,17 @@ const chips = "flex flex-wrap gap-1.5";
 const chipBase = "inline-flex cursor-default items-center gap-[5px] rounded-full py-1 pr-2.5 pl-2 text-[12.5px] shadow-btn";
 /** Pick chip: `on` (hovered horse) beats `both` (in both lists). */
 /** both = in the model and market-move lists; marketOnly = market-move list only (not the model's top N). */
-const chipCls = (both: boolean, on: boolean, marketOnly = false) =>
-  cx(chipBase, on ? "bg-accent-soft ring-1 ring-accent" : both ? "bg-surface ring-1 ring-ink" : marketOnly ? "bg-surface ring-1 ring-warn" : "bg-surface");
+/** `steam`: Place chips get a border by their Last 5m bucket — green = Steam, red = Strong steam. */
+const chipCls = (both: boolean, on: boolean, marketOnly = false, steam: Bucket | null = null) =>
+  cx(
+    chipBase,
+    on ? "bg-accent-soft ring-1 ring-accent"
+      : both ? "bg-surface ring-1 ring-ink"
+      : marketOnly ? "bg-surface ring-1 ring-warn"
+      : steam === "Strong steam" ? "bg-surface ring-2 ring-bad"
+      : steam === "Steam" ? "bg-surface ring-2 ring-good"
+      : "bg-surface"
+  );
 const chipOdds = "-ml-[3px] text-ink-3 tabular-nums";
 const chipDetail = "text-ink-2 tabular-nums";
 /** Dividend pools in HKJC results-page order; ordered pools print their combination with ">". */
@@ -424,14 +433,14 @@ function MoversTable({ series, focus, onFocus, stamp }: { series: RaceSeries; fo
 
 // ---------------- Suggested picks ----------------
 
-function PickChip({ horseNo, name, odds, oddsTitle, detail, both, marketOnly, struck, fin, focus, onFocus }: {
-  horseNo: number; name: string; odds?: number | null; oddsTitle?: string; detail?: ReactNode; struck?: boolean; both?: boolean; marketOnly?: boolean; fin?: number | null; focus: number | null; onFocus: (h: number | null) => void;
+function PickChip({ horseNo, name, odds, oddsTitle, detail, both, marketOnly, steam, struck, fin, focus, onFocus }: {
+  horseNo: number; name: string; odds?: number | null; oddsTitle?: string; detail?: ReactNode; struck?: boolean; both?: boolean; marketOnly?: boolean; steam?: Bucket | null; fin?: number | null; focus: number | null; onFocus: (h: number | null) => void;
 }) {
   const { t } = useTranslation(["momentum", "common"]);
   return (
     <span
-      className={cx(chipCls(!!both, focus === horseNo, !!marketOnly), struck && "text-ink-3")}
-      title={struck ? `${name} · ${t("picks.drifted")}` : name}
+      className={cx(chipCls(!!both, focus === horseNo, !!marketOnly, steam), struck && "text-ink-3")}
+      title={[name, struck && t("picks.drifted"), steam && steam !== "Flat" && t(`bucket.${steam}`)].filter(Boolean).join(" · ")}
       onMouseEnter={() => onFocus(horseNo)}
       onMouseLeave={() => onFocus(null)}
     >
@@ -583,6 +592,7 @@ function SuggestedPicks({ model, series, focus, onFocus, className }: {
                 horseNo={p.horseNo}
                 name={nameOf(p.horseNo, p.name)}
                 odds={p.now}
+                steam={bucketOf(p.change)}
                 detail={<span className="text-good" title={t("picks.placeFrom", { before: p.before, now: p.now, pla: p.placeNow ?? "–" })}>{signed(100 * p.change)}</span>}
                 fin={f(p.horseNo)}
                 {...chip}
@@ -959,7 +969,7 @@ function AnalysisPanel() {
             />
             <Kpi
               label={t("analysis.steamerEdge")}
-              value={steam.n ? signed(edge(steam)) : "–"}
+              value={steam.n ? pts(edge(steam)) : "–"}
               sub={t("analysis.spanSub", { from, to, n: steam.n })}
               tone={steam.n ? cls(edge(steam)) : ""}
               info={t("analysis.steamerEdgeInfo", { metric: metricLabel })}
@@ -1019,7 +1029,7 @@ function AnalysisPanel() {
                       <td>{b.n}</td>
                       <td>{pc(hit(b))}</td>
                       <td>{pc(implied(b))}</td>
-                      <td className={cls(edge(b))}>{signed(edge(b))}</td>
+                      <td className={cls(edge(b))}>{pts(edge(b))}</td>
                       <td className={cls(b.winRoi)}>{signed(b.winRoi)}</td>
                       <td className={cls(b.placeRoi)}>{signed(b.placeRoi)}</td>
                     </tr>
@@ -1032,50 +1042,21 @@ function AnalysisPanel() {
           </div>
 
           <H2 sub={t("analysis.placeEdgeSub", { from, to })}>{t("analysis.placeEdge")}</H2>
-          <div className={cx(grid2, "mt-4")}>
-            <div className={panel}>
-              <Legend items={[[C.accent, t("analysis.placedActual")], [C.muted, t("analysis.implied")]]} />
-              <EdgeChart
-                rows={placeRanges}
-                labelOf={(g) => g.key}
-                tickOf={(g) => g.key.replace(/ ~ .*$/, "").replace(/\s/g, "")}
-                hit={(g) => g.placePct}
-                implied={(g) => g.impliedPlacePct}
-                color={C.accent}
-                hitName={t("analysis.placedActual")}
-                impliedName={t("analysis.implied")}
-                edgeName={t("analysis.edge")}
-                onSelect={(i) => setPicksOf({ title: `${t("analysis.move")} ${placeRanges[i]!.key}`, rows: placeRanges[i]!.rows })}
-              />
-              <div className={note}>{t("analysis.placeEdgeNote")}</div>
-            </div>
-            <div className={panel}>
-              <div className={scroll}>
-              <table className={cx(table, tablePadTight)}>
-                <thead>
-                  <tr><th>{t("analysis.move")}</th><th>{t("analysis.n")}</th><th>{t("analysis.placedH")}</th><th>{t("analysis.impliedH")}</th><th>{t("analysis.edge")}</th><th>{t("analysis.placeRoi")}</th></tr>
-                </thead>
-                <tbody>
-                  {placeRanges.map((g) => (
-                    <tr
-                      key={g.key}
-                      className={cx(g.n < MIN_N && dim, g.n > 0 && "cursor-pointer")}
-                      onClick={g.n ? () => setPicksOf({ title: `${t("analysis.move")} ${g.key}`, rows: g.rows }) : undefined}
-                      title={g.n ? t("analysis.rowHint") : undefined}
-                    >
-                      <td className="whitespace-nowrap tabular-nums">{g.key}</td>
-                      <td>{g.n}</td>
-                      <td>{g.n ? pc(g.placePct) : "–"}</td>
-                      <td>{g.n ? pc(g.impliedPlacePct) : "–"}</td>
-                      <td className={g.n ? cls(g.placeEdge) : ""}>{g.n ? signed(g.placeEdge) : "–"}</td>
-                      <td className={g.placeBets ? cls(g.placeRoi) : ""}>{g.placeBets ? signed(g.placeRoi) : "–"}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-              </div>
-              <div className={note}>{t("analysis.greyNote", { n: MIN_N })}</div>
-            </div>
+          <div className={cx(panel, "mt-4")}>
+            <Legend items={[[C.accent, t("analysis.placedActual")], [C.muted, t("analysis.implied")]]} />
+            <EdgeChart
+              rows={placeRanges}
+              labelOf={(g) => g.key}
+              tickOf={(g) => g.key.replace(/ ~ .*$/, "").replace(/\s/g, "")}
+              hit={(g) => g.placePct}
+              implied={(g) => g.impliedPlacePct}
+              color={C.accent}
+              hitName={t("analysis.placedActual")}
+              impliedName={t("analysis.implied")}
+              edgeName={t("analysis.edge")}
+              onSelect={(i) => setPicksOf({ title: `${t("analysis.move")} ${placeRanges[i]!.key}`, rows: placeRanges[i]!.rows })}
+            />
+            <div className={note}>{t("analysis.placeEdgeNote")}</div>
           </div>
         </>
       )}
