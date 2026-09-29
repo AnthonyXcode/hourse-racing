@@ -1,7 +1,7 @@
 // Recharts wrappers for the analyzer tabs. All values are percents on a 0–max axis.
 import type { ReactElement, ReactNode } from "react";
 import {
-  Bar, BarChart, CartesianGrid, Cell, ComposedChart, Label, Line, LineChart as RLineChart, ResponsiveContainer, Tooltip, XAxis, YAxis,
+  Area, Bar, BarChart, CartesianGrid, Cell, ComposedChart, Label, Line, LineChart as RLineChart, ResponsiveContainer, Tooltip, XAxis, YAxis,
   type TooltipProps,
 } from "recharts";
 import { useTranslation } from "react-i18next";
@@ -17,6 +17,8 @@ export const C = {
   ink: "#23201d",
   muted: "#806d63",
   grid: "#ede8e8",
+  good: "#1d7a47",
+  bad: "#b4232c",
 } as const;
 
 const HEIGHT = 260;
@@ -129,6 +131,80 @@ export function GroupedBars<R extends { n: number }>({ rows, labelOf, series, ma
           </Bar>
         ))}
       </BarChart>
+    </Frame>
+  );
+}
+
+// ---------------- hit vs implied ----------------
+
+/**
+ * Actual hit rate (solid line) against the market-implied rate (dashed) per row, with the gap between
+ * them shaded — the edge. Rows with no runners leave a gap. `onSelect(rowIndex)` when a row is clicked.
+ * `tickOf`: a shorter x-axis label (the tooltip keeps `labelOf`).
+ */
+export function EdgeChart<R extends { n: number }>({ rows, labelOf, tickOf, hit, implied, color, hitName, impliedName, edgeName, onSelect }: {
+  rows: R[];
+  labelOf: (r: R) => string;
+  tickOf?: (r: R) => string;
+  hit: (r: R) => number;
+  implied: (r: R) => number;
+  color: string;
+  hitName: string;
+  impliedName: string;
+  edgeName: string;
+  onSelect?: (row: number) => void;
+}) {
+  const { t } = useTranslation();
+  const data = rows.map((r) => {
+    const h = r.n ? hit(r) : NaN, p = r.n ? implied(r) : NaN;
+    const ok = Number.isFinite(h) && Number.isFinite(p);
+    return { label: labelOf(r), tick: (tickOf ?? labelOf)(r), n: r.n, hit: ok ? h : null, implied: ok ? p : null, gap: ok ? [Math.min(h, p), Math.max(h, p)] : null };
+  });
+  const vals = data.flatMap((d) => [d.hit ?? 0, d.implied ?? 0]);
+  if (!data.some((d) => d.hit != null)) return <NoData />;
+  const max = Math.max(10, Math.ceil((Math.max(...vals) * 1.1) / 10) * 10);
+  return (
+    <Frame>
+      <ComposedChart
+        data={data}
+        margin={{ ...MARGIN, right: 22 }} // room for the last tick ("≥+30%")
+        onClick={onSelect ? (s: { activeTooltipIndex?: number } | null) => s?.activeTooltipIndex != null && data[s.activeTooltipIndex]!.n > 0 && onSelect(s.activeTooltipIndex) : undefined}
+        style={onSelect ? { cursor: "pointer" } : undefined}
+      >
+        <CartesianGrid stroke={C.grid} vertical={false} />
+        <XAxis dataKey="tick" tick={TICK} tickLine={false} axisLine={{ stroke: C.grid }} interval={0} />
+        {yAxis(max)}
+        <Tooltip
+          cursor={{ fill: C.ink, fillOpacity: 0.04 }}
+          isAnimationActive={false}
+          content={({ active, payload }: TooltipProps<number, string>) => {
+            if (!active || !payload?.length) return null;
+            const d = payload[0]!.payload as (typeof data)[number];
+            const edge = d.hit != null && d.implied != null ? d.hit - d.implied : NaN;
+            return (
+              <Tip
+                head={`${d.label} · ${t("unit.n", { n: d.n })}`}
+                rows={[
+                  { color, label: hitName, value: pc(d.hit ?? NaN) },
+                  { color: C.muted, label: impliedName, value: pc(d.implied ?? NaN), dash: true },
+                  { color: edge >= 0 ? C.good : C.bad, label: edgeName, value: Number.isFinite(edge) ? `${edge >= 0 ? "+" : ""}${edge.toFixed(1)}` : "–" },
+                ]}
+              />
+            );
+          }}
+        />
+        <Area dataKey="gap" stroke="none" fill={color} fillOpacity={0.12} connectNulls={false} isAnimationActive={false} activeDot={false} />
+        <Line dataKey="implied" stroke={C.muted} strokeWidth={1.5} strokeDasharray="5 4" dot={{ r: 2.5, fill: C.muted, strokeWidth: 0 }} activeDot={false} connectNulls={false} isAnimationActive={false} />
+        <Line
+          dataKey="hit"
+          stroke={color}
+          strokeWidth={2}
+          dot={{ r: 3.5, fill: color, stroke: "#fff", strokeWidth: 1 }}
+          activeDot={{ r: 5, fill: color, stroke: "#fff", strokeWidth: 2 }}
+          connectNulls={false}
+          isAnimationActive={false}
+        />
+      </ComposedChart>
     </Frame>
   );
 }

@@ -1,5 +1,5 @@
-import { useState, type ReactNode } from "react";
-import { bad, cx, figure, good, panel } from "../kit";
+import { useState, type KeyboardEvent, type ReactNode } from "react";
+import { bad, cx, figure, good, panel, tip } from "../kit";
 
 export const pc = (v: number, d = 1) => (Number.isFinite(v) ? v.toFixed(d) + "%" : "–");
 export const signed = (v: number) => (Number.isFinite(v) ? (v >= 0 ? "+" : "") + pc(v) : "–");
@@ -8,13 +8,61 @@ export const cls = (v: number) => (Number.isFinite(v) ? (v >= 0 ? good : bad) : 
 export const vs = (a: number, b: number) => (a >= b ? good : bad);
 export const money = (v: number) => (Number.isFinite(v) ? (v < 0 ? "−$" : "$") + Math.abs(Math.round(v)).toLocaleString() : "–");
 
-export function Kpi({ label, value, sub, tone = "" }: { label: string; value: ReactNode; sub: ReactNode; tone?: string }) {
+/**
+ * Headline figure card. `info`: an ⓘ beside the label that shows an explanation on hover / focus / tap.
+ * `onClick`: the whole card becomes a button (e.g. open the rows behind the figure).
+ */
+export function Kpi({ label, value, sub, tone = "", info, onClick }: {
+  label: string; value: ReactNode; sub: ReactNode; tone?: string; info?: ReactNode; onClick?: () => void;
+}) {
+  const clickable = onClick
+    ? {
+        role: "button",
+        tabIndex: 0,
+        onClick,
+        onKeyDown: (e: KeyboardEvent) => (e.key === "Enter" || e.key === " ") && (e.preventDefault(), onClick()),
+      }
+    : {};
   return (
-    <div className={panel}>
-      <div className="text-xs font-medium text-ink-2">{label}</div>
+    <div
+      className={cx(panel, "relative", onClick && "cursor-pointer transition-shadow hover:ring-1 hover:ring-accent/40 focus-visible:ring-2 focus-visible:ring-accent focus-visible:outline-none")}
+      {...clickable}
+    >
+      <div className="flex items-center gap-1 text-xs font-medium text-ink-2">
+        {label}
+        {info && <InfoTip>{info}</InfoTip>}
+      </div>
       <div className={cx(figure, "mt-3 text-[30px] sm:text-[36px]", tone)}>{value}</div>
       <div className="mt-2 text-xs leading-snug text-ink-3">{sub}</div>
     </div>
+  );
+}
+
+/**
+ * ⓘ icon with a popup: hover or keyboard focus on desktop, tap on touch. Clicks don't reach the card.
+ * The popup spans the nearest positioned ancestor (the card), so it never runs off a phone screen.
+ */
+export function InfoTip({ children }: { children: ReactNode }) {
+  return (
+    <span className="group inline-flex" onClick={(e) => e.stopPropagation()} onKeyDown={(e) => e.stopPropagation()}>
+      <button type="button" aria-label="Info" className="inline-flex cursor-help rounded-full text-ink-3 hover:text-ink focus-visible:text-ink focus-visible:outline-none">
+        <svg viewBox="0 0 16 16" className="size-3.5" aria-hidden="true">
+          <circle cx="8" cy="8" r="7" fill="none" stroke="currentColor" strokeWidth="1.3" />
+          <path d="M8 7v4.2" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+          <circle cx="8" cy="4.8" r="0.9" fill="currentColor" />
+        </svg>
+      </button>
+      <span
+        role="tooltip"
+        className={cx(
+          tip,
+          "pointer-events-none invisible absolute inset-x-2 top-10 z-40 min-w-0! font-normal leading-snug text-ink-2 opacity-0 transition-opacity",
+          "group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100"
+        )}
+      >
+        {children}
+      </span>
+    </span>
   );
 }
 

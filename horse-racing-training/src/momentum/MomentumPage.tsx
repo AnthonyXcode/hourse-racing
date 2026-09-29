@@ -5,14 +5,14 @@ import { motion, useReducedMotion } from "motion/react";
 import { api, type MomentumDay, type MomentumDayRef } from "../api";
 import {
   type RaceSeries, type HorseRow, type Window, type BucketStats, type Mover, type ModelRank, type Bucket,
-  WINDOWS, BUCKETS, MODEL_PICKS, MOVE_PICKS, TRIO_UNIT, PLACE_SURGE, PLACE_MAX, RECENT_SECS, CUTOFF_MINUTES, cutAt, isCutoff, choose3, movers, placeResult, placeSurges, suggestPicks, pickResults, byBucket, byBandAndBucket, stats,
+  WINDOWS, bucketRange, byMoveRange, bettableSteamers, moveBetween, MODEL_PICKS, MOVE_PICKS, TRIO_UNIT, PLACE_SURGE, PLACE_MAX, RECENT_SECS, CUTOFF_MINUTES, cutAt, isCutoff, choose3, movers, placeResult, placeSurges, suggestPicks, pickResults, byBucket, stats,
 } from "../../shared/momentum/model";
-import { C, GroupedBars, type Series } from "../analyzer/charts";
+import { C, EdgeChart, GroupedBars, type Series } from "../analyzer/charts";
 import { Kpi, Legend, SortTh, cls, pc, signed, useSort } from "../analyzer/format";
 import { useTranslation } from "react-i18next";
 import type { TFunction } from "i18next";
 import { useGlossary } from "../i18n/glossary";
-import { useFmt } from "../i18n/useLanguage";
+import { useFmt, useLanguage } from "../i18n/useLanguage";
 import { OddsChart, Swatch, horseStyle, useRunnerNames } from "./OddsChart";
 import { DaySummary } from "./DaySummary";
 import { HorseLink } from "./HorseRecord";
@@ -578,7 +578,15 @@ function SuggestedPicks({ model, series, focus, onFocus, className }: {
         <div className={chips}>
           {place.length ? (
             place.map((p) => (
-              <PickChip key={p.horseNo} horseNo={p.horseNo} name={nameOf(p.horseNo, p.name)} odds={p.now} detail={<span className="text-good" title={t("picks.placeFrom", { before: p.before, now: p.now, pla: p.placeNow ?? "–" })}>{signed(100 * p.change)}</span>} fin={f(p.horseNo)} {...chip} />
+              <PickChip
+                key={p.horseNo}
+                horseNo={p.horseNo}
+                name={nameOf(p.horseNo, p.name)}
+                odds={p.now}
+                detail={<span className="text-good" title={t("picks.placeFrom", { before: p.before, now: p.now, pla: p.placeNow ?? "–" })}>{signed(100 * p.change)}</span>}
+                fin={f(p.horseNo)}
+                {...chip}
+              />
             ))
           ) : (
             <span className={dim}>{span < RECENT_SECS ? t("picks.placeNeeds5") : t("picks.placeNone", { pct: 100 * PLACE_SURGE })}</span>
@@ -853,6 +861,11 @@ function AnalysisPanel() {
   });
   const [draft, setDraft] = useState(range);
   const [w, setW] = useState<Window>(10);
+  const [betAt, setBetAt] = useState<Window>(1);
+  const [venue, setVenue] = useState<"all" | "ST" | "HV">("all");
+  /** The steamer list modal (opened by clicking a tile). */
+  /** The runner list modal: the steamers (cards) or one table row. */
+  const [picksOf, setPicksOf] = useState<{ title: string; rows: HorseRow[] } | null>(null);
   const [metric, setMetric] = useState<"win" | "place">("win");
   const [data, setData] = useState<{ races: number; rows: HorseRow[] } | null>(null);
   const [error, setError] = useState("");
@@ -861,12 +874,19 @@ function AnalysisPanel() {
     api.momentumAnalysis(range.from, range.to).then(setData).catch((e) => setError(String(e)));
   }, [range]);
 
-  const rows = data?.rows ?? [];
-  const buckets = useMemo(() => byBucket(rows, w), [rows, w]);
-  const bands = useMemo(() => byBandAndBucket(rows, w), [rows, w]);
-  const measured = rows.filter((r) => r.mom[w] != null);
-  const steam = stats("steam", measured.filter((r) => r.mom[w]! >= 0.1));
-  const drift = stats("drift", measured.filter((r) => r.mom[w]! <= -0.1));
+  const rows = useMemo(() => (data?.rows ?? []).filter((r) => venue === "all" || r.venue === venue), [data, venue]);
+  const races = useMemo(() => new Set(rows.map((r) => r.raceId)).size, [rows]);
+  // Bet time must be after the measure-from checkpoint (smaller = closer to/after post).
+  const betWhen: Window = betAt < w ? betAt : (WINDOWS.find((x) => x < w) ?? w);
+  // Everything here groups runners by their move from Measure from to Bet at — odds known when you'd bet.
+  const buckets = useMemo(() => byBucket(rows, (r) => moveBetween(r, w, betWhen)), [rows, w, betWhen]);
+  const placeRanges = useMemo(() => byMoveRange(rows, (r) => moveBetween(r, w, betWhen)), [rows, w, betWhen]);
+  const measured = rows.filter((r) => moveBetween(r, w, betWhen) != null);
+  // Steamers as you could have backed them: up ≥10% from Measure from to Bet at, odds known by then.
+  const steamRows = bettableSteamers(rows, w, betWhen);
+  const steam = stats("steam", steamRows);
+  /** "10 min before" / "At post" / "3 min after" */
+  const windowLabel = (x: number) => (x > 0 ? t("analysis.minBefore", { n: x }) : x === 0 ? t("analysis.atPost") : t("analysis.minAfter", { n: -x }));
 
   const hit = (b: BucketStats) => (metric === "win" ? b.winPct : b.placePct);
   const implied = (b: BucketStats) => (metric === "win" ? b.impliedWinPct : b.impliedPlacePct);
@@ -876,6 +896,8 @@ function AnalysisPanel() {
     { name: t("analysis.implied"), color: C.muted, get: implied },
   ];
   const metricLabel = metric === "win" ? t("analysis.metricWin") : t("analysis.metricPlace");
+  const from = windowLabel(w), to = windowLabel(betWhen);
+  const openPicks = () => setPicksOf({ title: t("analysis.picksTitle"), rows: steamRows });
   const max = Math.max(10, ...buckets.flatMap((b) => [hit(b), implied(b)]).filter(Number.isFinite)) * 1.15;
 
   return (
@@ -894,7 +916,21 @@ function AnalysisPanel() {
         <div className={field}>
           <label htmlFor="mWin" className={fieldLabel}>{t("analysis.measureFrom")}</label>
           <select id="mWin" className={control} value={w} onChange={(e) => setW(Number(e.target.value) as Window)}>
-            {WINDOWS.map((x) => <option key={x} value={x}>{t("analysis.minBefore", { n: x })}</option>)}
+            {WINDOWS.map((x) => <option key={x} value={x}>{windowLabel(x)}</option>)}
+          </select>
+        </div>
+        <div className={field}>
+          <label htmlFor="mBetAt" className={fieldLabel}>{t("analysis.betAt")}</label>
+          <select id="mBetAt" className={control} value={betWhen} onChange={(e) => setBetAt(Number(e.target.value) as Window)}>
+            {WINDOWS.filter((x) => x < w).map((x) => <option key={x} value={x}>{windowLabel(x)}</option>)}
+          </select>
+        </div>
+        <div className={field}>
+          <label htmlFor="mVenue" className={fieldLabel}>{t("analysis.venue")}</label>
+          <select id="mVenue" className={control} value={venue} onChange={(e) => setVenue(e.target.value as "all" | "ST" | "HV")}>
+            <option value="all">{t("analysis.venueAll")}</option>
+            <option value="ST">{t("common:venue.ST")}</option>
+            <option value="HV">{t("common:venue.HV")}</option>
           </select>
         </div>
         <div className={field}>
@@ -904,20 +940,58 @@ function AnalysisPanel() {
             <option value="place">{t("analysis.place")}</option>
           </select>
         </div>
-        <span className={rangeMeta}>{data ? t("analysis.meta", { races: t("common:races", { count: data.races }), n: measured.length }) : t("common:state.loading")}</span>
+        <span className={rangeMeta}>{data ? t("analysis.meta", { races: t("common:races", { count: races }), n: measured.length }) : t("common:state.loading")}</span>
       </form>
       {error && <div className={errorBox}>{error}</div>}
 
-      {data && data.races === 0 ? (
+      {data && races === 0 ? (
         <div className={cx(panel, empty)}>{t("analysis.noRaces")}</div>
       ) : (
         <>
           <div className={kpis}>
-            <Kpi label={t("analysis.steamers", { metric: metricLabel })} value={pc(hit(steam))} sub={t("analysis.impliedSub", { p: pc(implied(steam)), n: steam.n })} tone={cls(edge(steam))} />
-            <Kpi label={t("analysis.steamerEdge")} value={signed(edge(steam))} sub={t("analysis.edgeSub")} tone={cls(edge(steam))} />
-            <Kpi label={t("analysis.drifters", { metric: metricLabel })} value={pc(hit(drift))} sub={t("analysis.impliedSub", { p: pc(implied(drift)), n: drift.n })} tone={cls(edge(drift))} />
-            <Kpi label={t("analysis.steamerRoi")} value={signed(steam.winRoi)} sub={t("analysis.roiSub")} tone={cls(steam.winRoi)} />
+            <Kpi
+              label={t("analysis.steamers", { metric: metricLabel })}
+              value={steam.n ? pc(hit(steam)) : "–"}
+              sub={t("analysis.impliedSub", { p: pc(implied(steam)), n: steam.n })}
+              tone={steam.n ? cls(edge(steam)) : ""}
+              info={t("analysis.steamersInfo", { from, to, metric: metricLabel })}
+              onClick={openPicks}
+            />
+            <Kpi
+              label={t("analysis.steamerEdge")}
+              value={steam.n ? signed(edge(steam)) : "–"}
+              sub={t("analysis.spanSub", { from, to, n: steam.n })}
+              tone={steam.n ? cls(edge(steam)) : ""}
+              info={t("analysis.steamerEdgeInfo", { metric: metricLabel })}
+              onClick={openPicks}
+            />
+            <Kpi
+              label={t("analysis.steamerRoi")}
+              value={steam.n ? signed(steam.winRoi) : "–"}
+              sub={t("analysis.betsSub", { n: steam.n, hit: pc(steam.winPct) })}
+              tone={steam.n ? cls(steam.winRoi) : ""}
+              info={t("analysis.winRoiInfo", { from, to })}
+              onClick={openPicks}
+            />
+            <Kpi
+              label={t("analysis.steamerPlaceRoi")}
+              value={steam.placeBets ? signed(steam.placeRoi) : "–"}
+              sub={t("analysis.placeBetsSub", { n: steam.placeBets, hit: pc(steam.placePct) })}
+              tone={steam.placeBets ? cls(steam.placeRoi) : ""}
+              info={t("analysis.placeRoiInfo", { from, to })}
+              onClick={openPicks}
+            />
           </div>
+          {picksOf && (
+            <PicksModal
+              title={picksOf.title}
+              rows={picksOf.rows}
+              from={w}
+              to={betWhen}
+              span={t("analysis.moveSpan", { from, to })}
+              onClose={() => setPicksOf(null)}
+            />
+          )}
 
           <div className={cx(grid2, "mt-4")}>
             <div className={panel}>
@@ -929,17 +1003,25 @@ function AnalysisPanel() {
               <div className={scroll}>
               <table className={cx(table, tablePadTight)}>
                 <thead>
-                  <tr><th>{t("analysis.bucket")}</th><th>{t("analysis.n")}</th><th>{t("analysis.hit")}</th><th>{t("analysis.impliedH")}</th><th>{t("analysis.edge")}</th><th>{t("analysis.winRoi")}</th></tr>
+                  <tr><th>{t("analysis.bucket")}</th><th>{t("analysis.n")}</th><th>{t("analysis.hit")}</th><th>{t("analysis.impliedH")}</th><th>{t("analysis.edge")}</th><th>{t("analysis.winRoi")}</th><th>{t("analysis.placeRoi")}</th></tr>
                 </thead>
                 <tbody>
                   {buckets.map((b) => (
-                    <tr key={b.key} className={b.n < MIN_N ? dim : ""}>
-                      <td>{t(`bucket.${b.key as Bucket}`)}</td>
+                    <tr
+                      key={b.key}
+                      className={cx(b.n < MIN_N && dim, b.n > 0 && "cursor-pointer")}
+                      onClick={b.n ? () => setPicksOf({ title: `${t(`bucket.${b.key as Bucket}`)} ${bucketRange(b.key as Bucket)}`, rows: b.rows }) : undefined}
+                      title={b.n ? t("analysis.rowHint") : undefined}
+                    >
+                      <td className="whitespace-nowrap">
+                        {t(`bucket.${b.key as Bucket}`)} <small className={dim}>{bucketRange(b.key as Bucket)}</small>
+                      </td>
                       <td>{b.n}</td>
                       <td>{pc(hit(b))}</td>
                       <td>{pc(implied(b))}</td>
                       <td className={cls(edge(b))}>{signed(edge(b))}</td>
                       <td className={cls(b.winRoi)}>{signed(b.winRoi)}</td>
+                      <td className={cls(b.placeRoi)}>{signed(b.placeRoi)}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -949,30 +1031,153 @@ function AnalysisPanel() {
             </div>
           </div>
 
-          <H2 sub={t("analysis.byOddsSub")}>{t("analysis.byOdds")}</H2>
-          <div className={panel}>
-            <div className={scroll}>
-            <table className={cx(table, tablePad)}>
-              <thead>
-                <tr><th>{t("analysis.finalOdds")}</th>{BUCKETS.map((b) => <th key={b}>{t(`bucket.${b}`)}</th>)}</tr>
-              </thead>
-              <tbody>
-                {bands.map(({ band, cells }) => (
-                  <tr key={band}>
-                    <td>{band}</td>
-                    {cells.map((c) => (
-                      <td key={c.key} className={c.n < MIN_N ? dim : cls(edge(c))} title={t("analysis.cellTitle", { hit: pc(hit(c)), implied: pc(implied(c)) })}>
-                        {c.n ? signed(edge(c)) : "–"} <small className={dim}>{t("common:unit.n", { n: c.n })}</small>
-                      </td>
-                    ))}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+          <H2 sub={t("analysis.placeEdgeSub", { from, to })}>{t("analysis.placeEdge")}</H2>
+          <div className={cx(grid2, "mt-4")}>
+            <div className={panel}>
+              <Legend items={[[C.accent, t("analysis.placedActual")], [C.muted, t("analysis.implied")]]} />
+              <EdgeChart
+                rows={placeRanges}
+                labelOf={(g) => g.key}
+                tickOf={(g) => g.key.replace(/ ~ .*$/, "").replace(/\s/g, "")}
+                hit={(g) => g.placePct}
+                implied={(g) => g.impliedPlacePct}
+                color={C.accent}
+                hitName={t("analysis.placedActual")}
+                impliedName={t("analysis.implied")}
+                edgeName={t("analysis.edge")}
+                onSelect={(i) => setPicksOf({ title: `${t("analysis.move")} ${placeRanges[i]!.key}`, rows: placeRanges[i]!.rows })}
+              />
+              <div className={note}>{t("analysis.placeEdgeNote")}</div>
+            </div>
+            <div className={panel}>
+              <div className={scroll}>
+              <table className={cx(table, tablePadTight)}>
+                <thead>
+                  <tr><th>{t("analysis.move")}</th><th>{t("analysis.n")}</th><th>{t("analysis.placedH")}</th><th>{t("analysis.impliedH")}</th><th>{t("analysis.edge")}</th><th>{t("analysis.placeRoi")}</th></tr>
+                </thead>
+                <tbody>
+                  {placeRanges.map((g) => (
+                    <tr
+                      key={g.key}
+                      className={cx(g.n < MIN_N && dim, g.n > 0 && "cursor-pointer")}
+                      onClick={g.n ? () => setPicksOf({ title: `${t("analysis.move")} ${g.key}`, rows: g.rows }) : undefined}
+                      title={g.n ? t("analysis.rowHint") : undefined}
+                    >
+                      <td className="whitespace-nowrap tabular-nums">{g.key}</td>
+                      <td>{g.n}</td>
+                      <td>{g.n ? pc(g.placePct) : "–"}</td>
+                      <td>{g.n ? pc(g.impliedPlacePct) : "–"}</td>
+                      <td className={g.n ? cls(g.placeEdge) : ""}>{g.n ? signed(g.placeEdge) : "–"}</td>
+                      <td className={g.placeBets ? cls(g.placeRoi) : ""}>{g.placeBets ? signed(g.placeRoi) : "–"}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              </div>
+              <div className={note}>{t("analysis.greyNote", { n: MIN_N })}</div>
             </div>
           </div>
         </>
       )}
     </>
+  );
+}
+
+/** Signed percentage points, e.g. "+15.0" (no % sign: it's a difference of two percentages). */
+const pts = (v: number) => (Number.isFinite(v) ? `${v >= 0 ? "+" : ""}${v.toFixed(1)}` : "–");
+
+/** Every runner behind a Momentum-analysis tile: race, horse, move, final odds, finish and the $1 win return. */
+function PicksModal({ title, rows, from, to, span, onClose }: {
+  title: string; rows: HorseRow[]; from: Window; to: Window; span: string; onClose: () => void;
+}) {
+  const { t } = useTranslation(["momentum", "common"]);
+  const { lang } = useLanguage();
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onClose]);
+  const raceNo = (id: string) => Number(id.split("-").pop());
+  const move = (r: HorseRow) => moveBetween(r, from, to);
+  const sorted = [...rows].sort((a, b) => b.date.localeCompare(a.date) || raceNo(a.raceId) - raceNo(b.raceId) || (move(b) ?? 0) - (move(a) ?? 0));
+  const won = rows.filter((r) => r.finishPos === 1);
+  const placed = rows.filter((r) => r.finishPos <= 3).length;
+  const st = stats("picks", rows);
+  // Edge as you'd have seen it when betting: placed (100) or not (0) minus the place chance at Bet at.
+  const betImplied = (r: HorseRow) => (r.placeProb[to] == null ? null : 100 * r.placeProb[to]!);
+  const edgeOf = (r: HorseRow) => {
+    const imp = betImplied(r);
+    return imp == null ? NaN : (r.finishPos <= 3 ? 100 : 0) - imp;
+  };
+  const priced = rows.filter((r) => betImplied(r) != null);
+  const avg = (f: (r: HorseRow) => number) => (priced.length ? priced.reduce((s, r) => s + f(r), 0) / priced.length : NaN);
+  const betPlaced = avg((r) => (r.finishPos <= 3 ? 100 : 0)), betImpliedAvg = avg((r) => betImplied(r)!), betEdge = betPlaced - betImpliedAvg;
+
+  return (
+    <div className={modalBg} onClick={onClose}>
+      <div className={cx(modal, "sm:w-[min(760px,100%)]")} role="dialog" aria-modal="true" aria-label={title} onClick={(e) => e.stopPropagation()}>
+        <div className="mb-3 flex items-start gap-3">
+          <h3 className={cx(h3, "mb-0")}>
+            {title}
+            <span className="block font-sans text-sm text-ink-3">{span}</span>
+          </h3>
+          <button className={cx(btn, "ml-auto")} onClick={onClose} aria-label={t("common:action.close")}>✕</button>
+        </div>
+        <p className="mb-3 text-sm text-ink-2">
+          {t("analysis.picksSummary", { n: rows.length, won: won.length, placed, winRoi: signed(st.winRoi), placeRoi: signed(st.placeRoi) })}
+          <br />
+          {t("analysis.picksEdge", { placed: pc(betPlaced), implied: pc(betImpliedAvg), edge: pts(betEdge), n: priced.length })}
+        </p>
+        {rows.length ? (
+          <div className={scroll}>
+            <table className={cx(table, tablePadTight, "[&_td:nth-child(3)]:text-left [&_th:nth-child(3)]:text-left")}>
+              <thead>
+                <tr>
+                  <th>{t("analysis.col.date")}</th>
+                  <th>{t("analysis.col.race")}</th>
+                  <th>{t("common:word.horse")}</th>
+                  <th>{t("analysis.move")}</th>
+                  <th title={t("analysis.col.oddsT")}>{t("analysis.col.odds")}</th>
+                  <th>{t("analysis.col.finish")}</th>
+                  <th title={t("analysis.col.impliedPlaceT")}>{t("analysis.col.impliedPlace")}</th>
+                  <th title={t("analysis.col.edgeT")}>{t("analysis.edge")}</th>
+                  <th>{t("analysis.col.winReturn")}</th>
+                  <th>{t("analysis.col.placeReturn")}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {sorted.map((r) => {
+                  const m = move(r);
+                  const imp = betImplied(r);
+                  const e = edgeOf(r);
+                  const o0 = r.odds[from], o1 = r.odds[to];
+                  return (
+                    <tr key={`${r.raceId}-${r.horseNo}`}>
+                      <td className="whitespace-nowrap tabular-nums">{r.date}</td>
+                      <td className="whitespace-nowrap">{r.venue} R{raceNo(r.raceId)}</td>
+                      <td className="whitespace-nowrap">
+                        <b className="tabular-nums">{r.horseNo}</b> <span className="text-ink-2">{lang === "zh-HK" && r.nameZh ? r.nameZh : r.name}</span>
+                      </td>
+                      <td className={m == null ? "" : cls(m)}>{m == null ? "–" : signed(100 * m)}</td>
+                      <td className="whitespace-nowrap tabular-nums">
+                        {o0 ?? "–"} <span className="text-ink-3">→</span> <span className={o0 && o1 ? (o1 < o0 ? "text-good" : o1 > o0 ? "text-bad" : "") : ""}>{o1 ?? "–"}</span>
+                      </td>
+                      <td className={cx("tabular-nums", r.finishPos === 1 ? "font-semibold text-good" : r.finishPos <= 3 ? "text-good" : "")}>{r.finishPos}</td>
+                      <td className="tabular-nums">{imp == null ? "–" : pc(imp)}</td>
+                      <td className={cx("tabular-nums", cls(e))}>{pts(e)}</td>
+                      <td className="tabular-nums">{r.finishPos === 1 ? `$${r.sp.toFixed(2)}` : "–"}</td>
+                      <td className="tabular-nums">{r.plaDiv ? `$${r.plaDiv.toFixed(2)}` : r.plaDiv == null ? "?" : "–"}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <div className={cx(empty, "p-4")}>{t("analysis.picksNone")}</div>
+        )}
+        <p className={note}>{t("analysis.picksNote")}</p>
+      </div>
+    </div>
   );
 }

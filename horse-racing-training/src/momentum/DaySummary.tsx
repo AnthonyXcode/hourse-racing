@@ -362,26 +362,23 @@ function PlaceByMinute({ run }: { run: Summary["races"] }) {
     const hits = settled.reduce((a, { r, m }) => a + m.picks.filter((h) => r.placed.some((p) => p.horseNo === h)).length, 0);
     const cost = settled.reduce((a, { m }) => a + m.cost, 0);
     const ret = settled.reduce((a, { m }) => a + (m.return ?? 0), 0);
-    const detail = settled.map(({ r, m }) => `${t("common:raceShort", { n: r.raceNo })} #${m.picks.join(", #")}`).join(" · ");
-    return { min, races: settled.length, picks, hits, cost, ret, detail };
+    return { min, races: settled.length, picks, hits, cost, ret };
   });
   const label = (min: number) => (min < 0 ? t("summary.byMin.before", { n: -min }) : t("summary.byMin.after", { n: min }));
 
   return (
     <div className={cx(panel, scroll, "mt-4")}>
       <h3 className={h3}>{t("summary.byMin.title")}</h3>
-      <table className={cx(table, tablePad, "[&_td:first-child]:text-left [&_th:first-child]:text-left [&_td:last-child]:text-left [&_th:last-child]:text-left")}>
+      <table className={cx(table, tablePad, "[&_td:first-child]:text-left [&_th:first-child]:text-left")}>
         <thead>
           <tr>
             <th>{t("summary.byMin.when")}</th>
             <th>{t("summary.byMin.races")}</th>
-            <th>{t("summary.byMin.picks")}</th>
             <th>{t("summary.byMin.placed")}</th>
             <th>{t("summary.byMin.cost")}</th>
             <th>{t("summary.col.return")}</th>
             <th>{t("summary.byMin.net")}</th>
             <th>{t("summary.byMin.roi")}</th>
-            <th>{t("summary.byMin.detail")}</th>
           </tr>
         </thead>
         <tbody>
@@ -389,13 +386,11 @@ function PlaceByMinute({ run }: { run: Summary["races"] }) {
             <tr key={x.min} className={cx(x.min === 1 && "[&_td]:border-t-2 [&_td]:border-t-ink/25", x.min > 0 && "[&_td]:text-ink-3")}>
               <td className="font-semibold whitespace-nowrap">{label(x.min)}</td>
               <td>{x.races ? `${x.races}/${run.length}` : <span className={dim}>0/{run.length}</span>}</td>
-              <td>{x.picks || <span className={dim}>0</span>}</td>
               <td>{x.picks ? `${x.hits}/${x.picks} (${pc((100 * x.hits) / x.picks, 0)})` : "–"}</td>
               <td>{x.picks ? money(x.cost) : "–"}</td>
               <td>{x.picks ? money(x.ret) : "–"}</td>
               <td className={x.picks ? cls(x.ret - x.cost) : ""}>{x.picks ? money(x.ret - x.cost) : "–"}</td>
               <td className={x.picks ? cls(x.ret - x.cost) : ""}>{x.picks ? signed((100 * (x.ret - x.cost)) / x.cost) : "–"}</td>
-              <td className="max-w-[320px] truncate text-xs" title={x.detail}>{x.detail || "–"}</td>
             </tr>
           ))}
         </tbody>

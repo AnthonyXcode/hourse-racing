@@ -7,7 +7,9 @@
 // Positive = the price shortened ("steamer"); negative = it drifted.
 
 /** Minutes-before-post checkpoints we measure momentum from. */
-export const WINDOWS = [30, 20, 10, 5, 2] as const;
+/** Momentum checkpoints, minutes before post (0 = at post, negative = after post): T−10 … T+5, every minute.
+ *  Snapshots run to ~5 min after post (poller grace), so nothing later is measurable. */
+export const WINDOWS = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, -1, -2, -3, -4, -5] as const;
 export type Window = (typeof WINDOWS)[number];
 
 /** A snapshot must land within this many seconds of the checkpoint to count. */
@@ -16,8 +18,12 @@ export const CHECKPOINT_TOLERANCE_S = 150;
 export const BUCKETS = ["Strong drift", "Drift", "Flat", "Steam", "Strong steam"] as const;
 export type Bucket = (typeof BUCKETS)[number];
 
+/** Bucket thresholds: relative change in implied probability. */
+export const BUCKET_STRONG = 0.25;
+export const BUCKET_MILD = 0.1;
+
 /** Momentum → bucket. Thresholds are relative change in implied probability. */
-export function bucketOf(m: number, strong = 0.25, mild = 0.1): Bucket {
+export function bucketOf(m: number, strong = BUCKET_STRONG, mild = BUCKET_MILD): Bucket {
   if (m <= -strong) return "Strong drift";
   if (m <= -mild) return "Drift";
   if (m < mild) return "Flat";
@@ -25,9 +31,11 @@ export function bucketOf(m: number, strong = 0.25, mild = 0.1): Bucket {
   return "Strong steam";
 }
 
-export const ODDS_BANDS = ["< 5", "5–10", "10–20", "20+"] as const;
-export type OddsBand = (typeof ODDS_BANDS)[number];
-export const oddsBand = (o: number): OddsBand => (o < 5 ? "< 5" : o < 10 ? "5–10" : o < 20 ? "10–20" : "20+");
+/** A bucket's range of implied-probability change, e.g. "+10% ~ +25%" or "≥ +25%". */
+export function bucketRange(b: Bucket): string {
+  const s = Math.round(BUCKET_STRONG * 100), m = Math.round(BUCKET_MILD * 100);
+  return { "Strong drift": `≤ −${s}%`, Drift: `−${m}% ~ −${s}%`, Flat: `±${m}%`, Steam: `+${m}% ~ +${s}%`, "Strong steam": `≥ +${s}%` }[b];
+}
 
 // ---- Live series (one race) ----
 
@@ -324,11 +332,17 @@ export interface HorseRow {
   date: string;
   venue: string;
   horseNo: number;
+  name: string;
+  nameZh: string | null;
   finishPos: number;
   sp: number; // final win odds (starting price)
   pFinal: number; // normalised implied win prob at the off (from SP)
   pPlaceFinal: number | null; // market-implied place prob (last snapshot place odds, scaled to 3 places)
-  mom: Partial<Record<Window, number>>; // momentum from T−W to the off
+  plaDiv: number | null; // official Place dividend per $1 (0 = didn't place); null until the race's Place dividends are posted
+  mom: Partial<Record<Window, number>>; // momentum from checkpoint W (min before post; negative = after) to the off
+  prob: Partial<Record<Window, number>>; // normalised implied win prob at checkpoint W (same field as mom)
+  odds: Partial<Record<Window, number>>; // win odds at checkpoint W
+  placeProb: Partial<Record<Window, number>>; // market place chance at checkpoint W (place odds, normalised, × places paid)
 }
 
 /** Build analysis rows for one settled race. Scratched / non-finishers are dropped. */
@@ -342,33 +356,58 @@ export function horseRows(s: RaceSeries): HorseRow[] {
   const plaFin = Object.fromEntries(finishers.filter((r) => last.pla[r.horseNo]).map((r) => [r.horseNo, last.pla[r.horseNo]!]));
   const places = finishers.length >= 7 ? 3 : 2; // HKJC pays 2 places with ≤ 6 runners
   const pPla = impliedProbs(plaFin);
+  /** Place chance per horse from a snapshot's place odds, same normalisation as pPlaceFinal. */
+  const placeChance = (pla: Record<number, number>) => {
+    const p = impliedProbs(Object.fromEntries(finishers.filter((r) => pla[r.horseNo]).map((r) => [r.horseNo, pla[r.horseNo]!])));
+    return Object.fromEntries(Object.entries(p).map(([h, v]) => [h, Math.min(1, v * places)])) as Record<number, number>;
+  };
 
+  const pts = Object.fromEntries(WINDOWS.map((w) => [w, pointAt(s.points, w * 60)])) as Record<Window, SeriesPoint | null>;
+  const placeAt = Object.fromEntries(WINDOWS.map((w) => [w, pts[w] ? placeChance(pts[w]!.pla) : null])) as Record<Window, Record<number, number> | null>;
   // Checkpoint probs are normalised over the SAME finishing field, so scratchings don't skew them.
   const checkpoints = Object.fromEntries(
     WINDOWS.map((w) => {
-      const pt = pointAt(s.points, w * 60);
+      const pt = pts[w];
       if (!pt) return [w, null];
       const odds = Object.fromEntries(finishers.filter((r) => pt.win[r.horseNo]).map((r) => [r.horseNo, pt.win[r.horseNo]!]));
       return [w, Object.keys(odds).length === finishers.length ? impliedProbs(odds) : null];
     })
   ) as Record<Window, Record<number, number> | null>;
 
+  const runner = new Map(s.runners.map((x) => [x.horseNo, x]));
+  const pla = (s.dividends ?? []).filter((d) => d.pool === "PLA");
   return finishers.map((r) => {
     const mom: Partial<Record<Window, number>> = {};
+    const prob: Partial<Record<Window, number>> = {};
+    const odds: Partial<Record<Window, number>> = {};
+    const placeProb: Partial<Record<Window, number>> = {};
     for (const w of WINDOWS) {
       const p0 = checkpoints[w]?.[r.horseNo];
-      if (p0) mom[w] = (pFinal[r.horseNo]! - p0) / p0;
+      if (p0) {
+        mom[w] = (pFinal[r.horseNo]! - p0) / p0;
+        prob[w] = p0;
+      }
+      const o = pts[w]?.win[r.horseNo];
+      if (o) odds[w] = o;
+      const pp = placeAt[w]?.[r.horseNo];
+      if (pp) placeProb[w] = pp;
     }
     return {
       raceId: s.raceId,
       date: s.date,
       venue: s.venue,
       horseNo: r.horseNo,
+      name: runner.get(r.horseNo)?.name ?? "",
+      nameZh: runner.get(r.horseNo)?.nameZh ?? null,
       finishPos: r.finishPos!,
       sp: r.sp!,
       pFinal: pFinal[r.horseNo]!,
       pPlaceFinal: pPla[r.horseNo] != null ? Math.min(1, pPla[r.horseNo]! * places) : null,
+      plaDiv: pla.length ? (pla.find((d) => d.comb === String(r.horseNo))?.div ?? 0) / 10 : null,
       mom,
+      prob,
+      odds,
+      placeProb,
     };
   });
 }
@@ -383,6 +422,8 @@ export interface BucketStats {
   impliedPlacePct: number;
   placeEdge: number;
   winRoi: number; // flat level-stake win bet at SP, % return on stake
+  placeRoi: number; // flat level-stake place bet at the official dividend, % return (rows with dividends posted)
+  placeBets: number; // rows placeRoi is over
 }
 
 export function stats(key: string, rows: HorseRow[]): BucketStats {
@@ -394,6 +435,7 @@ export function stats(key: string, rows: HorseRow[]): BucketStats {
   const winPct = pct(wins.length), impliedWinPct = pct(rows.reduce((s, r) => s + r.pFinal, 0));
   const placePct = pct(placed);
   const impliedPlacePct = withPla.length ? (100 * withPla.reduce((s, r) => s + r.pPlaceFinal!, 0)) / withPla.length : NaN;
+  const paid = rows.filter((r) => r.plaDiv != null);
   return {
     key,
     n,
@@ -404,15 +446,54 @@ export function stats(key: string, rows: HorseRow[]): BucketStats {
     impliedPlacePct,
     placeEdge: placePct - impliedPlacePct,
     winRoi: n ? (100 * (wins.reduce((s, r) => s + r.sp, 0) - n)) / n : NaN,
+    placeRoi: paid.length ? (100 * (paid.reduce((s, r) => s + r.plaDiv!, 0) - paid.length)) / paid.length : NaN,
+    placeBets: paid.length,
   };
 }
 
-/** Hit rate by momentum bucket for one window. Rows without a checkpoint at `w` are excluded. */
-export function byBucket(rows: HorseRow[], w: Window): BucketStats[] {
-  return BUCKETS.map((b) => stats(b, rows.filter((r) => r.mom[w] != null && bucketOf(r.mom[w]!) === b)));
+/** A table row: its stats plus the runners behind them (for drill-down). */
+export type Group = BucketStats & { rows: HorseRow[] };
+const group = (key: string, rows: HorseRow[]): Group => ({ ...stats(key, rows), rows });
+
+/** Hit rate by momentum bucket, grouping runners by `move`. Rows it can't measure are excluded. */
+export function byBucket(rows: HorseRow[], move: MoveOf): Group[] {
+  const m = rows.map((r) => [r, move(r)] as const).filter((x): x is readonly [HorseRow, number] => x[1] != null);
+  return BUCKETS.map((b) => group(b, m.filter(([, v]) => bucketOf(v) === b).map(([r]) => r)));
 }
 
-/** Bucket × final-odds band, so favourite bias doesn't masquerade as momentum. */
-export function byBandAndBucket(rows: HorseRow[], w: Window): { band: OddsBand; cells: BucketStats[] }[] {
-  return ODDS_BANDS.map((band) => ({ band, cells: byBucket(rows.filter((r) => oddsBand(r.sp) === band), w) }));
+/** Move steps for the place-edge chart: 10% wide, open-ended past −30% / +30%. */
+export const EDGE_CUTS = [-0.3, -0.2, -0.1, 0, 0.1, 0.2, 0.3] as const;
+
+/**
+ * Group runners by move into ranges split at `cuts` (ascending fractions): below the first cut,
+ * each [cut, next cut), and from the last cut up. Keys read "< −30%", "−30% ~ −20%" … "≥ +30%".
+ */
+export function byMoveRange(rows: HorseRow[], move: MoveOf, cuts: readonly number[] = EDGE_CUTS): RangeGroup[] {
+  const pct = (x: number) => `${x > 0 ? "+" : x < 0 ? "−" : ""}${Math.abs(Math.round(x * 100))}%`;
+  const m = rows.map((r) => [r, move(r)] as const).filter((x): x is readonly [HorseRow, number] => x[1] != null);
+  const edges = [-Infinity, ...cuts, Infinity];
+  return edges.slice(0, -1).map((lo, i) => {
+    const hi = edges[i + 1]!;
+    const key = lo === -Infinity ? `< ${pct(hi)}` : hi === Infinity ? `≥ ${pct(lo)}` : `${pct(lo)} ~ ${pct(hi)}`;
+    return { ...group(key, m.filter(([, v]) => v >= lo && v < hi).map(([r]) => r)), lo, hi };
+  });
+}
+export type RangeGroup = Group & { lo: number; hi: number };
+
+
+/** How a runner's move is measured for grouping; null = not measurable (row left out). */
+export type MoveOf = (r: HorseRow) => number | null;
+
+/** Relative change in implied win prob from checkpoint `from` to a later checkpoint `to`; null if either is missing. */
+export function moveBetween(r: HorseRow, from: Window, to: Window): number | null {
+  const a = r.prob[from], b = r.prob[to];
+  return a && b ? (b - a) / a : null;
+}
+
+/**
+ * Steamers you could actually have backed: implied win prob up ≥ BUCKET_MILD from `from` to `to`
+ * (`to` later than `from`), judged only on odds known by `to`. Paid at final odds, as HK pools do.
+ */
+export function bettableSteamers(rows: HorseRow[], from: Window, to: Window): HorseRow[] {
+  return rows.filter((r) => (moveBetween(r, from, to) ?? -Infinity) >= BUCKET_MILD);
 }

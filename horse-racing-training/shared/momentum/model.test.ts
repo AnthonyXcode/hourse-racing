@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { impliedProbs, bucketOf, pointAt, movers, placeSurges, cutAt, suggestPicks, pickResults, horseRows, byBucket, stats, oddsBand, type RaceSeries, type SeriesPoint, type Mover } from "./model";
+import { impliedProbs, bucketOf, pointAt, movers, placeSurges, cutAt, suggestPicks, pickResults, horseRows, byBucket, byMoveRange, moveBetween, bettableSteamers, stats, type RaceSeries, type SeriesPoint, type Mover } from "./model";
 
 const pt = (secsToPost: number, win: Record<number, number>, pla: Record<number, number> = {}): SeriesPoint => ({
   secsToPost,
@@ -39,12 +39,6 @@ describe("bucketOf", () => {
     expect(bucketOf(0)).toBe("Flat");
     expect(bucketOf(-0.1)).toBe("Drift");
     expect(bucketOf(-0.4)).toBe("Strong drift");
-  });
-});
-
-describe("oddsBand", () => {
-  it("bands final odds", () => {
-    expect([2, 5, 12, 40].map(oddsBand)).toEqual(["< 5", "5–10", "10–20", "20+"]);
   });
 });
 
@@ -129,7 +123,7 @@ describe("placeSurges", () => {
 describe("horseRows", () => {
   // Horse 1 steams 4 → 2, horse 2 drifts 4 → 8; horse 3 scratched.
   const s = race(
-    [pt(1800, { 1: 4, 2: 4, 3: 10 }, { 1: 1.5, 2: 1.5 }), pt(600, { 1: 3, 2: 5 }), pt(0, { 1: 2, 2: 8 }, { 1: 1.2, 2: 2 })],
+    [pt(600, { 1: 4, 2: 4, 3: 10 }, { 1: 1.5, 2: 1.5 }), pt(300, { 1: 3, 2: 5 }), pt(0, { 1: 2, 2: 8 }, { 1: 1.2, 2: 2 })],
     [
       { horseNo: 1, finishPos: 1, sp: 2 },
       { horseNo: 2, finishPos: 2, sp: 8 },
@@ -143,11 +137,25 @@ describe("horseRows", () => {
   });
   it("measures momentum from each available checkpoint to SP, over the finishing field only", () => {
     const h1 = rows[0]!;
-    // T−30: 1 vs 2 both at 4 → p=0.5. Final SP 2 vs 8 → p = 0.5/0.625 = 0.8.
-    expect(h1.mom[30]).toBeCloseTo((0.8 - 0.5) / 0.5);
-    expect(h1.mom[10]).toBeDefined();
-    expect(h1.mom[5]).toBeUndefined(); // no snapshot near T−5
-    expect(rows[1]!.mom[30]!).toBeLessThan(0);
+    // T−10: 1 vs 2 both at 4 → p=0.5. Final SP 2 vs 8 → p = 0.5/0.625 = 0.8.
+    expect(h1.mom[10]).toBeCloseTo((0.8 - 0.5) / 0.5);
+    expect(h1.mom[5]).toBeDefined();
+    expect(h1.mom[0]).toBeDefined(); // at post
+    expect(h1.mom[-5]).toBeUndefined(); // no snapshot near T+5
+    expect(rows[1]!.mom[10]!).toBeLessThan(0);
+  });
+  it("keeps each checkpoint's implied prob, so moves between two checkpoints need no look-ahead", () => {
+    const h1 = rows[0]!;
+    expect(h1.prob[10]).toBeCloseTo(0.5);
+    expect(h1.odds[10]).toBe(4);
+    expect(h1.odds[5]).toBe(3);
+    // T−10 place odds 1.5 / 1.5 → 0.5 each, × 2 places (2 finishers ≤ 6) → capped at 1
+    expect(h1.placeProb[10]).toBe(1);
+    expect(h1.placeProb[5]).toBeUndefined(); // no place odds in that snapshot
+    // T−5: 3 vs 5 → p = (1/3) / (1/3 + 1/5) = 0.625
+    expect(moveBetween(h1, 10, 5)).toBeCloseTo((0.625 - 0.5) / 0.5);
+    expect(moveBetween(h1, 10, -5)).toBeNull();
+    expect(bettableSteamers(rows, 10, 5).map((r) => r.horseNo)).toEqual([1]);
   });
   it("sums final implied probability to 1", () => {
     expect(rows.reduce((s, r) => s + r.pFinal, 0)).toBeCloseTo(1);
@@ -156,7 +164,7 @@ describe("horseRows", () => {
 
 describe("stats / byBucket", () => {
   const row = (finishPos: number, sp: number, m: number) => ({
-    raceId: "r", date: "d", venue: "HV", horseNo: 1, finishPos, sp, pFinal: 1 / sp, pPlaceFinal: 0.3, mom: { 10: m },
+    raceId: "r", date: "d", venue: "HV", horseNo: 1, name: "H1", nameZh: null, finishPos, sp, pFinal: 1 / sp, pPlaceFinal: 0.3, plaDiv: finishPos <= 3 ? 1.5 : 0, mom: { 10: m }, prob: {}, odds: {}, placeProb: {},
   });
   it("computes hit rate, implied rate, edge and ROI", () => {
     const s = stats("x", [row(1, 4, 0.3), row(5, 4, 0.3)]);
@@ -166,10 +174,18 @@ describe("stats / byBucket", () => {
     expect(s.winEdge).toBe(25);
     expect(s.winRoi).toBe(100); // returned 4 on 2 staked
     expect(s.placePct).toBe(50);
+    expect(s.placeRoi).toBe(-25); // returned 1.5 on 2 staked
+    expect(stats("y", [{ ...row(1, 4, 0.3), plaDiv: null }]).placeBets).toBe(0); // dividends not posted: left out
   });
   it("groups rows into all five buckets and skips rows missing the window", () => {
-    const b = byBucket([row(1, 4, 0.3), row(2, 4, -0.3), { ...row(3, 4, 0), mom: {} }], 10);
+    const b = byBucket([row(1, 4, 0.3), row(2, 4, -0.3), { ...row(3, 4, 0), mom: {} }], (r) => r.mom[10] ?? null);
     expect(b.map((x) => x.n)).toEqual([1, 0, 0, 0, 1]);
+  });
+  it("groups rows into move ranges, lower bound inclusive, open-ended at both ends", () => {
+    const g = byMoveRange([row(1, 4, -0.5), row(2, 4, 0), row(3, 4, 0.1), row(4, 4, 0.3), { ...row(5, 4, 0), mom: {} }], (r) => r.mom[10] ?? null);
+    expect(g.map((x) => x.key)).toEqual(["< −30%", "−30% ~ −20%", "−20% ~ −10%", "−10% ~ 0%", "0% ~ +10%", "+10% ~ +20%", "+20% ~ +30%", "≥ +30%"]);
+    expect(g.map((x) => x.n)).toEqual([1, 0, 0, 0, 1, 1, 0, 1]);
+    expect(g[7]!.rows[0]!.finishPos).toBe(4);
   });
 });
 
