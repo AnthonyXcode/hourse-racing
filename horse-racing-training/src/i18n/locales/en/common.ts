@@ -23,6 +23,7 @@ export const common = {
         title: "Odds momentum before post time",
         description: "Live Win and Place odds and pool totals for Hong Kong races, recorded every 30 seconds before the off, and how market movers finished.",
       },
+      settings: { title: "Settings", description: "Your Post Time preferences in this browser." },
     },
   },
   nav: {
@@ -31,10 +32,18 @@ export const common = {
     history: "History",
     winPlace: "Win / Place",
     trio: "Trio",
+    settings: "Settings",
     momentum: "Momentum",
     openMenu: "Open navigation menu",
     closeMenu: "Close menu",
     navigation: "Navigation",
+  },
+  settings: {
+    title: "Settings",
+    notify: {
+      title: "Cut-off notifications",
+      cutoff: "Uses Suggestions as of from the Momentum page — now {{when}}.",
+    },
   },
   language: {
     label: "Language",

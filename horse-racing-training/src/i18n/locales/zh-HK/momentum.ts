@@ -46,6 +46,15 @@ export const momentum: Shape<typeof En> = {
     after: "開跑後 {{n}} 分鐘",
     asOf: "· 以{{when}}計",
   },
+  notify: {
+    label: "到時通知我",
+    hint: "今日每場賽事到達建議計算時間時，以瀏覽器通知發送選擇。請保持本網站分頁開啟。",
+    denied: "此網站的通知已被封鎖，請在瀏覽器的網站設定中允許。",
+    title: "第{{n}}場 · {{when}}的選擇",
+    combined: "合併：{{picks}}",
+    place: "位置：{{picks}}",
+    noPicks: "此場沒有選擇。",
+  },
   picks: {
     title: "建議選擇",
     drifted: "大回飛（市場佔有率跌 25% 或以上）：不計入合併",
@@ -169,6 +178,11 @@ export const momentum: Shape<typeof En> = {
     closeT: "關閉（Esc）",
   },
   analysis: {
+    hitWin: "命中（獨贏）",
+    hitPlace: "命中（前三名）",
+    dayNone: "這個賽馬日暫未有已完成並有結果的賽事。",
+    dayTooEarly: "變動由開跑前 {{n}} 分鐘起計，請把建議計算時間設定在此之後。",
+    dayNote: "{{races}} · {{span}}。優勢 = 前三名率減最終位置賠率隱含率，以百分點計。按行查看馬匹。",
     title: "落飛與命中率",
     sub: "臨場落飛的馬匹，勝出次數會否多於最終賠率所反映？",
     from: "由",

@@ -24,6 +24,7 @@ export const common: Shape<typeof En> = {
         title: "開跑前賠率走勢",
         description: "開跑前每30秒記錄香港賽事獨贏、位置即時賠率及彩池，並分析落飛馬匹的實際賽果。",
       },
+      settings: { title: "設定", description: "你在此瀏覽器的開跑前偏好設定。" },
     },
   },
   nav: {
@@ -32,10 +33,18 @@ export const common: Shape<typeof En> = {
     history: "紀錄",
     winPlace: "獨贏 / 位置",
     trio: "單T",
+    settings: "設定",
     momentum: "賠率走勢",
     openMenu: "開啟選單",
     closeMenu: "關閉選單",
     navigation: "選單",
+  },
+  settings: {
+    title: "設定",
+    notify: {
+      title: "到時通知",
+      cutoff: "使用賠率走勢頁的「建議計算時間」— 現為{{when}}。",
+    },
   },
   language: {
     label: "語言",

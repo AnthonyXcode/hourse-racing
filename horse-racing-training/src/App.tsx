@@ -14,6 +14,7 @@ import { RaceCardTable, BetTypePicker, CostBar, ResultModal, ResultPanel, Histor
 import type { RaceResult } from "../shared/types";
 import { AnalyzerPage } from "./analyzer/AnalyzerPage";
 import { MomentumPage } from "./momentum/MomentumPage";
+import { SettingsPage } from "./SettingsPage";
 import { useTranslation } from "react-i18next";
 import { useGlossary } from "./i18n/glossary";
 import { LangSwitch, useFmt } from "./i18n/useLanguage";
@@ -21,6 +22,7 @@ import { MobileNav } from "./MobileNav";
 import { track } from "./analytics";
 import { Footer, LEGAL_VIEWS, LegalDoc, SiteMap } from "./LegalPages";
 import { PicksBanner } from "./momentum/PicksBanner";
+import { useCutoffNotifications } from "./momentum/notify";
 import { RaceAnalysisPanel } from "./RaceAnalysisPanel";
 import { useSeo } from "./seo";
 import { Display, btn, container, control, cx, errorBox, field, fieldLabel, panel, pill, pillRow } from "./kit";
@@ -47,7 +49,7 @@ function useOnceTrue(v: boolean): boolean {
   return seen || v;
 }
 
-const VIEWS = ["bet", "history", "win-place", "trio", "momentum", ...LEGAL_VIEWS] as const;
+const VIEWS = ["bet", "history", "win-place", "trio", "momentum", "settings", ...LEGAL_VIEWS] as const;
 type View = (typeof VIEWS)[number];
 const DEFAULT_VIEW: View = "bet";
 /** How often the bet page re-polls the meeting list while visible. */
@@ -58,6 +60,7 @@ const TABS = [
   ["win-place", "nav.winPlace"],
   ["trio", "nav.trio"],
   ["momentum", "nav.momentum"],
+  ["settings", "nav.settings"],
 ] as const satisfies readonly (readonly [View, `nav.${string}`])[];
 const navBtn = (on: boolean) =>
   on
@@ -112,6 +115,7 @@ export default function App() {
   const [result, setResult] = useState<SettleResult | null>(null);
   const [error, setError] = useState<string>("");
   const { t } = useTranslation(["common", "bet"]);
+  useCutoffNotifications();
   const g = useGlossary();
   const fmt = useFmt();
   const [view, setView] = useViewParam();
@@ -378,6 +382,7 @@ export default function App() {
         )}
 
         {view === "momentum" && <MomentumPage />}
+        {view === "settings" && <SettingsPage />}
 
         {view === "history" && (
           <HistoryPage

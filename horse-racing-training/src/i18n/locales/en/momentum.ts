@@ -44,6 +44,15 @@ export const momentum = {
     after: "{{n}} min after post",
     asOf: "· as of {{when}}",
   },
+  notify: {
+    label: "Notify at cut-off",
+    hint: "Get a browser notification with the picks when each of today's races passes Suggestions as of. Keep a tab of this site open.",
+    denied: "Notifications are blocked for this site. Allow them in your browser's site settings.",
+    title: "Race {{n}} · picks as of {{when}}",
+    combined: "Combined: {{picks}}",
+    place: "Place: {{picks}}",
+    noPicks: "No picks for this race.",
+  },
   picks: {
     title: "Suggested picks",
     drifted: "Strong drift (market share down 25%+): left out of Combined",
@@ -167,6 +176,11 @@ export const momentum = {
     closeT: "Close (Esc)",
   },
   analysis: {
+    hitWin: "Hit (win)",
+    hitPlace: "Hit (top 3)",
+    dayNone: "No finished races with results on this day yet.",
+    dayTooEarly: "Moves are measured from {{n}} min before post, so set Suggestions as of to later than that.",
+    dayNote: "{{races}} · {{span}}. Edge = top-3 rate minus the rate final place odds implied, in points. Click a row to see the runners.",
     title: "Momentum vs hit rate",
     sub: "do horses that shorten late win more often than their final price suggests?",
     from: "From",

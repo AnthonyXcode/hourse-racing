@@ -4,7 +4,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import type { TFunction } from "i18next";
 import { DEFAULT_CUTOFF, isCutoff, type Cutoff } from "../../shared/momentum/model";
 
-const KEY = "momentum.cutoff";
+export const CUTOFF_KEY = "momentum.cutoff";
 
 export const CutoffContext = createContext<Cutoff>(DEFAULT_CUTOFF);
 export const useCutoff = () => useContext(CutoffContext);
@@ -18,7 +18,7 @@ export function useStoredCutoff() {
     const fromUrl = new URLSearchParams(window.location.search).get("cutoff");
     if (fromUrl != null && isCutoff(Number(fromUrl))) return Number(fromUrl) as Cutoff;
     try {
-      const v = Number(localStorage.getItem(KEY));
+      const v = Number(localStorage.getItem(CUTOFF_KEY));
       return isCutoff(v) ? v : DEFAULT_CUTOFF;
     } catch {
       return DEFAULT_CUTOFF;
@@ -26,7 +26,7 @@ export function useStoredCutoff() {
   });
   useEffect(() => {
     try {
-      localStorage.setItem(KEY, String(cutoff));
+      localStorage.setItem(CUTOFF_KEY, String(cutoff));
     } catch {
       // storage blocked: keep it for this visit only
     }

@@ -321,7 +321,8 @@ function LivePanel({ date, isToday, initialRace }: { date: string; isToday: bool
         </nav>
       )}
       {summary && <DaySummary date={date} live={isToday} onOpenRace={(id) => setRaceId(id)} />}
-      {/* cross-day momentum vs hit-rate study: Summary tab only, not on each race */}
+      {/* this day's buckets at the cut-off, then the cross-day momentum vs hit-rate study: Summary tab only */}
+      {summary && <DayBuckets date={date} />}
       {summary && <AnalysisPanel />}
 
       {race && series && <SuggestedPicks model={modelHere} series={series} focus={focus} onFocus={setFocus} className="mb-4" />}
@@ -1061,6 +1062,78 @@ function AnalysisPanel() {
         </>
       )}
     </>
+  );
+}
+
+/** Measure-from checkpoint for the racing-day bucket table, in minutes before post. */
+const DAY_FROM: Window = 5;
+
+/** One racing day's runners by momentum bucket, moves measured from 5 min before post to the "Suggestions as of" cut-off. */
+function DayBuckets({ date }: { date: string }) {
+  const { t } = useTranslation(["momentum", "common"]);
+  const cutoff = useCutoff();
+  const [picksOf, setPicksOf] = useState<{ title: string; rows: HorseRow[] } | null>(null);
+  const [data, setData] = useState<{ date: string; rows: HorseRow[] } | null>(null);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    let live = true;
+    api.momentumAnalysis(date, date).then((d) => live && setData({ date, rows: d.rows })).catch((e) => live && setError(String(e)));
+    return () => {
+      live = false;
+    };
+  }, [date]);
+
+  // Cut-off counts minutes from post (− = before); a Window counts minutes before post (+ = before).
+  const betAt = -cutoff as Window;
+  const rows = useMemo(() => (data?.date === date ? data.rows : []), [data, date]);
+  const buckets = useMemo(() => (betAt < DAY_FROM ? byBucket(rows, (r) => moveBetween(r, DAY_FROM, betAt)) : []), [rows, betAt]);
+  const races = new Set(rows.map((r) => r.raceId)).size;
+  const span = t("analysis.moveSpan", { from: t("analysis.minBefore", { n: DAY_FROM }), to: cutoffLabel(t, cutoff) });
+
+  if (error) return <div className={errorBox}>{error}</div>;
+  if (!data) return null;
+  return (
+    <div className={cx(panel, "mt-4")}>
+      {races === 0 ? (
+        <div className={empty}>{t("analysis.dayNone")}</div>
+      ) : betAt >= DAY_FROM ? (
+        <div className={empty}>{t("analysis.dayTooEarly", { n: DAY_FROM })}</div>
+      ) : (
+        <div className={scroll}>
+          <table className={cx(table, tablePadTight)}>
+            <thead>
+              <tr>
+                <th>{t("analysis.bucket")}</th><th>{t("analysis.n")}</th><th>{t("analysis.hitWin")}</th><th>{t("analysis.hitPlace")}</th>
+                <th>{t("analysis.edge")}</th><th>{t("analysis.winRoi")}</th><th>{t("analysis.placeRoi")}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {buckets.map((b) => (
+                <tr
+                  key={b.key}
+                  className={cx(b.n > 0 && "cursor-pointer")}
+                  onClick={b.n ? () => setPicksOf({ title: `${t(`bucket.${b.key as Bucket}`)} ${bucketRange(b.key as Bucket)}`, rows: b.rows }) : undefined}
+                  title={b.n ? t("analysis.rowHint") : undefined}
+                >
+                  <td className="whitespace-nowrap">
+                    {t(`bucket.${b.key as Bucket}`)} <small className={dim}>{bucketRange(b.key as Bucket)}</small>
+                  </td>
+                  <td>{b.n}</td>
+                  <td>{pc(b.winPct)}</td>
+                  <td>{pc(b.placePct)}</td>
+                  <td className={cls(b.placeEdge)}>{pts(b.placeEdge)}</td>
+                  <td className={cls(b.winRoi)}>{signed(b.winRoi)}</td>
+                  <td className={cls(b.placeRoi)}>{signed(b.placeRoi)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+      <div className={note}>{t("analysis.dayNote", { span, races: t("common:races", { count: races }) })}</div>
+      {picksOf && <PicksModal title={picksOf.title} rows={picksOf.rows} from={DAY_FROM} to={betAt} span={span} onClose={() => setPicksOf(null)} />}
+    </div>
   );
 }
 
