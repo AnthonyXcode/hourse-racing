@@ -1,7 +1,7 @@
 // Market momentum: live pre-race odds movement (server polls HKJC every 30 s inside the
 // 30-min window) and, over settled races, whether that movement predicts the result.
 import { Fragment, useEffect, useMemo, useState, type ReactNode } from "react";
-import { motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { api, type MomentumDay, type MomentumDayRef } from "../api";
 import {
   type RaceSeries, type HorseRow, type Window, type BucketStats, type Mover, type ModelRank, type Bucket,
@@ -779,6 +779,30 @@ function SnapshotModal({ series, model, index, onIndex, onClose }: { series: Rac
 
 // ---------------- Records ----------------
 
+const RECORDS_KEY = "momentum.recordsOpen";
+const COLLAPSE = { duration: 0.24, ease: [0.2, 0, 0, 1] } as const;
+
+/** A boolean remembered in this browser (falls back to `initial` when storage is blocked). */
+function useStoredFlag(key: string, initial: boolean) {
+  const [v, setV] = useState(() => {
+    try {
+      const s = localStorage.getItem(key);
+      return s == null ? initial : s === "1";
+    } catch {
+      return initial;
+    }
+  });
+  const set = (next: boolean) => {
+    setV(next);
+    try {
+      localStorage.setItem(key, next ? "1" : "0");
+    } catch {
+      // storage blocked: keep it for this visit only
+    }
+  };
+  return [v, set] as const;
+}
+
 /** Every snapshot for the race, newest first: one row per snapshot, one column per horse. */
 function RecordsTable({ series, model }: { series: RaceSeries; model: ModelState }) {
   const { t } = useTranslation(["momentum", "common"]);
@@ -789,11 +813,29 @@ function RecordsTable({ series, model }: { series: RaceSeries; model: ModelState
   const pts = series.points;
   const rows = [...pts.keys()].reverse();
   const [open, setOpen] = useState<number | null>(null);
+  const [shown, setShown] = useStoredFlag(RECORDS_KEY, false);
 
   return (
     <>
-      <H2 sub={t("records.sub", { n: pts.length, race: series.raceNo })}>{t("records.title")}</H2>
-      <div className={panel}>
+      {/* collapsible card, same header as the "Analysis for reference" panel above it */}
+      <section className={cx(panel, "mt-3 p-0 sm:p-0")}>
+      <button
+        type="button"
+        className="flex w-full cursor-pointer items-center gap-3 px-4 py-3 text-left sm:px-5"
+        aria-expanded={shown}
+        aria-controls="records-panel"
+        onClick={() => setShown(!shown)}
+      >
+        <span className="flex min-w-0 flex-1 flex-col gap-0.5 sm:flex-row sm:items-center sm:gap-3">
+          <span className="flex-none text-sm font-semibold text-ink">{t("records.title")}</span>
+          <span className="min-w-0 truncate text-xs text-ink-2">{t("records.sub", { n: pts.length, race: series.raceNo })}</span>
+        </span>
+        <motion.span aria-hidden className="flex-none text-ink-3" animate={{ rotate: shown ? 180 : 0 }} transition={COLLAPSE}>▼</motion.span>
+      </button>
+      <AnimatePresence initial={false}>
+      {shown && (
+      <motion.div key="records" id="records-panel" className="overflow-hidden" initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={COLLAPSE}>
+      <div className="border-t border-edge px-4 pt-3 pb-4 sm:px-5">
         <div className={cx(moHead, "gap-y-2")}>
           <div className={seg} role="group" aria-label={t("records.oddsShown")}>
             <button className={segBtn(pool === "win")} onClick={() => setPool("win")}>{t("pool.win")}</button>
@@ -859,6 +901,10 @@ function RecordsTable({ series, model }: { series: RaceSeries; model: ModelState
           </table>
         </div>
       </div>
+      </motion.div>
+      )}
+      </AnimatePresence>
+      </section>
       {open != null && open < pts.length && <SnapshotModal series={series} model={model} index={open} onIndex={setOpen} onClose={() => setOpen(null)} />}
     </>
   );
