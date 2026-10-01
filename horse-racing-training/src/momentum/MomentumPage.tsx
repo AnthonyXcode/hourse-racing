@@ -18,6 +18,7 @@ import { DaySummary } from "./DaySummary";
 import { HorseLink } from "./HorseRecord";
 import { CutoffContext, cutoffLabel, useCutoff, useStoredCutoff } from "./cutoff";
 import { track } from "../analytics";
+import { RaceAnalysisPanel } from "../RaceAnalysisPanel";
 import {
   Display, H2, btn, dateControl, btnPrimary, control, cx, dim, empty, errorBox, field, fieldLabel, figure, grid2, h3, kpis, modal, modalBg, note, page, panel,
   pill, pillRow, rangeBar, rangeMeta, scroll, seg, segBtn, strong, table, tablePad, tablePadTight,
@@ -353,6 +354,8 @@ function LivePanel({ date, isToday, initialRace }: { date: string; isToday: bool
           />
         </div>
       )}
+      {/* pre-race model analysis (same panel as the Bet page), collapsed, above the odds records */}
+      {race && <RaceAnalysisPanel date={date.replace(/-/g, "")} venue={race.venue} raceNo={race.race_no} />}
       {race && series && series.points.length > 0 && <RecordsTable series={series} model={modelHere} />}
       {today && !races.length && (
         <div className={cx(panel, empty)}>

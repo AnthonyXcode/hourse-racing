@@ -1,4 +1,4 @@
-// Bet page: collapsible pre-race model analysis of the race being edited, for reference.
+// Bet and Momentum pages: collapsible pre-race model analysis of one race, for reference.
 // Built only from the saved racecard (no results or starting prices), so it can't give away the outcome.
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
