@@ -55,6 +55,7 @@
 | **38** | **16 Sep** | **HV** | **Turf "B"** | **Good** | **8** | **33.2%** | **66.8%** | **6/8** | **75.0%** | **❌✅❌✅✅✅✅✅** | **5 (R4-R8)** |
 | **39** | **23 Sep** | **HV** | **Turf** | **Good** | **9** | **30.3%** | **62.9%** | **5/9** | **55.6%** | **❌❌❌✅✅✅❌✅✅** | **3 (R4-R6)** |
 | **40** | **27 Sep** | **ST** | **Mixed (AWT+Turf)** | **Good / G-F** | **11** | **36.5%** | **70.2%** | **5/11** | **45.5%** | **❌❌❌❌✅✅✅❌✅❌✅** | **3 (R5-R7)** |
+| **41** | **1 Oct** | **ST** | **Turf** | **Good to Firm** | **11** | **31.1%** | **66.1%** | **6/11** | **54.5%** | **❌❌✅✅✅✅❌❌❌✅✅** | **4 (R3-R6)** |
 
 \*Meeting 8 **R1** (6 runners): MC #1 **#6** ran **3rd** but HKJC Place pool pays **two** places only → **$0** dividend; counts as **❌** for streaks and all-ups (same dividend logic as other meetings).
 
@@ -1872,3 +1873,27 @@ MC–market split, three meetings combined: **MC #1 at market rank 1–2 placed 
 **Placed:** 5/11 (45.5%) | **Pattern:** ❌❌❌❌✅✅✅❌✅❌✅ | **Max streak:** 3 (R5-R7)
 
 **Trio card note (R1–R11):** **LOSS.** Strategy A (as bet) **2/11 (R7 $137, R11 $246), $950 staked, $383 returned, −$567, ROI −59.7%**; canonical MC top-6 B **2/11, $1,100 staked, −$717, −65.2%**; MC-only Place%>20 variant (B-trio, as bet) **2/11, $1,390 staked, −$1,007, −72.4%**. All HIGH/Dominant races: A 2/6, +$43; MEDIUM/Competitive 0/5, −$610. MC #1 bankers ≥ 45% Win% placed 3/3 (R5, R7, R11), 25–40% only 2/8. Market rank 1–2 bankers (SP) went just 3/7 (R3 fav 5th, R8 fav 1.9 6th, R10 7th, R1 4th); four-meeting combined 15/22 (68.2%), rank 4+ 3/13. Three of the six failed bankers had drifted ≥ 1.6× from the 09:03 odds (R1 2.7→4.9, R2 5.2→9.9, R4 10→22). MC blind spot persists: MC Win% < 3% and SP ≤ 6 went 3/4 top 3 (R4 #11, R5 #1 won, R6 #9); 7/9 over two meetings. Every Trio ≥ $720 (R1, R3, R4, R5, R6, R10) had a placer rated ≤ 3.9% MC win. B-trio's Step B swap removed a placer for the third meeting running (R10 #7 VICTOR THE WINNER swapped out for #8, won).
+
+---
+
+## Meeting 41: Sha Tin | 1 Oct 2026 (11 races)
+
+**MC #1** = raw MC Win% from trio_strategy_20261001_ST_R*.md (10,000 iterations, form=all). **Results** from data/historical/results_20261001_ST.json (scraped first time; no dividend truncation seen). Place $ = HKJC place dividend per $10. Going: **Good to Firm**, all Turf. No scratchings. Odds used by reports: HKJC pool 09:55 HKT.
+
+| Race | Class | Dist (m) | MC #1 | MC Win% | MC Place% | Placed? | Place $ (if placed) |
+|------|-------|----------|-------|---------|-----------|---------|---------------------|
+| R1 | Class 5 | 1200 | #5 GOOD FORTUNE | 24.9% | 56.5% | ❌ (14th) | — |
+| R2 | Class 5 | 1600 | #11 SETANTA | 29.8% | 66.0% | ❌ (8th) | — |
+| R3 | Group 3 | 1000 | #4 COLOURFUL KING | 42.2% | 81.4% | ✅ 1st | 12 |
+| R4 | Class 4 | 1400 | #7 SOLID CAR | 38.2% | 75.6% | ✅ 1st | 11.5 |
+| R5 | Class 4 | 1000 | #3 KA YING LIGHTNING | 26.4% | 59.8% | ✅ 1st | 16 |
+| R6 | Class 4 | 1800 | #1 VICTOR SUPREME | 28.6% | 62.7% | ✅ 2nd | 17.5 |
+| R7 | Class 4 | 1200 | #2 LIGHT YEARS GLORY | 35.9% | 73.8% | ❌ (4th) | — |
+| R8 | Class 4 | 1200 | #1 ALMIGHTY WARRIOR | 26.0% | 59.7% | ❌ (13th) | — |
+| R9 | Class 2 | 1400 | #3 CHILL EASY | 24.7% | 56.1% | ❌ (6th) | — |
+| R10 | Class 3 | 1400 | #3 AEROVOLANIC | 39.9% | 76.4% | ✅ 1st | 18.5 |
+| R11 | Class 3 | 1200 | #6 ABSOLUTE HEART | 25.3% | 59.0% | ✅ 1st | 23 |
+
+**Placed:** 6/11 (54.5%) | **Pattern:** ❌❌✅✅✅✅❌❌❌✅✅ | **Max streak:** 4 (R3-R6)
+
+**Trio card note (R1–R11):** **WIN.** Strategy A (as bet) **4/11 (R3 $109, R5 $107, R6 $258, R10 $413), $790 staked, $887 returned, +$97, ROI +12.3%**. Canonical MC top-6 B: **3/11, $1,100 staked, −$471, −42.8%** (missed R6: #8 was MC #7, and A included it via SCMP `+excuses`). B-trio (as bet): **4/11, $1,410, −$523, −37.1%**. HIGH/Dominant: A 2/4, +$372. MEDIUM: 2/7, −$275. When MC #1 placed, it won 5 of 6 times. MC #1 at SP rank 1–2 placed 5/6 (five-meeting combined 20/28). Rank 4+ placed 0/2 (combined 3/15). The R1 MC #1 #5 GOOD FORTUNE was the 2.1 SP favourite and finished last. Near-zero blind spot: MC Win% < 3% at SP ≤ 6 placed 2/2 (R7 #10, R8 #11); 9/11 over three meetings. 'Undervalued > 200%' calls 0/3 (season 0/8). SCMP `+excuses` at pre-race ≤ 8 placed 8/12.
