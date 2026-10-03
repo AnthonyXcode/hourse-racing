@@ -6,121 +6,181 @@ import type { TFunction } from "i18next";
 import { useGlossary } from "./i18n/glossary";
 import { Name } from "./i18n/names";
 import { useFmt } from "./i18n/useLanguage";
-import { Display, btn, btnPrimary, cx, empty, figure, h3, modal, modalBg, panel, pill, pillRow, table, tablePad } from "./kit";
+import { Display, btn, btnPrimary, control, cx, empty, figure, h3, modal, modalBg, panel, pill, pillRow, table, tablePad } from "./kit";
+import { MIN_UNIT, ymd, type SettledBet } from "./slip";
+import { useSlipText } from "./BetSlip";
 
-/** Left-aligned card table: sentence-case headers, hairline rows. Tighter cell padding on phones. */
+/** Left-aligned card table: 13px headers, hairline rows, zebra stripes. Tighter cell padding on phones. */
 const cardTable =
-  "w-full border-collapse text-sm [&_th]:border-b [&_th]:border-edge [&_th]:px-2 [&_th]:py-2.5 [&_th]:text-left [&_th]:text-xs [&_th]:font-medium [&_th]:whitespace-nowrap [&_th]:text-ink-3 [&_td]:border-b [&_td]:border-edge [&_td]:px-2 [&_td]:py-2.5 [&_tbody_tr:last-child_td]:border-b-0 sm:[&_th]:px-3 sm:[&_td]:px-3";
-const chip = "inline-flex h-7 min-w-7 items-center justify-center rounded-full px-2 text-xs font-semibold";
-const modalTitle = "font-display text-[30px] leading-tight tracking-[-0.01em] sm:text-[34px]";
+  "w-full border-collapse text-sm [&_th]:border-b [&_th]:border-edge [&_th]:px-2 [&_th]:py-2 [&_th]:text-left [&_th]:text-[13px] [&_th]:font-normal [&_th]:whitespace-nowrap [&_th]:text-ink [&_td]:border-b [&_td]:border-edge [&_td]:px-2 [&_td]:py-2 [&_tbody_tr:nth-child(even)]:bg-zebra [&_tbody_tr:last-child_td]:border-b-0 sm:[&_th]:px-3 sm:[&_td]:px-3";
+const modalTitle = "text-[22px] leading-tight font-medium text-navy-900 sm:text-[26px]";
+/** Pick checkbox: native input, navy when ticked, 44px tap area from the cell padding. */
+const tick = "size-5 cursor-pointer accent-navy-700 disabled:cursor-not-allowed";
 
-export const HORSE_ROLE = { none: 0, leg: 1, banker: 2 } as const;
-export type Role = keyof typeof HORSE_ROLE;
+/** Pools as HKJC groups them: Win and Place share one page. */
+export type Pool = "wp" | Exclude<BetTypeId, "win" | "place">;
+export const POOLS: Pool[] = ["wp", "quinella", "qpl", "trio", "tierce", "first4", "doubleTrio", "tripleTrio"];
+/** A race's ticked boxes, one list per column. */
+export interface Picks {
+  win: number[];
+  place: number[];
+  bankers: number[];
+  legs: number[];
+}
+export type PickCol = keyof Picks;
+export const emptyPicks = (): Picks => ({ win: [], place: [], bankers: [], legs: [] });
 
 // ---- Race card ----
 export function RaceCardTable({
   card,
-  roleOf,
-  onCycle,
+  pool,
+  picks,
+  onToggle,
+  onField,
   bankerEnabled,
+  bankerMax,
+  head,
 }: {
   card: RaceCard;
-  roleOf: (horseNumber: number) => Role;
-  onCycle: (horseNumber: number) => void;
+  pool: Pool;
+  picks: Picks;
+  onToggle: (col: PickCol, horseNumber: number) => void;
+  /** Tick (or clear) every runner in a column. */
+  onField: (col: PickCol, on: boolean) => void;
   bankerEnabled: boolean;
+  /** Most bankers this pool allows (depth − 1). */
+  bankerMax: number;
+  /** Extra controls in the title bar (e.g. Results). */
+  head?: ReactNode;
 }) {
   const { t } = useTranslation(["bet", "common"]);
   const g = useGlossary();
   const [formOf, setFormOf] = useState<CardHorse | null>(null);
+  const entries = [...card.entries].sort((a, b) => a.horseNumber - b.horseNumber);
+  const runners = entries.filter((e) => !e.isScratched).map((e) => e.horseNumber);
+  const odds = runners.map((h) => card.winOdds[String(h)]).filter((o): o is number => o != null && o > 0);
+  const fav = odds.length ? Math.min(...odds) : null;
+  const cols: [PickCol, string][] =
+    pool === "wp"
+      ? [["win", t("card.win")], ["place", t("card.place")]]
+      : bankerEnabled
+        ? [["bankers", t("card.banker")], ["legs", t("card.select")]]
+        : [["legs", t("card.select")]];
+  const allOn = (col: PickCol) => runners.length > 0 && runners.every((h) => picks[col].includes(h));
   return (
-    <div className="mt-3 overflow-hidden rounded-card bg-surface shadow-card">
-      <div className="flex flex-col gap-1 border-b border-edge px-4 pt-4 pb-3 sm:flex-row sm:items-end sm:gap-4 sm:px-5 sm:pt-5">
-        <div className="min-w-0">
-          <div className="text-xs font-medium text-ink-3">{t("common:race", { n: card.raceNumber })}</div>
-          <h2 className="mt-0.5 font-display text-2xl leading-tight tracking-[-0.01em]">
-            <Name kind="race" code={card.id} en={card.name} />
-          </h2>
-        </div>
-        <div className="text-sm text-ink-2 sm:ml-auto sm:pb-0.5">
-          {g.raceClass(card.class)} · {t("common:metres", { n: card.distance })} · {g.surface(card.surface)} · {g.going(card.going)}
-        </div>
+    <section className="mt-3 overflow-hidden rounded-card bg-surface shadow-card">
+      <div className="flex min-h-9 items-center gap-2 bg-navy-900 px-[13px] py-2 text-white">
+        <h2 className="min-w-0 truncate text-[15px] font-medium sm:text-[17px]">
+          {t("common:race", { n: card.raceNumber })} · <Name kind="race" code={card.id} en={card.name} />
+        </h2>
+        <div className="ml-auto flex flex-none items-center gap-2">{head}</div>
+      </div>
+      <div className="border-b border-edge px-[13px] py-2 text-[13px] text-ink">
+        {g.raceClass(card.class)} · {t("common:metres", { n: card.distance })} · {g.surface(card.surface)} · {g.going(card.going)}
       </div>
       <div className="overflow-x-auto">
         <table className={cardTable}>
           <thead>
             <tr>
-              <th>{t("common:word.number")}</th>
+              <th className="w-10">{t("common:word.number")}</th>
               <th>{t("common:word.horse")}</th>
               <th className="hidden sm:table-cell">{t("common:word.draw")}</th>
               <th className="hidden sm:table-cell">{t("common:word.weight")}</th>
-              <th className="hidden sm:table-cell">{t("common:word.jockey")}</th>
-              <th className="hidden sm:table-cell">{t("common:word.trainer")}</th>
-              <th className="text-right!">{t("card.win")}</th>
-              <th className="text-center!">{t("card.pick")}</th>
+              <th className="hidden md:table-cell">{t("common:word.jockey")}</th>
+              <th className="hidden lg:table-cell">{t("common:word.trainer")}</th>
+              <th className="text-right!">{t("card.odds")}</th>
+              {cols.map(([c, label]) => (
+                <th key={c} className="w-14 text-center!">{label}</th>
+              ))}
             </tr>
           </thead>
           <tbody>
-            {[...card.entries].sort((a, b) => a.horseNumber - b.horseNumber).map((e) => {
-              const role = roleOf(e.horseNumber);
+            {entries.map((e) => {
               const scratched = e.isScratched;
+              const o = card.winOdds[String(e.horseNumber)];
+              const isFav = !scratched && fav != null && o === fav;
               return (
-                <tr
-                  key={e.horseNumber}
-                  className={cx(
-                    "transition-colors",
-                    scratched ? "cursor-default line-through opacity-45" : "cursor-pointer",
-                    // a picked row's colour beats the hover tint
-                    role === "leg" ? "bg-leg" : role === "banker" ? "bg-banker" : "hover:bg-canvas"
-                  )}
-                  onClick={() => !scratched && onCycle(e.horseNumber)}
-                >
-                  <td className="w-9 font-semibold tabular-nums">{e.horseNumber}</td>
+                <tr key={e.horseNumber} className={cx("h-11", scratched && "text-ink-muted")}>
+                  <td className="tabular-nums">{e.horseNumber}</td>
                   <td>
-                    {/* own click: opens past runs instead of cycling the pick */}
+                    {/* opens past runs */}
                     <button
                       type="button"
-                      className="cursor-pointer text-left font-medium underline decoration-ink/25 underline-offset-2 hover:decoration-ink"
+                      className={cx("cursor-pointer text-left font-medium hover:underline", scratched ? "line-through" : "text-navy-900")}
                       title={t("form.open")}
-                      onClick={(ev) => {
-                        ev.stopPropagation();
-                        setFormOf(e.horse);
-                      }}
+                      onClick={() => setFormOf(e.horse)}
                     >
                       <Name kind="horse" code={e.horse.code} en={e.horse.name} />
                     </button>
                     {e.jockey?.name && (
-                      <div className="mt-0.5 text-xs text-ink-3 sm:hidden">
+                      <div className="mt-0.5 text-xs text-ink-muted md:hidden">
                         <Name kind="jockey" code={e.jockey.code} en={e.jockey.name} />
+                        {e.draw ? <span className="sm:hidden"> · {t("common:word.draw")} {e.draw}</span> : null}
                       </div>
                     )}
                   </td>
                   <td className="hidden tabular-nums sm:table-cell">{e.draw}</td>
                   <td className="hidden tabular-nums sm:table-cell">{e.weight}</td>
-                  <td className="hidden sm:table-cell">{e.jockey && <Name kind="jockey" code={e.jockey.code} en={e.jockey.name} />}</td>
-                  <td className="hidden text-ink-2 sm:table-cell">{e.trainer && <Name kind="trainer" code={e.trainer.code} en={e.trainer.name} />}</td>
-                  <td className="text-right tabular-nums">{card.winOdds[String(e.horseNumber)] ?? "-"}</td>
-                  <td className="text-center">
+                  <td className="hidden md:table-cell">{e.jockey && <Name kind="jockey" code={e.jockey.code} en={e.jockey.name} />}</td>
+                  <td className="hidden lg:table-cell">{e.trainer && <Name kind="trainer" code={e.trainer.code} en={e.trainer.name} />}</td>
+                  <td className="text-right">
                     {scratched ? (
-                      <span className={cx(chip, "bg-surface-3 text-ink-3")}>{t("common:word.scratchedShort")}</span>
-                    ) : role === "banker" ? (
-                      <span className={cx(chip, "bg-banker-bd text-white")}>{t("common:role.bankerShort")}</span>
-                    ) : role === "leg" ? (
-                      <span className={cx(chip, "bg-accent text-white")}>{t("common:role.legShort")}</span>
+                      <span className="text-[13px]">{t("common:word.scratchedShort")}</span>
                     ) : (
-                      <span className={cx(chip, "bg-surface-2 text-ink-3")}>+</span>
+                      <span className={cx("inline-block min-w-9 rounded-xs px-1 py-0.5 text-center font-medium tabular-nums", isFav && "bg-odds-fav text-white")}>
+                        {o ?? "-"}
+                      </span>
                     )}
                   </td>
+                  {cols.map(([c, label]) => {
+                    const on = picks[c].includes(e.horseNumber);
+                    const full = c === "bankers" && !on && picks.bankers.length >= bankerMax;
+                    return (
+                      <td key={c} className="text-center">
+                        <input
+                          type="checkbox"
+                          className={tick}
+                          checked={on}
+                          disabled={scratched || full}
+                          aria-label={`${label} ${e.horseNumber}`}
+                          onChange={() => onToggle(c, e.horseNumber)}
+                        />
+                      </td>
+                    );
+                  })}
                 </tr>
               );
             })}
+            {/* Field: tick every runner in a selection column (not bankers). */}
+            <tr className="h-11">
+              <td className="font-medium">F</td>
+              <td colSpan={1} className="text-ink">{t("card.field")}</td>
+              <td className="hidden sm:table-cell" />
+              <td className="hidden sm:table-cell" />
+              <td className="hidden md:table-cell" />
+              <td className="hidden lg:table-cell" />
+              <td />
+              {cols.map(([c, label]) => (
+                <td key={c} className="text-center">
+                  {c !== "bankers" && (
+                    <input type="checkbox" className={tick} checked={allOn(c)} aria-label={`${label} ${t("card.field")}`} onChange={() => onField(c, !allOn(c))} />
+                  )}
+                </td>
+              ))}
+            </tr>
           </tbody>
         </table>
       </div>
-      <p className="border-t border-edge px-4 py-3 text-xs text-ink-3 sm:px-5">
-        {t("card.hint")} {bankerEnabled ? t("card.hintBanker") : t("card.hintClear")}
-      </p>
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-1 border-t border-edge px-[13px] py-2 text-[13px] text-ink-muted">
+        <span className="inline-flex items-center gap-1.5 text-ink">
+          <span className="size-3.5 rounded-xs bg-odds-fav" aria-hidden /> {t("card.favourite")}
+        </span>
+        <span>
+          {t("card.hint")} {bankerEnabled && pool !== "wp" ? t("card.hintBanker") : ""}
+        </span>
+      </div>
       {formOf && <HorseFormModal horse={formOf} onClose={() => setFormOf(null)} />}
-    </div>
+    </section>
   );
 }
 
@@ -132,7 +192,7 @@ export function HorseFormModal({ horse, onClose }: { horse: CardHorse; onClose: 
   const runs = horse.pastPerformances ?? [];
   return (
     <div className={modalBg} onClick={onClose}>
-      {/* wider than the default modal so all ten columns fit without scrolling */}
+      {/* wider than the default modal so all ten columns fit on desktop; phones get cards instead */}
       <div className={modal} style={{ maxWidth: "min(860px, 100%)" }} role="dialog" aria-modal="true" aria-label={t("form.title")} onClick={(e) => e.stopPropagation()}>
         <div className="text-xs font-medium text-ink-3">{t("form.title")}</div>
         <h2 className={modalTitle}>
@@ -143,19 +203,50 @@ export function HorseFormModal({ horse, onClose }: { horse: CardHorse; onClose: 
         ) : (
           <>
             <p className="mt-2 text-xs text-ink-3">{t("form.note")}</p>
-            <div className="mt-3 overflow-x-auto">
+            {/* Phones: one compact card per run, every field visible without scrolling. */}
+            <ul className="mt-3 divide-y divide-edge rounded-card ring-1 ring-edge sm:hidden">
+              {runs.map((r) => {
+                const top3 = r.finishPosition > 0 && r.finishPosition <= 3;
+                return (
+                  <li key={`${r.date}-${r.raceNumber}`} className="px-3 py-2.5 text-[13px] tabular-nums even:bg-zebra">
+                    <div className="flex items-baseline gap-2">
+                      <span className="font-medium text-navy-900">
+                        {fmt.date(r.date, { year: "2-digit", month: "numeric", day: "numeric" })} · {g.venue(r.venue)} {t("form.race", { n: r.raceNumber })}
+                      </span>
+                      <span className={cx("ml-auto text-[15px] font-medium whitespace-nowrap", top3 && "text-good")}>
+                        {r.finishPosition > 0 ? r.finishPosition : "-"}
+                        {r.fieldSize ? <span className="text-[13px] font-normal text-ink-3">/{r.fieldSize}</span> : null}
+                      </span>
+                    </div>
+                    <div className="mt-0.5 flex gap-2 text-ink">
+                      <span>
+                        {g.raceClass(r.raceClass)} · {t("common:metres", { n: r.distance })} · {g.going(r.going)}
+                      </span>
+                      <span className="ml-auto whitespace-nowrap">
+                        <span className="text-ink-3">{t("common:word.odds")}</span> {r.odds ?? "-"}
+                      </span>
+                    </div>
+                    <div className="mt-0.5 text-ink-3">
+                      {t("common:word.draw")} <span className="text-ink">{r.draw ?? "-"}</span> · {t("common:word.weight")}{" "}
+                      <span className="text-ink">{r.weight ?? "-"}</span> · {t("common:word.time")} <span className="text-ink">{fmtT(r.finishTime) || "-"}</span>
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
+            <div className="mt-3 hidden overflow-x-auto sm:block">
               <table className={cardTable}>
                 <thead>
                   <tr>
                     <th>{t("common:word.date")}</th>
                     <th>{t("common:word.venue")}</th>
-                    <th className="hidden sm:table-cell">{t("common:word.class")}</th>
+                    <th>{t("common:word.class")}</th>
                     <th className="text-right!">{t("form.distance")}</th>
-                    <th className="hidden sm:table-cell">{t("form.going")}</th>
-                    <th className="hidden text-right! sm:table-cell">{t("common:word.draw")}</th>
-                    <th className="hidden text-right! sm:table-cell">{t("common:word.weight")}</th>
+                    <th>{t("form.going")}</th>
+                    <th className="text-right!">{t("common:word.draw")}</th>
+                    <th className="text-right!">{t("common:word.weight")}</th>
                     <th className="text-right!">{t("common:word.placing")}</th>
-                    <th className="hidden text-right! sm:table-cell">{t("common:word.time")}</th>
+                    <th className="text-right!">{t("common:word.time")}</th>
                     <th className="text-right!">{t("common:word.odds")}</th>
                   </tr>
                 </thead>
@@ -166,16 +257,16 @@ export function HorseFormModal({ horse, onClose }: { horse: CardHorse; onClose: 
                       <td className="whitespace-nowrap">
                         {g.venue(r.venue)} <span className="text-ink-3">{t("form.race", { n: r.raceNumber })}</span>
                       </td>
-                      <td className="hidden whitespace-nowrap sm:table-cell">{g.raceClass(r.raceClass)}</td>
+                      <td className="whitespace-nowrap">{g.raceClass(r.raceClass)}</td>
                       <td className="text-right tabular-nums">{r.distance}</td>
-                      <td className="hidden whitespace-nowrap text-ink-2 sm:table-cell">{g.going(r.going)}</td>
-                      <td className="hidden text-right tabular-nums sm:table-cell">{r.draw ?? "-"}</td>
-                      <td className="hidden text-right tabular-nums sm:table-cell">{r.weight ?? "-"}</td>
+                      <td className="whitespace-nowrap text-ink-2">{g.going(r.going)}</td>
+                      <td className="text-right tabular-nums">{r.draw ?? "-"}</td>
+                      <td className="text-right tabular-nums">{r.weight ?? "-"}</td>
                       <td className={cx("text-right tabular-nums whitespace-nowrap", r.finishPosition > 0 && r.finishPosition <= 3 && "font-semibold text-good")}>
                         {r.finishPosition > 0 ? r.finishPosition : "-"}
                         {r.fieldSize ? <span className="font-normal text-ink-3">/{r.fieldSize}</span> : null}
                       </td>
-                      <td className="hidden text-right tabular-nums sm:table-cell">{fmtT(r.finishTime) || "-"}</td>
+                      <td className="text-right tabular-nums">{fmtT(r.finishTime) || "-"}</td>
                       <td className="text-right tabular-nums">{r.odds ?? "-"}</td>
                     </tr>
                   ))}
@@ -190,67 +281,121 @@ export function HorseFormModal({ horse, onClose }: { horse: CardHorse; onClose: 
   );
 }
 
-// ---- Bet type picker ----
-
-export function BetTypePicker({
+// ---- Pool picker ----
+/** Desktop: HKJC-style side menu. Phones: scrolling pill row. */
+export function PoolMenu({
   value,
   onChange,
   dtAvailable,
   ttAvailable,
+  variant,
 }: {
-  value: BetTypeId;
-  onChange: (b: BetTypeId) => void;
+  value: Pool;
+  onChange: (p: Pool) => void;
   dtAvailable: boolean;
   ttAvailable: boolean;
+  variant: "side" | "row";
 }) {
   const { t } = useTranslation(["bet", "common"]);
-  const g = useGlossary();
-  const all: BetTypeId[] = ["win", "place", "quinella", "qpl", "trio", "tierce", "first4", "doubleTrio", "tripleTrio"];
-  return (
-    <div className={cx(pillRow, "mt-3")} role="group" aria-label={t("betTypeGroup")}>
-      {all.map((b) => {
-        const disabled = (b === "doubleTrio" && !dtAvailable) || (b === "tripleTrio" && !ttAvailable);
-        return (
-          <button
-            key={b}
-            className={cx(pill(value === b), "flex-none")}
-            aria-pressed={value === b}
-            disabled={disabled}
-            title={disabled ? t("notOffered") : ""}
-            onClick={() => onChange(b)}
-          >
-            {g.betType(b)}
+  const name = usePoolName();
+  const off = (p: Pool) => (p === "doubleTrio" && !dtAvailable) || (p === "tripleTrio" && !ttAvailable);
+  if (variant === "row")
+    return (
+      <div className={cx(pillRow, "mt-3")} role="group" aria-label={t("betTypeGroup")}>
+        {POOLS.map((p) => (
+          <button key={p} className={cx(pill(value === p), "flex-none")} aria-pressed={value === p} disabled={off(p)} title={off(p) ? t("notOffered") : ""} onClick={() => onChange(p)}>
+            {name(p)}
           </button>
-        );
-      })}
-    </div>
+        ))}
+      </div>
+    );
+  return (
+    <nav aria-label={t("betTypeGroup")} className="overflow-hidden rounded-card bg-surface shadow-card">
+      <div className="px-3 pt-2 pb-1 text-[13px] text-link">{t("pool.menu")}</div>
+      <ul className="divide-y divide-edge">
+        {POOLS.map((p) => (
+          <li key={p}>
+            <button
+              type="button"
+              className={cx(
+                "flex min-h-9 w-full cursor-pointer items-center px-3 text-left text-[13px] transition-colors disabled:cursor-not-allowed disabled:text-disabled",
+                value === p ? "bg-navy-700 font-medium text-white" : "text-ink enabled:hover:bg-sky-50"
+              )}
+              aria-current={value === p ? "true" : undefined}
+              disabled={off(p)}
+              title={off(p) ? t("notOffered") : ""}
+              onClick={() => onChange(p)}
+            >
+              {name(p)}
+            </button>
+          </li>
+        ))}
+      </ul>
+    </nav>
   );
 }
 
-// ---- Cost bar ----
-export function CostBar({
+/** Display name of a pool ("Win / Place" for the shared page). */
+export function usePoolName() {
+  const { t } = useTranslation(["bet", "common"]);
+  const g = useGlossary();
+  return (p: Pool) => (p === "wp" ? t("pool.wp") : g.betType(p));
+}
+
+// ---- Stake calculator ----
+export function StakeBar({
   combos,
-  cost,
-  onSubmit,
-  canSubmit,
+  unit,
+  onUnit,
+  onAdd,
+  canAdd,
 }: {
   combos: number;
-  cost: number;
-  onSubmit: () => void;
-  canSubmit: boolean;
+  unit: number;
+  onUnit: (n: number) => void;
+  onAdd: () => void;
+  canAdd: boolean;
 }) {
   const { t } = useTranslation(["bet", "common"]);
   const fmt = useFmt();
+  const [draft, setDraft] = useState(String(unit));
+  const bad = !(Number(draft) >= MIN_UNIT);
   return (
-    <div className="sticky bottom-3 z-30 mt-4 flex items-center gap-3 rounded-card bg-surface/95 p-3 shadow-pop backdrop-blur sm:gap-4 sm:p-4">
-      <div className="text-sm text-ink-2">
-        <span className="font-semibold text-ink tabular-nums">{fmt.num(combos)}</span>
-        <span className="hidden sm:inline">{t("cost.combinations")}</span> {t("cost.perUnit")}
+    <div className="mt-3 rounded-card bg-surface px-[13px] py-3 shadow-card">
+      <div className="mb-2 text-[15px] text-ink">{t("stake.title")}</div>
+      <div className="grid grid-cols-2 items-center gap-x-4 gap-y-3 sm:flex sm:flex-wrap">
+        <div className="text-[15px]">
+          {t("stake.combos")}: <strong className="font-medium tabular-nums">{combos ? fmt.num(combos) : "-"}</strong>
+        </div>
+        <label className="flex items-center gap-2 text-[15px]">
+          <span className="whitespace-nowrap">{t("stake.unit")}</span>
+          <span className="relative">
+            <span className="pointer-events-none absolute top-1/2 left-2.5 -translate-y-1/2 text-ink">$</span>
+            <input
+              type="number"
+              inputMode="numeric"
+              min={MIN_UNIT}
+              step={1}
+              className={cx(control, "w-24 pl-6 tabular-nums", bad && "border-bad")}
+              value={draft}
+              aria-invalid={bad}
+              onChange={(e) => {
+                setDraft(e.target.value);
+                const n = Math.floor(Number(e.target.value));
+                if (n >= MIN_UNIT) onUnit(n);
+              }}
+              onBlur={() => setDraft(String(unit))}
+            />
+          </span>
+        </label>
+        <div className="text-[15px] sm:ml-auto">
+          {t("stake.total")}: <strong className="font-medium tabular-nums">{combos ? fmt.money(combos * unit) : "-"}</strong>
+        </div>
+        <button className={cx(btnPrimary, "justify-self-end")} disabled={!canAdd || combos === 0} onClick={onAdd}>
+          {t("stake.add")}
+        </button>
       </div>
-      <div className={cx(figure, "ml-auto text-[26px] text-ink sm:text-[28px]")}>{fmt.money(cost)}</div>
-      <button className={btnPrimary} disabled={!canSubmit} onClick={onSubmit}>
-        {t("cost.placeBet")}
-      </button>
+      {bad && <p className="mt-2 text-[13px] text-bad">{t("stake.minUnit")}</p>}
     </div>
   );
 }
@@ -277,39 +422,73 @@ function settleText(d: SettleDetail | undefined, t: TFunction<["bet", "common"]>
 }
 
 // ---- Result modal ----
-export function ResultModal({ result, onClose }: { result: SettleResult; onClose: () => void }) {
+/** Outcome of every bet just placed from the slip; a running total when there's more than one. */
+export function ResultModal({ bets, onClose }: { bets: SettledBet[]; onClose: () => void }) {
   const { t } = useTranslation(["bet", "common"]);
   const fmt = useFmt();
+  const multi = bets.length > 1;
+  const sum = (f: (r: SettleResult) => number | null) => bets.reduce((s, b) => s + (f(b.result) ?? 0), 0);
+  const totalNet = sum((r) => r.net);
+  const anyHit = bets.some((b) => b.result.hit);
+  return (
+    <div className={modalBg} onClick={onClose}>
+      <div className={modal} role="dialog" aria-modal="true" aria-label={anyHit ? t("result.hit") : t("result.miss")} onClick={(e) => e.stopPropagation()}>
+        <div className="flex flex-col gap-4">
+          {bets.map((b) => (
+            <SettledCard key={b.item.id} bet={b} compact={multi} />
+          ))}
+        </div>
+        {multi && (
+          <div className="mt-4 flex items-baseline justify-between rounded-card bg-sky-150 px-[13px] py-3 text-navy-900">
+            <span className="font-bold">{t("result.total")}</span>
+            <span className="text-sm">
+              {t("result.cost")} {fmt.money(sum((r) => r.cost))} · {t("result.payout")} {fmt.money(sum((r) => r.payout))} ·{" "}
+              <strong className={cx("text-lg font-bold tabular-nums", totalNet >= 0 ? "text-good" : "text-bad")}>
+                {totalNet >= 0 ? "+" : ""}
+                {fmt.money(totalNet)}
+              </strong>
+            </span>
+          </div>
+        )}
+        <button className={cx(btn, "mt-5 w-full sm:w-auto")} onClick={onClose}>{t("common:action.close")}</button>
+      </div>
+    </div>
+  );
+}
+
+function SettledCard({ bet, compact }: { bet: SettledBet; compact: boolean }) {
+  const { t } = useTranslation(["bet", "common"]);
+  const fmt = useFmt();
+  const text = useSlipText();
+  const { item, result } = bet;
   const payoutStr = result.payout === null ? t("result.payoutUnknown") : fmt.money(result.payout);
   const netStr = result.net === null ? "—" : `${result.net >= 0 ? "+" : ""}${fmt.money(result.net)}`;
   return (
-    <div className={modalBg} onClick={onClose}>
-      <div className={modal} role="dialog" aria-modal="true" aria-label={result.hit ? t("result.hit") : t("result.miss")} onClick={(e) => e.stopPropagation()}>
-        <h2 className={cx("font-display text-[40px] leading-none tracking-[-0.02em]", result.hit ? "text-good" : "text-bad")}>
+    <section className="overflow-hidden rounded-card ring-1 ring-edge">
+      <div className="flex items-center gap-2 bg-navy-900 px-[13px] py-2 text-white">
+        <span className="min-w-0 truncate text-[15px] font-medium">{text.title(item)}</span>
+        <span className={cx("ml-auto flex-none rounded-full px-2.5 py-0.5 text-[13px] font-bold", result.hit ? "bg-good" : "bg-bad")}>
           {result.hit ? t("result.hit") : t("result.miss")}
-        </h2>
-        <p className="mt-3 text-sm text-ink-2">{settleText(result.detailInfo, t)}</p>
+        </span>
+      </div>
+      <div className="px-[13px] py-3">
+        <p className="text-[13px] text-ink-muted">{text.picks(item)}</p>
+        <p className="mt-1 text-sm text-ink">{settleText(result.detailInfo, t)}</p>
 
         {/* Finish order of every leg race — always shown, hit or miss. */}
-        <div className="mt-5 flex flex-wrap gap-3">
+        <div className="mt-3 flex flex-wrap gap-3">
           {result.legResults.map((lr) => (
-            <div
-              key={lr.raceNumber}
-              className={cx(
-                "flex-[1_1_160px] rounded-control px-3.5 py-3 ring-1",
-                lr.covered ? "bg-good-soft ring-good/25" : "bg-bad-soft ring-bad/20"
-              )}
-            >
-              <div className="mb-2 flex items-baseline justify-between">
-                <span className="font-display text-lg leading-none">{t("common:race", { n: lr.raceNumber })}</span>
-                <span className={cx("text-sm font-semibold", lr.covered ? "text-good" : "text-bad")}>{lr.covered ? t("result.covered") : t("result.missed")}</span>
+            <div key={lr.raceNumber} className={cx("flex-[1_1_160px] rounded-control px-3 py-2.5 ring-1", lr.covered ? "bg-good-soft ring-good/25" : "bg-bad-soft ring-bad/20")}>
+              <div className="mb-1.5 flex items-baseline justify-between">
+                <span className="font-medium">{t("common:race", { n: lr.raceNumber })}</span>
+                <span className={cx("text-sm font-medium", lr.covered ? "text-good" : "text-bad")}>{lr.covered ? t("result.covered") : t("result.missed")}</span>
               </div>
               <ol className="text-[13px]">
-                {lr.finishers.map((f) => (
+                {lr.finishers.slice(0, compact ? 4 : undefined).map((f) => (
                   <li key={`${f.position}-${f.horseNumber}`} className="flex gap-2 py-px">
-                    <span className="w-4 text-ink-3 tabular-nums">{f.position}</span>
-                    <span className="min-w-7 font-semibold tabular-nums">#{f.horseNumber}</span>
-                    <span className="truncate text-ink-2">
+                    <span className="w-4 text-ink-muted tabular-nums">{f.position}</span>
+                    <span className="min-w-7 font-medium tabular-nums">#{f.horseNumber}</span>
+                    <span className="truncate text-ink">
                       <Name kind="horse" code={f.horseCode} en={f.horseName} />
                     </span>
                   </li>
@@ -319,23 +498,23 @@ export function ResultModal({ result, onClose }: { result: SettleResult; onClose
           ))}
         </div>
 
-        <table className="mt-5 w-full border-collapse text-sm [&_td]:border-b [&_td]:border-edge [&_td]:py-2.5 [&_td:first-child]:text-ink-2 [&_td:last-child]:text-right [&_td:last-child]:font-medium [&_td:last-child]:tabular-nums [&_tr:last-child_td]:border-b-0">
+        <table className="mt-3 w-full border-collapse text-sm [&_td]:border-b [&_td]:border-edge [&_td]:py-2 [&_td:first-child]:text-ink [&_td:last-child]:text-right [&_td:last-child]:font-medium [&_td:last-child]:tabular-nums [&_tr:last-child_td]:border-b-0">
           <tbody>
             <tr><td>{t("result.poolDividend")}</td><td>{result.poolDividendText}</td></tr>
             <tr><td>{t("result.combosWon")}</td><td>{result.combosWon} / {result.combos}</td></tr>
+            <tr><td>{t("result.unit")}</td><td>{fmt.money(item.unit)}</td></tr>
             <tr><td>{t("result.cost")}</td><td>{fmt.money(result.cost)}</td></tr>
             <tr><td>{t("result.payout")}</td><td>{payoutStr}</td></tr>
             <tr>
-              <td className="border-t border-t-ink/25 pt-3.5">{t("result.net")}</td>
-              <td className={cx("border-t border-t-ink/25 pt-3.5")}>
-                <span className={cx(figure, "text-[28px]", result.net === null ? "text-ink" : result.net >= 0 ? "text-good" : "text-bad")}>{netStr}</span>
+              <td className="font-medium">{t("result.net")}</td>
+              <td>
+                <span className={cx(figure, "text-[22px]", result.net === null ? "text-ink" : result.net >= 0 ? "text-good" : "text-bad")}>{netStr}</span>
               </td>
             </tr>
           </tbody>
         </table>
-        <button className={cx(btn, "mt-5 w-full sm:w-auto")} onClick={onClose}>{t("common:action.close")}</button>
       </div>
-    </div>
+    </section>
   );
 }
 
@@ -540,14 +719,13 @@ export function HistoryPage({
 function Stat({ label, big, tone, children }: { label: string; big?: boolean; tone?: string; children: ReactNode }) {
   return (
     <div className={cx("flex min-w-0 flex-col", big && "col-span-2 sm:col-span-1")}>
-      <span className="text-xs font-medium text-ink-2">{label}</span>
-      <strong className={cx(figure, "mt-2 font-normal", big ? "text-[40px]" : "text-[26px]", tone ?? "text-ink")}>{children}</strong>
+      <span className="text-[13px] text-ink-muted">{label}</span>
+      <strong className={cx(figure, "mt-2", big ? "text-[32px]" : "text-[22px]", tone ?? "text-ink")}>{children}</strong>
     </div>
   );
 }
 
-/** "20260923" → Date at noon HK time (safe to format in any timezone). */
-export const ymd = (d: string) => new Date(`${d.slice(0, 4)}-${d.slice(4, 6)}-${d.slice(6, 8)}T12:00:00+08:00`);
+export { ymd };
 
 /** Compact summary of one leg's picks. Stored in history as-is — keep the 膽/腳 format. */
 export function legSummary(leg: RaceLeg): string {

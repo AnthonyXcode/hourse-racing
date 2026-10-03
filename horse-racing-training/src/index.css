@@ -1,29 +1,57 @@
 @import "tailwindcss";
 
-/* Design tokens. Each --color-* becomes bg-*, text-*, border-* etc.
+/* Design tokens — HKJC-style theme, see DESIGN.md (§2, §9). Each --color-* becomes bg-*, text-*, border-* etc.
    Chart colors are mirrored as hex in src/analyzer/charts.tsx (SVG attributes can't read CSS vars).
-   Fonts load from Google Fonts in index.html. */
+   Fonts load from Google Fonts in index.html. Legacy names (canvas, surface-2, ink-2, accent…) are kept
+   as aliases so older screens pick up the theme. */
 @theme {
-  --font-sans: "Inter", "PingFang HK", "Noto Sans TC", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --font-display: "DM Serif Display", "Songti TC", "Noto Serif TC", Georgia, "Times New Roman", serif;
+  --font-sans: "Noto Sans", "Noto Sans TC", "PingFang HK", system-ui, -apple-system, "Segoe UI", sans-serif;
+  /* one family everywhere: headings use the sans at weight 500 */
+  --font-display: "Noto Sans", "Noto Sans TC", "PingFang HK", system-ui, sans-serif;
 
-  /* surfaces (warm) */
-  --color-canvas: #fbf9f9;
+  /* brand / structure */
+  --color-navy-900: #122c68;
+  --color-navy-700: #173e96;
+  --color-navy-600: #17368b;
+  --color-link: #003c84;
+  --color-slate: #6176a0;
+  --color-sky-50: #e8f0fe;
+  --color-sky-100: #e2edf6;
+  --color-sky-150: #dbe6ef;
+  --color-gold: #fecf13;
+  --color-gold-hover: #f2c200;
+
+  /* surfaces */
+  --color-canvas: #f4f4f4;
+  --color-canvas-2: #e7e7e7;
   --color-surface: #ffffff;
-  --color-surface-2: #f1eded;
-  --color-surface-3: #e7e1e0;
+  --color-surface-2: #f6f6f6; /* zebra rows, filled controls */
+  --color-surface-3: #e7e7e7;
+  --color-zebra: #f6f6f6;
   /* hairline for dividers and outlines */
-  --color-edge: rgb(88 64 50 / 0.16);
+  --color-edge: #dee2e6;
+  --color-line: #dee2e6;
+  --color-line-strong: #999999;
+  --color-disabled: #cccccc;
 
   /* text */
-  --color-ink: #23201d;
-  --color-ink-2: #5e564e;
-  --color-ink-3: #806d63;
+  --color-ink: #333333;
+  --color-ink-strong: #000000;
+  --color-ink-2: #555a61;
+  --color-ink-3: #6a6d73;
+  --color-ink-muted: #6a6d73;
 
-  /* the one brand accent */
-  --color-accent: #0042e6;
-  --color-accent-hover: #0036bd;
-  --color-accent-soft: #e8eefd;
+  /* accent = navy (selected / active) */
+  --color-accent: #173e96;
+  --color-accent-hover: #122c68;
+  --color-accent-soft: #e2edf6;
+
+  /* odds signals (reserved meanings) */
+  --color-odds-fav: #f03939;
+  --color-odds-drop20: #2aa217;
+  --color-odds-drop50: #993300;
+  --color-turf: #59b814;
+  --color-awt: #8b5a2b;
 
   /* status: profit/hit vs loss/miss only */
   --color-good: #1d7a47;
@@ -32,27 +60,29 @@
   --color-bad-soft: #fbeceb;
 
   /* chart series (see C in charts.tsx) */
-  --color-accent2: #eb6834;
+  --color-accent2: #e0a800;
   --color-warn: #b45309;
 
   /* bet-slip roles */
-  --color-leg: #e8eefd;
-  --color-leg-bd: #0042e6;
-  --color-banker: #fbf0d9;
+  --color-leg: #e8f0fe;
+  --color-leg-bd: #173e96;
+  --color-banker: #fff5cc;
   --color-banker-bd: #a86a12;
 
-  --radius-card: 20px;
-  --radius-control: 12px;
+  --radius-xs: 2px;
+  --radius-card: 4px;
+  --radius-control: 6px;
+  --radius-pill: 20px;
+  --radius-sheet: 15px;
 
-  --shadow-card: 0 0 0 1px rgb(88 64 50 / 0.12), 0 1px 2px rgb(88 64 50 / 0.06);
-  --shadow-pop: 0 0 0 1px rgb(88 64 50 / 0.12), 0 16px 40px rgb(35 32 29 / 0.14);
-  --shadow-btn: 0 0 0 1px rgb(88 64 50 / 0.16), 0 1px 1px rgb(88 64 50 / 0.06);
+  --shadow-card: 0 3px 5px rgb(0 0 0 / 0.05);
+  --shadow-pop: 0 2px 34px rgb(0 0 0 / 0.3);
+  --shadow-btn: 0 0 0 1px #dee2e6;
 }
 
 @layer base {
   body {
     @apply bg-canvas font-sans text-ink antialiased;
-    letter-spacing: -0.01em;
   }
   :focus-visible {
     @apply outline-2 outline-offset-2 outline-accent;
@@ -73,7 +103,7 @@ body:lang(zh-Hant-HK) {
    chevron (ink-3) inset like the text, and keep text clear of it. Unlayered: beats `px-3`. */
 select {
   appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M3 4.5 6 7.5 9 4.5' fill='none' stroke='%23806d63' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M3 4.5 6 7.5 9 4.5' fill='none' stroke='%236a6d73' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 0.75rem center;
   background-size: 12px;

@@ -30,7 +30,7 @@ function GradientFlow() {
   return (
     <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
       <motion.div
-        className="absolute inset-y-0 left-0 w-[200%] bg-[linear-gradient(90deg,#ffffff_0%,#86a6f2_25%,#ffffff_50%,#86a6f2_75%,#ffffff_100%)]"
+        className="absolute inset-y-0 left-0 w-[200%] bg-[linear-gradient(90deg,#ffffff_0%,#b9cdee_25%,#ffffff_50%,#b9cdee_75%,#ffffff_100%)]"
         animate={{ x: ["0%", "-50%"] }}
         transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
       />

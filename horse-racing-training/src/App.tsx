@@ -1,16 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { api } from "./api";
-import { BET_TYPES, countCombos, cost } from "../shared/betEngine/index";
-import type {
-  MeetingRef,
-  MeetingDetail,
-  RaceCard,
-  BetTypeId,
-  BetSelection,
-  SettleResult,
-  HistoryEntry,
-} from "../shared/types";
-import { RaceCardTable, BetTypePicker, CostBar, ResultModal, ResultPanel, HistoryPage, legSummary, ymd, type Role } from "./ui";
+import { BET_TYPES, countCombos } from "../shared/betEngine/index";
+import type { MeetingRef, MeetingDetail, RaceCard, BetTypeId, BetSelection, HistoryEntry } from "../shared/types";
+import { RaceCardTable, PoolMenu, StakeBar, ResultModal, ResultPanel, HistoryPage, emptyPicks, legSummary, usePoolName, ymd, type PickCol, type Picks, type Pool } from "./ui";
+import { BetSlip } from "./BetSlip";
+import { MIN_UNIT, scaleResult, type SettledBet, type SlipItem } from "./slip";
 import type { RaceResult } from "../shared/types";
 import { AnalyzerPage } from "./analyzer/AnalyzerPage";
 import { MomentumPage } from "./momentum/MomentumPage";
@@ -18,14 +12,13 @@ import { SettingsPage } from "./SettingsPage";
 import { useTranslation } from "react-i18next";
 import { useGlossary } from "./i18n/glossary";
 import { LangSwitch, useFmt } from "./i18n/useLanguage";
-import { MobileNav } from "./MobileNav";
 import { track } from "./analytics";
 import { Footer, LEGAL_VIEWS, LegalDoc, SiteMap } from "./LegalPages";
 import { PicksBanner } from "./momentum/PicksBanner";
 import { useCutoffNotifications } from "./momentum/notify";
 import { RaceAnalysisPanel } from "./RaceAnalysisPanel";
 import { useSeo } from "./seo";
-import { Display, btn, container, control, cx, errorBox, field, fieldLabel, panel, pill, pillRow } from "./kit";
+import { btnPill, chipBtn, container, control, cx, errorBox, panel, pill, pillRow } from "./kit";
 
 /** Publish the sticky header's height as --header-h so other sticky bars can sit just below it. */
 function useHeaderHeightVar() {
@@ -62,13 +55,14 @@ const TABS = [
   ["momentum", "nav.momentum"],
   ["settings", "nav.settings"],
 ] as const satisfies readonly (readonly [View, `nav.${string}`])[];
+/** Primary tab: HKJC-style block, navy when active. */
 const navBtn = (on: boolean) =>
   on
-    ? "inline-flex h-9 flex-none cursor-pointer items-center rounded-full bg-surface-2 px-3.5 text-sm font-medium whitespace-nowrap text-ink"
-    : "inline-flex h-9 flex-none cursor-pointer items-center rounded-full px-3.5 text-sm font-medium whitespace-nowrap text-ink-2 transition-colors hover:text-ink";
+    ? "inline-flex h-10 flex-none cursor-pointer items-center bg-navy-700 px-4 text-[15px] font-medium whitespace-nowrap text-white"
+    : "inline-flex h-10 flex-none cursor-pointer items-center px-4 text-[15px] whitespace-nowrap text-ink transition-colors hover:bg-sky-50";
 /** A race picked as a DT/TT leg but not the one being edited. */
 const pickedLeg =
-  "inline-flex h-9 flex-none cursor-pointer items-center justify-center rounded-full bg-accent-soft px-3.5 text-sm font-medium whitespace-nowrap text-accent";
+  "inline-flex size-8 flex-none cursor-pointer items-center justify-center rounded-full bg-sky-150 text-[15px] font-medium text-navy-900 ring-2 ring-navy-700";
 
 /** Tab named by ?tab= in the URL; unknown or missing → the default tab. */
 function readView(): View {
@@ -96,27 +90,24 @@ function useViewParam(): [View, (v: View) => void] {
   return [view, setView];
 }
 
-interface Picks {
-  bankers: number[];
-  legs: number[];
-}
-const emptyPicks = (): Picks => ({ bankers: [], legs: [] });
-
 export default function App() {
   const [days, setDays] = useState<MeetingRef[]>([]);
   const [meetingKey, setMeetingKey] = useState<string>(""); // "date_venue"
   const [meeting, setMeeting] = useState<MeetingDetail | null>(null);
   const [activeRace, setActiveRace] = useState(1);
-  const [betType, setBetType] = useState<BetTypeId>("place");
+  const [pool, setPool] = useState<Pool>("wp");
   const [cards, setCards] = useState<Record<number, RaceCard>>({});
   const [picks, setPicks] = useState<Record<number, Picks>>({});
   const [editRace, setEditRace] = useState(1);
   const [dtLegs, setDtLegs] = useState<number[]>([]); // chosen leg races for DT/TT
-  const [result, setResult] = useState<SettleResult | null>(null);
+  const [unit, setUnit] = useState(MIN_UNIT);
+  const [slip, setSlip] = useState<SlipItem[]>([]);
+  const [settled, setSettled] = useState<SettledBet[] | null>(null);
   const [error, setError] = useState<string>("");
   const { t } = useTranslation(["common", "bet"]);
   useCutoffNotifications();
   const g = useGlossary();
+  const poolName = usePoolName();
   const fmt = useFmt();
   const [view, setView] = useViewParam();
   useSeo(view);
@@ -171,7 +162,6 @@ export default function App() {
     if (!date || !venue) return;
     setPicks({});
     setCards({});
-    setResult(null);
     api
       .meeting(date, venue)
       .then((m) => {
@@ -198,6 +188,8 @@ export default function App() {
       .catch((e) => setError(String(e)));
   }, [openSig]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  /** The engine bet type behind the pool page (Win/Place settles as Win and/or Place). */
+  const betType: BetTypeId = pool === "wp" ? "win" : pool;
   const legCount = BET_TYPES[betType].legRaces; // 1, 2 (DT), or 3 (TT)
 
   const dtPools = meeting?.doubleTrioPools ?? [];
@@ -240,90 +232,116 @@ export default function App() {
       .catch((e) => setError(String(e)));
   }, [date, venue, editRace, cards]);
 
-  const bankerEnabled = BET_TYPES[betType].banker;
+  const bankerEnabled = pool !== "wp" && BET_TYPES[betType].banker;
+  const bankerMax = BET_TYPES[betType].depth - 1;
 
-  function roleOf(rn: number, horse: number): Role {
-    const p = picks[rn];
-    if (!p) return "none";
-    if (p.bankers.includes(horse)) return "banker";
-    if (p.legs.includes(horse)) return "leg";
-    return "none";
-  }
-
-  // Cycle none → leg → banker(if enabled) → none.
-  function cycle(rn: number, horse: number) {
+  // Tick / untick a box. Banker and Select are exclusive for a horse; Win and Place are independent.
+  function toggle(rn: number, col: PickCol, horse: number) {
     setPicks((prev) => {
-      const p = prev[rn] ?? emptyPicks();
-      const role = p.bankers.includes(horse) ? "banker" : p.legs.includes(horse) ? "leg" : "none";
-      let bankers = p.bankers.filter((h) => h !== horse);
-      let legs = p.legs.filter((h) => h !== horse);
-      if (role === "none") legs = [...legs, horse];
-      else if (role === "leg") {
-        if (bankerEnabled) bankers = [...bankers, horse];
-        // else: clears
-      }
-      // role === "banker" → cleared (already filtered out)
-      return { ...prev, [rn]: { bankers, legs } };
+      const p = { ...(prev[rn] ?? emptyPicks()) };
+      const on = p[col].includes(horse);
+      p[col] = on ? p[col].filter((h) => h !== horse) : [...p[col], horse];
+      if (!on && col === "bankers") p.legs = p.legs.filter((h) => h !== horse);
+      if (!on && col === "legs") p.bankers = p.bankers.filter((h) => h !== horse);
+      return { ...prev, [rn]: p };
     });
   }
 
-  // Build the selection DTO. Non-banker pools fold bankers into legs.
-  const selection = useMemo<BetSelection>(() => {
-    // Engine treats pool = bankers ∪ legs, and counts combos from leg count
-    // (excluding bankers). So keep them disjoint. Non-banker pools fold any
-    // banker-tagged picks back into plain legs.
+  // Field: every runner in a column (bankers stay bankers).
+  function field(rn: number, col: PickCol, on: boolean) {
+    const runners = (cards[rn]?.entries ?? []).filter((e) => !e.isScratched).map((e) => e.horseNumber);
+    setPicks((prev) => {
+      const p = { ...(prev[rn] ?? emptyPicks()) };
+      p[col] = on ? runners.filter((h) => col !== "legs" || !p.bankers.includes(h)) : [];
+      return { ...prev, [rn]: p };
+    });
+  }
+
+  // The bets the current ticks make. Win/Place can make two; other pools one.
+  // Engine counts combos from legs excluding bankers, so keep them disjoint; pools without
+  // bankers fold any banker ticks back into legs.
+  const selections = useMemo<BetSelection[]>(() => {
+    if (pool === "wp") {
+      const p = picks[activeRace] ?? emptyPicks();
+      return (["win", "place"] as const)
+        .filter((c) => p[c].length)
+        .map((c) => ({ type: c, raceLegs: [{ raceNumber: activeRace, bankers: [], legs: p[c] }] }));
+    }
     const raceLegs = legRaces.map((rn) => {
       const p = picks[rn] ?? emptyPicks();
-      return bankerEnabled
-        ? { raceNumber: rn, bankers: p.bankers, legs: p.legs }
-        : { raceNumber: rn, bankers: [], legs: [...p.bankers, ...p.legs] };
+      return bankerEnabled ? { raceNumber: rn, bankers: p.bankers, legs: p.legs } : { raceNumber: rn, bankers: [], legs: [...p.bankers, ...p.legs] };
     });
-    return { type: betType, raceLegs };
-  }, [legRaces, picks, betType, bankerEnabled]);
+    return [{ type: betType, raceLegs }];
+  }, [pool, legRaces, picks, betType, bankerEnabled, activeRace]);
 
-  const combos = countCombos(selection);
-  const totalCost = cost(selection);
-  const canSubmit = combos > 0 && (meeting?.hasResults ?? false);
+  const combos = selections.reduce((s, sel) => s + countCombos(sel), 0);
+  const canAdd = meeting?.hasResults ?? false;
 
-  async function submit() {
+  // Stake calculator → bet slip; clear the ticks that went in.
+  function addToSlip() {
     if (!date || !venue) return;
+    const items = selections
+      .map((sel): SlipItem | null => {
+        const n = countCombos(sel);
+        return n
+          ? { id: `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`, date, venue: venue as MeetingRef["venue"], betType: sel.type, selection: sel, unit, combos: n, cost: n * unit }
+          : null;
+      })
+      .filter((x): x is SlipItem => x !== null);
+    if (!items.length) return;
+    setSlip((s) => [...s, ...items]);
+    setPicks((prev) => {
+      const next = { ...prev };
+      for (const rn of pool === "wp" ? [activeRace] : legRaces) delete next[rn];
+      return next;
+    });
+  }
+
+  // Place bet → Confirm: settle each slip bet, record it in history, show the outcome.
+  async function confirmSlip() {
     setError("");
-    try {
-      const r = await api.settle({ date, venue: venue as MeetingRef["venue"], selection });
-      setResult(r);
-      track("practice_bet", { bet_type: betType, combos, hit: r.hit });
-      // Record the settled bet to history.
-      const picks = selection.raceLegs.map((l) => `R${l.raceNumber} ${legSummary(l)}`).join("  |  ");
-      const multi = r.legResults.length > 1;
-      const resultStr = r.legResults
-        .map((lr) => {
-          const top4 = lr.finishers.slice(0, 4).map((f) => f.horseNumber).join("-");
-          return multi ? `R${lr.raceNumber}:${top4}` : top4;
-        })
-        .join("  ");
-      const entry: HistoryEntry = {
-        id: `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
-        ts: new Date().toISOString(),
-        date,
-        venue: venue as MeetingRef["venue"],
-        betType,
-        betLabel: BET_TYPES[betType].label,
-        picks,
-        result: resultStr,
-        combos,
-        cost: totalCost,
-        hit: r.hit,
-        payout: r.payout,
-        net: r.net,
-        poolDividendText: r.poolDividendText,
-      };
-      api.addHistory(entry).catch((e) => setError(String(e)));
-    } catch (e) {
-      setError(String(e));
+    const done: SettledBet[] = [];
+    for (const item of slip) {
+      try {
+        const r = scaleResult(await api.settle({ date: item.date, venue: item.venue, selection: item.selection }), item.unit);
+        done.push({ item, result: r });
+        track("practice_bet", { bet_type: item.betType, combos: item.combos, hit: r.hit });
+        const multi = r.legResults.length > 1;
+        const resultStr = r.legResults
+          .map((lr) => {
+            const top4 = lr.finishers.slice(0, 4).map((f) => f.horseNumber).join("-");
+            return multi ? `R${lr.raceNumber}:${top4}` : top4;
+          })
+          .join("  ");
+        const entry: HistoryEntry = {
+          id: item.id,
+          ts: new Date().toISOString(),
+          date: item.date,
+          venue: item.venue,
+          betType: item.betType,
+          betLabel: BET_TYPES[item.betType].label,
+          picks: item.selection.raceLegs.map((l) => `R${l.raceNumber} ${legSummary(l)}`).join("  |  "),
+          result: resultStr,
+          combos: item.combos,
+          cost: r.cost,
+          hit: r.hit,
+          payout: r.payout,
+          net: r.net,
+          poolDividendText: r.poolDividendText,
+        };
+        api.addHistory(entry).catch((e) => setError(String(e)));
+      } catch (e) {
+        setError(String(e));
+        break; // keep this and later bets on the slip
+      }
     }
+    const ids = new Set(done.map((d) => d.item.id));
+    setSlip((s) => s.filter((it) => !ids.has(it.id)));
+    if (done.length) setSettled(done);
   }
 
   const card = cards[editRace];
+  const rp = picks[editRace] ?? emptyPicks();
 
   /** Display-only leg summary ("膽 1,2  腳 3" / "B 1,2  L 3"); history keeps legSummary's stored format. */
   const legLabel = (leg: { bankers: number[]; legs: number[] } | undefined) => {
@@ -349,28 +367,31 @@ export default function App() {
 
   return (
     <div className="flex min-h-dvh flex-col">
-      <header ref={headerRef} className="sticky top-0 z-40 border-b border-edge bg-canvas/80 backdrop-blur-md">
-        <div className={cx(container, "flex h-16 items-center gap-6")}>
-          <h1 className="flex-none font-display text-xl leading-none tracking-[-0.01em] text-ink lg:text-[22px]">{t("appName")}</h1>
-          {/* Desktop: inline tabs (+ meeting picker on Bet). Below lg: menu button → MobileNav sheet. */}
-          <nav aria-label={t("nav.sections")} className="hidden gap-1 lg:flex">
+      <header ref={headerRef} className="sticky top-0 z-40 shadow-card">
+        {/* Navy top bar: our own name (not HKJC's) + practice badge, language. */}
+        <div className="bg-navy-900 text-white">
+          <div className={cx(container, "flex h-12 items-center gap-3")}>
+            <h1 className="flex-none text-lg leading-none font-bold">{t("appName")}</h1>
+            <span className="rounded-full border border-gold px-2 py-0.5 text-[11px] leading-none font-medium text-gold">{t("practice")}</span>
+            <LangSwitch className="ml-auto" />
+          </div>
+        </div>
+        {/* Primary tabs: navy block marks the current one; scrolls sideways on phones. */}
+        <div className="border-b border-edge bg-surface">
+          <nav aria-label={t("nav.sections")} className={cx(container, "flex overflow-x-auto")}>
             {TABS.map(([v, key]) => (
               <button key={v} className={navBtn(view === v)} aria-current={view === v ? "page" : undefined} onClick={() => setView(v)}>
                 {t(key)}
               </button>
             ))}
           </nav>
-          <div className="hidden lg:ml-auto lg:block">
-            <LangSwitch />
-          </div>
-          <MobileNav title={t("appName")} tabs={TABS.map(([v, key]) => [v, t(key)] as [View, string])} view={view} onSelect={setView} />
         </div>
         {/* Featured Combined picks (next race, else the last one): slim strip inside the sticky header, so
             --header-h covers it. Every app tab; not on legal pages. */}
         {!(LEGAL_VIEWS as readonly string[]).includes(view) && <PicksBanner onSelect={selectView} linked={view !== "momentum"} />}
       </header>
 
-      <main className={cx(container, "flex-1 pb-12")}>
+      <main className={cx(container, "flex-1 pb-12", view === "bet" && "pb-24 lg:pb-12")}>
         {error && <div className={errorBox}>{error}</div>}
 
         {/* Analyzer performance. Stays mounted once opened so the range, filters
@@ -393,147 +414,162 @@ export default function App() {
         )}
 
         {view === "bet" && (
-          // Page head: title left, racing-day picker right (stacked on phones) — same as Momentum.
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-            <Display
-              sub={
-                meeting
-                  ? t("bet:subMeeting", { date: fmt.date(ymd(meeting.date)), venue: g.venue(meeting.venue), races: t("races", { count: meeting.races.length }) })
-                  : t("bet:subEmpty")
-              }
-            >
-              {t("bet:title")}
-            </Display>
-            <div className={cx(field, "w-full sm:w-auto sm:pb-2")}>
-              <label htmlFor="bDay" className={fieldLabel}>
-                {t("bet:racingDay")}
-              </label>
-              {meetingSelect}
+          // HKJC layout: pool menu · race card · bet slip (one column on phones, slip as a bottom bar).
+          <div className="mt-4 grid items-start gap-3 lg:grid-cols-[160px_minmax(0,1fr)_260px]">
+            <div className="hidden lg:block">
+              <PoolMenu variant="side" value={pool} onChange={setPool} dtAvailable={dtPools.length > 0} ttAvailable={ttPools.length > 0} />
             </div>
-          </div>
-        )}
 
-        {view === "bet" && meeting && (
-          <>
-            {/* Race tabs (browse + single-race selection) */}
-            <nav aria-label={t("bet:racesNav")} className={cx(pillRow, "mt-5")}>
-              {meeting.races.map((rn) => (
-                <button
-                  key={rn}
-                  className={cx(pill(rn === activeRace), "min-w-12 flex-none")}
-                  aria-current={rn === activeRace ? "true" : undefined}
-                  onClick={() => {
-                    setActiveRace(rn);
-                    if (legRaces.length <= 1) setEditRace(rn);
-                  }}
-                >
-                  {t("raceShort", { n: rn })}
-                </button>
-              ))}
-            </nav>
-
-            <BetTypePicker
-              value={betType}
-              onChange={setBetType}
-              dtAvailable={dtPools.length > 0}
-              ttAvailable={ttPools.length > 0}
-            />
-
-            {/* Multi-race leg chooser */}
-            {legCount > 1 && (
-              <div className={cx(panel, "mt-4 flex flex-col gap-4")}>
-                {officialPools.length > 0 && (
-                  <div>
-                    <div className="mb-2 text-xs font-medium text-ink-2">{t("bet:pools", { type: g.betType(betType) })}</div>
-                    <div className={pillRow}>
-                      {officialPools.map((pool) => {
-                        const active = [...dtLegs].sort((a, b) => a - b).join() === [...pool].sort((a, b) => a - b).join();
+            <div className="min-w-0">
+              {/* Page head: pool + meeting, then meeting picker and race chips. */}
+              <div className="overflow-hidden rounded-card bg-surface shadow-card">
+                <div className="flex flex-wrap items-baseline gap-x-3 gap-y-0.5 bg-navy-700 px-[13px] py-2 text-white">
+                  <h2 className="text-[15px] font-medium">{poolName(pool)}</h2>
+                  <span className="text-[13px] text-white/85">
+                    {meeting
+                      ? t("bet:subMeeting", { date: fmt.date(ymd(meeting.date)), venue: g.venue(meeting.venue), races: t("races", { count: meeting.races.length }) })
+                      : t("bet:subEmpty")}
+                  </span>
+                </div>
+                <div className="flex flex-col gap-2.5 px-[13px] py-2.5 sm:flex-row sm:items-center sm:gap-4">
+                  <label htmlFor="bDay" className="sr-only">
+                    {t("bet:racingDay")}
+                  </label>
+                  {meetingSelect}
+                  {meeting && legCount === 1 && (
+                    <nav aria-label={t("bet:racesNav")} className="-mx-[13px] flex gap-2 overflow-x-auto px-[13px] pt-0.5 sm:mx-0 sm:px-0">
+                      {meeting.races.map((rn) => {
+                        const on = rn === activeRace;
+                        const surface = cards[rn]?.surface;
                         return (
-                          <button
-                            key={pool.join()}
-                            className={cx(pill(active), "flex-none")}
-                            aria-pressed={active}
-                            onClick={() => { setDtLegs(pool); setEditRace(pool[0]!); }}
-                          >
-                            {pool.map((rn) => t("raceShort", { n: rn })).join(" · ")}
-                          </button>
+                          <span key={rn} className={cx("flex-none border-b-[3px] pb-1", on ? (surface === "AWT" ? "border-awt" : "border-turf") : "border-transparent")}>
+                            <button
+                              className={chipBtn(on)}
+                              aria-current={on ? "true" : undefined}
+                              aria-label={t("common:race", { n: rn })}
+                              onClick={() => {
+                                setActiveRace(rn);
+                                setEditRace(rn);
+                              }}
+                            >
+                              {rn}
+                            </button>
+                          </span>
                         );
                       })}
+                    </nav>
+                  )}
+                </div>
+              </div>
+
+              <div className="lg:hidden">
+                <PoolMenu variant="row" value={pool} onChange={setPool} dtAvailable={dtPools.length > 0} ttAvailable={ttPools.length > 0} />
+              </div>
+
+              {meeting && (
+                <>
+                  {/* Multi-race leg chooser */}
+                  {legCount > 1 && (
+                    <div className={cx(panel, "mt-3 flex flex-col gap-4")}>
+                      {officialPools.length > 0 && (
+                        <div>
+                          <div className="mb-2 text-[13px] text-ink">{t("bet:pools", { type: g.betType(betType) })}</div>
+                          <div className={pillRow}>
+                            {officialPools.map((op) => {
+                              const active = [...dtLegs].sort((a, b) => a - b).join() === [...op].sort((a, b) => a - b).join();
+                              return (
+                                <button
+                                  key={op.join()}
+                                  className={cx(pill(active), "flex-none")}
+                                  aria-pressed={active}
+                                  onClick={() => {
+                                    setDtLegs(op);
+                                    setEditRace(op[0]!);
+                                  }}
+                                >
+                                  {op.map((rn) => t("raceShort", { n: rn })).join(" · ")}
+                                </button>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      )}
+                      <div>
+                        <div className="mb-2 text-[13px] text-ink">{t("bet:pickAny", { n: legCount, picked: dtLegs.length })}</div>
+                        <div className="flex flex-wrap gap-2">
+                          {meeting.races.map((rn) => {
+                            const picked = dtLegs.includes(rn);
+                            const isEdit = rn === editRace && picked;
+                            return (
+                              <button
+                                key={rn}
+                                className={isEdit ? chipBtn(true) : picked ? pickedLeg : chipBtn(false)}
+                                aria-pressed={picked}
+                                aria-label={t("common:race", { n: rn })}
+                                disabled={!picked && dtLegs.length >= legCount}
+                                onClick={() => toggleLeg(rn)}
+                              >
+                                {rn}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                      <p className="text-xs text-ink-muted">{t("bet:customNote")}</p>
                     </div>
-                  </div>
-                )}
-                <div>
-                  <div className="mb-2 text-xs font-medium text-ink-2">
-                    {t("bet:pickAny", { n: legCount, picked: dtLegs.length })}
-                  </div>
-                  <div className={pillRow}>
-                    {meeting.races.map((rn) => {
-                      const picked = dtLegs.includes(rn);
-                      const isEdit = rn === editRace && picked;
-                      return (
+                  )}
+
+                  {/* Edit which leg's picks you're entering. */}
+                  {legCount > 1 && legRaces.length > 0 && (
+                    <div className="mt-3">
+                      <div className="mb-2 text-[13px] text-ink">{t("bet:editing")}</div>
+                      <div className={pillRow}>
+                        {legRaces.map((rn) => (
+                          <button key={rn} className={cx(pill(rn === editRace), "flex-none")} aria-pressed={rn === editRace} onClick={() => setEditRace(rn)}>
+                            {t("raceShort", { n: rn })}
+                            <em className={cx("not-italic", rn === editRace ? "text-white/75" : "text-ink-muted")}>
+                              {legLabel(selections[0]?.raceLegs.find((l) => l.raceNumber === rn))}
+                            </em>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {card ? (
+                    <RaceCardTable
+                      card={card}
+                      pool={pool}
+                      picks={rp}
+                      onToggle={(col, h) => toggle(editRace, col, h)}
+                      onField={(col, on) => field(editRace, col, on)}
+                      bankerEnabled={bankerEnabled}
+                      bankerMax={bankerMax}
+                      head={
                         <button
-                          key={rn}
-                          className={cx(isEdit ? pill(true) : picked ? pickedLeg : pill(false), "min-w-12 flex-none")}
-                          aria-pressed={picked}
-                          disabled={!picked && dtLegs.length >= legCount}
-                          onClick={() => toggleLeg(rn)}
+                          className={btnPill}
+                          disabled={!meeting.hasResults}
+                          title={meeting.hasResults ? "" : t("bet:noResultsMeeting")}
+                          onClick={() => date && venue && api.result(date, venue, editRace).then(setRaceResult).catch((e) => setError(String(e)))}
                         >
-                          {t("raceShort", { n: rn })}
+                          {t("bet:showResult", { race: t("raceShort", { n: editRace }) })}
                         </button>
-                      );
-                    })}
-                  </div>
-                </div>
-                <p className="text-xs text-ink-3">{t("bet:customNote")}</p>
-              </div>
-            )}
+                      }
+                    />
+                  ) : (
+                    <div className={cx(panel, "mt-3 text-center text-ink-muted")}>{t("bet:loadingRace", { n: editRace })}</div>
+                  )}
 
-            {/* Edit which leg's picks you're entering. */}
-            {legCount > 1 && legRaces.length > 0 && (
-              <div className="mt-4">
-                <div className="mb-2 text-xs font-medium text-ink-2">{t("bet:editing")}</div>
-                <div className={pillRow}>
-                  {legRaces.map((rn) => (
-                    <button key={rn} className={cx(pill(rn === editRace), "flex-none")} aria-pressed={rn === editRace} onClick={() => setEditRace(rn)}>
-                      {t("raceShort", { n: rn })}
-                      <em className={cx("not-italic", rn === editRace ? "text-white/70" : "text-ink-3")}>
-                        {legLabel(selection.raceLegs.find((l) => l.raceNumber === rn))}
-                      </em>
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
+                  <StakeBar combos={combos} unit={unit} onUnit={setUnit} onAdd={addToSlip} canAdd={canAdd} />
+                  {!meeting.hasResults && <p className="mt-3 text-[13px] text-warn">{t("bet:settlementDisabled")}</p>}
 
-            <div className="mt-5 flex justify-end">
-              <button
-                className={btn}
-                disabled={!meeting.hasResults}
-                title={meeting.hasResults ? "" : t("bet:noResultsMeeting")}
-                onClick={() =>
-                  date && venue && api.result(date, venue, editRace).then(setRaceResult).catch((e) => setError(String(e)))
-                }
-              >
-                {t("bet:showResult", { race: t("raceShort", { n: editRace }) })}
-              </button>
+                  {date && venue && <RaceAnalysisPanel date={date} venue={venue} raceNo={editRace} />}
+                </>
+              )}
             </div>
 
-            {date && venue && <RaceAnalysisPanel date={date} venue={venue} raceNo={editRace} />}
-
-            {card ? (
-              <RaceCardTable
-                card={card}
-                roleOf={(h) => roleOf(editRace, h)}
-                onCycle={(h) => cycle(editRace, h)}
-                bankerEnabled={bankerEnabled}
-              />
-            ) : (
-              <div className={cx(panel, "mt-3 text-center text-ink-3")}>{t("bet:loadingRace", { n: editRace })}</div>
-            )}
-
-            <CostBar combos={combos} cost={totalCost} canSubmit={canSubmit} onSubmit={submit} />
-            {!meeting.hasResults && <p className="mt-3 text-[13px] text-warn">{t("bet:settlementDisabled")}</p>}
-          </>
+            <BetSlip items={slip} onRemove={(id) => setSlip((s) => s.filter((it) => it.id !== id))} onClear={() => setSlip([])} onConfirm={confirmSlip} />
+          </div>
         )}
 
         {(view === "privacy" || view === "terms" || view === "sales" || view === "legal") && <LegalDoc view={view} />}
@@ -542,7 +578,7 @@ export default function App() {
 
       <Footer onSelect={selectView} />
 
-      {result && <ResultModal result={result} onClose={() => setResult(null)} />}
+      {settled && <ResultModal bets={settled} onClose={() => setSettled(null)} />}
       {raceResult && <ResultPanel result={raceResult} onClose={() => setRaceResult(null)} />}
     </div>
   );

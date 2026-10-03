@@ -3,6 +3,7 @@ import type { common as En } from "../en/common";
 
 export const common: Shape<typeof En> = {
   appName: "開跑前",
+  practice: "模擬",
   seo: {
     brand: "開跑前 Post Time",
     separator: "｜",

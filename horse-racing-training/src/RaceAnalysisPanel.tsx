@@ -118,7 +118,7 @@ export function RaceAnalysisPanel({ date, venue, raceNo }: { date: string; venue
                 ).map(([k, v]) => (
                   <div key={k} className="rounded-control bg-surface-2 px-3 py-2">
                     <dt className="text-[11px] text-ink-3">{t(`analysis.${k}`)}</dt>
-                    <dd className="font-display text-xl leading-tight tabular-nums">{v}</dd>
+                    <dd className="text-xl leading-tight font-medium tabular-nums">{v}</dd>
                   </div>
                 ))}
               </dl>

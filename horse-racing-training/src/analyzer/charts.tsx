@@ -11,12 +11,12 @@ import { pc } from "./format";
 
 /** Chart colors — hex mirrors of the @theme tokens in index.css (SVG attributes can't read CSS vars). */
 export const C = {
-  accent: "#0042e6",
-  accent2: "#eb6834",
+  accent: "#173e96",
+  accent2: "#e0a800",
   warn: "#b45309",
-  ink: "#23201d",
-  muted: "#806d63",
-  grid: "#ede8e8",
+  ink: "#333333",
+  muted: "#6a6d73",
+  grid: "#e7e7e7",
   good: "#1d7a47",
   bad: "#b4232c",
 } as const;

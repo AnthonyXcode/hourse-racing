@@ -87,7 +87,7 @@ export function LegalDoc({ view }: { view: Exclude<LegalView, "sitemap"> }) {
       <p className="mt-4 leading-relaxed text-ink-2">{fill(t(`${key}.intro`))}</p>
       {sections.map((s, i) => (
         <section key={i} className="mt-8">
-          <h2 className="font-display text-2xl leading-tight">{fill(s.heading)}</h2>
+          <h2 className="text-xl leading-tight font-medium text-navy-900">{fill(s.heading)}</h2>
           <Body lines={s.body.map(fill)} />
         </section>
       ))}

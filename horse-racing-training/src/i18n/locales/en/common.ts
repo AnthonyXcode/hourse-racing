@@ -1,6 +1,7 @@
 // Shared strings + racing glossary. zh-HK/common.ts must have exactly the same keys (enforced by type).
 export const common = {
   appName: "Post Time",
+  practice: "Practice",
   // <title> and meta description per page (src/seo.ts). Keep descriptions under ~155 characters.
   seo: {
     brand: "Post Time",
