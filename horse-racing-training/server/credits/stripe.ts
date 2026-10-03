@@ -1,7 +1,7 @@
 // Stripe purchases (docs/credits/PRD.md §5): hosted Checkout in HKD built from the server's plan table,
 // credits granted only by the signed webhook, exactly once. Purchase times use the REAL clock (never DEV_NOW):
 // they are about real money and Stripe's own timestamps.
-import { randomUUID } from "crypto";
+import { createHash, randomUUID } from "crypto";
 import type Stripe from "stripe";
 import type { MembersDB } from "../members/db";
 import { planById } from "../../shared/credits/plans";
@@ -37,11 +37,22 @@ interface PurchaseRow {
 export type Fail = { status: number; code: string; extra?: Record<string, unknown> };
 const tail = (id: string) => `…${id.slice(-4)}`;
 
-export function purchases(deps: { db: MembersDB; ledger: Ledger; cfg: CreditsConfig; stripe: StripeClient | null; realNow?: () => number; log?: (l: string) => void }) {
+export function purchases(deps: {
+  db: MembersDB;
+  ledger: Ledger;
+  cfg: CreditsConfig;
+  stripe: StripeClient | null;
+  realNow?: () => number;
+  log?: (l: string) => void;
+  onAlert?: (a: { key: string; kind: string; message: string; refType: string; refId: string }) => void;
+}) {
   const { db, ledger, cfg } = deps;
   const realNow = deps.realNow ?? Date.now;
   const log = deps.log ?? ((l: string) => console.error(l));
-  const alert = (m: string) => log(`[credits:alert] ${m}`);
+  const alert = (m: string) => {
+    log(`[credits:alert] ${m}`);
+    deps.onAlert?.({ key: `webhook:${createHash("sha256").update(m).digest("hex").slice(0, 16)}`, kind: "webhook_mismatch", message: m, refType: "purchase", refId: "" });
+  };
   const byId = db.prepare<[string], PurchaseRow>("SELECT * FROM purchases WHERE stripe_session_id = ?");
   const byPi = db.prepare<[string], PurchaseRow>("SELECT * FROM purchases WHERE payment_intent_id = ?");
 

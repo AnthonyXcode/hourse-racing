@@ -558,8 +558,11 @@ describe("config guards and CLI", () => {
   it("CLI writes need --operator, --reason and --yes", () => {
     expect(writeGuard(parseArgs(["adjust", "--user", "u", "--amount", "5"]))).toMatch(/operator/);
     expect(writeGuard(parseArgs(["adjust", "--operator", "a", "--amount", "5"]))).toMatch(/reason/);
-    expect(writeGuard(parseArgs(["adjust", "--operator", "a", "--reason", "x"]))).toMatch(/yes/);
-    expect(writeGuard(parseArgs(["adjust", "--operator", "a", "--reason", "goodwill", "--yes", "--amount", "-5"]))).toBeNull();
+    // Reason: same 10–200 rule as the panel (shared validator), with a clear message.
+    expect(writeGuard(parseArgs(["adjust", "--operator", "a", "--reason", "x", "--yes"]))).toBe("--reason must be 10–200 characters (yours has 1)");
+    expect(writeGuard(parseArgs(["adjust", "--operator", "a", "--reason", "y".repeat(201), "--yes"]))).toMatch(/10–200 characters \(yours has 201\)/);
+    expect(writeGuard(parseArgs(["adjust", "--operator", "a", "--reason", "goodwill top-up"]))).toMatch(/yes/);
+    expect(writeGuard(parseArgs(["adjust", "--operator", "a", "--reason", "goodwill top-up", "--yes", "--amount", "-5"]))).toBeNull();
     expect(parseArgs(["adjust", "--amount", "-5"]).opt.amount).toBe("-5");
     expect(parseArgs(["void-meeting", "2026-10-04", "ST", "--include-resulted", "--yes"]).opt).toEqual({ "include-resulted": true, yes: true });
   });

@@ -1,6 +1,7 @@
 import { defineConfig, loadEnv } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
+import { ADMIN_PAGE_HEADERS, isAdminPagePath } from "./server/adminPages";
 
 // Dev: Vite serves the SPA on WEB_PORT and proxies /api to the Express server
 // on PORT. Prod: `npm run build` emits dist/, which the Express server serves
@@ -15,7 +16,20 @@ export default defineConfig(({ mode }) => {
   const apiPort = Number(env.PORT) || 8787;
 
   return {
-    plugins: [react(), tailwindcss()],
+    plugins: [
+      react(),
+      tailwindcss(),
+      // Dev parity with the server: /admin pages are never indexed or framed.
+      {
+        name: "admin-headers",
+        configureServer(server) {
+          server.middlewares.use((req, res, next) => {
+            if (isAdminPagePath(req.url ?? "")) for (const [k, v] of Object.entries(ADMIN_PAGE_HEADERS)) res.setHeader(k, v);
+            next();
+          });
+        },
+      },
+    ],
     server: {
       port: webPort,
       proxy: {

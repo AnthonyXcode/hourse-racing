@@ -16,6 +16,9 @@ import { loadCreditsConfig, type CreditsConfig } from "./config";
 import type { CardRunner } from "./grade";
 import { creditsRouter, memberHooks, stripeWebhookRouter } from "./routes";
 import { createCredits } from "./service";
+import { loadAdminConfig } from "../admin/config";
+import { actions } from "../admin/actions";
+import { adminRouter } from "../admin/routes";
 import type { StripeClient } from "./stripe";
 
 export const DATE = "20261005";
@@ -98,9 +101,23 @@ export async function harness(env: Record<string, string> = {}) {
     log: () => {},
   });
   m.hooks = memberHooks(c);
+  const adminCfg = loadAdminConfig({ OWNER_PHONE: env.OWNER_PHONE ?? "" });
+  const meetingRaces = (date: string, venue: Venue) => (date === DATE && venue === "ST" ? [1, 2, 3] : null);
+  const adminActions = (actor: Parameters<typeof actions>[0]["actor"]) =>
+    actions({ db: membersDb, credits: c, cfg: adminCfg, actor, meetingRaces, results: (date, venue) => (date === DATE && venue === "ST" && results.length ? results : null) });
+  const admin = adminRouter({
+    members: m,
+    credits: c,
+    cfg: adminCfg,
+    actions: adminActions,
+    system: () => ({ appVersion: "test" }),
+    meetings: () => [{ date: DATE, venue: "ST", races: [1, 2, 3] }],
+    now: clock,
+  });
   const app = express();
   app.use("/api/stripe/webhook", stripeWebhookRouter(c));
   app.use(express.json());
+  app.use("/api/admin", admin);
   app.use("/api", membersRouter(m));
   app.use("/api", creditsRouter(c, m));
   app.use("/api", apiErrorHandler);
@@ -117,6 +134,14 @@ export async function harness(env: Record<string, string> = {}) {
     const text = await r.text();
     return { status: r.status, body: text ? JSON.parse(text) : null };
   };
+
+  /** Raw fetch (for CSV and header checks). */
+  const raw = (method: string, url: string, cookie?: string, body?: unknown) =>
+    fetch(base + url, {
+      method,
+      headers: { ...(body !== undefined ? { "Content-Type": "application/json" } : {}), ...(cookie ? { Cookie: cookie } : {}) },
+      body: body !== undefined ? JSON.stringify(body) : undefined,
+    });
 
   let n = 0;
   /** Sign up / log in a phone (each call uses a fresh number unless given). */
@@ -142,10 +167,25 @@ export async function harness(env: Record<string, string> = {}) {
     return { status: r.status, body: await r.json() };
   };
 
+  /** Confirm the admin session for a logged-in staff member (OTP to their own phone). */
+  async function adminVerify(u: { cookie: string; phone: string }) {
+    m.limiter.forgetPhone(u.phone); // the OTP send cooldown (tests log in and verify back to back)
+    const cookie = u.cookie;
+    await call("POST", "/admin/session/start", { turnstileToken: "ok" }, cookie);
+    const code = /code=(\d{6})/.exec(lines.at(-1)!)![1];
+    return call("POST", "/admin/session/check", { code }, cookie);
+  }
+
   return {
     c,
     m,
     cfg,
+    admin,
+    adminCfg,
+    adminActions,
+    adminVerify,
+    raw,
+    lastCode: () => /code=(\d{6})/.exec(lines.at(-1) ?? "")?.[1] ?? "",
     db: membersDb,
     raceDb,
     cards,

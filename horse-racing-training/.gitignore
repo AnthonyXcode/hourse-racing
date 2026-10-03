@@ -3,6 +3,7 @@ dist/
 history.json
 *.log
 .env
+.env.prod
 data/*.sqlite*
 
 # Member avatars (docs/membership)

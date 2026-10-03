@@ -308,6 +308,14 @@ not a button). Live amounts are always `積分 / credits`, never `$`. Other kit 
 won / lost / refunded), `creditChip` (header balance), `planCard`, `statusPanel`, `noticeBanner` (gold system
 notice: kill switch), `tabBadge`. Live slips never auto-confirm. Code: `src/credits/`.
 
+### Admin panel (docs/admin/DESIGN-SPEC.md)
+
+`/admin` is a separate lazy bundle (`src/admin/`) with inverted chrome: white top bar + navy-900 sidebar.
+Admin-only classes live in `src/admin/kit.ts` (`roleBadge`, `navItem`, `kpiTile`, `heldChip`, `flagChip`), not
+in `kit.tsx`, so the member bundle doesn't grow. Owner writes all use one `ConfirmDialog` (summary → reason →
+optional SMS step-up → one button: gold for non-destructive, `btnDanger` for destructive). Admins see no write
+buttons at all, only the line "Only the owner can make changes."
+
 ## 11. Checklist for any new UI
 
 - [ ] Colours only from §2 tokens; no raw hex in components.

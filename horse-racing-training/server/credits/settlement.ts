@@ -19,6 +19,9 @@ export interface SettleDeps {
   results(date: string, venue: Venue): RaceResult[] | null;
   card(date: string, venue: Venue, raceNo: number): CardRunner[] | null;
   log?: (line: string) => void;
+  /** Also record alerts for the admin dashboard (system_alerts), and clear them when the bet settles. */
+  onAlert?: (a: { key: string; kind: string; message: string; refType: string; refId: string }) => void;
+  onResolved?: (betId: string) => void;
 }
 
 interface PendingRow {
@@ -39,11 +42,17 @@ interface PendingRow {
 
 const isoDate = (d: string) => `${d.slice(0, 4)}-${d.slice(4, 6)}-${d.slice(6, 8)}`;
 
+export type ResolveResult =
+  | { ok: true; code: "ok"; message: string; status: "won" | "lost" | "void"; payout: number; refund: number }
+  | { ok: false; code: "bet_not_pending" | "results_not_stored" | "still_held"; message: string; reason?: string };
+
 export function settlement(deps: SettleDeps) {
   const { db, ledger } = deps;
   const log = deps.log ?? ((l: string) => console.error(l));
   const alerted = new Set<string>();
   const alertOnce = (key: string, msg: string) => {
+    const [kind = "alert", betId = ""] = key.split(":");
+    deps.onAlert?.({ key, kind: kind === "hold" ? "held_bet" : kind === "noresult" ? "no_result_6h" : "settle_failure", message: msg, refType: "bet", refId: betId });
     if (alerted.has(key)) return;
     alerted.add(key);
     log(`[credits:alert] ${msg}`);
@@ -76,6 +85,7 @@ export function settlement(deps: SettleDeps) {
         .run(status, payout, g.refund, g.refundedCombos, result, t, b.id).changes;
       if (!changed) return false;
       const note = JSON.stringify({ date: b.date, venue: b.venue, races: (JSON.parse(b.selection) as BetSelection).raceLegs.map((l) => l.raceNumber), betType: b.bet_type });
+      deps.onResolved?.(b.id);
       if (payout > 0) ledger.post({ userId: b.user_id, kind: "bet_payout", amount: payout, idemKey: `payout:${b.id}`, refType: "bet", refId: b.id, actor, note });
       if (g.refund > 0) ledger.post({ userId: b.user_id, kind: "bet_refund", amount: g.refund, idemKey: `refund:${b.id}`, refType: "bet", refId: b.id, actor, note });
       return true;
@@ -129,15 +139,26 @@ export function settlement(deps: SettleDeps) {
      * Operator: settle a held bet or void it. `settle` treats horses of unknown fate as runners (runner_unknown
      * holds, after checking HKJC's result); `dividend` supplies the per-$10 return for its winning combos.
      */
-    resolve(id: string, how: { void?: boolean; dividend?: number; settle?: boolean }, actor: string): { ok: boolean; message: string } {
+    resolve(id: string, how: { void?: boolean; dividend?: number; settle?: boolean }, actor: string): ResolveResult {
       const b = pendingRows({ id })[0];
-      if (!b) return { ok: false, message: "bet not found or not pending" };
-      if (how.void) return apply(b, { kind: "void", refund: b.stake, refundedCombos: b.combos, reason: "void_race" }, actor) ? { ok: true, message: "voided and refunded" } : { ok: false, message: "already settled" };
+      if (!b) return { ok: false, code: "bet_not_pending", message: "bet not found or not pending" };
+      if (how.void)
+        return apply(b, { kind: "void", refund: b.stake, refundedCombos: b.combos, reason: "void_race" }, actor)
+          ? { ok: true, code: "ok", message: "voided and refunded", status: "void", payout: 0, refund: b.stake }
+          : { ok: false, code: "bet_not_pending", message: "already settled" };
       const g = grade(b, how.dividend, !!how.settle);
-      if (g.kind === "wait") return { ok: false, message: "results not stored yet" };
+      if (g.kind === "wait") return { ok: false, code: "results_not_stored", message: "results not stored yet" };
       if (g.kind === "hold")
-        return { ok: false, message: g.reason === "runner_unknown" ? "still held (runner_unknown): check HKJC's result, then --settle (they ran) or --void" : `still held (${g.reason}); pass --dividend <per $10>` };
-      return apply(b, g, actor) ? { ok: true, message: g.kind === "void" ? "voided" : `${g.status}: payout ${g.payout}, refund ${g.refund}` } : { ok: false, message: "already settled" };
+        return {
+          ok: false,
+          code: "still_held",
+          reason: g.reason,
+          message: g.reason === "runner_unknown" ? "still held (runner_unknown): check HKJC's result, then --settle (they ran) or --void" : `still held (${g.reason}); pass --dividend <per $10>`,
+        };
+      if (!apply(b, g, actor)) return { ok: false, code: "bet_not_pending", message: "already settled" };
+      return g.kind === "void"
+        ? { ok: true, code: "ok", message: "voided", status: "void", payout: 0, refund: g.refund }
+        : { ok: true, code: "ok", message: `${g.status}: payout ${g.payout}, refund ${g.refund}`, status: g.status, payout: g.payout, refund: g.refund };
     },
   };
 }

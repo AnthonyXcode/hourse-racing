@@ -62,6 +62,8 @@ export function AccountEntry({ current, onNavigate, onLogout }: { current: strin
     { key: "profile", label: t("menu.profile"), current: current === "account", run: () => guard(() => onNavigate("account")) },
     { key: "credits", label: t("credits:menu.credits"), value: balance == null ? undefined : fmt.num(balance), current: current === "credits", run: () => guard(() => onNavigate("credits")) },
     { key: "history", label: t("menu.history"), current: current === "history", run: () => guard(() => onNavigate("history")) },
+    // Staff only (GET /api/me returns a role just for staff): a real link to the separate /admin app.
+    ...(user.role ? [{ key: "admin", label: t("menu.admin"), run: () => guard(() => window.location.assign("/admin")) }] : []),
     { key: "logout", label: t("menu.logout"), run: () => guard(onLogout) },
   ];
 

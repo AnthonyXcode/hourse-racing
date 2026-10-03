@@ -50,11 +50,11 @@ export function memberHooks(c: Credits): MemberHooks {
       const t = new Date(c.clock()).toISOString();
       // Pending LIVE bets are voided WITHOUT refund (credits are forfeited); the rows go with the user.
       db.prepare("UPDATE live_bets SET status = 'void', settled_at = ? WHERE user_id = ? AND status = 'pending'").run(t, u.id);
-      // Ledger, purchases and audit rows are kept for accounting, anonymised with a tombstone id.
+      // Ledger and purchase rows are kept for accounting, anonymised with a tombstone id.
       const tomb = `deleted:${randomUUID()}`;
       db.prepare("UPDATE credit_ledger SET user_id = ? WHERE user_id = ?").run(tomb, u.id);
       db.prepare("UPDATE purchases SET user_id = ? WHERE user_id = ?").run(tomb, u.id);
-      db.prepare("UPDATE admin_audit SET args = replace(args, ?, ?), before = replace(before, ?, ?), after = replace(after, ?, ?)").run(u.id, tomb, u.id, tomb, u.id, tomb);
+      // admin_audit is append-only and holds only ids / last-4 digits (docs/admin/PRD.md §6.1): left as is.
     },
     liveHistory: (userId) => c.live.list(userId).map(liveToHistory),
   };

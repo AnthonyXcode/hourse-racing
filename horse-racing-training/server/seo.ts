@@ -21,7 +21,7 @@ function pageUrl(base: string, view: string, lang: (typeof LANGS)[number]) {
 export const seo = Router();
 
 seo.get("/robots.txt", (req, res) => {
-  res.type("text/plain").send(`User-agent: *\nDisallow: /api/\n\nSitemap: ${origin(req)}/sitemap.xml\n`);
+  res.type("text/plain").send(`User-agent: *\nDisallow: /api/\nDisallow: /admin\n\nSitemap: ${origin(req)}/sitemap.xml\n`);
 });
 
 seo.get("/sitemap.xml", (req, res) => {

@@ -170,6 +170,74 @@ const MIGRATIONS: string[] = [
     created_at  TEXT NOT NULL
   );
   `,
+  // v3: admin panel (docs/admin/PRD.md §6). Roles (owner is never stored: it comes from OWNER_PHONE), admin
+  // session state on the existing session row, an append-only audit log shared by the panel and the CLI,
+  // an access log (kept 12 months), system alerts and job status.
+  `
+  ALTER TABLE users ADD COLUMN role TEXT NOT NULL DEFAULT 'user' CHECK (role IN ('user', 'admin'));
+  ALTER TABLE users ADD COLUMN role_updated_at TEXT;
+  ALTER TABLE users ADD COLUMN role_updated_by TEXT;
+  ALTER TABLE sessions ADD COLUMN admin_verified_at INTEGER;
+  ALTER TABLE sessions ADD COLUMN admin_seen_at INTEGER;
+  ALTER TABLE sessions ADD COLUMN step_up_at INTEGER;
+  ALTER TABLE admin_audit ADD COLUMN source TEXT NOT NULL DEFAULT 'cli' CHECK (source IN ('panel', 'cli', 'system'));
+  ALTER TABLE admin_audit ADD COLUMN actor_user_id TEXT;
+  ALTER TABLE admin_audit ADD COLUMN actor_role TEXT;
+  ALTER TABLE admin_audit ADD COLUMN action TEXT;
+  ALTER TABLE admin_audit ADD COLUMN target_type TEXT;
+  ALTER TABLE admin_audit ADD COLUMN target_id TEXT;
+  ALTER TABLE admin_audit ADD COLUMN ip TEXT;
+  ALTER TABLE admin_audit ADD COLUMN user_agent TEXT;
+  ALTER TABLE admin_audit ADD COLUMN idem_key TEXT;
+  ALTER TABLE admin_audit ADD COLUMN outcome TEXT NOT NULL DEFAULT 'ok' CHECK (outcome IN ('ok', 'refused'));
+  ALTER TABLE admin_audit ADD COLUMN self INTEGER NOT NULL DEFAULT 0;
+  UPDATE admin_audit SET action = command, actor_role = 'operator' WHERE action IS NULL;
+  CREATE UNIQUE INDEX admin_audit_idem ON admin_audit (idem_key) WHERE idem_key IS NOT NULL;
+  CREATE INDEX admin_audit_created ON admin_audit (created_at);
+  CREATE INDEX admin_audit_target ON admin_audit (target_type, target_id);
+  CREATE TRIGGER admin_audit_no_update BEFORE UPDATE ON admin_audit BEGIN SELECT RAISE(ABORT, 'admin_audit is append-only'); END;
+  CREATE TRIGGER admin_audit_no_delete BEFORE DELETE ON admin_audit BEGIN SELECT RAISE(ABORT, 'admin_audit is append-only'); END;
+
+  CREATE TABLE admin_access_log (
+    id             INTEGER PRIMARY KEY,
+    actor_user_id  TEXT NOT NULL,
+    actor_role     TEXT NOT NULL,
+    kind           TEXT NOT NULL CHECK (kind IN ('user_detail', 'user_tab', 'export', 'search_full_phone', 'contact_reveal')),
+    target_id      TEXT,
+    detail         TEXT,                      -- tab name / dataset + filters; never PII values
+    ip             TEXT,
+    created_at     TEXT NOT NULL              -- ISO
+  );
+  CREATE INDEX admin_access_target ON admin_access_log (target_id, created_at);
+  CREATE INDEX admin_access_created ON admin_access_log (created_at);
+  CREATE TRIGGER admin_access_no_update BEFORE UPDATE ON admin_access_log BEGIN SELECT RAISE(ABORT, 'admin_access_log is append-only'); END;
+  -- Only the retention purge may delete, and only rows older than 365 days.
+  CREATE TRIGGER admin_access_no_delete BEFORE DELETE ON admin_access_log
+    WHEN OLD.created_at > strftime('%Y-%m-%dT%H:%M:%fZ', 'now', '-365 days')
+    BEGIN SELECT RAISE(ABORT, 'admin_access_log rows are kept 12 months'); END;
+
+  CREATE TABLE system_alerts (
+    key            TEXT PRIMARY KEY,
+    kind           TEXT NOT NULL,
+    message        TEXT NOT NULL,
+    ref_type       TEXT,
+    ref_id         TEXT,
+    first_seen_at  TEXT NOT NULL,
+    last_seen_at   TEXT NOT NULL,
+    resolved_at    TEXT
+  );
+  CREATE TABLE system_status (
+    key         TEXT PRIMARY KEY,
+    value       TEXT NOT NULL,
+    updated_at  TEXT NOT NULL
+  );
+  CREATE INDEX users_role ON users (role);
+  CREATE INDEX users_name ON users (display_name);
+  CREATE INDEX credit_ledger_kind ON credit_ledger (kind, created_at);
+  CREATE INDEX credit_ledger_created ON credit_ledger (created_at);
+  CREATE INDEX live_bets_created ON live_bets (created_at);
+  CREATE INDEX purchases_status ON purchases (status, created_at);
+  `,
 ];
 
 /** Open (creating + migrating) the members DB. Pass ":memory:" in tests. */

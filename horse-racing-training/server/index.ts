@@ -17,6 +17,13 @@ import { creditsProductionProblems, creditsWarnings, loadCreditsConfig } from ".
 import { appCredits } from "./credits/instance";
 import { creditsRouter, memberHooks, stripeWebhookRouter } from "./credits/routes";
 import { reconcile } from "./credits/reconcile";
+import { adminProductionProblems, adminWarnings } from "./admin/config";
+import { adminConfig, appActions } from "./admin/instance";
+import { adminRouter } from "./admin/routes";
+import { adminPageHeaders } from "./adminPages";
+import { effectiveRole, getStatus, purgeAccessLog, raiseAlert, resolveAlert, setStatus, writeAudit } from "./admin/core";
+import { getManifest } from "./dataIndex";
+import { runLog } from "./data/runLog";
 
 // Membership: refuse to boot in production with dev OTP / Turnstile settings (docs/membership/PRD.md §5.12).
 assertProductionConfig(loadConfig());
@@ -28,9 +35,57 @@ assertProductionConfig(loadConfig());
   for (const w of creditsWarnings(cc)) console.warn(`[credits] ${w}`);
   configureClock();
 }
+// Admin: production needs a valid OWNER_PHONE (docs/admin/PRD.md §2.2); dev without it runs with no owner.
+{
+  const ac = adminConfig();
+  const problems = adminProductionProblems(ac);
+  if (problems.length) throw new Error(`[admin] refusing to start:\n  - ${problems.join("\n  - ")}`);
+  for (const w of adminWarnings(ac)) console.warn(`[admin] ${w}`);
+}
 const credits = appCredits();
 const memberDeps = members();
-memberDeps.hooks = memberHooks(credits);
+{
+  const hooks = memberHooks(credits);
+  // GET /api/me gains `role` for staff only (normal users get no role field).
+  const extend = hooks.extendMember;
+  hooks.extendMember = (u) => {
+    const role = effectiveRole(u as typeof u & { role?: string }, adminConfig());
+    return { ...extend(u), ...(role !== "user" ? { role } : {}) };
+  };
+  memberDeps.hooks = hooks;
+}
+// Owner handover: a system audit row the first time the server starts with a different OWNER_PHONE.
+{
+  const last4 = adminConfig().ownerPhone?.slice(-4) ?? null;
+  const prev = getStatus<{ last4: string | null }>(credits.db, "owner_phone");
+  if (!prev || prev.value.last4 !== last4) {
+    if (prev)
+      writeAudit(credits.db, {
+        source: "system",
+        operator: "system",
+        actorUserId: null,
+        actorRole: "system",
+        action: "owner_changed",
+        targetType: "system",
+        targetId: null,
+        before: { ownerLast4: prev.value.last4 },
+        after: { ownerLast4: last4 },
+        reason: "OWNER_PHONE changed",
+      });
+    setStatus(credits.db, "owner_phone", { last4 });
+  }
+}
+const admin = adminRouter({
+  members: memberDeps,
+  credits,
+  cfg: adminConfig(),
+  actions: appActions,
+  meetings: () => getManifest().map((m) => ({ date: m.date, venue: m.venue, races: m.races })),
+  system: () => {
+    const runs = runLog(momentum().db).recent(1);
+    return { lastFetchRun: runs[0] ?? null, appVersion: process.env.npm_package_version ?? null };
+  },
+});
 
 const app = express();
 // Client IP for per-IP rate limits behind nginx/Cloudflare: set TRUST_PROXY (e.g. 1). Unset = trust nothing.
@@ -41,8 +96,11 @@ if (process.env.TRUST_PROXY) {
 // Stripe webhook: raw body (signature check), no Origin guard, no session — mounted BEFORE express.json().
 app.use("/api/stripe/webhook", stripeWebhookRouter(credits));
 app.use(express.json());
+// /admin pages and every /admin/* deep link: never indexed, never framed (the API sets the same on /api/admin).
+app.use(adminPageHeaders);
 app.use(seo);
 app.use("/api/data", dataApi);
+app.use("/api/admin", admin);
 app.use("/api", membersRouter(memberDeps));
 app.use("/api", creditsRouter(credits, memberDeps));
 app.use("/api", api);
@@ -83,6 +141,7 @@ app.listen(PORT, () => {
   const sweep = () => {
     try {
       const s = credits.settle.sweep();
+      setStatus(credits.db, "last_settle_sweep", s);
       if (s.settled || s.held || s.failed) console.log(`[credits] sweep: ${s.settled} settled, ${s.held} held, ${s.failed} failed`);
     } catch (e) {
       console.error(`[credits:alert] settlement sweep failed: ${e instanceof Error ? e.message : e}`);
@@ -90,8 +149,16 @@ app.listen(PORT, () => {
   };
   setTimeout(sweep, 10_000).unref();
   setInterval(sweep, 5 * 60_000).unref();
-  setInterval(() => {
+  const daily = () => {
     const issues = reconcile(credits.db);
     for (const i of issues) console.error(`[credits:alert] reconcile: ${i}`);
-  }, 24 * 60 * 60_000).unref();
+    setStatus(credits.db, "last_reconcile", { ok: !issues.length, issues });
+    if (issues.length) raiseAlert(credits.db, { key: "reconcile", kind: "reconcile_issue", message: `${issues.length} reconcile issue(s)` });
+    else resolveAlert(credits.db, "reconcile");
+    // Access log: 12-month retention (audit log: kept indefinitely).
+    const purged = purgeAccessLog(credits.db, adminConfig().accessLogDays);
+    if (purged) console.log(`[admin] access log: purged ${purged} rows older than ${adminConfig().accessLogDays} days`);
+  };
+  setTimeout(daily, 30_000).unref();
+  setInterval(daily, 24 * 60 * 60_000).unref();
 });

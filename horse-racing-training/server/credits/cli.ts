@@ -2,24 +2,26 @@
 // --reason and --yes, prints before/after, and is recorded in admin_audit.
 //
 //   npm run credits -- show --phone "9123 4567" | --user <id>
-//   npm run credits:adjust -- --phone 91234567 --amount 500 --reason "goodwill" --operator anthony --yes
+//   npm run credits:adjust -- --phone 91234567 --amount 500 --reason "goodwill top-up" --operator anthony --yes
 //   npm run credits -- pending [--held]
 //   npm run credits -- resolve-bet <betId> (--settle | --void | --dividend <per $10>) --reason … --operator … --yes
 //   npm run credits -- void-race <YYYY-MM-DD> <ST|HV> <raceNo> --reason … --operator … --yes
 //   npm run credits -- void-meeting <YYYY-MM-DD> <ST|HV> --reason … --operator … --yes
 //   npm run credits -- flag | unflag --user <id> --reason … --operator … --yes
+//   npm run credits -- role --phone 91234567 --set admin|user --reason … --operator … --yes   (never the owner)
+// Writes go through server/admin/actions.ts, the same code the admin panel uses (audit source = cli).
 //   npm run credits:settle            settlement sweep now
 //   npm run credits:reconcile         ledger checks (+ Stripe paid sessions, last 30 days, when a key is set)
 //   npm run credits -- dev-schedule --date <YYYY-MM-DD> --venue ST (--first 13:00 | --in <min>) [--gap 30]   (dev only)
-import { randomUUID } from "crypto";
 import Stripe from "stripe";
 import { configureClock, nowMs } from "../clock";
 import { members } from "../members/service";
 import { normalizeHkMobile } from "../../shared/validation";
 import { appCredits } from "./instance";
+import { adminConfig, appActions } from "../admin/instance";
+import { REASON_MAX, REASON_MIN, checkReason } from "../admin/actions";
 import { reconcile } from "./reconcile";
-import { getManifest, readResults } from "../dataIndex";
-import { hasResult } from "./schedule";
+import { getManifest } from "../dataIndex";
 
 export interface Args {
   cmd: string;
@@ -57,6 +59,9 @@ export function parseArgs(argv: string[]): Args {
 export function writeGuard(a: Args): string | null {
   if (typeof a.opt.operator !== "string" || !a.opt.operator.trim()) return "--operator <name> is required";
   if (typeof a.opt.reason !== "string" || !a.opt.reason.trim()) return '--reason "<text>" is required';
+  // Same rule as the admin panel (shared in admin/actions.ts): 10–200 characters after trimming.
+  const rr = checkReason(a.opt.reason);
+  if (!rr.ok) return `--reason must be ${REASON_MIN}–${REASON_MAX} characters (yours has ${rr.length})`;
   if (a.opt.yes !== true) return "--yes is required to write";
   return null;
 }
@@ -68,10 +73,10 @@ export async function runCli(argv: string[], out: Out = console.log): Promise<nu
   const a = parseArgs(argv);
   const c = appCredits();
   const db = c.db;
-  const audit = (command: string, before: unknown, after: unknown) =>
-    db
-      .prepare("INSERT INTO admin_audit (operator, command, args, before, after, reason, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)")
-      .run(String(a.opt.operator), command, JSON.stringify({ pos: a.pos, opt: a.opt }), JSON.stringify(before), JSON.stringify(after), String(a.opt.reason), new Date().toISOString());
+  const act = () => appActions({ source: "cli", operator: String(a.opt.operator), userId: null, role: "operator" });
+  const reason = () => String(a.opt.reason);
+  const failMsg = (r: { code: string; extra?: Record<string, unknown> }) =>
+    r.code === "reason_required" ? `--reason must be ${REASON_MIN}–${REASON_MAX} characters` : r.code === "insufficient_credits" ? "the balance would go below 0" : r.code === "invalid_amount" ? `--amount must be between −${adminConfig().maxAdjust} and ${adminConfig().maxAdjust}` : `${r.code}${r.extra?.message ? `: ${r.extra.message}` : ""}`;
   const userId = (): string | null => {
     if (typeof a.opt.user === "string") return db.prepare("SELECT 1 FROM users WHERE id = ?").get(a.opt.user) ? a.opt.user : null;
     if (typeof a.opt.phone === "string") {
@@ -108,15 +113,9 @@ export async function runCli(argv: string[], out: Out = console.log): Promise<nu
       if (amount === null) return out("--amount must be a plain non-zero whole number, e.g. 500 or -200 (not 1e3, 1.5 or hex)"), 1;
       if (!needWrite()) return 1;
       const before = snapshot(id) ?? { balance: 0 };
-      try {
-        db.transaction(() => {
-          c.ledger.post({ userId: id, kind: "admin_adjust", amount, idemKey: `admin:${randomUUID()}`, refType: "admin", actor: String(a.opt.operator), note: JSON.stringify({ reason: String(a.opt.reason) }) });
-          audit("adjust", before, snapshot(id));
-        }).immediate();
-      } catch (e) {
-        return out(`refused: ${e instanceof Error && e.message === "insufficient_credits" ? "the balance would go below 0" : e}`), 1;
-      }
-      out(`before ${JSON.stringify(before)}\nafter  ${JSON.stringify(snapshot(id))}`);
+      const r = act().adjust({ userId: id, amount, reason: reason() });
+      if (!r.ok) return out(`refused: ${failMsg(r)} (audit #${r.auditId})`), 1;
+      out(`before ${JSON.stringify(before)}\nafter  ${JSON.stringify(snapshot(id))}  (audit #${r.auditId})`);
       return 0;
     }
     case "pending": {
@@ -133,9 +132,9 @@ export async function runCli(argv: string[], out: Out = console.log): Promise<nu
       if (!needWrite()) return 1;
       const dividend = a.opt.dividend !== undefined ? Number(a.opt.dividend) : undefined;
       if (dividend !== undefined && !(dividend >= 0)) return out("--dividend must be a number ≥ 0 (HK$ per $10 for the bet's winning combinations)"), 1;
-      const r = c.settle.resolve(id, { void: a.opt.void === true, dividend, settle: a.opt.settle === true }, String(a.opt.operator));
-      if (r.ok) audit("resolve-bet", { bet: id }, { result: r.message });
-      out(r.message);
+      const action = a.opt.void === true ? "void" : dividend !== undefined ? "dividend" : "settle";
+      const r = act().resolveBet({ betId: id, action, dividend, reason: reason() }); // failures are audited too
+      out(r.ok ? `${r.status}: payout ${r.payout}, refund ${r.refund} (audit #${r.auditId})` : `refused: ${failMsg(r)} (audit #${r.auditId})`);
       return r.ok ? 0 : 1;
     }
     case "void-race":
@@ -144,18 +143,10 @@ export async function runCli(argv: string[], out: Out = console.log): Promise<nu
       if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date) || (venue !== "ST" && venue !== "HV") || (a.cmd === "void-race" && !Number(raceNo)))
         return out(`usage: ${a.cmd} <YYYY-MM-DD> <ST|HV>${a.cmd === "void-race" ? " <raceNo>" : ""}`), 1;
       if (!needWrite()) return 1;
-      const compact = date.replaceAll("-", "");
-      const asked = a.cmd === "void-race" ? [Number(raceNo)] : (getManifest().find((m) => m.date === compact && m.venue === venue)?.races ?? []);
-      // A race that already has its result is settled as run (typhoon after race N): never voided by
-      // accident. --include-resulted overrides, explicitly.
-      const resulted = new Set((readResults(compact, venue) ?? []).filter((r) => hasResult(r)).map((r) => r.raceNumber));
-      const races = a.opt["include-resulted"] === true ? asked : asked.filter((n) => !resulted.has(n));
-      const skipped = asked.filter((n) => !races.includes(n));
-      if (skipped.length) out(`skipped (already resulted; pass --include-resulted to void them anyway): ${skipped.map((n) => `R${n}`).join(", ")}`);
-      for (const n of races) c.schedule.voidRace(date, venue, n);
-      const s = c.settle.sweep({ date: compact, venue });
-      audit(a.cmd, { date, venue, races, skipped }, s);
-      out(`voided ${races.length} race(s)${races.length ? ` (${races.map((n) => `R${n}`).join(", ")})` : ""}; ${s.settled} bet(s) refunded/settled`);
+      const r = act().voidRaces({ date, venue, raceNo: a.cmd === "void-race" ? Number(raceNo) : null, includeResulted: a.opt["include-resulted"] === true, reason: reason() });
+      if (!r.ok) return out(`refused: ${failMsg(r)} (audit #${r.auditId})`), 1;
+      if (r.skipped.length) out(`skipped (already resulted; pass --include-resulted to void them anyway): ${r.skipped.map((n) => `R${n}`).join(", ")}`);
+      out(`voided ${r.voided.length} race(s)${r.voided.length ? ` (${r.voided.map((n) => `R${n}`).join(", ")})` : ""}; ${r.settled} bet(s) refunded/settled (audit #${r.auditId})`);
       return 0;
     }
     case "flag":
@@ -164,10 +155,19 @@ export async function runCli(argv: string[], out: Out = console.log): Promise<nu
       if (!id) return out("user not found (use --phone or --user)"), 1;
       if (!needWrite()) return 1;
       const before = snapshot(id);
-      c.ledger.ensureWallet(id);
-      db.prepare("UPDATE wallets SET flagged = ?, flag_reason = ? WHERE user_id = ?").run(a.cmd === "flag" ? 1 : 0, a.cmd === "flag" ? String(a.opt.reason) : null, id);
-      audit(a.cmd, before, snapshot(id));
-      out(`before ${JSON.stringify(before)}\nafter  ${JSON.stringify(snapshot(id))}`);
+      const r = act().setFlag({ userId: id, flagged: a.cmd === "flag", reason: reason() }); // flag + audit in one transaction
+      if (!r.ok) return out(`refused: ${failMsg(r)} (audit #${r.auditId})`), 1;
+      out(`before ${JSON.stringify(before)}\nafter  ${JSON.stringify(snapshot(id))}  (audit #${r.auditId})`);
+      return 0;
+    }
+    case "role": {
+      const id = userId();
+      if (!id) return out(`user not found: ${typeof a.opt.phone === "string" ? `phone ${a.opt.phone}` : typeof a.opt.user === "string" ? `user ${a.opt.user}` : "pass --phone or --user"}`), 1;
+      if (a.opt.set !== "admin" && a.opt.set !== "user") return out("--set admin|user is required"), 1;
+      if (!needWrite()) return 1;
+      const r = act().setRole({ userId: id, role: a.opt.set, reason: reason() });
+      if (!r.ok) return out(`refused: ${failMsg(r)} (audit #${r.auditId})`), 1;
+      out(`role is now ${r.role} (audit #${r.auditId})`);
       return 0;
     }
     case "settle": {
@@ -218,7 +218,7 @@ export async function runCli(argv: string[], out: Out = console.log): Promise<nu
       return 0;
     }
     default:
-      out("commands: show, adjust, pending, resolve-bet, void-race, void-meeting, flag, unflag, settle, reconcile, dev-schedule (see server/credits/cli.ts)");
+      out("commands: show, adjust, pending, resolve-bet, void-race, void-meeting, flag, unflag, role, settle, reconcile, dev-schedule (see server/credits/cli.ts)");
       return a.cmd === "help" ? 0 : 1;
   }
 }

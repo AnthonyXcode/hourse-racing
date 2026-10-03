@@ -58,3 +58,15 @@ describe("plurals", () => {
     expect(i.t("account:toast.savedBets", { count: 1 })).toBe("已將 1 注儲存至投注紀錄");
   });
 });
+
+describe("admin namespace (lazy-loaded, not in resources.ts)", () => {
+  it("zh-HK has exactly the English admin keys and no empty strings", async () => {
+    const { admin: enAdmin } = await import("./locales/en/admin");
+    const { admin: zhAdmin } = await import("./locales/zh-HK/admin");
+    expect(keys(zhAdmin).sort()).toEqual(keys(enAdmin).sort());
+    const flat = (o: object): string[] => Object.values(o).flatMap((v) => (typeof v === "object" && v ? flat(v) : [v as string]));
+    expect(flat(zhAdmin).filter((v) => !v.trim())).toEqual([]);
+    // Not bundled with the member app.
+    expect(Object.keys(en)).not.toContain("admin");
+  });
+});

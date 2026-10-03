@@ -326,6 +326,8 @@ export interface Member {
   createdAt: string;
   /** 18+ self-declaration (credits), or null. */
   adultDeclaredAt?: string | null;
+  /** Staff only (admin panel): absent for normal members. The owner comes from OWNER_PHONE. */
+  role?: "admin" | "owner";
 }
 
 /** Error codes the API returns as `{ error: { code, … } }`; the client localises them. */

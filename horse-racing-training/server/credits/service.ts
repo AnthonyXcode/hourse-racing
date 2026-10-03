@@ -12,6 +12,7 @@ import { liveBets } from "./liveBets";
 import { meetingStatus, scheduleStore } from "./schedule";
 import { settlement } from "./settlement";
 import { purchases, type StripeClient } from "./stripe";
+import { raiseAlert, resolveAlert } from "../admin/core";
 
 /** Race data readers (dates YYYYMMDD). */
 export interface RaceData {
@@ -57,8 +58,13 @@ export function createCredits(opts: {
       return m ? { raceNos: m.races, status: m.status, card: (n) => data.card(date, venue, n) } : null;
     },
   });
-  const settle = settlement({ db: opts.membersDb, ledger: led, schedule, clock, results: data.results, card: data.card, log: opts.log });
-  const buy = purchases({ db: opts.membersDb, ledger: led, cfg, stripe, realNow: opts.realNow, log: opts.log });
+  // Alerts also go to system_alerts (admin dashboard); a settled bet clears its own alerts.
+  const onAlert = (a: Parameters<typeof raiseAlert>[1]) => raiseAlert(opts.membersDb, a);
+  const onResolved = (betId: string) => {
+    for (const k of ["hold", "noresult", "fail"]) resolveAlert(opts.membersDb, `${k}:${betId}`);
+  };
+  const settle = settlement({ db: opts.membersDb, ledger: led, schedule, clock, results: data.results, card: data.card, log: opts.log, onAlert, onResolved });
+  const buy = purchases({ db: opts.membersDb, ledger: led, cfg, stripe, realNow: opts.realNow, log: opts.log, onAlert });
 
   return { cfg, db: opts.membersDb, clock, schedule, ledger: led, live, settle, purchases: buy, meetingInfo, statusFor, liveOn: () => liveEnabled(cfg) };
 }

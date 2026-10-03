@@ -63,6 +63,12 @@ export const legal = {
         ],
       },
       {
+        heading: "Staff access",
+        body: [
+          "Our staff may access your account data to operate the service: support, fraud and abuse checks, settling live bets, and accounting. Access is restricted by role: most staff see your contact details masked, and only the site owner can view them in full. Every view of a member's details, every export and every change is logged with the staff member, time and network address. Access logs are kept for 12 months; the record of changes (which holds no contact details) is kept indefinitely.",
+        ],
+      },
+      {
         heading: "Storage outside Hong Kong",
         body: [
           "Some of our service providers may store or process data outside Hong Kong. Where this happens, we take reasonable steps to ensure your data receives a level of protection comparable to that under Hong Kong law.",

@@ -485,7 +485,7 @@ export function StakeBar({
 }
 
 /** Translated explanation of a settle result (falls back to nothing for unknown codes). */
-function settleText(d: SettleDetail | undefined, t: TFunction<["bet", "common"]>): string {
+export function settleText(d: SettleDetail | undefined, t: TFunction<["bet", "common"]>): string {
   if (!d) return "";
   const nums = (hs: number[]) => hs.map((h) => `#${h}`).join(", ");
   switch (d.code) {

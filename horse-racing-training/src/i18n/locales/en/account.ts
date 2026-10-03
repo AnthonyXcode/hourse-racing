@@ -2,6 +2,7 @@
 export const account = {
   login: "Log in",
   menu: {
+    admin: "Admin panel",
     open: "Account menu, {{name}}",
     profile: "Profile",
     history: "Bet history",

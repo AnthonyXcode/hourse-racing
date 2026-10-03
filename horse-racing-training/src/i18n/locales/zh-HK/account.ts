@@ -4,6 +4,7 @@ import type { account as En } from "../en/account";
 export const account: Shape<typeof En> = {
   login: "登入",
   menu: {
+    admin: "管理後台",
     open: "帳戶選單：{{name}}",
     profile: "個人資料",
     history: "投注紀錄",

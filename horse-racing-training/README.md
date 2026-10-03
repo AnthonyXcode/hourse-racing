@@ -162,16 +162,16 @@ until the webhook has credited the purchase; credits are granted only by the sig
 credits nothing (no matching purchase; logged as `[credits:alert]`). Refunds and disputes in the dashboard
 debit the credits (capped at the balance) and flag the account if credits were already spent.
 
-**Operator CLI** (no admin panel; writes need `--operator`, `--reason` and `--yes`, and go to `admin_audit`):
+**Operator CLI** (no admin panel; writes need `--operator`, `--reason` (10–200 characters, same rule as the panel) and `--yes`, and go to `admin_audit`):
 
 ```bash
 npm run credits -- show --phone "9123 4567"
-npm run credits:adjust -- --phone 91234567 --amount 500 --reason "goodwill" --operator anthony --yes
+npm run credits:adjust -- --phone 91234567 --amount 500 --reason "goodwill top-up" --operator anthony --yes
 npm run credits -- pending --held
 npm run credits -- resolve-bet <betId> --dividend 279 --reason "dead heat, official divs 279+301" --operator anthony --yes
-npm run credits -- void-race 2026-10-04 ST 5 --reason "abandoned" --operator anthony --yes
-npm run credits -- void-meeting 2026-10-04 ST --reason "typhoon" --operator anthony --yes   # skips races with results (--include-resulted to override)
-npm run credits -- flag --user <id> --reason "chargeback" --operator anthony --yes      # or unflag
+npm run credits -- void-race 2026-10-04 ST 5 --reason "race abandoned" --operator anthony --yes
+npm run credits -- void-meeting 2026-10-04 ST --reason "typhoon signal 8" --operator anthony --yes   # skips races with results (--include-resulted to override)
+npm run credits -- flag --user <id> --reason "card chargeback" --operator anthony --yes      # or unflag
 npm run credits:settle        # settlement sweep now
 npm run credits:reconcile     # wallets = ledger sums, one stake/payout/refund per bet, purchases credited once
 ```
@@ -187,6 +187,36 @@ racecard, or a withdrawn code (WV, WV-A, WX, WX-A, WXNR) in the results. Non-fin
 DISQ) are runners and their bets lose. The results ingest keeps every runner's HKJC place code in a new
 `runners` field on each stored race (`finishOrder` is unchanged); results stored before this change don't
 have it, so a missing horse there is held, never refunded.
+
+## Admin panel (`/admin`)
+
+Staff use the same phone + SMS-code login. Spec: [docs/admin/PRD.md](docs/admin/PRD.md), UI:
+[docs/admin/DESIGN-SPEC.md](docs/admin/DESIGN-SPEC.md). Code: `server/admin/` (routes, shared write actions,
+audit/access log, masking), `src/admin/` (a separate bundle, loaded only on `/admin` paths).
+
+- **Roles.** `owner` = the member whose number is `OWNER_PHONE` (worked out on every request, never stored);
+  `admin` = granted by the owner (read-only everywhere); everyone else is `user` and gets "no access".
+  Revoking takes effect on the next request.
+- **Admin session.** Entering the panel needs an SMS code (a login from the last 5 minutes counts). It lasts
+  1 h idle / 12 h in total; the UI warns 2 minutes before. Role changes, credit adjustments ≥ 1,000, voiding a
+  meeting (or resulted races) and full-contact CSV exports need a code from the last 5 minutes (step-up).
+- **Privacy.** Contact details are masked on the server for everyone. The owner can reveal one member's details
+  for 60 s (logged in the access log). CSV export is owner-only and masked unless "include full contact
+  details" is ticked (plus step-up). Viewing a member, their tabs, full-number search and exports are logged in
+  `admin_access_log` (kept 12 months); every write is in `admin_audit` (append-only, enforced by DB triggers,
+  kept indefinitely). Every admin API response (JSON and CSV) passes through one PII scrubber
+  (`server/admin/scrub.ts`: phones in any spacing / full-width digits, emails, IPs); only the owner's per-member
+  reveal and the full-contact columns of a step-up export are exempt. A number split across separate fields is
+  not recognised (documented limitation).
+- **Writes** need a reason (10–200 characters, stored scrubbed), an `Idempotency-Key` and our `Origin`; the panel and the CLI share
+  `server/admin/actions.ts` and write the same audit rows (`source = panel | cli`).
+
+**Try it locally.** Put `OWNER_PHONE=9123 4567` in `.env` (any HK mobile you'll log in with), restart
+`npm run dev`, open http://localhost:5173/admin, log in with that number (code in the server log). To make
+someone an admin: the owner opens their user page → Change role…, or from the shell
+`npm run credits -- role --phone 9xxx xxxx --set admin --reason "…" --operator you --yes`.
+
+`/admin` is `noindex` (header + meta + `robots.txt`), can't be framed, and isn't in `sitemap.xml`.
 
 ## Ports
 
