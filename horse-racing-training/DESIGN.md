@@ -284,10 +284,20 @@ above. Shared class strings are in `src/kit.tsx` (`btnPrimary` = gold pill, `btn
    "F" (Field) ticks every runner. Lowest win odds = red favourite cell.
 4. **Stake calculator**: no. of bets, unit bet (min $10), bet total, gold **Add**.
 5. **Bet slip** (right column / bottom bar + sheet on phones) → **Place bet** → **Confirm**
-   → result modal per bet (+ total). Each settled bet is saved to History.
+   → result modal per bet (+ total). A member's settled bets are saved to their History; a guest
+   sees a "Log in to save" banner instead.
 
 Code: `src/App.tsx` (state + flow), `src/ui.tsx` (`RaceCardTable`, `PoolMenu`, `StakeBar`,
 `ResultModal`), `src/BetSlip.tsx`, `src/slip.ts` (slip types, unit-bet scaling).
+
+### Membership UI (docs/membership/DESIGN-SPEC.md)
+
+`src/members/`: header `AccountEntry` (Log in = `btnPill`; avatar = initials on `sky-100`/`navy-900`),
+`LoginModal` (3 steps, `modalBgTop` so it stacks over the result modal, fixed-width `modalNarrow`),
+`AccountPage` (`?tab=account`, not a tab; one gold Save, sticky save bar below `lg`), `SaveBanner` /
+`LoginEmptyState` (sky panel + gold Log in, never a gold banner), and `Toast` (navy, bottom-centre,
+3 s, `role="status"`). Shared bits live in `src/members/ui.tsx` (`Avatar`, `Spinner`, prefix-chip input
+classes, the `Counter` used by every length-limited field) and `kit.tsx` (`modalBgTop`, `modalNarrow`). The phone account sheet is portalled to `<body>` so it sits above the page's fixed bottom bars.
 
 ## 11. Checklist for any new UI
 

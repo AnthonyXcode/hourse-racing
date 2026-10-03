@@ -24,5 +24,9 @@ export const history = {
     net: "Net",
     delete: "Delete",
   },
+  clearConfirm: "Clear all {{n}} records?",
+  clearBody: "This removes every practice bet saved to your account. It can't be undone.",
+  clearCancel: "Cancel",
+  clearError: "Couldn't clear your history. Please try again.",
   deleteAria: "Delete bet placed {{when}}",
 } as const;

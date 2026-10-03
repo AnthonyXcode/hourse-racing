@@ -1,12 +1,13 @@
 // Presentational components for the bet trainer.
 import type { CardHorse, PastPerformance, RaceCard, RaceLeg, RaceResult, SettleResult, SettleDetail, BetTypeId, HistoryEntry } from "../shared/types";
-import { useState, type ReactNode } from "react";
+import { useRef, useState, type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import type { TFunction } from "i18next";
 import { useGlossary } from "./i18n/glossary";
 import { Name } from "./i18n/names";
 import { useFmt, useLanguage } from "./i18n/useLanguage";
-import { Display, btn, btnPill, btnPrimary, control, cx, empty, figure, h3, modal, modalBg, panel, pill, pillRow, table, tablePad } from "./kit";
+import { Display, btn, btnDanger, btnPill, btnPrimary, control, cx, empty, errorBox, figure, h3, modal, modalBg, modalNarrow, panel, pill, pillRow, table, tablePad } from "./kit";
+import { Spinner, useDialog } from "./members/ui";
 import { MIN_UNIT, ymd, type SettledBet } from "./slip";
 import { useSlipText } from "./BetSlip";
 
@@ -452,7 +453,7 @@ function settleText(d: SettleDetail | undefined, t: TFunction<["bet", "common"]>
 
 // ---- Result modal ----
 /** Outcome of every bet just placed from the slip; a running total when there's more than one. */
-export function ResultModal({ bets, onClose }: { bets: SettledBet[]; onClose: () => void }) {
+export function ResultModal({ bets, onClose, banner }: { bets: SettledBet[]; onClose: () => void; /** Guest "log in to save" prompt, shown above the bets. */ banner?: ReactNode }) {
   const { t } = useTranslation(["bet", "common"]);
   const fmt = useFmt();
   const multi = bets.length > 1;
@@ -462,6 +463,7 @@ export function ResultModal({ bets, onClose }: { bets: SettledBet[]; onClose: ()
   return (
     <div className={modalBg} onClick={onClose}>
       <div className={modal} role="dialog" aria-modal="true" aria-label={anyHit ? t("result.hit") : t("result.miss")} onClick={(e) => e.stopPropagation()}>
+        {banner}
         <div className="flex flex-col gap-4">
           {bets.map((b) => (
             <SettledCard key={b.item.id} bet={b} compact={multi} />
@@ -655,9 +657,11 @@ export function HistoryPage({
 }: {
   entries: HistoryEntry[];
   onDelete: (id: string) => void;
-  onClear: () => void;
+  /** Clears everything; the page shows its own confirm dialog first. Rejects on failure. */
+  onClear: () => Promise<unknown>;
 }) {
   const { t } = useTranslation(["history", "common"]);
+  const [confirming, setConfirming] = useState(false);
   const g = useGlossary();
   const fmt = useFmt();
   const money = fmt.money;
@@ -676,11 +680,12 @@ export function HistoryPage({
       <div className="flex flex-wrap items-end justify-between gap-3">
         <Display sub={t("sub")}>{t("title")}</Display>
         {entries.length > 0 && (
-          <button className={cx(btn, "mb-2 text-bad")} onClick={onClear}>
+          <button className={cx(btnDanger, "mb-2")} onClick={() => setConfirming(true)}>
             {t("common:action.clearAll")}
           </button>
         )}
       </div>
+      {confirming && <ClearDialog count={entries.length} onCancel={() => setConfirming(false)} onConfirm={onClear} />}
 
       <div className={cx(panel, "mt-4 grid grid-cols-2 gap-x-4 gap-y-5 sm:grid-cols-[repeat(auto-fit,minmax(150px,1fr))]")}>
         <Stat label={t("stat.net")} big tone={tone(net)}>{net >= 0 ? "+" : ""}{money(net)}</Stat>
@@ -741,6 +746,55 @@ export function HistoryPage({
           </table>
         </div>
       )}
+    </div>
+  );
+}
+
+/** In-app confirm for "Clear all" (same pattern as the delete-account dialog): Cancel focused, red outline action. */
+function ClearDialog({ count, onCancel, onConfirm }: { count: number; onCancel: () => void; onConfirm: () => Promise<unknown> }) {
+  const { t } = useTranslation(["history", "common"]);
+  const [busy, setBusy] = useState(false);
+  const [err, setErr] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+  const cancel = useRef<HTMLButtonElement>(null);
+  useDialog(ref, () => !busy && onCancel(), cancel);
+
+  async function run() {
+    setBusy(true);
+    setErr(false);
+    try {
+      await onConfirm();
+      onCancel();
+    } catch {
+      setErr(true);
+      setBusy(false);
+    }
+  }
+
+  return (
+    <div className={modalBg} onClick={() => !busy && onCancel()}>
+      <div ref={ref} className={modalNarrow} role="alertdialog" aria-modal="true" aria-labelledby="clear-title" aria-describedby="clear-body" onClick={(e) => e.stopPropagation()}>
+        <h2 id="clear-title" className="text-[15px] font-medium text-navy-900 sm:text-[17px]">
+          {t("clearConfirm", { n: count })}
+        </h2>
+        {err && (
+          <div className={errorBox} role="alert">
+            {t("clearError")}
+          </div>
+        )}
+        <p id="clear-body" className="mt-2 text-[15px] leading-normal text-ink">
+          {t("clearBody")}
+        </p>
+        <div className="mt-5 flex items-center justify-between gap-3">
+          <button ref={cancel} type="button" className={btn} disabled={busy} onClick={onCancel}>
+            {t("clearCancel")}
+          </button>
+          <button type="button" className={btnDanger} disabled={busy} onClick={() => void run()}>
+            {busy && <Spinner />}
+            {t("common:action.clearAll")}
+          </button>
+        </div>
+      </div>
     </div>
   );
 }

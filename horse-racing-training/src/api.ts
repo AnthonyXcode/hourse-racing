@@ -5,7 +5,6 @@ import type {
   RaceResult,
   SettleRequest,
   SettleResult,
-  HistoryEntry,
 } from "../shared/types";
 import type { AnalyzerPayload, PreRaceAnalysis } from "../shared/analyzer/model";
 import type { RaceSeries, HorseRow, ModelRank, Highlight, DaySummary } from "../shared/momentum/model";
@@ -66,10 +65,6 @@ export const api = {
   result: (date: string, venue: string, rn: number) =>
     get<RaceResult>(`/api/result/${date}/${venue}/${rn}`),
   settle: (req: SettleRequest) => send<SettleResult>("POST", "/api/settle", req),
-  history: () => get<HistoryEntry[]>("/api/history"),
-  addHistory: (e: HistoryEntry) => send<HistoryEntry[]>("POST", "/api/history", e),
-  deleteHistory: (id: string) => send<HistoryEntry[]>("DELETE", `/api/history/${id}`),
-  clearHistory: () => send<HistoryEntry[]>("DELETE", "/api/history"),
   /** Pre-race model analysis of one racecard (date YYYYMMDD); never includes results. */
   raceAnalysis: (date: string, venue: string, race: number) => get<PreRaceAnalysis>(`/api/race-analysis?date=${date}&venue=${venue}&race=${race}`),
   analyzer: (from: string, to: string) => get<AnalyzerPayload>(`/api/analyzer?from=${from}&to=${to}`),

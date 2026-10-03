@@ -26,6 +26,7 @@ export const common: Shape<typeof En> = {
         description: "開跑前每30秒記錄香港賽事獨贏、位置即時賠率及彩池，並分析落飛馬匹的實際賽果。",
       },
       settings: { title: "設定", description: "你在此瀏覽器的開跑前偏好設定。" },
+      account: { title: "我的帳戶", description: "你在開跑前的會員資料及聯絡資料。" },
     },
   },
   nav: {

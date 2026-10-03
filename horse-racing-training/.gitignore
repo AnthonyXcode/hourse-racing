@@ -4,3 +4,6 @@ history.json
 *.log
 .env
 data/*.sqlite*
+
+# Member avatars (docs/membership)
+data/avatars/

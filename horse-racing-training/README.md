@@ -41,6 +41,57 @@ Production (single process serving built SPA + API):
 npm run build && npm start    # http://localhost:8787
 ```
 
+## Membership
+
+Members log in with a Hong Kong mobile number and a 6-digit SMS code (no passwords). A new number
+creates an account. Each member's bet history is stored on the server (`data/members.sqlite`, gitignored);
+guests can still bet, but nothing they do is saved. The account page is `?tab=account` (avatar menu).
+Spec: [docs/membership/PRD.md](docs/membership/PRD.md), UI: [docs/membership/DESIGN-SPEC.md](docs/membership/DESIGN-SPEC.md).
+Code: `server/members/` (API, OTP, Turnstile, rate limits, sessions, avatars), `shared/validation.ts`,
+`src/members/` (login sheet, account menu and page, guest prompts).
+
+The old shared bet log (`history.json`, `server/history.ts`) is no longer read; members' history is
+per account and is not migrated.
+
+**Log in locally.** With no extra settings, dev uses a mock SMS provider and Cloudflare's always-pass
+Turnstile test keys. Enter any HK mobile (e.g. `9123 4567`), press Send code, then read the code from the
+`npm run dev` server output:
+
+```
+[otp:mock] +852****4567 code=123456
+```
+
+Codes expire after 10 minutes, allow 5 wrong tries, and one number can request a code once a minute
+(5 an hour, 10 a day; 20 an hour per IP).
+
+| Variable | Default (dev) | What it is |
+|----------|---------------|------------|
+| `OTP_PROVIDER` | `mock` (`twilio` in production) | SMS provider. `mock` prints the code to the server log. |
+| `TWILIO_ACCOUNT_SID` / `TWILIO_AUTH_TOKEN` / `TWILIO_VERIFY_SERVICE_SID` | — | Twilio Verify credentials. Required for `twilio`. Secret. |
+| `TURNSTILE_SITE_KEY` / `TURNSTILE_SECRET_KEY` | Cloudflare test keys | Bot check before each SMS. The site key reaches the browser via `GET /api/config`. |
+| `MEMBERS_DB` | `data/members.sqlite` | Members, sessions, history, OTP + rate-limit rows. |
+| `AVATAR_DIR` | `data/avatars` | Avatars, re-encoded to 256×256 WebP. |
+| `SESSION_TTL_DAYS` | `30` | Sliding login lifetime. |
+| `APP_ORIGIN` | `http://localhost:5173` | Allowed `Origin` for state-changing auth/profile/history calls (comma-separated). |
+| `TRUST_PROXY` | unset | Proxy hops to trust for the client IP, e.g. `1` behind nginx. |
+| `OTP_RATE_PHONE_HOUR` / `OTP_RATE_PHONE_DAY` / `OTP_RATE_IP_HOUR` | `5` / `10` / `20` | Send-limit overrides. |
+
+**Production checklist** (the server refuses to start with `NODE_ENV=production` until these are done):
+
+1. In Twilio, create a **Verify Service** with code length 6. Set Verify **Geo-permissions to Hong Kong only**
+   and turn on **Fraud Guard**. Put `OTP_PROVIDER=twilio`, `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN` and
+   `TWILIO_VERIFY_SERVICE_SID` in `.env` (never in git). Set a monthly spend cap.
+2. In Cloudflare, create a **Turnstile** widget for the public domain and set `TURNSTILE_SITE_KEY` /
+   `TURNSTILE_SECRET_KEY` (the `1x…`/`2x…`/`3x…` test keys are refused).
+3. Set `APP_ORIGIN` to the public `https://` origin, and `TRUST_PROXY` if behind a reverse proxy.
+   The session cookie is `Secure` in production, so serve over HTTPS.
+4. Rotate the Twilio auth token and Turnstile secret if they were ever shared, and whenever staff change.
+5. Back up `data/members.sqlite` (same `.backup` method as below) and `data/avatars/`.
+
+QA-only Turnstile keys: site `2x00000000000000000000AB` always blocks, `3x00000000000000000000FF` forces a
+challenge; secret `2x0000000000000000000000000000000AA` always fails, `3x0000000000000000000000000000000AA`
+reports a spent token.
+
 ## Ports
 
 Both ports are set in `.env` (copy `.env.example`). `.env` is gitignored.
@@ -153,7 +204,8 @@ designated legs; disabled for meetings without them).
 ## Architecture
 
 ```
-server/   Express API (SQLite in data/momentum.sqlite: race cards, results, odds, names)
+server/   Express API (SQLite in data/momentum.sqlite: race cards, results, odds, names;
+          server/members: login, profiles and per-member history in data/members.sqlite)
 shared/   types + betEngine (combinatorics, dead-heat-aware settlement) — imported by server AND client
 src/      React + TS SPA (HKJC-style race card, banker/leg picker, cost bar, result modal)
 ```

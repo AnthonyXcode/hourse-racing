@@ -25,6 +25,7 @@ export const common = {
         description: "Live Win and Place odds and pool totals for Hong Kong races, recorded every 30 seconds before the off, and how market movers finished.",
       },
       settings: { title: "Settings", description: "Your Post Time preferences in this browser." },
+      account: { title: "My account", description: "Your Post Time member profile and contact details." },
     },
   },
   nav: {

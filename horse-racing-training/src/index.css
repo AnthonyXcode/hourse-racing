@@ -109,3 +109,10 @@ select {
   background-size: 12px;
   padding-right: 2.25rem;
 }
+
+/* Bottom sheets slide up (account menu on phones). Used via motion-safe:animate-[sheet-up_250ms_ease-out]. */
+@keyframes sheet-up {
+  from {
+    transform: translateY(100%);
+  }
+}

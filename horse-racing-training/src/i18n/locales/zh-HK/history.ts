@@ -27,5 +27,9 @@ export const history: Shape<typeof En> = {
     net: "淨額",
     delete: "刪除",
   },
+  clearConfirm: "清除全部 {{n}} 項紀錄？",
+  clearBody: "此操作會刪除你帳戶內所有已儲存的模擬投注紀錄，無法復原。",
+  clearCancel: "取消",
+  clearError: "未能清除紀錄，請再試一次。",
   deleteAria: "刪除於 {{when}} 落注的紀錄",
 };

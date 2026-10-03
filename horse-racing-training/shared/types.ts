@@ -220,3 +220,51 @@ export interface HistoryEntry {
   /** the pool's winning dividend (what a correct bet paid), shown even on a miss. */
   poolDividendText: string;
 }
+
+// ---- Membership (docs/membership/PRD.md §7) ----
+export type MemberLocale = "zh-HK" | "en";
+
+/** The logged-in member, as the API returns it. Only ever sent to its owner. */
+export interface Member {
+  id: string;
+  /** E.164, "+85291234567" */
+  phone: string;
+  displayName: string;
+  description: string | null;
+  telegram: string | null;
+  /** E.164 */
+  whatsapp: string | null;
+  email: string | null;
+  avatarUrl: string | null;
+  createdAt: string;
+}
+
+/** Error codes the API returns as `{ error: { code, … } }`; the client localises them. */
+export type ApiErrorCode =
+  | "invalid_phone"
+  | "turnstile_failed"
+  | "rate_limited"
+  | "otp_send_failed"
+  | "invalid_code"
+  | "code_expired"
+  | "too_many_attempts"
+  | "unauthorized"
+  | "validation_error"
+  | "unsupported_type"
+  | "file_too_large"
+  | "confirm_required"
+  | "invalid_entry"
+  | "bad_origin"
+  | "unsupported_media_type"
+  | "bad_request"
+  | "not_found"
+  | "server_error";
+
+export interface ApiErrorBody {
+  error: { code: ApiErrorCode | string; field?: string; /** field-specific code for validation_error, e.g. "invalid_email" */ detail?: string; retryAfter?: number; attemptsLeft?: number };
+}
+
+export interface PublicConfig {
+  turnstileSiteKey: string;
+  otp: { length: number; resendSeconds: number };
+}

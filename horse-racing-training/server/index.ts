@@ -8,12 +8,26 @@ import { names } from "./names/service";
 import { dataApi } from "./data/routes";
 import { dataService } from "./data/service";
 import { seo } from "./seo";
+import { loadConfig, assertProductionConfig } from "./members/config";
+import { members } from "./members/service";
+import { membersRouter } from "./members/routes";
+import { apiErrorHandler } from "./apiErrors";
+
+// Membership: refuse to boot in production with dev OTP / Turnstile settings (docs/membership/PRD.md §5.12).
+assertProductionConfig(loadConfig());
 
 const app = express();
+// Client IP for per-IP rate limits behind nginx/Cloudflare: set TRUST_PROXY (e.g. 1). Unset = trust nothing.
+if (process.env.TRUST_PROXY) {
+  const tp = process.env.TRUST_PROXY;
+  app.set("trust proxy", /^\d+$/.test(tp) ? Number(tp) : tp === "true" ? true : tp === "false" ? false : tp);
+}
 app.use(express.json());
 app.use(seo);
 app.use("/api/data", dataApi);
+app.use("/api", membersRouter(members()));
 app.use("/api", api);
+app.use("/api", apiErrorHandler); // after every /api router: malformed/oversized JSON etc. → JSON errors
 
 // Serve the built SPA in production (npm run build → dist/).
 const dist = fileURLToPath(new URL("../dist", import.meta.url));

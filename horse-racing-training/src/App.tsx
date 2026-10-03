@@ -18,7 +18,13 @@ import { PicksBanner } from "./momentum/PicksBanner";
 import { useCutoffNotifications } from "./momentum/notify";
 import { RaceAnalysisPanel } from "./RaceAnalysisPanel";
 import { useSeo } from "./seo";
-import { btnPill, chipBtn, container, control, cx, errorBox, panel, pill, pillRow } from "./kit";
+import { Display, btnPill, chipBtn, container, control, cx, errorBox, panel, pill, pillRow } from "./kit";
+import { AuthProvider, useAuth } from "./members/auth";
+import { AccountEntry } from "./members/AccountMenu";
+import { AccountPage } from "./members/AccountPage";
+import { LoginEmptyState, SaveBanner } from "./members/GuestPrompts";
+import { memberApi } from "./members/api";
+import { errorText } from "./members/ui";
 
 /** Publish the sticky header's height as --header-h so other sticky bars can sit just below it. */
 function useHeaderHeightVar() {
@@ -42,7 +48,8 @@ function useOnceTrue(v: boolean): boolean {
   return seen || v;
 }
 
-const VIEWS = ["bet", "history", "win-place", "trio", "momentum", "settings", ...LEGAL_VIEWS] as const;
+/** Every ?tab= view. "account" is reached from the avatar menu, so it isn't in TABS. */
+const VIEWS = ["bet", "history", "win-place", "trio", "momentum", "settings", "account", ...LEGAL_VIEWS] as const;
 type View = (typeof VIEWS)[number];
 const DEFAULT_VIEW: View = "bet";
 /** How often the bet page re-polls the meeting list while visible. */
@@ -60,6 +67,9 @@ const navBtn = (on: boolean) =>
   on
     ? "inline-flex h-10 flex-none cursor-pointer items-center bg-navy-700 px-4 text-[15px] font-medium whitespace-nowrap text-white"
     : "inline-flex h-10 flex-none cursor-pointer items-center px-4 text-[15px] whitespace-nowrap text-ink transition-colors hover:bg-sky-50";
+/** Bets a guest settled this visit, uploaded if they log in from the save prompt (PRD §2.7). */
+const GUEST_PENDING_MAX = 20;
+
 /** A race picked as a DT/TT leg but not the one being edited. */
 const pickedLeg =
   "inline-flex size-8 flex-none cursor-pointer items-center justify-center rounded-full bg-sky-150 text-[15px] font-medium text-navy-900 ring-2 ring-navy-700";
@@ -91,6 +101,14 @@ function useViewParam(): [View, (v: View) => void] {
 }
 
 export default function App() {
+  return (
+    <AuthProvider>
+      <AppBody />
+    </AuthProvider>
+  );
+}
+
+function AppBody() {
   const [days, setDays] = useState<MeetingRef[]>([]);
   const [meetingKey, setMeetingKey] = useState<string>(""); // "date_venue"
   const [meeting, setMeeting] = useState<MeetingDetail | null>(null);
@@ -104,12 +122,19 @@ export default function App() {
   const [slip, setSlip] = useState<SlipItem[]>([]);
   const [settled, setSettled] = useState<SettledBet[] | null>(null);
   const [error, setError] = useState<string>("");
-  const { t } = useTranslation(["common", "bet"]);
+  const { t } = useTranslation(["common", "bet", "account", "history"]);
+  const { t: ta } = useTranslation("account");
+  const auth = useAuth();
+  const { user } = auth;
+  /** Guest bets settled since the page loaded (newest last, at most 20). */
+  const guestPending = useRef<HistoryEntry[]>([]);
   useCutoffNotifications();
   const g = useGlossary();
   const poolName = usePoolName();
   const fmt = useFmt();
-  const [view, setView] = useViewParam();
+  const [view, setViewRaw] = useViewParam();
+  /** Switch tabs, asking first if the account page has unsaved edits. */
+  const setView = (v: View) => (v === view ? undefined : auth.guard(() => setViewRaw(v)));
   useSeo(view);
   const headerRef = useHeaderHeightVar();
   /** For links that carry a view name as a string (footer, site map). */
@@ -117,7 +142,8 @@ export default function App() {
     const known = VIEWS.find((x) => x === v);
     if (known) setView(known);
   };
-  const [history, setHistory] = useState<HistoryEntry[]>([]);
+  /** null until the member's history has loaded. */
+  const [history, setHistory] = useState<HistoryEntry[] | null>(null);
   const [raceResult, setRaceResult] = useState<RaceResult | null>(null);
   const analyzerOpened = useOnceTrue(view === "win-place" || view === "trio");
 
@@ -150,10 +176,17 @@ export default function App() {
     };
   }, []);
 
-  // Refresh history whenever the History tab is opened.
+  // Refresh a member's history whenever the History tab is opened (or they log in on it).
+  // Guests have no history; a 401 means the session ended, so drop to guest state.
+  const memberId = user?.id;
   useEffect(() => {
-    if (view === "history") api.history().then(setHistory).catch((e) => setError(String(e)));
-  }, [view]);
+    setHistory(null);
+    if (view !== "history" || !memberId) return;
+    memberApi
+      .history()
+      .then(setHistory)
+      .catch((e) => auth.handleAuthError(e) || setError(errorText(ta, e)));
+  }, [view, memberId]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const [date, venue] = meetingKey ? meetingKey.split("_") : ["", ""];
 
@@ -305,7 +338,7 @@ export default function App() {
       try {
         const r = scaleResult(await api.settle({ date: item.date, venue: item.venue, selection: item.selection }), item.unit);
         done.push({ item, result: r });
-        track("practice_bet", { bet_type: item.betType, combos: item.combos, hit: r.hit });
+        track("practice_bet", { bet_type: item.betType, combos: item.combos, hit: r.hit, member: !!user });
         const multi = r.legResults.length > 1;
         const resultStr = r.legResults
           .map((lr) => {
@@ -329,7 +362,11 @@ export default function App() {
           net: r.net,
           poolDividendText: r.poolDividendText,
         };
-        api.addHistory(entry).catch((e) => setError(String(e)));
+        if (user) {
+          memberApi.addHistory(entry).catch((e) => auth.handleAuthError(e) || setError(t("account:err.historySave")));
+        } else {
+          guestPending.current = [...guestPending.current, entry].slice(-GUEST_PENDING_MAX); // nothing is sent for guests
+        }
       } catch (e) {
         setError(String(e));
         break; // keep this and later bets on the slip
@@ -338,6 +375,32 @@ export default function App() {
     const ids = new Set(done.map((d) => d.item.id));
     setSlip((s) => s.filter((it) => !ids.has(it.id)));
     if (done.length) setSettled(done);
+  }
+
+  /** Header menu / account page Log out: back to the bet page if they were on their account. */
+  function logout() {
+    void auth.logout();
+    if (view === "account") setViewRaw("bet");
+  }
+
+  /** Result-modal banner: log in, then save this visit's guest bets once and close the modal. */
+  function loginToSave() {
+    auth.openLogin({
+      source: "save_prompt",
+      onLoggedIn: async () => {
+        const pending = guestPending.current;
+        guestPending.current = [];
+        setSettled(null);
+        if (!pending.length) return;
+        try {
+          await memberApi.addHistoryBatch(pending);
+          return t("account:toast.savedBets", { count: pending.length });
+        } catch (e) {
+          setError(t("account:err.historySave"));
+          return undefined;
+        }
+      },
+    });
   }
 
   const card = cards[editRace];
@@ -374,6 +437,7 @@ export default function App() {
             <h1 className="flex-none text-lg leading-none font-bold">{t("appName")}</h1>
             <span className="rounded-full border border-gold px-2 py-0.5 text-[11px] leading-none font-medium text-gold">{t("practice")}</span>
             <LangSwitch className="ml-auto" />
+            <AccountEntry current={view} onNavigate={setViewRaw} onLogout={logout} />
           </div>
         </div>
         {/* Primary tabs: navy block marks the current one; scrolls sideways on phones. */}
@@ -405,13 +469,30 @@ export default function App() {
         {view === "momentum" && <MomentumPage />}
         {view === "settings" && <SettingsPage />}
 
-        {view === "history" && (
-          <HistoryPage
-            entries={history}
-            onDelete={(id) => api.deleteHistory(id).then(setHistory).catch((e) => setError(String(e)))}
-            onClear={() => api.clearHistory().then(setHistory).catch((e) => setError(String(e)))}
-          />
-        )}
+        {view === "history" &&
+          (user === null ? (
+            <div className="mt-2">
+              <Display sub={t("history:sub")}>{t("history:title")}</Display>
+              <LoginEmptyState title={t("account:guest.historyTitle")} onLogin={() => auth.openLogin({ source: "history" })} />
+            </div>
+          ) : user && history ? (
+            <HistoryPage
+              entries={history}
+              onDelete={(id) => memberApi.deleteHistory(id).then(setHistory).catch((e) => auth.handleAuthError(e) || setError(errorText(ta, e)))}
+              onClear={() =>
+                memberApi
+                  .clearHistory()
+                  .then(setHistory)
+                  .catch((e) => {
+                    if (!auth.handleAuthError(e)) throw e; // dialog shows the error
+                  })
+              }
+            />
+          ) : (
+            <div className={cx(panel, "mt-6 text-center text-ink-muted")}>{t("account:loading")}</div>
+          ))}
+
+        {view === "account" && <AccountPage onLogout={logout} onDeleted={() => setViewRaw("bet")} />}
 
         {view === "bet" && (
           // HKJC layout: pool menu · race card · bet slip (one column on phones, slip as a bottom bar).
@@ -578,7 +659,13 @@ export default function App() {
 
       <Footer onSelect={selectView} />
 
-      {settled && <ResultModal bets={settled} onClose={() => setSettled(null)} />}
+      {settled && (
+        <ResultModal
+          bets={settled}
+          onClose={() => setSettled(null)}
+          banner={user === null ? <SaveBanner onLogin={loginToSave} /> : undefined}
+        />
+      )}
       {raceResult && <ResultPanel result={raceResult} onClose={() => setRaceResult(null)} />}
     </div>
   );

@@ -1,7 +1,6 @@
 import { Router } from "express";
 import { getManifest, readCard, readResults } from "./dataIndex";
 import { settle } from "../shared/betEngine/index";
-import { readHistory, addEntry, deleteEntry, clearHistory } from "./history";
 import { analyzeCard, runAnalyzer } from "./analyzer";
 import { momentum } from "./momentum/service";
 import { hkDate } from "./momentum/poller";
@@ -20,7 +19,6 @@ import type {
   MeetingDetail,
   SettleRequest,
   SettleResult,
-  HistoryEntry,
 } from "../shared/types";
 
 export const api = Router();
@@ -28,14 +26,7 @@ export const api = Router();
 /** date YYYYMMDD → race id "2026-09-23-HV-1" (same format as the momentum DB and the names table). */
 const raceKey = (date: string, venue: string, rn: number) => `${date.slice(0, 4)}-${date.slice(4, 6)}-${date.slice(6, 8)}-${venue}-${rn}`;
 
-// ---- Pick history ----
-api.get("/history", (_req, res) => res.json(readHistory()));
-api.post("/history", (req, res) => res.json(addEntry(req.body as HistoryEntry)));
-api.delete("/history/:id", (req, res) => res.json(deleteEntry(req.params.id)));
-api.delete("/history", (_req, res) => {
-  clearHistory();
-  res.json([]);
-});
+// Bet history is per member now: see server/members/routes.ts (/api/history).
 
 /** GET /api/analyzer?from=YYYY-MM-DD&to=YYYY-MM-DD → per-horse predictions vs results for the range. */
 api.get("/analyzer", async (req, res) => {

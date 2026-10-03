@@ -53,6 +53,9 @@ export const dateControl =
 /** Secondary button: navy outline. */
 export const btn =
   "inline-flex h-10 cursor-pointer items-center justify-center gap-1.5 rounded-control border border-navy-700 bg-surface px-4 text-sm font-medium whitespace-nowrap text-navy-700 transition-colors enabled:hover:bg-sky-50 disabled:cursor-default disabled:opacity-45";
+/** Destructive action (Clear all, Delete account): red outline. Never gold. */
+export const btnDanger =
+  "inline-flex h-10 cursor-pointer items-center justify-center gap-1.5 rounded-control border border-bad bg-surface px-4 text-sm font-medium whitespace-nowrap text-bad transition-colors enabled:hover:bg-bad-soft disabled:cursor-default disabled:opacity-45";
 /** Primary call to action: gold pill, black text. One per view. */
 export const btnPrimary =
   "inline-flex h-10 min-w-28 cursor-pointer items-center justify-center gap-1.5 rounded-full bg-gold px-5 text-[15px] font-medium whitespace-nowrap text-ink-strong transition-colors enabled:hover:bg-gold-hover disabled:cursor-default disabled:bg-disabled disabled:text-white";
@@ -104,8 +107,13 @@ export const tip = "min-w-[190px] rounded-card bg-surface px-3 py-2.5 text-xs sh
 export const tipRow = "flex items-center gap-1.5 py-px text-ink";
 /** Modal backdrop: bottom sheet on phones, centered dialog from `sm`. */
 export const modalBg = "fixed inset-0 z-50 flex items-end justify-center bg-ink/40 backdrop-blur-sm sm:items-center sm:p-6";
+/** Same backdrop one level up, for a dialog opened on top of another (login over the result modal). */
+export const modalBgTop = "fixed inset-0 z-[60] flex items-end justify-center bg-ink/40 backdrop-blur-sm sm:items-center sm:p-6";
 export const modal =
   "max-h-[92dvh] w-full overflow-auto rounded-t-sheet bg-surface p-5 shadow-pop sm:w-auto sm:min-w-[400px] sm:max-w-[min(720px,100%)] sm:rounded-card sm:p-7";
+
+/** `modal` at a fixed 400px from `sm` (login, confirm dialogs), so steps don't jump in width. */
+export const modalNarrow = "max-h-[92dvh] w-full overflow-auto rounded-t-sheet bg-surface p-5 shadow-pop sm:w-[400px] sm:max-w-full sm:rounded-card sm:p-7";
 
 /** Page title: navy, medium weight. */
 export function Display({ children, sub }: { children: ReactNode; sub?: ReactNode }) {

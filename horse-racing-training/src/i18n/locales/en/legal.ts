@@ -22,6 +22,7 @@ export const legal = {
         body: [
           "We collect only what we need to run the service:",
           "• Account and contact details, such as your name and email address, once you create an account.",
+          "• Membership: your Hong Kong mobile number (to log in by SMS code), the practice bets you save to your history, and any profile details you choose to add (display name, description, photo, Telegram, WhatsApp, email). Your profile is visible only to you.",
           "• Subscription and billing records, such as your plan, payment dates and amounts. Card details are entered with and processed by our payment processor; we do not receive or store your full card number.",
           "• Technical and usage information, such as IP address, browser type, pages viewed and error logs, which our servers record automatically.",
         ],
@@ -55,6 +56,7 @@ export const legal = {
           "• Our payment processor, to take payments and prevent fraud.",
           "• Google, which provides Google Analytics for Firebase and processes usage data on our behalf to produce statistics.",
           "• Hosting, IT and email providers who process data on our behalf and under our instructions.",
+          "• Twilio, which sends the SMS login codes and so processes your mobile number, and Cloudflare (Turnstile), which checks that login requests come from a person and processes technical data such as your IP address.",
           "• Law enforcement, regulators or courts, where we are required or permitted by law to do so.",
         ],
       },
@@ -68,6 +70,7 @@ export const legal = {
         heading: "How long we keep data",
         body: [
           "We keep personal data only for as long as needed for the purposes above. Billing records are kept for as long as required for accounting and tax purposes. When data is no longer needed, we delete or anonymise it.",
+          "Your member profile, photo and saved practice bets are kept until you delete your account. You can do that yourself at any time under My account → Delete account; it removes your profile, photo, bet history and every login session straight away. Login-code and anti-abuse records are deleted within 24 hours.",
         ],
       },
       {

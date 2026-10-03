@@ -46,3 +46,15 @@ describe("dictionaries", () => {
     }
   });
 });
+
+describe("plurals", () => {
+  it("'N bets saved' uses the singular for 1 in English (QA-06)", async () => {
+    const { createInstance } = await import("i18next");
+    const i = createInstance();
+    await i.init({ resources: { en, "zh-HK": zhHK }, lng: "en", ns: ["account"], defaultNS: "account", interpolation: { escapeValue: false } });
+    expect(i.t("account:toast.savedBets", { count: 1 })).toBe("1 bet saved to History");
+    expect(i.t("account:toast.savedBets", { count: 3 })).toBe("3 bets saved to History");
+    await i.changeLanguage("zh-HK");
+    expect(i.t("account:toast.savedBets", { count: 1 })).toBe("已將 1 注儲存至投注紀錄");
+  });
+});
