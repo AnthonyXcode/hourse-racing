@@ -213,6 +213,10 @@ export interface CardsSession {
   close(): Promise<void>;
 }
 export interface FetchDeps {
+  /** Meetings HKJC lists, with post times (feeds the LIVE race schedule). */
+  onDiscovered?(upcoming: UpcomingMeeting[]): void | Promise<void>;
+  /** A meeting's stored results changed (triggers LIVE settlement). */
+  onResults?(m: MeetingKey): void;
   store: RaceStore;
   runLog: RunLog;
   discover(): Promise<UpcomingMeeting[]>;
@@ -263,6 +267,13 @@ export async function runFetch(deps: FetchDeps, trigger: Trigger, opts: FetchOpt
       try {
         upcoming = await deps.discover();
         sum.discovered = upcoming.map((m) => ({ date: m.date, venue: m.venue }));
+        if (!opts.dryRun && deps.onDiscovered) {
+          try {
+            await deps.onDiscovered(upcoming);
+          } catch (e) {
+            log(`schedule update failed: ${e instanceof Error ? e.message : e}`);
+          }
+        }
       } catch (e) {
         sum.discoverError = e instanceof Error ? e.message : String(e);
         log(`meeting discovery failed: ${sum.discoverError}`);
@@ -294,6 +305,13 @@ export async function runFetch(deps: FetchDeps, trigger: Trigger, opts: FetchOpt
             }
             const changed = store.putResults({ date: m.date, venue: got.venue }, got.races, "scrape");
             sum.results.push({ meeting: `${m.date} ${got.venue}`, races: got.races.length, changed, note: got.note });
+            if (changed) {
+              try {
+                deps.onResults?.({ date: m.date, venue: got.venue });
+              } catch (e) {
+                log(`live settlement after results failed: ${e instanceof Error ? e.message : e}`);
+              }
+            }
             log(`results ${m.date} ${got.venue}: ${got.races.length} races${changed ? " (updated)" : ""}${got.note ? ` · ${got.note}` : ""}`);
           } catch (e) {
             fail(`results ${label}`, e);

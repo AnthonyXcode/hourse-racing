@@ -19,6 +19,8 @@ export interface SlipItem {
   combos: number;
   /** combos × unit */
   cost: number;
+  /** practice (instant, imaginary HK$) or live (credits, settles after the race). Missing = practice. */
+  mode?: "practice" | "live";
 }
 
 export interface SettledBet {

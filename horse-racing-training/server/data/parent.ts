@@ -6,6 +6,7 @@ import { fileURLToPath } from "url";
 import type { CardDoc, MeetingKey, RaceStore, Venue } from "./raceStore";
 import type { CardsSession, ResultsSession, UpcomingMeeting } from "./fetchJobs";
 import { fixDividends, parseDividendRows } from "./dividends";
+import { parseRunnerRows } from "./runners";
 import { hkjcClient } from "../momentum/hkjcClient";
 
 const PARENT = fileURLToPath(new URL("../../../", import.meta.url));
@@ -51,6 +52,9 @@ export async function openResultsSession(): Promise<ResultsSession> {
       }
       rows.push(...parsePoolRows(html, r.raceNumber));
       fixed += fixDividends(r as Parameters<typeof fixDividends>[0], parseDividendRows(html));
+      // Every runner with its status (finishOrder drops non-finishers and withdrawn horses).
+      const runners = parseRunnerRows(html);
+      if (runners.length) (r as { runners?: unknown }).runners = runners;
     }
     const fixNote = fixed ? ` · ${fixed} dividend(s) corrected` : "";
     // Same rule as enrichMeeting: don't apply a partial fetch.

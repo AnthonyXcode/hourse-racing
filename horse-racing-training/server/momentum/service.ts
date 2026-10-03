@@ -2,6 +2,8 @@
 import { openDb, repo, type DB, type Repo } from "./db";
 import { createPoller, type Poller } from "./poller";
 import { hkjcClient } from "./hkjcClient";
+import { scheduleStore } from "../credits/schedule";
+import { nowMs } from "../clock";
 
 let inst: { db: DB; repo: Repo; poller: Poller } | null = null;
 
@@ -16,6 +18,8 @@ export function momentum() {
         client: hkjcClient,
         repo: r,
         windowSecs: (Number(process.env.MOMENTUM_WINDOW_MIN) || 30) * 60,
+        onMeeting: (date, venue, rs) =>
+          scheduleStore(db, nowMs).upsert(rs.map((x) => ({ date, venue, raceNo: x.raceNo, postTime: x.postTime, hkjcStatus: x.status })), "poller"),
       }),
     };
   }

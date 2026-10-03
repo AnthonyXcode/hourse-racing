@@ -23,7 +23,10 @@ interface Auth {
   setUser: (u: Member | null) => void;
   openLogin: (req: LoginRequest) => void;
   logout: () => Promise<void>;
-  toast: (message: string) => void;
+  /** Bottom toast; 3 s by default (settlement summaries use 5 s). */
+  toast: (message: string, ms?: number) => void;
+  /** The login sheet is open (other dialogs wait for it). */
+  loginOpen: boolean;
   /** For member API errors: a 401 means the session ended, so drop to guest state. True when handled. */
   handleAuthError: (e: unknown) => boolean;
   /** The account page reports unsaved edits here. */
@@ -45,7 +48,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUserState] = useState<Member | null | undefined>(undefined);
   const [config, setConfig] = useState<PublicConfig | null>(null);
   const [login, setLogin] = useState<LoginRequest | null>(null);
-  const [toastMsg, setToastMsg] = useState<{ text: string; id: number; raised: boolean } | null>(null);
+  const [toastMsg, setToastMsg] = useState<{ text: string; id: number; raised: boolean; ms: number } | null>(null);
   const dirty = useRef(false);
   const [leaving, setLeaving] = useState<(() => void) | null>(null);
 
@@ -59,14 +62,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (!toastMsg) return;
-    const id = setTimeout(() => setToastMsg(null), 3000);
+    const id = setTimeout(() => setToastMsg(null), toastMsg.ms);
     return () => clearTimeout(id);
   }, [toastMsg]);
 
   // On the bet tab the phone slip bar sits at the bottom: lift the toast above it.
-  const toast = useCallback((text: string) => {
+  const toast = useCallback((text: string, ms = 3000) => {
     const tab = new URLSearchParams(window.location.search).get("tab");
-    setToastMsg({ text, id: Date.now(), raised: !tab || tab === "bet" });
+    setToastMsg({ text, id: Date.now(), raised: !tab || tab === "bet", ms });
   }, []);
   const setUser = useCallback((u: Member | null) => setUserState(u), []);
   const handleAuthError = useCallback((e: unknown) => {
@@ -99,11 +102,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       },
       logout,
       toast,
+      loginOpen: login !== null,
       handleAuthError,
       setDirty: (d) => (dirty.current = d),
       guard,
     }),
-    [user, config, setUser, logout, toast, handleAuthError, guard]
+    [user, config, setUser, logout, toast, handleAuthError, guard, login]
   );
 
   return (

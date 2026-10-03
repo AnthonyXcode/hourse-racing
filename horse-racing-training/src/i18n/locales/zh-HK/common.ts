@@ -27,6 +27,7 @@ export const common: Shape<typeof En> = {
       },
       settings: { title: "設定", description: "你在此瀏覽器的開跑前偏好設定。" },
       account: { title: "我的帳戶", description: "你在開跑前的會員資料及聯絡資料。" },
+      credits: { title: "積分", description: "你在開跑前的積分結餘、購買及交易紀錄。" },
     },
   },
   nav: {

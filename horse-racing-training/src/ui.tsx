@@ -6,10 +6,11 @@ import type { TFunction } from "i18next";
 import { useGlossary } from "./i18n/glossary";
 import { Name } from "./i18n/names";
 import { useFmt, useLanguage } from "./i18n/useLanguage";
-import { Display, btn, btnDanger, btnPill, btnPrimary, control, cx, empty, errorBox, figure, h3, modal, modalBg, modalNarrow, panel, pill, pillRow, table, tablePad } from "./kit";
+import { Display, btn, btnDanger, btnPill, btnPrimary, control, cx, empty, errorBox, figure, h3, modal, modalBg, modalNarrow, modeBadge, panel, pill, pillRow, statusChip, table, tablePad } from "./kit";
 import { Spinner, useDialog } from "./members/ui";
 import { MIN_UNIT, ymd, type SettledBet } from "./slip";
 import { useSlipText } from "./BetSlip";
+import { Coin } from "./credits/dialogs";
 
 /** Left-aligned card table: 13px headers, hairline rows, zebra stripes. Tighter cell padding on phones. */
 const cardTable =
@@ -41,6 +42,7 @@ export function RaceCardTable({
   bankerEnabled,
   bankerMax,
   head,
+  readOnly,
 }: {
   card: RaceCard;
   pool: Pool;
@@ -53,6 +55,8 @@ export function RaceCardTable({
   bankerMax: number;
   /** Extra controls in the title bar (e.g. Results). */
   head?: ReactNode;
+  /** View-only race (LIVE: closed / settled / void): every tick disabled. */
+  readOnly?: boolean;
 }) {
   const { t } = useTranslation(["bet", "common"]);
   const g = useGlossary();
@@ -142,7 +146,7 @@ export function RaceCardTable({
                           type="checkbox"
                           className={tick}
                           checked={on}
-                          disabled={scratched || full}
+                          disabled={scratched || full || readOnly}
                           aria-label={`${label} ${e.horseNumber}`}
                           onChange={() => onToggle(c, e.horseNumber)}
                         />
@@ -164,7 +168,7 @@ export function RaceCardTable({
               {cols.map(([c, label]) => (
                 <td key={c} className="text-center">
                   {c !== "bankers" && (
-                    <input type="checkbox" className={tick} checked={allOn(c)} aria-label={`${label} ${t("card.field")}`} onChange={() => onField(c, !allOn(c))} />
+                    <input type="checkbox" className={tick} checked={allOn(c)} disabled={readOnly} aria-label={`${label} ${t("card.field")}`} onChange={() => onField(c, !allOn(c))} />
                   )}
                 </td>
               ))}
@@ -373,23 +377,52 @@ export function usePoolName() {
 }
 
 // ---- Stake calculator ----
+/** LIVE extras for the stake calculator (amounts in credits). */
+export interface LiveStake {
+  /** null for guests. */
+  balance: number | null;
+  /** Credits already on the slip. */
+  slipTotal: number;
+  /** Shown instead of Add when the race can't take LIVE bets (closed / unavailable / view-only). */
+  blockedNote: string | null;
+  onLogin: () => void;
+  onBuy: () => void;
+}
+
 export function StakeBar({
   combos,
   unit,
   onUnit,
   onAdd,
   canAdd,
+  live,
 }: {
   combos: number;
   unit: number;
   onUnit: (n: number) => void;
   onAdd: () => void;
   canAdd: boolean;
+  live?: LiveStake;
 }) {
-  const { t } = useTranslation(["bet", "common"]);
+  const { t } = useTranslation(["bet", "common", "credits", "account"]);
   const fmt = useFmt();
   const [draft, setDraft] = useState(String(unit));
   const bad = !(Number(draft) >= MIN_UNIT);
+  const total = combos * unit;
+  const after = live?.balance != null ? live.balance - live.slipTotal - total : null;
+  const short = after != null && after < 0 && combos > 0;
+  if (live && live.balance === null && !live.blockedNote)
+    return (
+      <section role="region" aria-labelledby="live-guest" className="mt-3 rounded-card bg-sky-50 p-[13px] ring-1 ring-navy-700/20 sm:flex sm:items-center sm:gap-4">
+        <div className="min-w-0 flex-1">
+          <h3 id="live-guest" className="text-[15px] font-medium text-navy-900">{t("credits:guest.title")}</h3>
+          <p className="mt-1 text-[13px] leading-normal text-ink">{t("credits:guest.body")}</p>
+        </div>
+        <button type="button" className={cx(btnPrimary, "mt-3 w-full sm:mt-0 sm:w-auto")} onClick={live.onLogin}>
+          {t("account:login")}
+        </button>
+      </section>
+    );
   return (
     <div className="mt-3 rounded-card bg-surface px-[13px] py-3 shadow-card">
       <div className="mb-2 text-[15px] text-ink">{t("stake.title")}</div>
@@ -397,10 +430,10 @@ export function StakeBar({
         <div className="text-[15px]">
           {t("stake.combos")}: <strong className="font-medium tabular-nums">{combos ? fmt.num(combos) : "-"}</strong>
         </div>
-        <label className="flex items-center gap-2 text-[15px]">
+        <label className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1 text-[15px]">
           <span className="whitespace-nowrap">{t("stake.unit")}</span>
           <span className="relative">
-            <span className="pointer-events-none absolute top-1/2 left-2.5 -translate-y-1/2 text-ink">$</span>
+            <span className="pointer-events-none absolute top-1/2 left-2.5 -translate-y-1/2 text-ink">{live ? <Coin /> : "$"}</span>
             <input
               type="number"
               inputMode="numeric"
@@ -417,15 +450,36 @@ export function StakeBar({
               onBlur={() => setDraft(String(unit))}
             />
           </span>
+          {live && <span className="text-[15px]">{t("credits:unitWord")}</span>}
         </label>
         <div className="text-[15px] sm:ml-auto">
-          {t("stake.total")}: <strong className="font-medium tabular-nums">{combos ? fmt.money(combos * unit) : "-"}</strong>
+          {t("stake.total")}: <strong className="font-medium tabular-nums">{combos ? (live ? t("credits:unit", { n: fmt.num(total) }) : fmt.money(total)) : "-"}</strong>
         </div>
-        <button className={cx(btnPrimary, "justify-self-end")} disabled={!canAdd || combos === 0} onClick={onAdd}>
+        <button
+          className={cx(btnPrimary, "justify-self-end")}
+          disabled={!canAdd || combos === 0 || short || !!live?.blockedNote}
+          aria-describedby={short ? "stake-short" : undefined}
+          onClick={onAdd}
+        >
           {t("stake.add")}
         </button>
       </div>
-      {bad && <p className="mt-2 text-[13px] text-bad">{t("stake.minUnit")}</p>}
+      {bad && <p className="mt-2 text-[13px] text-bad">{live ? t("credits:stake.minUnit") : t("stake.minUnit")}</p>}
+      {live?.blockedNote && <p className="mt-2 text-[13px] text-ink-muted">{live.blockedNote}</p>}
+      {live && !live.blockedNote && after != null && (
+        <p className="mt-2 text-[13px] text-ink-muted tabular-nums">
+          {t("credits:stake.balance", { bal: fmt.num(live.balance!), after: "" })}
+          <span className={short ? "font-medium text-bad" : undefined}>{after < 0 ? `−${fmt.num(-after)}` : fmt.num(after)}</span>
+        </p>
+      )}
+      {short && (
+        <p id="stake-short" className="mt-1 text-[13px] text-bad" aria-live="polite">
+          {t("credits:stake.short")}{" "}
+          <button type="button" className="cursor-pointer text-link hover:underline" onClick={live!.onBuy}>
+            {t("credits:buy.cta")}
+          </button>
+        </p>
+      )}
     </div>
   );
 }
@@ -654,94 +708,166 @@ export function HistoryPage({
   entries,
   onDelete,
   onClear,
+  initialFilter,
 }: {
   entries: HistoryEntry[];
+  /** Practice rows only (LIVE rows are financial records). */
   onDelete: (id: string) => void;
-  /** Clears everything; the page shows its own confirm dialog first. Rejects on failure. */
+  /** Clears practice rows; the page shows its own confirm dialog first. Rejects on failure. */
   onClear: () => Promise<unknown>;
+  /** Open on this filter (e.g. "pending" from a "N pending live bets" link). */
+  initialFilter?: HistoryFilter;
 }) {
-  const { t } = useTranslation(["history", "common"]);
+  const { t } = useTranslation(["history", "common", "credits"]);
   const [confirming, setConfirming] = useState(false);
   const g = useGlossary();
   const fmt = useFmt();
-  const money = fmt.money;
   const when = (ts: string) => fmt.date(ts, { dateStyle: "short", timeStyle: "short" });
-  const totalCost = entries.reduce((s, e) => s + e.cost, 0);
-  // Treat unknown payouts (missing dividend) as 0 for the running total.
-  const totalReturn = entries.reduce((s, e) => s + (e.payout ?? 0), 0);
-  const net = totalReturn - totalCost;
-  const hits = entries.filter((e) => e.hit).length;
-  const roi = totalCost ? (net / totalCost) * 100 : 0;
+  const live = entries.filter((e) => e.mode === "live");
+  const practice = entries.filter((e) => e.mode !== "live");
+  const pending = live.filter((e) => e.status === "pending");
+  const hasLive = live.length > 0;
+  const [filter, setFilter] = useState<HistoryFilter>(initialFilter ?? (hasLive ? "live" : "practice"));
+  const f: HistoryFilter = hasLive ? filter : "practice";
+  const rows = f === "live" ? live : f === "pending" ? pending : practice;
+  const isLive = f !== "practice";
+  // Practice amounts are imaginary HK$; LIVE amounts are credits. Never mixed in one view.
+  const amount = (v: number) => (isLive ? fmt.num(v) : fmt.money(v));
+  const signed = (v: number) => (v >= 0 ? "+" : "−") + amount(Math.abs(v));
 
+  // Bets, hit rate, staked and returned all count SETTLED bets only; pending ones are listed separately.
+  const settled = rows.filter((e) => e.status !== "pending");
+  const pendingRows = rows.filter((e) => e.status === "pending");
+  /** Picks are stored in the 膽/腳 format (history keeps it); show B/L in English. */
+  const picks = (p: string) => p.replaceAll("膽", t("common:role.bankerShort")).replaceAll("腳", t("common:role.legShort"));
+  const totalCost = settled.reduce((s, e) => s + e.cost, 0);
+  // Treat unknown payouts (missing dividend) as 0 for the running total. LIVE returns include refunds.
+  const totalReturn = settled.reduce((s, e) => s + (e.payout ?? 0) + (e.refund ?? 0), 0);
+  const net = totalReturn - totalCost;
+  const hits = settled.filter((e) => e.hit).length;
+  const roi = totalCost ? (net / totalCost) * 100 : 0;
   const tone = (v: number) => (v >= 0 ? "text-good" : "text-bad");
+
+  const chip = (e: HistoryEntry) =>
+    e.status === "pending" ? (
+      <span className={statusChip("pending")}>
+        <svg aria-hidden="true" viewBox="0 0 12 12" className="size-3 fill-none stroke-current" strokeWidth="1.4">
+          <circle cx="6" cy="6" r="4.5" />
+          <path d="M6 3.5V6l1.6 1" />
+        </svg>
+        {t("credits:status.pending")}
+      </span>
+    ) : e.status === "won" ? (
+      <span className={statusChip("won")}>{t("credits:status.won", { n: fmt.num((e.payout ?? 0) + (e.refund ?? 0)) })}</span>
+    ) : e.status === "void" || (e.status === "lost" && (e.refund ?? 0) > 0) ? (
+      <span className={statusChip("refunded")}>{t("credits:status.refunded", { n: fmt.num(e.refund ?? 0) })}</span>
+    ) : (
+      <span className={statusChip("lost")}>{t("credits:status.lost")}</span>
+    );
 
   return (
     <div className="mt-2">
       <div className="flex flex-wrap items-end justify-between gap-3">
-        <Display sub={t("sub")}>{t("title")}</Display>
-        {entries.length > 0 && (
+        <Display sub={f === "live" ? t("credits:history.subLive") : f === "pending" ? t("credits:history.subPending") : t("sub")}>{t("title")}</Display>
+        {practice.length > 0 && f === "practice" && (
           <button className={cx(btnDanger, "mb-2")} onClick={() => setConfirming(true)}>
-            {t("common:action.clearAll")}
+            {hasLive ? t("credits:history.clearPractice") : t("common:action.clearAll")}
           </button>
         )}
       </div>
-      {confirming && <ClearDialog count={entries.length} onCancel={() => setConfirming(false)} onConfirm={onClear} />}
+      {confirming && <ClearDialog count={practice.length} practiceOnly={hasLive} onCancel={() => setConfirming(false)} onConfirm={onClear} />}
 
-      <div className={cx(panel, "mt-4 grid grid-cols-2 gap-x-4 gap-y-5 sm:grid-cols-[repeat(auto-fit,minmax(150px,1fr))]")}>
-        <Stat label={t("stat.net")} big tone={tone(net)}>{net >= 0 ? "+" : ""}{money(net)}</Stat>
-        <Stat label={t("stat.roi")} tone={tone(roi)}>{roi >= 0 ? "+" : ""}{roi.toFixed(1)}%</Stat>
-        <Stat label={t("stat.bets")}>{fmt.num(entries.length)}</Stat>
-        <Stat label={t("stat.hits")}>{fmt.num(hits)}{entries.length ? <span className="text-lg text-ink-3"> {((100 * hits) / entries.length).toFixed(0)}%</span> : ""}</Stat>
-        <Stat label={t("stat.staked")}>{money(totalCost)}</Stat>
-        <Stat label={t("stat.returned")}>{money(totalReturn)}</Stat>
-      </div>
+      {hasLive && (
+        <div className={cx(pillRow, "mt-2")} role="group" aria-label={t("credits:history.filters")}>
+          {(["live", "practice", "pending"] as const).map((k) => (
+            <button key={k} type="button" className={cx(pill(f === k), "flex-none")} aria-pressed={f === k} onClick={() => setFilter(k)}>
+              {k === "live" ? t("credits:history.filterLive") : k === "practice" ? t("credits:history.filterPractice") : t("credits:history.filterPending", { n: pending.length })}
+            </button>
+          ))}
+        </div>
+      )}
 
-      {entries.length === 0 ? (
-        <div className={cx(panel, empty, "mt-4")}>{t("empty")}</div>
+      {f === "pending" ? (
+        pending.length > 0 && (
+          <p className={cx(panel, "mt-4 text-[15px] text-navy-900")}>
+            {t("credits:history.pendingSummary", { count: pending.length, n: fmt.num(pending.reduce((s, e) => s + e.cost, 0)) })}
+          </p>
+        )
+      ) : (
+        <div className={cx(panel, "mt-4")}>
+          {hasLive && <div className="mb-3 text-[13px] font-medium text-ink-muted">{f === "live" ? t("credits:history.statsLive") : t("credits:history.statsPractice")}</div>}
+          <div className="grid grid-cols-2 gap-x-4 gap-y-5 sm:grid-cols-[repeat(auto-fit,minmax(150px,1fr))]">
+            <Stat label={t("stat.net")} big tone={tone(net)}>{signed(net)}</Stat>
+            <Stat label={t("stat.roi")} tone={tone(roi)}>{roi >= 0 ? "+" : ""}{roi.toFixed(1)}%</Stat>
+            <Stat label={t("stat.bets")}>{fmt.num(settled.length)}</Stat>
+            <Stat label={t("stat.hits")}>{fmt.num(hits)}{settled.length ? <span className="text-lg text-ink-3"> {((100 * hits) / settled.length).toFixed(0)}%</span> : ""}</Stat>
+            <Stat label={t("stat.staked")}>{amount(totalCost)}</Stat>
+            <Stat label={t("stat.returned")}>{amount(totalReturn)}</Stat>
+          </div>
+          {isLive && pendingRows.length > 0 && (
+            <p className="mt-4 text-[13px] text-ink-muted">
+              {t("credits:history.pendingStats", { count: pendingRows.length, n: fmt.num(pendingRows.reduce((s, e) => s + e.cost, 0)) })}
+            </p>
+          )}
+        </div>
+      )}
+
+      {rows.length === 0 ? (
+        <div className={cx(panel, empty, "mt-4")}>{f === "live" ? t("credits:history.emptyLive") : f === "pending" ? t("credits:history.emptyPending") : t("empty")}</div>
       ) : (
         <div className="mt-4 overflow-x-auto rounded-card bg-surface shadow-card">
           <table
             className={cx(
               table,
               tablePad,
-              "text-sm [&_th:nth-child(-n+4)]:text-left [&_td:nth-child(-n+4)]:text-left [&_th:nth-child(8)]:text-left [&_td:nth-child(8)]:text-left [&_th:nth-child(7)]:text-center [&_td:nth-child(7)]:text-center"
+              isLive
+                ? "text-sm [&_th:nth-child(-n+5)]:text-left [&_td:nth-child(-n+5)]:text-left [&_th:nth-child(8)]:text-left [&_td:nth-child(8)]:text-left"
+                : "text-sm [&_th:nth-child(-n+4)]:text-left [&_td:nth-child(-n+4)]:text-left [&_th:nth-child(8)]:text-left [&_td:nth-child(8)]:text-left [&_th:nth-child(7)]:text-center [&_td:nth-child(7)]:text-center"
             )}
           >
             <thead>
               <tr>
+                {isLive && <th>{t("credits:history.status")}</th>}
                 <th>{t("col.placed")}</th><th>{t("col.meeting")}</th><th>{t("col.bet")}</th><th>{t("col.picks")}</th>
-                <th>{t("col.combos")}</th><th>{t("col.cost")}</th><th>{t("col.hit")}</th><th>{t("col.result")}</th>
+                <th>{t("col.combos")}</th><th>{t("col.cost")}</th>{!isLive && <th>{t("col.hit")}</th>}<th>{t("col.result")}</th>
                 <th>{t("col.dividend")}</th><th>{t("col.payout")}</th><th>{t("col.net")}</th>
-                <th><span className="sr-only">{t("col.delete")}</span></th>
+                {!isLive && <th><span className="sr-only">{t("col.delete")}</span></th>}
               </tr>
             </thead>
             <tbody>
-              {entries.map((e) => (
-                <tr key={e.id}>
-                  <td className="text-ink-3">{when(e.ts)}</td>
-                  <td>{fmt.date(ymd(e.date))} {g.venue(e.venue)}</td>
-                  <td>{g.betType(e.betType)}</td>
-                  <td className="text-xs text-ink-2">{e.picks}</td>
-                  <td>{e.combos}</td>
-                  <td>{money(e.cost)}</td>
-                  <td className={e.hit ? "font-semibold text-good" : "text-bad"}>{e.hit ? "✓" : "✗"}</td>
-                  <td className="font-medium">{e.result}</td>
-                  <td className="text-ink-2">{e.poolDividendText}</td>
-                  <td>{e.payout === null ? "?" : money(e.payout)}</td>
-                  <td className={cx("font-semibold", tone(e.net ?? 0))}>
-                    {e.net === null ? "—" : `${e.net >= 0 ? "+" : ""}${money(e.net)}`}
-                  </td>
-                  <td>
-                    <button
-                      className="inline-flex size-8 cursor-pointer items-center justify-center rounded-full text-sm text-ink-3 transition-colors hover:bg-bad-soft hover:text-bad"
-                      aria-label={t("deleteAria", { when: when(e.ts) })}
-                      onClick={() => onDelete(e.id)}
-                    >
-                      ✕
-                    </button>
-                  </td>
-                </tr>
-              ))}
+              {rows.map((e) => {
+                const pend = e.status === "pending";
+                return (
+                  <tr key={e.id}>
+                    {isLive && <td>{chip(e)}</td>}
+                    <td className="text-ink-3">{when(e.ts)}</td>
+                    <td>
+                      {fmt.date(ymd(e.date))} {g.venue(e.venue)}
+                      {hasLive && <span className={cx(modeBadge(isLive ? "live" : "practice", "white"), "ml-1.5")}>{t(isLive ? "credits:mode.live" : "credits:mode.practice")}</span>}
+                    </td>
+                    <td>{g.betType(e.betType)}</td>
+                    <td className="text-xs text-ink-2">{picks(e.picks)}</td>
+                    <td>{e.combos}</td>
+                    <td>{amount(e.cost)}</td>
+                    {!isLive && <td className={e.hit ? "font-semibold text-good" : "text-bad"}>{e.hit ? "✓" : "✗"}</td>}
+                    <td className="font-medium">{pend ? "—" : e.result}</td>
+                    <td className="text-ink-2">{pend ? "—" : e.poolDividendText}</td>
+                    <td>{pend ? "—" : e.payout === null ? "?" : amount(e.payout)}</td>
+                    <td className={cx("font-semibold", !pend && tone(e.net ?? 0))}>{pend || e.net === null ? "—" : signed(e.net)}</td>
+                    {!isLive && (
+                      <td>
+                        <button
+                          className="inline-flex size-8 cursor-pointer items-center justify-center rounded-full text-sm text-ink-3 transition-colors hover:bg-bad-soft hover:text-bad"
+                          aria-label={t("deleteAria", { when: when(e.ts) })}
+                          onClick={() => onDelete(e.id)}
+                        >
+                          ✕
+                        </button>
+                      </td>
+                    )}
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>
@@ -750,9 +876,11 @@ export function HistoryPage({
   );
 }
 
+export type HistoryFilter = "live" | "practice" | "pending";
+
 /** In-app confirm for "Clear all" (same pattern as the delete-account dialog): Cancel focused, red outline action. */
-function ClearDialog({ count, onCancel, onConfirm }: { count: number; onCancel: () => void; onConfirm: () => Promise<unknown> }) {
-  const { t } = useTranslation(["history", "common"]);
+function ClearDialog({ count, practiceOnly, onCancel, onConfirm }: { count: number; practiceOnly?: boolean; onCancel: () => void; onConfirm: () => Promise<unknown> }) {
+  const { t } = useTranslation(["history", "common", "credits"]);
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -775,7 +903,7 @@ function ClearDialog({ count, onCancel, onConfirm }: { count: number; onCancel: 
     <div className={modalBg} onClick={() => !busy && onCancel()}>
       <div ref={ref} className={modalNarrow} role="alertdialog" aria-modal="true" aria-labelledby="clear-title" aria-describedby="clear-body" onClick={(e) => e.stopPropagation()}>
         <h2 id="clear-title" className="text-[15px] font-medium text-navy-900 sm:text-[17px]">
-          {t("clearConfirm", { n: count })}
+          {practiceOnly ? t("credits:history.clearPracticeConfirm", { n: count }) : t("clearConfirm", { n: count })}
         </h2>
         {err && (
           <div className={errorBox} role="alert">

@@ -106,6 +106,18 @@ export interface RaceResult {
   doubleTrioDividend?: number;
   tripleTrioLegs?: number[];
   tripleTrioDividend?: number;
+  /**
+   * Every runner with its HKJC place code (results ingest from 2026-10). Unlike finishOrder it keeps
+   * non-finishers and withdrawn horses. Missing on older stored results.
+   */
+  runners?: RunnerStatus[];
+}
+export interface RunnerStatus {
+  horseNumber: number;
+  /** HKJC "Pla." text, e.g. "3", "3 DH", "PU", "WV-A". */
+  place: string;
+  /** finished: has a placing; nonFinisher: started, didn't finish (bets lose); withdrawn: refunded. */
+  status: "finished" | "nonFinisher" | "withdrawn" | "unknown";
 }
 
 // ---- Bet types ----
@@ -183,6 +195,8 @@ export interface MeetingRef {
   venue: Venue;
   /** race numbers that have a saved card. */
   races: number[];
+  /** practice: every race settled/void; live: a race open for LIVE; closed: neither (awaiting results / unavailable). */
+  mode?: MeetingMode;
   /** true when a results file exists for this meeting (settlement possible). */
   hasResults: boolean;
 }
@@ -219,6 +233,79 @@ export interface HistoryEntry {
   net: number | null;
   /** the pool's winning dividend (what a correct bet paid), shown even on a miss. */
   poolDividendText: string;
+  /** Missing = practice. LIVE rows come from the server's live_bets, never from the client. */
+  mode?: "practice" | "live";
+  /** LIVE only. */
+  status?: LiveBetStatus;
+  /** LIVE only: credits returned for scratchings / void races. */
+  refund?: number;
+}
+
+// ---- Credits / LIVE (docs/credits/PRD.md §6) ----
+/** Per-race status, computed by the server (§2.3). */
+export type RaceStatus = "open" | "closed" | "settled" | "void" | "unavailable";
+export type MeetingMode = "practice" | "live" | "closed";
+export interface RaceInfo {
+  raceNumber: number;
+  /** ISO with +08:00, or null when unknown. */
+  postTime: string | null;
+  status: RaceStatus;
+  /** Seconds until betting closes (open races only). */
+  closesInSec: number | null;
+}
+/** Extra fields on MeetingRef / MeetingDetail. */
+export interface MeetingLiveInfo {
+  mode: MeetingMode;
+  raceInfo: RaceInfo[];
+  /** Designated DT/TT legs known before results (LIVE only offers these). */
+  liveDoubleTrioPools: number[][];
+  liveTripleTrioPools: number[][];
+}
+
+export type LiveBetStatus = "pending" | "won" | "lost" | "void";
+export interface LiveBet {
+  id: string;
+  date: string; // YYYYMMDD
+  venue: Venue;
+  betType: BetTypeId;
+  betLabel: string;
+  selection: BetSelection;
+  picks: string;
+  unit: number;
+  combos: number;
+  stake: number;
+  status: LiveBetStatus;
+  refund: number;
+  payout: number;
+  result: SettleResult | null;
+  placedAt: string;
+  settledAt: string | null;
+  /** Earliest post time of its races. */
+  firstPostTime: string | null;
+  held: boolean;
+}
+export type LedgerKind = "signup_bonus" | "purchase" | "bet_stake" | "bet_payout" | "bet_refund" | "purchase_reversal" | "admin_adjust";
+export interface LedgerRow {
+  id: number;
+  kind: LedgerKind;
+  amount: number;
+  balanceAfter: number;
+  /** e.g. { type: "bet", id, label: "20261005 ST R3 Trio" } or { type: "purchase", planId }. */
+  ref: { type: string; id: string | null; label?: string; planId?: string; date?: string; venue?: string; races?: number[]; betType?: string };
+  createdAt: string;
+}
+export interface CreditsSummary {
+  balance: number;
+  flagged: boolean;
+  pending: { count: number; stake: number };
+  ledger: LedgerRow[];
+  nextCursor: number | null;
+  /** Show the welcome dialog (once per member). */
+  welcome: boolean;
+  /** LIVE bets settled since the member last saw them. */
+  unseenSettled: { count: number; net: number };
+  purchasedTodayHkd: number;
+  dailyCapHkd: number;
 }
 
 // ---- Membership (docs/membership/PRD.md §7) ----
@@ -237,6 +324,8 @@ export interface Member {
   email: string | null;
   avatarUrl: string | null;
   createdAt: string;
+  /** 18+ self-declaration (credits), or null. */
+  adultDeclaredAt?: string | null;
 }
 
 /** Error codes the API returns as `{ error: { code, … } }`; the client localises them. */
@@ -267,4 +356,6 @@ export interface ApiErrorBody {
 export interface PublicConfig {
   turnstileSiteKey: string;
   otp: { length: number; resendSeconds: number };
+  features: { liveBetting: boolean; purchases: boolean };
+  credits: { signupBonus: number; minUnit: number; termsVersion: string; dailyCapHkd: number };
 }

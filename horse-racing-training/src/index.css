@@ -116,3 +116,10 @@ select {
     transform: translateY(100%);
   }
 }
+
+/* Credits chip value cross-fade (motion-safe:animate-[fade-in_150ms_ease-out]). */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}

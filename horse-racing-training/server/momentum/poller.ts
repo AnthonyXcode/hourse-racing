@@ -11,6 +11,8 @@ export interface PollerOptions {
   graceSecs?: number; // keep polling this long after post time (late off / final odds)
   meetingRefreshSecs?: number;
   log?: (msg: string) => void;
+  /** Post times / HKJC statuses seen on race day (feeds the LIVE race schedule). */
+  onMeeting?(date: string, venue: string, races: { raceNo: number; postTime: string; status: string }[]): void;
 }
 
 const VENUES = ["HV", "ST"] as const;
@@ -60,6 +62,11 @@ export function createPoller(opts: PollerOptions) {
           post_time: r.postTime,
           hkjc_status: r.status,
         });
+      try {
+        opts.onMeeting?.(date, code, races);
+      } catch (e) {
+        log(`schedule update failed: ${e instanceof Error ? e.message : e}`);
+      }
       break;
     }
   }

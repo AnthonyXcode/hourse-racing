@@ -15,7 +15,11 @@
     "test:watch": "vitest",
     "typecheck": "tsc --noEmit",
     "data:import": "tsx server/data/importFiles.ts",
-    "data:fetch": "tsx server/data/fetchCli.ts"
+    "data:fetch": "tsx server/data/fetchCli.ts",
+    "credits": "tsx --env-file-if-exists=.env server/credits/cli.ts",
+    "credits:adjust": "tsx --env-file-if-exists=.env server/credits/cli.ts adjust",
+    "credits:settle": "tsx --env-file-if-exists=.env server/credits/cli.ts settle",
+    "credits:reconcile": "tsx --env-file-if-exists=.env server/credits/cli.ts reconcile"
   },
   "dependencies": {
     "better-sqlite3": "^13.0.3",
@@ -28,7 +32,8 @@
     "react-dom": "^18.3.1",
     "react-i18next": "^17.0.15",
     "recharts": "^2.15.4",
-    "sharp": "^0.35.5"
+    "sharp": "^0.35.5",
+    "stripe": "^23.0.0"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.3.3",

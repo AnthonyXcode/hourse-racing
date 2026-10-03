@@ -66,6 +66,110 @@ const MIGRATIONS: string[] = [
   CREATE INDEX rate_events_phone ON rate_events (kind, phone_e164, ts);
   CREATE INDEX rate_events_ip ON rate_events (kind, ip, ts);
   `,
+  // v2: credits, LIVE bets and Stripe purchases (docs/credits/PRD.md §6.1). user_id columns on the ledger,
+  // purchases and audit have no FK on purpose: on account deletion they are anonymised, not deleted.
+  `
+  CREATE TABLE wallets (
+    user_id           TEXT PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
+    balance           INTEGER NOT NULL DEFAULT 0 CHECK (balance >= 0),
+    flagged           INTEGER NOT NULL DEFAULT 0,
+    flag_reason       TEXT,
+    welcome_pending   INTEGER NOT NULL DEFAULT 0,  -- show the bonus dialog once
+    settled_seen_at   TEXT,                        -- LIVE bets settled after this are "new"
+    updated_at        TEXT NOT NULL
+  );
+  CREATE TABLE credit_ledger (
+    id             INTEGER PRIMARY KEY,
+    user_id        TEXT NOT NULL,
+    kind           TEXT NOT NULL CHECK (kind IN ('signup_bonus','purchase','bet_stake','bet_payout','bet_refund','purchase_reversal','admin_adjust')),
+    amount         INTEGER NOT NULL,
+    balance_after  INTEGER NOT NULL CHECK (balance_after >= 0),
+    ref_type       TEXT,
+    ref_id         TEXT,
+    idem_key       TEXT NOT NULL UNIQUE,
+    actor          TEXT NOT NULL,
+    note           TEXT,
+    created_at     TEXT NOT NULL
+  );
+  CREATE INDEX credit_ledger_user ON credit_ledger (user_id, id DESC);
+  CREATE TABLE live_bets (
+    id               TEXT PRIMARY KEY,
+    user_id          TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    slip_key         TEXT NOT NULL,
+    date             TEXT NOT NULL,              -- YYYYMMDD
+    venue            TEXT NOT NULL,
+    bet_type         TEXT NOT NULL,
+    selection        TEXT NOT NULL,              -- JSON BetSelection
+    race_ids         TEXT NOT NULL,              -- JSON number[] (race numbers)
+    first_post_time  TEXT,
+    unit             INTEGER NOT NULL,
+    combos           INTEGER NOT NULL,
+    stake            INTEGER NOT NULL,
+    status           TEXT NOT NULL CHECK (status IN ('pending','won','lost','void')),
+    refunded_combos  INTEGER NOT NULL DEFAULT 0,
+    refund           INTEGER NOT NULL DEFAULT 0,
+    payout           INTEGER NOT NULL DEFAULT 0,
+    result           TEXT,                       -- JSON SettleResult
+    hold_reason      TEXT,
+    held_since       TEXT,
+    settle_attempts  INTEGER NOT NULL DEFAULT 0,
+    created_at       TEXT NOT NULL,
+    settled_at       TEXT
+  );
+  CREATE INDEX live_bets_status ON live_bets (status, date, venue);
+  CREATE INDEX live_bets_user ON live_bets (user_id, created_at DESC);
+  CREATE TABLE idempotency_keys (
+    key         TEXT NOT NULL,
+    user_id     TEXT NOT NULL,
+    body_hash   TEXT NOT NULL,
+    status      INTEGER NOT NULL,
+    response    TEXT NOT NULL,
+    created_at  INTEGER NOT NULL,
+    PRIMARY KEY (key, user_id)
+  );
+  CREATE TABLE purchases (
+    stripe_session_id  TEXT PRIMARY KEY,
+    user_id            TEXT NOT NULL,
+    plan_id            TEXT NOT NULL,
+    amount_hkd         INTEGER NOT NULL,
+    credits            INTEGER NOT NULL,
+    status             TEXT NOT NULL CHECK (status IN ('open','paid','expired','refunded','disputed')),
+    payment_intent_id  TEXT,
+    reversed_credits   INTEGER NOT NULL DEFAULT 0,
+    created_at         INTEGER NOT NULL,         -- epoch ms (daily cap window)
+    paid_at            INTEGER
+  );
+  CREATE INDEX purchases_user ON purchases (user_id, created_at);
+  CREATE INDEX purchases_pi ON purchases (payment_intent_id);
+  CREATE TABLE stripe_events (
+    event_id      TEXT PRIMARY KEY,
+    type          TEXT NOT NULL,
+    received_at   TEXT NOT NULL,
+    processed_at  TEXT
+  );
+  CREATE TABLE declarations (
+    user_id        TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    kind           TEXT NOT NULL CHECK (kind IN ('adult_18')),
+    terms_version  TEXT NOT NULL,
+    declared_at    TEXT NOT NULL,
+    ip             TEXT,
+    PRIMARY KEY (user_id, kind)
+  );
+  CREATE TABLE bonus_claims (
+    phone_hash  TEXT PRIMARY KEY,                -- HMAC-SHA256(phone, CREDITS_PEPPER)
+    claimed_at  TEXT NOT NULL
+  );
+  CREATE TABLE admin_audit (
+    id          INTEGER PRIMARY KEY,
+    operator    TEXT NOT NULL,
+    command     TEXT NOT NULL,
+    args        TEXT NOT NULL,
+    before      TEXT,
+    after       TEXT,
+    reason      TEXT NOT NULL,
+    created_at  TEXT NOT NULL
+  );
+  `,
 ];
 
 /** Open (creating + migrating) the members DB. Pass ":memory:" in tests. */
@@ -91,4 +195,5 @@ export function purgeStale(db: MembersDB, now = Date.now()): void {
   db.prepare("DELETE FROM sessions WHERE expires_at <= ?").run(now);
   db.prepare("DELETE FROM otp_challenges WHERE created_at < ?").run(now - DAY_MS);
   db.prepare("DELETE FROM rate_events WHERE ts < ?").run(now - DAY_MS);
+  db.prepare("DELETE FROM idempotency_keys WHERE created_at < ?").run(now - 7 * DAY_MS);
 }

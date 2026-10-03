@@ -7,10 +7,14 @@ import { maskPhoneUi } from "../../shared/validation";
 import { btnPill, cx } from "../kit";
 import { useAuth } from "./auth";
 import { Avatar } from "./ui";
+import { useCredits } from "../credits/CreditsProvider";
+import { useFmt } from "../i18n/useLanguage";
 
-export function AccountEntry({ current, onNavigate, onLogout }: { current: string; onNavigate: (v: "account" | "history") => void; onLogout: () => void }) {
-  const { t } = useTranslation(["account", "common"]);
+export function AccountEntry({ current, onNavigate, onLogout }: { current: string; onNavigate: (v: "account" | "history" | "credits") => void; onLogout: () => void }) {
+  const { t } = useTranslation(["account", "common", "credits"]);
   const { user, openLogin, guard } = useAuth();
+  const { balance } = useCredits();
+  const fmt = useFmt();
   const [open, setOpen] = useState(false);
   const trigger = useRef<HTMLButtonElement>(null);
   // Two renderings of one menu: a popover in the header (≥ sm) and a bottom sheet portalled to <body> (< sm).
@@ -54,8 +58,9 @@ export function AccountEntry({ current, onNavigate, onLogout }: { current: strin
       </button>
     );
 
-  const items: { key: string; label: string; current?: boolean; run: () => void }[] = [
+  const items: { key: string; label: string; value?: string; current?: boolean; run: () => void }[] = [
     { key: "profile", label: t("menu.profile"), current: current === "account", run: () => guard(() => onNavigate("account")) },
+    { key: "credits", label: t("credits:menu.credits"), value: balance == null ? undefined : fmt.num(balance), current: current === "credits", run: () => guard(() => onNavigate("credits")) },
     { key: "history", label: t("menu.history"), current: current === "history", run: () => guard(() => onNavigate("history")) },
     { key: "logout", label: t("menu.logout"), run: () => guard(onLogout) },
   ];
@@ -85,6 +90,7 @@ export function AccountEntry({ current, onNavigate, onLogout }: { current: strin
         }}
       >
         {it.label}
+        {it.value && <span className="ml-auto text-ink-muted tabular-nums">{it.value}</span>}
       </button>
     ));
 

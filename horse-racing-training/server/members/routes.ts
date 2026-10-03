@@ -2,7 +2,7 @@
 // Mounted at /api. Errors are `{ error: { code, … } }`; request bodies on these routes are never logged.
 import express, { Router, type NextFunction, type Request, type RequestHandler, type Response } from "express";
 import { createReadStream, existsSync } from "fs";
-import type { MemberLocale, PublicConfig } from "../../shared/types";
+import type { HistoryEntry, Member, MemberLocale, PublicConfig } from "../../shared/types";
 import { AVATAR_MAX_BYTES, OTP_LENGTH, OTP_TTL_SECONDS, RESEND_SECONDS, maskPhoneLog, normalizeHkMobile, validateProfilePatch } from "../../shared/validation";
 import type { MembersConfig } from "./config";
 import type { MembersDB } from "./db";
@@ -24,25 +24,44 @@ export interface MembersDeps {
   avatars: AvatarFiles;
   verifyTurnstile: (token: unknown, ip: string | undefined) => Promise<boolean>;
   log?: (line: string) => void;
+  /** Credits integration (server/credits). Absent in membership-only tests. */
+  hooks?: MemberHooks;
 }
 
+/** What the credits feature adds to membership flows. */
+export interface MemberHooks {
+  config(): Pick<PublicConfig, "features" | "credits">;
+  /** After a successful code check: signup bonus for new members. */
+  onLogin(user: UserRow, isNew: boolean): void;
+  /** On GET /api/me for a member: the lazy signup bonus for members created before credits. */
+  onAuthenticated(user: UserRow): void;
+  /** Extra Member DTO fields (adultDeclaredAt). */
+  extendMember(user: UserRow): Partial<Member>;
+  /** Inside the account-deletion transaction, before the user row goes. */
+  beforeDelete(user: UserRow): void;
+  /** The member's LIVE bets as History rows (merged with practice rows; not deletable). */
+  liveHistory(userId: string): HistoryEntry[];
+}
+
+const DEFAULT_PUBLIC: Pick<PublicConfig, "features" | "credits"> = {
+  features: { liveBetting: false, purchases: false },
+  credits: { signupBonus: 0, minUnit: 10, termsVersion: "", dailyCapHkd: 0 },
+};
+
 type Extra = { field?: string; detail?: string; retryAfter?: number; attemptsLeft?: number };
-const fail = (res: Response, status: number, code: string, extra: Extra = {}) => res.status(status).json({ error: { code, ...extra } });
+export const fail = (res: Response, status: number, code: string, extra: Record<string, unknown> & Extra = {}) => res.status(status).json({ error: { code, ...extra } });
 
 const LOCAL = /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/;
 
 /** Member attached by `withMember`. */
-type MemberReq = Request & { member?: UserRow | null };
+export type MemberReq = Request & { member?: UserRow | null };
 
-export function membersRouter(d: MembersDeps): Router {
+/**
+ * Session and CSRF middleware, shared with the credits router so every member route behaves the same.
+ * `csrf()` must guard every state-changing member route (attached per route, not matched on req.path).
+ */
+export function authKit(d: Pick<MembersDeps, "cfg" | "sessions" | "users">) {
   const { cfg } = d;
-  const log = d.log ?? ((l: string) => console.error(l));
-  const r = Router();
-  const ip = (req: Request) => req.ip ?? req.socket.remoteAddress ?? "unknown";
-
-  // CSRF (PRD §5.7): every state-changing route this router serves must come from our origin, as JSON
-  // (multipart only where a route allows it). The guard is attached to each route rather than matched on
-  // req.path, so it runs exactly when the route does, whatever the path's case or trailing slash.
   const csrf =
     (allowMultipart = false): RequestHandler =>
     (req, res, next) => {
@@ -53,11 +72,6 @@ export function membersRouter(d: MembersDeps): Router {
       if (hasBody && !req.is("application/json") && !(allowMultipart && req.is("multipart/form-data"))) return fail(res, 415, "unsupported_media_type");
       next();
     };
-  /** Mutating routes: always behind the CSRF guard. Use these, never r.post/patch/delete directly. */
-  const post = (path: string, ...h: RequestHandler[]) => r.post(path, csrf(), ...h);
-  const patch = (path: string, ...h: RequestHandler[]) => r.patch(path, csrf(), ...h);
-  const del = (path: string, ...h: RequestHandler[]) => r.delete(path, csrf(), ...h);
-
   /** Resolve the session cookie to a member (null for guests), sliding the expiry when due. */
   const withMember = (req: MemberReq, res: Response, next: NextFunction) => {
     const token = parseCookies(req.headers.cookie)[COOKIE];
@@ -70,9 +84,32 @@ export function membersRouter(d: MembersDeps): Router {
   const requireMember = (req: MemberReq, res: Response, next: NextFunction) =>
     withMember(req, res, () => (req.member ? next() : fail(res, 401, "unauthorized")));
   const me = (req: Request) => (req as MemberReq).member!;
+  return { csrf, withMember, requireMember, me };
+}
+
+export function membersRouter(d: MembersDeps): Router {
+  const { cfg } = d;
+  const log = d.log ?? ((l: string) => console.error(l));
+  const r = Router();
+  const ip = (req: Request) => req.ip ?? req.socket.remoteAddress ?? "unknown";
+  const { csrf, withMember, requireMember, me } = authKit(d);
+  const hooks = d.hooks;
+  const dto = (u: UserRow): Member => ({ ...toMember(u), ...hooks?.extendMember(u) });
+  /** Practice rows merged with LIVE rows, newest first. */
+  const historyFor = (userId: string): HistoryEntry[] =>
+    hooks ? [...d.history.list(userId), ...hooks.liveHistory(userId)].sort((a, b) => b.ts.localeCompare(a.ts)) : d.history.list(userId);
+
+  /** Mutating routes: always behind the CSRF guard. Use these, never r.post/patch/delete directly. */
+  const post = (path: string, ...h: RequestHandler[]) => r.post(path, csrf(), ...h);
+  const patch = (path: string, ...h: RequestHandler[]) => r.patch(path, csrf(), ...h);
+  const del = (path: string, ...h: RequestHandler[]) => r.delete(path, csrf(), ...h);
 
   r.get("/config", (_req, res) => {
-    const body: PublicConfig = { turnstileSiteKey: cfg.turnstile.siteKey, otp: { length: OTP_LENGTH, resendSeconds: RESEND_SECONDS } };
+    const body: PublicConfig = {
+      turnstileSiteKey: cfg.turnstile.siteKey,
+      otp: { length: OTP_LENGTH, resendSeconds: RESEND_SECONDS },
+      ...(hooks?.config() ?? DEFAULT_PUBLIC),
+    };
     res.json(body);
   });
 
@@ -121,7 +158,12 @@ export function membersRouter(d: MembersDeps): Router {
     d.sessions.destroy(parseCookies(req.headers.cookie)[COOKIE]);
     const token = d.sessions.create(user.id, req.get("user-agent"));
     res.append("Set-Cookie", sessionCookie(token, d.sessions.ttlMs, cfg.production));
-    res.json({ user: toMember(user), isNew });
+    try {
+      hooks?.onLogin(user, isNew);
+    } catch (e) {
+      log(`[members] signup bonus failed: ${e instanceof Error ? e.message : "error"}`); // retried lazily on /me
+    }
+    res.json({ user: dto(user), isNew });
   });
 
   post("/auth/logout", (req, res) => {
@@ -133,21 +175,23 @@ export function membersRouter(d: MembersDeps): Router {
   // ---- Profile ----
   r.get("/me", withMember, (req, res) => {
     const u = (req as MemberReq).member;
-    res.json({ user: u ? toMember(u) : null });
+    if (u) hooks?.onAuthenticated(u);
+    res.json({ user: u ? dto(u) : null });
   });
 
   patch("/me", requireMember, (req, res) => {
     const u = me(req);
     const v = validateProfilePatch(req.body, u.phone_e164);
     if (!v.ok) return fail(res, 400, "validation_error", { field: v.field, detail: v.code });
-    res.json({ user: toMember(d.users.update(u.id, v.patch)) });
+    res.json({ user: dto(d.users.update(u.id, v.patch)) });
   });
 
   del("/me", requireMember, async (req, res) => {
     if (req.body?.confirm !== "DELETE") return fail(res, 400, "confirm_required");
     const u = me(req);
     d.db.transaction(() => {
-      d.users.remove(u.id); // sessions + history cascade
+      hooks?.beforeDelete(u); // void pending LIVE bets (no refund), anonymise ledger / purchases
+      d.users.remove(u.id); // sessions, history, wallet, LIVE bets, declarations cascade
       d.otp.forgetPhone(u.phone_e164);
       d.limiter.forgetPhone(u.phone_e164);
     })();
@@ -168,7 +212,7 @@ export function membersRouter(d: MembersDeps): Router {
       const name = await d.avatars.save(webp);
       const { user, previous } = d.users.setAvatar(me(req).id, name);
       await d.avatars.remove(previous);
-      res.json({ user: toMember(user) });
+      res.json({ user: dto(user) });
     } catch (e) {
       if (e instanceof AvatarError) return fail(res, 400, e.code);
       log(`[members] avatar save failed: ${e instanceof Error ? e.message : "error"}`);
@@ -179,7 +223,7 @@ export function membersRouter(d: MembersDeps): Router {
   del("/me/avatar", requireMember, async (req, res) => {
     const { user, previous } = d.users.setAvatar(me(req).id, null);
     await d.avatars.remove(previous);
-    res.json({ user: toMember(user) });
+    res.json({ user: dto(user) });
   });
 
   r.get("/avatars/:file", (req, res) => {
@@ -190,7 +234,7 @@ export function membersRouter(d: MembersDeps): Router {
   });
 
   // ---- History (member only) ----
-  r.get("/history", requireMember, (req, res) => res.json(d.history.list(me(req).id)));
+  r.get("/history", requireMember, (req, res) => res.json(historyFor(me(req).id)));
 
   post("/history", requireMember, (req, res) => {
     const b = req.body as unknown;
@@ -198,14 +242,19 @@ export function membersRouter(d: MembersDeps): Router {
     if (!raw.length || raw.length > BATCH_MAX) return fail(res, 400, "invalid_entry");
     const entries = raw.map(parseEntry);
     if (entries.some((e) => e === null)) return fail(res, 400, "invalid_entry");
-    res.json(d.history.add(me(req).id, entries as NonNullable<(typeof entries)[number]>[]));
+    d.history.add(me(req).id, entries as NonNullable<(typeof entries)[number]>[]);
+    res.json(historyFor(me(req).id));
   });
 
-  del("/history/:id", requireMember, (req, res) => res.json(d.history.remove(me(req).id, req.params.id ?? "")));
+  // Practice rows only: LIVE bets are financial records and can't be deleted.
+  del("/history/:id", requireMember, (req, res) => {
+    d.history.remove(me(req).id, req.params.id ?? "");
+    res.json(historyFor(me(req).id));
+  });
 
   del("/history", requireMember, (req, res) => {
     d.history.clear(me(req).id);
-    res.json([]);
+    res.json(historyFor(me(req).id));
   });
 
   // Upload over the size cap, or malformed JSON on these routes → our error shape.

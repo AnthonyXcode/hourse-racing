@@ -19,6 +19,7 @@ import { useFmt } from "../i18n/useLanguage";
 import { Display, btn, btnDanger, btnPrimary, control, cx, errorBox, modalBg, modalNarrow, sectionBody, sectionHead } from "../kit";
 import { ApiError, memberApi } from "./api";
 import { useAuth } from "./auth";
+import { useCredits } from "../credits/CreditsProvider";
 import { AvatarField, type StagedAvatar } from "./AvatarField";
 import { LoginEmptyState } from "./GuestPrompts";
 import { Counter, Spinner, errorText, visibleLength, fieldErr, formLabel, prefixChip, prefixInput, prefixWrap, useDialog } from "./ui";
@@ -418,8 +419,10 @@ function Row({ label, value }: { label: string; value: string }) {
 }
 
 function DeleteDialog({ phone, onCancel, onDeleted }: { phone: string; onCancel: () => void; onDeleted: () => void }) {
-  const { t } = useTranslation(["account", "common"]);
+  const { t } = useTranslation(["account", "common", "credits"]);
   const { toast, setUser } = useAuth();
+  const { summary } = useCredits();
+  const fmtN = useFmt();
   const [digits, setDigits] = useState("");
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState("");
@@ -456,6 +459,11 @@ function DeleteDialog({ phone, onCancel, onDeleted }: { phone: string; onCancel:
         <p id="del-body" className="mt-2 text-[15px] leading-normal text-ink">
           {t("delete.body")}
         </p>
+        {summary && (summary.balance > 0 || summary.pending.count > 0) && (
+          <p className="mt-2 text-[15px] leading-normal font-medium text-bad">
+            {t("credits:deleteWarning", { n: fmtN.num(summary.balance), count: summary.pending.count })}
+          </p>
+        )}
         <label htmlFor="del-digits" className="mt-3 block text-[13px] text-ink">
           {t("delete.prompt")}
         </label>

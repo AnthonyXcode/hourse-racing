@@ -12,13 +12,13 @@ export class ApiError extends Error {
   }
 }
 
-async function call<T>(method: string, url: string, body?: unknown): Promise<T> {
+export async function call<T>(method: string, url: string, body?: unknown, headers?: Record<string, string>): Promise<T> {
   let r: Response;
   try {
     r = await fetch(url, {
       method,
       credentials: "same-origin",
-      headers: body !== undefined && !(body instanceof FormData) ? { "Content-Type": "application/json" } : undefined,
+      headers: { ...(body !== undefined && !(body instanceof FormData) ? { "Content-Type": "application/json" } : {}), ...headers },
       body: body === undefined ? undefined : body instanceof FormData ? body : JSON.stringify(body),
     });
   } catch {

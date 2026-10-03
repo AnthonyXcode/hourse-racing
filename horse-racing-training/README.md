@@ -92,6 +92,102 @@ QA-only Turnstile keys: site `2x00000000000000000000AB` always blocks, `3x000000
 challenge; secret `2x0000000000000000000000000000000AA` always fails, `3x0000000000000000000000000000000AA`
 reports a spent token.
 
+## Credits, LIVE betting and Stripe
+
+> **Legal gate.** Members can buy credits with real money and stake them on real upcoming races. Do not turn
+> this on in production (`FUTURE_BETTING=1` or a `sk_live_` key) until HK counsel (Gambling Ordinance Cap. 148,
+> HKJC exclusivity) and Stripe have approved it in writing. The server refuses a `sk_live_` key unless
+> `STRIPE_LIVE_APPROVED=1`. Spec: [docs/credits/PRD.md](docs/credits/PRD.md), UI: [docs/credits/DESIGN-SPEC.md](docs/credits/DESIGN-SPEC.md).
+
+Two modes, decided per race by the server's clock (Asia/Hong_Kong):
+
+- **Practice**: past races with results. Free, settles instantly (unchanged).
+- **Live**: races before post time. Costs credits (1 credit = HK$1 stake, unit ≥ 10), members only, settles
+  automatically after the result is stored. Payouts are `floor(dividend × unit / 10 × combos won)` credits.
+
+Every member gets 1,000 credits once per phone number (kept as an HMAC in `bonus_claims`, so deleting and
+re-registering doesn't grant it again). Credits are bought through Stripe Checkout (HKD): `hk10` = 100,
+`hk100` = 1,200, `hk300` = 4,000 credits, up to HK$1,000 per member per HK day. Code: `server/credits/`,
+`shared/credits/`, `src/credits/`. Data: `data/members.sqlite` (wallets, ledger, LIVE bets, purchases) and
+`data/momentum.sqlite` (`race_schedule`, `meeting_pools`).
+
+**Where post times come from.** Racecards don't carry post times. `race_schedule` is filled by:
+1. the fetch job's meeting discovery (`activeMeetings` in HKJC's GraphQL meeting query) every 5 min from
+   12:00–24:00 HKT — this needs **`DATA_FETCH=1`**; the same run also reads each upcoming meeting's race
+   statuses and **designated Double/Triple Trio legs** (`poolInvs` DT/TT) from that query, and stores results,
+   which triggers settlement;
+2. the race-day odds poller (`MOMENTUM_POLLER`, on by default), which refreshes post times and HKJC race
+   statuses (e.g. `ABANDONED` → void) during the meeting.
+
+A race with no post time, or whose schedule hasn't been refreshed for 24 h, stays **unavailable** (never open).
+Closing is one-way: once post time passes the race never reopens. So LIVE needs `FUTURE_BETTING=1` **and**
+`DATA_FETCH=1` (the only exception is local testing with `DEV_NOW`, below). Settlement runs after every
+results change, every 5 minutes, and when a member opens their bets — also with `FUTURE_BETTING=0`.
+
+| Variable | Default (dev) | What it is |
+|----------|---------------|------------|
+| `FUTURE_BETTING` | `0` | `1` turns on LIVE bets and buying credits. `0` = 503 + a notice banner; pending bets still settle. |
+| `STRIPE_SECRET_KEY` | — | `sk_test_…`. Without it, buying answers `503 stripe_unconfigured`. Secret. |
+| `STRIPE_WEBHOOK_SECRET` | — | `whsec_…` (from `stripe listen` in dev). Secret. |
+| `STRIPE_LIVE_APPROVED` | unset | Must be `1` to accept a `sk_live_` key. |
+| `CREDITS_SIGNUP_BONUS` | `1000` | Free credits per new phone number. |
+| `CREDITS_PEPPER` | dev value | HMAC key for `bonus_claims`. Required (secret) in production. |
+| `PURCHASE_DAILY_CAP_HKD` | `1000` | Per member per HK calendar day (paid + open checkouts). |
+| `LIVE_MAX_STAKE` | `50000` | Credits per LIVE bet item. |
+| `DEV_NOW` | unset | Dev only: server clock starts at this time (refused in production). |
+
+**Try LIVE locally (no HKJC scraping).** Pick a stored meeting that has no results yet (e.g. the newest one in
+the meeting picker) and pretend it's the morning of race day:
+
+```bash
+# .env (or the shell): FUTURE_BETTING=1  DEV_NOW=2026-10-04T11:00:00+08:00
+npm run credits -- dev-schedule --date 2026-10-04 --venue ST --first 12:30 --gap 30   # post times 12:30, 13:00, …
+npm run dev
+```
+
+Log in (code in the server log), confirm 18+, tick, Add, Place bet → Confirm. To settle, store that meeting's
+results (`DATA_FETCH=1` when they're published, or `npm run data:fetch`) and run `npm run credits:settle`.
+
+**Stripe test mode.** Put a `sk_test_…` key in `.env`, then:
+
+```bash
+stripe login
+stripe listen --forward-to localhost:8787/api/stripe/webhook    # copy the whsec_… into STRIPE_WEBHOOK_SECRET
+npm run dev                                                      # restart after editing .env
+```
+
+Buy on `?tab=credits` with card `4242 4242 4242 4242` (any future expiry, any CVC). The success page polls
+until the webhook has credited the purchase; credits are granted only by the signed webhook, once
+(`stripe events resend <evt>` is a no-op). `stripe trigger checkout.session.completed` is answered 200 but
+credits nothing (no matching purchase; logged as `[credits:alert]`). Refunds and disputes in the dashboard
+debit the credits (capped at the balance) and flag the account if credits were already spent.
+
+**Operator CLI** (no admin panel; writes need `--operator`, `--reason` and `--yes`, and go to `admin_audit`):
+
+```bash
+npm run credits -- show --phone "9123 4567"
+npm run credits:adjust -- --phone 91234567 --amount 500 --reason "goodwill" --operator anthony --yes
+npm run credits -- pending --held
+npm run credits -- resolve-bet <betId> --dividend 279 --reason "dead heat, official divs 279+301" --operator anthony --yes
+npm run credits -- void-race 2026-10-04 ST 5 --reason "abandoned" --operator anthony --yes
+npm run credits -- void-meeting 2026-10-04 ST --reason "typhoon" --operator anthony --yes   # skips races with results (--include-resulted to override)
+npm run credits -- flag --user <id> --reason "chargeback" --operator anthony --yes      # or unflag
+npm run credits:settle        # settlement sweep now
+npm run credits:reconcile     # wallets = ledger sums, one stake/payout/refund per bet, purchases credited once
+```
+
+Held bets (logged as `[credits:alert]`):
+- a hit with no stored dividend, or a dead heat where the stored data has a single dividend: settle with
+  `resolve-bet --dividend <HK$ per $10 for the bet's winning combinations>`;
+- `runner_unknown`: a picked horse is missing from the finish order and its status isn't known. Check HKJC's
+  result, then `resolve-bet <id> --settle` (it ran: non-finisher, the bet loses) or `--void` (refund).
+
+Scratchings: only horses positively known not to have run are refunded, meaning `isScratched` on the last
+racecard, or a withdrawn code (WV, WV-A, WX, WX-A, WXNR) in the results. Non-finishers (PU, FE, UR, DNF,
+DISQ) are runners and their bets lose. The results ingest keeps every runner's HKJC place code in a new
+`runners` field on each stored race (`finishOrder` is unchanged); results stored before this change don't
+have it, so a missing horse there is held, never refunded.
+
 ## Ports
 
 Both ports are set in `.env` (copy `.env.example`). `.env` is gitignored.
@@ -205,7 +301,8 @@ designated legs; disabled for meetings without them).
 
 ```
 server/   Express API (SQLite in data/momentum.sqlite: race cards, results, odds, names;
-          server/members: login, profiles and per-member history in data/members.sqlite)
+          server/members: login, profiles and per-member history in data/members.sqlite;
+          server/credits: credit ledger, LIVE bets, settlement, Stripe, operator CLI)
 shared/   types + betEngine (combinatorics, dead-heat-aware settlement) — imported by server AND client
 src/      React + TS SPA (HKJC-style race card, banker/leg picker, cost bar, result modal)
 ```

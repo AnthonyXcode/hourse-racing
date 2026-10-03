@@ -82,6 +82,26 @@ interface PoolNode {
   oddsNodes?: { combString: string; oddsValue: string }[];
 }
 
+/**
+ * One meeting's races (post time + status) and its designated Double/Triple Trio legs, from the same
+ * whitelisted meeting query. Null unless HKJC answered with exactly this date and venue (it returns
+ * "the current meeting" for other dates).
+ */
+export async function meetingPools(
+  date: string,
+  venue: string
+): Promise<{ races: { raceNo: number; postTime: string | null; status: string | null }[]; DT: number[][]; TT: number[][] } | null> {
+  type P = { oddsType?: string; leg?: { races?: number[] } };
+  const d = await post<{ raceMeetings: { venueCode?: string; date?: string; races?: { no: number; postTime: string | null; status: string | null }[]; poolInvs?: P[] }[] | null }>(
+    "meeting",
+    { date, venueCode: venue }
+  );
+  const m = (d.raceMeetings ?? []).find((x) => x.venueCode === venue && (x.date ?? "").slice(0, 10) === date);
+  if (!m) return null;
+  const legs = (t: string) => (m.poolInvs ?? []).filter((p) => p.oddsType === t && (p.leg?.races?.length ?? 0) > 1).map((p) => p.leg!.races!.map(Number));
+  return { races: (m.races ?? []).map((r) => ({ raceNo: Number(r.no), postTime: r.postTime ?? null, status: r.status ?? null })), DT: legs("DT"), TT: legs("TT") };
+}
+
 export const hkjcClient: HkjcClient = {
   async meeting(date, venue) {
     const d = await post<{ raceMeetings: { venueCode?: string; races: { no: number; postTime: string; status: string }[] }[] | null }>(

@@ -22,6 +22,7 @@ export const legal = {
         body: [
           "We collect only what we need to run the service:",
           "• Account and contact details, such as your name and email address, once you create an account.",
+          "• Credits: purchase records (Stripe session reference, plan, amount and time), your credit transactions and live bets, and your 18+ declaration. Card details are entered on Stripe's page; we never see or store card numbers.",
           "• Membership: your Hong Kong mobile number (to log in by SMS code), the practice bets you save to your history, and any profile details you choose to add (display name, description, photo, Telegram, WhatsApp, email). Your profile is visible only to you.",
           "• Subscription and billing records, such as your plan, payment dates and amounts. Card details are entered with and processed by our payment processor; we do not receive or store your full card number.",
           "• Technical and usage information, such as IP address, browser type, pages viewed and error logs, which our servers record automatically.",
@@ -56,6 +57,7 @@ export const legal = {
           "• Our payment processor, to take payments and prevent fraud.",
           "• Google, which provides Google Analytics for Firebase and processes usage data on our behalf to produce statistics.",
           "• Hosting, IT and email providers who process data on our behalf and under our instructions.",
+          "• Stripe, which processes payments for credits (we receive the payment status and amount, never your card number).",
           "• Twilio, which sends the SMS login codes and so processes your mobile number, and Cloudflare (Turnstile), which checks that login requests come from a person and processes technical data such as your IP address.",
           "• Law enforcement, regulators or courts, where we are required or permitted by law to do so.",
         ],
@@ -71,6 +73,7 @@ export const legal = {
         body: [
           "We keep personal data only for as long as needed for the purposes above. Billing records are kept for as long as required for accounting and tax purposes. When data is no longer needed, we delete or anonymise it.",
           "Your member profile, photo and saved practice bets are kept until you delete your account. You can do that yourself at any time under My account → Delete account; it removes your profile, photo, bet history and every login session straight away. Login-code and anti-abuse records are deleted within 24 hours.",
+          "Credit purchase records and credit transactions are kept for accounting and fraud prevention even after you delete your account, with your account identifier removed (anonymised).",
         ],
       },
       {
@@ -120,6 +123,14 @@ export const legal = {
         body: [
           "{{appName}} is an educational and informational tool. It lets you practise bets against past race results, review how our model's predictions have performed, and follow odds movements before races.",
           "We do not accept bets, take stakes, pay out winnings or act as a betting operator or agent. Practice bets on {{appName}} have no monetary value.",
+        ],
+      },
+      {
+        heading: "Credits and live bets",
+        body: [
+          "Credits are a virtual token for use inside {{appName}} only. Credits have no cash value. They are non-refundable, non-transferable and cannot be withdrawn or exchanged for money, goods or anything else. Payouts on live bets are paid in credits only.",
+          "Live bets use credits on upcoming races. A live bet is final once placed and cannot be cancelled. Live bets are settled from the Hong Kong Jockey Club's published results and dividends, but {{appName}} is not affiliated with, endorsed by or connected to the Hong Kong Jockey Club. If a runner is scratched or a race is abandoned, the affected stakes are returned in credits.",
+          "We may void bets or adjust balances to correct errors, and we may suspend live betting or the sale of credits at any time. You must be 18 or over to buy credits or place live bets. If you delete your account, your credits and any pending live bets are forfeited.",
         ],
       },
       {
@@ -202,6 +213,13 @@ export const legal = {
     intro:
       "This policy explains how paid subscriptions to {{appName}} work, including billing, cancellation and refunds. It forms part of our Terms of Use.",
     sections: [
+      {
+        heading: "Credits",
+        body: [
+          "Credits are sold in three packs, paid in HKD through Stripe Checkout: HK$10 for 100 credits, HK$100 for 1,200 credits and HK$300 for 4,000 credits. Each member can buy up to HK$1,000 of credits per Hong Kong calendar day.",
+          "Credits have no cash value and all credit purchases are final: they are non-refundable and cannot be withdrawn, transferred or exchanged for money. If a payment is refunded or disputed, the matching credits are removed from your balance. Stripe sends your receipt.",
+        ],
+      },
       {
         heading: "Prices",
         body: [

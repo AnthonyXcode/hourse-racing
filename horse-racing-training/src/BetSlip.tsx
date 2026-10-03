@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useGlossary } from "./i18n/glossary";
 import { useFmt } from "./i18n/useLanguage";
-import { btn, btnPrimary, cx } from "./kit";
+import { btn, btnPrimary, cx, errorBox, modeBadge } from "./kit";
 import { ymd, type SlipItem } from "./slip";
 
 /** Display text for a slip item, in the current language. */
@@ -35,16 +35,35 @@ type Stage = "edit" | "confirm";
 /** Seconds the confirm step waits before placing the bets by itself. */
 const AUTO_CONFIRM_S = 5;
 
+/** LIVE slip extras (docs/credits/DESIGN-SPEC.md §3b). */
+export interface LiveSlip {
+  balance: number | null;
+  /** Non-field error from the last placement attempt. */
+  error: string | null;
+  /** Items the server said are closed. */
+  closedIds: Set<string>;
+  /** Shown instead of the items after a successful placement. */
+  receipt: { count: number; total: number; balance: number } | null;
+  onBuy: () => void;
+  onRemoveClosed: () => void;
+  onReceiptDone: () => void;
+  onViewBets: () => void;
+}
+
 interface Props {
   items: SlipItem[];
   onRemove: (id: string) => void;
   onClear: () => void;
-  /** Settle everything on the slip; resolves when done. */
+  /** Settle (practice) or place (live) everything on the slip; resolves when done. */
   onConfirm: () => Promise<void>;
+  /** Set when the slip holds LIVE bets (no auto-confirm, amounts in credits). */
+  live?: LiveSlip;
+  /** A live meeting is open: an empty slip shows credits, not $. */
+  liveContext?: boolean;
 }
 
 export function BetSlip(props: Props) {
-  const { t } = useTranslation(["bet", "common"]);
+  const { t } = useTranslation(["bet", "common", "credits"]);
   const fmt = useFmt();
   const [stage, setStage] = useState<Stage>("edit");
   const [sheet, setSheet] = useState(false);
@@ -54,6 +73,10 @@ export function BetSlip(props: Props) {
   const [busy, setBusy] = useState(false);
   const firing = useRef(false);
   const total = props.items.reduce((s, it) => s + it.cost, 0);
+  const live = props.live;
+  const mode: "practice" | "live" | null = live ? "live" : props.items.length ? "practice" : null;
+  const inCredits = !!live || (!props.items.length && !!props.liveContext);
+  const amount = (n: number) => (inCredits ? t("credits:unit", { n: fmt.num(n) }) : fmt.money(n));
 
   // An emptied slip can't stay on the confirm step.
   useEffect(() => {
@@ -91,13 +114,14 @@ export function BetSlip(props: Props) {
       firing.current = false;
       setBusy(false);
       setStage("edit");
-      setSheet(false);
+      if (!live) setSheet(false); // live keeps the sheet open for the receipt or the error
     }
   };
 
-  // Confirm step: count down, then place the bets automatically. Back cancels.
+  // Confirm step (practice only): count down, then place the bets automatically. Back cancels.
+  // LIVE spends credits and can't be undone, so it always needs an explicit tap (no auto-confirm).
   useEffect(() => {
-    if (stage !== "confirm" || busy) return;
+    if (stage !== "confirm" || busy || live) return;
     const tick = () => {
       const n = Math.max(0, Math.ceil((deadline.current - Date.now()) / 1000));
       setLeft(n);
@@ -105,7 +129,7 @@ export function BetSlip(props: Props) {
     };
     const id = setInterval(tick, 200);
     return () => clearInterval(id);
-  }, [stage, busy]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [stage, busy, !!live]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const go = (s: Stage) => {
     if (s === "confirm") {
@@ -114,7 +138,7 @@ export function BetSlip(props: Props) {
     }
     setStage(s);
   };
-  const body = <SlipBody {...props} stage={stage} setStage={go} onConfirm={confirm} total={total} left={left} busy={busy} />;
+  const body = <SlipBody {...props} stage={stage} setStage={go} onConfirm={confirm} total={total} left={left} busy={busy} mode={mode} amount={amount} />;
 
   return (
     <>
@@ -134,7 +158,8 @@ export function BetSlip(props: Props) {
         >
           <span className="inline-flex size-7 items-center justify-center rounded-full bg-navy-700 text-[13px] font-medium text-white tabular-nums">{props.items.length}</span>
           <span className="font-medium text-navy-900">{t("slip.title")}</span>
-          <span className="ml-auto font-medium tabular-nums">{fmt.money(total)}</span>
+          {mode && <span className={modeBadge(mode, "white")}>{t(`credits:mode.${mode}`)}</span>}
+          <span className="ml-auto font-medium tabular-nums">{amount(total)}</span>
           <svg width="14" height="14" viewBox="0 0 12 12" aria-hidden fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
             <path d="M3 7.5 6 4.5 9 7.5" />
           </svg>
@@ -167,23 +192,51 @@ function SlipBody({
   total,
   left,
   busy,
-}: Props & { stage: Stage; setStage: (s: Stage) => void; total: number; left: number; busy: boolean }) {
-  const { t } = useTranslation(["bet", "common"]);
+  mode,
+  amount,
+  live,
+}: Props & { stage: Stage; setStage: (s: Stage) => void; total: number; left: number; busy: boolean; mode: "practice" | "live" | null; amount: (n: number) => string }) {
+  const { t } = useTranslation(["bet", "common", "credits"]);
   const fmt = useFmt();
   const text = useSlipText();
+  const after = live?.balance != null ? live.balance - total : null;
+  const short = after != null && after < 0;
+  const receiptHead = useRef<HTMLHeadingElement>(null);
+  useEffect(() => {
+    if (live?.receipt) receiptHead.current?.focus();
+  }, [live?.receipt]);
   return (
     <div className="overflow-hidden rounded-card bg-surface shadow-card">
-      <div className="flex min-h-9 items-center bg-navy-900 px-[13px] py-2 text-[15px] font-medium text-white">
-        {stage === "confirm" ? t("slip.confirmTitle") : t("slip.title")}
+      <div className="flex min-h-9 items-center gap-2 bg-navy-900 px-[13px] py-2 text-[15px] font-medium text-white">
+        {stage === "confirm" ? (live ? t("credits:slip.confirmTitle") : t("slip.confirmTitle")) : t("slip.title")}
+        {mode && <span className={cx(modeBadge(mode, "navy"), "ml-auto")}>{mode === "live" && <span aria-hidden="true" className="size-1.5 rounded-full bg-ink-strong" />}{t(`credits:mode.${mode}`)}</span>}
       </div>
-      {items.length === 0 ? (
+      {live?.receipt ? (
+        <div className="m-[13px] rounded-card bg-sky-50 p-[13px]">
+          <h3 ref={receiptHead} tabIndex={-1} className="text-[15px] font-medium text-navy-900">
+            {t("credits:slip.placedTitle")}
+          </h3>
+          <p className="mt-1 text-[13px] text-ink tabular-nums">
+            {t("credits:slip.placedBody", { count: live.receipt.count, total: fmt.num(live.receipt.total), bal: fmt.num(live.receipt.balance) })}
+          </p>
+          <div className="mt-3 flex items-center gap-3">
+            <button type="button" className={btn} onClick={live.onViewBets}>
+              {t("credits:slip.viewBets")}
+            </button>
+            <button type="button" className="h-11 cursor-pointer text-[15px] text-link hover:underline" onClick={live.onReceiptDone}>
+              {t("credits:slip.done")}
+            </button>
+          </div>
+        </div>
+      ) : items.length === 0 ? (
         <p className="px-[13px] py-6 text-center text-[13px] text-ink-muted">{t("slip.empty")}</p>
       ) : (
         <ul className="max-h-[55dvh] divide-y divide-edge overflow-auto">
           {items.map((it) => (
-            <li key={it.id} className="px-[13px] py-2.5">
+            <li key={it.id} className={cx("px-[13px] py-2.5", live?.closedIds.has(it.id) && "bg-bad-soft")}>
               <div className="flex items-start gap-2">
                 <span className="min-w-0 flex-1 text-[13px] font-medium text-navy-900">{text.title(it)}</span>
+                {live?.closedIds.has(it.id) && <span className="flex-none rounded-full px-2 text-[13px] font-medium text-bad">🔒 {t("credits:slip.closedTag")}</span>}
                 {stage === "edit" && (
                   <button
                     type="button"
@@ -197,8 +250,8 @@ function SlipBody({
               </div>
               <div className="mt-0.5 text-[13px] break-words text-ink">{text.picks(it)}</div>
               <div className="mt-1 flex text-[13px] tabular-nums">
-                <span className="text-ink-muted">{t("slip.line", { unit: fmt.money(it.unit), combos: fmt.num(it.combos) })}</span>
-                <span className="ml-auto font-medium">{fmt.money(it.cost)}</span>
+                <span className="text-ink-muted">{live ? t("credits:slip.line", { unit: fmt.num(it.unit), combos: fmt.num(it.combos) }) : t("slip.line", { unit: fmt.money(it.unit), combos: fmt.num(it.combos) })}</span>
+                <span className="ml-auto font-medium">{amount(it.cost)}</span>
               </div>
             </li>
           ))}
@@ -211,10 +264,41 @@ function SlipBody({
         </div>
         <div className="flex">
           <span>{t("slip.amount")}</span>
-          <span className="ml-auto font-bold tabular-nums">{fmt.money(total)}</span>
+          <span className="ml-auto font-bold tabular-nums">{amount(total)}</span>
         </div>
+        {live && live.balance != null && (
+          <>
+            <div className="flex">
+              <span>{t("credits:slip.balance")}</span>
+              <span className="ml-auto font-bold tabular-nums">{amount(live.balance)}</span>
+            </div>
+            <div className="flex">
+              <span>{t("credits:slip.after")}</span>
+              <span className={cx("ml-auto font-bold tabular-nums", short && "text-bad")} aria-live="polite">
+                {short ? `−${t("credits:unit", { n: fmt.num(-after!) })}` : amount(after!)}
+              </span>
+            </div>
+          </>
+        )}
       </div>
-      {stage === "confirm" && (
+      {live && !live.receipt && (short || live.error) && (
+        <div className="px-[13px]">
+          <div className={errorBox} role="alert">
+            {live.error ?? t("credits:slip.short")}
+            {live.closedIds.size > 0 && (
+              <button type="button" className={cx(btn, "mt-2 flex")} onClick={live.onRemoveClosed}>
+                {t("credits:slip.removeClosed")}
+              </button>
+            )}
+          </div>
+        </div>
+      )}
+      {stage === "confirm" && live && (
+        <div className="px-[13px] pt-3 text-[13px]">
+          <p className="text-ink-muted">{t("credits:slip.confirmNote")}</p>
+        </div>
+      )}
+      {stage === "confirm" && !live && (
         <div className="px-[13px] pt-3 text-[13px]">
           <p className="text-ink-muted">{t("slip.confirmNote")}</p>
           {!busy && (
@@ -230,9 +314,15 @@ function SlipBody({
             <button className={cx(btn, "flex-none")} disabled={!items.length} onClick={onClear}>
               {t("slip.clear")}
             </button>
-            <button className={cx(btnPrimary, "min-w-0 flex-1")} disabled={!items.length} onClick={() => setStage("confirm")}>
-              {t("slip.place")}
-            </button>
+            {live && short ? (
+              <button className={cx(btnPrimary, "min-w-0 flex-1")} onClick={live.onBuy}>
+                {t("credits:buy.cta")}
+              </button>
+            ) : (
+              <button className={cx(btnPrimary, "min-w-0 flex-1")} disabled={!items.length || !!live?.receipt || (live ? live.closedIds.size > 0 : false)} onClick={() => setStage("confirm")}>
+                {t("slip.place")}
+              </button>
+            )}
           </>
         ) : (
           <>
@@ -244,7 +334,7 @@ function SlipBody({
               disabled={busy}
               onClick={() => void onConfirm()}
             >
-              {busy ? t("slip.confirm") : t("slip.confirmIn", { n: left })}
+              {live ? (busy ? t("credits:slip.placing") : t("credits:slip.confirm", { n: fmt.num(total) })) : busy ? t("slip.confirm") : t("slip.confirmIn", { n: left })}
             </button>
           </>
         )}

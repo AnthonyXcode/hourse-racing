@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { api } from "./api";
 import { BET_TYPES, countCombos } from "../shared/betEngine/index";
-import type { MeetingRef, MeetingDetail, RaceCard, BetTypeId, BetSelection, HistoryEntry } from "../shared/types";
-import { RaceCardTable, PoolMenu, StakeBar, ResultModal, ResultPanel, HistoryPage, emptyPicks, legSummary, usePoolName, ymd, type PickCol, type Picks, type Pool } from "./ui";
+import type { MeetingRef, RaceCard, BetTypeId, BetSelection, HistoryEntry, RaceStatus } from "../shared/types";
+import { RaceCardTable, PoolMenu, StakeBar, ResultModal, ResultPanel, HistoryPage, emptyPicks, legSummary, usePoolName, ymd, type HistoryFilter, type PickCol, type Picks, type Pool } from "./ui";
 import { BetSlip } from "./BetSlip";
 import { MIN_UNIT, scaleResult, type SettledBet, type SlipItem } from "./slip";
 import type { RaceResult } from "../shared/types";
@@ -18,7 +18,13 @@ import { PicksBanner } from "./momentum/PicksBanner";
 import { useCutoffNotifications } from "./momentum/notify";
 import { RaceAnalysisPanel } from "./RaceAnalysisPanel";
 import { useSeo } from "./seo";
-import { Display, btnPill, chipBtn, container, control, cx, errorBox, panel, pill, pillRow } from "./kit";
+import { Display, btnPill, chipBtn, container, control, cx, errorBox, modeBadge, noticeBanner, panel, pill, pillRow, tabBadge } from "./kit";
+import { CreditsProvider, useCredits } from "./credits/CreditsProvider";
+import { CreditChip } from "./credits/CreditChip";
+import { CreditsPage } from "./credits/CreditsPage";
+import { SwitchModeDialog, WelcomeDialog } from "./credits/dialogs";
+import { loadSavedSlip, saveSlip, useLiveSlip } from "./credits/useLiveSlip";
+import type { MeetingWithLive } from "./credits/api";
 import { AuthProvider, useAuth } from "./members/auth";
 import { AccountEntry } from "./members/AccountMenu";
 import { AccountPage } from "./members/AccountPage";
@@ -49,7 +55,7 @@ function useOnceTrue(v: boolean): boolean {
 }
 
 /** Every ?tab= view. "account" is reached from the avatar menu, so it isn't in TABS. */
-const VIEWS = ["bet", "history", "win-place", "trio", "momentum", "settings", "account", ...LEGAL_VIEWS] as const;
+const VIEWS = ["bet", "history", "win-place", "trio", "momentum", "settings", "account", "credits", ...LEGAL_VIEWS] as const;
 type View = (typeof VIEWS)[number];
 const DEFAULT_VIEW: View = "bet";
 /** How often the bet page re-polls the meeting list while visible. */
@@ -67,6 +73,25 @@ const navBtn = (on: boolean) =>
   on
     ? "inline-flex h-10 flex-none cursor-pointer items-center bg-navy-700 px-4 text-[15px] font-medium whitespace-nowrap text-white"
     : "inline-flex h-10 flex-none cursor-pointer items-center px-4 text-[15px] whitespace-nowrap text-ink transition-colors hover:bg-sky-50";
+/** Last meeting picked on this device (per DESIGN-SPEC §1b). */
+const MEETING_KEY = "pt:meeting";
+const readSaved = () => {
+  try {
+    return localStorage.getItem(MEETING_KEY) ?? "";
+  } catch {
+    return "";
+  }
+};
+/** Upcoming (Live) group = any race not settled/void yet; Past (Practice) = all settled. */
+const isUpcoming = (m: MeetingRef) => (m.mode ? m.mode !== "practice" : !m.hasResults);
+/** mm:ss or h:mm:ss */
+const clockText = (sec: number) => {
+  const h = Math.floor(sec / 3600);
+  const m = Math.floor((sec % 3600) / 60);
+  const s = sec % 60;
+  return h ? `${h}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}` : `${m}:${String(s).padStart(2, "0")}`;
+};
+
 /** Bets a guest settled this visit, uploaded if they log in from the save prompt (PRD §2.7). */
 const GUEST_PENDING_MAX = 20;
 
@@ -103,7 +128,9 @@ function useViewParam(): [View, (v: View) => void] {
 export default function App() {
   return (
     <AuthProvider>
-      <AppBody />
+      <CreditsProvider>
+        <AppBody />
+      </CreditsProvider>
     </AuthProvider>
   );
 }
@@ -111,7 +138,7 @@ export default function App() {
 function AppBody() {
   const [days, setDays] = useState<MeetingRef[]>([]);
   const [meetingKey, setMeetingKey] = useState<string>(""); // "date_venue"
-  const [meeting, setMeeting] = useState<MeetingDetail | null>(null);
+  const [meeting, setMeeting] = useState<MeetingWithLive | null>(null);
   const [activeRace, setActiveRace] = useState(1);
   const [pool, setPool] = useState<Pool>("wp");
   const [cards, setCards] = useState<Record<number, RaceCard>>({});
@@ -119,10 +146,11 @@ function AppBody() {
   const [editRace, setEditRace] = useState(1);
   const [dtLegs, setDtLegs] = useState<number[]>([]); // chosen leg races for DT/TT
   const [unit, setUnit] = useState(MIN_UNIT);
-  const [slip, setSlip] = useState<SlipItem[]>([]);
+  const [slip, setSlip] = useState<SlipItem[]>(loadSavedSlip);
   const [settled, setSettled] = useState<SettledBet[] | null>(null);
   const [error, setError] = useState<string>("");
-  const { t } = useTranslation(["common", "bet", "account", "history"]);
+  const { t } = useTranslation(["common", "bet", "account", "history", "credits"]);
+  const credits = useCredits();
   const { t: ta } = useTranslation("account");
   const auth = useAuth();
   const { user } = auth;
@@ -159,9 +187,6 @@ function AppBody() {
         .then((ds) => {
           if (!live) return;
           setDays(ds);
-          const today = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Hong_Kong" }).format(new Date()).replaceAll("-", "");
-          const last = ds.find((m) => m.date <= today) ?? ds[ds.length - 1]; // newest first; else the earliest upcoming
-          if (last) setMeetingKey((k) => k || `${last.date}_${last.venue}`);
         })
         .catch((e) => first && setError(String(e))) // background refresh failures stay quiet
         .finally(() => (first = false));
@@ -175,6 +200,36 @@ function AppBody() {
       document.removeEventListener("visibilitychange", onShow);
     };
   }, []);
+
+  // Default meeting once the list and the session are known: the device's last choice; else a member with
+  // LIVE on gets the next upcoming meeting; guests (or LIVE off) get the newest past meeting, as before.
+  useEffect(() => {
+    if (meetingKey || !days.length || user === undefined) return;
+    const saved = readSaved();
+    if (saved && days.some((m) => `${m.date}_${m.venue}` === saved) && (credits.liveBetting || !isUpcoming(days.find((m) => `${m.date}_${m.venue}` === saved)!))) return setMeetingKey(saved);
+    const today = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Hong_Kong" }).format(new Date()).replaceAll("-", "");
+    const upcoming = days.filter(isUpcoming).sort((a, b) => a.date.localeCompare(b.date));
+    const pick =
+      (user && credits.liveBetting && upcoming[0]) ||
+      days.find((m) => !isUpcoming(m) && m.date <= today) ||
+      days.find((m) => m.date <= today) ||
+      days[days.length - 1]; // newest first; else the earliest upcoming
+    if (pick) setMeetingKey(`${pick.date}_${pick.venue}`);
+  }, [days, user, credits.liveBetting, meetingKey]);
+  const chooseMeeting = (k: string) => {
+    setMeetingKey(k);
+    try {
+      localStorage.setItem(MEETING_KEY, k);
+    } catch {
+      /* per-device convenience only */
+    }
+  };
+
+  // Opening History clears the "new results" badge.
+  useEffect(() => {
+    if (view === "history") credits.markSettledSeen();
+    if (view !== "history") setHistoryFilter(undefined);
+  }, [view, credits.unseenSettled]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Refresh a member's history whenever the History tab is opened (or they log in on it).
   // Guests have no history; a 401 means the session ended, so drop to guest state.
@@ -198,12 +253,53 @@ function AppBody() {
     api
       .meeting(date, venue)
       .then((m) => {
-        setMeeting(m);
-        setActiveRace(m.races[0] ?? 1);
-        setEditRace(m.races[0] ?? 1);
+        const lm = m as MeetingWithLive;
+        setMeeting(lm);
+        if (lm.serverNow) setClockOffset(Date.parse(lm.serverNow) - Date.now());
+        // Live meeting: open on the next race still open, else the first race.
+        const next = lm.raceInfo?.find((r) => r.status === "open")?.raceNumber;
+        setActiveRace(next ?? m.races[0] ?? 1);
+        setEditRace(next ?? m.races[0] ?? 1);
       })
       .catch((e) => setError(String(e)));
   }, [meetingKey]);
+
+  // ---- LIVE: per-race status on the server clock ----
+  const [clockOffset, setClockOffset] = useState(0);
+  const [nowTick, setNowTick] = useState(Date.now());
+  const serverNow = nowTick + clockOffset;
+  const liveMeeting = !!meeting && meeting.date === date && !!meeting.mode && meeting.mode !== "practice";
+  useEffect(() => {
+    if (!liveMeeting) return;
+    const tick = setInterval(() => setNowTick(Date.now()), 1000);
+    // Pick up status changes (results in, schedule moved, kill switch) about once a minute.
+    const refresh = setInterval(() => {
+      if (document.visibilityState !== "visible" || !date || !venue) return;
+      api
+        .meeting(date, venue)
+        .then((m) => {
+          const lm = m as MeetingWithLive;
+          setMeeting(lm);
+          if (lm.serverNow) setClockOffset(Date.parse(lm.serverNow) - Date.now());
+        })
+        .catch(() => {});
+    }, 60_000);
+    return () => {
+      clearInterval(tick);
+      clearInterval(refresh);
+    };
+  }, [liveMeeting, date, venue]);
+  /** Status of a race now. The server decides; the client only closes a race early for display at post time. */
+  const raceStatusOf = (rn: number): RaceStatus => {
+    const r = meeting?.raceInfo?.find((x) => x.raceNumber === rn);
+    if (!r) return liveMeeting ? "unavailable" : "settled";
+    if (r.status === "open" && r.postTime && serverNow >= Date.parse(r.postTime)) return "closed";
+    return r.status;
+  };
+  const postTimeOf = (d: string, rn: number) => (meeting && meeting.date === d ? (meeting.raceInfo?.find((x) => x.raceNumber === rn)?.postTime ?? null) : null);
+  useEffect(() => {
+    if (meeting?.mode) track("mode_view", { mode: liveMeeting ? "live" : "practice" });
+  }, [meetingKey, liveMeeting]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // A refresh changed the open meeting (results posted, races added): reload its detail and cards
   // (cards pick up final odds from results), keeping the user's picks.
@@ -225,16 +321,17 @@ function AppBody() {
   const betType: BetTypeId = pool === "wp" ? "win" : pool;
   const legCount = BET_TYPES[betType].legRaces; // 1, 2 (DT), or 3 (TT)
 
-  const dtPools = meeting?.doubleTrioPools ?? [];
-  const ttPools = meeting?.tripleTrioPools ?? [];
+  // LIVE offers only the meeting's designated DT/TT legs (known before results); practice keeps any legs.
+  const dtPools = (liveMeeting ? meeting?.liveDoubleTrioPools : meeting?.doubleTrioPools) ?? [];
+  const ttPools = (liveMeeting ? meeting?.liveTripleTrioPools : meeting?.tripleTrioPools) ?? [];
   const officialPools = betType === "doubleTrio" ? dtPools : betType === "tripleTrio" ? ttPools : [];
 
   // Default the DT/TT leg races to the first designated pool when switching in.
   useEffect(() => {
     if (!meeting) return;
-    if (betType === "doubleTrio") setDtLegs(meeting.doubleTrioPools[0] ?? []);
-    else if (betType === "tripleTrio") setDtLegs(meeting.tripleTrioPools[0] ?? []);
-  }, [betType, meeting]);
+    if (betType === "doubleTrio") setDtLegs(dtPools[0] ?? []);
+    else if (betType === "tripleTrio") setDtLegs(ttPools[0] ?? []);
+  }, [betType, meeting]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Which races this bet type collects picks in.
   const legRaces = useMemo<number[]>(() => {
@@ -308,7 +405,21 @@ function AppBody() {
   }, [pool, legRaces, picks, betType, bankerEnabled, activeRace]);
 
   const combos = selections.reduce((s, sel) => s + countCombos(sel), 0);
-  const canAdd = meeting?.hasResults ?? false;
+  // Practice meeting: as before (needs results). Live meeting: every leg race open → LIVE; else view-only.
+  const legStatuses = (pool === "wp" ? [activeRace] : legRaces).map(raceStatusOf);
+  const betMode: "practice" | "live" | "view" = !liveMeeting ? "practice" : legStatuses.length && legStatuses.every((s) => s === "open") && credits.liveBetting ? "live" : "view";
+  const canAdd = betMode === "practice" ? (meeting?.hasResults ?? false) : betMode === "live";
+  const viewStatus = legStatuses.find((s) => s !== "open") ?? (credits.liveBetting ? "open" : "unavailable");
+  const slipMode: "practice" | "live" | null = slip.length ? (slip[0]!.mode ?? "practice") : null;
+  const slipTotal = slip.reduce((s, it) => s + it.cost, 0);
+  const [switchAsk, setSwitchAsk] = useState<SlipItem[] | null>(null);
+  const liveSlip = useLiveSlip(slip, (f) => setSlip(f), postTimeOf);
+  useEffect(() => saveSlip(slip), [slip]);
+  const [historyFilter, setHistoryFilter] = useState<HistoryFilter | undefined>();
+  const goBuy = () => {
+    saveSlip(slip);
+    setView("credits");
+  };
 
   // Stake calculator → bet slip; clear the ticks that went in.
   function addToSlip() {
@@ -322,6 +433,17 @@ function AppBody() {
       })
       .filter((x): x is SlipItem => x !== null);
     if (!items.length) return;
+    const mode = betMode === "live" ? "live" : "practice";
+    for (const it of items) it.mode = mode;
+    if (mode === "live" && !user) {
+      auth.openLogin({ source: "header" }); // ticks are kept; Add again after logging in
+      return;
+    }
+    liveSlip.clearReceipt();
+    if (slipMode && slipMode !== mode) {
+      setSwitchAsk(items); // a slip holds one mode only
+      return;
+    }
     setSlip((s) => [...s, ...items]);
     setPicks((prev) => {
       const next = { ...prev };
@@ -330,8 +452,10 @@ function AppBody() {
     });
   }
 
-  // Place bet → Confirm: settle each slip bet, record it in history, show the outcome.
+  // Place bet → Confirm: LIVE slips are placed on the server (credits, settle later); practice slips settle
+  // each bet now, record it in history, and show the outcome.
   async function confirmSlip() {
+    if (slipMode === "live") return liveSlip.place();
     setError("");
     const done: SettledBet[] = [];
     for (const item of slip) {
@@ -416,15 +540,48 @@ function AppBody() {
     return parts.join("  ") || "—";
   };
 
+  const upcomingDays = days.filter(isUpcoming).sort((a, b) => a.date.localeCompare(b.date) || a.venue.localeCompare(b.venue));
+  const pastDays = days.filter((m) => !isUpcoming(m));
+
+  // Status line under the race chips (live meetings): next race / countdown / all closed.
+  const openRaces = (meeting?.raceInfo ?? []).filter((r) => raceStatusOf(r.raceNumber) === "open" && r.postTime);
+  const nextRace = openRaces[0];
+  const nextIn = nextRace ? Math.max(0, Math.floor((Date.parse(nextRace.postTime!) - serverNow) / 1000)) : 0;
+  const hkTime = (iso: string) => fmt.date(iso, { hour: "2-digit", minute: "2-digit", hour12: false });
+  const statusLine = !liveMeeting || !credits.liveBetting
+    ? null
+    : !nextRace
+      ? { text: t("credits:race.allClosed"), cls: "text-ink-muted" }
+      : nextIn > 3600
+        ? { text: t("credits:race.nextAt", { n: nextRace.raceNumber, time: hkTime(nextRace.postTime!) }), cls: "text-ink" }
+        : { text: t("credits:race.closesIn", { n: nextRace.raceNumber, time: clockText(nextIn) }), cls: "font-medium text-navy-900 tabular-nums" };
+  // Announce the countdown only at 10 min, 1 min and closed (never every second).
+  const announce = !nextRace ? (liveMeeting ? t("credits:race.allClosed") : "") : nextIn <= 60 ? t("credits:race.closesIn", { n: nextRace.raceNumber, time: "1:00" }) : nextIn <= 600 ? t("credits:race.closesIn", { n: nextRace.raceNumber, time: "10:00" }) : "";
+  const blockedNote =
+    betMode !== "view" ? null : viewStatus === "closed" ? t("credits:race.closedNote") : viewStatus === "unavailable" || viewStatus === "open" ? t("credits:race.unavailable") : t("credits:race.viewOnly");
+
   const meetingSelect = (
-    <select id="bDay" className={cx(control, "w-full sm:w-auto sm:min-w-[300px]")} value={meetingKey} disabled={!days.length} onChange={(e) => setMeetingKey(e.target.value)}>
+    <select id="bDay" className={cx(control, "w-full sm:w-auto sm:min-w-[300px]")} value={meetingKey} disabled={!days.length} onChange={(e) => chooseMeeting(e.target.value)}>
       {!meetingKey && <option value="">{days.length ? t("bet:selectDay") : t("state.loading")}</option>}
-      {days.map((m) => (
-        <option key={`${m.date}_${m.venue}`} value={`${m.date}_${m.venue}`}>
-          {t("bet:dayOption", { date: fmt.date(ymd(m.date)), venue: g.venue(m.venue), races: t("races", { count: m.races.length }) })}
-          {m.hasResults ? "" : t("bet:noResultsSuffix")}
-        </option>
-      ))}
+      {/* Mode is a property of the meeting (DESIGN-SPEC D1): upcoming = Live, past = Practice. */}
+      {upcomingDays.length > 0 && (
+        <optgroup label={credits.liveBetting ? t("credits:picker.live") : t("credits:picker.livePaused")}>
+          {upcomingDays.map((m) => (
+            <option key={`${m.date}_${m.venue}`} value={`${m.date}_${m.venue}`} disabled={!credits.liveBetting && `${m.date}_${m.venue}` !== meetingKey}>
+              {t("bet:dayOption", { date: fmt.date(ymd(m.date)), venue: g.venue(m.venue), races: t("races", { count: m.races.length }) })}
+              {m.mode === "closed" ? ` ${t("credits:picker.awaitingResults")}` : ""}
+            </option>
+          ))}
+        </optgroup>
+      )}
+      <optgroup label={t("credits:picker.practice")}>
+        {pastDays.map((m) => (
+          <option key={`${m.date}_${m.venue}`} value={`${m.date}_${m.venue}`}>
+            {t("bet:dayOption", { date: fmt.date(ymd(m.date)), venue: g.venue(m.venue), races: t("races", { count: m.races.length }) })}
+            {m.hasResults ? "" : t("bet:noResultsSuffix")}
+          </option>
+        ))}
+      </optgroup>
     </select>
   );
 
@@ -435,8 +592,8 @@ function AppBody() {
         <div className="bg-navy-900 text-white">
           <div className={cx(container, "flex h-12 items-center gap-3")}>
             <h1 className="flex-none text-lg leading-none font-bold">{t("appName")}</h1>
-            <span className="rounded-full border border-gold px-2 py-0.5 text-[11px] leading-none font-medium text-gold">{t("practice")}</span>
             <LangSwitch className="ml-auto" />
+            <CreditChip onOpen={() => setView("credits")} />
             <AccountEntry current={view} onNavigate={setViewRaw} onLogout={logout} />
           </div>
         </div>
@@ -444,8 +601,15 @@ function AppBody() {
         <div className="border-b border-edge bg-surface">
           <nav aria-label={t("nav.sections")} className={cx(container, "flex overflow-x-auto")}>
             {TABS.map(([v, key]) => (
-              <button key={v} className={navBtn(view === v)} aria-current={view === v ? "page" : undefined} onClick={() => setView(v)}>
+              <button
+                key={v}
+                className={navBtn(view === v)}
+                aria-current={view === v ? "page" : undefined}
+                aria-label={v === "history" && credits.unseenSettled ? t("credits:history.tabBadge", { n: credits.unseenSettled }) : undefined}
+                onClick={() => setView(v)}
+              >
                 {t(key)}
+                {v === "history" && credits.unseenSettled > 0 && <span className={tabBadge(view === v)}>{credits.unseenSettled}</span>}
               </button>
             ))}
           </nav>
@@ -477,6 +641,8 @@ function AppBody() {
             </div>
           ) : user && history ? (
             <HistoryPage
+              key={historyFilter ?? "default"}
+              initialFilter={historyFilter}
               entries={history}
               onDelete={(id) => memberApi.deleteHistory(id).then(setHistory).catch((e) => auth.handleAuthError(e) || setError(errorText(ta, e)))}
               onClear={() =>
@@ -493,7 +659,25 @@ function AppBody() {
           ))}
 
         {view === "account" && <AccountPage onLogout={logout} onDeleted={() => setViewRaw("bet")} />}
+        {view === "credits" && (
+          <CreditsPage
+            onOpenHistory={() => {
+              setHistoryFilter("pending");
+              setView("history");
+            }}
+            savedSlip={slip.some((i) => i.mode === "live")}
+            onBackToSlip={() => setView("bet")}
+          />
+        )}
 
+        {view === "bet" && !credits.liveBetting && upcomingDays.length > 0 && (
+          <div className={cx(noticeBanner, "mt-4")} role="status">
+            <span aria-hidden="true" className="mt-0.5 inline-flex size-4 flex-none items-center justify-center bg-ink-strong text-[11px] font-bold text-gold">
+              !
+            </span>
+            {t("credits:killswitch.banner")}
+          </div>
+        )}
         {view === "bet" && (
           // HKJC layout: pool menu · race card · bet slip (one column on phones, slip as a bottom bar).
           <div className="mt-4 grid items-start gap-3 lg:grid-cols-[160px_minmax(0,1fr)_260px]">
@@ -505,7 +689,16 @@ function AppBody() {
               {/* Page head: pool + meeting, then meeting picker and race chips. */}
               <div className="overflow-hidden rounded-card bg-surface shadow-card">
                 <div className="flex flex-wrap items-baseline gap-x-3 gap-y-0.5 bg-navy-700 px-[13px] py-2 text-white">
-                  <h2 className="text-[15px] font-medium">{poolName(pool)}</h2>
+                  <h2 className="flex items-center gap-2 text-[15px] font-medium">
+                    {poolName(pool)}
+                    {meeting && (
+                      <span className={modeBadge(liveMeeting ? "live" : "practice", "navy")}>
+                        {liveMeeting && <span aria-hidden="true" className="size-1.5 rounded-full bg-ink-strong" />}
+                        <span className="sr-only">, </span>
+                        {t(liveMeeting ? "credits:mode.live" : "credits:mode.practice")}
+                      </span>
+                    )}
+                  </h2>
                   <span className="text-[13px] text-white/85">
                     {meeting
                       ? t("bet:subMeeting", { date: fmt.date(ymd(meeting.date)), venue: g.venue(meeting.venue), races: t("races", { count: meeting.races.length }) })
@@ -518,16 +711,29 @@ function AppBody() {
                   </label>
                   {meetingSelect}
                   {meeting && legCount === 1 && (
-                    <nav aria-label={t("bet:racesNav")} className="-mx-[13px] flex gap-2 overflow-x-auto px-[13px] pt-0.5 sm:mx-0 sm:px-0">
+                    <nav aria-label={t("bet:racesNav")} className={cx("-mx-[13px] flex gap-2 overflow-x-auto px-[13px] sm:mx-0 sm:px-0", liveMeeting ? "pt-2" : "pt-0.5")}>
                       {meeting.races.map((rn) => {
                         const on = rn === activeRace;
                         const surface = cards[rn]?.surface;
+                        // Live meeting: races that can't take LIVE bets stay selectable for viewing, faded with a lock
+                        // (or a "Void" tag for a voided race).
+                        const st = liveMeeting ? raceStatusOf(rn) : null;
+                        const locked = !!st && st !== "open";
+                        const isVoid = st === "void";
                         return (
-                          <span key={rn} className={cx("flex-none border-b-[3px] pb-1", on ? (surface === "AWT" ? "border-awt" : "border-turf") : "border-transparent")}>
+                          <span key={rn} className={cx("relative flex-none border-b-[3px] pb-1", on ? (surface === "AWT" ? "border-awt" : "border-turf") : "border-transparent")}>
                             <button
-                              className={chipBtn(on)}
+                              className={cx(chipBtn(on), locked && !on && "opacity-40")}
                               aria-current={on ? "true" : undefined}
-                              aria-label={t("common:race", { n: rn })}
+                              aria-label={
+                                isVoid
+                                  ? t("credits:race.chipVoid", { n: rn })
+                                  : st === "settled"
+                                    ? t("credits:race.chipFinished", { n: rn })
+                                    : locked
+                                      ? t("credits:race.chipClosed", { n: rn })
+                                      : t("common:race", { n: rn })
+                              }
                               onClick={() => {
                                 setActiveRace(rn);
                                 setEditRace(rn);
@@ -535,12 +741,48 @@ function AppBody() {
                             >
                               {rn}
                             </button>
+                            {isVoid && (
+                              <span aria-hidden="true" className="pointer-events-none absolute -top-1.5 left-1/2 -translate-x-1/2 rounded-full bg-surface px-1 text-[10px] leading-3.5 font-medium whitespace-nowrap text-bad ring-1 ring-line">
+                                {t("credits:race.void")}
+                              </span>
+                            )}
+                            {locked && !isVoid && (
+                              <span aria-hidden="true" className="pointer-events-none absolute -top-1 -right-1 inline-flex size-3.5 items-center justify-center rounded-full bg-surface ring-1 ring-line">
+                                <svg viewBox="0 0 12 12" className="size-2.5 fill-ink-muted">
+                                  <rect x="2.5" y="5.5" width="7" height="5" rx="1" />
+                                  <path d="M4 5.5V4a2 2 0 0 1 4 0v1.5" className="fill-none stroke-ink-muted" strokeWidth="1.2" />
+                                </svg>
+                              </span>
+                            )}
                           </span>
                         );
                       })}
                     </nav>
                   )}
                 </div>
+                {statusLine && (
+                  <p className={cx("px-[13px] pb-2.5 text-[13px]", statusLine.cls)}>
+                    {statusLine.text}
+                    <span className="sr-only" aria-live="polite">
+                      {announce}
+                    </span>
+                  </p>
+                )}
+                {!credits.liveBetting && upcomingDays.length === 0 ? null : credits.liveBetting && upcomingDays.length === 0 ? (
+                  <p className="px-[13px] pb-2.5 text-[13px] text-ink-muted">{t("credits:picker.noUpcoming")}</p>
+                ) : null}
+                {user && (credits.summary?.pending.count ?? 0) > 0 && (
+                  <button
+                    type="button"
+                    className="mx-[13px] mb-2.5 cursor-pointer text-[13px] text-link hover:underline"
+                    onClick={() => {
+                      setHistoryFilter("pending");
+                      setView("history");
+                    }}
+                  >
+                    {t("credits:history.pendingLink", { count: credits.summary!.pending.count })}
+                  </button>
+                )}
               </div>
 
               <div className="lg:hidden">
@@ -575,6 +817,7 @@ function AppBody() {
                           </div>
                         </div>
                       )}
+                      {!liveMeeting && (
                       <div>
                         <div className="mb-2 text-[13px] text-ink">{t("bet:pickAny", { n: legCount, picked: dtLegs.length })}</div>
                         <div className="flex flex-wrap gap-2">
@@ -596,7 +839,8 @@ function AppBody() {
                           })}
                         </div>
                       </div>
-                      <p className="text-xs text-ink-muted">{t("bet:customNote")}</p>
+                      )}
+                      {!liveMeeting && <p className="text-xs text-ink-muted">{t("bet:customNote")}</p>}
                     </div>
                   )}
 
@@ -626,7 +870,12 @@ function AppBody() {
                       onField={(col, on) => field(editRace, col, on)}
                       bankerEnabled={bankerEnabled}
                       bankerMax={bankerMax}
+                      readOnly={betMode === "view"}
                       head={
+                        <>
+                        {liveMeeting && raceStatusOf(editRace) === "closed" && (
+                          <span className="inline-flex h-7 items-center rounded-full bg-white/15 px-2.5 text-[13px] text-white">🔒 {t("credits:race.closed")}</span>
+                        )}
                         <button
                           className={btnPill}
                           disabled={!meeting.hasResults}
@@ -635,21 +884,63 @@ function AppBody() {
                         >
                           {t("bet:showResult", { race: t("raceShort", { n: editRace }) })}
                         </button>
+                        </>
                       }
                     />
                   ) : (
                     <div className={cx(panel, "mt-3 text-center text-ink-muted")}>{t("bet:loadingRace", { n: editRace })}</div>
                   )}
 
-                  <StakeBar combos={combos} unit={unit} onUnit={setUnit} onAdd={addToSlip} canAdd={canAdd} />
-                  {!meeting.hasResults && <p className="mt-3 text-[13px] text-warn">{t("bet:settlementDisabled")}</p>}
+                  <StakeBar
+                    combos={combos}
+                    unit={unit}
+                    onUnit={setUnit}
+                    onAdd={addToSlip}
+                    canAdd={canAdd}
+                    live={
+                      liveMeeting
+                        ? {
+                            balance: user ? (credits.balance ?? 0) : null,
+                            slipTotal: slipMode === "live" ? slipTotal : 0,
+                            blockedNote,
+                            onLogin: () => auth.openLogin({ source: "header" }),
+                            onBuy: goBuy,
+                          }
+                        : undefined
+                    }
+                  />
+                  {!liveMeeting && !meeting.hasResults && <p className="mt-3 text-[13px] text-warn">{t("bet:settlementDisabled")}</p>}
 
                   {date && venue && <RaceAnalysisPanel date={date} venue={venue} raceNo={editRace} />}
                 </>
               )}
             </div>
 
-            <BetSlip items={slip} onRemove={(id) => setSlip((s) => s.filter((it) => it.id !== id))} onClear={() => setSlip([])} onConfirm={confirmSlip} />
+            <BetSlip
+              items={slip}
+              onRemove={(id) => setSlip((s) => s.filter((it) => it.id !== id))}
+              onClear={() => setSlip([])}
+              onConfirm={confirmSlip}
+              liveContext={liveMeeting}
+              live={
+                slipMode === "live" || liveSlip.receipt
+                  ? {
+                      balance: credits.balance,
+                      error: liveSlip.error,
+                      closedIds: liveSlip.closedIds,
+                      receipt: liveSlip.receipt,
+                      onBuy: goBuy,
+                      onRemoveClosed: liveSlip.removeClosed,
+                      onReceiptDone: liveSlip.clearReceipt,
+                      onViewBets: () => {
+                        liveSlip.clearReceipt();
+                        setHistoryFilter("pending");
+                        setView("history");
+                      },
+                    }
+                  : undefined
+              }
+            />
           </div>
         )}
 
@@ -659,6 +950,29 @@ function AppBody() {
 
       <Footer onSelect={selectView} />
 
+      {switchAsk && slipMode && (
+        <SwitchModeDialog
+          mode={slipMode}
+          onCancel={() => setSwitchAsk(null)}
+          onConfirm={() => {
+            setSlip(switchAsk);
+            setSwitchAsk(null);
+          }}
+        />
+      )}
+      {credits.welcomeOpen && (
+        <WelcomeDialog
+          amount={credits.signupBonus}
+          livePaused={!credits.liveBetting}
+          onClose={credits.dismissWelcome}
+          onCta={() => {
+            credits.dismissWelcome();
+            const next = upcomingDays[0];
+            if (next) chooseMeeting(`${next.date}_${next.venue}`);
+            setView("bet");
+          }}
+        />
+      )}
       {settled && (
         <ResultModal
           bets={settled}

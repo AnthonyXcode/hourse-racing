@@ -285,7 +285,8 @@ above. Shared class strings are in `src/kit.tsx` (`btnPrimary` = gold pill, `btn
 4. **Stake calculator**: no. of bets, unit bet (min $10), bet total, gold **Add**.
 5. **Bet slip** (right column / bottom bar + sheet on phones) → **Place bet** → **Confirm**
    → result modal per bet (+ total). A member's settled bets are saved to their History; a guest
-   sees a "Log in to save" banner instead.
+   sees a "Log in to save" banner instead. On a Live meeting the slip spends credits: Confirm needs a tap,
+   the slip shows a receipt, and bets settle after the race.
 
 Code: `src/App.tsx` (state + flow), `src/ui.tsx` (`RaceCardTable`, `PoolMenu`, `StakeBar`,
 `ResultModal`), `src/BetSlip.tsx`, `src/slip.ts` (slip types, unit-bet scaling).
@@ -298,6 +299,14 @@ Code: `src/App.tsx` (state + flow), `src/ui.tsx` (`RaceCardTable`, `PoolMenu`, `
 `LoginEmptyState` (sky panel + gold Log in, never a gold banner), and `Toast` (navy, bottom-centre,
 3 s, `role="status"`). Shared bits live in `src/members/ui.tsx` (`Avatar`, `Spinner`, prefix-chip input
 classes, the `Counter` used by every length-limited field) and `kit.tsx` (`modalBgTop`, `modalNarrow`). The phone account sheet is portalled to `<body>` so it sits above the page's fixed bottom bars.
+
+### Credits & LIVE UI (docs/credits/DESIGN-SPEC.md)
+
+Mode is a property of the meeting: the picker groups Upcoming (Live) / Past (Practice). `modeBadge(mode, on)`
+marks the pool header, slip and History rows (Practice = quiet outline, Live = gold fill + dot; it is a status,
+not a button). Live amounts are always `積分 / credits`, never `$`. Other kit additions: `statusChip` (pending /
+won / lost / refunded), `creditChip` (header balance), `planCard`, `statusPanel`, `noticeBanner` (gold system
+notice: kill switch), `tabBadge`. Live slips never auto-confirm. Code: `src/credits/`.
 
 ## 11. Checklist for any new UI
 

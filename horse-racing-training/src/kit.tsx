@@ -115,6 +115,39 @@ export const modal =
 /** `modal` at a fixed 400px from `sm` (login, confirm dialogs), so steps don't jump in width. */
 export const modalNarrow = "max-h-[92dvh] w-full overflow-auto rounded-t-sheet bg-surface p-5 shadow-pop sm:w-[400px] sm:max-w-full sm:rounded-card sm:p-7";
 
+// ---- credits / LIVE (docs/credits/DESIGN-SPEC.md) ----
+/** Mode badge: a status, never a button. Practice is quiet; Live is the gold one that stands out. */
+export const modeBadge = (mode: "practice" | "live", on: "navy" | "white") =>
+  mode === "live"
+    ? "inline-flex h-5 flex-none items-center gap-1 rounded-full bg-gold px-2 text-[11px] font-medium whitespace-nowrap text-ink-strong lg:h-6 lg:text-[13px]"
+    : on === "navy"
+      ? "inline-flex h-5 flex-none items-center rounded-full px-2 text-[11px] font-medium whitespace-nowrap text-white ring-1 ring-white/50 lg:h-6 lg:text-[13px]"
+      : "inline-flex h-5 flex-none items-center rounded-full bg-sky-100 px-2 text-[11px] font-medium whitespace-nowrap text-navy-900 lg:h-6 lg:text-[13px]";
+/** LIVE bet status chip. */
+export const statusChip = (kind: "pending" | "won" | "lost" | "refunded") =>
+  cx(
+    "inline-flex h-6 items-center gap-1 rounded-full px-2 text-[13px] font-medium whitespace-nowrap tabular-nums",
+    kind === "pending" ? "bg-sky-100 text-navy-900" : kind === "won" ? "bg-good-soft text-good" : kind === "lost" ? "bg-bad-soft text-bad" : "bg-surface-2 text-ink-muted"
+  );
+/** Header credits chip (on navy). */
+export const creditChip =
+  "relative inline-flex h-7 flex-none cursor-pointer items-center gap-1.5 rounded-full bg-white/10 px-2.5 text-[13px] font-medium text-white tabular-nums before:absolute before:-inset-2 before:content-[''] hover:bg-white/20";
+/** Credit plan card (a label around a radio). */
+export const planCard = (on: boolean, disabled = false) =>
+  cx(
+    "relative flex min-h-14 cursor-pointer items-center gap-3 rounded-card px-[13px] py-3 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-navy-700",
+    on ? "bg-sky-50 ring-2 ring-navy-700" : "bg-surface ring-1 ring-line",
+    disabled && "cursor-not-allowed opacity-45"
+  );
+/** Return-state / info panel. */
+export const statusPanel = (tone: "info" | "success") =>
+  tone === "info" ? "rounded-card bg-sky-50 px-[13px] py-3 text-[15px] text-navy-900 ring-1 ring-navy-700/20" : "rounded-card bg-good-soft px-[13px] py-3 text-[15px] text-good";
+/** System notice banner (gold): kill switch etc. */
+export const noticeBanner = "flex items-start gap-2 rounded-card bg-gold px-[13px] py-2 text-[13px] text-ink-strong";
+/** Count badge on a tab label. */
+export const tabBadge = (onNavy: boolean) =>
+  cx("ml-1.5 inline-flex h-4 min-w-4 items-center justify-center rounded-full px-1 text-[11px] tabular-nums", onNavy ? "bg-white text-navy-700" : "bg-navy-700 text-white");
+
 /** Page title: navy, medium weight. */
 export function Display({ children, sub }: { children: ReactNode; sub?: ReactNode }) {
   return (

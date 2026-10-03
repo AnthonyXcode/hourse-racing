@@ -123,6 +123,33 @@ const MIGRATIONS = [
   );
   CREATE INDEX fetch_runs_started ON fetch_runs (started_at DESC);
   `,
+  // v7: post times for LIVE betting (docs/credits/PRD.md §2.2). Written by meeting discovery (fetch job) and
+  // the race-day odds poller. closed_at is one-way: once set, the race never reopens.
+  `
+  CREATE TABLE race_schedule (
+    race_id       TEXT PRIMARY KEY,             -- 2026-10-05-ST-3
+    date          TEXT NOT NULL,                -- YYYY-MM-DD
+    venue         TEXT NOT NULL,
+    race_no       INTEGER NOT NULL,
+    post_time     TEXT,                         -- ISO with +08:00
+    hkjc_status   TEXT,
+    first_seen_at TEXT NOT NULL,
+    updated_at    TEXT NOT NULL,                -- last refresh from a source (staleness check)
+    closed_at     TEXT,
+    voided_at     TEXT,                         -- operator void-race / void-meeting
+    source        TEXT NOT NULL                 -- discovery | poller | dev
+  );
+  CREATE INDEX race_schedule_meeting ON race_schedule (date, venue);
+  -- Designated Double/Triple Trio legs per meeting, from HKJC's pool list before results exist.
+  CREATE TABLE meeting_pools (
+    date        TEXT NOT NULL,
+    venue       TEXT NOT NULL,
+    pool        TEXT NOT NULL CHECK (pool IN ('DT', 'TT')),
+    legs        TEXT NOT NULL,                  -- JSON number[]
+    updated_at  TEXT NOT NULL,
+    PRIMARY KEY (date, venue, pool, legs)
+  );
+  `,
 ];
 
 export function openDb(file = process.env.MOMENTUM_DB || defaultPath()): DB {

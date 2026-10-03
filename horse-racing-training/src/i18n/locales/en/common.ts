@@ -26,6 +26,7 @@ export const common = {
       },
       settings: { title: "Settings", description: "Your Post Time preferences in this browser." },
       account: { title: "My account", description: "Your Post Time member profile and contact details." },
+      credits: { title: "Credits", description: "Your Post Time credits balance, purchases and transactions." },
     },
   },
   nav: {

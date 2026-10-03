@@ -1,6 +1,8 @@
 import { Router } from "express";
 import { getManifest, readCard, readResults } from "./dataIndex";
-import { settle } from "../shared/betEngine/index";
+import { settleAgainstResults } from "./settleCore";
+import { appCredits } from "./credits/instance";
+import { hkDay, nowMs } from "./clock";
 import { analyzeCard, runAnalyzer } from "./analyzer";
 import { momentum } from "./momentum/service";
 import { hkDate } from "./momentum/poller";
@@ -17,6 +19,7 @@ import type {
   RaceCard,
   RaceResult,
   MeetingDetail,
+  MeetingLiveInfo,
   SettleRequest,
   SettleResult,
 } from "../shared/types";
@@ -41,9 +44,17 @@ api.get("/analyzer", async (req, res) => {
   }
 });
 
-/** GET /api/days → all meetings with saved cards, newest first. */
+/** GET /api/days → all meetings with saved cards, newest first, each with its mode (practice / live / closed).
+ *  Meetings with results from before yesterday (HK) are practice without a per-race check (cheap). */
 api.get("/days", (_req, res) => {
-  res.json(getManifest());
+  const c = appCredits();
+  const cutoff = hkDay(nowMs() - 86_400_000).replaceAll("-", "");
+  res.json(
+    getManifest().map((m) => {
+      if (m.hasResults && m.date < cutoff) return { ...m, mode: "practice" as const };
+      return { ...m, mode: c.statusFor(m.date, m.venue, m.races).mode };
+    })
+  );
 });
 
 /** GET /api/meeting/:date/:venue → races + multi-race pool legs (from results). */
@@ -63,10 +74,13 @@ api.get("/meeting/:date/:venue", (req, res) => {
     return [...seen.values()].sort((a, b) => a[0]! - b[0]!);
   };
 
-  const detail: MeetingDetail = {
+  const live = appCredits().statusFor(date!, ref.venue, ref.races);
+  const detail: MeetingDetail & MeetingLiveInfo & { serverNow: string } = {
     ...ref,
     doubleTrioPools: ref.hasResults ? uniquePools((r) => r.doubleTrioLegs) : [],
     tripleTrioPools: ref.hasResults ? uniquePools((r) => r.tripleTrioLegs) : [],
+    ...live,
+    serverNow: new Date(nowMs()).toISOString(),
   };
   res.json(detail);
 });
@@ -124,34 +138,8 @@ api.post("/settle", (req, res) => {
   const results = readResults(date, venue);
   if (!results) return res.status(404).json({ error: "no results for this meeting yet" });
 
-  const byRace = new Map<number, RaceResult>(results.map((r) => [r.raceNumber, r]));
-
-  // The DT/TT dividend lives on whichever race object carries it, and only applies
-  // when the user's chosen leg races EXACTLY match the designated pool. Picking a
-  // different pair/triple still grades hit/miss but has no official dividend.
-  const sameSet = (a: number[], b: number[]) =>
-    a.length === b.length && [...a].sort((x, y) => x - y).join() === [...b].sort((x, y) => x - y).join();
-  const selRaces = selection.raceLegs.map((l) => l.raceNumber);
-
-  const multi = selection.type === "doubleTrio" || selection.type === "tripleTrio";
-  let dividendSource: RaceResult | undefined;
-  if (selection.type === "doubleTrio") {
-    dividendSource = results.find((r) => r.doubleTrioDividend != null && r.doubleTrioLegs && sameSet(r.doubleTrioLegs, selRaces));
-  } else if (selection.type === "tripleTrio") {
-    dividendSource = results.find((r) => r.tripleTrioDividend != null && r.tripleTrioLegs && sameSet(r.tripleTrioLegs, selRaces));
-  } else {
-    dividendSource = byRace.get(selRaces[0] ?? -1);
-  }
-  // No matching designated pool (or single pool with no result): use the bet's
-  // own race but STRIP any DT/TT dividend so a non-designated combo never inherits
-  // an unrelated pool's payout.
-  if (!dividendSource) {
-    const fb = byRace.get(selRaces[0] ?? -1);
-    if (!fb) return res.status(400).json({ error: "no result for selected race" });
-    dividendSource = multi ? { ...fb, doubleTrioDividend: undefined, tripleTrioDividend: undefined } : fb;
-  }
-
-  const out: SettleResult = settle(selection, byRace, dividendSource);
+  const out: SettleResult | null = settleAgainstResults(selection, results);
+  if (!out) return res.status(400).json({ error: "no result for selected race" });
   res.json(out);
 });
 
