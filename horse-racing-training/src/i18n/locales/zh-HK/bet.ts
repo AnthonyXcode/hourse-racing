@@ -54,6 +54,8 @@ export const bet: Shape<typeof En> = {
     confirmTitle: "確認投注",
     confirmNote: "只屬模擬：以真實賽果結算，不涉及真錢。",
     confirm: "確認",
+    confirmIn: "確認（{{n}}秒）",
+    autoNote: "{{n}} 秒後自動投注，按「返回」取消。",
     back: "返回",
     clear: "全部刪除",
     remove: "刪除此注",
@@ -94,6 +96,8 @@ export const bet: Shape<typeof En> = {
     race: "第{{n}}場",
     distance: "路程",
     going: "場地狀況",
+    replay: "重溫",
+    replayAria: "在馬會網站重溫 {{date}} 第{{race}}場（新分頁）",
   },
   panel: {
     title: "第{{n}}場賽果",

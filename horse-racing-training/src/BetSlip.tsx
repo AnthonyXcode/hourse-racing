@@ -1,6 +1,6 @@
 // HKJC-style bet slip: right-hand panel on desktop, bottom bar + sheet on phones.
 // Flow: Add (stake calculator) → slip → Place bet → Confirm → settle.
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useGlossary } from "./i18n/glossary";
 import { useFmt } from "./i18n/useLanguage";
@@ -32,6 +32,8 @@ export function useSlipText() {
 }
 
 type Stage = "edit" | "confirm";
+/** Seconds the confirm step waits before placing the bets by itself. */
+const AUTO_CONFIRM_S = 5;
 
 interface Props {
   items: SlipItem[];
@@ -46,6 +48,11 @@ export function BetSlip(props: Props) {
   const fmt = useFmt();
   const [stage, setStage] = useState<Stage>("edit");
   const [sheet, setSheet] = useState(false);
+  const [left, setLeft] = useState(AUTO_CONFIRM_S);
+  /** When the confirm step places the bets by itself (epoch ms). Wall clock, so throttled timers don't stretch it. */
+  const deadline = useRef(0);
+  const [busy, setBusy] = useState(false);
+  const firing = useRef(false);
   const total = props.items.reduce((s, it) => s + it.cost, 0);
 
   // An emptied slip can't stay on the confirm step.
@@ -53,10 +60,16 @@ export function BetSlip(props: Props) {
     if (!props.items.length) setStage("edit");
   }, [props.items.length]);
 
+  // Closing the phone sheet cancels a pending confirm.
+  const closeSheet = () => {
+    setSheet(false);
+    if (!firing.current) setStage("edit");
+  };
+
   // Phone sheet: Esc closes, page behind doesn't scroll.
   useEffect(() => {
     if (!sheet) return;
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setSheet(false);
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && closeSheet();
     const overflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     window.addEventListener("keydown", onKey);
@@ -66,12 +79,42 @@ export function BetSlip(props: Props) {
     };
   }, [sheet]);
 
+  // Settle once, whether tapped or fired by the countdown. Lives here, not in SlipBody, because the
+  // body is mounted twice (desktop aside + phone sheet) and must not place the bets twice.
   const confirm = async () => {
-    await props.onConfirm();
-    setStage("edit");
-    setSheet(false);
+    if (firing.current) return;
+    firing.current = true;
+    setBusy(true);
+    try {
+      await props.onConfirm();
+    } finally {
+      firing.current = false;
+      setBusy(false);
+      setStage("edit");
+      setSheet(false);
+    }
   };
-  const body = <SlipBody {...props} stage={stage} setStage={setStage} onConfirm={confirm} total={total} />;
+
+  // Confirm step: count down, then place the bets automatically. Back cancels.
+  useEffect(() => {
+    if (stage !== "confirm" || busy) return;
+    const tick = () => {
+      const n = Math.max(0, Math.ceil((deadline.current - Date.now()) / 1000));
+      setLeft(n);
+      if (n === 0) void confirm();
+    };
+    const id = setInterval(tick, 200);
+    return () => clearInterval(id);
+  }, [stage, busy]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const go = (s: Stage) => {
+    if (s === "confirm") {
+      deadline.current = Date.now() + AUTO_CONFIRM_S * 1000;
+      setLeft(AUTO_CONFIRM_S);
+    }
+    setStage(s);
+  };
+  const body = <SlipBody {...props} stage={stage} setStage={go} onConfirm={confirm} total={total} left={left} busy={busy} />;
 
   return (
     <>
@@ -99,10 +142,10 @@ export function BetSlip(props: Props) {
       </div>
       {sheet && (
         <div className="fixed inset-0 z-50 lg:hidden">
-          <div className="absolute inset-0 bg-ink/40" onClick={() => setSheet(false)} />
+          <div className="absolute inset-0 bg-ink/40" onClick={closeSheet} />
           <div role="dialog" aria-modal="true" aria-label={t("slip.title")} className="absolute inset-x-0 bottom-0 max-h-[85dvh] overflow-auto rounded-t-sheet bg-canvas pb-[env(safe-area-inset-bottom)]">
             <div className="flex justify-center pt-2 pb-1">
-              <button type="button" className="h-5 w-16 cursor-pointer" aria-label={t("slip.close")} onClick={() => setSheet(false)}>
+              <button type="button" className="h-5 w-16 cursor-pointer" aria-label={t("slip.close")} onClick={closeSheet}>
                 <span className="mx-auto block h-1 w-10 rounded-full bg-line-strong" />
               </button>
             </div>
@@ -122,11 +165,12 @@ function SlipBody({
   stage,
   setStage,
   total,
-}: Props & { stage: Stage; setStage: (s: Stage) => void; total: number }) {
+  left,
+  busy,
+}: Props & { stage: Stage; setStage: (s: Stage) => void; total: number; left: number; busy: boolean }) {
   const { t } = useTranslation(["bet", "common"]);
   const fmt = useFmt();
   const text = useSlipText();
-  const [busy, setBusy] = useState(false);
   return (
     <div className="overflow-hidden rounded-card bg-surface shadow-card">
       <div className="flex min-h-9 items-center bg-navy-900 px-[13px] py-2 text-[15px] font-medium text-white">
@@ -170,7 +214,16 @@ function SlipBody({
           <span className="ml-auto font-bold tabular-nums">{fmt.money(total)}</span>
         </div>
       </div>
-      {stage === "confirm" && <p className="px-[13px] pt-3 text-[13px] text-ink-muted">{t("slip.confirmNote")}</p>}
+      {stage === "confirm" && (
+        <div className="px-[13px] pt-3 text-[13px]">
+          <p className="text-ink-muted">{t("slip.confirmNote")}</p>
+          {!busy && (
+            <p className="mt-1 font-medium text-navy-900" aria-live="polite">
+              {t("slip.autoNote", { n: left })}
+            </p>
+          )}
+        </div>
+      )}
       <div className="flex gap-2 p-[13px]">
         {stage === "edit" ? (
           <>
@@ -189,16 +242,9 @@ function SlipBody({
             <button
               className={cx(btnPrimary, "min-w-0 flex-1")}
               disabled={busy}
-              onClick={async () => {
-                setBusy(true);
-                try {
-                  await onConfirm();
-                } finally {
-                  setBusy(false);
-                }
-              }}
+              onClick={() => void onConfirm()}
             >
-              {t("slip.confirm")}
+              {busy ? t("slip.confirm") : t("slip.confirmIn", { n: left })}
             </button>
           </>
         )}

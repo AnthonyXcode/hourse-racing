@@ -51,6 +51,8 @@ export const bet = {
     confirmTitle: "Confirm bets",
     confirmNote: "Practice only: settled against the real result, no money involved.",
     confirm: "Confirm",
+    confirmIn: "Confirm ({{n}}s)",
+    autoNote: "Placing automatically in {{n}}s. Tap Back to cancel.",
     back: "Back",
     clear: "Clear all",
     remove: "Remove bet",
@@ -91,6 +93,8 @@ export const bet = {
     race: "R{{n}}",
     distance: "Dist.",
     going: "Going",
+    replay: "Replay",
+    replayAria: "Watch the replay of {{date}} race {{race}} on HKJC (opens a new tab)",
   },
   panel: {
     title: "Race {{n}} result",

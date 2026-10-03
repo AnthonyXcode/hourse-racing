@@ -22,15 +22,15 @@ const dayRace = (date: string, raceNo: number, lang: string) => {
 };
 const EASE = [0.2, 0, 0, 1] as const;
 /**
- * Slowly drifting blue gradient behind the strip. The layer is 200% wide and its gradient repeats
- * twice (white → blue → white → blue → white), so sliding it by -50% loops seamlessly.
+ * Slowly drifting gold gradient behind the strip (HKJC gold, DESIGN.md). The layer is 200% wide and its
+ * gradient repeats twice (pale → gold → pale → gold → pale), so sliding it by -50% loops seamlessly.
  * Transform-only, so MotionConfig's reducedMotion="user" stills it.
  */
 function GradientFlow() {
   return (
     <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
       <motion.div
-        className="absolute inset-y-0 left-0 w-[200%] bg-[linear-gradient(90deg,#ffffff_0%,#b9cdee_25%,#ffffff_50%,#b9cdee_75%,#ffffff_100%)]"
+        className="absolute inset-y-0 left-0 w-[200%] bg-[linear-gradient(90deg,#fff5cc_0%,#fecf13_25%,#fff5cc_50%,#fecf13_75%,#fff5cc_100%)]"
         animate={{ x: ["0%", "-50%"] }}
         transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
       />

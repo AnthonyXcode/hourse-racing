@@ -1,12 +1,12 @@
 // Presentational components for the bet trainer.
-import type { CardHorse, RaceCard, RaceLeg, RaceResult, SettleResult, SettleDetail, BetTypeId, HistoryEntry } from "../shared/types";
+import type { CardHorse, PastPerformance, RaceCard, RaceLeg, RaceResult, SettleResult, SettleDetail, BetTypeId, HistoryEntry } from "../shared/types";
 import { useState, type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import type { TFunction } from "i18next";
 import { useGlossary } from "./i18n/glossary";
 import { Name } from "./i18n/names";
-import { useFmt } from "./i18n/useLanguage";
-import { Display, btn, btnPrimary, control, cx, empty, figure, h3, modal, modalBg, panel, pill, pillRow, table, tablePad } from "./kit";
+import { useFmt, useLanguage } from "./i18n/useLanguage";
+import { Display, btn, btnPill, btnPrimary, control, cx, empty, figure, h3, modal, modalBg, panel, pill, pillRow, table, tablePad } from "./kit";
 import { MIN_UNIT, ymd, type SettledBet } from "./slip";
 import { useSlipText } from "./BetSlip";
 
@@ -185,10 +185,32 @@ export function RaceCardTable({
 }
 
 // ---- A horse's past runs (from the racecard) ----
+/** HKJC's own race-replay page for a past run (opens on racing.hkjc.com; we only link to it). */
+function replayUrl(r: PastPerformance, lang: "en" | "zh-HK"): string {
+  const day = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Hong_Kong" }).format(new Date(r.date)).replaceAll("-", "");
+  const no = String(r.raceNumber).padStart(2, "0");
+  return `https://racing.hkjc.com/racing/video/play.asp?type=replay-full&date=${day}&no=${no}&lang=${lang === "en" ? "eng" : "chi"}`;
+}
+
 export function HorseFormModal({ horse, onClose }: { horse: CardHorse; onClose: () => void }) {
   const { t } = useTranslation(["bet", "common"]);
   const g = useGlossary();
   const fmt = useFmt();
+  const { lang } = useLanguage();
+  const replay = (r: PastPerformance) => (
+    <a
+      href={replayUrl(r, lang)}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={cx(btnPill, "gap-1 no-underline")}
+      aria-label={t("form.replayAria", { date: fmt.date(r.date), race: r.raceNumber })}
+    >
+      <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden fill="currentColor">
+        <path d="M2 1.2v7.6L8.6 5z" />
+      </svg>
+      {t("form.replay")}
+    </a>
+  );
   const runs = horse.pastPerformances ?? [];
   return (
     <div className={modalBg} onClick={onClose}>
@@ -226,9 +248,12 @@ export function HorseFormModal({ horse, onClose }: { horse: CardHorse; onClose: 
                         <span className="text-ink-3">{t("common:word.odds")}</span> {r.odds ?? "-"}
                       </span>
                     </div>
-                    <div className="mt-0.5 text-ink-3">
-                      {t("common:word.draw")} <span className="text-ink">{r.draw ?? "-"}</span> · {t("common:word.weight")}{" "}
-                      <span className="text-ink">{r.weight ?? "-"}</span> · {t("common:word.time")} <span className="text-ink">{fmtT(r.finishTime) || "-"}</span>
+                    <div className="mt-0.5 flex items-center gap-2 text-ink-3">
+                      <span>
+                        {t("common:word.draw")} <span className="text-ink">{r.draw ?? "-"}</span> · {t("common:word.weight")}{" "}
+                        <span className="text-ink">{r.weight ?? "-"}</span> · {t("common:word.time")} <span className="text-ink">{fmtT(r.finishTime) || "-"}</span>
+                      </span>
+                      <span className="ml-auto flex-none">{replay(r)}</span>
                     </div>
                   </li>
                 );
@@ -248,6 +273,9 @@ export function HorseFormModal({ horse, onClose }: { horse: CardHorse; onClose: 
                     <th className="text-right!">{t("common:word.placing")}</th>
                     <th className="text-right!">{t("common:word.time")}</th>
                     <th className="text-right!">{t("common:word.odds")}</th>
+                    <th>
+                      <span className="sr-only">{t("form.replay")}</span>
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -268,6 +296,7 @@ export function HorseFormModal({ horse, onClose }: { horse: CardHorse; onClose: 
                       </td>
                       <td className="text-right tabular-nums">{fmtT(r.finishTime) || "-"}</td>
                       <td className="text-right tabular-nums">{r.odds ?? "-"}</td>
+                      <td className="text-right">{replay(r)}</td>
                     </tr>
                   ))}
                 </tbody>
