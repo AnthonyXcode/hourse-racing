@@ -588,10 +588,13 @@ function AppBody() {
   return (
     <div className="flex min-h-dvh flex-col">
       <header ref={headerRef} className="sticky top-0 z-40 shadow-card">
-        {/* Navy top bar: our own name (not HKJC's) + practice badge, language. */}
+        {/* Navy top bar: our own logo + name (not HKJC's), language, credits, account. */}
         <div className="bg-navy-900 text-white">
           <div className={cx(container, "flex h-12 items-center gap-3")}>
-            <h1 className="flex-none text-lg leading-none font-bold">{t("appName")}</h1>
+            <h1 className="flex flex-none items-center gap-2 text-lg leading-none font-bold">
+              <img src="/logo-128.png" alt="" width={32} height={32} className="size-8 flex-none" />
+              {t("appName")}
+            </h1>
             <LangSwitch className="ml-auto" />
             <CreditChip onOpen={() => setView("credits")} />
             <AccountEntry current={view} onNavigate={setViewRaw} onLogout={logout} />

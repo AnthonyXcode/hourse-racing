@@ -153,7 +153,7 @@ export function useCutoffNotifications() {
       const n = new Notification(t("notify.title", { n: race.raceNo, when: cutoffLabel(t, cutoff) }), {
         body: lines.join("\n") || t("notify.noPicks"),
         tag: `cutoff-${race.raceId}`, // one per race, even across tabs
-        icon: "/favicon.svg",
+        icon: "/logo-128.png",
       });
       n.onclick = () => {
         window.focus();

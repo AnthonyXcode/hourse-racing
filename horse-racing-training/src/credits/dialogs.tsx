@@ -5,14 +5,9 @@ import { btn, btnPrimary, cx, errorBox, modalBgTop, modalNarrow } from "../kit";
 import { useFmt } from "../i18n/useLanguage";
 import { Spinner, textBtn, useDialog } from "../members/ui";
 
-/** A gold coin glyph (decorative). */
-export function Coin({ size = 14 }: { size?: number }) {
-  return (
-    <svg aria-hidden="true" width={size} height={size} viewBox="0 0 16 16" className="flex-none">
-      <circle cx="8" cy="8" r="7.5" className="fill-gold" />
-      <circle cx="8" cy="8" r="5" className="fill-none stroke-navy-900" strokeWidth="1" />
-    </svg>
-  );
+/** Credits glyph: the app's logo mark (decorative). */
+export function Coin({ size = 16 }: { size?: number }) {
+  return <img src="/logo-128.png" alt="" aria-hidden="true" width={size} height={size} className="flex-none" style={{ width: size, height: size }} />;
 }
 
 function Dialog({ titleId, onClose, children, initial, role = "dialog" }: { titleId: string; onClose: () => void; children: ReactNode; initial?: React.RefObject<HTMLElement>; role?: string }) {
