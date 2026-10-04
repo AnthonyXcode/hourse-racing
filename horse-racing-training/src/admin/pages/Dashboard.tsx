@@ -18,6 +18,7 @@ interface Dash {
   recentPurchases: { createdAt: number; planId: string; amountHkd: number; status: string; displayName: string | null }[];
   recentAudit: { id: number; createdAt: string; operator: string; action: string; outcome: string }[];
   system: { futureBetting: boolean; liveEnabled: boolean; stripeMode: string };
+  smsAlerts?: { subscribers: number; sentToday: number; failedToday: number; skippedToday: number };
   serverTime: string;
 }
 
@@ -127,6 +128,15 @@ export default function Dashboard() {
             d.alerts.length ? t("dash.systemAlerts", { n: d.alerts.length }) : t(`stripe.${d.system.stripeMode}`),
             "/admin/system"
           )}
+          {d.smsAlerts &&
+            tile(
+              t("dash.sms"),
+              fmt.num(d.smsAlerts.sentToday),
+              <span className={d.smsAlerts.failedToday ? "text-bad" : undefined}>
+                {t("dash.smsSub", { subs: fmt.num(d.smsAlerts.subscribers), failed: fmt.num(d.smsAlerts.failedToday), skipped: fmt.num(d.smsAlerts.skippedToday) })}
+              </span>,
+              "/admin/system"
+            )}
         </div>
       )}
       {d && (

@@ -316,6 +316,64 @@ export function SystemPage() {
           )}
         </div>
       )}
+      <SmsLog />
     </div>
+  );
+}
+
+interface SmsRow {
+  id: number;
+  createdAt: string;
+  date: string;
+  venue: string;
+  kind: "pre" | "post" | "stop";
+  status: "pending" | "sent" | "failed" | "skipped";
+  error: string | null;
+  phone: string | null;
+  displayName: string | null;
+}
+/** 5★ pick SMS alerts: the latest sends (read-only, phones masked). */
+function SmsLog() {
+  const t = useA();
+  const when = useWhen();
+  const { version } = useAdmin();
+  const [d, setD] = useState<{ subscribers: number; items: SmsRow[] } | null>(null);
+  const [err, setErr] = useState("");
+  useEffect(() => {
+    adminCall<{ subscribers: number; items: SmsRow[] }>("GET", "/sms-log")
+      .then(setD)
+      .catch((e) => setErr(errText(t, e)));
+  }, [version]); // eslint-disable-line react-hooks/exhaustive-deps
+  const tone = (s: SmsRow["status"]) => (s === "sent" ? "text-good" : s === "failed" ? "text-bad" : "text-ink-muted");
+  return (
+    <section className="mt-4">
+      <h2 className={sectionHead}>{t("sms.title")}</h2>
+      <div className={sectionBody}>
+        {err && <div className={cx(errorBox, "mx-[13px]")}>{err}</div>}
+        {d && (
+          <>
+            <p className="px-[13px] pt-2 text-[13px] text-ink-muted">{t("sms.subscribers", { n: d.subscribers })}</p>
+            {d.items.length === 0 ? (
+              <p className="p-6 text-center text-ink-muted">{t("sms.empty")}</p>
+            ) : (
+              <ul className="flex flex-col">
+                {d.items.map((r) => (
+                  <li key={r.id} className="flex flex-wrap items-baseline gap-x-3 gap-y-0.5 border-t border-line px-[13px] py-2 text-[13px] [overflow-wrap:anywhere]">
+                    <span className="text-ink-muted tabular-nums">{when(r.createdAt, true)}</span>
+                    <span className="font-medium">{t(`sms.kind.${r.kind}`)}</span>
+                    <span>
+                      {r.date} {r.venue}
+                    </span>
+                    <span className="tabular-nums">{r.phone ?? "–"}</span>
+                    <span className={cx("font-medium", tone(r.status))}>{t(`sms.status.${r.status}`)}</span>
+                    {r.error && <span className="basis-full text-ink-muted">{r.error}</span>}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </>
+        )}
+      </div>
+    </section>
   );
 }

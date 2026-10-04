@@ -33,6 +33,8 @@ interface Form {
   email: string;
   /** Public leaderboard opt-in. */
   leaderboard: boolean;
+  /** 5★ pick SMS alerts. */
+  alerts: boolean;
 }
 const fromUser = (u: Member): Form => ({
   displayName: u.displayName,
@@ -42,6 +44,7 @@ const fromUser = (u: Member): Form => ({
   sameAsLogin: u.whatsapp != null && u.whatsapp === u.phone,
   email: u.email ?? "",
   leaderboard: !!u.showOnLeaderboard,
+  alerts: !!u.alerts5Star,
 });
 const sameForm = (a: Form, b: Form) => (Object.keys(a) as (keyof Form)[]).every((k) => a[k] === b[k]);
 
@@ -64,7 +67,7 @@ export function AccountPage({ onLogout, onDeleted }: { onLogout: () => void; onD
 }
 
 function AccountForm({ user, onLogout, onDeleted }: { user: Member; onLogout: () => void; onDeleted: () => void }) {
-  const { t } = useTranslation(["account", "common"]);
+  const { t, i18n } = useTranslation(["account", "common"]);
   const fmt = useFmt();
   const { setUser, setDirty, toast, handleAuthError } = useAuth();
   const [saved, setSaved] = useState<Form>(() => fromUser(user));
@@ -144,12 +147,17 @@ function AccountForm({ user, onLogout, onDeleted }: { user: Member; onLogout: ()
     }
     const leaderboardChanged = form.leaderboard !== !!user.showOnLeaderboard;
     if (leaderboardChanged) patch.showOnLeaderboard = form.leaderboard;
+    const alertsChanged = form.alerts !== !!user.alerts5Star;
+    if (alertsChanged) {
+      patch.alerts5Star = form.alerts;
+      patch.alertsLang = i18n.language === "en" ? "en" : "zh-HK"; // the SMS language = the site language now
+    }
 
     setSaving(true);
     setBox("");
     let u = user;
     try {
-      if (changed.length || leaderboardChanged) {
+      if (changed.length || leaderboardChanged || alertsChanged) {
         u = (await memberApi.updateMe(patch)).user;
         if (leaderboardChanged) track("profile_updated", { field: "leaderboard", action: form.leaderboard ? "set" : "clear" });
         for (const f of changed) track("profile_updated", { field: ANALYTICS_FIELD[f], action: u[f] == null ? "clear" : "set" });
@@ -361,6 +369,24 @@ function AccountForm({ user, onLogout, onDeleted }: { user: Member; onLogout: ()
             <p>{t("leaderboard.hidden")}</p>
             <p>{t("leaderboard.off")}</p>
           </div>
+        </Card>
+
+        <Card title={t("section.notifications")}>
+          <label className="flex min-h-11 cursor-pointer items-center gap-3 text-[15px] font-medium text-ink">
+            <input
+              type="checkbox"
+              role="switch"
+              className="size-5 flex-none rounded-xs border-line-strong accent-navy-700"
+              checked={form.alerts}
+              disabled={saving}
+              aria-describedby="acc-alerts-help"
+              onChange={(e) => set("alerts", e.target.checked)}
+            />
+            {t("alerts.toggle")}
+          </label>
+          <p id="acc-alerts-help" className="text-[13px] leading-normal text-ink-muted">
+            {t("alerts.help", { phone: `+852 •••• ${user.phone.slice(-4)}` })}
+          </p>
         </Card>
 
         <Card title={t("section.account")}>

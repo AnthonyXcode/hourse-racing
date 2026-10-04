@@ -71,7 +71,16 @@ export const admin: Shape<typeof En> = {
     },
   },
   range: { today: "今日", d7: "7 日", d30: "30 日" },
+  sms: {
+    title: "5星短訊提示",
+    subscribers: "{{n}} 位會員已開啟提示。最近 100 則：",
+    empty: "暫未有提示短訊。",
+    kind: { pre: "首選", post: "結果", stop: "回覆STOP" },
+    status: { pending: "傳送中", sent: "已傳送", failed: "失敗", skipped: "略過" },
+  },
   dash: {
+    sms: "今日提示短訊",
+    smsSub: "{{subs}} 位訂閱 · {{failed}} 失敗 · {{skipped}} 略過",
     updated: "更新於 {{time}}",
     refresh: "重新整理",
     members: "會員",

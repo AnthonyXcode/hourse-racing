@@ -1,8 +1,9 @@
-// Settings: per-browser preferences. For now, the cut-off notification opt-in.
+// Settings: the cut-off notification opt-in (this browser) and the 5★ SMS alerts (member account).
 import { useTranslation } from "react-i18next";
 import { NotifyToggle, storedCutoff } from "./momentum/notify";
 import { cutoffLabel } from "./momentum/cutoff";
 import { Display, h3, page, panel } from "./kit";
+import { AlertsSetting } from "./home/AlertsBell";
 
 export function SettingsPage() {
   const { t } = useTranslation();
@@ -19,6 +20,9 @@ export function SettingsPage() {
           </div>
           <NotifyToggle className="flex-none self-start sm:self-center" />
         </div>
+      </div>
+      <div className={`${panel} mt-4`}>
+        <AlertsSetting />
       </div>
     </div>
   );

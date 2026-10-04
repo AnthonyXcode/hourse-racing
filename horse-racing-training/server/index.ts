@@ -29,9 +29,20 @@ import { adminPageHeaders } from "./adminPages";
 import { effectiveRole, getStatus, purgeAccessLog, raiseAlert, resolveAlert, setStatus, writeAudit } from "./admin/core";
 import { getManifest, races as raceDb } from "./dataIndex";
 import { runLog } from "./data/runLog";
+import { alertsProductionProblems, loadAlertsConfig } from "./alerts/config";
+import { senderFor } from "./alerts/sender";
+import { alertSweeper } from "./alerts/scheduler";
+import { analyzeCard } from "./analyzer";
+import { readResults } from "./dataIndex";
 
 // Membership: refuse to boot in production with dev OTP / Turnstile settings (docs/membership/PRD.md §5.12).
 assertProductionConfig(loadConfig());
+// 5★ SMS alerts: in production, SMS_ALERTS=1 needs Twilio messaging credentials.
+const alertsCfg = loadAlertsConfig();
+{
+  const p = alertsProductionProblems(alertsCfg);
+  if (p.length) throw new Error(`[alerts] refusing to start in production:\n  - ${p.join("\n  - ")}`);
+}
 // Credits: legal / Stripe gates and DEV_NOW (docs/credits/PRD.md §8.3). DEV_NOW is refused in production.
 {
   const cc = loadCreditsConfig();
@@ -180,4 +191,47 @@ app.listen(PORT, () => {
   };
   setTimeout(daily, 30_000).unref();
   setInterval(daily, 24 * 60 * 60_000).unref();
+  // 5★ pick SMS alerts: every minute, PRE 30 min before the first race and POST after the results.
+  if (alertsCfg.enabled) {
+    const sweepAlerts = alertSweeper({
+      db: memberDeps.db,
+      cfg: alertsCfg,
+      sender: senderFor(alertsCfg),
+      now: nowMs,
+      meetings: (date) =>
+        getManifest()
+          .filter((m) => m.date === date.replaceAll("-", ""))
+          .map((m) => {
+            const rows = credits.schedule.forMeeting(date, m.venue);
+            return {
+              venue: m.venue,
+              races: m.races.map((n) => {
+                const r = rows.find((x) => x.race_no === n);
+                const post = r?.post_time ? Date.parse(r.post_time) : NaN;
+                return { raceNo: n, post: Number.isNaN(post) ? null : post, voided: !!r?.voided_at };
+              }),
+            };
+          }),
+      analyses: async (date, venue, raceNos) => {
+        const out = [];
+        for (const n of raceNos) {
+          const a = await analyzeCard(date.replaceAll("-", ""), venue as "ST" | "HV", n);
+          if (a) out.push(a);
+        }
+        return out;
+      },
+      results: (date, venue) => readResults(date.replaceAll("-", ""), venue),
+    });
+    let busy = false;
+    const tick = () => {
+      if (busy) return;
+      busy = true;
+      sweepAlerts()
+        .catch((e) => console.error("[sms] alerts sweep failed:", e))
+        .finally(() => (busy = false));
+    };
+    setTimeout(tick, 15_000);
+    setInterval(tick, 60_000).unref();
+    console.log(`[sms] 5-star alerts on (${alertsCfg.provider})`);
+  }
 });

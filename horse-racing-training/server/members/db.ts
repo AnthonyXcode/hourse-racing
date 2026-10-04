@@ -248,6 +248,34 @@ export const MIGRATIONS: string[] = [
   CREATE INDEX users_leaderboard ON users (show_on_leaderboard) WHERE show_on_leaderboard = 1;
   CREATE INDEX live_bets_user_status ON live_bets (user_id, status, date);
   `,
+  // v5: 5★ pick SMS alerts (opt-in, off by default). One log row per member, meeting and kind: the UNIQUE key
+  // makes sending idempotent across sweeps and restarts. sms_alert_meeting keeps the 5★ races chosen before
+  // the first race, so the results SMS reports exactly the races the suggestions SMS listed.
+  `
+  ALTER TABLE users ADD COLUMN alerts_5star INTEGER NOT NULL DEFAULT 0 CHECK (alerts_5star IN (0, 1));
+  ALTER TABLE users ADD COLUMN alerts_lang TEXT CHECK (alerts_lang IN ('en', 'zh-HK'));
+  CREATE INDEX users_alerts ON users (alerts_5star) WHERE alerts_5star = 1;
+  CREATE TABLE sms_alert_log (
+    id          INTEGER PRIMARY KEY,
+    user_id     TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    date        TEXT NOT NULL,              -- YYYY-MM-DD (HK)
+    venue       TEXT NOT NULL,              -- ST | HV ('-' for an opt-out)
+    kind        TEXT NOT NULL CHECK (kind IN ('pre', 'post', 'stop')),
+    status      TEXT NOT NULL CHECK (status IN ('pending', 'sent', 'failed', 'skipped')),
+    provider_id TEXT,
+    error       TEXT,
+    created_at  TEXT NOT NULL,
+    UNIQUE (user_id, date, venue, kind)
+  );
+  CREATE INDEX sms_alert_log_created ON sms_alert_log (created_at);
+  CREATE TABLE sms_alert_meeting (
+    date        TEXT NOT NULL,
+    venue       TEXT NOT NULL,
+    picks       TEXT NOT NULL,              -- JSON [{raceNo, num, name}], [] = no 5★ race
+    created_at  TEXT NOT NULL,
+    PRIMARY KEY (date, venue)
+  );
+  `,
 ];
 
 /** Open (creating + migrating) the members DB. Pass ":memory:" in tests. */

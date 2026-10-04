@@ -15,6 +15,7 @@ import { useFmt } from "../i18n/useLanguage";
 import { useAuth } from "../members/auth";
 import { Avatar } from "../members/ui";
 import { homeApi } from "./api";
+import { AlertsBell } from "./AlertsBell";
 import { motion } from "motion/react";
 import { CountUp, Reveal, rise, slideIn, stagger, useSkipEntrance } from "./motion";
 
@@ -144,6 +145,7 @@ function ModelSection({ onNavigate }: { onNavigate: (v: Nav) => void }) {
                   roi: data.fiveStarRoi == null ? "–" : signed(data.fiveStarRoi),
                 })}
                 more={details("win-place")}
+                corner={<AlertsBell />}
                 className="col-span-2 lg:col-span-1"
               />
             </motion.div>
@@ -291,13 +293,18 @@ function RecordRow({ r }: { r: HomeRecordDay["races"][number] }) {
   );
 }
 
-function Stat({ label, value, sub, more, className }: { label: ReactNode; value: ReactNode; sub: ReactNode; more?: ReactNode; className?: string }) {
+function Stat({ label, value, sub, more, corner, className }: { label: ReactNode; value: ReactNode; sub: ReactNode; more?: ReactNode; corner?: ReactNode; className?: string }) {
   return (
     <motion.div variants={rise} whileHover={{ y: -3 }} className={cx("flex min-w-0 flex-col rounded-card border border-line bg-surface px-[13px] pt-2.5 pb-1.5 transition-shadow hover:shadow-card", className)}>
       <div className="text-[13px] leading-snug text-ink-muted">{label}</div>
       <div className="mt-1.5 text-[26px] leading-none font-medium text-navy-900 tabular-nums sm:text-[30px]">{value}</div>
       <div className="mt-1.5 text-[13px] leading-snug text-ink">{sub}</div>
-      {more && <div className="mt-auto">{more}</div>}
+      {(more || corner) && (
+        <div className="mt-auto flex items-end justify-between gap-2">
+          <div>{more}</div>
+          {corner && <div className="-mr-2 -mb-1">{corner}</div>}
+        </div>
+      )}
     </motion.div>
   );
 }

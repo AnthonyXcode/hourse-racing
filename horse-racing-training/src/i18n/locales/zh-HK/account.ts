@@ -66,6 +66,11 @@ export const account: Shape<typeof En> = {
     contact: "聯絡資料",
     account: "帳戶",
     leaderboard: "公開排行榜",
+    notifications: "通知",
+  },
+  alerts: {
+    toggle: "5星首選短訊提示",
+    help: "每個賽馬日傳送兩則簡短短訊至 {{phone}}：首場開跑前30分鐘的模型5星首選，以及尾場開跑後30分鐘的賽果。一般短訊；可在此或「設定」內關閉（回覆短訊不會關閉）。只屬模型建議，並非投注建議。",
   },
   leaderboard: {
     toggle: "在公開排行榜顯示我",

@@ -69,7 +69,16 @@ export const admin = {
     },
   },
   range: { today: "Today", d7: "7 days", d30: "30 days" },
+  sms: {
+    title: "5-star SMS alerts",
+    subscribers: "{{n}} members have alerts on. Latest 100 sends:",
+    empty: "No alert SMS yet.",
+    kind: { pre: "Suggestions", post: "Results", stop: "STOP reply" },
+    status: { pending: "Sending", sent: "Sent", failed: "Failed", skipped: "Skipped" },
+  },
   dash: {
+    sms: "Alert SMS today",
+    smsSub: "{{subs}} subscribers · {{failed}} failed · {{skipped}} skipped",
     updated: "Updated {{time}}",
     refresh: "Refresh",
     members: "Members",

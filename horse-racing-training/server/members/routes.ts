@@ -185,8 +185,14 @@ export function membersRouter(d: MembersDeps): Router {
     if (!v.ok) return fail(res, 400, "validation_error", { field: v.field, detail: v.code });
     const lb = req.body?.showOnLeaderboard;
     if (lb !== undefined && typeof lb !== "boolean") return fail(res, 400, "validation_error", { field: "showOnLeaderboard", detail: "invalid" });
+    const al = req.body?.alerts5Star;
+    if (al !== undefined && typeof al !== "boolean") return fail(res, 400, "validation_error", { field: "alerts5Star", detail: "invalid" });
+    const alLang = req.body?.alertsLang;
+    if (alLang !== undefined && alLang !== "en" && alLang !== "zh-HK") return fail(res, 400, "validation_error", { field: "alertsLang", detail: "invalid" });
     const updated = d.db.transaction(() => {
       if (typeof lb === "boolean") d.users.setLeaderboard(u.id, lb);
+      // SMS language: what the member is reading the site in when they turn alerts on (else their account locale).
+      if (typeof al === "boolean") d.users.setAlerts(u.id, al, alLang ?? (u.locale === "en" ? "en" : "zh-HK"));
       return d.users.update(u.id, v.patch);
     })();
     res.json({ user: dto(updated) });

@@ -75,6 +75,12 @@ export const legal = {
         ],
       },
       {
+        heading: "SMS alerts (optional)",
+        body: [
+          "If you turn on 5-star pick alerts (off by default), we send up to two SMS to your login mobile number on each racing day: the model's suggestions before the first race and the results after the last race. We keep a log of each alert (date, meeting, delivery status and the provider's message reference) to avoid duplicates and to deal with delivery problems. Twilio delivers these messages for us. You can turn alerts off at any time in the app, in Settings or My account.",
+        ],
+      },
+      {
         heading: "Storage outside Hong Kong",
         body: [
           "Some of our service providers may store or process data outside Hong Kong. Where this happens, we take reasonable steps to ensure your data receives a level of protection comparable to that under Hong Kong law.",

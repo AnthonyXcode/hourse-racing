@@ -347,6 +347,18 @@ export function adminRouter(d: AdminDeps): Router & { routes: RouteDecl[] } {
   );
 
   // ---- dashboard + system ----
+  // 5★ pick SMS alerts: the latest send log (read-only). Phones masked; the JSON choke point scrubs the rest.
+  get("admin", "/sms-log", (_req, res) => {
+    const rows = db
+      .prepare(
+        `SELECT l.id, l.created_at createdAt, l.date, l.venue, l.kind, l.status, l.provider_id providerId, l.error, u.phone_e164 phone, u.display_name displayName
+           FROM sms_alert_log l LEFT JOIN users u ON u.id = l.user_id ORDER BY l.id DESC LIMIT 100`
+      )
+      .all() as { phone: string | null }[];
+    const subscribers = (db.prepare("SELECT COUNT(*) n FROM users WHERE alerts_5star = 1").get() as { n: number }).n;
+    res.json({ subscribers, items: rows.map((r) => ({ ...r, phone: maskPhone(r.phone) })) });
+  });
+
   get("admin", "/dashboard", (_req, res) => {
     const today = new Date(hkMidnight(Date.now())).toISOString();
     const one = <T>(sql: string, ...a: unknown[]) => db.prepare(sql).get(...a) as T;
@@ -370,6 +382,11 @@ export function adminRouter(d: AdminDeps): Router & { routes: RouteDecl[] } {
     const alerts = db.prepare("SELECT key, kind, message, ref_type refType, ref_id refId, first_seen_at firstSeenAt, last_seen_at lastSeenAt FROM system_alerts WHERE resolved_at IS NULL ORDER BY last_seen_at DESC LIMIT 20").all();
     const alertCount = db.prepare("SELECT kind, COUNT(*) n FROM system_alerts WHERE resolved_at IS NULL GROUP BY kind").all();
     const recentPurchases = db.prepare("SELECT p.created_at createdAt, p.plan_id planId, p.amount_hkd amountHkd, p.status, u.display_name displayName FROM purchases p LEFT JOIN users u ON u.id = p.user_id ORDER BY p.created_at DESC LIMIT 5").all();
+    const smsToday = one<{ sent: number | null; failed: number | null; skipped: number | null }>(
+      "SELECT SUM(status = 'sent') sent, SUM(status = 'failed') failed, SUM(status = 'skipped') skipped FROM sms_alert_log WHERE created_at >= ? AND kind IN ('pre', 'post')",
+      today
+    );
+    const smsSubscribers = one<{ n: number }>("SELECT COUNT(*) n FROM users WHERE alerts_5star = 1").n;
     const recentAudit = (db.prepare("SELECT id, created_at createdAt, operator, actor_role actorRole, action, target_type targetType, target_id targetId, outcome FROM admin_audit ORDER BY id DESC LIMIT 5").all() as { operator: string }[]).map((r) => ({ ...r, operator: scrubText(r.operator ?? "") }));
     res.json({
       members: { total: members.n, today: members.today ?? 0 },
@@ -383,6 +400,7 @@ export function adminRouter(d: AdminDeps): Router & { routes: RouteDecl[] } {
       alertCount,
       recentPurchases,
       recentAudit,
+      smsAlerts: { subscribers: smsSubscribers, sentToday: smsToday.sent ?? 0, failedToday: smsToday.failed ?? 0, skippedToday: smsToday.skipped ?? 0 },
       system: { futureBetting: d.credits.cfg.futureBetting, liveEnabled: d.credits.liveOn(), stripeMode: stripeMode() },
       serverTime: new Date(now()).toISOString(),
     });

@@ -324,6 +324,8 @@ export interface Member {
   email: string | null;
   avatarUrl: string | null;
   createdAt: string;
+  /** 5★ pick SMS alerts (opt-in, off by default). */
+  alerts5Star?: boolean;
   /** Shown on the public leaderboard (opt-in, off by default). */
   showOnLeaderboard?: boolean;
   /** Opaque id of this member's public profile (only ever sent to the member themself). */

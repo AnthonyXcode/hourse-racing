@@ -21,6 +21,9 @@ export interface UserRow {
   show_on_leaderboard?: number;
   /** Random opaque id for the public profile (v4); never the internal id. */
   public_id?: string | null;
+  /** 5★ pick SMS alerts (v5), off by default; language of those SMS. */
+  alerts_5star?: number;
+  alerts_lang?: string | null;
 }
 
 /** A fresh public profile id: 18 hex chars, unguessable and unrelated to the user id. */
@@ -41,6 +44,7 @@ export function toMember(u: UserRow): Member {
     avatarUrl: u.avatar_file ? `/api/avatars/${u.avatar_file}` : null,
     createdAt: u.created_at,
     showOnLeaderboard: !!u.show_on_leaderboard,
+    alerts5Star: !!u.alerts_5star,
     publicId: u.public_id ?? null,
   };
 }
@@ -85,6 +89,11 @@ export function userStore(db: MembersDB, now: () => Date = () => new Date()) {
     /** Public leaderboard opt-in (also makes sure the member has a public id). */
     setLeaderboard(id: string, on: boolean): UserRow {
       db.prepare("UPDATE users SET show_on_leaderboard = ?, public_id = COALESCE(public_id, ?), updated_at = ? WHERE id = ?").run(on ? 1 : 0, newPublicId(), now().toISOString(), id);
+      return byId.get(id)!;
+    },
+    /** 5★ pick SMS alerts on / off; turning them on records the language the SMS will use. */
+    setAlerts(id: string, on: boolean, lang: "en" | "zh-HK"): UserRow {
+      db.prepare("UPDATE users SET alerts_5star = ?, alerts_lang = CASE WHEN ? = 1 THEN ? ELSE alerts_lang END, updated_at = ? WHERE id = ?").run(on ? 1 : 0, on ? 1 : 0, lang, now().toISOString(), id);
       return byId.get(id)!;
     },
     /** Set (or clear) the avatar file; returns the previous file name so the caller can delete it. */

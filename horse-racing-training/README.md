@@ -218,6 +218,36 @@ someone an admin: the owner opens their user page → Change role…, or from th
 
 `/admin` is `noindex` (header + meta + `robots.txt`), can't be framed, and isn't in `sitemap.xml`.
 
+## SMS alerts (5★ picks)
+
+Members can turn on **5-star pick alerts** (bell on the Home "5 stars" card, or My account → Notifications; off by
+default). On each racing day they get two short SMS: the meeting's 5★ races and top picks **30 min before the first
+race**, and how those picks finished **30 min after the last race** (or as soon as every result is stored, given up
+after 3 h). A 5★ race is the one the Home card counts: the model's top pick meets every rule of its venue's strategy
+(`strategyChecks` all ok) on the **pre-race** analysis. No 5★ race → one short "no 5-star races" SMS and no results SMS.
+
+- Code: `server/alerts/` (content, sender, scheduler). The sweep runs every minute; `sms_alert_log` has one row
+  per member, meeting and kind (UNIQUE), so a restart never double-sends. No SMS 23:30–08:00 HK except a due results
+  SMS; a suggestions SMS is never sent after the first race (logged `skipped`). Sends are limited to 5 per second.
+- Texts: Chinese or English (the site language when the member turned alerts on), ≤ 2 segments, starting with the
+  sender name and ending with "Turn off in the app (Settings)" / 「可於App設定內關閉」.
+- **Opt-out is in the app only** (Settings, My account, or the bell on Home). There is no inbound-SMS handler:
+  replying to an alert does not turn it off. UEMO requires a functional unsubscribe facility in commercial
+  messages; confirm with counsel that the in-app switch satisfies it.
+- Env: `SMS_ALERTS` (kill switch, off in production unless `1`), `SMS_PROVIDER=mock|twilio`,
+  `TWILIO_MESSAGING_SERVICE_SID` (preferred) or `TWILIO_SMS_FROM`, plus the existing `TWILIO_ACCOUNT_SID` /
+  `TWILIO_AUTH_TOKEN`. With `SMS_ALERTS=1` in production the server refuses to start without Twilio messaging settings.
+- **Twilio setup:** create a Messaging Service and add the sender (HK numbers / alphanumeric sender ID). No inbound
+  webhook is needed. Note that Twilio may still apply its own STOP handling on some number types (it then blocks
+  delivery to that number until START); those sends show up as `failed` in the admin SMS log.
+- **Hong Kong sender registration:** check OFCA's SMS Sender Registration Scheme (SSRS) before going live and register
+  the sender ID with Twilio's help if required, so recipients see a registered sender (and messages aren't flagged).
+- **Cost:** each SMS segment is billed (Chinese texts are UCS-2: 70 characters per segment, 67 when concatenated);
+  the texts aim for ≤ 2 segments, i.e. up to 4 segments per member per racing day.
+- Try it locally: `DEV_NOW=… npm run dev:server`, then `npm run credits -- dev-schedule --date <YYYY-MM-DD> --venue ST --in 35`
+  and turn alerts on for your member; the mock sender prints `[sms:mock] …` in the server log. Admins see the send log
+  under System (phones masked) and today's counts on the dashboard.
+
 ## Ports
 
 Both ports are set in `.env` (copy `.env.example`). `.env` is gitignored.

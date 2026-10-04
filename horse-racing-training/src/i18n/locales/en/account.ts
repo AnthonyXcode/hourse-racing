@@ -64,6 +64,11 @@ export const account = {
     contact: "Contact",
     account: "Account",
     leaderboard: "Public leaderboard",
+    notifications: "Notifications",
+  },
+  alerts: {
+    toggle: "5-star pick SMS alerts",
+    help: "Two short SMS on each racing day to {{phone}}: the model's 5-star picks 30 minutes before the first race, and how they finished 30 minutes after the last race. Standard SMS; turn them off here or in Settings (replying to the SMS doesn't turn them off). Model suggestions only, not betting advice.",
   },
   leaderboard: {
     toggle: "Show me on the public leaderboard",

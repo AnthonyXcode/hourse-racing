@@ -9,7 +9,7 @@ import { isUnauthorized, memberApi } from "./api";
 import { LoginModal } from "./LoginModal";
 import { Toast, useDialog } from "./ui";
 
-export type LoginSource = "header" | "history" | "save_prompt" | "leaderboard";
+export type LoginSource = "header" | "history" | "save_prompt" | "leaderboard" | "alerts";
 export interface LoginRequest {
   source: LoginSource;
   /** Runs once the code is verified. A returned string replaces the "Logged in as …" toast. */
