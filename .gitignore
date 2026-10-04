@@ -41,3 +41,6 @@ data/temp/
 data/analysis/
 .serena/
 .gstack/
+
+# Cron job logs (tools/cron)
+logs/
