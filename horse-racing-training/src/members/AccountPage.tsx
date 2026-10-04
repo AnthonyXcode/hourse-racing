@@ -23,6 +23,7 @@ import { useCredits } from "../credits/CreditsProvider";
 import { AvatarField, type StagedAvatar } from "./AvatarField";
 import { LoginEmptyState } from "./GuestPrompts";
 import { Counter, Spinner, errorText, visibleLength, fieldErr, formLabel, prefixChip, prefixInput, prefixWrap, useDialog } from "./ui";
+import { Switch } from "../Switch";
 
 interface Form {
   displayName: string;
@@ -372,18 +373,12 @@ function AccountForm({ user, onLogout, onDeleted }: { user: Member; onLogout: ()
         </Card>
 
         <Card title={t("section.notifications")}>
-          <label className="flex min-h-11 cursor-pointer items-center gap-3 text-[15px] font-medium text-ink">
-            <input
-              type="checkbox"
-              role="switch"
-              className="size-5 flex-none rounded-xs border-line-strong accent-navy-700"
-              checked={form.alerts}
-              disabled={saving}
-              aria-describedby="acc-alerts-help"
-              onChange={(e) => set("alerts", e.target.checked)}
-            />
-            {t("alerts.toggle")}
-          </label>
+          <div className="flex min-h-11 items-center justify-between gap-3">
+            <label htmlFor="acc-alerts-switch" className="cursor-pointer text-[15px] font-medium text-ink">
+              {t("alerts.toggle")}
+            </label>
+            <Switch id="acc-alerts-switch" checked={form.alerts} disabled={saving} describedBy="acc-alerts-help" onChange={(v) => set("alerts", v)} />
+          </div>
           <p id="acc-alerts-help" className="text-[13px] leading-normal text-ink-muted">
             {t("alerts.help", { phone: `+852 •••• ${user.phone.slice(-4)}` })}
           </p>

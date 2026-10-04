@@ -2,11 +2,13 @@
 // the popup. Two SMS per racing day; the server sends them (server/alerts).
 import { useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import { motion, useReducedMotion } from "motion/react";
 import { useTranslation } from "react-i18next";
 import { btn, btnPrimary, cx, modalBgTop, modalNarrow } from "../kit";
 import { useAuth } from "../members/auth";
 import { memberApi } from "../members/api";
 import { Spinner, useDialog } from "../members/ui";
+import { Switch } from "../Switch";
 
 /** +85291235678 → +852 •••• 5678 */
 export const maskedPhone = (e164: string) => `+852 •••• ${e164.slice(-4)}`;
@@ -16,21 +18,51 @@ export function AlertsBell() {
   const auth = useAuth();
   const [open, setOpen] = useState(false);
   const on = !!auth.user?.alerts5Star;
+  // Attention loop while alerts are off: a short ring every few seconds + a soft gold pulse behind the bell.
+  // Stops once alerts are on, while hovered / focused, and for reduced motion.
+  const reduce = useReducedMotion();
+  const [hold, setHold] = useState(false);
+  const ring = !on && !reduce && !hold;
   const tap = () => (auth.user ? setOpen(true) : auth.openLogin({ source: "alerts", onLoggedIn: () => setOpen(true) }));
   return (
     <>
       <button
         type="button"
-        className="inline-flex size-11 flex-none cursor-pointer items-center justify-center rounded-full text-navy-700 transition-colors hover:bg-sky-50"
+        className="relative inline-flex size-11 flex-none cursor-pointer items-center justify-center rounded-full text-navy-700 transition-colors hover:bg-sky-50"
         aria-label={t("alerts.bell")}
         aria-pressed={on}
         title={t("alerts.bell")}
         onClick={tap}
+        onMouseEnter={() => setHold(true)}
+        onMouseLeave={() => setHold(false)}
+        onFocus={() => setHold(true)}
+        onBlur={() => setHold(false)}
       >
-        <svg viewBox="0 0 24 24" className="size-6" aria-hidden="true" fill={on ? "currentColor" : "none"} stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" strokeLinecap="round">
+        {ring && (
+          <motion.span
+            aria-hidden="true"
+            className="absolute inset-1 rounded-full bg-gold"
+            initial={{ opacity: 0, scale: 0.6 }}
+            animate={{ opacity: [0, 0.45, 0], scale: [0.6, 1.25, 1.5] }}
+            transition={{ duration: 1.2, ease: "easeOut", repeat: Infinity, repeatDelay: 1.0 }}
+          />
+        )}
+        <motion.svg
+          viewBox="0 0 24 24"
+          className="relative size-6"
+          aria-hidden="true"
+          fill={on ? "currentColor" : "none"}
+          stroke="currentColor"
+          strokeWidth="1.8"
+          strokeLinejoin="round"
+          strokeLinecap="round"
+          style={{ originX: 0.5, originY: 0.1 }}
+          animate={ring ? { rotate: [0, -16, 14, -10, 8, -4, 0] } : { rotate: 0 }}
+          transition={ring ? { duration: 0.9, ease: "easeInOut", repeat: Infinity, repeatDelay: 1.3 } : { duration: 0.2 }}
+        >
           <path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15L6 16Z" />
           <path d="M10 20.5a2 2 0 0 0 4 0" fill="none" />
-        </svg>
+        </motion.svg>
       </button>
       {/* Portalled: the card animates with a transform, which would trap a fixed-position modal inside it. */}
       {open && auth.user && createPortal(<AlertsDialog onClose={() => setOpen(false)} />, document.body)}
@@ -74,10 +106,12 @@ function AlertsDialog({ onClose }: { onClose: () => void }) {
           <li>{t("alerts.post")}</li>
         </ul>
         <p className="mt-2 text-[13px] text-ink-muted tabular-nums">{t("alerts.to", { phone: maskedPhone(user.phone) })}</p>
-        <label className="mt-3 flex min-h-11 cursor-pointer items-center justify-between gap-3 rounded-card border border-line px-[13px] text-[15px] font-medium text-ink">
-          {t("alerts.toggle")}
-          <input type="checkbox" role="switch" className="size-5 flex-none accent-navy-700" checked={on} disabled={busy} onChange={(e) => setOn(e.target.checked)} />
-        </label>
+        <div className="mt-3 flex min-h-11 items-center justify-between gap-3 rounded-card border border-line px-[13px] py-2">
+          <label htmlFor="alerts-switch-dialog" className="cursor-pointer text-[15px] font-medium text-ink">
+            {t("alerts.toggle")}
+          </label>
+          <Switch id="alerts-switch-dialog" checked={on} disabled={busy} onChange={setOn} />
+        </div>
         <p className="mt-2 text-[13px] leading-normal text-ink-muted">{t("alerts.note")}</p>
         {err && (
           <p className="mt-2 text-[13px] text-bad" role="alert">
@@ -134,11 +168,13 @@ export function AlertsSetting() {
         )}
       </div>
       {user ? (
-        <label className="flex min-h-11 flex-none cursor-pointer items-center gap-3 self-start text-[15px] font-medium text-ink sm:self-center">
+        <div className="flex min-h-11 flex-none items-center gap-3 self-start sm:self-center">
           {busy && <Spinner />}
-          {t("alerts.toggle")}
-          <input type="checkbox" role="switch" className="size-5 flex-none accent-navy-700" checked={!!user.alerts5Star} disabled={busy} onChange={(e) => void set(e.target.checked)} />
-        </label>
+          <label htmlFor="alerts-switch-settings" className="cursor-pointer text-[15px] font-medium text-ink">
+            {t("alerts.toggle")}
+          </label>
+          <Switch id="alerts-switch-settings" checked={!!user.alerts5Star} disabled={busy} onChange={(v) => void set(v)} />
+        </div>
       ) : (
         <button type="button" className={cx(btn, "h-11 flex-none self-start sm:self-center")} onClick={() => auth.openLogin({ source: "alerts" })}>
           {t("alerts.loginCta")}

@@ -2,13 +2,13 @@
 // final then, so the viewer can act on them. Client-side only (no push server), so a tab of the site has
 // to be open; checked on an interval rather than with one timer per race, so a changed cut-off or a
 // delayed post time is picked up on the next tick. Opt-in per browser.
-import { useEffect, useState, useSyncExternalStore } from "react";
-import { motion } from "motion/react";
+import { useEffect, useSyncExternalStore } from "react";
 import { useTranslation } from "react-i18next";
 import { api } from "../api";
 import { DEFAULT_CUTOFF, isCutoff, type DaySummaryRace } from "../../shared/momentum/model";
 import { CUTOFF_KEY, cutoffLabel } from "./cutoff";
 import { cx } from "../kit";
+import { Switch } from "../Switch";
 
 const KEY = "momentum.notify";
 const TICK_MS = 15_000;
@@ -54,16 +54,6 @@ export function storedCutoff(): number {
   }
 }
 
-// Liquid-glass switch geometry (px): a 64×28 track holding a 38×24 capsule knob, 2px inset.
-const TRACK_W = 64, KNOB_W = 38, INSET = 2;
-const KNOB_TRAVEL = TRACK_W - KNOB_W - 2 * INSET;
-/** Resting knob: frosted white capsule with a top specular edge. */
-const knobRest =
-  "bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(255,255,255,0.86))] shadow-[inset_0_1px_0_rgba(255,255,255,1),inset_0_-1px_1px_rgba(0,0,0,0.06),0_2px_6px_rgba(0,0,0,0.16),0_0_0_0.5px_rgba(0,0,0,0.06)]";
-/** Pressed knob: clear glass lens over the track — tint shows through, rim and highlight catch the light. */
-const knobLens =
-  "bg-[linear-gradient(180deg,rgba(255,255,255,0.55),rgba(255,255,255,0.12))] backdrop-blur-[1.5px] backdrop-saturate-[1.8] shadow-[inset_0_1px_1px_rgba(255,255,255,0.95),inset_0_-2px_4px_rgba(255,255,255,0.35),inset_0_0_0_1px_rgba(255,255,255,0.6),0_4px_14px_rgba(0,0,0,0.18)]";
-
 /**
  * Liquid-glass switch (Settings page); asks for permission on first switch-on. Hidden where notifications
  * aren't available. While pressed the knob swells into a clear lens; it springs across on release.
@@ -71,7 +61,6 @@ const knobLens =
 export function NotifyToggle({ className }: { className?: string }) {
   const { t } = useTranslation(["momentum", "common"]);
   const on = useEnabled();
-  const [pressed, setPressed] = useState(false);
   if (!supported()) return null;
   const denied = Notification.permission === "denied";
   const toggle = async () => {
@@ -79,40 +68,10 @@ export function NotifyToggle({ className }: { className?: string }) {
     const p = Notification.permission === "default" ? await Notification.requestPermission() : Notification.permission;
     setEnabled(p === "granted");
   };
-  const release = () => setPressed(false);
   return (
     <span className={cx("inline-flex items-center gap-2", className)}>
       {denied && <span className="text-xs text-bad">{t("notify.denied")}</span>}
-      <button
-        type="button"
-        role="switch"
-        aria-checked={on}
-        aria-label={t("notify.label")}
-        onClick={toggle}
-        onPointerDown={() => !denied && setPressed(true)}
-        onPointerUp={release}
-        onPointerLeave={release}
-        onPointerCancel={release}
-        disabled={denied}
-        style={{ width: TRACK_W }}
-        className={cx(
-          "relative inline-flex h-7 flex-none cursor-pointer touch-manipulation rounded-full",
-          "backdrop-blur-md backdrop-saturate-150 transition-[background-color,box-shadow] duration-300 motion-reduce:transition-none",
-          "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:cursor-default disabled:opacity-45",
-          on
-            ? "bg-[rgba(52,199,89,0.92)] shadow-[inset_0_1px_2px_rgba(0,0,0,0.12),inset_0_-1px_0_rgba(255,255,255,0.25)]"
-            : "bg-[rgba(120,120,128,0.16)] shadow-[inset_0_1px_2px_rgba(0,0,0,0.1),inset_0_0_0_0.5px_rgba(0,0,0,0.05)]"
-        )}
-      >
-        <motion.span
-          aria-hidden
-          className={cx("absolute rounded-full transition-[background,box-shadow] duration-200", pressed ? knobLens : knobRest)}
-          style={{ top: INSET, left: INSET, width: KNOB_W, height: 24 }}
-          initial={false}
-          animate={{ x: on ? KNOB_TRAVEL : 0, scaleX: pressed ? 1.32 : 1, scaleY: pressed ? 1.42 : 1 }}
-          transition={{ type: "spring", stiffness: 520, damping: 30, mass: 0.8 }}
-        />
-      </button>
+      <Switch checked={on} disabled={denied} label={t("notify.label")} onChange={() => void toggle()} />
     </span>
   );
 }
