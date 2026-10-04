@@ -286,6 +286,20 @@ function LivePanel({ date, isToday, initialRace }: { date: string; isToday: bool
   }, [date, cutoff, isToday]);
 
   const race = races.find((r) => r.race_id === selected);
+  // Selected race's surface / class / distance (from the saved racecard), shown after the venue in the heading.
+  const [card, setCard] = useState<{ id: string; surface: string; cls: string; distance: number } | null>(null);
+  useEffect(() => {
+    if (!race) return;
+    let live = true;
+    api
+      .race(date.replace(/-/g, ""), race.venue, race.race_no)
+      .then((c) => live && setCard({ id: race.race_id, surface: c.surface, cls: c.class, distance: c.distance }))
+      .catch(() => live && setCard(null)); // no card saved: the heading just shows the venue
+    return () => {
+      live = false;
+    };
+  }, [race?.race_id]); // eslint-disable-line react-hooks/exhaustive-deps
+  const raceInfo = race && card?.id === race.race_id ? [g.surface(card.surface), g.raceClass(card.cls), t("common:metres", { n: card.distance })].filter(Boolean).join(" · ") : "";
   const secsToPost = race?.post_time ? (Date.parse(race.post_time) - now) / 1000 : NaN;
   const upcomingDay = races.length > 0 && races.every((r) => !r.post_time);
   // Chart + movers show the race as of the cut-off (same odds the picks use); Records still lists every
@@ -296,7 +310,7 @@ function LivePanel({ date, isToday, initialRace }: { date: string; isToday: bool
 
   return (
     <>
-      <H2 sub={today ? `${f.day(today.date)} · ${races[0] ? g.venue(races[0].venue) : t("noMeeting")}` : t("common:state.loading")}>{upcomingDay ? t("upcoming") : isToday ? t("live") : t("replay")}</H2>
+      <H2 sub={today ? `${f.day(today.date)} · ${races[0] ? g.venue(races[0].venue) : t("noMeeting")}${raceInfo ? ` · ${raceInfo}` : ""}` : t("common:state.loading")}>{upcomingDay ? t("upcoming") : isToday ? t("live") : t("replay")}</H2>
       {error && <div className={errorBox}>{error}</div>}
       {isToday && today?.poller.lastError && <div className={errorBox}>{t("poller", { error: today.poller.lastError })}</div>}
 

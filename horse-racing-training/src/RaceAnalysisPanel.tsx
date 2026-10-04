@@ -8,6 +8,7 @@ import { track } from "./analytics";
 import { confidence, strategyChecks, type PreRaceAnalysis } from "../shared/analyzer/model";
 import { useNames } from "./i18n/names";
 import { cx, panel, table, tablePadTight } from "./kit";
+import { HorseLink } from "./momentum/HorseRecord";
 
 const COLLAPSE = { duration: 0.24, ease: [0.2, 0, 0, 1] } as const;
 const STAR = "M10 1.6l2.6 5.3 5.8.8-4.2 4.1 1 5.8L10 14.9l-5.2 2.7 1-5.8L1.6 7.7l5.8-.8z";
@@ -151,7 +152,10 @@ export function RaceAnalysisPanel({ date, venue, raceNo }: { date: string; venue
                       <tr key={h.horseNo} className={h.modelRank === 1 ? "[&_td]:bg-accent-soft/60" : undefined} title={h.modelRank === 1 ? t("analysis.topPick") : undefined}>
                         <td className="font-semibold">{h.modelRank}</td>
                         <td>{h.horseNo}</td>
-                        <td className="max-w-[180px] truncate">{name("horse", h.code, h.name)}</td>
+                        <td className="max-w-[180px]">
+                          {/* opens the horse's past runs (same popup as the race card / Momentum) */}
+                          <HorseLink raceId={a.raceId} horseNo={h.horseNo} code={h.code} name={name("horse", h.code, h.name)} />
+                        </td>
                         <td>{h.winPct.toFixed(1)}</td>
                         <td>{h.placePct.toFixed(1)}</td>
                         <td>{h.marketRank || "–"}</td>
