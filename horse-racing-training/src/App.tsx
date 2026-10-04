@@ -1,4 +1,9 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { Suspense, lazy, useEffect, useMemo, useRef, useState } from "react";
+import { DEFAULT_VIEW, VIEWS, readView, type View } from "./views";
+import { HomePage } from "./home/HomePage";
+
+const MemberProfilePage = lazy(() => import("./home/MemberProfile").then((m) => ({ default: m.MemberProfilePage })));
+const BotProfilePage = lazy(() => import("./home/BotProfile").then((m) => ({ default: m.BotProfilePage })));
 import { api } from "./api";
 import { BET_TYPES, countCombos } from "../shared/betEngine/index";
 import type { MeetingRef, RaceCard, BetTypeId, BetSelection, HistoryEntry, RaceStatus } from "../shared/types";
@@ -11,7 +16,7 @@ import { MomentumPage } from "./momentum/MomentumPage";
 import { SettingsPage } from "./SettingsPage";
 import { useTranslation } from "react-i18next";
 import { useGlossary } from "./i18n/glossary";
-import { LangSwitch, useFmt } from "./i18n/useLanguage";
+import { LangSwitch, useFmt, useLanguage } from "./i18n/useLanguage";
 import { track } from "./analytics";
 import { Footer, LEGAL_VIEWS, LegalDoc, SiteMap } from "./LegalPages";
 import { PicksBanner } from "./momentum/PicksBanner";
@@ -54,12 +59,9 @@ function useOnceTrue(v: boolean): boolean {
   return seen || v;
 }
 
-/** Every ?tab= view. "account" is reached from the avatar menu, so it isn't in TABS. */
-const VIEWS = ["bet", "history", "win-place", "trio", "momentum", "settings", "account", "credits", ...LEGAL_VIEWS] as const;
-type View = (typeof VIEWS)[number];
-const DEFAULT_VIEW: View = "bet";
 /** How often the bet page re-polls the meeting list while visible. */
 const DAYS_REFRESH_MS = 5 * 60_000;
+/** Home has no tab: the logo + name at the top left leads there. */
 const TABS = [
   ["bet", "nav.bet"],
   ["history", "nav.history"],
@@ -99,30 +101,44 @@ const GUEST_PENDING_MAX = 20;
 const pickedLeg =
   "inline-flex size-8 flex-none cursor-pointer items-center justify-center rounded-full bg-sky-150 text-[15px] font-medium text-navy-900 ring-2 ring-navy-700";
 
-/** Tab named by ?tab= in the URL; unknown or missing → the default tab. */
-function readView(): View {
-  const t = new URLSearchParams(window.location.search).get("tab");
-  return VIEWS.find((v) => v === t) ?? DEFAULT_VIEW;
-}
+/** The public profile shown by ?tab=member&id=… (opaque public id). */
+const readProfileId = () => new URLSearchParams(window.location.search).get("id") ?? "";
 
-/** Current tab, mirrored to ?tab= so a copied link reopens it. Each switch is a history entry, so back/forward step between tabs. */
-function useViewParam(): [View, (v: View) => void] {
-  const [view, setViewState] = useState(readView);
+/**
+ * Current tab, mirrored to ?tab= so a copied link reopens it. Each switch is a history entry, so back/forward
+ * step between tabs (and between member profiles: ?tab=member&id=…).
+ */
+/** Member / bot page state besides the id: ?range=day|30d (&date=YYYY-MM-DD) for bot pages. */
+const MEMBER_PARAMS = ["range", "date"] as const;
+const readMemberParams = () => {
+  const q = new URLSearchParams(window.location.search);
+  return Object.fromEntries(MEMBER_PARAMS.flatMap((k) => (q.get(k) ? [[k, q.get(k)!]] : []))) as Partial<Record<(typeof MEMBER_PARAMS)[number], string>>;
+};
+
+function useViewParam(): [View, (v: View, id?: string, extra?: Partial<Record<(typeof MEMBER_PARAMS)[number], string>>) => void, string, Partial<Record<(typeof MEMBER_PARAMS)[number], string>>] {
+  const [state, setState] = useState(() => ({ view: readView(), id: readProfileId(), extra: readMemberParams() }));
   useEffect(() => {
-    const onPop = () => setViewState(readView());
+    const onPop = () => setState({ view: readView(), id: readProfileId(), extra: readMemberParams() });
     window.addEventListener("popstate", onPop);
     return () => window.removeEventListener("popstate", onPop);
   }, []);
-  const setView = (v: View) => {
-    if (v === view) return;
+  const setView = (v: View, id = "", extra: Partial<Record<(typeof MEMBER_PARAMS)[number], string>> = {}) => {
+    if (v === state.view && id === state.id && MEMBER_PARAMS.every((k) => (extra[k] ?? "") === (state.extra[k] ?? ""))) return;
     const url = new URL(window.location.href);
     if (v === DEFAULT_VIEW) url.searchParams.delete("tab");
     else url.searchParams.set("tab", v);
     if (v !== "momentum") for (const k of ["day", "race", "cutoff"]) url.searchParams.delete(k); // Momentum-only state
+    if (v === "member" && id) url.searchParams.set("id", id);
+    else url.searchParams.delete("id"); // member-only state
+    for (const k of MEMBER_PARAMS) {
+      const val = v === "member" ? extra[k] : undefined;
+      if (val) url.searchParams.set(k, val);
+      else url.searchParams.delete(k);
+    }
     window.history.pushState(null, "", url);
-    setViewState(v);
+    setState({ view: v, id, extra: v === "member" ? extra : {} });
   };
-  return [view, setView];
+  return [state.view, setView, state.id, state.extra];
 }
 
 export default function App() {
@@ -159,10 +175,13 @@ function AppBody() {
   useCutoffNotifications();
   const g = useGlossary();
   const poolName = usePoolName();
+  const { lang } = useLanguage();
   const fmt = useFmt();
-  const [view, setViewRaw] = useViewParam();
+  const [view, setViewRaw, profileId, profileParams] = useViewParam();
   /** Switch tabs, asking first if the account page has unsaved edits. */
   const setView = (v: View) => (v === view ? undefined : auth.guard(() => setViewRaw(v)));
+  /** Open a leaderboard member's public profile (?tab=member&id=…). */
+  const openProfile = (id: string, extra?: { range?: string; date?: string }) => auth.guard(() => setViewRaw("member", id, extra));
   useSeo(view);
   const headerRef = useHeaderHeightVar();
   /** For links that carry a view name as a string (footer, site map). */
@@ -504,7 +523,7 @@ function AppBody() {
   /** Header menu / account page Log out: back to the bet page if they were on their account. */
   function logout() {
     void auth.logout();
-    if (view === "account") setViewRaw("bet");
+    if (view === "account") setViewRaw(DEFAULT_VIEW);
   }
 
   /** Result-modal banner: log in, then save this visit's guest bets once and close the modal. */
@@ -591,9 +610,21 @@ function AppBody() {
         {/* Navy top bar: our own logo + name (not HKJC's), language, credits, account. */}
         <div className="bg-navy-900 text-white">
           <div className={cx(container, "flex h-12 items-center gap-3")}>
-            <h1 className="flex flex-none items-center gap-2 text-lg leading-none font-bold">
-              <img src="/logo-128.png" alt="" width={32} height={32} className="size-8 flex-none" />
-              {t("appName")}
+            <h1 className="flex-none text-lg leading-none font-bold">
+              <a
+                href={lang === "en" ? "/?language=en" : "/"}
+                className="-ml-1 flex min-h-11 items-center gap-2 rounded-control px-1 text-white no-underline hover:opacity-90"
+                aria-current={view === "home" ? "page" : undefined}
+                aria-label={t("nav.homeLink", { name: t("appName") })}
+                onClick={(e) => {
+                  if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return; // new tab / window: let the browser do it
+                  e.preventDefault();
+                  setView("home");
+                }}
+              >
+                <img src="/logo-128.png" alt="" width={32} height={32} className="size-8 flex-none" />
+                {t("appName")}
+              </a>
             </h1>
             <LangSwitch className="ml-auto" />
             <CreditChip onOpen={() => setView("credits")} />
@@ -633,6 +664,33 @@ function AppBody() {
           </div>
         )}
 
+        {view === "home" && (
+          <HomePage
+            onNavigate={(v) => selectView(v)}
+            onUpcoming={() => {
+              const next = upcomingDays[0];
+              if (next) chooseMeeting(`${next.date}_${next.venue}`);
+              setView("bet");
+            }}
+            onOpenProfile={openProfile}
+          />
+        )}
+        {view === "member" && (
+          <Suspense fallback={<div className={cx(panel, "mt-6 text-center text-ink-muted")}>{t("account:loading")}</div>}>
+            {profileId.startsWith("bot-") ? (
+              <BotProfilePage
+                key={`${profileId}_${profileParams.range ?? ""}_${profileParams.date ?? ""}`}
+                alias={profileId.slice(4)}
+                range={profileParams.range === "day" ? "day" : "30d"}
+                date={profileParams.date}
+                onRange={(range, date) => setViewRaw("member", profileId, { range, ...(date ? { date } : {}) })}
+                onBack={() => (window.history.length > 1 ? window.history.back() : setView("home"))}
+              />
+            ) : (
+              <MemberProfilePage key={profileId} publicId={profileId} onBack={() => (window.history.length > 1 ? window.history.back() : setView("home"))} />
+            )}
+          </Suspense>
+        )}
         {view === "momentum" && <MomentumPage />}
         {view === "settings" && <SettingsPage />}
 
@@ -646,6 +704,7 @@ function AppBody() {
             <HistoryPage
               key={historyFilter ?? "default"}
               initialFilter={historyFilter}
+              shareName={user?.displayName}
               entries={history}
               onDelete={(id) => memberApi.deleteHistory(id).then(setHistory).catch((e) => auth.handleAuthError(e) || setError(errorText(ta, e)))}
               onClear={() =>
@@ -661,7 +720,7 @@ function AppBody() {
             <div className={cx(panel, "mt-6 text-center text-ink-muted")}>{t("account:loading")}</div>
           ))}
 
-        {view === "account" && <AccountPage onLogout={logout} onDeleted={() => setViewRaw("bet")} />}
+        {view === "account" && <AccountPage onLogout={logout} onDeleted={() => setViewRaw(DEFAULT_VIEW)} />}
         {view === "credits" && (
           <CreditsPage
             onOpenHistory={() => {

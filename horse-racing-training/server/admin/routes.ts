@@ -259,6 +259,7 @@ export function adminRouter(d: AdminDeps): Router & { routes: RouteDecl[] } {
       adultDeclaredAt: decl?.declared_at ?? null,
       termsVersion: decl?.terms_version ?? null,
       flagReason: w?.flag_reason ?? null,
+      showOnLeaderboard: !!u.show_on_leaderboard, // read-only here: only the member can change it
       sessions: { count: sess.n, lastSeenAt: sess.last ? new Date(sess.last).toISOString() : null },
     };
   };

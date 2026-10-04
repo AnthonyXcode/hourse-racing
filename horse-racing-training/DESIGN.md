@@ -316,6 +316,15 @@ in `kit.tsx`, so the member bundle doesn't grow. Owner writes all use one `Confi
 optional SMS step-up → one button: gold for non-destructive, `btnDanger` for destructive). Admins see no write
 buttons at all, only the line "Only the owner can make changes."
 
+### Home (first tab, landing view)
+
+`src/home/`: compact hero (headline, subline, the view's one gold CTA → Bet), then three `sectionHead` /
+`sectionBody` sections: model hit rate (2-up / 4-up stat cards, skeleton while the analyzer runs, footnote),
+member leaderboard (phones: ranked list rows; ≥ md: fixed, unsortable table; own row `sky-50` + "You" chip;
+two boards: last racing day and last 30 days) and "Why Post Time" cards with 4:3 photo slots
+(`public/home/purpose-N.jpg`; a same-size placeholder when missing). Member profiles are a lazy view
+(`?tab=member&id=<publicId>`). Secondary CTAs here are `btn` outlines, never gold.
+
 ## 11. Checklist for any new UI
 
 - [ ] Colours only from §2 tokens; no raw hex in components.

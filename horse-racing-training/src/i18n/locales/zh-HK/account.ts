@@ -65,6 +65,13 @@ export const account: Shape<typeof En> = {
     profile: "個人資料",
     contact: "聯絡資料",
     account: "帳戶",
+    leaderboard: "公開排行榜",
+  },
+  leaderboard: {
+    toggle: "在公開排行榜顯示我",
+    shown: "會公開顯示：你的顯示名稱、相片、已結算即場投注成績（注數、命中率、投注及派彩積分），以及最近 20 注已結算的即場投注。",
+    hidden: "不會顯示：你的電話號碼、聯絡資料、簡介及模擬投注。",
+    off: "預設為關閉。你可隨時關閉，關閉後會即時從排行榜消失。",
   },
   avatar: {
     change: "更換相片",

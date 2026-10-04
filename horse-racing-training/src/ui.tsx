@@ -1,6 +1,6 @@
 // Presentational components for the bet trainer.
 import type { CardHorse, PastPerformance, RaceCard, RaceLeg, RaceResult, SettleResult, SettleDetail, BetTypeId, HistoryEntry } from "../shared/types";
-import { useRef, useState, type ReactNode } from "react";
+import { Suspense, lazy, useRef, useState, type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import type { TFunction } from "i18next";
 import { useGlossary } from "./i18n/glossary";
@@ -704,11 +704,15 @@ export function ResultPanel({ result, onClose }: { result: RaceResult; onClose: 
 
 // ---- History page ----
 
+/** Lazy: the canvas image builder only loads when a member opens Share. */
+const ShareRecord = lazy(() => import("./history/ShareRecord"));
+
 export function HistoryPage({
   entries,
   onDelete,
   onClear,
   initialFilter,
+  shareName,
 }: {
   entries: HistoryEntry[];
   /** Practice rows only (LIVE rows are financial records). */
@@ -717,9 +721,13 @@ export function HistoryPage({
   onClear: () => Promise<unknown>;
   /** Open on this filter (e.g. "pending" from a "N pending live bets" link). */
   initialFilter?: HistoryFilter;
+  /** The member's display name: enables "Share" on the Live summary. */
+  shareName?: string;
 }) {
   const { t } = useTranslation(["history", "common", "credits"]);
   const [confirming, setConfirming] = useState(false);
+  const [sharing, setSharing] = useState(false);
+  const [shareBet, setShareBet] = useState<HistoryEntry | null>(null);
   const g = useGlossary();
   const fmt = useFmt();
   const when = (ts: string) => fmt.date(ts, { dateStyle: "short", timeStyle: "short" });
@@ -776,6 +784,35 @@ export function HistoryPage({
         )}
       </div>
       {confirming && <ClearDialog count={practice.length} practiceOnly={hasLive} onCancel={() => setConfirming(false)} onConfirm={onClear} />}
+      {shareBet && shareName && (
+        <Suspense fallback={null}>
+          <ShareRecord
+            onClose={() => setShareBet(null)}
+            data={{
+              kind: "bet",
+              name: shareName,
+              ref: shareBet.id.replace(/[^a-z0-9]/gi, "").slice(-6).toUpperCase(),
+              placed: fmt.date(shareBet.ts, { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit", hour12: false }),
+              pool: g.betType(shareBet.betType),
+              details: [
+                `${g.venue(shareBet.venue)} ${fmt.date(ymd(shareBet.date), { weekday: "long" })} ${g.betType(shareBet.betType)}`,
+                `${picks(shareBet.picks)} · ${t("credits:unit", { n: fmt.num(shareBet.cost) })}`,
+              ],
+              stake: shareBet.cost,
+              returned: shareBet.status === "pending" ? null : (shareBet.payout ?? 0) + (shareBet.refund ?? 0),
+              status:
+                shareBet.status === "pending"
+                  ? t("credits:status.pending")
+                  : shareBet.status === "won"
+                    ? t("credits:status.won", { n: fmt.num((shareBet.payout ?? 0) + (shareBet.refund ?? 0)) })
+                    : shareBet.status === "void" || (shareBet.refund ?? 0) > 0
+                      ? t("credits:status.refunded", { n: fmt.num(shareBet.refund ?? 0) })
+                      : t("credits:status.lost"),
+              statusTone: shareBet.status === "won" ? "good" : shareBet.status === "lost" && !(shareBet.refund ?? 0) ? "bad" : "muted",
+            }}
+          />
+        </Suspense>
+      )}
 
       {hasLive && (
         <div className={cx(pillRow, "mt-2")} role="group" aria-label={t("credits:history.filters")}>
@@ -795,7 +832,54 @@ export function HistoryPage({
         )
       ) : (
         <div className={cx(panel, "mt-4")}>
-          {hasLive && <div className="mb-3 text-[13px] font-medium text-ink-muted">{f === "live" ? t("credits:history.statsLive") : t("credits:history.statsPractice")}</div>}
+          {hasLive && (
+            <div className="mb-3 flex items-center justify-between gap-3">
+              <div className="text-[13px] font-medium text-ink-muted">{f === "live" ? t("credits:history.statsLive") : t("credits:history.statsPractice")}</div>
+              {f === "live" && shareName && settled.length > 0 && (
+                <button
+                  type="button"
+                  className="-my-2 -mr-2 inline-flex size-11 flex-none cursor-pointer items-center justify-center rounded-full text-navy-700 transition-colors hover:bg-sky-50"
+                  aria-label={t("credits:share.title")}
+                  title={t("credits:share.button")}
+                  onClick={() => setSharing(true)}
+                >
+                  <svg aria-hidden="true" viewBox="0 0 16 16" className="size-5 fill-none stroke-current" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M8 10V2.5M5 5.5 8 2.5l3 3M3 9v3.5h10V9" />
+                  </svg>
+                </button>
+              )}
+            </div>
+          )}
+          {sharing && shareName && (
+            <Suspense fallback={null}>
+              <ShareRecord
+                onClose={() => setSharing(false)}
+                data={{
+                  name: shareName,
+                  net,
+                  roi,
+                  bets: settled.length,
+                  hits,
+                  staked: totalCost,
+                  returned: totalReturn,
+                  recent: [...settled]
+                    .sort((a, b) => b.ts.localeCompare(a.ts))
+                    .slice(0, 5)
+                    .map((e) => ({
+                      when: fmt.date(ymd(e.date), { day: "numeric", month: "short" }),
+                      what: `${g.venue(e.venue)} · ${g.betType(e.betType)} · ${picks(e.picks)}`,
+                      result:
+                        e.status === "won"
+                          ? `+${fmt.num((e.payout ?? 0) + (e.refund ?? 0))}`
+                          : e.status === "void" || (e.refund ?? 0) > 0
+                            ? t("credits:status.refunded", { n: fmt.num(e.refund ?? 0) })
+                            : t("credits:status.lost"),
+                      good: e.status === "won",
+                    })),
+                }}
+              />
+            </Suspense>
+          )}
           <div className="grid grid-cols-2 gap-x-4 gap-y-5 sm:grid-cols-[repeat(auto-fit,minmax(150px,1fr))]">
             <Stat label={t("stat.net")} big tone={tone(net)}>{signed(net)}</Stat>
             <Stat label={t("stat.roi")} tone={tone(roi)}>{roi >= 0 ? "+" : ""}{roi.toFixed(1)}%</Stat>
@@ -832,6 +916,7 @@ export function HistoryPage({
                 <th>{t("col.combos")}</th><th>{t("col.cost")}</th>{!isLive && <th>{t("col.hit")}</th>}<th>{t("col.result")}</th>
                 <th>{t("col.dividend")}</th><th>{t("col.payout")}</th><th>{t("col.net")}</th>
                 {!isLive && <th><span className="sr-only">{t("col.delete")}</span></th>}
+                {isLive && shareName && <th><span className="sr-only">{t("credits:share.button")}</span></th>}
               </tr>
             </thead>
             <tbody>
@@ -854,6 +939,21 @@ export function HistoryPage({
                     <td className="text-ink-2">{pend ? "—" : e.poolDividendText}</td>
                     <td>{pend ? "—" : e.payout === null ? "?" : amount(e.payout)}</td>
                     <td className={cx("font-semibold", !pend && tone(e.net ?? 0))}>{pend || e.net === null ? "—" : signed(e.net)}</td>
+                    {isLive && shareName && (
+                      <td className="py-0!">
+                        <button
+                          type="button"
+                          className="inline-flex size-11 cursor-pointer items-center justify-center rounded-full text-navy-700 transition-colors hover:bg-sky-50"
+                          aria-label={t("credits:share.bet.shareAria", { when: when(e.ts) })}
+                          title={t("credits:share.button")}
+                          onClick={() => setShareBet(e)}
+                        >
+                          <svg aria-hidden="true" viewBox="0 0 16 16" className="size-[18px] fill-none stroke-current" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M8 10V2.5M5 5.5 8 2.5l3 3M3 9v3.5h10V9" />
+                          </svg>
+                        </button>
+                      </td>
+                    )}
                     {!isLive && (
                       <td>
                         <button

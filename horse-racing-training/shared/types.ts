@@ -324,6 +324,10 @@ export interface Member {
   email: string | null;
   avatarUrl: string | null;
   createdAt: string;
+  /** Shown on the public leaderboard (opt-in, off by default). */
+  showOnLeaderboard?: boolean;
+  /** Opaque id of this member's public profile (only ever sent to the member themself). */
+  publicId?: string | null;
   /** 18+ self-declaration (credits), or null. */
   adultDeclaredAt?: string | null;
   /** Staff only (admin panel): absent for normal members. The owner comes from OWNER_PHONE. */
@@ -360,4 +364,135 @@ export interface PublicConfig {
   otp: { length: number; resendSeconds: number };
   features: { liveBetting: boolean; purchases: boolean };
   credits: { signupBonus: number; minUnit: number; termsVersion: string; dailyCapHkd: number };
+}
+
+// ---- Home page (docs: coordinator spec, 2026-10-04) ----
+/** GET /api/home/summary: the model's last-3-months figures (numbers only, rounded to 0.1). */
+export interface HomeSummary {
+  /** Requested range, YYYY-MM-DD (HK). */
+  from: string;
+  to: string;
+  /** First / last settled race actually in the range (null when none). */
+  firstRace: string | null;
+  lastRace: string | null;
+  races: number;
+  meetings: number;
+  /** Model top 3 picks, per race: win = the winner was one of them; place = at least one of them finished top 3. */
+  top3Races: number;
+  top3WinHits: number;
+  top3Win: number | null;
+  top3PlaceHits: number;
+  top3Place: number | null;
+  /** Racing days (YYYY-MM-DD) with settled races in the range, newest first: the Records picker. */
+  days: string[];
+  /** Trio "Banker #1 + 2–L" (TRIO_STRATS key). */
+  trio: { key: string; bankers: number; last: number; races: number; hits: number; hit: number | null; combos: number | null; roi: number | null };
+  generatedAt: string;
+}
+
+/** Home "Records": one racing day's settled races with the model's top 3 picks vs the actual top 3. */
+export interface HomeRecordHorse {
+  num: number;
+  name: string;
+  /** HKJC horse code for the Chinese name lookup (null if the card is missing). */
+  code: string | null;
+}
+export interface HomeRecordRace {
+  venue: "ST" | "HV";
+  raceNo: number;
+  /** Model picks #1–#3 with their finishing position (null = didn't finish). */
+  picks: (HomeRecordHorse & { rank: number; fin: number | null; won: boolean; placed: boolean })[];
+  /** Actual 1st–3rd (more on a dead heat); picked = one of the model's top 3. */
+  top3: (HomeRecordHorse & { pos: number; picked: boolean })[];
+  /** Winner among the top 3 picks / at least one of them placed. */
+  win: boolean;
+  place: boolean;
+}
+export interface HomeRecordDay {
+  date: string;
+  races: HomeRecordRace[];
+  winHits: number;
+  placeHits: number;
+}
+
+/** Member profile period. */
+export type LeaderboardRange = "30d" | "all";
+export interface LeaderboardStats {
+  /** Settled LIVE bets (won / lost). */
+  bets: number;
+  hits: number;
+  /** % of settled bets that won. */
+  hitRate: number;
+  /** Credits staked (after scratch refunds) and returned. */
+  staked: number;
+  returned: number;
+  net: number;
+  /** net / staked, %. */
+  roi: number;
+}
+export interface LeaderboardRow extends LeaderboardStats {
+  rank: number;
+  /** Opaque public id (never the internal user id). */
+  publicId: string;
+  displayName: string;
+  avatarUrl: string | null;
+  /** Strategy bot key (rows that fill a board below 5 members): no profile, the client localises the name. */
+  bot?: string;
+}
+export interface LeaderboardBoard {
+  /** Bets needed to appear on this board. */
+  minBets: number;
+  rows: LeaderboardRow[];
+}
+/** Home "Member performance": two boards, the last racing day and the last 30 days. */
+export interface LeaderboardResponse {
+  /** Most recent racing day (YYYY-MM-DD) with settled races (else with settled live bets), or null. */
+  lastDay: LeaderboardBoard & { date: string | null };
+  /** First day (YYYY-MM-DD) of the 30-day window, inclusive. */
+  last30: LeaderboardBoard & { from: string };
+}
+export interface LeaderboardProfile extends LeaderboardStats {
+  publicId: string;
+  displayName: string;
+  avatarUrl: string | null;
+  /** YYYY-MM */
+  memberSince: string;
+  pools: { pool: string; bets: number; hits: number }[];
+  recent: { date: string; venue: string; races: number[]; pool: string; picks: string; stake: number; payout: number; result: "won" | "lost" }[];
+}
+
+/** A horse on a bot's page: number plus the saved racecard's name and HKJC code (null when not saved). */
+export interface BotHorse {
+  num: number;
+  name: string | null;
+  code: string | null;
+}
+export interface BotProfileBet {
+  /** YYYY-MM-DD */
+  date: string;
+  venue: string;
+  raceNo: number;
+  pool: "WIN" | "PLACE" | "TRIO";
+  /** Every horse backed (bankers first). */
+  selection: BotHorse[];
+  /** Horse numbers: Trio bankers (empty otherwise) and legs. */
+  bankers: number[];
+  legs: number[];
+  combos: number;
+  stake: number;
+  returned: number;
+  status: "won" | "lost";
+  /** The actual first three (more on a dead heat). */
+  top3: (BotHorse & { pos: number })[];
+}
+export type BotRange = "day" | "30d";
+/** GET /api/leaderboard/bot-<alias>: the bot's board numbers for the window and every bet behind them. */
+export interface BotProfile extends LeaderboardStats {
+  /** Public alias only; the strategy behind it is described by the client. */
+  alias: string;
+  /** Race dates covered, YYYY-MM-DD inclusive. */
+  from: string;
+  to: string;
+  /** Every bet behind the numbers, newest first (`bets` is already the count, as on the board). */
+  records: BotProfileBet[];
 }

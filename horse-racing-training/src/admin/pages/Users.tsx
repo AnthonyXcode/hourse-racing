@@ -31,6 +31,7 @@ interface UserDetail extends UserRow {
   adultDeclaredAt: string | null;
   termsVersion: string | null;
   flagReason: string | null;
+  showOnLeaderboard?: boolean;
   sessions: { count: number; lastSeenAt: string | null };
 }
 
@@ -248,6 +249,9 @@ export function UserDetailPage({ id }: { id: string }) {
                   <div>{t("user.joined", { date: when(u.createdAt) })}</div>
                   <div>{t("user.lastLogin", { date: when(u.lastLoginAt) })}</div>
                 </div>
+              </div>
+              <div className="text-[13px]">
+                {t("user.leaderboard")}: {u.showOnLeaderboard ? t("user.leaderboardOn") : t("user.leaderboardOff")}
               </div>
               <div className="text-[13px]">
                 {t("user.description")}: {u.description !== undefined ? (u.description ?? "–") : u.hasDescription ? <span className="text-ink-muted">{t("user.descriptionHidden")}</span> : "–"}

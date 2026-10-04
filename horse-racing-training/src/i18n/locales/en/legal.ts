@@ -23,7 +23,7 @@ export const legal = {
           "We collect only what we need to run the service:",
           "• Account and contact details, such as your name and email address, once you create an account.",
           "• Credits: purchase records (Stripe session reference, plan, amount and time), your credit transactions and live bets, and your 18+ declaration. Card details are entered on Stripe's page; we never see or store card numbers.",
-          "• Membership: your Hong Kong mobile number (to log in by SMS code), the practice bets you save to your history, and any profile details you choose to add (display name, description, photo, Telegram, WhatsApp, email). Your profile is visible only to you.",
+          "• Membership: your Hong Kong mobile number (to log in by SMS code), the practice bets you save to your history, and any profile details you choose to add (display name, description, photo, Telegram, WhatsApp, email). Your profile is visible only to you, unless you turn on the public leaderboard (see below).",
           "• Subscription and billing records, such as your plan, payment dates and amounts. Card details are entered with and processed by our payment processor; we do not receive or store your full card number.",
           "• Technical and usage information, such as IP address, browser type, pages viewed and error logs, which our servers record automatically.",
         ],
@@ -66,6 +66,12 @@ export const legal = {
         heading: "Staff access",
         body: [
           "Our staff may access your account data to operate the service: support, fraud and abuse checks, settling live bets, and accounting. Access is restricted by role: most staff see your contact details masked, and only the site owner can view them in full. Every view of a member's details, every export and every change is logged with the staff member, time and network address. Access logs are kept for 12 months; the record of changes (which holds no contact details) is kept indefinitely.",
+        ],
+      },
+      {
+        heading: "Public leaderboard (optional)",
+        body: [
+          "The member leaderboard on the Home page is opt-in and off by default. If you turn on \"Show me on the public leaderboard\" in My account, anyone visiting {{appName}} can see your display name, photo, member-since month, the results of your settled live bets (number of bets, hit rate, credits staked and returned, return on investment, a breakdown by pool) and your 20 most recent settled live bets. Your phone number, contact details, description, practice bets and account id are never shown; your public profile uses a separate random id. You can turn it off at any time and you are removed from the leaderboard immediately.",
         ],
       },
       {

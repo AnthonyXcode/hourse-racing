@@ -6,6 +6,7 @@ import { momentum as enMomentum } from "./locales/en/momentum";
 import { legal as enLegal } from "./locales/en/legal";
 import { account as enAccount } from "./locales/en/account";
 import { credits as enCredits } from "./locales/en/credits";
+import { home as enHome } from "./locales/en/home";
 import { common as zhCommon } from "./locales/zh-HK/common";
 import { bet as zhBet } from "./locales/zh-HK/bet";
 import { history as zhHistory } from "./locales/zh-HK/history";
@@ -14,7 +15,8 @@ import { momentum as zhMomentum } from "./locales/zh-HK/momentum";
 import { legal as zhLegal } from "./locales/zh-HK/legal";
 import { account as zhAccount } from "./locales/zh-HK/account";
 import { credits as zhCredits } from "./locales/zh-HK/credits";
+import { home as zhHome } from "./locales/zh-HK/home";
 
-export const en = { common: enCommon, bet: enBet, history: enHistory, analyzer: enAnalyzer, momentum: enMomentum, legal: enLegal, account: enAccount, credits: enCredits } as const;
-export const zhHK = { common: zhCommon, bet: zhBet, history: zhHistory, analyzer: zhAnalyzer, momentum: zhMomentum, legal: zhLegal, account: zhAccount, credits: zhCredits };
+export const en = { common: enCommon, bet: enBet, history: enHistory, analyzer: enAnalyzer, momentum: enMomentum, legal: enLegal, account: enAccount, credits: enCredits, home: enHome } as const;
+export const zhHK = { common: zhCommon, bet: zhBet, history: zhHistory, analyzer: zhAnalyzer, momentum: zhMomentum, legal: zhLegal, account: zhAccount, credits: zhCredits, home: zhHome };
 export const NAMESPACES = Object.keys(en) as (keyof typeof en)[];

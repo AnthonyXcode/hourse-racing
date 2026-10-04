@@ -6,7 +6,7 @@ import path from "path";
 
 export type MembersDB = Database.Database;
 
-const MIGRATIONS: string[] = [
+export const MIGRATIONS: string[] = [
   // v1
   `
   CREATE TABLE users (
@@ -237,6 +237,16 @@ const MIGRATIONS: string[] = [
   CREATE INDEX credit_ledger_created ON credit_ledger (created_at);
   CREATE INDEX live_bets_created ON live_bets (created_at);
   CREATE INDEX purchases_status ON purchases (status, created_at);
+  `,
+  // v4: public leaderboard (opt-in, off by default). public_id is a random opaque id for the public profile
+  // URL, so internal user ids never leave the server. Additive only: existing rows get a fresh public_id.
+  `
+  ALTER TABLE users ADD COLUMN show_on_leaderboard INTEGER NOT NULL DEFAULT 0 CHECK (show_on_leaderboard IN (0, 1));
+  ALTER TABLE users ADD COLUMN public_id TEXT;
+  UPDATE users SET public_id = lower(hex(randomblob(9))) WHERE public_id IS NULL;
+  CREATE UNIQUE INDEX users_public_id ON users (public_id);
+  CREATE INDEX users_leaderboard ON users (show_on_leaderboard) WHERE show_on_leaderboard = 1;
+  CREATE INDEX live_bets_user_status ON live_bets (user_id, status, date);
   `,
 ];
 

@@ -183,7 +183,13 @@ export function membersRouter(d: MembersDeps): Router {
     const u = me(req);
     const v = validateProfilePatch(req.body, u.phone_e164);
     if (!v.ok) return fail(res, 400, "validation_error", { field: v.field, detail: v.code });
-    res.json({ user: dto(d.users.update(u.id, v.patch)) });
+    const lb = req.body?.showOnLeaderboard;
+    if (lb !== undefined && typeof lb !== "boolean") return fail(res, 400, "validation_error", { field: "showOnLeaderboard", detail: "invalid" });
+    const updated = d.db.transaction(() => {
+      if (typeof lb === "boolean") d.users.setLeaderboard(u.id, lb);
+      return d.users.update(u.id, v.patch);
+    })();
+    res.json({ user: dto(updated) });
   });
 
   del("/me", requireMember, async (req, res) => {

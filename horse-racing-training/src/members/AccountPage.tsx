@@ -31,6 +31,8 @@ interface Form {
   whatsapp: string;
   sameAsLogin: boolean;
   email: string;
+  /** Public leaderboard opt-in. */
+  leaderboard: boolean;
 }
 const fromUser = (u: Member): Form => ({
   displayName: u.displayName,
@@ -39,6 +41,7 @@ const fromUser = (u: Member): Form => ({
   whatsapp: u.whatsapp && u.whatsapp !== u.phone ? u.whatsapp : "",
   sameAsLogin: u.whatsapp != null && u.whatsapp === u.phone,
   email: u.email ?? "",
+  leaderboard: !!u.showOnLeaderboard,
 });
 const sameForm = (a: Form, b: Form) => (Object.keys(a) as (keyof Form)[]).every((k) => a[k] === b[k]);
 
@@ -139,13 +142,16 @@ function AccountForm({ user, onLogout, onDeleted }: { user: Member; onLogout: ()
       if (f === "whatsapp" && form.sameAsLogin) patch.whatsappSameAsLogin = true;
       else patch[f] = v;
     }
+    const leaderboardChanged = form.leaderboard !== !!user.showOnLeaderboard;
+    if (leaderboardChanged) patch.showOnLeaderboard = form.leaderboard;
 
     setSaving(true);
     setBox("");
     let u = user;
     try {
-      if (changed.length) {
+      if (changed.length || leaderboardChanged) {
         u = (await memberApi.updateMe(patch)).user;
+        if (leaderboardChanged) track("profile_updated", { field: "leaderboard", action: form.leaderboard ? "set" : "clear" });
         for (const f of changed) track("profile_updated", { field: ANALYTICS_FIELD[f], action: u[f] == null ? "clear" : "set" });
       }
       if (avatar) {
@@ -335,6 +341,26 @@ function AccountForm({ user, onLogout, onDeleted }: { user: Member; onLogout: ()
             />
           </Field>
           <p className="text-[13px] text-ink-muted">{t("contact.helper")}</p>
+        </Card>
+
+        <Card title={t("section.leaderboard")}>
+          <label className="flex min-h-11 cursor-pointer items-center gap-3 text-[15px] font-medium text-ink">
+            <input
+              type="checkbox"
+              role="switch"
+              className="size-5 flex-none rounded-xs border-line-strong accent-navy-700"
+              checked={form.leaderboard}
+              disabled={saving}
+              aria-describedby="acc-lb-help"
+              onChange={(e) => set("leaderboard", e.target.checked)}
+            />
+            {t("leaderboard.toggle")}
+          </label>
+          <div id="acc-lb-help" className="flex flex-col gap-1.5 text-[13px] leading-normal text-ink-muted">
+            <p>{t("leaderboard.shown")}</p>
+            <p>{t("leaderboard.hidden")}</p>
+            <p>{t("leaderboard.off")}</p>
+          </div>
         </Card>
 
         <Card title={t("section.account")}>

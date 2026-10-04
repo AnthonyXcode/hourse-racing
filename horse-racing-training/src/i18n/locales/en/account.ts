@@ -63,6 +63,13 @@ export const account = {
     profile: "Profile",
     contact: "Contact",
     account: "Account",
+    leaderboard: "Public leaderboard",
+  },
+  leaderboard: {
+    toggle: "Show me on the public leaderboard",
+    shown: "Shown to everyone: your display name, photo, your settled live-bet results (bets, hit rate, credits staked and returned) and your 20 most recent settled live bets.",
+    hidden: "Never shown: your phone number, contact details, description and practice bets.",
+    off: "Off by default. You can turn it off at any time; you disappear from the leaderboard straight away.",
   },
   avatar: {
     change: "Change photo",

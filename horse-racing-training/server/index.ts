@@ -12,7 +12,12 @@ import { loadConfig, assertProductionConfig } from "./members/config";
 import { members } from "./members/service";
 import { membersRouter } from "./members/routes";
 import { apiErrorHandler } from "./apiErrors";
-import { configureClock } from "./clock";
+import { configureClock, hkDay, nowMs } from "./clock";
+import { runAnalyzer } from "./analyzer";
+import { homeRouter, loadMinBets, loadMinBetsDay } from "./home/routes";
+import { homeSummary } from "./home/summary";
+import { recordsFor } from "./home/records";
+import { botBoard } from "./home/bots";
 import { creditsProductionProblems, creditsWarnings, loadCreditsConfig } from "./credits/config";
 import { appCredits } from "./credits/instance";
 import { creditsRouter, memberHooks, stripeWebhookRouter } from "./credits/routes";
@@ -22,7 +27,7 @@ import { adminConfig, appActions } from "./admin/instance";
 import { adminRouter } from "./admin/routes";
 import { adminPageHeaders } from "./adminPages";
 import { effectiveRole, getStatus, purgeAccessLog, raiseAlert, resolveAlert, setStatus, writeAudit } from "./admin/core";
-import { getManifest } from "./dataIndex";
+import { getManifest, races as raceDb } from "./dataIndex";
 import { runLog } from "./data/runLog";
 
 // Membership: refuse to boot in production with dev OTP / Turnstile settings (docs/membership/PRD.md §5.12).
@@ -101,6 +106,20 @@ app.use(adminPageHeaders);
 app.use(seo);
 app.use("/api/data", dataApi);
 app.use("/api/admin", admin);
+// Home: public model summary (cached) + opt-in member leaderboard.
+{
+  const today = () => hkDay(nowMs());
+  /** Saved racecard runners (names + codes) for the Home records. */
+  const cardRunners = (date: string, venue: string, raceNo: number) =>
+    ((raceDb().card({ date, venue: venue as "ST" | "HV", raceNo })?.race as { entries?: { horseNumber: number; horse?: { code?: string; name?: string } }[] } | undefined)?.entries ?? null);
+  const summary = homeSummary({ run: runAnalyzer, today });
+  const bots = botBoard({ run: runAnalyzer });
+  app.use("/api", homeRouter({ db: memberDeps.db, summary,
+      records: (date) => recordsFor({ run: runAnalyzer, runners: cardRunners }, date),
+      minBets: loadMinBets(), minBetsDay: loadMinBetsDay(), today,
+      lastRaceDay: async () => (await summary.get()).days[0] ?? null,
+      bots: bots.stats, botRaces: bots.races, runners: cardRunners }));
+}
 app.use("/api", membersRouter(memberDeps));
 app.use("/api", creditsRouter(credits, memberDeps));
 app.use("/api", api);

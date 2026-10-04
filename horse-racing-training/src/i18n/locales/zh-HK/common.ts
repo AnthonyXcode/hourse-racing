@@ -9,9 +9,14 @@ export const common: Shape<typeof En> = {
     separator: "｜",
     homeTitle: "開跑前 Post Time｜香港賽馬模擬投注・賽果分析",
     description:
-      "以過往沙田及跑馬地賽事模擬投注，無需真金白銀。支援獨贏、位置、連贏、單T、三重彩及膽拖，即計成本及真實派彩，開跑前追蹤即時賠率走勢。",
+      "以過往沙田及跑馬地賽事模擬投注，按真實派彩計算；查看模型近3個月命中率，以及會員即場投注表現。",
     legal: "開跑前 Post Time 香港賽馬模擬投注及分析網站的{{title}}。",
     pages: {
+      bet: {
+        title: "模擬投注",
+        description: "以過往沙田及跑馬地賽事模擬投注，無需真金白銀。支援獨贏、位置、連贏、單T、三重彩及膽拖，即計成本及真實派彩，開跑前追蹤即時賠率走勢。",
+      },
+      member: { title: "會員表現", description: "開跑前會員已結算的即場投注：命中率、投注及派彩積分。" },
       history: { title: "我的模擬投注紀錄", description: "你在開跑前的所有模擬投注，連同中／不中及真實派彩。" },
       winPlace: {
         title: "獨贏及位置模型成績",
@@ -32,6 +37,8 @@ export const common: Shape<typeof En> = {
   },
   nav: {
     sections: "版面",
+    home: "主頁",
+    homeLink: "{{name}} 主頁",
     bet: "投注",
     history: "紀錄",
     winPlace: "獨贏 / 位置",

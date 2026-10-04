@@ -1,8 +1,9 @@
 // robots.txt and sitemap.xml, built from the request's own host so no site URL needs configuring.
-// Page list mirrors the ?tab= views in src/App.tsx (history is per-user, so left out).
+// Page list mirrors the ?tab= views in src/App.tsx (history is per-user, so left out). Home is the default
+// view (no ?tab=), so its URL is the bare site root.
 import { Router, type Request } from "express";
 
-const VIEWS = ["bet", "win-place", "trio", "momentum", "privacy", "terms", "sales", "legal", "sitemap"];
+const VIEWS = ["home", "bet", "win-place", "trio", "momentum", "privacy", "terms", "sales", "legal", "sitemap"];
 const LANGS = ["zh-HK", "en"] as const;
 
 // Behind a TLS proxy req.protocol is "http"; the proxy's X-Forwarded-Proto says what the visitor used.
@@ -13,7 +14,7 @@ const origin = (req: Request) => {
 };
 function pageUrl(base: string, view: string, lang: (typeof LANGS)[number]) {
   const url = new URL("/", base);
-  if (view !== "bet") url.searchParams.set("tab", view);
+  if (view !== "home") url.searchParams.set("tab", view);
   if (lang === "en") url.searchParams.set("language", "en");
   return url.href.replace(/&/g, "&amp;");
 }

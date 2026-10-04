@@ -8,5 +8,5 @@ export const SITE = {
   /** Registered office address. */
   address: "[Registered address, Hong Kong]",
   /** Date the current legal texts took effect (YYYY-MM-DD). */
-  legalUpdated: "2026-09-26",
+  legalUpdated: "2026-10-04",
 } as const;

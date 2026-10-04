@@ -1,5 +1,5 @@
 // Member accounts and profile fields (PRD §2.5, §6).
-import { randomUUID } from "crypto";
+import { randomBytes, randomUUID } from "crypto";
 import type { MembersDB } from "./db";
 import type { Member, MemberLocale } from "../../shared/types";
 import type { NormalizedPatch } from "../../shared/validation";
@@ -17,7 +17,14 @@ export interface UserRow {
   created_at: string;
   updated_at: string;
   last_login_at: string;
+  /** Public leaderboard opt-in (v4), off by default. */
+  show_on_leaderboard?: number;
+  /** Random opaque id for the public profile (v4); never the internal id. */
+  public_id?: string | null;
 }
+
+/** A fresh public profile id: 18 hex chars, unguessable and unrelated to the user id. */
+export const newPublicId = () => randomBytes(9).toString("hex");
 
 /** Default display name: "會員 5678" / "Member 5678" (last 4 digits of the login number). */
 export const defaultName = (phone: string, locale: MemberLocale) => `${locale === "en" ? "Member" : "會員"} ${phone.slice(-4)}`;
@@ -33,6 +40,8 @@ export function toMember(u: UserRow): Member {
     email: u.email,
     avatarUrl: u.avatar_file ? `/api/avatars/${u.avatar_file}` : null,
     createdAt: u.created_at,
+    showOnLeaderboard: !!u.show_on_leaderboard,
+    publicId: u.public_id ?? null,
   };
 }
 
@@ -60,8 +69,8 @@ export function userStore(db: MembersDB, now: () => Date = () => new Date()) {
         }
         const id = randomUUID();
         db.prepare(
-          "INSERT INTO users (id, phone_e164, display_name, locale, created_at, updated_at, last_login_at) VALUES (?, ?, ?, ?, ?, ?, ?)"
-        ).run(id, phone, defaultName(phone, locale), locale, ts, ts, ts);
+          "INSERT INTO users (id, phone_e164, display_name, locale, created_at, updated_at, last_login_at, public_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+        ).run(id, phone, defaultName(phone, locale), locale, ts, ts, ts, newPublicId());
         return { user: byId.get(id)!, isNew: true };
       })();
     },
@@ -71,6 +80,11 @@ export function userStore(db: MembersDB, now: () => Date = () => new Date()) {
         const sets = keys.map((k) => `${COLUMN[k]} = @${k}`).join(", ");
         db.prepare(`UPDATE users SET ${sets}, updated_at = @updatedAt WHERE id = @id`).run({ ...patch, updatedAt: now().toISOString(), id });
       }
+      return byId.get(id)!;
+    },
+    /** Public leaderboard opt-in (also makes sure the member has a public id). */
+    setLeaderboard(id: string, on: boolean): UserRow {
+      db.prepare("UPDATE users SET show_on_leaderboard = ?, public_id = COALESCE(public_id, ?), updated_at = ? WHERE id = ?").run(on ? 1 : 0, newPublicId(), now().toISOString(), id);
       return byId.get(id)!;
     },
     /** Set (or clear) the avatar file; returns the previous file name so the caller can delete it. */

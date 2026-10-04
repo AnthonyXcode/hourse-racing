@@ -8,9 +8,14 @@ export const common = {
     separator: " | ",
     homeTitle: "Post Time — Hong Kong horse racing bet practice & race analysis",
     description:
-      "Practise bets on past Sha Tin and Happy Valley races, risk-free. Win, Place, Quinella, Trio, Tierce with bankers, real payouts and live odds moves.",
+      "Practise bets on past Sha Tin and Happy Valley races with real dividends, see the model's hit rate over the last 3 months and how members' live bets are doing.",
     legal: "{{title}} for Post Time, the Hong Kong horse racing bet practice and analysis site.",
     pages: {
+      bet: {
+        title: "Practise betting",
+        description: "Practise bets on past Sha Tin and Happy Valley races, risk-free. Win, Place, Quinella, Trio, Tierce with bankers, real payouts and live odds moves.",
+      },
+      member: { title: "Member performance", description: "A Post Time member's settled live bets: hit rate, credits staked and returned." },
       history: { title: "Your practice bets", description: "Every practice bet you have placed on Post Time, with hit or miss and the real payout." },
       winPlace: {
         title: "Win & Place model results",
@@ -31,6 +36,8 @@ export const common = {
   },
   nav: {
     sections: "Sections",
+    home: "Home",
+    homeLink: "{{name}} home",
     bet: "Bet",
     history: "History",
     winPlace: "Win / Place",

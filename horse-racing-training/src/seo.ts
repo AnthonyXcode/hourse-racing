@@ -6,18 +6,18 @@ import { useTranslation } from "react-i18next";
 import { LEGAL_VIEWS, type LegalView } from "./LegalPages";
 import { LANGS, PARAM, type Lang } from "./i18n/url";
 
-const PAGE_KEY = { history: "history", "win-place": "winPlace", trio: "trio", momentum: "momentum", settings: "settings", account: "account", credits: "credits" } as const;
+const PAGE_KEY = { bet: "bet", member: "member", history: "history", "win-place": "winPlace", trio: "trio", momentum: "momentum", settings: "settings", account: "account", credits: "credits" } as const;
 type ToolView = keyof typeof PAGE_KEY;
 /** Legal view → its key in the legal namespace (privacy/terms/sales/sitemap share the view name). */
 const LEGAL_KEY = { privacy: "privacy", terms: "terms", sales: "sales", legal: "legalNotices", sitemap: "sitemap" } as const satisfies Record<LegalView, string>;
 /** Per-user pages: nothing for a search engine to show. */
-const NOINDEX = new Set<string>(["history", "settings", "account", "credits"]);
+const NOINDEX = new Set<string>(["history", "settings", "account", "credits", "member"]);
 const OG_LOCALE: Record<Lang, string> = { "zh-HK": "zh_HK", en: "en_US" };
 
 /** Absolute URL of `view` in `lang`, with only the parameters that change the page (tab, language). */
 export function pageUrl(origin: string, view: string, lang: Lang): string {
   const url = new URL("/", origin);
-  if (view !== "bet") url.searchParams.set("tab", view);
+  if (view !== "home") url.searchParams.set("tab", view);
   if (lang === "en") url.searchParams.set(PARAM, "en");
   return url.href;
 }
@@ -54,7 +54,7 @@ export function useSeo(view: string) {
       title = t(`common:seo.pages.${key}.title`) + t("common:seo.separator") + brand;
       description = t(`common:seo.pages.${key}.description`);
     } else {
-      title = t("common:seo.homeTitle"); // the bet tab is the home page
+      title = t("common:seo.homeTitle"); // the Home tab is the site root
       description = home;
     }
 

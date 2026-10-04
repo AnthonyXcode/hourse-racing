@@ -18,8 +18,9 @@ interface Section {
 /** URL of the current page switched to view `v` (keeps ?language= and anything else). */
 export function viewHref(v: string): string {
   const url = new URL(window.location.href);
-  if (v === "bet") url.searchParams.delete("tab");
+  if (v === "home") url.searchParams.delete("tab"); // Home is the default view (src/views.ts)
   else url.searchParams.set("tab", v);
+  url.searchParams.delete("id"); // member-profile only
   return url.pathname + url.search;
 }
 
