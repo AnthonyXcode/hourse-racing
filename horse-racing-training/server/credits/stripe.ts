@@ -117,6 +117,11 @@ export function purchases(deps: {
       try {
         session = await deps.stripe.checkout.sessions.create(
           {
+            // Stripe "Managed Payments" (Stripe as merchant of record) can be on by default for an account; it
+            // needs a product tax code on every line and is meant for eligible digital goods. Credits for a
+            // racing practice app are sold by us directly (no HK sales tax), so opt out explicitly. Not yet in
+            // stripe-node's types, hence the cast; Stripe accepts it as a normal create parameter.
+            ...({ managed_payments: { enabled: false } } as Record<string, unknown>),
             mode: "payment",
             line_items: [
               {

@@ -395,6 +395,8 @@ describe("Stripe", () => {
     const p = h.sessions[0]!;
     expect(p.line_items![0]!.price_data).toMatchObject({ currency: "hkd", unit_amount: 30000 });
     expect(p.metadata).toEqual({ user_id: u.user.id, plan_id: "hk300", credits: "4000" });
+    // Managed Payments (Stripe as merchant of record) is opted out explicitly: it would demand a product tax code.
+    expect((p as Record<string, unknown>).managed_payments).toEqual({ enabled: false });
     expect(p.success_url).toBe("http://localhost:5173/?tab=credits&checkout=success&session_id={CHECKOUT_SESSION_ID}");
     expect((await h.call("POST", "/credits/checkout", { planId: "p999" }, u.cookie)).body.error.code).toBe("invalid_plan");
     expect(PLANS.map((x) => [x.id, x.priceHkd, x.credits])).toEqual([["hk10", 10, 100], ["hk100", 100, 1200], ["hk300", 300, 4000]]);
