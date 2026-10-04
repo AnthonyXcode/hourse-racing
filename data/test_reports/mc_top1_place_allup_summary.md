@@ -56,6 +56,7 @@
 | **39** | **23 Sep** | **HV** | **Turf** | **Good** | **9** | **30.3%** | **62.9%** | **5/9** | **55.6%** | **❌❌❌✅✅✅❌✅✅** | **3 (R4-R6)** |
 | **40** | **27 Sep** | **ST** | **Mixed (AWT+Turf)** | **Good / G-F** | **11** | **36.5%** | **70.2%** | **5/11** | **45.5%** | **❌❌❌❌✅✅✅❌✅❌✅** | **3 (R5-R7)** |
 | **41** | **1 Oct** | **ST** | **Turf** | **Good to Firm** | **11** | **31.1%** | **66.1%** | **6/11** | **54.5%** | **❌❌✅✅✅✅❌❌❌✅✅** | **4 (R3-R6)** |
+| **42** | **4 Oct** | **ST** | **Mixed (AWT+Turf)** | **AWT Good / Turf G-F** | **11** | **39.9%** | **72.2%** | **6/11** | **54.5%** | **❌✅✅❌❌✅✅❌❌✅✅** | **2 (R2-R3)** |
 
 \*Meeting 8 **R1** (6 runners): MC #1 **#6** ran **3rd** but HKJC Place pool pays **two** places only → **$0** dividend; counts as **❌** for streaks and all-ups (same dividend logic as other meetings).
 
@@ -1897,3 +1898,27 @@ MC–market split, three meetings combined: **MC #1 at market rank 1–2 placed 
 **Placed:** 6/11 (54.5%) | **Pattern:** ❌❌✅✅✅✅❌❌❌✅✅ | **Max streak:** 4 (R3-R6)
 
 **Trio card note (R1–R11):** **WIN.** Strategy A (as bet) **4/11 (R3 $109, R5 $107, R6 $258, R10 $413), $790 staked, $887 returned, +$97, ROI +12.3%**. Canonical MC top-6 B: **3/11, $1,100 staked, −$471, −42.8%** (missed R6: #8 was MC #7, and A included it via SCMP `+excuses`). B-trio (as bet): **4/11, $1,410, −$523, −37.1%**. HIGH/Dominant: A 2/4, +$372. MEDIUM: 2/7, −$275. When MC #1 placed, it won 5 of 6 times. MC #1 at SP rank 1–2 placed 5/6 (five-meeting combined 20/28). Rank 4+ placed 0/2 (combined 3/15). The R1 MC #1 #5 GOOD FORTUNE was the 2.1 SP favourite and finished last. Near-zero blind spot: MC Win% < 3% at SP ≤ 6 placed 2/2 (R7 #10, R8 #11); 9/11 over three meetings. 'Undervalued > 200%' calls 0/3 (season 0/8). SCMP `+excuses` at pre-race ≤ 8 placed 8/12.
+
+---
+
+## Meeting 42: Sha Tin | 4 Oct 2026 (11 races)
+
+**MC #1** = raw MC Win% from trio_strategy_20261004_ST_R*.md (10,000 iterations, form=all). **Results** from data/historical/results_20261004_ST.json (scraped first time; all Win/Place/Trio dividends match the momentum API; three truncated Quinella/QP values were corrected). Place $ = HKJC place dividend per $10. Going: **AWT Good** (R1, R3, R5, R9) / **Turf Good to Firm** (rest). R9 #3 RELIABLE PROFIT withdrawn (11 ran). Odds used by reports: HKJC pool ~10:22–10:35 HKT.
+
+| Race | Class | Dist (m) | MC #1 | MC Win% | MC Place% | Placed? | Place $ (if placed) |
+|------|-------|----------|-------|---------|-----------|---------|---------------------|
+| R1 | Class 5 | 1650 | #2 HAILTOTHEVICTORS | 45.7% | 81.6% | ❌ (6th) | — |
+| R2 | Class 4 | 1200 | #13 KOL | 31.4% | 62.3% | ✅ 1st | 12 |
+| R3 | Class 2 | 1650 | #2 TALENTS AMBITION | 62.8% | 93.1% | ✅ 2nd | 14.5 |
+| R4 | Class 5 | 1400 | #4 RATTAN GALAXY | 36.5% | 69.6% | ❌ (12th) | — |
+| R5 | Class 4 | 1650 | #4 VIVACIOUS WIN | 35.5% | 67.5% | ❌ (10th) | — |
+| R6 | Class 4 | 1400 | #2 GRAND PATCH | 27.0% | 59.7% | ✅ 2nd | 14.5 |
+| R7 | Class 4 | 1400 | #3 LADY'S LOVE | 47.6% | 77.9% | ✅ 1st | 22.5 |
+| R8 | Class 3 | 1800 | #5 FLOW WATER FLOW | 45.0% | 79.4% | ❌ (6th) | — |
+| R9 | Class 3 | 1650 | #8 BLOSSOMY | 34.5% | 68.2% | ❌ (7th) | — |
+| R10 | Class 3 | 1000 | #1 HORSEPOWER | 23.8% | 53.4% | ✅ 1st | 49 |
+| R11 | Class 3 | 1200 | #2 SOLID STATE | 49.2% | 81.8% | ✅ 2nd | 13 |
+
+**Placed:** 6/11 (54.5%) | **Pattern:** ❌✅✅❌❌✅✅❌❌✅✅ | **Max streak:** 2 (R2-R3, R6-R7, R10-R11)
+
+**Trio card note (R1–R11):** **WIN.** Strategy A (as bet) **2/11 (R3 $116, R11 $1,148), $1,130 staked, $1,264 returned, +$134, ROI +11.9%**. Canonical MC top-6 B: **2/11 (same races), $1,100 staked, +$164, +14.9%**. B won by $30 on stake alone, because A's must-include extensions made R8–R10 into $150–$210 tickets. B-trio (as bet): **3/11 (R2, R3, R7), $1,470, −$863, −58.7%**. Its swap removed R11's #3 (3rd, $1,148 Trio) and R8's winner #8. Dominant: A 2/8, +$544. Competitive: 0/3, −$410. MC #1 ≥ 35% placed only 3/7, while 23–35% placed 3/4. MC #1 at SP rank 1–2 placed 4/6 (six-meeting combined 24/34). Rank 4+ placed 1/2 (combined 4/17), and that one was R10 #1 HORSEPOWER, which won at 18. The R5 MC #1 #4 steamed 9.8→5.3 and ran 10th. Near-zero blind spot: MC Win% < 3% at SP ≤ 6 placed 3/5 (R1 #14 fav, R2 #2, R7 #14); 12/16 over four meetings. SCMP `+trial` placed 10/17 (8/12 at pre-race ≤ 10) and was the single pool gap in R2, R6 and R7. 'Undervalued > 200%' calls 1/6 (season 1/14). Every gap horse was MC #7 or lower.
