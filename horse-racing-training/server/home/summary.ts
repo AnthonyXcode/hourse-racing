@@ -2,7 +2,7 @@
 // every settled race in [today − 3 months, today] HK time, with no filters. Only the computed figures are
 // returned, never the per-horse payload. Cached in memory (~10 min); the analyzer keeps its per-race cache,
 // so a refresh only simulates races it hasn't seen.
-import { MC, PLACED, SBY, WON, isSettled, rate, trioStats, type AnalyzerPayload, type AnalyzerRace, type RankIdx } from "../../shared/analyzer/model";
+import { MC, PLACED, SBY, VENUE_DEFAULTS, WON, applyFilters, isSettled, metrics, rate, topOf, trioStats, type AnalyzerPayload, type AnalyzerRace, type RankIdx } from "../../shared/analyzer/model";
 import type { HomeSummary } from "../../shared/types";
 
 export const SUMMARY_TTL_MS = 10 * 60_000;
@@ -29,6 +29,7 @@ export function summarize(all: AnalyzerRace[], from: string, to: string, generat
   const trio = trioStats(races, MC, strat);
   const dates = races.map((r) => r.d).sort();
   const model = top3(races, MC);
+  const five = fiveStar(races);
   return {
     from,
     to,
@@ -42,6 +43,10 @@ export function summarize(all: AnalyzerRace[], from: string, to: string, generat
     top3PlaceHits: model.placeHits,
     top3Place: model.place,
     days: [...new Set(dates)].reverse(),
+    fiveStarRaces: five.races,
+    fiveStarPlaceHits: five.placeHits,
+    fiveStarPlace: five.place,
+    fiveStarRoi: five.roi,
     trio: { key: strat.key, bankers: strat.B, last: strat.L, races: trio.races, hits: trio.hits, hit: round(trio.hit), combos: round(trio.combos), roi: round(trio.roi) },
     generatedAt,
   };
@@ -61,6 +66,17 @@ export function top3(races: AnalyzerRace[], idx: RankIdx) {
     if (ps.some((h) => h[PLACED])) placeHits++;
   }
   return { races: n, winHits, win: round(rate(winHits, n)), placeHits, place: round(rate(placeHits, n)) };
+}
+
+/**
+ * 5★ races: the model's top pick meets every rule of its venue's strategy (the Bet page's confidence stars,
+ * strategyChecks / confidence = 5 of 5; the Win/Place tab's default filters). Place rate of that top pick.
+ */
+export function fiveStar(races: AnalyzerRace[]) {
+  const picked = (["ST", "HV"] as const).flatMap((v) => applyFilters(races, VENUE_DEFAULTS[v]));
+  const placeHits = picked.filter((r) => topOf(r)[PLACED]).length;
+  // ROI of a 10-credit place bet on that top pick in every 5★ race, at the real place dividends.
+  return { races: picked.length, placeHits, place: round(rate(placeHits, picked.length)), roi: picked.length ? round(metrics(picked).placeRoi) : null };
 }
 
 /** Cached summary: fresh for `ttlMs`; after that the stale copy is served while one refresh runs. */

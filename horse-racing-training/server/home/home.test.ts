@@ -47,6 +47,11 @@ describe("home summary", () => {
       top3PlaceHits: 2,
       top3Place: 100,
       days: ["2026-09-12", "2026-08-01"], // newest first; C (unsettled) not listed
+      // A/B have avgDiff 5 (< ST's 12): no 5★ races.
+      fiveStarRaces: 0,
+      fiveStarPlaceHits: 0,
+      fiveStarPlace: null,
+      fiveStarRoi: null,
       // Banker #1 + 2–6: 4 runners covered → C(3,2) = 3 combos/race; 1 hit of 2; stake 60, return 100 → +66.7%.
       trio: { key: "k16", bankers: 1, last: 6, races: 2, hits: 1, hit: 50, combos: 3, roi: 66.7 },
       generatedAt: "t",
@@ -83,6 +88,19 @@ describe("home summary", () => {
     // D: winner #4 not picked → no win; pick #1 ran 2nd → place.
     expect(d2).toMatchObject({ raceNo: 2, win: false, place: true });
     expect(day).toMatchObject({ date: "2026-09-12", winHits: 1, placeHits: 2 });
+  });
+
+  it("5★: top-pick place rate over races meeting every rule of their venue's strategy", () => {
+    // ST defaults: Turf, sparse ≤ 3, close ≤ 4, avgDiff ≥ 12, gap ≥ 4, top pick trip runs ≥ 3.
+    const withTrip = (h: HorseRow, trip: number): HorseRow => Object.assign([...h], { 12: trip }) as HorseRow;
+    const ok = (d: string, topFin: number): AnalyzerRace => ({
+      ...race(d, [withTrip(horse(1, 1, topFin), 3), horse(2, 2, topFin === 1 ? 2 : 1), horse(3, 3, 3), horse(4, 4, topFin === 4 ? 2 : 4)], 0),
+      ad: 13, gp: 5, c8: 3, sp: 0,
+    });
+    const placed = ok("2026-09-01", 2);
+    const missed = ok("2026-09-02", 4);
+    const tooClose = { ...ok("2026-09-03", 1), c8: 5 }; // one rule fails → not 5★
+    expect(summarize([placed, missed, tooClose, A, B], "a", "b")).toMatchObject({ fiveStarRaces: 2, fiveStarPlaceHits: 1, fiveStarPlace: 50, fiveStarRoi: -100 }); // fixtures carry no place dividends → nothing returned
   });
 
   it("covers exactly 3 calendar months back (HK dates, month ends clamped)", () => {

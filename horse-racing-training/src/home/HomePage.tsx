@@ -125,15 +125,26 @@ function ModelSection({ onNavigate }: { onNavigate: (v: Nav) => void }) {
           <p className="py-4 text-center text-ink-muted">{t("model.empty")}</p>
         ) : (
           <>
-            <motion.div className="grid grid-cols-2 gap-3 lg:grid-cols-4" variants={stagger(0.09, 0.15)} initial={skipEntrance ? false : "hidden"} whileInView="show" viewport={{ once: true, amount: 0.3 }}>
+            <motion.div className="grid grid-cols-2 gap-3 lg:grid-cols-5" variants={stagger(0.09, 0.15)} initial={skipEntrance ? false : "hidden"} whileInView="show" viewport={{ once: true, amount: 0.3 }}>
               <Stat label={t("model.racesLabel")} value={<CountUp value={data.races} format={(v) => (v == null ? "–" : fmt.num(Math.round(v)))} />} sub={t("model.racesSub", { meetings: fmt.num(data.meetings), range })} />
               <Stat label={t("model.winLabel")} value={<CountUp value={data.top3Win} format={pct} />} sub={t("model.top3Sub", { hits: fmt.num(data.top3WinHits), races: fmt.num(data.top3Races) })} more={details("win-place")} />
               <Stat label={t("model.placeLabel")} value={<CountUp value={data.top3Place} format={pct} />} sub={t("model.top3Sub", { hits: fmt.num(data.top3PlaceHits), races: fmt.num(data.top3Races) })} more={details("win-place")} />
               <Stat
                 label={`${t("model.trioLabel")} · ${t("model.trioName", { last: data.trio.last })}`}
                 value={<CountUp value={data.trio.hit} format={pct} />}
-                sub={t("model.trioSub", { combos: data.trio.combos == null ? "–" : fmt.num(data.trio.combos, { maximumFractionDigits: 1 }), roi: data.trio.roi == null ? "–" : signed(data.trio.roi) })}
+                sub={t("model.trioSub", { combos: data.trio.combos == null ? "–" : fmt.num(data.trio.combos, { maximumFractionDigits: 1 }) })}
                 more={details("trio")}
+              />
+              <Stat
+                label={t("model.fiveStarLabel")}
+                value={<CountUp value={data.fiveStarPlace ?? null} format={pct} />}
+                sub={t("model.fiveStarSub", {
+                  hits: fmt.num(data.fiveStarPlaceHits ?? 0),
+                  races: fmt.num(data.fiveStarRaces ?? 0),
+                  roi: data.fiveStarRoi == null ? "–" : signed(data.fiveStarRoi),
+                })}
+                more={details("win-place")}
+                className="col-span-2 lg:col-span-1"
               />
             </motion.div>
             <Records days={data.days ?? []} />
@@ -280,9 +291,9 @@ function RecordRow({ r }: { r: HomeRecordDay["races"][number] }) {
   );
 }
 
-function Stat({ label, value, sub, more }: { label: string; value: ReactNode; sub: ReactNode; more?: ReactNode }) {
+function Stat({ label, value, sub, more, className }: { label: ReactNode; value: ReactNode; sub: ReactNode; more?: ReactNode; className?: string }) {
   return (
-    <motion.div variants={rise} whileHover={{ y: -3 }} className="flex min-w-0 flex-col rounded-card border border-line bg-surface px-[13px] pt-2.5 pb-1.5 transition-shadow hover:shadow-card">
+    <motion.div variants={rise} whileHover={{ y: -3 }} className={cx("flex min-w-0 flex-col rounded-card border border-line bg-surface px-[13px] pt-2.5 pb-1.5 transition-shadow hover:shadow-card", className)}>
       <div className="text-[13px] leading-snug text-ink-muted">{label}</div>
       <div className="mt-1.5 text-[26px] leading-none font-medium text-navy-900 tabular-nums sm:text-[30px]">{value}</div>
       <div className="mt-1.5 text-[13px] leading-snug text-ink">{sub}</div>

@@ -385,6 +385,12 @@ export interface HomeSummary {
   top3Place: number | null;
   /** Racing days (YYYY-MM-DD) with settled races in the range, newest first: the Records picker. */
   days: string[];
+  /** 5★ races (top pick meets every venue strategy rule): their top pick's place hit rate. */
+  fiveStarRaces: number;
+  fiveStarPlaceHits: number;
+  fiveStarPlace: number | null;
+  /** ROI % of a place bet on that top pick in every 5★ race (null = none). */
+  fiveStarRoi: number | null;
   /** Trio "Banker #1 + 2–L" (TRIO_STRATS key). */
   trio: { key: string; bankers: number; last: number; races: number; hits: number; hit: number | null; combos: number | null; roi: number | null };
   generatedAt: string;
