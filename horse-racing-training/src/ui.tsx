@@ -1,6 +1,6 @@
 // Presentational components for the bet trainer.
 import type { CardHorse, PastPerformance, RaceCard, RaceLeg, RaceResult, SettleResult, SettleDetail, BetTypeId, HistoryEntry } from "../shared/types";
-import { Suspense, lazy, useRef, useState, type ReactNode } from "react";
+import { Suspense, lazy, useEffect, useId, useRef, useState, type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import type { TFunction } from "i18next";
 import { useGlossary } from "./i18n/glossary";
@@ -11,6 +11,7 @@ import { Spinner, useDialog } from "./members/ui";
 import { MIN_UNIT, ymd, type SettledBet } from "./slip";
 import { useSlipText } from "./BetSlip";
 import { Coin } from "./credits/dialogs";
+import { api } from "./api";
 
 /** Left-aligned card table: 13px headers, hairline rows, zebra stripes. Tighter cell padding on phones. */
 const cardTable =
@@ -43,6 +44,7 @@ export function RaceCardTable({
   bankerMax,
   head,
   readOnly,
+  analysisFor,
 }: {
   card: RaceCard;
   pool: Pool;
@@ -57,9 +59,12 @@ export function RaceCardTable({
   head?: ReactNode;
   /** View-only race (LIVE: closed / settled / void): every tick disabled. */
   readOnly?: boolean;
+  /** Meeting (date YYYYMMDD, venue) to load the pre-race analysis for: stars on the model's top 3. */
+  analysisFor?: { date: string; venue: string };
 }) {
   const { t } = useTranslation(["bet", "common"]);
   const g = useGlossary();
+  const topPicks = useTopPicks(analysisFor, card.raceNumber);
   const [formOf, setFormOf] = useState<CardHorse | null>(null);
   const entries = [...card.entries].sort((a, b) => a.horseNumber - b.horseNumber);
   const runners = entries.filter((e) => !e.isScratched).map((e) => e.horseNumber);
@@ -117,6 +122,7 @@ export function RaceCardTable({
                     >
                       <Name kind="horse" code={e.horse.code} en={e.horse.name} />
                     </button>
+                    {topPicks.get(e.horseNumber) && <PickStar {...topPicks.get(e.horseNumber)!} />}
                     {e.jockey?.name && (
                       <div className="mt-0.5 text-xs text-ink-muted md:hidden">
                         <Name kind="jockey" code={e.jockey.code} en={e.jockey.name} />
@@ -186,6 +192,51 @@ export function RaceCardTable({
       </div>
       {formOf && <HorseFormModal horse={formOf} onClose={() => setFormOf(null)} />}
     </section>
+  );
+}
+
+// ---- Model's top 3 on the race card ----
+/** horseNumber → { rank 1–3, place % } from the pre-race analysis (same as the analysis panel). */
+function useTopPicks(at: { date: string; venue: string } | undefined, raceNo: number) {
+  const [picks, setPicks] = useState<Map<number, { rank: number; placePct: number }>>(new Map());
+  useEffect(() => {
+    if (!at) return setPicks(new Map());
+    let live = true;
+    api
+      .raceAnalysis(at.date, at.venue, raceNo)
+      .then((a) => live && setPicks(new Map(a.horses.filter((h) => h.modelRank >= 1 && h.modelRank <= 3).map((h) => [h.horseNo, { rank: h.modelRank, placePct: h.placePct }]))))
+      .catch(() => live && setPicks(new Map())); // no analysis: no stars
+    return () => {
+      live = false;
+    };
+  }, [at?.date, at?.venue, raceNo]); // eslint-disable-line react-hooks/exhaustive-deps
+  return picks;
+}
+
+/** Outline star filled from the bottom up to the pick's place % (gold, as the analysis panel's stars). */
+function PickStar({ rank, placePct }: { rank: number; placePct: number }) {
+  const { t } = useTranslation("bet");
+  const id = useId();
+  const p = Math.max(0, Math.min(100, placePct));
+  const label = t("card.pickStar", { rank, pct: p.toFixed(0) });
+  return (
+    <span className="ml-1 inline-flex translate-y-[2px] align-baseline" title={label} role="img" aria-label={label}>
+      <svg viewBox="0 0 20 20" width="15" height="15" aria-hidden="true">
+        <defs>
+          <linearGradient id={id} x1="0" y1="1" x2="0" y2="0">
+            <stop offset={`${p}%`} stopColor="#e8a317" />
+            <stop offset={`${p}%`} stopColor="#e8a317" stopOpacity="0" />
+          </linearGradient>
+        </defs>
+        <path
+          d="M10 1.8l2.47 5.01 5.53.8-4 3.9.94 5.5L10 14.42l-4.94 2.6.94-5.5-4-3.9 5.53-.8z"
+          fill={`url(#${id})`}
+          stroke="#e8a317"
+          strokeWidth="1.3"
+          strokeLinejoin="round"
+        />
+      </svg>
+    </span>
   );
 }
 

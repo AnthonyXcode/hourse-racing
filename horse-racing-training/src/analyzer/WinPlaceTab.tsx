@@ -98,6 +98,7 @@ export function WinPlaceTab({ races }: { races: AnalyzerRace[] }) {
         <Breakdown title={t("byDiff")} head={t("col.avgDiff")} rows={charts.diff} />
         <Breakdown title={t("byClass")} head={t("common:word.class")} rows={charts.cls} label={g.raceClass} />
         <Breakdown title={t("byField")} head={t("col.runners")} rows={charts.field} />
+        <PickPlaceCard m={M} races={races.length} />
       </div>
 
       <H2 sub={t("wp.raceByRaceSub")}>{t("wp.raceByRace")}</H2>
@@ -106,6 +107,44 @@ export function WinPlaceTab({ races }: { races: AnalyzerRace[] }) {
       <H2 sub={t("wp.monthByMonthSub")}>{t("wp.monthByMonth")}</H2>
       <MonthlyTable races={races} rows={charts.monthly} />
     </>
+  );
+}
+
+/** Place hit rate of the model's #1, #2 and #3 picks over the filtered races. */
+function PickPlaceCard({ m, races }: { m: ReturnType<typeof metrics>; races: number }) {
+  const { t } = useTranslation(["analyzer", "common"]);
+  const rows: [number, number][] = [
+    [1, m.mcTopPlace],
+    [2, m.mc2Place],
+    [3, m.mc3Place],
+  ];
+  return (
+    <div className={panel}>
+      <h3 className={h3}>{t("byPick")}</h3>
+      <div className={scroll}>
+        <table className={cx(table, tablePadTight)}>
+          <thead>
+            <tr>
+              <th>{t("col.pick")}</th>
+              <th>{t("col.races")}</th>
+              <th>{t("col.placePct")}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map(([n, v]) => (
+              <tr key={n}>
+                <td>{t("col.pickN", { n })}</td>
+                <td>{races}</td>
+                <td>
+                  {pc(v)} <Bar v={v} />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <div className={note}>{t("byPickNote")}</div>
+    </div>
   );
 }
 

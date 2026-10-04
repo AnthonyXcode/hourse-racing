@@ -52,6 +52,8 @@ export const analyzer: Shape<typeof En> = {
     calibAxis: "預測 %（區間中位數）",
   },
   col: {
+    pick: "排名",
+    pickN: "第{{n}}選",
     races: "場數",
     runners: "出賽馬數",
     avgDiff: "平均差距",
@@ -107,6 +109,8 @@ export const analyzer: Shape<typeof En> = {
   byDiff: "按實力差距（avgDiff）",
   byClass: "按班次",
   byField: "按出賽馬數",
+  byPick: "按模型排名",
+  byPickNote: "每場模型第1、2、3選跑入前三名的比率。",
   wp: {
     kpi: {
       topWin: "首選勝出率",

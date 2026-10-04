@@ -109,6 +109,15 @@ describe("applyFilters + metrics", () => {
     expect(m.placeRoi).toBe(((15 - 20) / 20) * 100);
     expect(m.favWin).toBe(100);
   });
+  it("place rate of the model's #2 and #3 picks", () => {
+    // x: #2 ran 2nd (placed), #3 ran 5th. y: #2 ran 4th, #3 ran 3rd (placed). z has no #3 pick.
+    const x = race([horse(1, 1, 1), horse(2, 2, 2), horse(3, 3, 5), horse(4, 4, 3)]);
+    const y = race([horse(1, 1, 1), horse(2, 2, 4), horse(3, 3, 3), horse(4, 4, 2)]);
+    const z = race([horse(1, 1, 2), horse(2, 2, 1), horse(0, 3, 3)]);
+    const m = metrics([x, y, z]);
+    expect(m.mc2Place).toBe((2 / 3) * 100); // x placed, y not, z (won) placed
+    expect(m.mc3Place).toBe(50); // only x and y have a #3
+  });
 });
 
 describe("venue default filters", () => {

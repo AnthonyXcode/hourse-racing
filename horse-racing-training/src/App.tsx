@@ -933,6 +933,7 @@ function AppBody() {
                       bankerEnabled={bankerEnabled}
                       bankerMax={bankerMax}
                       readOnly={betMode === "view"}
+                      analysisFor={date && venue ? { date, venue } : undefined}
                       head={
                         <>
                         {liveMeeting && raceStatusOf(editRace) === "closed" && (

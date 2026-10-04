@@ -50,6 +50,8 @@ export const analyzer = {
     calibAxis: "predicted % (bucket midpoint)",
   },
   col: {
+    pick: "Pick",
+    pickN: "#{{n}} pick",
     races: "Races",
     runners: "Runners",
     avgDiff: "avgDiff",
@@ -105,6 +107,8 @@ export const analyzer = {
   byDiff: "By field spread (avgDiff)",
   byClass: "By class",
   byField: "By field size",
+  byPick: "By model pick",
+  byPickNote: "Place hit rate of the model's 1st, 2nd and 3rd pick in each race (finished 1st–3rd).",
   wp: {
     kpi: {
       topWin: "Top pick wins",

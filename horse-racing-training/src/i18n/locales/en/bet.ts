@@ -22,6 +22,7 @@ export const bet = {
     wp: "Win / Place",
   },
   card: {
+    pickStar: "Model pick #{{rank}} · place {{pct}}%",
     win: "Win",
     place: "Place",
     odds: "Win odds",

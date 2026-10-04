@@ -25,6 +25,7 @@ export const bet: Shape<typeof En> = {
     wp: "獨贏 / 位置",
   },
   card: {
+    pickStar: "模型第{{rank}}選 · 位置 {{pct}}%",
     win: "獨贏",
     place: "位置",
     odds: "獨贏賠率",

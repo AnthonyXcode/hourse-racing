@@ -208,11 +208,18 @@ export function metrics(races: AnalyzerRace[]) {
   const winRet = tops.reduce((s, h) => s + (h[WON] && h[WODDS] > 0 ? h[WODDS] * UNIT : 0), 0);
   const placeRet = tops.reduce((s, h) => s + (h[PLACED] && h[PODDS] > 0 ? h[PODDS] * UNIT : 0), 0);
   const finished = horses.filter((h) => h[FIN] > 0);
+  /** Place % of the model's pick at `rank` (1–3), over races that have one. */
+  const rankPlace = (rank: number) => {
+    const picks = races.map((r) => r.h.find((h) => h[MC] === rank)).filter((h): h is HorseRow => !!h);
+    return rate(picks.filter((h) => h[PLACED]).length, picks.length);
+  };
   return {
     races: races.length,
     horses: horses.length,
     mcTopWin: rate(tops.filter((h) => h[WON]).length, tops.length),
     mcTopPlace: rate(tops.filter((h) => h[PLACED]).length, tops.length),
+    mc2Place: rankPlace(2),
+    mc3Place: rankPlace(3),
     predWin: mean(tops.map((h) => h[PWIN])) * 100,
     predPlace: mean(tops.map((h) => h[PPLACE])) * 100,
     favWin: rate(favs.filter((h) => h[WON]).length, favs.length),
