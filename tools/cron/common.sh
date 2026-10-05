@@ -4,6 +4,8 @@ ROOT="/Users/anthonycyy/Documents/HR-project/hourse-racing"
 export PATH="/Users/anthonycyy/.local/bin:/Users/anthonycyy/.nvm/versions/node/v22.22.3/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin"
 export TZ="Asia/Hong_Kong"
 export HOME="/Users/anthonycyy"
+# Claude auth for cron (Keychain login is not reachable from cron); token file lives outside the repo.
+[ -f "$HOME/.config/hr-cron.env" ] && . "$HOME/.config/hr-cron.env"
 cd "$ROOT" || exit 2
 TODAY="$(date +%Y-%m-%d)"
 YMD="$(date +%Y%m%d)"
