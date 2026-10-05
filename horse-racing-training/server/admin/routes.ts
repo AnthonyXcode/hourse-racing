@@ -2,7 +2,7 @@
 // - Every route declares its minimum role; there's no other way to mount one (fail closed). The route table
 //   is exported so a test can walk every route as guest / user / admin.
 // - Role = OWNER_PHONE match or users.role, resolved from the DB on every request.
-// - The panel needs its own OTP confirmation (admin session: 1 h idle, 12 h absolute) on top of the app login.
+// - The panel needs its own OTP confirmation (admin session lapses after SESSION_TTL_DAYS without admin use, like the login) on top of the app login.
 // - Contact data is masked on the server for everyone; the owner can reveal one user's values (logged).
 // - Writes: Origin guard, JSON only, Idempotency-Key, reason, stale-state guard, step-up where sensitive.
 import { Router, type NextFunction, type Request, type RequestHandler, type Response } from "express";
@@ -151,7 +151,7 @@ export function adminRouter(d: AdminDeps): Router & { routes: RouteDecl[] } {
         db.prepare("UPDATE sessions SET admin_verified_at = ?, admin_seen_at = ?, step_up_at = ? WHERE id = ?").run(row.created_at, t, row.created_at, row.id);
         Object.assign(row, { admin_verified_at: row.created_at, admin_seen_at: t, step_up_at: row.created_at });
       }
-      const valid = !!row.admin_verified_at && t - row.admin_verified_at < cfg.maxMs && t - (row.admin_seen_at ?? 0) < cfg.idleMs;
+      const valid = !!row.admin_verified_at && t - (row.admin_seen_at ?? 0) < cfg.idleMs;
       if (verified && !valid) return fail(res, 401, "admin_reauth_required");
       // Only user-initiated requests extend the idle timer; background polls (X-Admin-Background: 1) don't.
       const background = req.get("x-admin-background") === "1";
@@ -282,8 +282,8 @@ export function adminRouter(d: AdminDeps): Router & { routes: RouteDecl[] } {
         role: s.role,
         displayName: s.user.display_name,
         phoneLast4: last4(s.user.phone_e164),
-        adminSessionExpiresAt: s.verifiedAt ? new Date(Math.min(s.verifiedAt + cfg.maxMs, (s.seenAt ?? now()) + cfg.idleMs)).toISOString() : null,
-        adminAbsoluteExpiresAt: s.verifiedAt ? new Date(s.verifiedAt + cfg.maxMs).toISOString() : null,
+        adminSessionExpiresAt: s.verifiedAt ? new Date((s.seenAt ?? now()) + cfg.idleMs).toISOString() : null,
+        adminAbsoluteExpiresAt: null, // no absolute limit: admin access follows the login session (SESSION_TTL_DAYS)
         serverNow: new Date(now()).toISOString(),
         idleMs: cfg.idleMs,
         stepUpUntil: s.stepUpAt && now() - s.stepUpAt < cfg.stepUpMs ? new Date(s.stepUpAt + cfg.stepUpMs).toISOString() : null,
@@ -330,9 +330,7 @@ export function adminRouter(d: AdminDeps): Router & { routes: RouteDecl[] } {
       }
       const t = now();
       // The confirmation opens (or renews) the admin session and counts as step-up for a few minutes.
-      db.prepare("UPDATE sessions SET admin_verified_at = CASE WHEN admin_verified_at IS NULL OR ? - admin_verified_at >= ? OR ? - admin_seen_at >= ? THEN ? ELSE admin_verified_at END, admin_seen_at = ?, step_up_at = ? WHERE id = ?").run(
-        t,
-        cfg.maxMs,
+      db.prepare("UPDATE sessions SET admin_verified_at = CASE WHEN admin_verified_at IS NULL OR ? - admin_seen_at >= ? THEN ? ELSE admin_verified_at END, admin_seen_at = ?, step_up_at = ? WHERE id = ?").run(
         t,
         cfg.idleMs,
         t,
@@ -340,8 +338,7 @@ export function adminRouter(d: AdminDeps): Router & { routes: RouteDecl[] } {
         t,
         s.sessionId
       );
-      const v = db.prepare("SELECT admin_verified_at FROM sessions WHERE id = ?").get(s.sessionId) as { admin_verified_at: number };
-      res.json({ adminSessionExpiresAt: new Date(Math.min(v.admin_verified_at + cfg.maxMs, t + cfg.idleMs)).toISOString(), stepUpUntil: new Date(t + cfg.stepUpMs).toISOString() });
+      res.json({ adminSessionExpiresAt: new Date(t + cfg.idleMs).toISOString(), stepUpUntil: new Date(t + cfg.stepUpMs).toISOString() });
     },
     false
   );

@@ -9,6 +9,7 @@ import { adminPageHeaders } from "../adminPages";
 
 const OWNER = "+85291110000";
 const MIN = 60_000;
+const DAY = 86_400_000;
 let h: Harness | null = null;
 afterEach(() => {
   h?.close();
@@ -80,21 +81,26 @@ describe("route walker (fail closed)", () => {
     expect(routes.every((r) => r.min === "admin" || r.min === "owner")).toBe(true);
   });
 
-  it("an admin session needs its own OTP; it expires after 1 h idle and 12 h total", async () => {
+  it("an admin session needs its own OTP; it follows SESSION_TTL_DAYS (idle) with no absolute limit", async () => {
     h = await harness({ OWNER_PHONE: "9111 0000" });
     const owner = await h.login(OWNER);
     expect((await h.call("GET", "/admin/dashboard", undefined, owner.cookie)).body.error.code).toBe("admin_reauth_required");
     expect((await h.call("GET", "/admin/me", undefined, owner.cookie)).body.adminSessionExpiresAt).toBeNull();
     await h.adminVerify(owner);
+    const me = (await h.call("GET", "/admin/me", undefined, owner.cookie)).body;
+    expect([me.idleMs, me.adminAbsoluteExpiresAt]).toEqual([30 * DAY, null]);
     expect((await h.call("GET", "/admin/dashboard", undefined, owner.cookie)).status).toBe(200);
-    h.setNow(T0 + 61 * MIN); // idle > 1 h
+    // Member-only traffic keeps the login alive but not the admin session: 30 days without admin use ends it.
+    for (let d = 7; d <= 28; d += 7) {
+      h.setNow(T0 + d * DAY);
+      expect((await h.call("GET", "/me", undefined, owner.cookie)).status).toBe(200);
+    }
+    h.setNow(T0 + 30 * DAY + MIN);
     expect((await h.call("GET", "/admin/dashboard", undefined, owner.cookie)).body.error.code).toBe("admin_reauth_required");
     await h.adminVerify(owner);
-    for (let i = 1; i <= 14; i++) {
-      h.setNow(T0 + 61 * MIN + i * 55 * MIN); // active every 55 min (13 × 55 = 11.9 h, 14 × 55 = 12.8 h)…
-      const r = await h.call("GET", "/admin/dashboard", undefined, owner.cookie);
-      if (i < 14) expect(r.status).toBe(200);
-      else expect(r.body.error.code).toBe("admin_reauth_required"); // …but 12 h after verification it ends anyway
+    for (let i = 1; i <= 4; i++) {
+      h.setNow(T0 + 30 * DAY + MIN + i * 29 * DAY); // active every 29 days: never asked again (no 12 h cap)
+      expect((await h.call("GET", "/admin/dashboard", undefined, owner.cookie)).status).toBe(200);
     }
   });
 
@@ -399,21 +405,21 @@ describe("QA round (docs/admin/QA-REPORT.md AD-01…AD-08)", () => {
     const bg = { "X-Admin-Background": "1" };
     const seen = () => (h!.db.prepare("SELECT admin_seen_at FROM sessions WHERE user_id = ?").get(owner.user.id) as { admin_seen_at: number }).admin_seen_at;
     const before = seen();
-    for (let m = 10; m <= 59; m += 7) {
-      h!.setNow(T0 + m * MIN);
+    for (let d = 1; d <= 29; d += 7) {
+      h!.setNow(T0 + d * DAY);
       const r = await h!.call("GET", "/admin/dashboard", undefined, owner.cookie, bg);
-      expect([m, r.status, r.body.error?.code]).toEqual([m, 200, undefined]);
+      expect([d, r.status, r.body.error?.code]).toEqual([d, 200, undefined]);
     }
     expect(seen()).toBe(before);
-    h!.setNow(T0 + 61 * MIN);
+    h!.setNow(T0 + 30 * DAY + MIN);
     expect((await h!.call("GET", "/admin/dashboard", undefined, owner.cookie, bg)).body.error.code).toBe("admin_reauth_required");
     // Same pattern without the header keeps the session alive.
     await h!.adminVerify(owner);
     const t1 = seen();
-    h!.setNow(T0 + 61 * MIN + 30 * MIN);
+    h!.setNow(T0 + 30 * DAY + MIN + 2 * DAY);
     expect((await h!.call("GET", "/admin/dashboard", undefined, owner.cookie)).status).toBe(200);
     expect(seen()).toBeGreaterThan(t1);
-    h!.setNow(T0 + 61 * MIN + 80 * MIN);
+    h!.setNow(T0 + 30 * DAY + MIN + 2 * DAY + 29 * DAY);
     expect((await h!.call("GET", "/admin/dashboard", undefined, owner.cookie)).status).toBe(200);
   });
 

@@ -177,7 +177,7 @@ General rules:
 - Session cookie as today. **Guest → 401 `unauthorized`. Logged-in `user` → 403 `forbidden`. Admin calling
   an owner-only route → 403 `owner_only`.** The check is middleware on the whole `/api/admin` router, and
   each route also declares its minimum role (fail closed: a route without a declared role isn't mounted).
-- Admin session idle > `ADMIN_IDLE_HOURS` → 401 `admin_reauth_required` (§7.2).
+- Admin session idle > `SESSION_TTL_DAYS` → 401 `admin_reauth_required` (§7.2).
 - Writes: `POST` only, behind the existing Origin/CSRF guard and JSON-only, `Idempotency-Key` required
   (400 `idempotency_key_required`), `reason` required (400 `reason_required`).
 - Lists: `?page=1&limit=50` (limit ≤ 100), filters as query params, server-side sort.
@@ -263,8 +263,8 @@ Phone last-4 search uses `substr(phone_e164, -4)` (fine at current scale; add a 
 ### 7.2 Admin session (shorter) and step-up
 - The app session stays 30 days. **Entering the admin panel requires an OTP confirmation** ("Confirm it's you")
   that sets `sessions.admin_verified_at`. The admin session then lasts while it's in use: each
-  `/api/admin` call moves `admin_seen_at` (at most once a minute). **Idle > 12 h (`ADMIN_IDLE_HOURS`) or
-  older than 24 h in total → `admin_reauth_required`** and the OTP step again. A stolen 30-day app cookie
+  `/api/admin` call moves `admin_seen_at` (at most once a minute). **No admin use for `SESSION_TTL_DAYS`
+  (same as the app login; no separate absolute limit) → `admin_reauth_required`** and the OTP step again. A stolen 30-day app cookie
   alone doesn't open the panel.
 - **Step-up:** the admin-session OTP also counts as step-up for `ADMIN_STEPUP_MINUTES` (5). After that,
   sensitive owner writes (role change, credit adjust ≥ 1,000, void meeting, `includeResulted`) return
@@ -329,8 +329,6 @@ Phone last-4 search uses `substr(phone_e164, -4)` (fine at current scale; add a 
 | Variable | Default (dev) | Notes |
 |---|---|---|
 | `OWNER_PHONE` | unset (warning, no owner) | HK mobile in any accepted format, normalised to E.164. **Required and validated in production** |
-| `ADMIN_IDLE_HOURS` | `12` | Admin session idle timeout |
-| `ADMIN_MAX_HOURS` | `24` | Admin session absolute limit |
 | `ADMIN_STEPUP_MINUTES` | `5` | How long an OTP counts as step-up |
 | `ADMIN_STEPUP_CREDITS` | `1000` | \|amount\| at or above which a credit adjust needs step-up |
 | `ADMIN_EXPORT_MAX_ROWS` | `50000` | |
