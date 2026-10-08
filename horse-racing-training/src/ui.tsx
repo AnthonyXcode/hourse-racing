@@ -6,7 +6,7 @@ import type { TFunction } from "i18next";
 import { useGlossary } from "./i18n/glossary";
 import { Name } from "./i18n/names";
 import { useFmt, useLanguage } from "./i18n/useLanguage";
-import { Display, btn, btnDanger, btnPill, btnPrimary, control, cx, empty, errorBox, figure, h3, modal, modalBg, modalNarrow, modeBadge, panel, pill, pillRow, statusChip, table, tablePad } from "./kit";
+import { Display, btn, btnDanger, btnPill, btnPrimary, control, cx, dateControl, empty, errorBox, field, fieldLabel, figure, h3, modal, modalBg, modalNarrow, modeBadge, panel, pill, pillRow, rangeBar, statusChip, table, tablePad } from "./kit";
 import { Spinner, useDialog } from "./members/ui";
 import { MIN_UNIT, ymd, type SettledBet } from "./slip";
 import { useSlipText } from "./BetSlip";
@@ -764,6 +764,7 @@ export function HistoryPage({
   onClear,
   initialFilter,
   shareName,
+  lastRaceDay,
 }: {
   entries: HistoryEntry[];
   /** Practice rows only (LIVE rows are financial records). */
@@ -774,6 +775,8 @@ export function HistoryPage({
   initialFilter?: HistoryFilter;
   /** The member's display name: enables "Share" on the Live summary. */
   shareName?: string;
+  /** Newest meeting date on or before today (YYYYMMDD): the "Last racing day" period. */
+  lastRaceDay?: string;
 }) {
   const { t } = useTranslation(["history", "common", "credits"]);
   const [confirming, setConfirming] = useState(false);
@@ -782,13 +785,25 @@ export function HistoryPage({
   const g = useGlossary();
   const fmt = useFmt();
   const when = (ts: string) => fmt.date(ts, { dateStyle: "short", timeStyle: "short" });
-  const live = entries.filter((e) => e.mode === "live");
-  const practice = entries.filter((e) => e.mode !== "live");
-  const pending = live.filter((e) => e.status === "pending");
-  const hasLive = live.length > 0;
+  // Period filter on the meeting date (YYYY-MM-DD; "" = open-ended). Default: last 30 days.
+  // The Pending view ignores it, so a bet on an upcoming meeting is never hidden.
+  const [range, setRange] = useState(last30Days);
+  const inRange = (e: HistoryEntry) => {
+    const d = `${e.date.slice(0, 4)}-${e.date.slice(4, 6)}-${e.date.slice(6, 8)}`;
+    return (!range.from || d >= range.from) && (!range.to || d <= range.to);
+  };
+  const raceDay = lastRaceDay && `${lastRaceDay.slice(0, 4)}-${lastRaceDay.slice(4, 6)}-${lastRaceDay.slice(6, 8)}`;
+  const allPractice = entries.filter((e) => e.mode !== "live");
+  const hasLive = entries.some((e) => e.mode === "live");
+  const shown = entries.filter(inRange);
+  const live = shown.filter((e) => e.mode === "live");
+  const practice = shown.filter((e) => e.mode !== "live");
+  const pending = entries.filter((e) => e.mode === "live" && e.status === "pending");
   const [filter, setFilter] = useState<HistoryFilter>(initialFilter ?? (hasLive ? "live" : "practice"));
   const f: HistoryFilter = hasLive ? filter : "practice";
   const rows = f === "live" ? live : f === "pending" ? pending : practice;
+  /** Rows of this view before the period filter: tells "nothing yet" from "nothing in this period". */
+  const anyInView = entries.some((e) => (f === "practice" ? e.mode !== "live" : e.mode === "live" && (f === "live" || e.status === "pending")));
   const isLive = f !== "practice";
   // Practice amounts are imaginary HK$; LIVE amounts are credits. Never mixed in one view.
   const amount = (v: number) => (isLive ? fmt.num(v) : fmt.money(v));
@@ -828,13 +843,13 @@ export function HistoryPage({
     <div className="mt-2">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <Display sub={f === "live" ? t("credits:history.subLive") : f === "pending" ? t("credits:history.subPending") : t("sub")}>{t("title")}</Display>
-        {practice.length > 0 && f === "practice" && (
+        {allPractice.length > 0 && f === "practice" && (
           <button className={cx(btnDanger, "mb-2")} onClick={() => setConfirming(true)}>
             {hasLive ? t("credits:history.clearPractice") : t("common:action.clearAll")}
           </button>
         )}
       </div>
-      {confirming && <ClearDialog count={practice.length} practiceOnly={hasLive} onCancel={() => setConfirming(false)} onConfirm={onClear} />}
+      {confirming && <ClearDialog count={allPractice.length} practiceOnly={hasLive} onCancel={() => setConfirming(false)} onConfirm={onClear} />}
       {shareBet && shareName && (
         <Suspense fallback={null}>
           <ShareRecord
@@ -874,6 +889,22 @@ export function HistoryPage({
           ))}
         </div>
       )}
+
+      <div className={cx(rangeBar, "mt-4")} role="group" aria-label={t("range.label")}>
+        <div className={field}>
+          <label htmlFor="hFrom" className={fieldLabel}>{t("range.from")}</label>
+          <input type="date" id="hFrom" className={dateControl} value={range.from} max={range.to || undefined} onChange={(e) => setRange({ ...range, from: e.target.value })} />
+        </div>
+        <div className={field}>
+          <label htmlFor="hTo" className={fieldLabel}>{t("range.to")}</label>
+          <input type="date" id="hTo" className={dateControl} value={range.to} min={range.from || undefined} onChange={(e) => setRange({ ...range, to: e.target.value })} />
+        </div>
+        {([...(raceDay ? ([["lastRaceDay", { from: raceDay, to: raceDay }]] as const) : []), ["last30", last30Days()], ["all", { from: "", to: "" }]] as const).map(([k, r]) => (
+          <button key={k} type="button" className={cx(pill(range.from === r.from && range.to === r.to), "flex-none")} aria-pressed={range.from === r.from && range.to === r.to} onClick={() => setRange(r)}>
+            {t(`range.${k}`)}
+          </button>
+        ))}
+      </div>
 
       {f === "pending" ? (
         pending.length > 0 && (
@@ -948,7 +979,7 @@ export function HistoryPage({
       )}
 
       {rows.length === 0 ? (
-        <div className={cx(panel, empty, "mt-4")}>{f === "live" ? t("credits:history.emptyLive") : f === "pending" ? t("credits:history.emptyPending") : t("empty")}</div>
+        <div className={cx(panel, empty, "mt-4")}>{anyInView ? t("range.empty") : f === "live" ? t("credits:history.emptyLive") : f === "pending" ? t("credits:history.emptyPending") : t("empty")}</div>
       ) : (
         <div className="mt-4 overflow-x-auto rounded-card bg-surface shadow-card">
           <table
@@ -1028,6 +1059,11 @@ export function HistoryPage({
 }
 
 export type HistoryFilter = "live" | "practice" | "pending";
+
+/** Epoch ms → its Hong Kong day, YYYY-MM-DD (the value format of <input type="date">). */
+const hkIsoDay = (ms: number) => new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Hong_Kong" }).format(new Date(ms));
+/** The last 30 HK days, today included. */
+const last30Days = () => ({ from: hkIsoDay(Date.now() - 29 * 24 * 60 * 60_000), to: hkIsoDay(Date.now()) });
 
 /** In-app confirm for "Clear all" (same pattern as the delete-account dialog): Cancel focused, red outline action. */
 function ClearDialog({ count, practiceOnly, onCancel, onConfirm }: { count: number; practiceOnly?: boolean; onCancel: () => void; onConfirm: () => Promise<unknown> }) {

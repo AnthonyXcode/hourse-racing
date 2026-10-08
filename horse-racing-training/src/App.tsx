@@ -705,6 +705,7 @@ function AppBody() {
               key={historyFilter ?? "default"}
               initialFilter={historyFilter}
               shareName={user?.displayName}
+              lastRaceDay={days.map((m) => m.date).filter((d) => d <= new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Hong_Kong" }).format(new Date()).replaceAll("-", "")).sort().at(-1)}
               entries={history}
               onDelete={(id) => memberApi.deleteHistory(id).then(setHistory).catch((e) => auth.handleAuthError(e) || setError(errorText(ta, e)))}
               onClear={() =>

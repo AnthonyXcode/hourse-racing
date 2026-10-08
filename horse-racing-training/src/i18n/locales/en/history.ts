@@ -10,6 +10,15 @@ export const history = {
     returned: "Total return",
   },
   empty: "No bets yet. Place one from the Bet tab.",
+  range: {
+    label: "Period (meeting date)",
+    from: "From",
+    to: "To",
+    lastRaceDay: "Last racing day",
+    last30: "Last 30 days",
+    all: "All time",
+    empty: "No bets on meetings in this period.",
+  },
   col: {
     placed: "Placed",
     meeting: "Meeting",

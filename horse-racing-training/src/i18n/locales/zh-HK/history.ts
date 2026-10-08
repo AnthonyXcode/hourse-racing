@@ -13,6 +13,15 @@ export const history: Shape<typeof En> = {
     returned: "總派彩",
   },
   empty: "尚未有投注紀錄。請到「投注」版面落注。",
+  range: {
+    label: "期間（賽事日期）",
+    from: "由",
+    to: "至",
+    lastRaceDay: "上一個賽馬日",
+    last30: "最近 30 日",
+    all: "全部",
+    empty: "此期間的賽事沒有投注紀錄。",
+  },
   col: {
     placed: "落注時間",
     meeting: "賽馬日",
