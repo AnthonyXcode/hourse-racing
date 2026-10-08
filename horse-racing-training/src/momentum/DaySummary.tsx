@@ -1,15 +1,12 @@
 // Momentum → Summary: review of a racing day — how each race's Combined picks did, with day totals.
 import { useEffect, useState } from "react";
-import { AnimatePresence, motion } from "motion/react";
 import { useTranslation } from "react-i18next";
 import { api } from "../api";
 import type { DaySummary as Summary } from "../../shared/momentum/model";
-import { C, GroupedBars, type Series } from "../analyzer/charts";
-import { Kpi, Legend, cls, money, pc, signed } from "../analyzer/format";
+import { Kpi, cls, money, pc, signed } from "../analyzer/format";
 import { useNames } from "../i18n/names";
 import { useLanguage } from "../i18n/useLanguage";
 import { cx, dim, empty, errorBox, h3, kpis, note, panel, scroll, table, tablePad } from "../kit";
-import { HorseLink } from "./HorseRecord";
 import { cutoffLabel, useCutoff } from "./cutoff";
 
 const REFRESH_MS = 60_000;
@@ -21,8 +18,6 @@ export function DaySummary({ date, live, onOpenRace }: { date: string; live: boo
   const cutoff = useCutoff();
   const [data, setData] = useState<{ key: string; s: Summary | null; error?: string } | null>(null);
   const key = `${date}|${cutoff}`;
-  /** Drill-down: which bar of the position chart is open (row = pick position index, series index into POS_LISTS). */
-  const [sel, setSel] = useState<{ row: number; series: number } | null>(null);
 
   useEffect(() => {
     let on = true;
@@ -59,27 +54,6 @@ export function DaySummary({ date, live, onOpenRace }: { date: string; live: boo
   const when = cutoffLabel(t, cutoff);
   const topPlaced = run.filter((r) => r.modelTop?.finishPos != null && r.modelTop.finishPos <= 3).length;
   const best = run.reduce<(typeof run)[number] | null>((b, r) => ((r.combined!.trioReturn ?? 0) > (b?.combined!.trioReturn ?? 0) ? r : b), null);
-  // Place hit rate by pick position: for position k, the share of finished races whose k-th model /
-  // market-move / last-5-min-move pick finished in the first three.
-  type PosRow = { pos: number; n: number; model: number; move: number; recent: number };
-  const byPos: PosRow[] = [0, 1, 2, 3, 4].map((k) => {
-    const rate = (list: (r: (typeof run)[number]) => number[]) => {
-      const withPick = run.filter((r) => list(r).length > k);
-      const hits = withPick.filter((r) => r.placed.some((p) => p.horseNo === list(r)[k])).length;
-      return { n: withPick.length, pct: withPick.length ? (hits / withPick.length) * 100 : NaN };
-    };
-    const m = rate((r) => r.modelList), v = rate((r) => r.moveList), rc = rate((r) => r.recentList);
-    return { pos: k + 1, n: m.n, model: m.pct, move: v.pct, recent: rc.pct };
-  });
-  const overall = (list: (r: (typeof run)[number]) => number[]) => {
-    const all = run.flatMap((r) => list(r).map((h) => r.placed.some((p) => p.horseNo === h)));
-    return all.length ? (all.filter(Boolean).length / all.length) * 100 : NaN;
-  };
-  const posSeries: Series<PosRow>[] = [
-    { name: t("summary.chart.model"), color: C.accent, get: (r) => r.model },
-    { name: t("summary.chart.move"), color: C.accent2, get: (r) => r.move },
-    { name: t("summary.chart.recent"), color: C.warn, get: (r) => r.recent },
-  ];
   const horse = (h: { code: string | null; name: string; nameZh: string | null }) => (lang === "zh-HK" && h.nameZh ? h.nameZh : name("horse", h.code, h.name));
   const of = (a: number, b: number) => (b ? `${a}/${b}` : "–");
   /** Net money with ROI (net ÷ stake) beside it in smaller type. */
@@ -119,53 +93,6 @@ export function DaySummary({ date, live, onOpenRace }: { date: string; live: boo
         </div>
       ) : (
         <div className={cx(panel, empty)}>{t("summary.noneRun")}</div>
-      )}
-
-      {run.length > 0 && (
-        <div className={cx(panel, "mt-4")}>
-          <h3 className={h3}>{t("summary.chart.title")}</h3>
-          <Legend
-            items={[
-              [C.accent, t("summary.chart.modelOverall", { pct: pc(overall((r) => r.modelList)) })],
-              [C.accent2, t("summary.chart.moveOverall", { pct: pc(overall((r) => r.moveList)) })],
-              [C.warn, t("summary.chart.recentOverall", { pct: pc(overall((r) => r.recentList)) })],
-            ]}
-          />
-          <GroupedBars
-            rows={byPos}
-            labelOf={(r) => t("summary.chart.pos", { n: r.pos })}
-            series={posSeries}
-            max={100}
-            selected={sel}
-            onSelect={(row, series) => setSel((cur) => (cur && cur.row === row && cur.series === series ? null : { row, series }))}
-          />
-          <AnimatePresence initial={false}>
-            {sel && (
-              <motion.div
-                key={`${sel.row}-${sel.series}`}
-                className="overflow-hidden"
-                initial={{ height: 0, opacity: 0 }}
-                animate={{ height: "auto", opacity: 1 }}
-                exit={{ height: 0, opacity: 0 }}
-                transition={{ duration: 0.24, ease: [0.2, 0, 0, 1] }}
-              >
-                <PositionBreakdown
-                  pos={sel.row}
-                  list={POS_LISTS[sel.series]!}
-                  label={posSeries[sel.series]!.name}
-                  races={run}
-                  horse={horse}
-                  onOpenRace={onOpenRace}
-                  onClose={() => setSel(null)}
-                />
-              </motion.div>
-            )}
-          </AnimatePresence>
-          <p className={note}>
-            {t("summary.chart.note", { n: run.length, m: run.filter((r) => r.moveList.length > 0).length, k: run.filter((r) => r.recentList.length > 0).length })}{" "}
-            {t("summary.chart.clickHint")}
-          </p>
-        </div>
       )}
 
       {run.length > 0 && <PlaceByMinute run={run} />}
@@ -241,73 +168,6 @@ export function DaySummary({ date, live, onOpenRace }: { date: string; live: boo
       </div>
       <p className={note}>{pending ? t("summary.notePending", { n: pending }) : t("summary.note")}</p>
     </section>
-  );
-}
-
-/** The chart's series, in order: which pick list each bar reads. */
-const POS_LISTS = ["model", "move", "recent"] as const;
-const listOf = (r: Summary["races"][number], list: (typeof POS_LISTS)[number]) =>
-  list === "model" ? r.modelList : list === "move" ? r.moveList : r.recentList;
-
-/** The races behind one bar: the horse at pick position `pos` of the chosen list, and where it finished. */
-function PositionBreakdown({ pos, list, label, races, horse, onOpenRace, onClose }: {
-  pos: number;
-  list: (typeof POS_LISTS)[number];
-  label: string;
-  races: Summary["races"];
-  horse: (h: { code: string | null; name: string; nameZh: string | null }) => string;
-  onOpenRace: (raceId: string) => void;
-  onClose: () => void;
-}) {
-  const { t } = useTranslation(["momentum", "common"]);
-  const rows = races
-    .map((r) => {
-      const no = listOf(r, list)[pos];
-      if (no == null) return null;
-      const p = r.picks.find((x) => x.horseNo === no);
-      const fin = r.finishPos[no] ?? null;
-      return { race: r, no, name: p ? horse(p) : "", code: p?.code ?? null, fin, placed: fin != null && fin <= 3 };
-    })
-    .filter((x): x is NonNullable<typeof x> => x != null);
-  const hits = rows.filter((r) => r.placed).length;
-  return (
-    <div className="mt-3 rounded-control bg-surface-2 p-3 sm:p-4">
-      <div className="mb-2 flex items-center gap-2">
-        <p className="text-sm font-semibold text-ink">
-          {t("summary.chart.pos", { n: pos + 1 })} · {label}
-          <span className="ml-2 font-normal text-ink-2">
-            {t("summary.chart.breakdown", { hits, n: rows.length, pct: rows.length ? ((hits / rows.length) * 100).toFixed(1) : "0.0" })}
-          </span>
-        </p>
-        <button type="button" onClick={onClose} aria-label={t("common:action.close")} className="ml-auto cursor-pointer rounded-full px-2 text-ink-3 hover:text-ink">
-          ✕
-        </button>
-      </div>
-      <div className="overflow-x-auto">
-        <table className={cx(table, "[&_td]:bg-transparent [&_th]:bg-transparent [&_td]:px-2 [&_td]:py-1.5 [&_th]:px-2 [&_th]:py-1.5 [&_td:nth-child(2)]:text-left [&_th:nth-child(2)]:text-left")}>
-          <thead>
-            <tr>
-              <th>{t("summary.col.race")}</th>
-              <th>{t("common:word.horse")}</th>
-              <th>{t("summary.chart.finish")}</th>
-              <th>{t("summary.chart.placed")}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {rows.map((r) => (
-              <tr key={r.race.raceId} className="cursor-pointer" onClick={() => onOpenRace(r.race.raceId)} title={t("summary.openRace")}>
-                <td className="font-semibold">{t("common:raceShort", { n: r.race.raceNo })}</td>
-                <td>
-                  <b className="tabular-nums">{r.no}</b> <HorseLink raceId={r.race.raceId} horseNo={r.no} code={r.code} name={r.name} className="text-ink-2" />
-                </td>
-                <td className="tabular-nums">{r.fin ?? "–"}</td>
-                <td className={r.placed ? "text-good" : "text-bad"}>{r.placed ? "✓" : "✗"}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
   );
 }
 

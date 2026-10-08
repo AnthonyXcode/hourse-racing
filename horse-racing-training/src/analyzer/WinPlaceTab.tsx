@@ -4,7 +4,7 @@ import { useGlossary } from "../i18n/glossary";
 import { useNames } from "../i18n/names";
 import {
   type AnalyzerRace, MC, MKT, PWIN, PPLACE, WON, PLACED, WODDS, FIN, TRIP,
-  metrics, byRank, calibration, groupBy, topOf, diffBucket, DIFF_ORDER,
+  metrics, byRank, calibration, groupBy, topOf, diffBucket, DIFF_ORDER, oddsBucket, ODDS_ORDER,
 } from "../../shared/analyzer/model";
 import { C, CalibChart, GroupedBars, LineChart, type Series } from "./charts";
 import { Bar, Kpi, Legend, SortTh, cls, pc, signed, useSort, vs } from "./format";
@@ -30,6 +30,7 @@ export function WinPlaceTab({ races }: { races: AnalyzerRace[] }) {
       diff: withMetrics(groupBy(races, diffBucket, (a, b) => DIFF_ORDER.indexOf(a) - DIFF_ORDER.indexOf(b))),
       cls: withMetrics(groupBy(races, (r) => r.c)),
       field: withMetrics(groupBy(races, (r) => r.n, (a, b) => a - b)),
+      odds: withMetrics(groupBy(races, oddsBucket, (a, b) => ODDS_ORDER.indexOf(a) - ODDS_ORDER.indexOf(b))),
     };
   }, [races]);
 
@@ -98,6 +99,7 @@ export function WinPlaceTab({ races }: { races: AnalyzerRace[] }) {
         <Breakdown title={t("byDiff")} head={t("col.avgDiff")} rows={charts.diff} />
         <Breakdown title={t("byClass")} head={t("common:word.class")} rows={charts.cls} label={g.raceClass} />
         <Breakdown title={t("byField")} head={t("col.runners")} rows={charts.field} />
+        <Breakdown title={t("byOdds")} head={t("col.topOdds")} rows={charts.odds} label={(k) => k || t("noOdds")} note={t("byOddsNote")} />
         <PickPlaceCard m={M} races={races.length} />
       </div>
 
@@ -148,7 +150,7 @@ function PickPlaceCard({ m, races }: { m: ReturnType<typeof metrics>; races: num
   );
 }
 
-function Breakdown({ title, head, rows, label = String }: { title: string; head: string; rows: ({ key: string | number } & ReturnType<typeof metrics>)[]; label?: (k: string) => string }) {
+function Breakdown({ title, head, rows, label = String, note: foot }: { title: string; head: string; rows: ({ key: string | number } & ReturnType<typeof metrics>)[]; label?: (k: string) => string; note?: string }) {
   const { t } = useTranslation(["analyzer", "common"]);
   return (
     <div className={panel}>
@@ -181,6 +183,7 @@ function Breakdown({ title, head, rows, label = String }: { title: string; head:
           </tbody>
         </table>
       </div>
+      {foot && <div className={note}>{foot}</div>}
     </div>
   );
 }

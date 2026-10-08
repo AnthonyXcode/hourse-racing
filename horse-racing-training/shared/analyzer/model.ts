@@ -286,6 +286,12 @@ export function groupBy<K extends string | number>(races: AnalyzerRace[], keyOf:
 
 export const DIFF_ORDER = ["≤ 8", "9–10", "11–13", "14+"];
 export const diffBucket = (r: AnalyzerRace) => (r.ad <= 8 ? "≤ 8" : r.ad <= 10 ? "9–10" : r.ad <= 13 ? "11–13" : "14+");
+/** Win-odds band of the model's top pick ("" = no odds saved). */
+export const ODDS_ORDER = ["≤ 3", "3.1–5", "5.1–8", "8.1–15", "15+", ""];
+export const oddsBucket = (r: AnalyzerRace) => {
+  const o = topOf(r)[WODDS];
+  return !(o > 0) ? "" : o <= 3 ? "≤ 3" : o <= 5 ? "3.1–5" : o <= 8 ? "5.1–8" : o <= 15 ? "8.1–15" : "15+";
+};
 
 // ---- Trio ----
 /** B = bankers (ranks 1..B), L = last rank covered; legs are ranks B+1..L. */

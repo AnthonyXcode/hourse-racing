@@ -58,6 +58,7 @@ export const analyzer: Shape<typeof En> = {
     runners: "出賽馬數",
     avgDiff: "平均差距",
     winPct: "獨贏 %",
+    topOdds: "獨贏賠率",
     placePct: "位置 %",
     favPlacePct: "大熱位置 %",
     favWinPct: "大熱獨贏 %",
@@ -109,6 +110,9 @@ export const analyzer: Shape<typeof En> = {
   byDiff: "按實力差距（avgDiff）",
   byClass: "按班次",
   byField: "按出賽馬數",
+  byOdds: "按首選賠率",
+  byOddsNote: "按模型首選的獨贏賠率分組；命中率為該首選的勝出／上名率。",
+  noOdds: "無賠率",
   byPick: "按模型排名",
   byPickNote: "每場模型第1、2、3選跑入前三名的比率。",
   wp: {

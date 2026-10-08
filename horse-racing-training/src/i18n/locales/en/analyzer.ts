@@ -56,6 +56,7 @@ export const analyzer = {
     runners: "Runners",
     avgDiff: "avgDiff",
     winPct: "Win %",
+    topOdds: "Win odds",
     placePct: "Place %",
     favPlacePct: "Fav place %",
     favWinPct: "Fav win %",
@@ -107,6 +108,9 @@ export const analyzer = {
   byDiff: "By field spread (avgDiff)",
   byClass: "By class",
   byField: "By field size",
+  byOdds: "By top pick's odds",
+  byOddsNote: "Races grouped by the win odds of the model's #1 pick; the rates are that pick's.",
+  noOdds: "No odds",
   byPick: "By model pick",
   byPickNote: "Place hit rate of the model's 1st, 2nd and 3rd pick in each race (finished 1st–3rd).",
   wp: {
