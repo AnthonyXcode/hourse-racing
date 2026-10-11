@@ -16,7 +16,6 @@
     "typecheck": "tsc --noEmit",
     "data:import": "tsx server/data/importFiles.ts",
     "data:fetch": "tsx server/data/fetchCli.ts",
-    "data:backfill-odds": "tsx --env-file-if-exists=.env server/data/backfillCardOdds.ts",
     "credits": "tsx --env-file-if-exists=.env server/credits/cli.ts",
     "credits:adjust": "tsx --env-file-if-exists=.env server/credits/cli.ts adjust",
     "credits:settle": "tsx --env-file-if-exists=.env server/credits/cli.ts settle",
