@@ -288,6 +288,28 @@ describe("payout maths", () => {
     expect(grade(sel("trio", [5, 1, 2]), 10, res, runners(5))).toMatchObject({ status: "lost" });
   });
 
+  it("dead heat holds only the pools it makes ambiguous", () => {
+    // 2026-10-11 ST R6: #12 won, #2 and #7 dead-heated for 2nd.
+    const res = [result(1, [[12, 1], [2, 2], [7, 2], [3, 4], [4, 5]], { winDividend: 112, placeDividends: [23.5, 12, 24], quinellaDividend: 41, quinellaPlaceDividends: [35.5, 101, 38.5], tierceDividend: 963, trioDividend: 212, first4Dividend: 186 })];
+    const card = runners(12);
+    // One trio wins (12-2-7) and Win isn't touched by a tie for 2nd: settle.
+    expect(grade(sel("trio", [12, 2, 7]), 10, res, card)).toMatchObject({ kind: "settle", status: "won", payout: 212 });
+    expect(grade(sel("win", [12]), 10, res, card)).toMatchObject({ kind: "settle", status: "won", payout: 112 });
+    // Place on the untied winner keeps its own row; a tied horse's row is ambiguous.
+    expect(grade(sel("place", [12]), 10, res, card)).toMatchObject({ kind: "settle", status: "won", payout: 23 });
+    expect(grade(sel("place", [12, 7]), 10, res, card)).toMatchObject({ kind: "hold", reason: "dead_heat" });
+    // Two quinellas (12-2, 12-7) and two tierce orders share one stored dividend: hold.
+    expect(grade(sel("quinella", [12, 2]), 10, res, card)).toMatchObject({ kind: "hold", reason: "dead_heat" });
+    expect(grade(sel("qpl", [12, 2]), 10, res, card)).toMatchObject({ kind: "hold", reason: "dead_heat" });
+    expect(grade(sel("tierce", [12, 2, 7]), 10, res, card)).toMatchObject({ kind: "hold", reason: "dead_heat" });
+    expect(grade(sel("first4", [12, 2, 7, 3]), 10, res, card)).toMatchObject({ kind: "hold", reason: "dead_heat" });
+    // A tie for 1st: two winners (Win held) but still one quinella and one trio.
+    const top = [result(1, [[1, 1], [2, 1], [3, 3], [4, 4]], { winDividend: 30, quinellaDividend: 40, trioDividend: 90 })];
+    expect(grade(sel("win", [1]), 10, top, runners(4))).toMatchObject({ kind: "hold", reason: "dead_heat" });
+    expect(grade(sel("quinella", [1, 2]), 10, top, runners(4))).toMatchObject({ kind: "settle", payout: 40 });
+    expect(grade(sel("trio", [1, 2, 3]), 10, top, runners(4))).toMatchObject({ kind: "settle", payout: 90 });
+  });
+
   it("missing dividend → held; void race → full refund; no result → wait", () => {
     const res = [result(1, [[1, 1], [2, 2], [3, 3]], { trioDividend: undefined })];
     expect(grade(sel("trio", [1, 2, 3]), 10, res, runners(3))).toMatchObject({ kind: "hold", reason: "missing_dividend" });

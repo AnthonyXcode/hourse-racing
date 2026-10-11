@@ -1,5 +1,5 @@
 // How a LIVE bet settles (docs/credits/PRD.md §4.3–4.4). Pure: no DB, so every rule is unit-tested.
-import { BET_TYPES, countCombos } from "../../shared/betEngine/index";
+import { countCombos } from "../../shared/betEngine/index";
 import type { BetSelection, RaceResult, RaceStatus, SettleResult } from "../../shared/types";
 import { settleAgainstResults } from "../settleCore";
 import { hasResult } from "./schedule";
@@ -59,14 +59,44 @@ export function effectiveSelection(sel: BetSelection, scratched: Map<number, Set
   return { ...sel, raceLegs: legs };
 }
 
-/** Ties among finishers inside the pool's paying placings for any leg race the bet covers. */
+/**
+ * A dead heat makes the stored dividend ambiguous only when it creates more winning combinations than the
+ * result stores dividends for (one per pool, or one per placing for Place / QPL, without horse numbers):
+ * - Win: a tie for 1st (two winners, two dividends).
+ * - Place: one of the bet's placed horses is tied (the tied rows can't be told apart); untied horses keep
+ *   their own row, since HKJC skips positions after a tie (1, 2, 2, 4).
+ * - Quinella: more than two horses in 1st–2nd. Trio / DT / TT: more than three in 1st–3rd in any leg
+ *   (a tie for 1st or 2nd still leaves a single trio).
+ * - QPL / Tierce / First 4: any tie inside the placings (ordered pools, or per-pair rows).
+ */
 function deadHeatAffects(sel: BetSelection, byRace: Map<number, RaceResult>): boolean {
-  const def = BET_TYPES[sel.type];
   return sel.raceLegs.some((leg) => {
     const r = byRace.get(leg.raceNumber)!;
-    const depth = sel.type === "place" ? (r.placeDividends?.length ?? 3) : sel.type === "qpl" ? 3 : def.depth;
-    const pos = r.finishOrder.filter((f) => f.finishPosition <= depth).map((f) => f.finishPosition);
-    return new Set(pos).size < pos.length;
+    const within = (d: number) => r.finishOrder.filter((f) => f.finishPosition <= d);
+    const tied = (d: number) => {
+      const pos = within(d).map((f) => f.finishPosition);
+      return new Set(pos).size < pos.length;
+    };
+    switch (sel.type) {
+      case "win":
+        return within(1).length > 1;
+      case "place": {
+        const placed = within(r.placeDividends?.length ?? 3);
+        const picked = new Set(leg.legs);
+        return placed.some((f) => picked.has(f.horseNumber) && placed.some((o) => o !== f && o.finishPosition === f.finishPosition));
+      }
+      case "quinella":
+        return within(2).length > 2;
+      case "trio":
+      case "doubleTrio":
+      case "tripleTrio":
+        return within(3).length > 3;
+      case "qpl":
+      case "tierce":
+        return tied(3);
+      case "first4":
+        return tied(4);
+    }
   });
 }
 
