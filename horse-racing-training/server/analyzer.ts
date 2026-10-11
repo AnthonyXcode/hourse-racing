@@ -21,7 +21,7 @@ const MIN_RUNNERS = 6;
 interface Entry {
   horseNumber: number;
   isScratched?: boolean;
-  horse: { code: string; name?: string; currentRating?: number; pastPerformances?: { finishPosition: number }[] };
+  horse: { code: string; name?: string; pastPerformances?: unknown[] };
   jockey?: { name?: string; code?: string };
 }
 interface Race {
@@ -256,6 +256,7 @@ export async function analyzeCard(date: string, venue: "ST" | "HV", rn: number):
       const diffs = analyses.map((a) => Math.abs(topRating - a.overallRating));
       const second = analyses[1];
       const ratingRank = new Map(analyses.map((a, i) => [a.horseCode, i + 1]));
+      const modelRating = new Map(analyses.map((a) => [a.horseCode, a.overallRating]));
       const odds = (n: number) => winOddsMap.get(n) ?? 0;
       const mktRank = new Map(
         active
@@ -284,7 +285,7 @@ export async function analyzeCard(date: string, venue: "ST" | "HV", rn: number):
           winPct: Math.round(r.winProbability * 1000) / 10,
           placePct: Math.round(r.placeProbability * 1000) / 10,
           tripRuns: eng.tripRunCount(entryByNum.get(r.horseNumber), race.distance),
-          rating: entryByNum.get(r.horseNumber)?.horse.currentRating ?? 0,
+          modelRating: Math.round(modelRating.get(r.horseCode) ?? 0),
           formRuns: entryByNum.get(r.horseNumber)?.horse.pastPerformances?.length ?? 0,
         })),
       };

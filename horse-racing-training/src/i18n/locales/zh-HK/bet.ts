@@ -135,7 +135,7 @@ export const bet: Shape<typeof En> = {
       odds: "賠率",
       trip: "同程次數（往績）",
       tripT: "此途程的出賽次數（所有往績出賽次數）",
-      rating: "評分",
+      modelRating: "模型評分",
     },
     topPick: "模型首選",
     note: "以已儲存的排位表於賽前作出的模型估算，只供參考，並非投注建議。",

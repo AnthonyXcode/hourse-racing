@@ -138,7 +138,7 @@ describe("venue default filters", () => {
 describe("strategyChecks", () => {
   const pre = (over: Partial<PreRaceAnalysis> = {}, top: Partial<PreRaceAnalysis["horses"][number]> = {}): PreRaceAnalysis => ({
     raceId: "2026-09-23-HV-1", venue: "HV", surface: "Turf", runners: 12, avgDiff: 18, close8: 1, sparse: 0, gap: 8,
-    horses: [{ horseNo: 3, code: "C", name: "N", modelRank: 1, ratingRank: 1, marketRank: 3, odds: 5.2, winPct: 43, placePct: 77.1, tripRuns: 5, rating: 60, formRuns: 6, ...top }],
+    horses: [{ horseNo: 3, code: "C", name: "N", modelRank: 1, ratingRank: 1, marketRank: 3, odds: 5.2, winPct: 43, placePct: 77.1, tripRuns: 5, modelRating: 60, formRuns: 6, ...top }],
     ...over,
   });
 

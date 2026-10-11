@@ -140,7 +140,7 @@ export function RaceAnalysisPanel({ date, venue, raceNo }: { date: string; venue
                       <th>{t("analysis.col.model")}</th>
                       <th>{t("common:word.number")}</th>
                       <th>{t("common:word.horse")}</th>
-                      <th>{t("analysis.col.rating")}</th>
+                      <th>{t("analysis.col.modelRating")}</th>
                       <th>{t("analysis.col.win")}</th>
                       <th>{t("analysis.col.place")}</th>
                       <th>{t("analysis.col.market")}</th>
@@ -157,7 +157,7 @@ export function RaceAnalysisPanel({ date, venue, raceNo }: { date: string; venue
                           {/* opens the horse's past runs (same popup as the race card / Momentum) */}
                           <HorseLink raceId={a.raceId} horseNo={h.horseNo} code={h.code} name={name("horse", h.code, h.name)} />
                         </td>
-                        <td>{h.rating || "–"}</td>
+                        <td>{h.modelRating}</td>
                         <td>{h.winPct.toFixed(1)}</td>
                         <td>{h.placePct.toFixed(1)}</td>
                         <td>{h.marketRank || "–"}</td>

@@ -132,7 +132,7 @@ export const bet = {
       odds: "Odds",
       trip: "Trip runs (form)",
       tripT: "Runs at this distance (all runs on record)",
-      rating: "Rating",
+      modelRating: "Model rating",
     },
     topPick: "Model's top pick",
     note: "Model estimates from the saved racecard, made before the race. For reference only, not betting advice.",
