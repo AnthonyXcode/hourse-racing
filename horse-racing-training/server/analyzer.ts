@@ -274,6 +274,7 @@ export async function analyzeCard(date: string, venue: "ST" | "HV", rn: number):
         close8: diffs.filter((d) => d < 8).length,
         sparse: active.filter((e) => eng.isSparseFormEntry(e)).length,
         gap: second ? Math.abs(topRating - second.overallRating) : 999,
+        updatedAt: row.updatedAt,
         horses: mc.map((r, i) => ({
           horseNo: r.horseNumber,
           code: r.horseCode,

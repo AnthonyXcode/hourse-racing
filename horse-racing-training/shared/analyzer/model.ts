@@ -118,6 +118,8 @@ export interface PreRaceAnalysis {
   close8: number;
   sparse: number;
   gap: number;
+  /** when the saved racecard (incl. its win odds) last changed, ISO */
+  updatedAt?: string;
   /** model order, best first */
   horses: {
     horseNo: number;

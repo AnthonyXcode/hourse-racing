@@ -111,6 +111,7 @@ export const bet: Shape<typeof En> = {
     summary: "模型首選 {{n}}號 {{name}} · 獨贏 {{win}}% · 位置 {{place}}%",
     loading: "正在分析此場賽事…",
     unavailable: "此場賽事暫無分析。",
+    lastUpdate: "最後更新 {{time}}",
     runners: "出賽馬數",
     avgDiff: "平均差距",
     close8: "評分接近 < 8",

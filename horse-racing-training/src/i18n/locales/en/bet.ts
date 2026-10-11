@@ -108,6 +108,7 @@ export const bet = {
     summary: "Model's top pick #{{n}} {{name}} · win {{win}}% · place {{place}}%",
     loading: "Analysing this race…",
     unavailable: "No analysis for this race.",
+    lastUpdate: "Last update {{time}}",
     runners: "Runners",
     avgDiff: "avgDiff",
     close8: "Close < 8",

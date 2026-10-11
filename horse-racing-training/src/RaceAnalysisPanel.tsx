@@ -7,6 +7,7 @@ import { api } from "./api";
 import { track } from "./analytics";
 import { confidence, strategyChecks, type PreRaceAnalysis } from "../shared/analyzer/model";
 import { useNames } from "./i18n/names";
+import { useFmt } from "./i18n/useLanguage";
 import { cx, panel, table, tablePadTight } from "./kit";
 import { HorseLink } from "./momentum/HorseRecord";
 
@@ -40,6 +41,7 @@ function Stars({ value, size = 14 }: { value: number; size?: number }) {
 export function RaceAnalysisPanel({ date, venue, raceNo }: { date: string; venue: string; raceNo: number }) {
   const { t } = useTranslation(["bet", "common"]);
   const name = useNames();
+  const { date: fmtDate } = useFmt();
   const [open, setOpen] = useState(false);
   const [state, setState] = useState<{ key: string; data: PreRaceAnalysis | null; error?: boolean } | null>(null);
   const key = `${date}_${venue}_${raceNo}`;
@@ -89,6 +91,11 @@ export function RaceAnalysisPanel({ date, venue, raceNo }: { date: string; venue
             </span>
           )}
         </span>
+        {a?.updatedAt && (
+          <span className="hidden flex-none text-xs text-ink-3 tabular-nums sm:inline" title={a.updatedAt}>
+            {t("analysis.lastUpdate", { time: fmtDate(a.updatedAt, { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit", hourCycle: "h23" }) })}
+          </span>
+        )}
         <motion.span aria-hidden className="flex-none text-ink-3" animate={{ rotate: open ? 180 : 0 }} transition={COLLAPSE}>
           ▼
         </motion.span>
@@ -171,6 +178,11 @@ export function RaceAnalysisPanel({ date, venue, raceNo }: { date: string; venue
                 </table>
               </div>
               <p className="mt-3 text-xs text-ink-3">{t("analysis.note")}</p>
+              {a.updatedAt && (
+                <p className="mt-1 text-xs text-ink-3 tabular-nums sm:hidden">
+                  {t("analysis.lastUpdate", { time: fmtDate(a.updatedAt, { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit", hourCycle: "h23" }) })}
+                </p>
+              )}
             </div>
           </motion.div>
         )}
