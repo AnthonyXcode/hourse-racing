@@ -780,11 +780,7 @@ export function HistoryPage({
 }) {
   const { t } = useTranslation(["history", "common", "credits"]);
   const [confirming, setConfirming] = useState(false);
-  const [sharing, setSharing] = useState(false);
-  const [shareBet, setShareBet] = useState<HistoryEntry | null>(null);
-  const g = useGlossary();
   const fmt = useFmt();
-  const when = (ts: string) => fmt.date(ts, { dateStyle: "short", timeStyle: "short" });
   // Period filter on the meeting date (YYYY-MM-DD; "" = open-ended). Default: last 30 days.
   // The Pending view ignores it, so a bet on an upcoming meeting is never hidden.
   const [range, setRange] = useState(last30Days);
@@ -805,10 +801,106 @@ export function HistoryPage({
   /** Rows of this view before the period filter: tells "nothing yet" from "nothing in this period". */
   const anyInView = entries.some((e) => (f === "practice" ? e.mode !== "live" : e.mode === "live" && (f === "live" || e.status === "pending")));
   const isLive = f !== "practice";
+
+  return (
+    <div className="mt-2">
+      <div className="flex flex-wrap items-end justify-between gap-3">
+        <Display sub={f === "live" ? t("credits:history.subLive") : f === "pending" ? t("credits:history.subPending") : t("sub")}>{t("title")}</Display>
+        {allPractice.length > 0 && f === "practice" && (
+          <button className={cx(btnDanger, "mb-2")} onClick={() => setConfirming(true)}>
+            {hasLive ? t("credits:history.clearPractice") : t("common:action.clearAll")}
+          </button>
+        )}
+      </div>
+      {confirming && <ClearDialog count={allPractice.length} practiceOnly={hasLive} onCancel={() => setConfirming(false)} onConfirm={onClear} />}
+
+      {hasLive && (
+        <div className={cx(pillRow, "mt-2")} role="group" aria-label={t("credits:history.filters")}>
+          {(["live", "practice", "pending"] as const).map((k) => (
+            <button key={k} type="button" className={cx(pill(f === k), "flex-none")} aria-pressed={f === k} onClick={() => setFilter(k)}>
+              {k === "live" ? t("credits:history.filterLive") : k === "practice" ? t("credits:history.filterPractice") : t("credits:history.filterPending", { n: pending.length })}
+            </button>
+          ))}
+        </div>
+      )}
+
+      <div className={cx(rangeBar, "mt-4")} role="group" aria-label={t("range.label")}>
+        <div className={field}>
+          <label htmlFor="hFrom" className={fieldLabel}>{t("range.from")}</label>
+          <input type="date" id="hFrom" className={dateControl} value={range.from} max={range.to || undefined} onChange={(e) => setRange({ ...range, from: e.target.value })} />
+        </div>
+        <div className={field}>
+          <label htmlFor="hTo" className={fieldLabel}>{t("range.to")}</label>
+          <input type="date" id="hTo" className={dateControl} value={range.to} min={range.from || undefined} onChange={(e) => setRange({ ...range, to: e.target.value })} />
+        </div>
+        {([...(raceDay ? ([["lastRaceDay", { from: raceDay, to: raceDay }]] as const) : []), ["last30", last30Days()], ["all", { from: "", to: "" }]] as const).map(([k, r]) => (
+          <button key={k} type="button" className={cx(pill(range.from === r.from && range.to === r.to), "flex-none")} aria-pressed={range.from === r.from && range.to === r.to} onClick={() => setRange(r)}>
+            {t(`range.${k}`)}
+          </button>
+        ))}
+      </div>
+
+      {f === "pending" && pending.length > 0 && (
+        <p className={cx(panel, "mt-4 text-[15px] text-navy-900")}>
+          {t("credits:history.pendingSummary", { count: pending.length, n: fmt.num(pending.reduce((s, e) => s + e.cost, 0)) })}
+        </p>
+      )}
+      <HistoryLedger
+        rows={rows}
+        isLive={isLive}
+        stats={f !== "pending"}
+        statsLabel={hasLive}
+        modeBadges={hasLive}
+        shareName={shareName}
+        onDelete={onDelete}
+        emptyText={anyInView ? t("range.empty") : f === "live" ? t("credits:history.emptyLive") : f === "pending" ? t("credits:history.emptyPending") : t("empty")}
+      />
+    </div>
+  );
+}
+
+/**
+ * History's stats panel + bet table for one mode (live credits or practice HK$), shared by the History tab
+ * and the Bet tab's day summary. `where` adds the Placed / Meeting columns (History lists many meetings).
+ */
+export function HistoryLedger({
+  rows,
+  isLive,
+  stats = true,
+  statsLabel,
+  modeBadges,
+  where = true,
+  shareName,
+  onDelete,
+  emptyText,
+  flat,
+}: {
+  rows: HistoryEntry[];
+  isLive: boolean;
+  /** Show the Net / ROI / … panel (off for History's Pending view). */
+  stats?: boolean;
+  /** Label the panel "Live · credits" / "Practice · HK$". */
+  statsLabel?: boolean;
+  /** Live / Practice badge in the Meeting column. */
+  modeBadges?: boolean;
+  where?: boolean;
+  /** Enables Share on live rows and the live summary. */
+  shareName?: string;
+  /** Practice rows get a delete button when given. */
+  onDelete?: (id: string) => void;
+  emptyText: string;
+  /** Inside another card: no card chrome of its own (hairline-bordered table, plain stats). */
+  flat?: boolean;
+}) {
+  const { t } = useTranslation(["history", "common", "credits"]);
+  const [sharing, setSharing] = useState(false);
+  const [shareBet, setShareBet] = useState<HistoryEntry | null>(null);
+  const g = useGlossary();
+  const fmt = useFmt();
+  const when = (ts: string) => fmt.date(ts, { dateStyle: "short", timeStyle: "short" });
   // Practice amounts are imaginary HK$; LIVE amounts are credits. Never mixed in one view.
   const amount = (v: number) => (isLive ? fmt.num(v) : fmt.money(v));
   const signed = (v: number) => (v >= 0 ? "+" : "−") + amount(Math.abs(v));
-
   // Bets, hit rate, staked and returned all count SETTLED bets only; pending ones are listed separately.
   const settled = rows.filter((e) => e.status !== "pending");
   const pendingRows = rows.filter((e) => e.status === "pending");
@@ -840,16 +932,7 @@ export function HistoryPage({
     );
 
   return (
-    <div className="mt-2">
-      <div className="flex flex-wrap items-end justify-between gap-3">
-        <Display sub={f === "live" ? t("credits:history.subLive") : f === "pending" ? t("credits:history.subPending") : t("sub")}>{t("title")}</Display>
-        {allPractice.length > 0 && f === "practice" && (
-          <button className={cx(btnDanger, "mb-2")} onClick={() => setConfirming(true)}>
-            {hasLive ? t("credits:history.clearPractice") : t("common:action.clearAll")}
-          </button>
-        )}
-      </div>
-      {confirming && <ClearDialog count={allPractice.length} practiceOnly={hasLive} onCancel={() => setConfirming(false)} onConfirm={onClear} />}
+    <>
       {shareBet && shareName && (
         <Suspense fallback={null}>
           <ShareRecord
@@ -879,45 +962,12 @@ export function HistoryPage({
           />
         </Suspense>
       )}
-
-      {hasLive && (
-        <div className={cx(pillRow, "mt-2")} role="group" aria-label={t("credits:history.filters")}>
-          {(["live", "practice", "pending"] as const).map((k) => (
-            <button key={k} type="button" className={cx(pill(f === k), "flex-none")} aria-pressed={f === k} onClick={() => setFilter(k)}>
-              {k === "live" ? t("credits:history.filterLive") : k === "practice" ? t("credits:history.filterPractice") : t("credits:history.filterPending", { n: pending.length })}
-            </button>
-          ))}
-        </div>
-      )}
-
-      <div className={cx(rangeBar, "mt-4")} role="group" aria-label={t("range.label")}>
-        <div className={field}>
-          <label htmlFor="hFrom" className={fieldLabel}>{t("range.from")}</label>
-          <input type="date" id="hFrom" className={dateControl} value={range.from} max={range.to || undefined} onChange={(e) => setRange({ ...range, from: e.target.value })} />
-        </div>
-        <div className={field}>
-          <label htmlFor="hTo" className={fieldLabel}>{t("range.to")}</label>
-          <input type="date" id="hTo" className={dateControl} value={range.to} min={range.from || undefined} onChange={(e) => setRange({ ...range, to: e.target.value })} />
-        </div>
-        {([...(raceDay ? ([["lastRaceDay", { from: raceDay, to: raceDay }]] as const) : []), ["last30", last30Days()], ["all", { from: "", to: "" }]] as const).map(([k, r]) => (
-          <button key={k} type="button" className={cx(pill(range.from === r.from && range.to === r.to), "flex-none")} aria-pressed={range.from === r.from && range.to === r.to} onClick={() => setRange(r)}>
-            {t(`range.${k}`)}
-          </button>
-        ))}
-      </div>
-
-      {f === "pending" ? (
-        pending.length > 0 && (
-          <p className={cx(panel, "mt-4 text-[15px] text-navy-900")}>
-            {t("credits:history.pendingSummary", { count: pending.length, n: fmt.num(pending.reduce((s, e) => s + e.cost, 0)) })}
-          </p>
-        )
-      ) : (
-        <div className={cx(panel, "mt-4")}>
-          {hasLive && (
+      {stats && (
+        <div className={flat ? "mt-1" : cx(panel, "mt-4")}>
+          {statsLabel && (
             <div className="mb-3 flex items-center justify-between gap-3">
-              <div className="text-[13px] font-medium text-ink-muted">{f === "live" ? t("credits:history.statsLive") : t("credits:history.statsPractice")}</div>
-              {f === "live" && shareName && settled.length > 0 && (
+              <div className="text-[13px] font-medium text-ink-muted">{isLive ? t("credits:history.statsLive") : t("credits:history.statsPractice")}</div>
+              {isLive && shareName && settled.length > 0 && (
                 <button
                   type="button"
                   className="-my-2 -mr-2 inline-flex size-11 flex-none cursor-pointer items-center justify-center rounded-full text-navy-700 transition-colors hover:bg-sky-50"
@@ -979,25 +1029,29 @@ export function HistoryPage({
       )}
 
       {rows.length === 0 ? (
-        <div className={cx(panel, empty, "mt-4")}>{anyInView ? t("range.empty") : f === "live" ? t("credits:history.emptyLive") : f === "pending" ? t("credits:history.emptyPending") : t("empty")}</div>
+        <div className={flat ? "mt-3 text-[13px] text-ink-muted" : cx(panel, empty, "mt-4")}>{emptyText}</div>
       ) : (
-        <div className="mt-4 overflow-x-auto rounded-card bg-surface shadow-card">
+        <div className={cx("mt-4 overflow-x-auto rounded-card bg-surface", flat ? "border border-line" : "shadow-card")}>
           <table
             className={cx(
               table,
               tablePad,
-              isLive
-                ? "text-sm [&_th:nth-child(-n+5)]:text-left [&_td:nth-child(-n+5)]:text-left [&_th:nth-child(8)]:text-left [&_td:nth-child(8)]:text-left"
-                : "text-sm [&_th:nth-child(-n+4)]:text-left [&_td:nth-child(-n+4)]:text-left [&_th:nth-child(8)]:text-left [&_td:nth-child(8)]:text-left [&_th:nth-child(7)]:text-center [&_td:nth-child(7)]:text-center"
+              where
+                ? isLive
+                  ? "text-sm [&_th:nth-child(-n+5)]:text-left [&_td:nth-child(-n+5)]:text-left [&_th:nth-child(8)]:text-left [&_td:nth-child(8)]:text-left"
+                  : "text-sm [&_th:nth-child(-n+4)]:text-left [&_td:nth-child(-n+4)]:text-left [&_th:nth-child(8)]:text-left [&_td:nth-child(8)]:text-left [&_th:nth-child(7)]:text-center [&_td:nth-child(7)]:text-center"
+                : isLive
+                  ? "text-sm [&_th:nth-child(-n+3)]:text-left [&_td:nth-child(-n+3)]:text-left [&_th:nth-child(6)]:text-left [&_td:nth-child(6)]:text-left"
+                  : "text-sm [&_th:nth-child(-n+2)]:text-left [&_td:nth-child(-n+2)]:text-left [&_th:nth-child(6)]:text-left [&_td:nth-child(6)]:text-left [&_th:nth-child(5)]:text-center [&_td:nth-child(5)]:text-center"
             )}
           >
             <thead>
               <tr>
                 {isLive && <th>{t("credits:history.status")}</th>}
-                <th>{t("col.placed")}</th><th>{t("col.meeting")}</th><th>{t("col.bet")}</th><th>{t("col.picks")}</th>
+                {where && <><th>{t("col.placed")}</th><th>{t("col.meeting")}</th></>}<th>{t("col.bet")}</th><th>{t("col.picks")}</th>
                 <th>{t("col.combos")}</th><th>{t("col.cost")}</th>{!isLive && <th>{t("col.hit")}</th>}<th>{t("col.result")}</th>
                 <th>{t("col.dividend")}</th><th>{t("col.payout")}</th><th>{t("col.net")}</th>
-                {!isLive && <th><span className="sr-only">{t("col.delete")}</span></th>}
+                {!isLive && onDelete && <th><span className="sr-only">{t("col.delete")}</span></th>}
                 {isLive && shareName && <th><span className="sr-only">{t("credits:share.button")}</span></th>}
               </tr>
             </thead>
@@ -1007,11 +1061,11 @@ export function HistoryPage({
                 return (
                   <tr key={e.id}>
                     {isLive && <td>{chip(e)}</td>}
-                    <td className="text-ink-3">{when(e.ts)}</td>
-                    <td>
+                    {where && <td className="text-ink-3">{when(e.ts)}</td>}
+                    {where && <td>
                       {fmt.date(ymd(e.date))} {g.venue(e.venue)}
-                      {hasLive && <span className={cx(modeBadge(isLive ? "live" : "practice", "white"), "ml-1.5")}>{t(isLive ? "credits:mode.live" : "credits:mode.practice")}</span>}
-                    </td>
+                      {modeBadges && <span className={cx(modeBadge(isLive ? "live" : "practice", "white"), "ml-1.5")}>{t(isLive ? "credits:mode.live" : "credits:mode.practice")}</span>}
+                    </td>}
                     <td>{g.betType(e.betType)}</td>
                     <td className="text-xs text-ink-2">{picks(e.picks)}</td>
                     <td>{e.combos}</td>
@@ -1036,7 +1090,7 @@ export function HistoryPage({
                         </button>
                       </td>
                     )}
-                    {!isLive && (
+                    {!isLive && onDelete && (
                       <td>
                         <button
                           className="inline-flex size-8 cursor-pointer items-center justify-center rounded-full text-sm text-ink-3 transition-colors hover:bg-bad-soft hover:text-bad"
@@ -1054,7 +1108,7 @@ export function HistoryPage({
           </table>
         </div>
       )}
-    </div>
+    </>
   );
 }
 

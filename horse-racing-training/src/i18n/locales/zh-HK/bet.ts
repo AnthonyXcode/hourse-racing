@@ -141,4 +141,16 @@ export const bet: Shape<typeof En> = {
     topPick: "模型首選",
     note: "以已儲存的排位表於賽前作出的模型估算，只供參考，並非投注建議。",
   },
+  day: {
+    title: "我的投注 · {{date}} {{venue}}",
+    bets_one: "{{count}} 注",
+    bets_other: "{{count}} 注",
+    none: "未有投注",
+    empty: "你在此賽馬日尚未投注。落注後，已結算的投注會在此顯示。",
+    note: "淨盈虧、回報率及命中只計已結算的投注。",
+    guestNote: "只顯示今次瀏覽的投注。登入後可保存至投注紀錄。",
+    login: "登入以保存",
+    history: "查看完整投注紀錄 →",
+    cardTitle: "本賽馬日我的投注",
+  },
 };

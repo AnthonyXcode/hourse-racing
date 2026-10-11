@@ -138,4 +138,16 @@ export const bet = {
     topPick: "Model's top pick",
     note: "Model estimates from the saved racecard, made before the race. For reference only, not betting advice.",
   },
+  day: {
+    title: "My bets · {{date}} {{venue}}",
+    bets_one: "{{count}} bet",
+    bets_other: "{{count}} bets",
+    none: "No bets yet",
+    empty: "You haven't bet on this racing day yet. Settled bets show up here as you place them.",
+    note: "Net, ROI and hits count settled bets only.",
+    guestNote: "Bets from this visit only. Log in to keep them in your History.",
+    login: "Log in to save",
+    history: "Open full History →",
+    cardTitle: "My bets of the day",
+  },
 } as const;

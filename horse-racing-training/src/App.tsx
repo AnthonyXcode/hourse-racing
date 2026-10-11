@@ -7,6 +7,7 @@ const BotProfilePage = lazy(() => import("./home/BotProfile").then((m) => ({ def
 import { api } from "./api";
 import { BET_TYPES, countCombos } from "../shared/betEngine/index";
 import type { MeetingRef, RaceCard, BetTypeId, BetSelection, HistoryEntry, RaceStatus } from "../shared/types";
+import { BetDaySummary } from "./BetDaySummary";
 import { RaceCardTable, PoolMenu, StakeBar, ResultModal, ResultPanel, HistoryPage, emptyPicks, legSummary, usePoolName, ymd, type HistoryFilter, type PickCol, type Picks, type Pool } from "./ui";
 import { BetSlip } from "./BetSlip";
 import { MIN_UNIT, scaleResult, type SettledBet, type SlipItem } from "./slip";
@@ -199,6 +200,8 @@ function AppBody() {
   };
   /** null until the member's history has loaded. */
   const [history, setHistory] = useState<HistoryEntry[] | null>(null);
+  /** The member's bets for the Bet tab's day summary (null while loading). */
+  const [dayBets, setDayBets] = useState<HistoryEntry[] | null>(null);
   const [raceResult, setRaceResult] = useState<RaceResult | null>(null);
   const analyzerOpened = useOnceTrue(view === "win-place" || view === "trio");
 
@@ -520,6 +523,20 @@ function AppBody() {
     });
   }
 
+  // The Bet tab's day summary: reload the member's bets on opening the tab and whenever bets are
+  // settled (practice result modal, LIVE receipt, LIVE results arriving).
+  useEffect(() => {
+    if (view !== "bet" || !memberId) return setDayBets(null);
+    let live = true;
+    memberApi
+      .history()
+      .then((all) => live && setDayBets(all))
+      .catch((e) => live && (auth.handleAuthError(e) || setDayBets([])));
+    return () => {
+      live = false;
+    };
+  }, [view, memberId, settled, liveSlip.receipt, credits.unseenSettled]); // eslint-disable-line react-hooks/exhaustive-deps
+
   // Place bet → Confirm: LIVE slips are placed on the server (credits, settle later); practice slips settle
   // each bet now, record it in history, and show the outcome.
   async function confirmSlip() {
@@ -555,7 +572,10 @@ function AppBody() {
           poolDividendText: r.poolDividendText,
         };
         if (user) {
-          memberApi.addHistory(entry).catch((e) => auth.handleAuthError(e) || setError(t("account:err.historySave")));
+          memberApi
+            .addHistory(entry)
+            .then((all) => setDayBets((prev) => (!prev || all.length >= prev.length ? all : prev)))
+            .catch((e) => auth.handleAuthError(e) || setError(t("account:err.historySave")));
         } else {
           guestPending.current = [...guestPending.current, entry].slice(-GUEST_PENDING_MAX); // nothing is sent for guests
         }
@@ -1025,6 +1045,16 @@ function AppBody() {
                   {!liveMeeting && !meeting.hasResults && <p className="mt-3 text-[13px] text-warn">{t("bet:settlementDisabled")}</p>}
 
                   {date && venue && <RaceAnalysisPanel date={date} venue={venue} raceNo={editRace} />}
+                  <BetDaySummary
+                    date={meeting.date}
+                    venue={meeting.venue}
+                    entries={user ? dayBets : user === null ? [...guestPending.current] : null}
+                    guest={user === null}
+                    onLogin={loginToSave}
+                    onOpenHistory={() => setView("history")}
+                    shareName={user?.displayName}
+                    onDelete={user ? (id) => memberApi.deleteHistory(id).then(setDayBets).catch((e) => auth.handleAuthError(e) || setError(errorText(ta, e))) : undefined}
+                  />
                 </>
               )}
             </div>
