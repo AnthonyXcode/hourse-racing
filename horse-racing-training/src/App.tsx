@@ -11,7 +11,7 @@ import { BetDaySummary } from "./BetDaySummary";
 import { RaceCardTable, PoolMenu, StakeBar, ResultModal, ResultPanel, HistoryPage, emptyPicks, legSummary, usePoolName, ymd, type HistoryFilter, type PickCol, type Picks, type Pool } from "./ui";
 import { BetSlip } from "./BetSlip";
 import { MIN_UNIT, scaleResult, type SettledBet, type SlipItem } from "./slip";
-import type { RaceResult } from "../shared/types";
+import type { RaceResult, Venue } from "../shared/types";
 import { AnalyzerPage } from "./analyzer/AnalyzerPage";
 import { MomentumPage } from "./momentum/MomentumPage";
 import { SettingsPage } from "./SettingsPage";
@@ -93,6 +93,8 @@ const parseBetDate = (raw: string | null) => {
 const readBetDate = () => (readView() === "bet" ? parseBetDate(new URLSearchParams(window.location.search).get("date")) : "");
 /** YYYYMMDD → YYYY/MM/DD, the ?date= form (slashes left unescaped so the link stays readable). */
 const betDateParam = (d: string) => `${d.slice(0, 4)}/${d.slice(4, 6)}/${d.slice(6, 8)}`;
+/** YYYYMMDD → YYYY/MM/DD for error details. */
+const ymdSlash = (d: string) => `${d.slice(0, 4)}/${d.slice(4, 6)}/${d.slice(6, 8)}`;
 /** Upcoming (Live) group = any race not settled/void yet; Past (Practice) = all settled. */
 const isUpcoming = (m: MeetingRef) => (m.mode ? m.mode !== "practice" : !m.hasResults);
 /** mm:ss or h:mm:ss */
@@ -174,6 +176,8 @@ function AppBody() {
   const [slip, setSlip] = useState<SlipItem[]>(loadSavedSlip);
   const [settled, setSettled] = useState<SettledBet[] | null>(null);
   const [error, setError] = useState<string>("");
+  /** What failed behind `error` (shown under it while that error is up): request, raw error, HK time. */
+  const [errorDetail, setErrorDetail] = useState<{ for: string; text: string } | null>(null);
   const { t } = useTranslation(["common", "bet", "account", "history", "credits"]);
   const credits = useCredits();
   const { t: ta } = useTranslation("account");
@@ -187,6 +191,17 @@ function AppBody() {
   const { lang } = useLanguage();
   const fmt = useFmt();
   const [view, setViewRaw, profileId, profileParams] = useViewParam();
+  /**
+   * catch() handler for a request: a plain-language banner, with what was loading and the raw error below.
+   * fetch() rejects with a TypeError only when no response came back at all (offline, waking from sleep,
+   * server restarting), so that case gets the "can't reach the server" text.
+   */
+  const fail = (what: string) => (e: unknown) => {
+    const text = e instanceof TypeError ? t("bet:err.network") : e instanceof Error ? e.message : String(e);
+    const raw = e instanceof Error ? `${e.name}: ${e.message}` : String(e);
+    setError(text);
+    setErrorDetail({ for: text, text: `${what} · ${raw} · ${fmt.date(new Date(), { hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false })}` });
+  };
   /** Switch tabs, asking first if the account page has unsaved edits. */
   const setView = (v: View) => (v === view ? undefined : auth.guard(() => setViewRaw(v)));
   /** Open a leaderboard member's public profile (?tab=member&id=…). */
@@ -218,7 +233,7 @@ function AppBody() {
           if (!live) return;
           setDays(ds);
         })
-        .catch((e) => first && setError(String(e))) // background refresh failures stay quiet
+        .catch((e) => first && fail(t("bet:err.days"))(e)) // background refresh failures stay quiet
         .finally(() => (first = false));
     load();
     const onShow = () => document.visibilityState === "visible" && load();
@@ -332,7 +347,7 @@ function AppBody() {
         setActiveRace(next ?? m.races[0] ?? 1);
         setEditRace(next ?? m.races[0] ?? 1);
       })
-      .catch((e) => setError(String(e)));
+      .catch(fail(t("bet:err.meeting", { date: ymdSlash(date), venue: g.venue(venue as Venue) })));
   }, [meetingKey]);
 
   // ---- LIVE: per-race status on the server clock ----
@@ -385,7 +400,7 @@ function AppBody() {
         setMeeting(m);
         setCards({});
       })
-      .catch((e) => setError(String(e)));
+      .catch(fail(t("bet:err.meetingRefresh", { date: ymdSlash(date), venue: g.venue(venue as Venue) })));
   }, [openSig]); // eslint-disable-line react-hooks/exhaustive-deps
 
   /** The engine bet type behind the pool page (Win/Place settles as Win and/or Place). */
@@ -430,7 +445,7 @@ function AppBody() {
     api
       .race(date, venue, editRace)
       .then((c) => setCards((p) => ({ ...p, [editRace]: c })))
-      .catch((e) => setError(String(e)));
+      .catch(fail(t("bet:err.race", { n: editRace, date: ymdSlash(date), venue: g.venue(venue as Venue) })));
   }, [date, venue, editRace, cards]);
 
   const bankerEnabled = pool !== "wp" && BET_TYPES[betType].banker;
@@ -580,7 +595,7 @@ function AppBody() {
           guestPending.current = [...guestPending.current, entry].slice(-GUEST_PENDING_MAX); // nothing is sent for guests
         }
       } catch (e) {
-        setError(String(e));
+        fail(t("bet:err.settle", { bet: g.betType(item.betType), date: ymdSlash(item.date), venue: g.venue(item.venue) }))(e);
         break; // keep this and later bets on the slip
       }
     }
@@ -723,7 +738,12 @@ function AppBody() {
       </header>
 
       <main className={cx(container, "flex-1 pb-12", view === "bet" && "pb-24 lg:pb-12")}>
-        {error && <div className={errorBox}>{error}</div>}
+        {error && (
+          <div className={errorBox} role="alert">
+            {error}
+            {errorDetail?.for === error && <div className="mt-1 text-[12px] break-words opacity-80">{errorDetail.text}</div>}
+          </div>
+        )}
 
         {/* Analyzer performance. Stays mounted once opened so the range, filters
             and loaded analysis survive switching to other tabs and back. */}
@@ -1013,7 +1033,7 @@ function AppBody() {
                           className={btnPill}
                           disabled={!meeting.hasResults}
                           title={meeting.hasResults ? "" : t("bet:noResultsMeeting")}
-                          onClick={() => date && venue && api.result(date, venue, editRace).then(setRaceResult).catch((e) => setError(String(e)))}
+                          onClick={() => date && venue && api.result(date, venue, editRace).then(setRaceResult).catch(fail(t("bet:err.result", { n: editRace, date: ymdSlash(date), venue: g.venue(venue as Venue) })))}
                         >
                           {t("bet:showResult", { race: t("raceShort", { n: editRace }) })}
                         </button>

@@ -58,6 +58,7 @@
 | **41** | **1 Oct** | **ST** | **Turf** | **Good to Firm** | **11** | **31.1%** | **66.1%** | **6/11** | **54.5%** | **❌❌✅✅✅✅❌❌❌✅✅** | **4 (R3-R6)** |
 | **42** | **4 Oct** | **ST** | **Mixed (AWT+Turf)** | **AWT Good / Turf G-F** | **11** | **39.9%** | **72.2%** | **6/11** | **54.5%** | **❌✅✅❌❌✅✅❌❌✅✅** | **2 (R2-R3)** |
 | **43** | **7 Oct** | **HV** | **Turf** | **Good to Firm** | **9** | **33.0%** | **66.0%** | **4/9** | **44.4%** | **❌❌✅✅❌❌✅❌✅** | **2 (R3-R4)** |
+| **44** | **11 Oct** | **ST** | **Mixed (AWT+Turf)** | **Good** | **11** | **35.5%** | **68.5%** | **3/11** | **27.3%** | **❌❌❌✅❌✅❌❌✅❌❌** | **1** |
 
 \*Meeting 8 **R1** (6 runners): MC #1 **#6** ran **3rd** but HKJC Place pool pays **two** places only → **$0** dividend; counts as **❌** for streaks and all-ups (same dividend logic as other meetings).
 
@@ -1945,3 +1946,27 @@ MC–market split, three meetings combined: **MC #1 at market rank 1–2 placed 
 **Placed:** 4/9 (44.4%) | **Pattern:** ❌❌✅✅❌❌✅❌✅ | **Max streak:** 2 (R3-R4)
 
 **Trio card note (R1–R9):** **LOSS.** Strategy A (as bet) **2/9 (R4 $142, R9 $88), $790 staked (net of the $30 R9 refund), $230 returned, −$560, ROI −70.9%**. Canonical MC top-6 B: **3/9 (R3 $354, R4, R9), $860 net, −$276, −32.1%**. B beat A by $284 because MC #6 #3 ran 3rd in R3, where A's Mode A pool stopped at 5; it is the first race this season that B hit and A missed. B-trio (as bet): **3/9 (R3, R4, R9), $1,210, −$626, −51.7%**. MC #1 at SP rank 1–2 placed only **2/7** (seven-meeting combined 26/41); rank 3+ placed 2/2. Short favourites R5 #4 (2.5) and R6 #9 (2.1, last) failed, and steamers R2 #4 (11→5.4) and R8 #2 (6.9→3.0) were unplaced. MC #1 ≥ 35% placed 3/4; < 35% placed 1/5. Near-zero blind spot: MC Win% < 3% at SP ≤ 6 placed 0/2 (R3 #10, R7 #11), season 12/18; R1 #4 (MC 1.7%, 2nd fav 4.9→6.6) ran 2nd. MC-opposed market top-3 horses placed 5/8. SCMP `+excuses` at pre-race ≤ 8 placed 6/14; `+trial` 2/9; negative flags 0/12. 'Undervalued > 200%' calls 1/2 (R7 #9 won; season 2/16). Every B gap horse was MC #8 or lower.
+
+---
+
+## Meeting 44: Sha Tin | 11 Oct 2026 (11 races)
+
+**MC #1** = raw MC Win% from trio_strategy_20261011_ST_R*.md (10,000 iterations, form=all). **Results** from data/historical/results_20261011_ST.json (scraped first time; R1, R6, R7 and R10 dividends checked against the HKJC results page; truncated R1 Quinella and R7 QP values noted, not edited). Place $ = HKJC place dividend per $10. Going: **AWT Good** (R1, R4, R5) / **Turf Good** (rest; R10 on "C" course). No scratchings. R6 dead heat for 2nd (#2 and #7, both paid a Place dividend). Odds used by reports: HKJC pool 11:23–11:24 HKT.
+
+| Race | Class | Dist (m) | MC #1 | MC Win% | MC Place% | Placed? | Place $ (if placed) |
+|------|-------|----------|-------|---------|-----------|---------|---------------------|
+| R1 | Class 5 | 1200 | #4 JOLLY COMPANION | 27.0% | 59.4% | ❌ (11th) | — |
+| R2 | Class 5 | 1000 | #4 SPICY SPANGLE | 37.8% | 76.8% | ❌ (5th) | — |
+| R3 | Class 4 | 1200 | #1 CROSSBORDERDUDE | 24.0% | 55.5% | ❌ (8th) | — |
+| R4 | Class 3 | 1200 | #2 BUSTLING CITY | 63.9% | 93.1% | ✅ 2nd | 10.1 |
+| R5 | Class 4 | 1200 | #2 MEGA CAPTAIN | 26.8% | 61.5% | ❌ (4th) | — |
+| R6 | Class 4 | 1200 | #2 GALLANT DESIGN | 40.2% | 73.4% | ✅ 2nd (DH) | 12 |
+| R7 | Class 4 | 1400 | #3 ABSOLUTE AWAKENED | 42.4% | 76.4% | ❌ (4th) | — |
+| R8 | Class 4 | 1600 | #12 FAMILY FORTUNE | 17.2% | 42.3% | ❌ (13th) | — |
+| R9 | Class 3 | 1200 | #3 HAPPY INDEX | 35.5% | 67.9% | ✅ 3rd | 15 |
+| R10 | Class 3 | 1400 | #3 FIT FOR BEAUTY | 32.7% | 64.4% | ❌ (9th) | — |
+| R11 | Class 2 | 1200 | #11 JUMBO TREASURE | 43.2% | 82.9% | ❌ (4th) | — |
+
+**Placed:** 3/11 (27.3%) | **Pattern:** ❌❌❌✅❌✅❌❌✅❌❌ | **Max streak:** 1
+
+**Trio card note (R1–R11):** **LOSS.** Strategy A (as bet) **3/10 (R4 $43, R6 $212, R9 $367), $1,060 staked (R8 PASS), $622 returned, −$438, ROI −41.3%**. Canonical MC top-6 B: **2/11 (R4, R6), $1,100, −$845, −76.8%**. A beat B by $407: Rule 8 put R9's runner-up #1 (MC #7, Place% 21.0%) into A's pool, and the R8 PASS and three 雙膽拖 tickets cut stake. B-trio (as bet): **3/11 (R4, R6, R9), $1,120, −$498, −44.5%**. **MC #1 placed only 3/11 and won none**; mean MC Place% 68.5% vs actual 27.3%. MC #1 ≥ 35% placed 3/6; < 35% placed 0/5. MC #1 at SP rank 1–2 placed 3/6 (eight-meeting combined 29/47); rank 3+ placed 0/5 (combined 9/33). Three MC #1 horses ran 4th (R5, R7, R11). **In four races (R3, R5, R10, R11) every placer was in A's pool and the banker missed** (Pattern A, $2,140). MC #2 placed 10/11 (previous eight cards 27/77). Near-zero blind spot: MC Win% < 4% at SP ≤ 6 placed 3/3 (R3 #4 won, R7 #10 2nd, R11 #6 2nd); < 3% definition 1/1, season 13/19. SCMP `+excuses` at pre-race ≤ 8 placed 7/12; `+trial` at ≤ 10 6/11; negative flags 2/16 (both short favourites). 'Undervalued > 200%' calls 0/3 (season 2/19). Dominant races: A 3/6, +$62; Competitive 0/4, −$500.

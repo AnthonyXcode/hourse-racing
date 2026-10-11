@@ -141,6 +141,15 @@ export const bet: Shape<typeof En> = {
     topPick: "模型首選",
     note: "以已儲存的排位表於賽前作出的模型估算，只供參考，並非投注建議。",
   },
+  err: {
+    network: "未能連接伺服器，請檢查網絡連線後再試。",
+    days: "載入賽馬日",
+    meeting: "載入 {{date}} {{venue}} 賽事",
+    meetingRefresh: "更新 {{date}} {{venue}} 賽事",
+    race: "載入排位表 第{{n}}場 · {{date}} {{venue}}",
+    settle: "結算{{bet}}投注 · {{date}} {{venue}}",
+    result: "載入賽果 第{{n}}場 · {{date}} {{venue}}",
+  },
   day: {
     title: "我的投注 · {{date}} {{venue}}",
     bets_one: "{{count}} 注",

@@ -138,6 +138,15 @@ export const bet = {
     topPick: "Model's top pick",
     note: "Model estimates from the saved racecard, made before the race. For reference only, not betting advice.",
   },
+  err: {
+    network: "Can't reach the server. Check your connection and try again.",
+    days: "Loading racing days",
+    meeting: "Loading meeting {{date}} {{venue}}",
+    meetingRefresh: "Refreshing meeting {{date}} {{venue}}",
+    race: "Loading race card R{{n}} · {{date}} {{venue}}",
+    settle: "Settling {{bet}} bet · {{date}} {{venue}}",
+    result: "Loading result R{{n}} · {{date}} {{venue}}",
+  },
   day: {
     title: "My bets · {{date}} {{venue}}",
     bets_one: "{{count}} bet",
