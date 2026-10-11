@@ -220,22 +220,31 @@ function AppBody() {
     };
   }, []);
 
-  // Default meeting once the list and the session are known: the device's last choice; else a member with
-  // LIVE on gets the next upcoming meeting; guests (or LIVE off) get the newest past meeting, as before.
+  // Default meeting once the list and the session are known: with LIVE on, the Upcoming (Live) meeting
+  // (one open for betting first) — even over the device's last choice; else that last choice; else the
+  // newest past meeting. Until the member picks one themselves it is re-checked, since the LIVE flag
+  // (public config) can arrive after the meeting list.
+  const autoKey = useRef("");
   useEffect(() => {
-    if (meetingKey || !days.length || user === undefined) return;
-    const saved = readSaved();
-    if (saved && days.some((m) => `${m.date}_${m.venue}` === saved) && (credits.liveBetting || !isUpcoming(days.find((m) => `${m.date}_${m.venue}` === saved)!))) return setMeetingKey(saved);
-    const today = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Hong_Kong" }).format(new Date()).replaceAll("-", "");
+    if ((meetingKey && meetingKey !== autoKey.current) || !days.length || user === undefined) return;
+    const auto = (k: string) => {
+      autoKey.current = k;
+      if (k !== meetingKey) setMeetingKey(k);
+    };
     const upcoming = days.filter(isUpcoming).sort((a, b) => a.date.localeCompare(b.date));
+    const live = credits.liveBetting && (upcoming.find((m) => m.mode === "live") ?? upcoming[0]);
+    if (live) return auto(`${live.date}_${live.venue}`);
+    const saved = readSaved();
+    if (saved && days.some((m) => `${m.date}_${m.venue}` === saved) && (credits.liveBetting || !isUpcoming(days.find((m) => `${m.date}_${m.venue}` === saved)!))) return auto(saved);
+    const today = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Hong_Kong" }).format(new Date()).replaceAll("-", "");
     const pick =
-      (user && credits.liveBetting && upcoming[0]) ||
       days.find((m) => !isUpcoming(m) && m.date <= today) ||
       days.find((m) => m.date <= today) ||
       days[days.length - 1]; // newest first; else the earliest upcoming
-    if (pick) setMeetingKey(`${pick.date}_${pick.venue}`);
+    if (pick) auto(`${pick.date}_${pick.venue}`);
   }, [days, user, credits.liveBetting, meetingKey]);
   const chooseMeeting = (k: string) => {
+    autoKey.current = ""; // the member's own choice: stop re-picking
     setMeetingKey(k);
     try {
       localStorage.setItem(MEETING_KEY, k);
