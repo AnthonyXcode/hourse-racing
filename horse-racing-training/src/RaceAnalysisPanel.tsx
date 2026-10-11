@@ -140,11 +140,12 @@ export function RaceAnalysisPanel({ date, venue, raceNo }: { date: string; venue
                       <th>{t("analysis.col.model")}</th>
                       <th>{t("common:word.number")}</th>
                       <th>{t("common:word.horse")}</th>
+                      <th>{t("analysis.col.rating")}</th>
                       <th>{t("analysis.col.win")}</th>
                       <th>{t("analysis.col.place")}</th>
                       <th>{t("analysis.col.market")}</th>
                       <th>{t("analysis.col.odds")}</th>
-                      <th>{t("analysis.col.trip")}</th>
+                      <th title={t("analysis.col.tripT")}>{t("analysis.col.trip")}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -156,11 +157,14 @@ export function RaceAnalysisPanel({ date, venue, raceNo }: { date: string; venue
                           {/* opens the horse's past runs (same popup as the race card / Momentum) */}
                           <HorseLink raceId={a.raceId} horseNo={h.horseNo} code={h.code} name={name("horse", h.code, h.name)} />
                         </td>
+                        <td>{h.rating || "–"}</td>
                         <td>{h.winPct.toFixed(1)}</td>
                         <td>{h.placePct.toFixed(1)}</td>
                         <td>{h.marketRank || "–"}</td>
                         <td>{h.odds > 0 ? h.odds : "–"}</td>
-                        <td>{h.tripRuns}</td>
+                        <td className="whitespace-nowrap">
+                          {h.tripRuns}({h.formRuns})
+                        </td>
                       </tr>
                     ))}
                   </tbody>

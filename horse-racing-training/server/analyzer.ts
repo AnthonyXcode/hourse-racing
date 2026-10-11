@@ -21,7 +21,7 @@ const MIN_RUNNERS = 6;
 interface Entry {
   horseNumber: number;
   isScratched?: boolean;
-  horse: { code: string; name?: string };
+  horse: { code: string; name?: string; currentRating?: number; pastPerformances?: { finishPosition: number }[] };
   jockey?: { name?: string; code?: string };
 }
 interface Race {
@@ -284,6 +284,8 @@ export async function analyzeCard(date: string, venue: "ST" | "HV", rn: number):
           winPct: Math.round(r.winProbability * 1000) / 10,
           placePct: Math.round(r.placeProbability * 1000) / 10,
           tripRuns: eng.tripRunCount(entryByNum.get(r.horseNumber), race.distance),
+          rating: entryByNum.get(r.horseNumber)?.horse.currentRating ?? 0,
+          formRuns: entryByNum.get(r.horseNumber)?.horse.pastPerformances?.length ?? 0,
         })),
       };
     }

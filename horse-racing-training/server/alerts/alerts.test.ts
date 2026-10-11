@@ -22,8 +22,8 @@ function card(raceNo: number, fail?: "surface" | "trip" | "gap", top = { no: 4, 
     sparse: 1,
     gap: fail === "gap" ? 2 : 6,
     horses: [
-      { horseNo: top.no, code: "K223", name: top.name, modelRank: 1, ratingRank: 1, marketRank: 2, odds: 4, winPct: 30, placePct: 70, tripRuns: fail === "trip" ? 1 : 5 },
-      { horseNo: 9, code: "X9", name: "OTHER", modelRank: 2, ratingRank: 2, marketRank: 1, odds: 3, winPct: 20, placePct: 50, tripRuns: 4 },
+      { horseNo: top.no, code: "K223", name: top.name, modelRank: 1, ratingRank: 1, marketRank: 2, odds: 4, winPct: 30, placePct: 70, tripRuns: fail === "trip" ? 1 : 5, rating: 60, formRuns: 8 },
+      { horseNo: 9, code: "X9", name: "OTHER", modelRank: 2, ratingRank: 2, marketRank: 1, odds: 3, winPct: 20, placePct: 50, tripRuns: 4, rating: 55, formRuns: 6 },
     ],
   };
 }

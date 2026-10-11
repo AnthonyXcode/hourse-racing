@@ -131,6 +131,10 @@ export interface PreRaceAnalysis {
     winPct: number;
     placePct: number;
     tripRuns: number;
+    /** HKJC rating on the card; 0 = none */
+    rating: number;
+    /** past runs on the card (it keeps up to 10) */
+    formRuns: number;
   }[];
 }
 
