@@ -7,7 +7,7 @@ import { userStore } from "../members/users";
 import { countCombos } from "../../shared/betEngine/index";
 import { PLANS } from "../../shared/credits/plans";
 import { creditsProductionProblems, creditsWarnings, loadCreditsConfig } from "./config";
-import { gradeLiveBet, effectiveSelection } from "./grade";
+import { gradeLiveBet, effectiveSelection, type OfficialDividend } from "./grade";
 import { ledger, InsufficientCredits } from "./ledger";
 import { raceStatus, scheduleStore, STALE_MS } from "./schedule";
 import { reconcile } from "./reconcile";
@@ -308,6 +308,23 @@ describe("payout maths", () => {
     expect(grade(sel("win", [1]), 10, top, runners(4))).toMatchObject({ kind: "hold", reason: "dead_heat" });
     expect(grade(sel("quinella", [1, 2]), 10, top, runners(4))).toMatchObject({ kind: "settle", payout: 40 });
     expect(grade(sel("trio", [1, 2, 3]), 10, top, runners(4))).toMatchObject({ kind: "settle", payout: 90 });
+  });
+
+  it("dead heat settles from HKJC's official per-combination dividends", () => {
+    const res = [result(1, [[12, 1], [2, 2], [7, 2], [3, 4]], { placeDividends: [23.5, 12, 24], quinellaDividend: 41, quinellaPlaceDividends: [35.5, 101, 38.5] })];
+    const official = new Map<number, OfficialDividend[]>([[1, [
+      { pool: "PLA", comb: "7", div: 24 }, { pool: "PLA", comb: "12", div: 23.5 }, { pool: "PLA", comb: "2", div: 12 },
+      { pool: "QIN", comb: "7,12", div: 184 }, { pool: "QIN", comb: "2,12", div: 41 },
+    ]]]);
+    const g = (s: BetSelection, unit = 10) => gradeLiveBet({ selection: s, unit, combos: countCombos(s), stake: countCombos(s) * unit }, res, new Map([[1, runners(12)]]), st(), undefined, { official });
+    expect(g(sel("place", [2]))).toMatchObject({ kind: "settle", status: "won", payout: 12 });
+    expect(g(sel("place", [7]))).toMatchObject({ kind: "settle", payout: 24 });
+    expect(g(sel("place", [12, 7]))).toMatchObject({ kind: "settle", payout: 47 }); // floor(23.5 + 24)
+    expect(g(sel("quinella", [7, 12]))).toMatchObject({ kind: "settle", payout: 184 });
+    expect(g(sel("quinella", [2, 7, 12]), 20)).toMatchObject({ kind: "settle", payout: 450 }); // (41 + 184) × 2
+    expect(g(sel("quinella", [2, 7]))).toMatchObject({ kind: "settle", status: "lost", payout: 0 }); // the tied pair isn't a quinella
+    // Pool not published yet (no QPL rows): still held.
+    expect(g(sel("qpl", [12, 2]))).toMatchObject({ kind: "hold", reason: "dead_heat" });
   });
 
   it("missing dividend → held; void race → full refund; no result → wait", () => {

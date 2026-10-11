@@ -1,7 +1,7 @@
 // Wires credits / LIVE / Stripe together. One lazily-built instance for the server; tests call
 // createCredits() with in-memory DBs, fake race data and a fake Stripe client.
 import Stripe from "stripe";
-import type { DB } from "../momentum/db";
+import { repo, type DB } from "../momentum/db";
 import type { MembersDB } from "../members/db";
 import type { RaceResult, Venue } from "../../shared/types";
 import { nowMs } from "../clock";
@@ -63,7 +63,10 @@ export function createCredits(opts: {
   const onResolved = (betId: string) => {
     for (const k of ["hold", "noresult", "fail"]) resolveAlert(opts.membersDb, `${k}:${betId}`);
   };
-  const settle = settlement({ db: opts.membersDb, ledger: led, schedule, clock, results: data.results, card: data.card, log: opts.log, onAlert, onResolved });
+  const raceRepo = repo(opts.raceDb);
+  const dividends = (date: string, venue: Venue, raceNo: number) =>
+    raceRepo.dividends(`${isoDate(date)}-${venue}-${raceNo}`).map((d) => ({ pool: d.pool, comb: d.win_comb, div: d.dividend }));
+  const settle = settlement({ db: opts.membersDb, ledger: led, schedule, clock, results: data.results, card: data.card, dividends, log: opts.log, onAlert, onResolved });
   const buy = purchases({ db: opts.membersDb, ledger: led, cfg, stripe, realNow: opts.realNow, log: opts.log, onAlert });
 
   return { cfg, db: opts.membersDb, clock, schedule, ledger: led, live, settle, purchases: buy, meetingInfo, statusFor, liveOn: () => liveEnabled(cfg) };

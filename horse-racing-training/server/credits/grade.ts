@@ -11,6 +11,9 @@ export interface GradeInput {
   stake: number;
 }
 
+/** HKJC's official dividends for one race, with the winning combination ("2", "2,12", "7,8,9"). */
+export type OfficialDividend = { pool: string; comb: string; div: number };
+
 export interface CardRunner {
   horseNumber: number;
   isScratched?: boolean;
@@ -100,6 +103,28 @@ function deadHeatAffects(sel: BetSelection, byRace: Map<number, RaceResult>): bo
   });
 }
 
+const OFFICIAL_POOL: Partial<Record<BetSelection["type"], string>> = { win: "WIN", place: "PLA", quinella: "QIN", qpl: "QPL", trio: "TRI", tierce: "TCE", first4: "FF" };
+
+/**
+ * Total official return per $10 for the winning combinations a single-race bet covers, from HKJC's dividends
+ * (one row per winning combination, so dead heats are exact). null when the pool isn't published or the
+ * bet's combinations aren't in it — the caller then holds as before. Multi-race pools (DT/TT) aren't covered.
+ */
+export function officialReturn(sel: BetSelection, official: Map<number, OfficialDividend[]> | undefined): number | null {
+  const pool = OFFICIAL_POOL[sel.type];
+  const leg = sel.raceLegs[0];
+  if (!pool || !leg || sel.raceLegs.length !== 1) return null;
+  const rows = (official?.get(leg.raceNumber) ?? []).filter((d) => d.pool === pool);
+  if (!rows.length) return null;
+  const picked = new Set([...leg.bankers, ...leg.legs]);
+  let sum = 0;
+  for (const d of rows) {
+    const horses = d.comb.split(",").map(Number);
+    if (horses.every((h) => picked.has(h)) && leg.bankers.every((b) => horses.includes(b))) sum += d.div;
+  }
+  return sum > 0 ? sum : null;
+}
+
 /**
  * Grade a pending LIVE bet. `dividendPer10Override` (operator resolve-bet) is the total return per $10 unit
  * for the bet's winning combinations; it replaces a missing or ambiguous dividend.
@@ -110,8 +135,9 @@ export function gradeLiveBet(
   cards: Map<number, CardRunner[] | null>,
   statuses: Map<number, RaceStatus>,
   dividendPer10Override?: number,
-  /** Operator decision for a runner_unknown hold: treat horses of unknown fate as runners. */
-  opts: { assumeRunners?: boolean } = {}
+  /** assumeRunners: operator decision for a runner_unknown hold (treat horses of unknown fate as runners).
+   *  official: HKJC's per-combination dividends by race, used when the stored dividend is missing or a dead heat makes it ambiguous. */
+  opts: { assumeRunners?: boolean; official?: Map<number, OfficialDividend[]> } = {}
 ): Grade {
   const races = bet.selection.raceLegs.map((l) => l.raceNumber);
   if (races.some((n) => statuses.get(n) === "void")) return { kind: "void", refund: bet.stake, refundedCombos: bet.combos, reason: "void_race" };
@@ -137,8 +163,13 @@ export function gradeLiveBet(
     const payout = Math.floor(dividendPer10Override * scale);
     return { kind: "settle", status: "won", payout, refund, refundedCombos, result: result(payout) };
   }
-  if (raw.payout === null) return { kind: "hold", reason: "missing_dividend", result: { ...raw, cost: effStake }, refund, refundedCombos };
-  if (deadHeatAffects(eff, byRace)) return { kind: "hold", reason: "dead_heat", result: { ...raw, cost: effStake }, refund, refundedCombos };
+  const deadHeat = raw.payout !== null && deadHeatAffects(eff, byRace);
+  if (raw.payout === null || deadHeat) {
+    const off = officialReturn(eff, opts.official);
+    if (off == null) return { kind: "hold", reason: deadHeat ? "dead_heat" : "missing_dividend", result: { ...raw, cost: effStake }, refund, refundedCombos };
+    const payout = Math.floor(off * scale + 1e-9);
+    return { kind: "settle", status: "won", payout, refund, refundedCombos, result: result(payout) };
+  }
   // payout = floor(dividendPer10 × unit / 10 × combosWon); raw.payout already sums the matching dividends.
   const payout = Math.floor(raw.payout * scale + 1e-9);
   return { kind: "settle", status: "won", payout, refund, refundedCombos, result: result(payout) };

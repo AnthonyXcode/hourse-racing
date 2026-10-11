@@ -3,7 +3,7 @@
 // concurrent or repeated sweeps harmless.
 import type { MembersDB } from "../members/db";
 import type { BetSelection, RaceResult, RaceStatus, Venue } from "../../shared/types";
-import { gradeLiveBet, type CardRunner, type Grade } from "./grade";
+import { gradeLiveBet, type CardRunner, type Grade, type OfficialDividend } from "./grade";
 import type { Ledger } from "./ledger";
 import { raceStatus, type ScheduleStore } from "./schedule";
 
@@ -18,6 +18,8 @@ export interface SettleDeps {
   /** date YYYYMMDD */
   results(date: string, venue: Venue): RaceResult[] | null;
   card(date: string, venue: Venue, raceNo: number): CardRunner[] | null;
+  /** HKJC's official per-combination dividends (momentum DB), for dead heats and missing dividends. */
+  dividends?(date: string, venue: Venue, raceNo: number): OfficialDividend[];
   log?: (line: string) => void;
   /** Also record alerts for the admin dashboard (system_alerts), and clear them when the bet settles. */
   onAlert?: (a: { key: string; kind: string; message: string; refType: string; refId: string }) => void;
@@ -68,7 +70,8 @@ export function settlement(deps: SettleDeps) {
       races.map((n) => [n, raceStatus(deps.schedule.get(isoDate(b.date), b.venue, n), byRace.get(n), deps.clock(), false)])
     );
     const cards = new Map(races.map((n) => [n, deps.card(b.date, b.venue, n)]));
-    return gradeLiveBet({ selection: sel, unit: b.unit, combos: b.combos, stake: b.stake }, results, cards, statuses, override, { assumeRunners });
+    const official = new Map(races.map((n) => [n, deps.dividends?.(b.date, b.venue, n) ?? []]));
+    return gradeLiveBet({ selection: sel, unit: b.unit, combos: b.combos, stake: b.stake }, results, cards, statuses, override, { assumeRunners, official });
   }
 
   /** Apply a final grade in one transaction. Returns false if the bet was no longer pending. */
