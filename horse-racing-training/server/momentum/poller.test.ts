@@ -123,6 +123,30 @@ describe("momentum poller", () => {
     expect(r.race("2026-09-23-HV-1")!.status).toBe("settled");
   });
 
+  it("keeps fetching dividends until every core pool is published", async () => {
+    const fc = fakeClient();
+    const full = ["WIN", "PLA", "QIN", "QPL", "FCT", "TRI"].map((pool) => ({ raceNo: 1, pool, comb: "1", div: 50 }));
+    let published = full.filter((d) => d.pool === "FCT" || d.pool === "TRI"); // HKJC mid-publication
+    let fetches = 0;
+    fc.client.dividends = async () => (fetches++, published);
+    const p = make(fc);
+    fc.state.status = "RESULT";
+    fc.state.finished = true;
+    t = new Date("2026-09-23T12:02:00Z");
+    await p.tick();
+    const pools = () => r.dividends("2026-09-23-HV-1").map((d) => d.pool);
+    expect(pools()).toEqual(["FCT", "TRI"]);
+    await p.tick(); // throttled: same instant
+    expect(fetches).toBe(1);
+    published = full;
+    t = new Date("2026-09-23T12:02:30Z");
+    await p.tick();
+    expect(pools()).toEqual(["FCT", "PLA", "QIN", "QPL", "TRI", "WIN"]);
+    t = new Date("2026-09-23T12:05:00Z");
+    await p.tick(); // complete: no more requests
+    expect(fetches).toBe(2);
+  });
+
   it("records the error and keeps going when HKJC fails", async () => {
     const fc = fakeClient();
     fc.client.meeting = async () => {

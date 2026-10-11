@@ -17,6 +17,10 @@ export interface PollerOptions {
 
 const VENUES = ["HV", "ST"] as const;
 const FINISHED = new Set(["RESULT", "ABANDONED", "VOID"]);
+// HKJC publishes a race's dividends pool by pool (e.g. FCT + TRI first, WIN/PLA a little later), so keep
+// re-fetching until every pool each race always offers is in. Exotic pools (FCT/TCE/FF/QTT) come along with them.
+const CORE_POOLS = ["WIN", "PLA", "QIN", "QPL", "TRI"];
+const DIVIDEND_RETRY_SECS = 30;
 
 /** Today's date in Hong Kong time, as YYYY-MM-DD. */
 export function hkDate(d: Date): string {
@@ -39,6 +43,7 @@ export function createPoller(opts: PollerOptions) {
 
   let inFlight = false;
   let lastMeetingFetch = 0;
+  let lastDividendFetch = 0;
   let venue: { date: string; code: string | null } = { date: "", code: null };
   const state = { lastTickAt: null as string | null, lastError: null as string | null, polling: [] as string[] };
 
@@ -97,16 +102,21 @@ export function createPoller(opts: PollerOptions) {
     }
   }
 
-  /** Official dividends for races with a result that we don't have a Trio dividend for yet. */
+  /** Official dividends for races with a result that are still missing a core pool (at most every DIVIDEND_RETRY_SECS). */
   async function fetchDividends(date: string) {
-    const pending = repo.racesOn(date).filter((r) => r.hkjc_status === "RESULT" && !repo.dividends(r.race_id).some((d) => d.pool === "TRI"));
-    if (!pending.length) return;
+    const pending = repo.racesOn(date).filter((r) => {
+      if (r.hkjc_status !== "RESULT") return false;
+      const have = new Set(repo.dividends(r.race_id).map((d) => d.pool));
+      return CORE_POOLS.some((p) => !have.has(p));
+    });
+    if (!pending.length || now().getTime() - lastDividendFetch < DIVIDEND_RETRY_SECS * 1000) return;
+    lastDividendFetch = now().getTime();
     const all = await client.dividends(date, pending[0]!.venue);
     for (const race of pending) {
       const ds = all.filter((d) => d.raceNo === race.race_no);
       if (!ds.length) continue; // not paid out yet
       repo.upsertDividends(race.race_id, ds);
-      log(`dividends ${race.race_id}: TRI ${ds.filter((d) => d.pool === "TRI").map((d) => `${d.comb} $${d.div}`).join(", ") || "–"}`);
+      log(`dividends ${race.race_id}: ${[...new Set(ds.map((d) => d.pool))].join(" ")}; TRI ${ds.filter((d) => d.pool === "TRI").map((d) => `${d.comb} $${d.div}`).join(", ") || "–"}`);
     }
   }
 
