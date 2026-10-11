@@ -84,6 +84,14 @@ const readSaved = () => {
     return "";
   }
 };
+/** Bet tab ?date= (YYYY/MM/DD; YYYY-MM-DD and YYYYMMDD also accepted) → YYYYMMDD, else "". */
+const parseBetDate = (raw: string | null) => {
+  const m = (raw ?? "").trim().match(/^(\d{4})[/-]?(\d{2})[/-]?(\d{2})$/);
+  return m ? `${m[1]}${m[2]}${m[3]}` : "";
+};
+const readBetDate = () => (readView() === "bet" ? parseBetDate(new URLSearchParams(window.location.search).get("date")) : "");
+/** YYYYMMDD → YYYY/MM/DD, the ?date= form (slashes left unescaped so the link stays readable). */
+const betDateParam = (d: string) => `${d.slice(0, 4)}/${d.slice(4, 6)}/${d.slice(6, 8)}`;
 /** Upcoming (Live) group = any race not settled/void yet; Past (Practice) = all settled. */
 const isUpcoming = (m: MeetingRef) => (m.mode ? m.mode !== "practice" : !m.hasResults);
 /** mm:ss or h:mm:ss */
@@ -225,12 +233,22 @@ function AppBody() {
   // newest past meeting. Until the member picks one themselves it is re-checked, since the LIVE flag
   // (public config) can arrive after the meeting list.
   const autoKey = useRef("");
+  /** ?date= the page was opened with on the Bet tab (YYYYMMDD): wins over every default, once. */
+  const urlDate = useRef(readBetDate());
   useEffect(() => {
     if ((meetingKey && meetingKey !== autoKey.current) || !days.length || user === undefined) return;
     const auto = (k: string) => {
       autoKey.current = k;
       if (k !== meetingKey) setMeetingKey(k);
     };
+    if (urlDate.current) {
+      const asked = days.find((m) => m.date === urlDate.current);
+      urlDate.current = "";
+      if (asked) {
+        autoKey.current = ""; // an explicit choice, like the member's own: stop re-picking
+        return setMeetingKey(`${asked.date}_${asked.venue}`);
+      }
+    }
     const upcoming = days.filter(isUpcoming).sort((a, b) => a.date.localeCompare(b.date));
     const live = credits.liveBetting && (upcoming.find((m) => m.mode === "live") ?? upcoming[0]);
     if (live) return auto(`${live.date}_${live.venue}`);
@@ -243,6 +261,28 @@ function AppBody() {
       days[days.length - 1]; // newest first; else the earliest upcoming
     if (pick) auto(`${pick.date}_${pick.venue}`);
   }, [days, user, credits.liveBetting, meetingKey]);
+  // Mirror the Bet tab's meeting to ?date= (replaceState: picking a meeting isn't a history step).
+  useEffect(() => {
+    if (view !== "bet" || !meetingKey) return;
+    const want = betDateParam(meetingKey.split("_")[0]!);
+    const url = new URL(window.location.href);
+    if (parseBetDate(url.searchParams.get("date")) === want.replaceAll("/", "")) return;
+    url.searchParams.set("date", want);
+    window.history.replaceState(window.history.state, "", url.href.replaceAll("%2F", "/"));
+  }, [view, meetingKey]);
+  // Back / forward onto a Bet link with another ?date=: open that meeting.
+  useEffect(() => {
+    const onPop = () => {
+      const d = readBetDate();
+      const m = d && days.find((x) => x.date === d);
+      if (m && `${m.date}_${m.venue}` !== meetingKey) {
+        autoKey.current = "";
+        setMeetingKey(`${m.date}_${m.venue}`);
+      }
+    };
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+  }, [days, meetingKey]);
   const chooseMeeting = (k: string) => {
     autoKey.current = ""; // the member's own choice: stop re-picking
     setMeetingKey(k);
