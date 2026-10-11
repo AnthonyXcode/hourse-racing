@@ -16,7 +16,7 @@ import { configureClock, hkDay, nowMs } from "./clock";
 import { runAnalyzer } from "./analyzer";
 import { homeRouter, loadMinBets, loadMinBetsDay } from "./home/routes";
 import { homeSummary } from "./home/summary";
-import { recordsFor } from "./home/records";
+import { meetingsFor, recordsFor } from "./home/records";
 import { botBoard } from "./home/bots";
 import { creditsProductionProblems, creditsWarnings, loadCreditsConfig } from "./credits/config";
 import { appCredits } from "./credits/instance";
@@ -127,6 +127,7 @@ app.use("/api/admin", admin);
   const bots = botBoard({ run: runAnalyzer });
   app.use("/api", homeRouter({ db: memberDeps.db, summary,
       records: (date) => recordsFor({ run: runAnalyzer, runners: cardRunners }, date),
+      meetings: (from, to) => meetingsFor(runAnalyzer, from, to),
       minBets: loadMinBets(), minBetsDay: loadMinBetsDay(), today,
       lastRaceDay: async () => (await summary.get()).days[0] ?? null,
       bots: bots.stats, botRaces: bots.races, runners: cardRunners }));

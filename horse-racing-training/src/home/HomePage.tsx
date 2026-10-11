@@ -17,6 +17,8 @@ import { Avatar } from "../members/ui";
 import { homeApi } from "./api";
 import { AlertsBell } from "./AlertsBell";
 import { motion } from "motion/react";
+import { createPortal } from "react-dom";
+import { MeetingsDialog } from "./MeetingsDialog";
 import { CountUp, Reveal, rise, slideIn, stagger, useSkipEntrance } from "./motion";
 
 /** Open a member profile or a bot page (bots carry the board's window). */
@@ -76,6 +78,7 @@ function ModelSection({ onNavigate }: { onNavigate: (v: Nav) => void }) {
   const [data, setData] = useState<HomeSummary | null>(null);
   const [err, setErr] = useState(false);
   const [attempt, setAttempt] = useState(0);
+  const [meetings, setMeetings] = useState(false);
   useEffect(() => {
     const ac = new AbortController();
     setErr(false);
@@ -90,6 +93,11 @@ function ModelSection({ onNavigate }: { onNavigate: (v: Nav) => void }) {
   const day = (iso: string, year: boolean) => fmt.date(`${iso}T12:00:00+08:00`, year ? { day: "numeric", month: "short", year: "numeric" } : { day: "numeric", month: "short" });
   const range = data ? t("model.range", { from: day(data.firstRace ?? data.from, false), to: day(data.lastRace ?? data.to, true) }) : "";
   const pct = (v: number | null) => (v == null ? "–" : pc(v));
+  const openMeetings = (
+    <button type="button" className="mt-1 inline-flex min-h-11 cursor-pointer items-center text-[13px] text-link hover:underline" aria-haspopup="dialog" onClick={() => setMeetings(true)}>
+      {t("model.details")}
+    </button>
+  );
   const details = (v: Nav) => (
     <button type="button" className="mt-1 inline-flex min-h-11 cursor-pointer items-center text-[13px] text-link hover:underline" onClick={() => onNavigate(v)}>
       {t("model.details")}
@@ -128,8 +136,8 @@ function ModelSection({ onNavigate }: { onNavigate: (v: Nav) => void }) {
           <>
             <motion.div className="grid grid-cols-2 gap-3 lg:grid-cols-5" variants={stagger(0.09, 0.15)} initial={skipEntrance ? false : "hidden"} whileInView="show" viewport={{ once: true, amount: 0.3 }}>
               <Stat label={t("model.racesLabel")} value={<CountUp value={data.races} format={(v) => (v == null ? "–" : fmt.num(Math.round(v)))} />} sub={t("model.racesSub", { meetings: fmt.num(data.meetings), range })} />
-              <Stat label={t("model.winLabel")} value={<CountUp value={data.top3Win} format={pct} />} sub={t("model.top3Sub", { hits: fmt.num(data.top3WinHits), races: fmt.num(data.top3Races) })} more={details("win-place")} />
-              <Stat label={t("model.placeLabel")} value={<CountUp value={data.top3Place} format={pct} />} sub={t("model.top3Sub", { hits: fmt.num(data.top3PlaceHits), races: fmt.num(data.top3Races) })} more={details("win-place")} />
+              <Stat label={t("model.winLabel")} value={<CountUp value={data.top3Win} format={pct} />} sub={t("model.top3Sub", { hits: fmt.num(data.top3WinHits), races: fmt.num(data.top3Races) })} more={openMeetings} />
+              <Stat label={t("model.placeLabel")} value={<CountUp value={data.top3Place} format={pct} />} sub={t("model.top3Sub", { hits: fmt.num(data.top3PlaceHits), races: fmt.num(data.top3Races) })} more={openMeetings} />
               <Stat
                 label={`${t("model.trioLabel")} · ${t("model.trioName", { last: data.trio.last })}`}
                 value={<CountUp value={data.trio.hit} format={pct} />}
@@ -150,6 +158,8 @@ function ModelSection({ onNavigate }: { onNavigate: (v: Nav) => void }) {
               />
             </motion.div>
             <Records days={data.days ?? []} />
+            {/* Portalled: the stat cards animate with a transform, which would trap a fixed-position modal. */}
+            {meetings && createPortal(<MeetingsDialog from={data.from} to={data.to} today={data.to} onClose={() => setMeetings(false)} />, document.body)}
             <p className="mt-3 text-[13px] leading-normal text-ink-muted">{t("model.footnote")}</p>
           </>
         )}
@@ -229,7 +239,8 @@ function Records({ days }: { days: string[] }) {
   );
 }
 
-function RecordRow({ r }: { r: HomeRecordDay["races"][number] }) {
+/** `noResult`: leave out the actual-top-3 column (the meetings dialog shows hits by pick colour alone). */
+export function RecordRow({ r, noResult }: { r: HomeRecordDay["races"][number]; noResult?: boolean }) {
   const { t } = useTranslation("home");
   const g = useGlossary();
   const name = (h: HomeRecordHorse) => (h.code ? <Name kind="horse" code={h.code} en={h.name} /> : h.name);
@@ -244,7 +255,7 @@ function RecordRow({ r }: { r: HomeRecordDay["races"][number] }) {
     </span>
   );
   return (
-    <li className="grid gap-2 px-[13px] py-2.5 even:bg-zebra md:grid-cols-[88px_minmax(0,1fr)_minmax(0,1fr)_auto] md:items-center md:gap-4">
+    <li className={cx("grid gap-2 px-[13px] py-2.5 even:bg-zebra md:items-center md:gap-4", noResult ? "md:grid-cols-[88px_minmax(0,1fr)_auto]" : "md:grid-cols-[88px_minmax(0,1fr)_minmax(0,1fr)_auto]")}>
       <div className="flex items-center justify-between gap-2 md:block">
         <div className="text-[15px] font-medium text-navy-900">
           {t("records.race", { n: r.raceNo })} <span className="text-[13px] font-normal text-ink-muted">{g.venue(r.venue)}</span>
@@ -273,18 +284,20 @@ function RecordRow({ r }: { r: HomeRecordDay["races"][number] }) {
           ))}
         </ol>
       </div>
-      <div className="min-w-0">
-        <div className="text-[12px] text-ink-muted md:hidden">{t("records.result")}</div>
-        <ol className="flex flex-wrap gap-x-3 gap-y-1 text-[13px]">
-          {r.top3.map((h) => (
-            <li key={`${h.pos}-${h.num}`} className="inline-flex min-w-0 items-center gap-1">
-              <span className="text-ink-muted tabular-nums">{h.pos}.</span>
-              <span className={cx("font-medium tabular-nums", h.picked ? "text-good" : "text-ink")}>{h.num}</span>
-              <span className={cx("min-w-0 truncate", h.picked ? "text-good" : "text-ink")}>{name(h)}</span>
-            </li>
-          ))}
-        </ol>
-      </div>
+      {!noResult && (
+        <div className="min-w-0">
+          <div className="text-[12px] text-ink-muted md:hidden">{t("records.result")}</div>
+          <ol className="flex flex-wrap gap-x-3 gap-y-1 text-[13px]">
+            {r.top3.map((h) => (
+              <li key={`${h.pos}-${h.num}`} className="inline-flex min-w-0 items-center gap-1">
+                <span className="text-ink-muted tabular-nums">{h.pos}.</span>
+                <span className={cx("font-medium tabular-nums", h.picked ? "text-good" : "text-ink")}>{h.num}</span>
+                <span className={cx("min-w-0 truncate", h.picked ? "text-good" : "text-ink")}>{name(h)}</span>
+              </li>
+            ))}
+          </ol>
+        </div>
+      )}
       <div className="hidden gap-1.5 md:flex">
         {mark(r.win, t("records.win"))}
         {mark(r.place, t("records.place"))}

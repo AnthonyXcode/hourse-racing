@@ -2,7 +2,7 @@
 // and whether the picks hit (win = winner among the top 3; place = at least one of them in the top 3).
 // Same per-race rules as the Top-3-pick cards (summary.ts top3).
 import { FIN, HNUM, MC, PLACED, WON, isSettled, type AnalyzerPayload } from "../../shared/analyzer/model";
-import type { HomeRecordDay, HomeRecordRace } from "../../shared/types";
+import type { HomeMeetingRow, HomeMeetings, HomeRecordDay, HomeRecordRace } from "../../shared/types";
 
 interface CardRunner {
   horseNumber: number;
@@ -40,4 +40,28 @@ export async function recordsFor(d: RecordsDeps, date: string): Promise<HomeReco
     winHits: races.filter((r) => r.win).length,
     placeHits: races.filter((r) => r.place).length,
   };
+}
+
+/** Longest window the meeting table accepts (days, inclusive). */
+export const MEETINGS_MAX_DAYS = 366;
+
+/** Top-3-pick hits meeting by meeting over [from, to], newest first. Same per-race rules as records / summary top3. */
+export async function meetingsFor(run: RecordsDeps["run"], from: string, to: string): Promise<HomeMeetings> {
+  const payload = await run(from, to);
+  const byMeeting = new Map<string, HomeMeetingRow>();
+  for (const r of payload.races) {
+    if (r.d < from || r.d > to || !isSettled(r)) continue;
+    const picks = r.h.filter((h) => h[MC] >= 1 && h[MC] <= 3);
+    if (!picks.length) continue;
+    const key = `${r.d}_${r.v}`;
+    const m = byMeeting.get(key) ?? byMeeting.set(key, { date: r.d, venue: r.v, races: [], winHits: 0, placeHits: 0 }).get(key)!;
+    const win = picks.some((h) => h[WON]), place = picks.some((h) => h[PLACED]);
+    m.races.push({ raceNo: r.r, win, place });
+    if (win) m.winHits++;
+    if (place) m.placeHits++;
+  }
+  const meetings = [...byMeeting.values()].sort((a, b) => b.date.localeCompare(a.date) || a.venue.localeCompare(b.venue));
+  for (const m of meetings) m.races.sort((a, b) => a.raceNo - b.raceNo);
+  const sum = (f: (m: HomeMeetingRow) => number) => meetings.reduce((s, m) => s + f(m), 0);
+  return { from, to, meetings, races: sum((m) => m.races.length), winHits: sum((m) => m.winHits), placeHits: sum((m) => m.placeHits) };
 }

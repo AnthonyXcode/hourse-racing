@@ -422,6 +422,24 @@ export interface HomeRecordDay {
   winHits: number;
   placeHits: number;
 }
+/** Home "See details": the model's top 3 picks meeting by meeting over [from, to]. */
+export interface HomeMeetingRow {
+  date: string;
+  venue: "ST" | "HV";
+  /** Settled races in race order: win = winner among the top 3 picks, place = at least one of them top 3. */
+  races: { raceNo: number; win: boolean; place: boolean }[];
+  winHits: number;
+  placeHits: number;
+}
+export interface HomeMeetings {
+  from: string;
+  to: string;
+  /** Newest first. */
+  meetings: HomeMeetingRow[];
+  races: number;
+  winHits: number;
+  placeHits: number;
+}
 
 /** Member profile period. */
 export type LeaderboardRange = "30d" | "all";

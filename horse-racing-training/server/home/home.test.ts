@@ -10,7 +10,7 @@ import { MIGRATIONS, openMembersDb, type MembersDB } from "../members/db";
 import { userStore } from "../members/users";
 import type { AnalyzerRace, HorseRow } from "../../shared/analyzer/model";
 import { homeSummary, minusMonths, summarize } from "./summary";
-import { recordsFor } from "./records";
+import { meetingsFor, recordsFor } from "./records";
 import { lastRacingDay, leaderboard, memberProfile } from "./leaderboard";
 import { homeRouter } from "./routes";
 import { botBoard, botStats, fillWithBots, type BotStats } from "./bots";
@@ -31,6 +31,23 @@ const B = race("2026-09-12", [horse(1, 3, 4), horse(2, 1, 1), horse(3, 2, 2), ho
 const C = race("2026-09-20", [horse(1, 1, 1), horse(2, 2, 2), horse(3, 3, 0), horse(4, 4, 0)], 0);
 
 describe("home summary", () => {
+  it("meetings: top-3-pick hits grouped by meeting, newest first, settled races in the window only", async () => {
+    const B2 = { ...B, r: 2 };
+    const run = async () => ({ generatedAt: "t", from: "", to: "", races: [B2, A, B, C] });
+    expect(await meetingsFor(run, "2026-07-01", "2026-09-30")).toEqual({
+      from: "2026-07-01",
+      to: "2026-09-30",
+      meetings: [
+        { date: "2026-09-12", venue: "ST", races: [{ raceNo: 1, win: true, place: true }, { raceNo: 2, win: true, place: true }], winHits: 2, placeHits: 2 },
+        { date: "2026-08-01", venue: "ST", races: [{ raceNo: 1, win: true, place: true }], winHits: 1, placeHits: 1 },
+      ],
+      races: 3,
+      winHits: 3,
+      placeHits: 3,
+    });
+    expect((await meetingsFor(run, "2026-09-01", "2026-09-30")).meetings.map((m) => m.date)).toEqual(["2026-09-12"]);
+  });
+
   it("computes the figures with the analyzer's own metrics over settled races only", () => {
     const s = summarize([A, B, C], "2026-07-04", "2026-10-04", "t");
     expect(s).toEqual({
@@ -236,7 +253,7 @@ describe("leaderboard", () => {
 
     // Over HTTP: public, no auth; PII never present.
     const app = express();
-    app.use("/api", homeRouter({ db: db!, minBets: 5, today: () => TODAY, summary: { get: async () => summarize([A, B], "x", "y") }, records: async (date) => recordsFor({ run: async () => ({ generatedAt: "t", from: date, to: date, races: [A, B] }), runners: () => null }, date) }));
+    app.use("/api", homeRouter({ db: db!, minBets: 5, today: () => TODAY, summary: { get: async () => summarize([A, B], "x", "y") }, records: async (date) => recordsFor({ run: async () => ({ generatedAt: "t", from: date, to: date, races: [A, B] }), runners: () => null }, date), meetings: (f, t) => meetingsFor(async () => ({ generatedAt: "t", from: f, to: t, races: [A, B, C] }), f, t) }));
     server = app.listen(0);
     await new Promise((r) => server!.once("listening", r));
     const base = `http://127.0.0.1:${(server.address() as AddressInfo).port}/api`;
@@ -261,6 +278,10 @@ describe("leaderboard", () => {
     expect(await (await fetch(`${base}/home/records?date=2026-09-12`)).json()).toMatchObject({ date: "2026-09-12", winHits: 1, races: [{ raceNo: 1 }] });
     expect((await fetch(`${base}/home/records?date=12-09-2026`)).status).toBe(400);
     expect((await fetch(`${base}/home/records?date=2999-01-01`)).status).toBe(400);
+    expect(await (await fetch(`${base}/home/meetings?from=2026-07-01&to=2026-10-04`)).json()).toMatchObject({ races: 2, meetings: [{ date: "2026-09-12" }, { date: "2026-08-01" }] });
+    expect((await fetch(`${base}/home/meetings?from=2026-10-04&to=2026-07-01`)).status).toBe(400);
+    expect((await fetch(`${base}/home/meetings?from=2025-01-01&to=2026-10-04`)).status).toBe(400);
+    expect((await fetch(`${base}/home/meetings?from=x&to=2026-10-04`)).status).toBe(400);
   });
 
   it("opting out removes the member at once", () => {

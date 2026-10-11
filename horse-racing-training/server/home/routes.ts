@@ -1,7 +1,8 @@
 // Public Home endpoints: model summary + member leaderboard. No auth, no contact data.
 import { Router } from "express";
 import type { MembersDB } from "../members/db";
-import type { HomeRecordDay, HomeSummary, LeaderboardResponse } from "../../shared/types";
+import type { HomeMeetings, HomeRecordDay, HomeSummary, LeaderboardResponse } from "../../shared/types";
+import { MEETINGS_MAX_DAYS } from "./records";
 import { LEADERBOARD_DAYS, lastRacingDay, leaderboard, memberProfile, parseRange } from "./leaderboard";
 import { botKeyOf, botProfile, fillWithBots, type BotStats, type Runners } from "./bots";
 import type { AnalyzerRace } from "../../shared/analyzer/model";
@@ -11,6 +12,8 @@ export interface HomeDeps {
   summary: { get(): Promise<HomeSummary> };
   /** One racing day's top-3-pick records (records.ts). */
   records: (date: string) => Promise<HomeRecordDay>;
+  /** Top-3-pick hits meeting by meeting over [from, to] (records.ts meetingsFor). */
+  meetings?: (from: string, to: string) => Promise<HomeMeetings>;
   /** Settled live bets needed to appear on the 30-day board (LEADERBOARD_MIN_BETS, default 5). */
   minBets: number;
   /** …and on the last-racing-day board (LEADERBOARD_MIN_BETS_DAY, default 3). */
@@ -62,6 +65,22 @@ export function homeRouter(d: HomeDeps) {
     } catch (e) {
       console.error("[home] records failed:", e);
       res.status(503).json({ error: { code: "records_unavailable" } });
+    }
+  });
+
+  r.get("/home/meetings", async (req, res) => {
+    const from = String(req.query.from ?? ""), to = String(req.query.to ?? "");
+    const iso = /^\d{4}-\d{2}-\d{2}$/;
+    const span = (Date.parse(`${to}T00:00:00Z`) - Date.parse(`${from}T00:00:00Z`)) / 86_400_000;
+    if (!iso.test(from) || !iso.test(to) || !(span >= 0) || from > d.today()) return res.status(400).json({ error: { code: "invalid_range" } });
+    if (span >= MEETINGS_MAX_DAYS) return res.status(400).json({ error: { code: "range_too_long" } });
+    if (!d.meetings) return res.status(404).json({ error: { code: "not_found" } });
+    try {
+      res.set("Cache-Control", "public, max-age=300");
+      res.json(await d.meetings(from, to > d.today() ? d.today() : to));
+    } catch (e) {
+      console.error("[home] meetings failed:", e);
+      res.status(503).json({ error: { code: "meetings_unavailable" } });
     }
   });
 
