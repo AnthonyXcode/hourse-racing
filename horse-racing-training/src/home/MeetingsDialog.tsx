@@ -21,14 +21,12 @@ const rate = (hits: number, n: number) => (n ? pc((hits / n) * 100) : "–");
 export function MeetingsDialog({ from: from0, to: to0, today, onClose }: { from: string; to: string; today: string; onClose: () => void }) {
   const { t } = useTranslation("home");
   const fmt = useFmt();
-  const g = useGlossary();
   const ref = useRef<HTMLDivElement>(null);
   useDialog(ref, onClose);
   const [from, setFrom] = useState(from0);
   const [to, setTo] = useState(to0);
   const [data, setData] = useState<HomeMeetings | null>(null);
   const [err, setErr] = useState(false);
-  const [open, setOpen] = useState<string | null>(null);
 
   const span = from && to ? daysBetween(from, to) : NaN;
   const invalid = !(span >= 0) ? t("meetings.badRange") : span >= MAX_DAYS ? t("meetings.tooLong") : null;
@@ -44,7 +42,6 @@ export function MeetingsDialog({ from: from0, to: to0, today, onClose }: { from:
     return () => ac.abort();
   }, [from, to, invalid]);
 
-  const day = (iso: string) => fmt.date(`${iso}T12:00:00+08:00`, { weekday: "short", day: "numeric", month: "short", year: "numeric" });
   return (
     <div className={modalBg} onClick={onClose}>
       <div
@@ -105,70 +102,83 @@ export function MeetingsDialog({ from: from0, to: to0, today, onClose }: { from:
         ) : data.meetings.length === 0 ? (
           <p className="mt-4 text-center text-ink-muted">{t("meetings.empty")}</p>
         ) : (
-          <div className="mt-3 overflow-x-auto rounded-card border border-line">
-            <table className={cx(table, tablePadTight, "text-[13px] sm:text-[15px] [&_td]:align-middle")}>
-              <thead>
-                <tr>
-                  <th scope="col">{t("meetings.meeting")}</th>
-                  <th scope="col">{t("meetings.win")}</th>
-                  <th scope="col">{t("meetings.place")}</th>
-                  <th scope="col" className="!text-left max-sm:hidden">
-                    {t("meetings.races")}
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {data.meetings.map((m) => {
-                  const key = `${m.date}_${m.venue}`;
-                  const expanded = open === key;
-                  const n = m.races.length;
-                  return (
-                    <Fragment key={key}>
-                      <tr>
-                        <td>
-                          <button
-                            type="button"
-                            className="inline-flex min-h-11 cursor-pointer items-center gap-1.5 text-left font-medium whitespace-normal text-navy-900 hover:underline"
-                            aria-expanded={expanded}
-                            onClick={() => setOpen(expanded ? null : key)}
-                          >
-                            <svg aria-hidden="true" width="12" height="12" viewBox="0 0 12 12" className={cx("flex-none transition-transform", expanded && "rotate-90")}>
-                              <path d="M4 2.5 7.5 6 4 9.5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-                            </svg>
-                            <span>
-                              {day(m.date)} <span className="font-normal text-ink-muted">{g.venue(m.venue)}</span>
-                            </span>
-                          </button>
-                          <div className="pb-1 sm:hidden">
-                            <RaceChips races={m.races} />
-                          </div>
-                        </td>
-                        <td>
-                          {m.winHits}/{n} <span className="block text-[12px] text-ink-muted sm:inline">{rate(m.winHits, n)}</span>
-                        </td>
-                        <td>
-                          {m.placeHits}/{n} <span className="block text-[12px] text-ink-muted sm:inline">{rate(m.placeHits, n)}</span>
-                        </td>
-                        <td className="!text-left !whitespace-normal max-sm:hidden">
-                          <RaceChips races={m.races} />
-                        </td>
-                      </tr>
-                      {expanded && (
-                        <tr>
-                          <td colSpan={4} className="!p-0 !whitespace-normal">
-                            <MeetingRaces date={m.date} venue={m.venue} />
-                          </td>
-                        </tr>
-                      )}
-                    </Fragment>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
+          <MeetingsTable meetings={data.meetings} />
         )}
         <p className="mt-2 text-[12px] leading-normal text-ink-muted">{t("meetings.legend")}</p>
       </div>
+    </div>
+  );
+}
+
+/** Meeting rows: picks hit per meeting with one chip per race; a row expands to that day's per-race records.
+ *  Shared by this dialog and the Analyzer's Win/Place tab. */
+export function MeetingsTable({ meetings }: { meetings: HomeMeetings["meetings"] }) {
+  const { t } = useTranslation("home");
+  const fmt = useFmt();
+  const g = useGlossary();
+  const [open, setOpen] = useState<string | null>(null);
+  const day = (iso: string) => fmt.date(`${iso}T12:00:00+08:00`, { weekday: "short", day: "numeric", month: "short", year: "numeric" });
+  return (
+    <div className="mt-3 overflow-x-auto rounded-card border border-line">
+      <table className={cx(table, tablePadTight, "text-[13px] sm:text-[15px] [&_td]:align-middle")}>
+        <thead>
+          <tr>
+            <th scope="col">{t("meetings.meeting")}</th>
+            <th scope="col">{t("meetings.win")}</th>
+            <th scope="col">{t("meetings.place")}</th>
+            <th scope="col" className="!text-left max-sm:hidden">
+              {t("meetings.races")}
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {meetings.map((m) => {
+            const key = `${m.date}_${m.venue}`;
+            const expanded = open === key;
+            const n = m.races.length;
+            return (
+              <Fragment key={key}>
+                <tr>
+                  <td>
+                    <button
+                      type="button"
+                      className="inline-flex min-h-11 cursor-pointer items-center gap-1.5 text-left font-medium whitespace-normal text-navy-900 hover:underline"
+                      aria-expanded={expanded}
+                      onClick={() => setOpen(expanded ? null : key)}
+                    >
+                      <svg aria-hidden="true" width="12" height="12" viewBox="0 0 12 12" className={cx("flex-none transition-transform", expanded && "rotate-90")}>
+                        <path d="M4 2.5 7.5 6 4 9.5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                      <span>
+                        {day(m.date)} <span className="font-normal text-ink-muted">{g.venue(m.venue)}</span>
+                      </span>
+                    </button>
+                    <div className="pb-1 sm:hidden">
+                      <RaceChips races={m.races} />
+                    </div>
+                  </td>
+                  <td>
+                    {m.winHits}/{n} <span className="block text-[12px] text-ink-muted sm:inline">{rate(m.winHits, n)}</span>
+                  </td>
+                  <td>
+                    {m.placeHits}/{n} <span className="block text-[12px] text-ink-muted sm:inline">{rate(m.placeHits, n)}</span>
+                  </td>
+                  <td className="!text-left !whitespace-normal max-sm:hidden">
+                    <RaceChips races={m.races} />
+                  </td>
+                </tr>
+                {expanded && (
+                  <tr>
+                    <td colSpan={4} className="!p-0 !whitespace-normal">
+                      <MeetingRaces date={m.date} venue={m.venue} />
+                    </td>
+                  </tr>
+                )}
+              </Fragment>
+            );
+          })}
+        </tbody>
+      </table>
     </div>
   );
 }

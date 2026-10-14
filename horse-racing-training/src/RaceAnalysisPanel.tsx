@@ -1,6 +1,6 @@
 // Bet and Momentum pages: collapsible pre-race model analysis of one race, for reference.
 // Built only from the saved racecard (no results or starting prices), so it can't give away the outcome.
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { useTranslation } from "react-i18next";
 import { api } from "./api";
@@ -10,8 +10,10 @@ import { useNames } from "./i18n/names";
 import { useFmt } from "./i18n/useLanguage";
 import { cx, panel, table, tablePadTight } from "./kit";
 import { HorseLink } from "./momentum/HorseRecord";
+import { SortTh, useSort } from "./analyzer/format";
 
 const COLLAPSE = { duration: 0.24, ease: [0.2, 0, 0, 1] } as const;
+type ColKey = "modelRank" | "horseNo" | "name" | "modelRating" | "winPct" | "placePct" | "marketRank" | "odds" | "tripRuns";
 const STAR = "M10 1.6l2.6 5.3 5.8.8-4.2 4.1 1 5.8L10 14.9l-5.2 2.7 1-5.8L1.6 7.7l5.8-.8z";
 
 /** Five stars filled to `value` (0–5, fractional): grey row, gold row clipped to the exact width on top. */
@@ -63,6 +65,17 @@ export function RaceAnalysisPanel({ date, venue, raceNo }: { date: string; venue
   const checks = a ? strategyChecks(a) : [];
   const conf = confidence(checks);
   const confLabel = t("analysis.confidenceAria", { stars: conf.stars.toFixed(1).replace(/\.0$/, "") });
+  const sort = useSort<ColKey>("modelRank", 1);
+  // Click a header to sort; missing market rank / odds (0) always sink to the bottom.
+  const rows = useMemo(() => {
+    const val = (h: PreRaceAnalysis["horses"][number]): number | string | null =>
+      sort.key === "name" ? name("horse", h.code, h.name) : (sort.key === "marketRank" || sort.key === "odds") && !h[sort.key] ? null : h[sort.key];
+    return [...(a?.horses ?? [])].sort((x, y) => {
+      const p = val(x), q = val(y);
+      if (p === null || q === null) return p === q ? 0 : p === null ? 1 : -1;
+      return (p > q ? 1 : p < q ? -1 : 0) * sort.dir;
+    });
+  }, [a, sort.key, sort.dir, name]);
 
   return (
     <section className={cx(panel, "mt-3 p-0 sm:p-0")}>
@@ -139,24 +152,26 @@ export function RaceAnalysisPanel({ date, venue, raceNo }: { date: string; venue
                 </div>
               )}
 
-              {/* Runners in model order */}
+              {/* Runners, model order by default; headers sort */}
               <div className="mt-3 overflow-x-auto">
                 <table className={cx(table, tablePadTight, "text-[13px] [&_td:nth-child(3)]:text-left [&_th:nth-child(3)]:text-left")}>
                   <thead>
                     <tr>
-                      <th>{t("analysis.col.model")}</th>
-                      <th>{t("common:word.number")}</th>
-                      <th>{t("common:word.horse")}</th>
-                      <th>{t("analysis.col.modelRating")}</th>
-                      <th>{t("analysis.col.win")}</th>
-                      <th>{t("analysis.col.place")}</th>
-                      <th>{t("analysis.col.market")}</th>
-                      <th>{t("analysis.col.odds")}</th>
-                      <th title={t("analysis.col.tripT")}>{t("analysis.col.trip")}</th>
+                      <SortTh k="modelRank" sort={sort}>{t("analysis.col.model")}</SortTh>
+                      <SortTh k="horseNo" sort={sort}>{t("common:word.number")}</SortTh>
+                      <SortTh k="name" sort={sort}>{t("common:word.horse")}</SortTh>
+                      <SortTh k="modelRating" sort={sort}>{t("analysis.col.modelRating")}</SortTh>
+                      <SortTh k="winPct" sort={sort}>{t("analysis.col.win")}</SortTh>
+                      <SortTh k="placePct" sort={sort}>{t("analysis.col.place")}</SortTh>
+                      <SortTh k="marketRank" sort={sort}>{t("analysis.col.market")}</SortTh>
+                      <SortTh k="odds" sort={sort}>{t("analysis.col.odds")}</SortTh>
+                      <SortTh k="tripRuns" sort={sort}>
+                        <span title={t("analysis.col.tripT")}>{t("analysis.col.trip")}</span>
+                      </SortTh>
                     </tr>
                   </thead>
                   <tbody>
-                    {a.horses.map((h) => (
+                    {rows.map((h) => (
                       <tr key={h.horseNo} className={h.modelRank === 1 ? "[&_td]:bg-accent-soft/60" : undefined} title={h.modelRank === 1 ? t("analysis.topPick") : undefined}>
                         <td className="font-semibold">{h.modelRank}</td>
                         <td>{h.horseNo}</td>

@@ -288,7 +288,7 @@ export function AnalyzerPage({ tab }: { tab: AnalyzerTab }) {
           {races.length === 0 ? (
             <div className={cx(panel, empty, "mt-6")}>{t("filters.noMatch")}</div>
           ) : tab === "win-place" ? (
-            <WinPlaceTab races={races} />
+            <WinPlaceTab races={races} allRaces={all} />
           ) : (
             <TrioTab races={races} />
           )}

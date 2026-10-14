@@ -344,6 +344,43 @@ export const combosOf = (race: AnalyzerRace) => {
 };
 export const isSettled = (race: AnalyzerRace) => combosOf(race).length > 0;
 
+/** One meeting's top-3-pick hits; races in race order (win = winner among the model's top 3, place = at least one of them top 3). */
+export interface Top3Meeting {
+  date: string;
+  venue: "ST" | "HV";
+  races: { raceNo: number; win: boolean; place: boolean }[];
+  winHits: number;
+  placeHits: number;
+}
+
+/** Model top-3-pick hits meeting by meeting (newest first) over settled races, plus totals.
+ *  ROI: $10 win (place) on each of the top 3 picks in every race. */
+export function top3Meetings(races: AnalyzerRace[]) {
+  const byMeeting = new Map<string, Top3Meeting>();
+  let stake = 0, winRet = 0, placeRet = 0;
+  for (const r of races) {
+    if (!isSettled(r)) continue;
+    const picks = r.h.filter((h) => h[MC] >= 1 && h[MC] <= 3);
+    if (!picks.length) continue;
+    stake += picks.length * UNIT;
+    for (const h of picks) {
+      if (h[WON] && h[WODDS] > 0) winRet += h[WODDS] * UNIT;
+      if (h[PLACED] && h[PODDS] > 0) placeRet += h[PODDS] * UNIT;
+    }
+    const key = `${r.d}_${r.v}`;
+    const m = byMeeting.get(key) ?? byMeeting.set(key, { date: r.d, venue: r.v, races: [], winHits: 0, placeHits: 0 }).get(key)!;
+    const win = picks.some((h) => h[WON]), place = picks.some((h) => h[PLACED]);
+    m.races.push({ raceNo: r.r, win, place });
+    if (win) m.winHits++;
+    if (place) m.placeHits++;
+  }
+  const meetings = [...byMeeting.values()].sort((a, b) => b.date.localeCompare(a.date) || a.venue.localeCompare(b.venue));
+  for (const m of meetings) m.races.sort((a, b) => a.raceNo - b.raceNo);
+  const sum = (f: (m: Top3Meeting) => number) => meetings.reduce((s, m) => s + f(m), 0);
+  const roi = (ret: number) => (stake ? ((ret - stake) / stake) * 100 : NaN);
+  return { meetings, races: sum((m) => m.races.length), winHits: sum((m) => m.winHits), placeHits: sum((m) => m.placeHits), winRoi: roi(winRet), placeRoi: roi(placeRet) };
+}
+
 export function trioOutcome(race: AnalyzerRace, idx: RankIdx, s: Pick<TrioStrat, "B" | "L">) {
   const covered = race.h.filter((h) => h[idx] > 0 && h[idx] <= s.L).length;
   const n = choose(covered - s.B, 3 - s.B);

@@ -4,17 +4,20 @@ import { useGlossary } from "../i18n/glossary";
 import { useNames } from "../i18n/names";
 import {
   type AnalyzerRace, MC, MKT, PWIN, PPLACE, WON, PLACED, WODDS, FIN, TRIP,
-  metrics, byRank, calibration, groupBy, topOf, diffBucket, DIFF_ORDER, oddsBucket, ODDS_ORDER,
+  metrics, byRank, calibration, groupBy, topOf, diffBucket, DIFF_ORDER, oddsBucket, ODDS_ORDER, top3Meetings,
 } from "../../shared/analyzer/model";
 import { C, CalibChart, GroupedBars, LineChart, type Series } from "./charts";
 import { Bar, Kpi, Legend, SortTh, cls, pc, signed, useSort, vs } from "./format";
+import { MeetingsTable } from "../home/MeetingsDialog";
+import { useFmt } from "../i18n/useLanguage";
 import { H2, code, control, cx, good, grid2, h3, kpis, note, panel, row, scroll, strong, table, tablePad, tablePadTight, tag, tall, totalRow } from "../kit";
 
 const ACCENT = C.accent, ACCENT2 = C.accent2, WARN = C.warn;
 
 type RowKey = "date" | "venue" | "race" | "cls" | "dist" | "runners" | "avgDiff" | "close8" | "sparse" | "gap" | "horse" | "trip" | "predWin" | "predPlace" | "mkt" | "odds" | "finish" | "jockey";
 
-export function WinPlaceTab({ races }: { races: AnalyzerRace[] }) {
+/** `races`: after the strategy filters; `allRaces`: the whole date range (the meeting-by-meeting section). */
+export function WinPlaceTab({ races, allRaces }: { races: AnalyzerRace[]; allRaces: AnalyzerRace[] }) {
   const { t } = useTranslation(["analyzer", "common"]);
   const g = useGlossary();
   const M = useMemo(() => metrics(races), [races]);
@@ -103,11 +106,43 @@ export function WinPlaceTab({ races }: { races: AnalyzerRace[] }) {
         <PickPlaceCard m={M} races={races.length} />
       </div>
 
+      <H2 sub={t("wp.top3Sub")}>{t("wp.top3")}</H2>
+      <Top3Meetings races={allRaces} />
+
       <H2 sub={t("wp.raceByRaceSub")}>{t("wp.raceByRace")}</H2>
       <RaceTable races={races} />
 
       <H2 sub={t("wp.monthByMonthSub")}>{t("wp.monthByMonth")}</H2>
       <MonthlyTable races={races} rows={charts.monthly} />
+    </>
+  );
+}
+
+/** The model's top 3 picks meeting by meeting over the page's date range (strategy filters not applied), laid
+ *  out like Home's "See details" dialog: pick / hit counts with ROI, then the shared meeting table. */
+function Top3Meetings({ races }: { races: AnalyzerRace[] }) {
+  const { t } = useTranslation(["analyzer", "home"]);
+  const fmt = useFmt();
+  const d = useMemo(() => top3Meetings(races), [races]);
+  const rate = (hits: number) => pc(d.races ? (hits / d.races) * 100 : NaN);
+  const hitSub = (hits: number, roi: number) => (
+    <>
+      {t("wp.top3HitSub", { rate: rate(hits), n: fmt.num(d.races) })} · {t("wp.top3Roi")} <span className={cls(roi)}>{signed(roi)}</span>
+    </>
+  );
+  return (
+    <>
+      <div className={kpis.replace("mt-5", "")}>
+        <Kpi label={t("wp.top3Picks")} value={fmt.num(d.races)} sub={t("wp.top3PicksSub", { m: fmt.num(d.meetings.length) })} />
+        <Kpi label={t("wp.top3Win")} value={fmt.num(d.winHits)} sub={hitSub(d.winHits, d.winRoi)} />
+        <Kpi label={t("wp.top3Place")} value={fmt.num(d.placeHits)} sub={hitSub(d.placeHits, d.placeRoi)} />
+      </div>
+      <div className={cx(panel, "mt-4")}>
+        {d.meetings.length === 0 ? <p className="text-center text-ink-3">{t("wp.top3Empty")}</p> : <MeetingsTable meetings={d.meetings} />}
+        <div className={note}>
+          {t("home:meetings.legend")} {t("wp.top3RoiNote")}
+        </div>
+      </div>
     </>
   );
 }
