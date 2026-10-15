@@ -59,6 +59,7 @@
 | **42** | **4 Oct** | **ST** | **Mixed (AWT+Turf)** | **AWT Good / Turf G-F** | **11** | **39.9%** | **72.2%** | **6/11** | **54.5%** | **❌✅✅❌❌✅✅❌❌✅✅** | **2 (R2-R3)** |
 | **43** | **7 Oct** | **HV** | **Turf** | **Good to Firm** | **9** | **33.0%** | **66.0%** | **4/9** | **44.4%** | **❌❌✅✅❌❌✅❌✅** | **2 (R3-R4)** |
 | **44** | **11 Oct** | **ST** | **Mixed (AWT+Turf)** | **Good** | **11** | **35.5%** | **68.5%** | **3/11** | **27.3%** | **❌❌❌✅❌✅❌❌✅❌❌** | **1** |
+| **45** | **14 Oct** | **HV** | **Turf** | **Good** | **9** | **33.9%** | **66.6%** | **3/9** | **33.3%** | **❌✅✅❌❌❌✅❌❌** | **2 (R2-R3)** |
 
 \*Meeting 8 **R1** (6 runners): MC #1 **#6** ran **3rd** but HKJC Place pool pays **two** places only → **$0** dividend; counts as **❌** for streaks and all-ups (same dividend logic as other meetings).
 
@@ -1970,3 +1971,25 @@ MC–market split, three meetings combined: **MC #1 at market rank 1–2 placed 
 **Placed:** 3/11 (27.3%) | **Pattern:** ❌❌❌✅❌✅❌❌✅❌❌ | **Max streak:** 1
 
 **Trio card note (R1–R11):** **LOSS.** Strategy A (as bet) **3/10 (R4 $43, R6 $212, R9 $367), $1,060 staked (R8 PASS), $622 returned, −$438, ROI −41.3%**. Canonical MC top-6 B: **2/11 (R4, R6), $1,100, −$845, −76.8%**. A beat B by $407: Rule 8 put R9's runner-up #1 (MC #7, Place% 21.0%) into A's pool, and the R8 PASS and three 雙膽拖 tickets cut stake. B-trio (as bet): **3/11 (R4, R6, R9), $1,120, −$498, −44.5%**. **MC #1 placed only 3/11 and won none**; mean MC Place% 68.5% vs actual 27.3%. MC #1 ≥ 35% placed 3/6; < 35% placed 0/5. MC #1 at SP rank 1–2 placed 3/6 (eight-meeting combined 29/47); rank 3+ placed 0/5 (combined 9/33). Three MC #1 horses ran 4th (R5, R7, R11). **In four races (R3, R5, R10, R11) every placer was in A's pool and the banker missed** (Pattern A, $2,140). MC #2 placed 10/11 (previous eight cards 27/77). Near-zero blind spot: MC Win% < 4% at SP ≤ 6 placed 3/3 (R3 #4 won, R7 #10 2nd, R11 #6 2nd); < 3% definition 1/1, season 13/19. SCMP `+excuses` at pre-race ≤ 8 placed 7/12; `+trial` at ≤ 10 6/11; negative flags 2/16 (both short favourites). 'Undervalued > 200%' calls 0/3 (season 2/19). Dominant races: A 3/6, +$62; Competitive 0/4, −$500.
+
+---
+
+## Meeting 45: Happy Valley | 14 Oct 2026 (9 races)
+
+**MC #1** = raw MC Win% from trio_strategy_20261014_HV_R*.md (10,000 iterations, form=all). **Results** from data/historical/results_20261014_HV.json (scraped first time; R5 dividends checked against the HKJC results page). Place $ = HKJC place dividend per $10. Going: **Turf Good** ("A" course) throughout. **R5 late scratchings: #4 RUN RUN SUNRISE and #7 VICTOR THE RAPID** (MC #3 and #2; not the MC #1). Odds used by reports: HKJC pool 11:00–11:01 HKT.
+
+| Race | Class | Dist (m) | MC #1 | MC Win% | MC Place% | Placed? | Place $ (if placed) |
+|------|-------|----------|-------|---------|-----------|---------|---------------------|
+| R1 | Class 5 | 1650 | #5 THE ALL ROUNDER | 24.5% | 55.7% | ❌ (10th) | — |
+| R2 | Class 4 | 1650 | #3 AKERMANIS GOLD | 34.4% | 69.9% | ✅ 1st | 13 |
+| R3 | Class 4 | 1650 | #2 SHOOTING TO TOP | 42.9% | 76.9% | ✅ 1st | 13 |
+| R4 | Class 4 | 1200 | #2 FORERUNNER | 41.9% | 75.0% | ❌ (6th) | — |
+| R5 | Class 4 | 1200 | #1 BROWNNEEDSFURTHER | 29.5% | 61.4% | ❌ (4th) | — |
+| R6 | Class 2 | 1800 | #7 LE ZONDA | 49.0% | 82.6% | ❌ (5th) | — |
+| R7 | Class 4 | 1200 | #5 CLOUD NINE | 37.1% | 71.0% | ✅ 2nd | 13 |
+| R8 | Class 3 | 1800 | #1 FORTUNATE SON | 23.9% | 54.0% | ❌ (6th) | — |
+| R9 | Class 3 | 1200 | #8 ROBOT LUCKY STAR | 22.3% | 52.5% | ❌ (11th) | — |
+
+**Placed:** 3/9 (33.3%) | **Pattern:** ❌✅✅❌❌❌✅❌❌ | **Max streak:** 2 (R2-R3)
+
+**Trio card note (R1–R9):** **LOSS, the third blank card of the season (all three at HV).** Strategy A (as bet) **0/9, $1,120 staked (net of the $90 R5 refund), $0 returned, −$1,120, ROI −100%**. Canonical MC top-6 B: **0/9, $830 net, −$830, −100%**. B won by $290 on stake only. B-trio (as bet): **3/9 (R2 $66, R3 $206, R7 $322), $1,110, −$516, −46.5%**. Its Win-odds < 10 rule caught the market-backed MC near-zeros that filled A's and B's Pattern B gaps (R2 #8, R3 #10, R7 #12). **MC #1 placed 3/9**; mean MC Place% 66.6% vs actual 33.3%. MC #1 ≥ 35% placed 2/4; < 30% placed 0/4 (two-card 0/8). MC #1 at SP rank 1–2 placed 2/6 (nine-meeting combined 31/53); rank 3+ placed 1/3 (combined 10/36). In R5 and R6 every placer was in A's pool and the banker missed (Pattern A, $1,528). MC #2 placed 2/8 (R5 MC #2 scratched). Near-zero blind spot: MC Win% < 4% at SP ≤ 6 placed 3/4 (R3 #10, R4 #12, R9 #6 ✅; R6 #9 ❌); at SP ≤ 8, 6/7; < 3% definition 1/1, season 14/20. MC-opposed market top-3 horses placed 7/7. SCMP `+excuses` at pre-race ≤ 8 placed 6/10; `+trial` at ≤ 10 2/7; negative flags 2/12 (both `-notRO`). 'Undervalued > 100%' calls 0/3. Dominant races: A 0/5, −$760; Competitive 0/4, −$360.
