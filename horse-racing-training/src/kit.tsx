@@ -132,6 +132,12 @@ export const statusChip = (kind: "pending" | "won" | "lost" | "refunded") =>
 /** All Up leg status chip (docs/all-up/DESIGN-SPEC.md §6.3): refund / void read as refunded, hold / toRun as pending. */
 export const legStatusChip = (kind: "won" | "lost" | "refund" | "void" | "hold" | "toRun") =>
   statusChip(kind === "won" ? "won" : kind === "lost" ? "lost" : kind === "refund" || kind === "void" ? "refunded" : "pending");
+/** Segmented toggle tab bar (e.g. Performance page bet type): equal segments, 44px tall overall. */
+export const segTabs = "inline-grid w-full auto-cols-fr grid-flow-col gap-1 rounded-full bg-sky-100 p-1 sm:w-auto";
+export const segTab = (on: boolean) =>
+  on
+    ? "h-9 min-w-0 cursor-pointer rounded-full bg-navy-600 px-4 text-[14px] font-medium whitespace-nowrap text-white sm:px-6"
+    : "h-9 min-w-0 cursor-pointer rounded-full px-4 text-[14px] whitespace-nowrap text-ink transition-colors hover:bg-sky-50 sm:px-6";
 /** All Up leg pool: 5 equal segments, 44px tall overall (36px buttons + 4px padding). */
 export const allUpPoolSeg = "grid w-full grid-cols-5 gap-1 rounded-full bg-sky-100 p-1 sm:inline-grid sm:w-auto";
 export const allUpPoolBtn = (on: boolean) =>

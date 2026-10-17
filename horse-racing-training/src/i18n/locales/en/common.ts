@@ -42,6 +42,7 @@ export const common = {
     history: "History",
     winPlace: "Win / Place",
     trio: "Trio",
+    performance: "Performance",
     settings: "Settings",
     momentum: "Momentum",
     openMenu: "Open navigation menu",

@@ -43,6 +43,7 @@ export const common: Shape<typeof En> = {
     history: "紀錄",
     winPlace: "獨贏 / 位置",
     trio: "單T",
+    performance: "表現分析",
     settings: "設定",
     momentum: "賠率走勢",
     openMenu: "開啟選單",

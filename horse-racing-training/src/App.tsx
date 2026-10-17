@@ -17,7 +17,7 @@ import { RaceCardTable, PoolMenu, StakeBar, ResultModal, ResultPanel, HistoryPag
 import { BetSlip } from "./BetSlip";
 import { MIN_UNIT, scaleResult, type SettledBet, type SlipItem } from "./slip";
 import type { RaceResult, Venue } from "../shared/types";
-import { AnalyzerPage } from "./analyzer/AnalyzerPage";
+import { AnalyzerPage, type AnalyzerTab } from "./analyzer/AnalyzerPage";
 import { MomentumPage } from "./momentum/MomentumPage";
 import { SettingsPage } from "./SettingsPage";
 import { useTranslation } from "react-i18next";
@@ -71,11 +71,21 @@ const DAYS_REFRESH_MS = 5 * 60_000;
 const TABS = [
   ["bet", "nav.bet"],
   ["history", "nav.history"],
+  ["win-place", "nav.performance"],
+  ["momentum", "nav.momentum"],
+  ["settings", "nav.settings"],
+] as const satisfies readonly (readonly [View, `nav.${string}`])[];
+/** Site map lists each analyzer page on its own (the Performance tab toggles between them). */
+const SITEMAP_TOOLS = [
+  ["bet", "nav.bet"],
+  ["history", "nav.history"],
   ["win-place", "nav.winPlace"],
   ["trio", "nav.trio"],
   ["momentum", "nav.momentum"],
   ["settings", "nav.settings"],
 ] as const satisfies readonly (readonly [View, `nav.${string}`])[];
+/** Both analyzer views sit under the one Performance tab. */
+const isPerf = (v: View): v is AnalyzerTab => v === "win-place" || v === "trio";
 /** Primary tab: HKJC-style block, navy when active. */
 const navBtn = (on: boolean) =>
   on
@@ -236,7 +246,10 @@ function AppBody() {
   /** The member's bets for the Bet tab's day summary (null while loading). */
   const [dayBets, setDayBets] = useState<HistoryEntry[] | null>(null);
   const [raceResult, setRaceResult] = useState<RaceResult | null>(null);
-  const analyzerOpened = useOnceTrue(view === "win-place" || view === "trio");
+  const analyzerOpened = useOnceTrue(isPerf(view));
+  /** Last bet type picked on the Performance tab, so the nav tab returns to it. */
+  const [perfTab, setPerfTab] = useState<AnalyzerTab>(isPerf(view) ? view : "win-place");
+  if (isPerf(view) && view !== perfTab) setPerfTab(view);
 
   // Load the meeting list and open the last racing day (newest meeting on or before today, HK time).
   // Re-poll while the tab is visible and on returning to it: the server fetches new racecards/results
@@ -804,18 +817,21 @@ function AppBody() {
         {/* Primary tabs: navy block marks the current one; scrolls sideways on phones. */}
         <div className="border-b border-edge bg-surface">
           <nav aria-label={t("nav.sections")} className={cx(container, "flex overflow-x-auto")}>
-            {TABS.map(([v, key]) => (
-              <button
-                key={v}
-                className={navBtn(view === v)}
-                aria-current={view === v ? "page" : undefined}
-                aria-label={v === "history" && credits.unseenSettled ? t("credits:history.tabBadge", { n: credits.unseenSettled }) : undefined}
-                onClick={() => setView(v)}
-              >
-                {t(key)}
-                {v === "history" && credits.unseenSettled > 0 && <span className={tabBadge(view === v)}>{credits.unseenSettled}</span>}
-              </button>
-            ))}
+            {TABS.map(([v, key]) => {
+              const on = view === v || (isPerf(v) && isPerf(view));
+              return (
+                <button
+                  key={v}
+                  className={navBtn(on)}
+                  aria-current={on ? "page" : undefined}
+                  aria-label={v === "history" && credits.unseenSettled ? t("credits:history.tabBadge", { n: credits.unseenSettled }) : undefined}
+                  onClick={() => setView(isPerf(v) ? perfTab : v)}
+                >
+                  {t(key)}
+                  {v === "history" && credits.unseenSettled > 0 && <span className={tabBadge(on)}>{credits.unseenSettled}</span>}
+                </button>
+              );
+            })}
           </nav>
         </div>
         {/* Featured Combined picks (next race, else the last one): slim strip inside the sticky header, so
@@ -834,8 +850,8 @@ function AppBody() {
         {/* Analyzer performance. Stays mounted once opened so the range, filters
             and loaded analysis survive switching to other tabs and back. */}
         {analyzerOpened && (
-          <div hidden={view !== "win-place" && view !== "trio"}>
-            <AnalyzerPage tab={view === "trio" ? "trio" : "win-place"} />
+          <div hidden={!isPerf(view)}>
+            <AnalyzerPage tab={perfTab} onTab={setView} />
           </div>
         )}
 
@@ -1289,7 +1305,7 @@ function AppBody() {
         )}
 
         {(view === "privacy" || view === "terms" || view === "sales" || view === "legal") && <LegalDoc view={view} />}
-        {view === "sitemap" && <SiteMap tools={TABS.map(([v, key]) => [v, t(key)])} onSelect={selectView} />}
+        {view === "sitemap" && <SiteMap tools={SITEMAP_TOOLS.map(([v, key]) => [v, t(key)])} onSelect={selectView} />}
       </main>
 
       <Footer onSelect={selectView} />

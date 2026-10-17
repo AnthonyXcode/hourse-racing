@@ -1,7 +1,7 @@
 // Analyzer performance: how the form analyzer + model's predictions
 // held up against real results. The server runs the analysis for the chosen
 // date range; every panel below it is computed client-side from that payload.
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { Trans, useTranslation } from "react-i18next";
 import { useGlossary } from "../i18n/glossary";
@@ -9,9 +9,13 @@ import { api } from "../api";
 import { type AnalyzerPayload, type Filters, EMPTY_FILTERS, VENUE_DEFAULTS, applyFilters, isSettled, untouchedPreset } from "../../shared/analyzer/model";
 import { WinPlaceTab } from "./WinPlaceTab";
 import { TrioTab } from "./TrioTab";
-import { Display, btn, btnPrimary, code, control, dateControl, cx, empty, errorBox, field, fieldLabel, note, page, panel, rangeBar, rangeMeta } from "../kit";
+import { Display, btn, btnPrimary, code, control, dateControl, cx, empty, errorBox, field, fieldLabel, note, page, panel, rangeBar, rangeMeta, segTab, segTabs } from "../kit";
 
 export type AnalyzerTab = "win-place" | "trio";
+const TABS = [
+  ["win-place", "nav.winPlace"],
+  ["trio", "nav.trio"],
+] as const satisfies readonly (readonly [AnalyzerTab, `nav.${string}`])[];
 
 const ymd = (d: Date) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 /** The last `n` months up to today. */
@@ -46,7 +50,45 @@ const filterControl = cx(control, "w-full");
 /** Open/close of the filter grid: quick, eased out, height + fade. */
 const COLLAPSE = { duration: 0.24, ease: [0.2, 0, 0, 1] } as const;
 
-export function AnalyzerPage({ tab }: { tab: AnalyzerTab }) {
+/** Bet-type toggle: a tablist (arrow keys move between tabs and select). */
+function BetTypeTabs({ tab, onTab }: { tab: AnalyzerTab; onTab: (t: AnalyzerTab) => void }) {
+  const { t } = useTranslation("analyzer");
+  const { t: tc } = useTranslation();
+  const refs = useRef<(HTMLButtonElement | null)[]>([]);
+  const onKey = (e: React.KeyboardEvent, i: number) => {
+    const step = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0;
+    if (!step) return;
+    e.preventDefault();
+    const n = (i + step + TABS.length) % TABS.length;
+    refs.current[n]?.focus();
+    onTab(TABS[n]![0]);
+  };
+  return (
+    <div role="tablist" aria-label={t("betType")} className={cx(segTabs, "mt-6")}>
+      {TABS.map(([v, key], i) => (
+        <button
+          key={v}
+          ref={(el) => {
+            refs.current[i] = el;
+          }}
+          type="button"
+          role="tab"
+          id={`perf-tab-${v}`}
+          aria-selected={tab === v}
+          aria-controls="perf-panel"
+          tabIndex={tab === v ? 0 : -1}
+          className={segTab(tab === v)}
+          onClick={() => tab !== v && onTab(v)}
+          onKeyDown={(e) => onKey(e, i)}
+        >
+          {tc(key)}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+export function AnalyzerPage({ tab, onTab }: { tab: AnalyzerTab; onTab: (t: AnalyzerTab) => void }) {
   const { t } = useTranslation("analyzer");
   const { t: tc } = useTranslation();
   const g = useGlossary();
@@ -116,7 +158,7 @@ export function AnalyzerPage({ tab }: { tab: AnalyzerTab }) {
 
   return (
     <div className={page}>
-      <Display sub={sub}>{tab === "win-place" ? t("title.winPlace") : t("title.trio")}</Display>
+      <Display sub={sub}>{t("title.page")}</Display>
 
       <form
         className={cx(rangeBar, "mt-4")}
@@ -166,7 +208,7 @@ export function AnalyzerPage({ tab }: { tab: AnalyzerTab }) {
       {loading && !data && <div className={cx(panel, empty, "mt-4")}>{t("range.runningFor", { from: range.from, to: range.to })}</div>}
 
       {data && (
-        <div className={loading ? "pointer-events-none opacity-55 transition-opacity" : "transition-opacity"}>
+        <div id="perf-panel" role="tabpanel" aria-labelledby={`perf-tab-${tab}`} className={loading ? "pointer-events-none opacity-55 transition-opacity" : "transition-opacity"}>
           {/* Sticky under the app header (h-16 on phones, 72px from sm). */}
           {/* Opaque, and on sm+ its background bleeds to the viewport edges (shadow + clip-path, no layout change),
               so cards scrolling underneath never peek out at the sides. Phones already bleed via -mx-4. */}
@@ -284,6 +326,8 @@ export function AnalyzerPage({ tab }: { tab: AnalyzerTab }) {
               />
             </div>
           </div>
+
+          <BetTypeTabs tab={tab} onTab={onTab} />
 
           {races.length === 0 ? (
             <div className={cx(panel, empty, "mt-6")}>{t("filters.noMatch")}</div>

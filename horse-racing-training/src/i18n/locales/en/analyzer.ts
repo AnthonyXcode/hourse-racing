@@ -1,9 +1,12 @@
 // Win / Place and Trio analyzer pages + their charts.
 export const analyzer = {
   title: {
+    page: "Model performance",
     winPlace: "Race analyzer performance",
     trio: "Trio performance",
   },
+  /** Accessible name of the bet-type toggle. */
+  betType: "Bet type",
   sub: {
     intro: "How our model's predictions held up against real results.",
     winPlace: "{{races}} races ({{span}}), {{preds}} horse predictions",

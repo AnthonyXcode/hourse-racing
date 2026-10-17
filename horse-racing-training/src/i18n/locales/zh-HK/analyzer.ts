@@ -3,9 +3,12 @@ import type { analyzer as En } from "../en/analyzer";
 
 export const analyzer: Shape<typeof En> = {
   title: {
+    page: "模型表現",
     winPlace: "賽事分析表現",
     trio: "單T表現",
   },
+  /** Accessible name of the bet-type toggle. */
+  betType: "投注類型",
   sub: {
     intro: "我們的模型預測與實際賽果比較。",
     winPlace: "{{races}} 場賽事（{{span}}），{{preds}} 個馬匹預測",
