@@ -18,6 +18,7 @@ import { BetSlip } from "./BetSlip";
 import { MIN_UNIT, scaleResult, type SettledBet, type SlipItem } from "./slip";
 import type { RaceResult, Venue } from "../shared/types";
 import { AnalyzerPage, type AnalyzerTab } from "./analyzer/AnalyzerPage";
+import { PricingPage } from "./credits/PricingPage";
 import { MomentumPage } from "./momentum/MomentumPage";
 import { SettingsPage } from "./SettingsPage";
 import { useTranslation } from "react-i18next";
@@ -73,6 +74,7 @@ const TABS = [
   ["history", "nav.history"],
   ["win-place", "nav.performance"],
   ["momentum", "nav.momentum"],
+  ["pricing", "nav.pricing"],
   ["settings", "nav.settings"],
 ] as const satisfies readonly (readonly [View, `nav.${string}`])[];
 /** Site map lists each analyzer page on its own (the Performance tab toggles between them). */
@@ -82,6 +84,7 @@ const SITEMAP_TOOLS = [
   ["win-place", "nav.winPlace"],
   ["trio", "nav.trio"],
   ["momentum", "nav.momentum"],
+  ["pricing", "nav.pricing"],
   ["settings", "nav.settings"],
 ] as const satisfies readonly (readonly [View, `nav.${string}`])[];
 /** Both analyzer views sit under the one Performance tab. */
@@ -912,6 +915,7 @@ function AppBody() {
             <div className={cx(panel, "mt-6 text-center text-ink-muted")}>{t("account:loading")}</div>
           ))}
 
+        {view === "pricing" && <PricingPage onBuy={() => setView("credits")} onPractice={() => setView("bet")} />}
         {view === "account" && <AccountPage onLogout={logout} onDeleted={() => setViewRaw(DEFAULT_VIEW)} />}
         {view === "credits" && (
           <CreditsPage

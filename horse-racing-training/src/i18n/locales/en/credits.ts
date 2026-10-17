@@ -107,6 +107,20 @@ export const credits = {
     stripe: "Secure payment by Stripe. You'll leave Post Time briefly.",
     plans: "Credit plans",
   },
+  pricing: {
+    title: "Pricing",
+    sub: "Practice betting is free. Buy credits only if you want to bet on live races.",
+    plan: "HK${{price}} plan",
+    choose: "Choose plan",
+    howTitle: "How credits work",
+    how: {
+      practice: "Practice bets on past races are always free, with no credits needed.",
+      rate: "1 credit = HK$1 of stake on a live bet. The minimum is {{min}} credits per combination, as at HKJC.",
+      noCash: "Credits have no cash value, can't be exchanged for cash or transferred, and are non-refundable.",
+      stripe: "Payments are handled securely by Stripe. You'll sign in before checkout.",
+    },
+    practice: "Try practice betting",
+  },
   plan: {
     bonus: "+{{pct}}% extra",
     best: "Best value",

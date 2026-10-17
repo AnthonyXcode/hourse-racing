@@ -3,7 +3,7 @@
 // view (no ?tab=), so its URL is the bare site root.
 import { Router, type Request } from "express";
 
-const VIEWS = ["home", "bet", "win-place", "trio", "momentum", "privacy", "terms", "sales", "legal", "sitemap"];
+const VIEWS = ["home", "bet", "win-place", "trio", "momentum", "pricing", "privacy", "terms", "sales", "legal", "sitemap"];
 const LANGS = ["zh-HK", "en"] as const;
 
 // Behind a TLS proxy req.protocol is "http"; the proxy's X-Forwarded-Proto says what the visitor used.

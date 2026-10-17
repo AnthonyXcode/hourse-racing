@@ -33,6 +33,7 @@ export const common: Shape<typeof En> = {
       settings: { title: "設定", description: "你在此瀏覽器的開跑前偏好設定。" },
       account: { title: "我的帳戶", description: "你在開跑前的會員資料及聯絡資料。" },
       credits: { title: "積分", description: "你在開跑前的積分結餘、購買及交易紀錄。" },
+      pricing: { title: "積分收費", description: "開跑前積分方案：HK$10、HK$100 及 HK$300，最多額外送 33% 積分。模擬投注永遠免費。" },
     },
   },
   nav: {
@@ -46,6 +47,7 @@ export const common: Shape<typeof En> = {
     performance: "表現分析",
     settings: "設定",
     momentum: "賠率走勢",
+    pricing: "收費",
     openMenu: "開啟選單",
     closeMenu: "關閉選單",
     navigation: "選單",

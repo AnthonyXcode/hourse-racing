@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import { LEGAL_VIEWS, type LegalView } from "./LegalPages";
 import { LANGS, PARAM, type Lang } from "./i18n/url";
 
-const PAGE_KEY = { bet: "bet", member: "member", history: "history", "win-place": "winPlace", trio: "trio", momentum: "momentum", settings: "settings", account: "account", credits: "credits" } as const;
+const PAGE_KEY = { bet: "bet", member: "member", history: "history", "win-place": "winPlace", trio: "trio", momentum: "momentum", settings: "settings", account: "account", credits: "credits", pricing: "pricing" } as const;
 type ToolView = keyof typeof PAGE_KEY;
 /** Legal view → its key in the legal namespace (privacy/terms/sales/sitemap share the view name). */
 const LEGAL_KEY = { privacy: "privacy", terms: "terms", sales: "sales", legal: "legalNotices", sitemap: "sitemap" } as const satisfies Record<LegalView, string>;

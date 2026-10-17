@@ -3,7 +3,7 @@ import { LEGAL_VIEWS } from "./LegalPages";
 
 /** Every ?tab= view. "account" is reached from the avatar menu and "member" (?tab=member&id=…) from the
  *  Home leaderboard, so neither is a primary tab. */
-export const VIEWS = ["home", "bet", "member", "history", "win-place", "trio", "momentum", "settings", "account", "credits", ...LEGAL_VIEWS] as const;
+export const VIEWS = ["home", "bet", "member", "history", "win-place", "trio", "momentum", "settings", "account", "credits", "pricing", ...LEGAL_VIEWS] as const;
 export type View = (typeof VIEWS)[number];
 export const DEFAULT_VIEW: View = "home";
 

@@ -110,6 +110,20 @@ export const credits: Shape<typeof En> = {
     stripe: "經 Stripe 安全付款，將暫時離開開跑前。",
     plans: "購買方案",
   },
+  pricing: {
+    title: "收費",
+    sub: "模擬投注免費。只有想投注即場賽事才需購買積分。",
+    plan: "HK${{price}} 方案",
+    choose: "選擇方案",
+    howTitle: "積分點運作",
+    how: {
+      practice: "以過往賽事模擬投注永遠免費，毋須積分。",
+      rate: "1 積分 = 即場投注 HK$1 注碼。每注最少 {{min}} 積分，與馬會相同。",
+      noCash: "積分沒有現金價值，不可兌換現金或轉讓，亦不設退款。",
+      stripe: "付款由 Stripe 安全處理。結帳前需先登入。",
+    },
+    practice: "試玩模擬投注",
+  },
   plan: {
     bonus: "額外 +{{pct}}%",
     best: "最抵",

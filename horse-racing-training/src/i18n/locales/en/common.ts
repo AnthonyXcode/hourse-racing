@@ -32,6 +32,7 @@ export const common = {
       settings: { title: "Settings", description: "Your Post Time preferences in this browser." },
       account: { title: "My account", description: "Your Post Time member profile and contact details." },
       credits: { title: "Credits", description: "Your Post Time credits balance, purchases and transactions." },
+      pricing: { title: "Credit pricing", description: "Post Time credit plans: HK$10, HK$100 and HK$300, with up to 33% extra credits. Practice betting stays free." },
     },
   },
   nav: {
@@ -45,6 +46,7 @@ export const common = {
     performance: "Performance",
     settings: "Settings",
     momentum: "Momentum",
+    pricing: "Pricing",
     openMenu: "Open navigation menu",
     closeMenu: "Close menu",
     navigation: "Navigation",
