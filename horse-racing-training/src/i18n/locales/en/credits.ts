@@ -35,7 +35,7 @@ export const credits = {
     credits: "Credits",
   },
   stake: {
-    minUnit: "Minimum unit bet is 10 credits.",
+    minUnit: "The unit bet must be a whole number of at least 10 credits.",
     balance: "Balance {{bal}} → after {{after}}",
     short: "Not enough credits for this bet.",
   },
@@ -64,6 +64,10 @@ export const credits = {
     line: "{{unit}} credits × {{combos}}",
     closedTag: "Closed",
   },
+  allUp: {
+    slipLine: "{{unit}} credits × {{lines}} lines",
+    equation: "{{lines}} lines × {{unit}} credits = {{total}} credits",
+  },
   err: {
     raceClosed: "Race {{n}} closed at {{time}}. No credits were deducted.",
     raceNotOpen: "Race {{n}} isn't open for live betting. No credits were deducted.",
@@ -76,6 +80,9 @@ export const credits = {
     invalidSelection: "One of the bets isn't valid any more. Check your slip.",
     notDesignated: "Double / Triple Trio live bets are only for the meeting's designated legs.",
     stakeTooLarge: "One bet is over the 50,000-credit limit.",
+    allUpTooManyLegs: "All Up with a Trio leg can have at most 3 legs.",
+    allUpBadFormula: "That formula doesn't match the number of legs.",
+    allUpDuplicateRace: "Each All Up leg must be a different race.",
     tooMany: "A live slip can hold up to 20 bets.",
     flagged: "Buying credits and live betting are off for this account. Please contact support.",
     stripeUnconfigured: "Buying credits isn't available yet. Please try again later.",

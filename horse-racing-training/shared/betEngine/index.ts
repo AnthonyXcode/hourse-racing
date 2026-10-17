@@ -12,6 +12,7 @@ import type {
 } from "../types";
 import { choose, perm, bankerLegCombos, subsets } from "./combinatorics";
 import { coverCount, placedHorses, positionOf } from "./settle";
+import { allUpLines, isAllUpFormula, isAllUpPool } from "./allUp";
 
 const fmt = (n: number) => `$${n.toLocaleString()}`;
 
@@ -20,7 +21,7 @@ const fmt = (n: number) => `$${n.toLocaleString()}`;
  * of the user's selection. value is null for multi-value pools (place/qpl); text
  * always renders something.
  */
-function headlineDividend(type: BetTypeId, src: RaceResult): { value: number | null; text: string } {
+export function headlineDividend(type: BetTypeId, src: RaceResult): { value: number | null; text: string } {
   const one = (n: number | undefined): { value: number | null; text: string } =>
     n == null ? { value: null, text: "—" } : { value: n, text: fmt(n) };
   const many = (a: number[] | undefined): { value: number | null; text: string } =>
@@ -35,11 +36,12 @@ function headlineDividend(type: BetTypeId, src: RaceResult): { value: number | n
     case "first4": return one(src.first4Dividend);
     case "doubleTrio": return one(src.doubleTrioDividend);
     case "tripleTrio": return one(src.tripleTrioDividend);
+    case "allUp": return { value: null, text: "—" }; // per leg: see server/settleCore.ts settleAllUp
   }
 }
 
 /** Top finishers of a race for display (ascending position, includes dead-heats). */
-function legResult(res: RaceResult, depth: number, covered: boolean): LegResult {
+export function legResult(res: RaceResult, depth: number, covered: boolean): LegResult {
   const finishers = res.finishOrder
     .filter((f) => f.finishPosition <= depth)
     .sort((a, b) => a.finishPosition - b.finishPosition)
@@ -52,6 +54,7 @@ export const UNIT = 10; // HKD per combination
 interface BetTypeDef {
   id: BetTypeId;
   label: string;
+  /** leg races the pool needs (All Up: the minimum, 2; it takes 2–6, see ./allUp.ts). */
   legRaces: 1 | 2 | 3;
   /** does this pool support banker (膽) selection? */
   banker: boolean;
@@ -77,10 +80,32 @@ export const BET_TYPES: Record<BetTypeId, BetTypeDef> = {
   first4: { id: "first4", label: "First 4", legRaces: 1, banker: false, depth: 4, legCombos: (l) => perm(l.legs.length, 4) },
   doubleTrio: { id: "doubleTrio", label: "Double Trio", legRaces: 2, banker: true, depth: 3, legCombos: anyOrder(3, true) },
   tripleTrio: { id: "tripleTrio", label: "Triple Trio", legRaces: 3, banker: true, depth: 3, legCombos: anyOrder(3, true) },
+  // All Up: legCombos is n_i of one leg in its own pool; banker/depth are the most any leg pool allows (TRI: 2 bankers).
+  allUp: { id: "allUp", label: "All Up", legRaces: 2, banker: true, depth: 3, legCombos: (l) => allUpLegCombos(l) },
 };
 
-/** Total combinations across all leg races (multi-race pools multiply). */
+/** n_i: combinations of one All Up leg in its own pool (0 when the pool is missing or the picks are short). */
+export function allUpLegCombos(leg: RaceLeg): number {
+  if (!isAllUpPool(leg.pool)) return 0;
+  const def = BET_TYPES[leg.pool];
+  if (!def.banker && leg.bankers.length) return 0;
+  return def.legCombos(leg);
+}
+
+/** "All Up 3x7", "Trio", … */
+export function betLabel(sel: BetSelection): string {
+  return sel.type === "allUp" ? `All Up${sel.formula ? ` ${sel.formula}` : ""}` : BET_TYPES[sel.type].label;
+}
+
+/**
+ * Total combinations across all leg races (multi-race pools multiply).
+ * All Up: bet lines = Σ over the formula's leg groups of Π n_i (SPEC §2.2).
+ */
 export function countCombos(sel: BetSelection): number {
+  if (sel.type === "allUp") {
+    if (!isAllUpFormula(sel.formula)) return 0;
+    return allUpLines(sel.formula, sel.raceLegs.map(allUpLegCombos));
+  }
   const def = BET_TYPES[sel.type];
   if (sel.raceLegs.length !== def.legRaces) return 0;
   let total = 1;
@@ -147,6 +172,8 @@ function dividend(type: BetTypeId, res: RaceResult, leg: RaceLeg): number | null
       return res.doubleTrioDividend ?? null;
     case "tripleTrio":
       return res.tripleTrioDividend ?? null;
+    case "allUp":
+      return null;
   }
 }
 
@@ -164,6 +191,10 @@ export function describe(d: SettleDetail): string {
       const legs = d.legs.map((l) => `R${l.race}${l.bankers.length ? ` 膽${l.bankers.join(",")}` : ""}`).join(" + ");
       return `Hit — ${legs}.${d.deadHeat > 1 ? ` ${d.deadHeat}× (dead-heat)` : ""}`;
     }
+    case "allUpHit": return `Hit — All Up ${d.formula}: ${d.linesWon} of ${d.lines} lines returned.`;
+    case "allUpMiss": return `Miss — All Up ${d.formula}: no line survived (race ${d.race} lost).`;
+    case "allUpVoid": return "Void — every line refunded.";
+    case "allUpHold": return `All Up ${d.formula}: dividend unavailable for race ${d.races.join(", ")}.`;
   }
 }
 
@@ -207,7 +238,8 @@ export function settle(
     poolDividendText: head.text,
   });
 
-  if (combos === 0) return base(false, 0, 0, { code: "invalid" }, []);
+  // All Up settles per leg with exact maths (server/settleCore.ts settleAllUp), never here.
+  if (combos === 0 || sel.type === "allUp") return base(false, 0, 0, { code: "invalid" }, []);
 
   // Win / Place: hit if any selected horse occupies a paying placing.
   if (sel.type === "win" || sel.type === "place") {

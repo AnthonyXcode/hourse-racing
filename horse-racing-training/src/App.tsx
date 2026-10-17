@@ -5,8 +5,13 @@ import { HomePage } from "./home/HomePage";
 const MemberProfilePage = lazy(() => import("./home/MemberProfile").then((m) => ({ default: m.MemberProfilePage })));
 const BotProfilePage = lazy(() => import("./home/BotProfile").then((m) => ({ default: m.BotProfilePage })));
 import { api } from "./api";
-import { BET_TYPES, countCombos } from "../shared/betEngine/index";
-import type { MeetingRef, RaceCard, BetTypeId, BetSelection, HistoryEntry, RaceStatus } from "../shared/types";
+import { BET_TYPES, allUpLegCombos, betLabel, countCombos } from "../shared/betEngine/index";
+import type { AllUpFormula, AllUpPool, MeetingRef, RaceCard, BetTypeId, BetSelection, HistoryEntry, RaceStatus } from "../shared/types";
+import { allUpHistory, picksText } from "../shared/credits/format";
+import { addLeg, bankerMaxFor, buildAllUpSelection, defaultFormula, firstEmptyLeg, formulaOptions, legCounts, maxLegsFor, switchPool, type AllUpDraftLeg } from "./allUp/model";
+import { AllUpLegList } from "./allUp/AllUpLegList";
+import { AllUpPoolPicker } from "./allUp/AllUpPoolPicker";
+import { AllUpFormulaPicker } from "./allUp/AllUpFormulaPicker";
 import { BetDaySummary } from "./BetDaySummary";
 import { RaceCardTable, PoolMenu, StakeBar, ResultModal, ResultPanel, HistoryPage, emptyPicks, legSummary, usePoolName, ymd, type HistoryFilter, type PickCol, type Picks, type Pool } from "./ui";
 import { BetSlip } from "./BetSlip";
@@ -109,6 +114,15 @@ const clockText = (sec: number) => {
 const GUEST_PENDING_MAX = 20;
 
 /** A race picked as a DT/TT leg but not the one being edited. */
+/** Server All Up validation codes (POST /api/settle) → their message. */
+const AU_ERRORS: Record<string, "credits:err.allUpTooManyLegs" | "credits:err.allUpBadFormula" | "credits:err.allUpDuplicateRace" | "credits:err.invalidSelection" | "credits:err.unitTooSmall"> = {
+  all_up_too_many_legs: "credits:err.allUpTooManyLegs",
+  all_up_duplicate_race: "credits:err.allUpDuplicateRace",
+  all_up_bad_formula: "credits:err.allUpBadFormula",
+  invalid_selection: "credits:err.invalidSelection",
+  unit_too_small: "credits:err.unitTooSmall",
+};
+
 const pickedLeg =
   "inline-flex size-8 flex-none cursor-pointer items-center justify-center rounded-full bg-sky-150 text-[15px] font-medium text-navy-900 ring-2 ring-navy-700";
 
@@ -172,6 +186,10 @@ function AppBody() {
   const [picks, setPicks] = useState<Record<number, Picks>>({});
   const [editRace, setEditRace] = useState(1);
   const [dtLegs, setDtLegs] = useState<number[]>([]); // chosen leg races for DT/TT
+  // All Up builder (docs/all-up/DESIGN-SPEC.md §1): legs (race + pool, sorted), formula, screen-reader notes.
+  const [auLegs, setAuLegs] = useState<AllUpDraftLeg[]>([]);
+  const [auFormula, setAuFormula] = useState<AllUpFormula | null>(null);
+  const [auAnnounce, setAuAnnounce] = useState("");
   const [unit, setUnit] = useState(MIN_UNIT);
   const [slip, setSlip] = useState<SlipItem[]>(loadSavedSlip);
   const [settled, setSettled] = useState<SettledBet[] | null>(null);
@@ -336,6 +354,7 @@ function AppBody() {
     if (!date || !venue) return;
     setPicks({});
     setCards({});
+    setAuLegs([]);
     api
       .meeting(date, venue)
       .then((m) => {
@@ -405,7 +424,9 @@ function AppBody() {
 
   /** The engine bet type behind the pool page (Win/Place settles as Win and/or Place). */
   const betType: BetTypeId = pool === "wp" ? "win" : pool;
-  const legCount = BET_TYPES[betType].legRaces; // 1, 2 (DT), or 3 (TT)
+  const isAllUp = pool === "allUp";
+  const legCount = BET_TYPES[betType].legRaces; // 1, 2 (DT), or 3 (TT); All Up has its own builder
+  const multiLeg = legCount > 1 && !isAllUp; // DT / TT
 
   // LIVE offers only the meeting's designated DT/TT legs (known before results); practice keeps any legs.
   const dtPools = (liveMeeting ? meeting?.liveDoubleTrioPools : meeting?.doubleTrioPools) ?? [];
@@ -422,9 +443,10 @@ function AppBody() {
   // Which races this bet type collects picks in.
   const legRaces = useMemo<number[]>(() => {
     if (!meeting) return [];
+    if (isAllUp) return auLegs.map((l) => l.raceNumber);
     if (legCount > 1) return [...dtLegs].sort((a, b) => a - b);
     return [activeRace];
-  }, [legCount, dtLegs, activeRace, meeting]);
+  }, [legCount, dtLegs, activeRace, meeting, isAllUp, auLegs]);
 
   // Toggle a race in/out of the DT/TT leg set (max legCount).
   function toggleLeg(rn: number) {
@@ -448,8 +470,53 @@ function AppBody() {
       .catch(fail(t("bet:err.race", { n: editRace, date: ymdSlash(date), venue: g.venue(venue as Venue) })));
   }, [date, venue, editRace, cards]);
 
-  const bankerEnabled = pool !== "wp" && BET_TYPES[betType].banker;
-  const bankerMax = BET_TYPES[betType].depth - 1;
+  // ---- All Up builder ----
+  const auEdit = auLegs.find((l) => l.raceNumber === editRace);
+  const auIndex = auEdit ? auLegs.indexOf(auEdit) + 1 : 0;
+  const auMax = maxLegsFor(auLegs);
+  // A new leg count resets the formula to Nx1 (announced when one was already chosen).
+  const auCount = useRef(0);
+  useEffect(() => {
+    if (auCount.current === auLegs.length) return;
+    const had = auCount.current >= 2;
+    auCount.current = auLegs.length;
+    const f = defaultFormula(auLegs.length);
+    setAuFormula(f);
+    if (f && had) setAuAnnounce(t("bet:allUp.formulaReset", { f, n: auLegs.length }));
+  }, [auLegs.length]); // eslint-disable-line react-hooks/exhaustive-deps
+  /** Race chip: add the race as a leg (WIN) or edit it if it's one already. */
+  function auChip(rn: number) {
+    setEditRace(rn);
+    if (auLegs.some((l) => l.raceNumber === rn)) return;
+    const next = addLeg(auLegs, rn);
+    if (next === auLegs) return;
+    setAuLegs(next);
+    setAuAnnounce(t("bet:allUp.announceAdd", { n: rn, leg: next.findIndex((l) => l.raceNumber === rn) + 1 }));
+  }
+  /** Leg list ✕: focus moves to the next leg, else the previous one, else the first race chip. */
+  function auRemove(rn: number) {
+    const i = auLegs.findIndex((l) => l.raceNumber === rn);
+    const rest = auLegs.filter((l) => l.raceNumber !== rn);
+    const target = rest[i] ?? rest[i - 1];
+    setAuLegs(rest);
+    if (target && editRace === rn) setEditRace(target.raceNumber);
+    setAuAnnounce(t("bet:allUp.announceRemove", { n: rn }));
+    requestAnimationFrame(() =>
+      (document.querySelector<HTMLElement>(target ? `[data-leg-edit="${target.raceNumber}"]` : "[data-allup-chip]"))?.focus()
+    );
+  }
+  /** Change the edited leg's pool, keeping its ticks (bankers that no longer fit become selections). */
+  function auPool(p: AllUpPool) {
+    if (!auEdit) return;
+    setAuLegs((legs) => legs.map((l) => (l.raceNumber === auEdit.raceNumber ? { ...l, pool: p } : l)));
+    const cur = picks[auEdit.raceNumber] ?? emptyPicks();
+    const { ticks, moved } = switchPool(cur, p);
+    if (moved.length && bankerMaxFor(p) > 0) setAuAnnounce(t("bet:allUp.bankerMoved", { h: moved.join(", ") }));
+    setPicks((prev) => ({ ...prev, [auEdit.raceNumber]: { ...cur, ...ticks } }));
+  }
+
+  const bankerEnabled = isAllUp ? !!auEdit && bankerMaxFor(auEdit.pool) > 0 : pool !== "wp" && BET_TYPES[betType].banker;
+  const bankerMax = isAllUp ? (auEdit ? bankerMaxFor(auEdit.pool) : 0) : BET_TYPES[betType].depth - 1;
 
   // Tick / untick a box. Banker and Select are exclusive for a horse; Win and Place are independent.
   function toggle(rn: number, col: PickCol, horse: number) {
@@ -477,6 +544,7 @@ function AppBody() {
   // Engine counts combos from legs excluding bankers, so keep them disjoint; pools without
   // bankers fold any banker ticks back into legs.
   const selections = useMemo<BetSelection[]>(() => {
+    if (isAllUp) return [buildAllUpSelection(auLegs, (rn) => picks[rn], auFormula)];
     if (pool === "wp") {
       const p = picks[activeRace] ?? emptyPicks();
       return (["win", "place"] as const)
@@ -488,12 +556,15 @@ function AppBody() {
       return bankerEnabled ? { raceNumber: rn, bankers: p.bankers, legs: p.legs } : { raceNumber: rn, bankers: [], legs: [...p.bankers, ...p.legs] };
     });
     return [{ type: betType, raceLegs }];
-  }, [pool, legRaces, picks, betType, bankerEnabled, activeRace]);
+  }, [pool, legRaces, picks, betType, bankerEnabled, activeRace, isAllUp, auLegs, auFormula]);
 
   const combos = selections.reduce((s, sel) => s + countCombos(sel), 0);
   // Practice meeting: as before (needs results). Live meeting: every leg race open → LIVE; else view-only.
   const legStatuses = (pool === "wp" ? [activeRace] : legRaces).map(raceStatusOf);
-  const betMode: "practice" | "live" | "view" = !liveMeeting ? "practice" : legStatuses.length && legStatuses.every((s) => s === "open") && credits.liveBetting ? "live" : "view";
+  const betMode: "practice" | "live" | "view" = !liveMeeting ? "practice" : (legStatuses.length || isAllUp) && legStatuses.every((s) => s === "open") && credits.liveBetting ? "live" : "view";
+  const auSel = isAllUp ? selections[0]! : null;
+  const auEmpty = auSel && auLegs.length >= 2 ? firstEmptyLeg(auSel) : null;
+  const auClosed = isAllUp && liveMeeting ? legRaces.find((rn) => raceStatusOf(rn) !== "open") : undefined;
   const canAdd = betMode === "practice" ? (meeting?.hasResults ?? false) : betMode === "live";
   const viewStatus = legStatuses.find((s) => s !== "open") ?? (credits.liveBetting ? "open" : "unavailable");
   const slipMode: "practice" | "live" | null = slip.length ? (slip[0]!.mode ?? "practice") : null;
@@ -536,6 +607,11 @@ function AppBody() {
       for (const rn of pool === "wp" ? [activeRace] : legRaces) delete next[rn];
       return next;
     });
+    if (isAllUp) {
+      // Clear the legs and formula, keep the unit, focus the first race chip (DESIGN-SPEC §1.3).
+      setAuLegs([]);
+      requestAnimationFrame(() => document.querySelector<HTMLElement>("[data-allup-chip]")?.focus());
+    }
   }
 
   // The Bet tab's day summary: reload the member's bets on opening the tab and whenever bets are
@@ -560,7 +636,15 @@ function AppBody() {
     const done: SettledBet[] = [];
     for (const item of slip) {
       try {
-        const r = scaleResult(await api.settle({ date: item.date, venue: item.venue, selection: item.selection }), item.unit);
+        const allUp = item.betType === "allUp";
+        // All Up is settled (and rounded per ticket) at its unit by the server; other pools are scaled from $10.
+        const r = scaleResult(
+          await api.settle({ date: item.date, venue: item.venue, selection: item.selection, ...(allUp ? { unit: item.unit } : {}) }).catch((e: unknown) => {
+            const code = e instanceof Error ? AU_ERRORS[e.message] : undefined;
+            throw code ? new Error(t(code)) : e;
+          }),
+          item.unit
+        );
         done.push({ item, result: r });
         track("practice_bet", { bet_type: item.betType, combos: item.combos, hit: r.hit, member: !!user });
         const multi = r.legResults.length > 1;
@@ -576,15 +660,17 @@ function AppBody() {
           date: item.date,
           venue: item.venue,
           betType: item.betType,
-          betLabel: BET_TYPES[item.betType].label,
-          picks: item.selection.raceLegs.map((l) => `R${l.raceNumber} ${legSummary(l)}`).join("  |  "),
+          betLabel: betLabel(item.selection),
+          picks: allUp ? picksText(item.selection) : item.selection.raceLegs.map((l) => `R${l.raceNumber} ${legSummary(l)}`).join("  |  "),
           result: resultStr,
           combos: item.combos,
           cost: r.cost,
           hit: r.hit,
-          payout: r.payout,
+          // All Up: the practice row's payout is the whole return (payout + refunded lines), so net = payout − cost.
+          payout: r.allUp && r.payout !== null ? r.payout + r.allUp.refund : r.payout,
           net: r.net,
           poolDividendText: r.poolDividendText,
+          ...(r.allUp ? { allUp: allUpHistory({ selection: item.selection, combos: r.combos, refund: r.allUp.refund, result: r }) } : {}),
         };
         if (user) {
           memberApi
@@ -661,7 +747,7 @@ function AppBody() {
   // Announce the countdown only at 10 min, 1 min and closed (never every second).
   const announce = !nextRace ? (liveMeeting ? t("credits:race.allClosed") : "") : nextIn <= 60 ? t("credits:race.closesIn", { n: nextRace.raceNumber, time: "1:00" }) : nextIn <= 600 ? t("credits:race.closesIn", { n: nextRace.raceNumber, time: "10:00" }) : "";
   const blockedNote =
-    betMode !== "view" ? null : viewStatus === "closed" ? t("credits:race.closedNote") : viewStatus === "unavailable" || viewStatus === "open" ? t("credits:race.unavailable") : t("credits:race.viewOnly");
+    auClosed != null ? t("bet:allUp.legClosed", { n: auClosed }) : betMode !== "view" ? null : viewStatus === "closed" ? t("credits:race.closedNote") : viewStatus === "unavailable" || viewStatus === "open" ? t("credits:race.unavailable") : t("credits:race.viewOnly");
 
   const meetingSelect = (
     <select id="bDay" className={cx(control, "w-full sm:w-auto sm:min-w-[300px]")} value={meetingKey} disabled={!days.length} onChange={(e) => chooseMeeting(e.target.value)}>
@@ -944,7 +1030,7 @@ function AppBody() {
               {meeting && (
                 <>
                   {/* Multi-race leg chooser */}
-                  {legCount > 1 && (
+                  {multiLeg && (
                     <div className={cx(panel, "mt-3 flex flex-col gap-4")}>
                       {officialPools.length > 0 && (
                         <div>
@@ -997,7 +1083,7 @@ function AppBody() {
                   )}
 
                   {/* Edit which leg's picks you're entering. */}
-                  {legCount > 1 && legRaces.length > 0 && (
+                  {multiLeg && legRaces.length > 0 && (
                     <div className="mt-3">
                       <div className="mb-2 text-[13px] text-ink">{t("bet:editing")}</div>
                       <div className={pillRow}>
@@ -1013,7 +1099,89 @@ function AppBody() {
                     </div>
                   )}
 
-                  {card ? (
+                  {isAllUp && (
+                    <div className={cx(panel, "mt-3")}>
+                      <div id="au-cap" className="mb-2 text-[13px] text-ink">
+                        {t("bet:allUp.pickRaces", { picked: auLegs.length, max: auMax })}
+                      </div>
+                      <div className="flex flex-wrap gap-2">
+                        {meeting.races.map((rn, i) => {
+                          const legAt = auLegs.findIndex((l) => l.raceNumber === rn);
+                          const isLeg = legAt >= 0;
+                          const st = liveMeeting ? raceStatusOf(rn) : null;
+                          const locked = !!st && st !== "open";
+                          const full = auLegs.length >= auMax;
+                          return (
+                            <span key={rn} className="relative flex-none">
+                              <button
+                                data-allup-chip={i === 0 ? "" : undefined}
+                                className={isLeg && rn === editRace ? chipBtn(true) : isLeg ? pickedLeg : chipBtn(false)}
+                                aria-pressed={isLeg}
+                                aria-label={isLeg ? t("bet:allUp.chipAria", { n: rn, leg: legAt + 1 }) : locked ? t("credits:race.chipClosed", { n: rn }) : t("common:race", { n: rn })}
+                                aria-describedby={!isLeg && (full || locked) ? "au-cap-note" : undefined}
+                                disabled={!isLeg && (full || locked)}
+                                onClick={() => auChip(rn)}
+                              >
+                                {rn}
+                              </button>
+                              {locked && (
+                                <span aria-hidden="true" className="pointer-events-none absolute -top-1 -right-1 inline-flex size-3.5 items-center justify-center rounded-full bg-surface ring-1 ring-line">
+                                  <svg viewBox="0 0 12 12" className="size-2.5 fill-ink-muted">
+                                    <rect x="2.5" y="5.5" width="7" height="5" rx="1" />
+                                    <path d="M4 5.5V4a2 2 0 0 1 4 0v1.5" className="fill-none stroke-ink-muted" strokeWidth="1.2" />
+                                  </svg>
+                                </span>
+                              )}
+                            </span>
+                          );
+                        })}
+                      </div>
+                      {auLegs.length >= auMax && (
+                        <p id="au-cap-note" className="mt-2 text-[13px] text-ink-muted">
+                          {auMax < 6 ? t("bet:allUp.trioCap") : t("bet:allUp.maxLegs")}
+                        </p>
+                      )}
+                      <div className="mt-3 border-t border-edge pt-1">
+                        <AllUpLegList
+                          legs={auLegs.map((l) => {
+                            const leg = auSel!.raceLegs.find((x) => x.raceNumber === l.raceNumber)!;
+                            const n = allUpLegCombos(leg);
+                            return { raceNumber: l.raceNumber, pool: l.pool, picks: !leg.bankers.length && !leg.legs.length ? "" : l.pool === "win" || l.pool === "place" ? leg.legs.join(",") : legLabel(leg), combos: n, closed: liveMeeting && raceStatusOf(l.raceNumber) !== "open" };
+                          })}
+                          editing={editRace}
+                          onEdit={setEditRace}
+                          onRemove={auRemove}
+                        />
+                      </div>
+                      <span className="sr-only" aria-live="polite">
+                        {auAnnounce}
+                      </span>
+                    </div>
+                  )}
+                  {isAllUp && auEdit && (
+                    <div className="mt-3 rounded-card bg-surface px-[13px] py-2.5 shadow-card">
+                      <div className="mb-2 text-[13px] text-ink">{t("bet:allUp.legPool", { race: auEdit.raceNumber, n: auIndex })}</div>
+                      <AllUpPoolPicker
+                        value={auEdit.pool}
+                        onChange={auPool}
+                        trioDisabled={auLegs.length > 3}
+                        label={t("bet:allUp.legPool", { race: auEdit.raceNumber, n: auIndex })}
+                        reasonId="au-trio-reason"
+                      />
+                      {auLegs.length > 3 && (
+                        <p id="au-trio-reason" className="mt-2 text-[12px] text-ink-muted">
+                          {t("bet:allUp.trioCapPool")}
+                        </p>
+                      )}
+                      {bankerMax > 0 && (
+                        <p className="mt-2 text-[12px] text-ink-muted">
+                          {t("bet:card.hintBanker")} {t("bet:allUp.bankerMax", { count: bankerMax })}
+                        </p>
+                      )}
+                    </div>
+                  )}
+
+                  {isAllUp && !auEdit ? null : card ? (
                     <RaceCardTable
                       card={card}
                       pool={pool}
@@ -1045,6 +1213,19 @@ function AppBody() {
                   )}
 
                   <StakeBar
+                    before={
+                      isAllUp ? (
+                        <AllUpFormulaPicker
+                          legs={auLegs.length}
+                          options={auSel ? formulaOptions(legCounts(auSel)) : []}
+                          value={auFormula}
+                          onChange={setAuFormula}
+                          unit={unit}
+                          live={betMode === "live"}
+                        />
+                      ) : undefined
+                    }
+                    note={auEmpty != null ? t("bet:allUp.errLegEmpty", { n: auEmpty }) : null}
                     combos={combos}
                     unit={unit}
                     onUnit={setUnit}

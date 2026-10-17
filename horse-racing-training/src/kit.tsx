@@ -129,6 +129,20 @@ export const statusChip = (kind: "pending" | "won" | "lost" | "refunded") =>
     "inline-flex h-6 items-center gap-1 rounded-full px-2 text-[13px] font-medium whitespace-nowrap tabular-nums",
     kind === "pending" ? "bg-sky-100 text-navy-900" : kind === "won" ? "bg-good-soft text-good" : kind === "lost" ? "bg-bad-soft text-bad" : "bg-surface-2 text-ink-muted"
   );
+/** All Up leg status chip (docs/all-up/DESIGN-SPEC.md §6.3): refund / void read as refunded, hold / toRun as pending. */
+export const legStatusChip = (kind: "won" | "lost" | "refund" | "void" | "hold" | "toRun") =>
+  statusChip(kind === "won" ? "won" : kind === "lost" ? "lost" : kind === "refund" || kind === "void" ? "refunded" : "pending");
+/** All Up leg pool: 5 equal segments, 44px tall overall (36px buttons + 4px padding). */
+export const allUpPoolSeg = "grid w-full grid-cols-5 gap-1 rounded-full bg-sky-100 p-1 sm:inline-grid sm:w-auto";
+export const allUpPoolBtn = (on: boolean) =>
+  on
+    ? "h-9 min-w-0 cursor-pointer rounded-full bg-navy-600 px-2 text-[13px] font-medium whitespace-nowrap text-white sm:px-3.5"
+    : "h-9 min-w-0 cursor-pointer rounded-full px-2 text-[13px] whitespace-nowrap text-ink transition-colors hover:bg-sky-50 aria-disabled:cursor-not-allowed aria-disabled:opacity-40 aria-disabled:hover:bg-transparent sm:px-3.5";
+/** All Up formula radio pill: formula on top, line count under it. */
+export const formulaPill = (on: boolean) =>
+  on
+    ? "inline-flex h-11 min-w-16 flex-none cursor-pointer flex-col items-center justify-center rounded-control bg-navy-700 px-3 text-white"
+    : "inline-flex h-11 min-w-16 flex-none cursor-pointer flex-col items-center justify-center rounded-control border border-line bg-surface px-3 text-ink transition-colors hover:bg-sky-50";
 /** Header credits chip (on navy). */
 export const creditChip =
   "relative inline-flex h-7 flex-none cursor-pointer items-center gap-1.5 rounded-full bg-white/10 px-2.5 text-[13px] font-medium text-white tabular-nums before:absolute before:-inset-2 before:content-[''] hover:bg-white/20";

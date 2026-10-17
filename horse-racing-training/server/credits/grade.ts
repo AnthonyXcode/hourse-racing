@@ -1,8 +1,11 @@
 // How a LIVE bet settles (docs/credits/PRD.md §4.3–4.4). Pure: no DB, so every rule is unit-tested.
 import { countCombos } from "../../shared/betEngine/index";
 import type { BetSelection, RaceResult, RaceStatus, SettleResult } from "../../shared/types";
-import { settleAgainstResults } from "../settleCore";
+import { settleAgainstResults, settleAllUp } from "../settleCore";
 import { hasResult } from "./schedule";
+import { deadHeatAffects, officialReturn, scratchedIn, unknownRunners, type CardRunner, type OfficialDividend } from "./raceRules";
+
+export { deadHeatAffects, officialReturn, scratchedIn, unknownRunners, type CardRunner, type OfficialDividend };
 
 export interface GradeInput {
   selection: BetSelection;
@@ -11,45 +14,14 @@ export interface GradeInput {
   stake: number;
 }
 
-/** HKJC's official dividends for one race, with the winning combination ("2", "2,12", "7,8,9"). */
-export type OfficialDividend = { pool: string; comb: string; div: number };
-
-export interface CardRunner {
-  horseNumber: number;
-  isScratched?: boolean;
-}
-
 export type Grade =
   /** Some leg has no result yet. */
   | { kind: "wait" }
   /** Full refund (void race / meeting, or every combination scratched). */
-  | { kind: "void"; refund: number; refundedCombos: number; reason: "void_race" | "all_scratched" }
+  | { kind: "void"; refund: number; refundedCombos: number; reason: "void_race" | "all_scratched"; /** All Up: the per-leg breakdown. */ result?: SettleResult }
   /** Needs an operator: hit with no stored dividend, or an ambiguous dead-heat dividend. */
   | { kind: "hold"; reason: "missing_dividend" | "dead_heat" | "runner_unknown"; result: SettleResult; refund: number; refundedCombos: number }
   | { kind: "settle"; status: "won" | "lost"; payout: number; refund: number; refundedCombos: number; result: SettleResult };
-
-/**
- * Horses POSITIVELY known not to have run (refunded): scratched on the last card refresh before post time,
- * or a withdrawn code (WV, WV-A, WX, WX-A, WXNR…) in the results' runner list. Nothing else counts: a horse that
- * started but didn't finish (PU, FE, UR, DNF, DISQ) is a runner and its bets lose.
- */
-export function scratchedIn(card: CardRunner[] | null, result: RaceResult): Set<number> {
-  const out = new Set<number>();
-  for (const e of card ?? []) if (e.isScratched) out.add(e.horseNumber);
-  for (const r of result.runners ?? []) if (r.status === "withdrawn") out.add(r.horseNumber);
-  return out;
-}
-
-/**
- * Picked horses whose fate is unknown: not withdrawn, not in the finish order, and not listed as a
- * non-finisher (e.g. results stored before runner statuses were kept, or an unrecognised code). The bet is
- * held for the operator rather than guessed either way.
- */
-export function unknownRunners(horses: number[], result: RaceResult, withdrawn: Set<number>): number[] {
-  const finished = new Set(result.finishOrder.map((f) => f.horseNumber));
-  const status = new Map((result.runners ?? []).map((r) => [r.horseNumber, r.status]));
-  return horses.filter((h) => !withdrawn.has(h) && !finished.has(h) && status.get(h) !== "nonFinisher" && status.get(h) !== "finished");
-}
 
 /** The selection without scratched horses. A scratched banker removes every combination of that leg. */
 export function effectiveSelection(sel: BetSelection, scratched: Map<number, Set<number>>): BetSelection | null {
@@ -60,69 +32,6 @@ export function effectiveSelection(sel: BetSelection, scratched: Map<number, Set
     legs.push({ ...leg, legs: leg.legs.filter((h) => !s.has(h)) });
   }
   return { ...sel, raceLegs: legs };
-}
-
-/**
- * A dead heat makes the stored dividend ambiguous only when it creates more winning combinations than the
- * result stores dividends for (one per pool, or one per placing for Place / QPL, without horse numbers):
- * - Win: a tie for 1st (two winners, two dividends).
- * - Place: one of the bet's placed horses is tied (the tied rows can't be told apart); untied horses keep
- *   their own row, since HKJC skips positions after a tie (1, 2, 2, 4).
- * - Quinella: more than two horses in 1st–2nd. Trio / DT / TT: more than three in 1st–3rd in any leg
- *   (a tie for 1st or 2nd still leaves a single trio).
- * - QPL / Tierce / First 4: any tie inside the placings (ordered pools, or per-pair rows).
- */
-function deadHeatAffects(sel: BetSelection, byRace: Map<number, RaceResult>): boolean {
-  return sel.raceLegs.some((leg) => {
-    const r = byRace.get(leg.raceNumber)!;
-    const within = (d: number) => r.finishOrder.filter((f) => f.finishPosition <= d);
-    const tied = (d: number) => {
-      const pos = within(d).map((f) => f.finishPosition);
-      return new Set(pos).size < pos.length;
-    };
-    switch (sel.type) {
-      case "win":
-        return within(1).length > 1;
-      case "place": {
-        const placed = within(r.placeDividends?.length ?? 3);
-        const picked = new Set(leg.legs);
-        return placed.some((f) => picked.has(f.horseNumber) && placed.some((o) => o !== f && o.finishPosition === f.finishPosition));
-      }
-      case "quinella":
-        return within(2).length > 2;
-      case "trio":
-      case "doubleTrio":
-      case "tripleTrio":
-        return within(3).length > 3;
-      case "qpl":
-      case "tierce":
-        return tied(3);
-      case "first4":
-        return tied(4);
-    }
-  });
-}
-
-const OFFICIAL_POOL: Partial<Record<BetSelection["type"], string>> = { win: "WIN", place: "PLA", quinella: "QIN", qpl: "QPL", trio: "TRI", tierce: "TCE", first4: "FF" };
-
-/**
- * Total official return per $10 for the winning combinations a single-race bet covers, from HKJC's dividends
- * (one row per winning combination, so dead heats are exact). null when the pool isn't published or the
- * bet's combinations aren't in it — the caller then holds as before. Multi-race pools (DT/TT) aren't covered.
- */
-export function officialReturn(sel: BetSelection, official: Map<number, OfficialDividend[]> | undefined): number | null {
-  const pool = OFFICIAL_POOL[sel.type];
-  const leg = sel.raceLegs[0];
-  if (!pool || !leg || sel.raceLegs.length !== 1) return null;
-  const rows = (official?.get(leg.raceNumber) ?? []).filter((d) => d.pool === pool);
-  if (!rows.length) return null;
-  const picked = new Set([...leg.bankers, ...leg.legs]);
-  let sum = 0;
-  for (const d of rows) {
-    const horses = d.comb.split(",").map(Number);
-    if (horses.every((h) => picked.has(h)) && leg.bankers.every((b) => horses.includes(b))) sum += d.div;
-  }
-  return sum > 0 ? sum : null;
 }
 
 /**
@@ -137,8 +46,9 @@ export function gradeLiveBet(
   dividendPer10Override?: number,
   /** assumeRunners: operator decision for a runner_unknown hold (treat horses of unknown fate as runners).
    *  official: HKJC's per-combination dividends by race, used when the stored dividend is missing or a dead heat makes it ambiguous. */
-  opts: { assumeRunners?: boolean; official?: Map<number, OfficialDividend[]> } = {}
+  opts: { assumeRunners?: boolean; official?: Map<number, OfficialDividend[]>; legDividends?: Map<number, number> } = {}
 ): Grade {
+  if (bet.selection.type === "allUp") return gradeAllUp(bet, results, cards, statuses, dividendPer10Override, opts);
   const races = bet.selection.raceLegs.map((l) => l.raceNumber);
   if (races.some((n) => statuses.get(n) === "void")) return { kind: "void", refund: bet.stake, refundedCombos: bet.combos, reason: "void_race" };
   const byRace = new Map((results ?? []).map((r) => [r.raceNumber, r]));
@@ -173,4 +83,40 @@ export function gradeLiveBet(
   // payout = floor(dividendPer10 × unit / 10 × combosWon); raw.payout already sums the matching dividends.
   const payout = Math.floor(raw.payout * scale + 1e-9);
   return { kind: "settle", status: "won", payout, refund, refundedCombos, result: result(payout) };
+}
+
+/**
+ * Grade a LIVE All Up bet (docs/all-up/SPEC.md §6–7): waits until EVERY leg race is resulted or void; void legs and
+ * scratchings carry forward ×1 instead of voiding the bet; status void only when every line is fully refunded.
+ * refundedCombos here = fully refunded lines. `dividendPer10Override` applies to the single held leg (if exactly
+ * one is held); `opts.legDividends` gives per-leg returns per $10 (resolve-bet --leg R:div).
+ */
+function gradeAllUp(
+  bet: GradeInput,
+  results: RaceResult[] | null,
+  cards: Map<number, CardRunner[] | null>,
+  statuses: Map<number, RaceStatus>,
+  dividendPer10Override: number | undefined,
+  opts: { assumeRunners?: boolean; official?: Map<number, OfficialDividend[]>; legDividends?: Map<number, number> }
+): Grade {
+  const races = bet.selection.raceLegs.map((l) => l.raceNumber);
+  const voidRaces = new Set(races.filter((n) => statuses.get(n) === "void"));
+  const byRace = new Map((results ?? []).map((r) => [r.raceNumber, r]));
+  if (!races.every((n) => voidRaces.has(n) || hasResult(byRace.get(n)))) return { kind: "wait" };
+  const scratched = new Map(races.filter((n) => !voidRaces.has(n)).map((n) => [n, scratchedIn(cards.get(n) ?? null, byRace.get(n)!)]));
+  const run = (legDividends?: Map<number, number>) =>
+    settleAllUp(bet.selection, results ?? [], { unit: bet.unit, mode: "live", voidRaces, scratched, official: opts.official, legDividends, checkRunners: true, assumeRunners: opts.assumeRunners });
+  let r = run(opts.legDividends);
+  if (r.kind === "hold" && dividendPer10Override != null) {
+    const held = r.result.allUp!.legs.filter((l) => l.status === "hold");
+    if (held.length === 1) r = run(new Map([...(opts.legDividends ?? []), [held[0]!.raceNumber, dividendPer10Override]]));
+  }
+  if (r.kind === "noResult") return { kind: "wait" };
+  if (r.kind === "hold") {
+    const a = r.result.allUp!;
+    return { kind: "hold", reason: r.reason, result: r.result, refund: a.refund, refundedCombos: a.linesRefunded };
+  }
+  if (r.status === "void")
+    return { kind: "void", refund: bet.stake, refundedCombos: bet.combos, reason: races.every((n) => voidRaces.has(n)) ? "void_race" : "all_scratched", result: r.result };
+  return { kind: "settle", status: r.status, payout: r.payout, refund: r.refund, refundedCombos: r.refundedLines, result: r.result };
 }

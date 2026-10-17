@@ -79,6 +79,7 @@ export const common: Shape<typeof En> = {
     first4: "四連環",
     doubleTrio: "孖T",
     tripleTrio: "三T",
+    allUp: "過關",
   },
   role: {
     banker: "膽",

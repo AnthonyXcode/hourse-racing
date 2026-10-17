@@ -869,7 +869,7 @@ export function adminRouter(d: AdminDeps): Router & { routes: RouteDecl[] } {
     return fromResult(out, () => ({ flagged: req.body.flagged, auditId: out.auditId }));
   });
   write("owner", "/live-bets/:id/resolve", (req) => {
-    const out = act(req).resolveBet({ betId: req.params.id ?? "", action: req.body?.action, dividend: req.body?.dividend, reason: String(req.body.reason).trim(), idemKey: idem(req) });
+    const out = act(req).resolveBet({ betId: req.params.id ?? "", action: req.body?.action, dividend: req.body?.dividend, legDividends: req.body?.legDividends, reason: String(req.body.reason).trim(), idemKey: idem(req) });
     return fromResult(out, () => ({ status: (out as { status: string }).status, payout: (out as { payout: number }).payout, refund: (out as { refund: number }).refund, auditId: out.auditId }));
   });
   const voidInput = (req: Request) => ({

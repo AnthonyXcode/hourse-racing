@@ -126,6 +126,15 @@ export function useLiveSlip(slip: SlipItem[], setSlip: (f: (s: SlipItem[]) => Sl
         case "invalid_selection":
           setError(t("err.invalidSelection"));
           break;
+        case "all_up_too_many_legs":
+          setError(t("err.allUpTooManyLegs"));
+          break;
+        case "all_up_bad_formula":
+          setError(t("err.allUpBadFormula"));
+          break;
+        case "all_up_duplicate_race":
+          setError(t("err.allUpDuplicateRace"));
+          break;
         default:
           setError(t("err.generic"));
       }

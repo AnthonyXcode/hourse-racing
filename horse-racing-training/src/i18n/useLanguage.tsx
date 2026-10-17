@@ -33,6 +33,12 @@ export function useFmt() {
       locale: loc,
       num,
       money: (v: number) => (Number.isFinite(v) ? (v < 0 ? "−$" : "$") + num(Math.abs(Math.round(v))) : "–"),
+      /** Like money, but keeps cents when there are any ($104.50): All Up practice returns are rounded to $0.50. */
+      cash: (v: number) => {
+        if (!Number.isFinite(v)) return "–";
+        const c = Math.round(Math.abs(v) * 100);
+        return (v < 0 ? "−$" : "$") + num(c / 100, c % 100 ? { minimumFractionDigits: 2, maximumFractionDigits: 2 } : undefined);
+      },
       date: (d: Date | string, o: Intl.DateTimeFormatOptions = { dateStyle: "medium" }) => new Intl.DateTimeFormat(loc, { timeZone: "Asia/Hong_Kong", ...o }).format(typeof d === "string" ? new Date(d) : d),
     };
   }, [lang]);

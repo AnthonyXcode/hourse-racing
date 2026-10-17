@@ -78,6 +78,7 @@ export const common = {
     first4: "First 4",
     doubleTrio: "Double Trio",
     tripleTrio: "Triple Trio",
+    allUp: "All Up",
   },
   role: {
     banker: "Banker",

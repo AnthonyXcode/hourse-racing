@@ -61,7 +61,7 @@ export function settlement(deps: SettleDeps) {
   };
 
   /** Grade one bet against the current data (optionally with an operator dividend). */
-  function grade(b: PendingRow, override?: number, assumeRunners = false): Grade {
+  function grade(b: PendingRow, override?: number, assumeRunners = false, legDividends?: Map<number, number>): Grade {
     const sel = JSON.parse(b.selection) as BetSelection;
     const results = deps.results(b.date, b.venue);
     const byRace = new Map((results ?? []).map((r) => [r.raceNumber, r]));
@@ -71,7 +71,7 @@ export function settlement(deps: SettleDeps) {
     );
     const cards = new Map(races.map((n) => [n, deps.card(b.date, b.venue, n)]));
     const official = new Map(races.map((n) => [n, deps.dividends?.(b.date, b.venue, n) ?? []]));
-    return gradeLiveBet({ selection: sel, unit: b.unit, combos: b.combos, stake: b.stake }, results, cards, statuses, override, { assumeRunners, official });
+    return gradeLiveBet({ selection: sel, unit: b.unit, combos: b.combos, stake: b.stake }, results, cards, statuses, override, { assumeRunners, official, legDividends });
   }
 
   /** Apply a final grade in one transaction. Returns false if the bet was no longer pending. */
@@ -80,7 +80,7 @@ export function settlement(deps: SettleDeps) {
       const t = new Date(deps.clock()).toISOString();
       const status = g.kind === "void" ? "void" : g.status;
       const payout = g.kind === "settle" ? g.payout : 0;
-      const result = g.kind === "settle" ? JSON.stringify(g.result) : null;
+      const result = g.kind === "settle" || g.result ? JSON.stringify(g.result) : null;
       const changed = db
         .prepare(
           "UPDATE live_bets SET status = ?, payout = ?, refund = ?, refunded_combos = ?, result = ?, hold_reason = NULL, settled_at = ? WHERE id = ? AND status = 'pending'"
@@ -142,21 +142,21 @@ export function settlement(deps: SettleDeps) {
      * Operator: settle a held bet or void it. `settle` treats horses of unknown fate as runners (runner_unknown
      * holds, after checking HKJC's result); `dividend` supplies the per-$10 return for its winning combos.
      */
-    resolve(id: string, how: { void?: boolean; dividend?: number; settle?: boolean }, actor: string): ResolveResult {
+    resolve(id: string, how: { void?: boolean; dividend?: number; settle?: boolean; /** All Up: race → return per $10 for that leg */ legDividends?: Map<number, number> }, actor: string): ResolveResult {
       const b = pendingRows({ id })[0];
       if (!b) return { ok: false, code: "bet_not_pending", message: "bet not found or not pending" };
       if (how.void)
         return apply(b, { kind: "void", refund: b.stake, refundedCombos: b.combos, reason: "void_race" }, actor)
           ? { ok: true, code: "ok", message: "voided and refunded", status: "void", payout: 0, refund: b.stake }
           : { ok: false, code: "bet_not_pending", message: "already settled" };
-      const g = grade(b, how.dividend, !!how.settle);
+      const g = grade(b, how.dividend, !!how.settle, how.legDividends);
       if (g.kind === "wait") return { ok: false, code: "results_not_stored", message: "results not stored yet" };
       if (g.kind === "hold")
         return {
           ok: false,
           code: "still_held",
           reason: g.reason,
-          message: g.reason === "runner_unknown" ? "still held (runner_unknown): check HKJC's result, then --settle (they ran) or --void" : `still held (${g.reason}); pass --dividend <per $10>`,
+          message: g.reason === "runner_unknown" ? "still held (runner_unknown): check HKJC's result, then --settle (they ran) or --void" : b.bet_type === "allUp" ? `still held (${g.reason}); pass --leg <race>:<per $10>[,<race>:<per $10>…]` : `still held (${g.reason}); pass --dividend <per $10>`,
         };
       if (!apply(b, g, actor)) return { ok: false, code: "bet_not_pending", message: "already settled" };
       return g.kind === "void"

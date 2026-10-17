@@ -13,10 +13,17 @@ export function useSlipText() {
   const g = useGlossary();
   const fmt = useFmt();
   const races = (it: SlipItem) => it.selection.raceLegs.map((l) => l.raceNumber);
+  const legPicks = (l: { bankers: number[]; legs: number[] }) =>
+    [l.bankers.length ? `${t("common:role.bankerShort")}${l.bankers.join(",")}` : "", l.legs.length ? `${l.bankers.length ? t("common:role.legShort") : ""}${l.legs.join(",")}` : ""].filter(Boolean).join(" ") || "—";
+  /** All Up: one line per leg, "第4場 獨贏 5" / "R4 WIN 5" (DESIGN-SPEC §5.1). */
+  const legLines = (it: SlipItem) =>
+    it.selection.raceLegs.map((l) => `${t("common:raceShort", { n: l.raceNumber })} ${l.pool ? t(`allUp.poolShort.${l.pool}`) : ""} ${legPicks(l)}`);
   return {
     title: (it: SlipItem) =>
-      `${g.betType(it.betType)} · ${t("slip.race", { date: fmt.date(ymd(it.date), { month: "numeric", day: "numeric" }), venue: g.venue(it.venue), race: races(it).join(", ") })}`,
+      `${g.betType(it.betType)}${it.selection.formula ? ` ${it.selection.formula}` : ""} · ${t("slip.race", { date: fmt.date(ymd(it.date), { month: "numeric", day: "numeric" }), venue: g.venue(it.venue), race: races(it).join(", ") })}`,
+    legLines,
     picks: (it: SlipItem) => {
+      if (it.betType === "allUp") return legLines(it).join(" · ");
       const multi = it.selection.raceLegs.length > 1;
       return it.selection.raceLegs
         .map((l) => {
@@ -248,9 +255,25 @@ function SlipBody({
                   </button>
                 )}
               </div>
-              <div className="mt-0.5 text-[13px] break-words text-ink">{text.picks(it)}</div>
+              {it.betType === "allUp" ? (
+                <ul className="mt-0.5 text-[13px] break-words text-ink">
+                  {text.legLines(it).map((line) => (
+                    <li key={line}>{line}</li>
+                  ))}
+                </ul>
+              ) : (
+                <div className="mt-0.5 text-[13px] break-words text-ink">{text.picks(it)}</div>
+              )}
               <div className="mt-1 flex text-[13px] tabular-nums">
-                <span className="text-ink-muted">{live ? t("credits:slip.line", { unit: fmt.num(it.unit), combos: fmt.num(it.combos) }) : t("slip.line", { unit: fmt.money(it.unit), combos: fmt.num(it.combos) })}</span>
+                <span className="text-ink-muted">
+                  {it.betType === "allUp"
+                    ? live
+                      ? t("credits:allUp.slipLine", { unit: fmt.num(it.unit), lines: fmt.num(it.combos) })
+                      : t("allUp.slipLine", { unit: fmt.money(it.unit), lines: fmt.num(it.combos) })
+                    : live
+                      ? t("credits:slip.line", { unit: fmt.num(it.unit), combos: fmt.num(it.combos) })
+                      : t("slip.line", { unit: fmt.money(it.unit), combos: fmt.num(it.combos) })}
+                </span>
                 <span className="ml-auto font-medium">{amount(it.cost)}</span>
               </div>
             </li>

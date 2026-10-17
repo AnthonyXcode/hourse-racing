@@ -1,6 +1,10 @@
 // Presentational components for the bet trainer.
 import type { CardHorse, PastPerformance, RaceCard, RaceLeg, RaceResult, SettleResult, SettleDetail, BetTypeId, HistoryEntry } from "../shared/types";
-import { Suspense, lazy, useEffect, useId, useRef, useState, type ReactNode } from "react";
+import { Fragment, Suspense, lazy, useEffect, useId, useRef, useState, type ReactNode } from "react";
+import { AnimatePresence, motion } from "motion/react";
+import { AllUpLegTable, type AllUpLegView } from "./allUp/AllUpLegTable";
+import { wasRounded } from "./allUp/model";
+import { allUpHistory } from "../shared/credits/format";
 import { useTranslation } from "react-i18next";
 import type { TFunction } from "i18next";
 import { useGlossary } from "./i18n/glossary";
@@ -8,7 +12,7 @@ import { Name } from "./i18n/names";
 import { useFmt, useLanguage } from "./i18n/useLanguage";
 import { Display, btn, btnDanger, btnPill, btnPrimary, control, cx, dateControl, empty, errorBox, field, fieldLabel, figure, h3, modal, modalBg, modalNarrow, modeBadge, panel, pill, pillRow, rangeBar, statusChip, table, tablePad } from "./kit";
 import { Spinner, useDialog } from "./members/ui";
-import { MIN_UNIT, ymd, type SettledBet } from "./slip";
+import { MIN_UNIT, parseUnit, ymd, type SettledBet } from "./slip";
 import { useSlipText } from "./BetSlip";
 import { Coin } from "./credits/dialogs";
 import { api } from "./api";
@@ -22,7 +26,7 @@ const tick = "size-5 cursor-pointer accent-navy-700 disabled:cursor-not-allowed"
 
 /** Pools as HKJC groups them: Win and Place share one page. */
 export type Pool = "wp" | Exclude<BetTypeId, "win" | "place">;
-export const POOLS: Pool[] = ["wp", "quinella", "qpl", "trio", "tierce", "first4", "doubleTrio", "tripleTrio"];
+export const POOLS: Pool[] = ["wp", "quinella", "qpl", "trio", "tierce", "first4", "doubleTrio", "tripleTrio", "allUp"];
 /** A race's ticked boxes, one list per column. */
 export interface Picks {
   win: number[];
@@ -447,6 +451,8 @@ export function StakeBar({
   onAdd,
   canAdd,
   live,
+  before,
+  note,
 }: {
   combos: number;
   unit: number;
@@ -454,11 +460,16 @@ export function StakeBar({
   onAdd: () => void;
   canAdd: boolean;
   live?: LiveStake;
+  /** Rendered above the grid (All Up: the formula picker). */
+  before?: ReactNode;
+  /** Why Add is disabled (All Up: a leg without horses), shown after the unit error. */
+  note?: string | null;
 }) {
   const { t } = useTranslation(["bet", "common", "credits", "account"]);
   const fmt = useFmt();
   const [draft, setDraft] = useState(String(unit));
-  const bad = !(Number(draft) >= MIN_UNIT);
+  // What's typed is what's bet: an invalid draft blocks Add (never silently replaced by the last valid unit).
+  const bad = parseUnit(draft) === null;
   const total = combos * unit;
   const after = live?.balance != null ? live.balance - live.slipTotal - total : null;
   const short = after != null && after < 0 && combos > 0;
@@ -477,6 +488,7 @@ export function StakeBar({
   return (
     <div className="mt-3 rounded-card bg-surface px-[13px] py-3 shadow-card">
       <div className="mb-2 text-[15px] text-ink">{t("stake.title")}</div>
+      {before}
       <div className="grid grid-cols-2 items-center gap-x-4 gap-y-3 sm:flex sm:flex-wrap">
         <div className="text-[15px]">
           {t("stake.combos")}: <strong className="font-medium tabular-nums">{combos ? fmt.num(combos) : "-"}</strong>
@@ -495,27 +507,32 @@ export function StakeBar({
               aria-invalid={bad}
               onChange={(e) => {
                 setDraft(e.target.value);
-                const n = Math.floor(Number(e.target.value));
-                if (n >= MIN_UNIT) onUnit(n);
+                const n = parseUnit(e.target.value);
+                if (n !== null) onUnit(n);
               }}
-              onBlur={() => setDraft(String(unit))}
+              onBlur={() => !bad && setDraft(String(unit))}
             />
           </span>
           {live && <span className="text-[15px]">{t("credits:unitWord")}</span>}
         </label>
         <div className="text-[15px] sm:ml-auto">
-          {t("stake.total")}: <strong className="font-medium tabular-nums">{combos ? (live ? t("credits:unit", { n: fmt.num(total) }) : fmt.money(total)) : "-"}</strong>
+          {t("stake.total")}: <strong className="font-medium tabular-nums">{combos && !bad ? (live ? t("credits:unit", { n: fmt.num(total) }) : fmt.money(total)) : "-"}</strong>
         </div>
         <button
           className={cx(btnPrimary, "justify-self-end")}
-          disabled={!canAdd || combos === 0 || short || !!live?.blockedNote}
-          aria-describedby={short ? "stake-short" : undefined}
-          onClick={onAdd}
+          disabled={bad || !canAdd || combos === 0 || short || !!live?.blockedNote || !!note}
+          aria-describedby={bad ? "stake-unit-err" : short ? "stake-short" : note ? "stake-note" : undefined}
+          onClick={() => !bad && onAdd()}
         >
           {t("stake.add")}
         </button>
       </div>
-      {bad && <p className="mt-2 text-[13px] text-bad">{live ? t("credits:stake.minUnit") : t("stake.minUnit")}</p>}
+      {bad && <p id="stake-unit-err" className="mt-2 text-[13px] text-bad">{live ? t("credits:stake.minUnit") : t("stake.minUnit")}</p>}
+      {!bad && note && (
+        <p id="stake-note" className="mt-2 text-[13px] text-bad">
+          {note}
+        </p>
+      )}
       {live?.blockedNote && <p className="mt-2 text-[13px] text-ink-muted">{live.blockedNote}</p>}
       {live && !live.blockedNote && after != null && (
         <p className="mt-2 text-[13px] text-ink-muted tabular-nums">
@@ -553,6 +570,10 @@ export function settleText(d: SettleDetail | undefined, t: TFunction<["bet", "co
         .join(" + ");
       return t("detail.hitLegs", { legs }) + (d.deadHeat > 1 ? " " + t("detail.deadHeat", { n: d.deadHeat }) : "");
     }
+    case "allUpHit": return t("detail.allUpHit", { formula: d.formula, linesWon: d.linesWon, count: d.lines });
+    case "allUpMiss": return t("detail.allUpMiss", { formula: d.formula, race: d.race });
+    case "allUpVoid": return t("detail.allUpVoid");
+    case "allUpHold": return t("detail.allUpHold", { formula: d.formula, races: d.races.join(", ") });
   }
 }
 
@@ -578,10 +599,10 @@ export function ResultModal({ bets, onClose, banner }: { bets: SettledBet[]; onC
           <div className="mt-4 flex items-baseline justify-between rounded-card bg-sky-150 px-[13px] py-3 text-navy-900">
             <span className="font-bold">{t("result.total")}</span>
             <span className="text-sm">
-              {t("result.cost")} {fmt.money(sum((r) => r.cost))} · {t("result.payout")} {fmt.money(sum((r) => r.payout))} ·{" "}
+              {t("result.cost")} {fmt.cash(sum((r) => r.cost))} · {t("result.payout")} {fmt.cash(sum((r) => (r.payout ?? 0) + (r.allUp?.refund ?? 0)))} ·{" "}
               <strong className={cx("text-lg font-bold tabular-nums", totalNet >= 0 ? "text-good" : "text-bad")}>
                 {totalNet >= 0 ? "+" : ""}
-                {fmt.money(totalNet)}
+                {fmt.cash(totalNet)}
               </strong>
             </span>
           </div>
@@ -597,8 +618,10 @@ function SettledCard({ bet, compact }: { bet: SettledBet; compact: boolean }) {
   const fmt = useFmt();
   const text = useSlipText();
   const { item, result } = bet;
-  const payoutStr = result.payout === null ? t("result.payoutUnknown") : fmt.money(result.payout);
-  const netStr = result.net === null ? "—" : `${result.net >= 0 ? "+" : ""}${fmt.money(result.net)}`;
+  if (result.allUp) return <AllUpSettledCard bet={bet} />;
+  // Cents kept ($96.50), the same as My bets of the day / History (QA-02).
+  const payoutStr = result.payout === null ? t("result.payoutUnknown") : fmt.cash(result.payout);
+  const netStr = result.net === null ? "—" : `${result.net >= 0 ? "+" : ""}${fmt.cash(result.net)}`;
   return (
     <section className="overflow-hidden rounded-card ring-1 ring-edge">
       <div className="flex items-center gap-2 bg-navy-900 px-[13px] py-2 text-white">
@@ -638,8 +661,8 @@ function SettledCard({ bet, compact }: { bet: SettledBet; compact: boolean }) {
           <tbody>
             <tr><td>{t("result.poolDividend")}</td><td>{result.poolDividendText}</td></tr>
             <tr><td>{t("result.combosWon")}</td><td>{result.combosWon} / {result.combos}</td></tr>
-            <tr><td>{t("result.unit")}</td><td>{fmt.money(item.unit)}</td></tr>
-            <tr><td>{t("result.cost")}</td><td>{fmt.money(result.cost)}</td></tr>
+            <tr><td>{t("result.unit")}</td><td>{fmt.cash(item.unit)}</td></tr>
+            <tr><td>{t("result.cost")}</td><td>{fmt.cash(result.cost)}</td></tr>
             <tr><td>{t("result.payout")}</td><td>{payoutStr}</td></tr>
             <tr>
               <td className="font-medium">{t("result.net")}</td>
@@ -649,6 +672,58 @@ function SettledCard({ bet, compact }: { bet: SettledBet; compact: boolean }) {
             </tr>
           </tbody>
         </table>
+      </div>
+    </section>
+  );
+}
+
+/** All Up result (docs/all-up/DESIGN-SPEC.md §6.1): per-leg table instead of the finisher cards. */
+function AllUpSettledCard({ bet }: { bet: SettledBet }) {
+  const { t } = useTranslation(["bet", "common", "credits"]);
+  const fmt = useFmt();
+  const text = useSlipText();
+  const { item, result } = bet;
+  const a = result.allUp!;
+  const money = fmt.cash;
+  const isVoid = a.status === "void";
+  const legs: AllUpLegView[] = allUpHistory({ selection: item.selection, combos: result.combos, refund: a.refund, result }).legs.map((l) => ({
+    ...l,
+    resultTitle: result.legResults.find((r) => r.raceNumber === l.raceNumber)?.finishers.slice(0, 4).map((f) => `${f.position}. #${f.horseNumber} ${f.horseName}`).join("\n"),
+  }));
+  const netStr = result.net === null ? "—" : `${result.net >= 0 ? "+" : ""}${money(result.net)}`;
+  return (
+    <section className="overflow-hidden rounded-card ring-1 ring-edge">
+      <div className="flex items-center gap-2 bg-navy-900 px-[13px] py-2 text-white">
+        <span className="min-w-0 truncate text-[15px] font-medium">{text.title(item)}</span>
+        {isVoid ? (
+          <span className={cx(statusChip("refunded"), "ml-auto flex-none")}>{t("credits:status.refunded", { n: money(a.refund) })}</span>
+        ) : (
+          <span className={cx("ml-auto flex-none rounded-full px-2.5 py-0.5 text-[13px] font-bold", result.hit ? "bg-good" : "bg-bad")}>{result.hit ? t("result.hit") : t("result.miss")}</span>
+        )}
+      </div>
+      <div className="px-[13px] py-3">
+        <p className="text-[13px] text-ink-muted">{text.picks(item)}</p>
+        <p className="mt-1 text-sm text-ink">{settleText(result.detailInfo, t)}</p>
+        <div className="mt-3">
+          <AllUpLegTable legs={legs} />
+        </div>
+        <table className="mt-3 w-full border-collapse text-sm [&_td]:border-b [&_td]:border-edge [&_td]:py-2 [&_td:first-child]:text-ink [&_td:last-child]:text-right [&_td:last-child]:font-medium [&_td:last-child]:tabular-nums [&_tr:last-child_td]:border-b-0">
+          <tbody>
+            <tr><td>{t("allUp.formula")}</td><td>{a.formula}</td></tr>
+            <tr><td>{t("allUp.linesWon")}</td><td>{a.linesWon} / {a.lines}</td></tr>
+            <tr><td>{t("result.unit")}</td><td>{money(item.unit)}</td></tr>
+            <tr><td>{t("result.cost")}</td><td>{money(result.cost)}</td></tr>
+            {a.refund > 0 && <tr><td>{t("allUp.refund")}</td><td>{money(a.refund)}</td></tr>}
+            <tr><td>{t("result.payout")}</td><td>{result.payout === null ? t("result.payoutUnknown") : money(result.payout)}</td></tr>
+            <tr>
+              <td className="font-medium">{t("result.net")}</td>
+              <td>
+                <span className={cx(figure, "text-[22px]", result.net === null ? "text-ink" : result.net >= 0 ? "text-good" : "text-bad")}>{netStr}</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        {item.mode !== "live" && wasRounded(a) && <p className="mt-2 text-[12px] text-ink-muted">{t("allUp.rounded")}</p>}
       </div>
     </section>
   );
@@ -892,14 +967,25 @@ export function HistoryLedger({
   /** Inside another card: no card chrome of its own (hairline-bordered table, plain stats). */
   flat?: boolean;
 }) {
-  const { t } = useTranslation(["history", "common", "credits"]);
+  const { t } = useTranslation(["history", "common", "credits", "bet"]);
   const [sharing, setSharing] = useState(false);
   const [shareBet, setShareBet] = useState<HistoryEntry | null>(null);
   const g = useGlossary();
   const fmt = useFmt();
   const when = (ts: string) => fmt.date(ts, { dateStyle: "short", timeStyle: "short" });
   // Practice amounts are imaginary HK$; LIVE amounts are credits. Never mixed in one view.
-  const amount = (v: number) => (isLive ? fmt.num(v) : fmt.money(v));
+  const amount = (v: number) => (isLive ? fmt.num(v) : fmt.cash(v));
+  /** All Up rows whose per-leg expander is open. */
+  const [openLegs, setOpenLegs] = useState<Set<string>>(() => new Set());
+  const toggleLegs = (id: string) =>
+    setOpenLegs((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  const allCols = (isLive ? 1 : 0) + (where ? 2 : 0) + 4 + (!isLive ? 1 : 0) + 4 + (!isLive && onDelete ? 1 : 0) + (isLive && shareName ? 1 : 0);
+  const legsId = useId();
   const signed = (v: number) => (v >= 0 ? "+" : "−") + amount(Math.abs(v));
   // Bets, hit rate, staked and returned all count SETTLED bets only; pending ones are listed separately.
   const settled = rows.filter((e) => e.status !== "pending");
@@ -1056,17 +1142,38 @@ export function HistoryLedger({
               </tr>
             </thead>
             <tbody>
-              {rows.map((e) => {
+              {rows.map((e, i) => {
                 const pend = e.status === "pending";
+                const legsOpen = !!e.allUp && openLegs.has(e.id);
+                const panelId = `${legsId}-${e.id}`;
                 return (
-                  <tr key={e.id}>
+                  <Fragment key={e.id}>
+                  {/* Zebra by bet index, not DOM position, so an open legs row doesn't shift the stripes (QA-05). */}
+                  <tr className={cx(i % 2 ? "bg-zebra!" : "bg-transparent!", "hover:bg-sky-50!")}>
                     {isLive && <td>{chip(e)}</td>}
                     {where && <td className="text-ink-3">{when(e.ts)}</td>}
                     {where && <td>
                       {fmt.date(ymd(e.date))} {g.venue(e.venue)}
                       {modeBadges && <span className={cx(modeBadge(isLive ? "live" : "practice", "white"), "ml-1.5")}>{t(isLive ? "credits:mode.live" : "credits:mode.practice")}</span>}
                     </td>}
-                    <td>{g.betType(e.betType)}</td>
+                    <td>
+                      {g.betType(e.betType)}
+                      {e.allUp && (
+                        <>
+                          {" "}
+                          {e.allUp.formula}
+                          <button
+                            type="button"
+                            className="flex min-h-11 cursor-pointer items-center text-[13px] text-link hover:underline"
+                            aria-expanded={legsOpen}
+                            aria-controls={panelId}
+                            onClick={() => toggleLegs(e.id)}
+                          >
+                            {t("bet:allUp.showLegs", { n: e.allUp.legs.length })}
+                          </button>
+                        </>
+                      )}
+                    </td>
                     <td className="text-xs text-ink-2">{picks(e.picks)}</td>
                     <td>{e.combos}</td>
                     <td>{amount(e.cost)}</td>
@@ -1102,6 +1209,22 @@ export function HistoryLedger({
                       </td>
                     )}
                   </tr>
+                  {/* The legs row exists only while open (or closing): the exit animation runs before it is removed (QA-04). */}
+                  <AnimatePresence initial={false}>
+                    {e.allUp && legsOpen && (
+                      <motion.tr key="legs" id={panelId} className="bg-sky-50! hover:bg-sky-50!" exit={{ opacity: 1 }} transition={{ duration: LEGS_MS }}>
+                        <td colSpan={allCols} className="px-[13px]! py-0! whitespace-normal! text-left!">
+                          <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: LEGS_MS, ease: [0.2, 0, 0, 1] }} className="overflow-hidden">
+                            <div className="py-3">
+                              <AllUpLegTable legs={e.allUp.legs} compact />
+                              {pend && <p className="mt-2 text-[12px] text-ink-muted">{t("bet:allUp.pendingNote")}</p>}
+                            </div>
+                          </motion.div>
+                        </td>
+                      </motion.tr>
+                    )}
+                  </AnimatePresence>
+                  </Fragment>
                 );
               })}
             </tbody>
@@ -1113,6 +1236,8 @@ export function HistoryLedger({
 }
 
 export type HistoryFilter = "live" | "practice" | "pending";
+/** All Up legs expander open / close (DESIGN-SPEC §9: 150 ms). */
+const LEGS_MS = 0.15;
 
 /** Epoch ms → its Hong Kong day, YYYY-MM-DD (the value format of <input type="date">). */
 const hkIsoDay = (ms: number) => new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Hong_Kong" }).format(new Date(ms));

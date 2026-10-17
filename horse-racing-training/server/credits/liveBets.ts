@@ -4,8 +4,9 @@
 import { createHash, randomUUID } from "crypto";
 import type { MembersDB } from "../members/db";
 import type { BetSelection, BetTypeId, HistoryEntry, LiveBet, RaceStatus, SettleResult, Venue } from "../../shared/types";
-import { BET_TYPES, countCombos } from "../../shared/betEngine/index";
-import { picksText } from "../../shared/credits/format";
+import { BET_TYPES, betLabel, countCombos } from "../../shared/betEngine/index";
+import { allUpHistory, picksText } from "../../shared/credits/format";
+import { validateAllUpSelection } from "../../shared/validation";
 import { MAX_LIVE_ITEMS, MIN_LIVE_UNIT } from "../../shared/credits/rules";
 import type { CreditsConfig } from "./config";
 import { InsufficientCredits, type Ledger } from "./ledger";
@@ -62,10 +63,24 @@ type NewBet = Pick<BetRow, "date" | "venue" | "bet_type" | "selection" | "race_i
 const ints = (a: unknown, max = 30): a is number[] =>
   Array.isArray(a) && a.length <= max && a.every((n) => Number.isInteger(n) && n > 0 && n < 100) && new Set(a).size === a.length;
 
+/** A well-formed selection for its pool, or the error code (All Up: SPEC §8 codes; else invalid_selection). */
+export function checkSelection(x: unknown): { sel: BetSelection } | { code: string } {
+  if ((x as { type?: unknown } | null)?.type === "allUp") {
+    const r = validateAllUpSelection(x);
+    return r.ok ? { sel: r.value } : { code: r.code };
+  }
+  const sel = parseSelection(x);
+  return sel ? { sel } : { code: "invalid_selection" };
+}
+
 /** A well-formed selection for its pool (shape only; horses are checked against the card later). */
 export function parseSelection(x: unknown): BetSelection | null {
   if (!x || typeof x !== "object") return null;
   const s = x as { type?: unknown; raceLegs?: unknown };
+  if (s.type === "allUp") {
+    const r = validateAllUpSelection(x);
+    return r.ok ? r.value : null;
+  }
   if (typeof s.type !== "string" || !Object.hasOwn(BET_TYPES, s.type)) return null;
   const def = BET_TYPES[s.type as BetTypeId];
   if (!Array.isArray(s.raceLegs) || s.raceLegs.length !== def.legRaces) return null;
@@ -93,7 +108,7 @@ export function toLiveBet(r: BetRow): LiveBet {
     date: r.date,
     venue: r.venue,
     betType: r.bet_type,
-    betLabel: BET_TYPES[r.bet_type].label,
+    betLabel: betLabel(selection),
     selection,
     picks: picksText(selection),
     unit: r.unit,
@@ -134,8 +149,10 @@ export function liveToHistory(b: LiveBet): HistoryEntry {
     mode: "live",
     status: b.status,
     refund: b.refund,
+    ...(b.betType === "allUp" ? { allUp: allUpHistory(b) } : {}),
   };
 }
+
 
 export function liveBets(deps: LiveDeps) {
   const { db, ledger, cfg } = deps;
@@ -146,8 +163,9 @@ export function liveBets(deps: LiveDeps) {
     const it = (raw && typeof raw === "object" ? raw : {}) as { date?: unknown; venue?: unknown; selection?: unknown; unit?: unknown };
     const err = (code: string, extra: Partial<ItemError> = {}) => ({ error: { index, code, ...extra } });
     if (typeof it.date !== "string" || !/^\d{8}$/.test(it.date) || (it.venue !== "ST" && it.venue !== "HV")) return err("invalid_selection");
-    const sel = parseSelection(it.selection);
-    if (!sel) return err("invalid_selection");
+    const parsed = checkSelection(it.selection);
+    if ("code" in parsed) return err(parsed.code);
+    const sel = parsed.sel;
     if (typeof it.unit !== "number" || !Number.isInteger(it.unit) || it.unit < MIN_LIVE_UNIT) return err("unit_too_small");
     const m = deps.meeting(it.date, it.venue);
     if (!m) return err("race_not_open", { raceNumber: sel.raceLegs[0]!.raceNumber });

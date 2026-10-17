@@ -130,19 +130,73 @@ export type BetTypeId =
   | "tierce"
   | "first4"
   | "doubleTrio"
-  | "tripleTrio";
+  | "tripleTrio"
+  /** All Up (過關): 2–6 races, each leg with its own pool (docs/all-up/SPEC.md). */
+  | "allUp";
+
+/** Pools an All Up leg can use (SPEC §3). */
+export type AllUpPool = "win" | "place" | "quinella" | "qpl" | "trio";
+/** HKJC All Up formulas `N x M` (SPEC §2.1); the table lives in shared/betEngine/allUp.ts. */
+export type AllUpFormula =
+  | "2x1" | "2x3"
+  | "3x1" | "3x3" | "3x4" | "3x6" | "3x7"
+  | "4x1" | "4x4" | "4x5" | "4x6" | "4x10" | "4x11" | "4x14" | "4x15"
+  | "5x1" | "5x5" | "5x6" | "5x10" | "5x15" | "5x16" | "5x20" | "5x25" | "5x26" | "5x30" | "5x31"
+  | "6x1" | "6x6" | "6x7" | "6x15" | "6x20" | "6x21" | "6x22" | "6x35" | "6x41" | "6x42" | "6x50" | "6x56" | "6x57" | "6x62" | "6x63";
 
 /** One race's horse picks. bankers must all appear in the result combo; legs are interchangeable. */
 export interface RaceLeg {
   raceNumber: number;
   bankers: number[];
   legs: number[];
+  /** All Up only: this leg's pool. Required when BetSelection.type === "allUp". */
+  pool?: AllUpPool;
 }
 
 /** A complete bet slip for one bet type. Single-race bets use raceLegs[0]. */
 export interface BetSelection {
   type: BetTypeId;
+  /** All Up: 2–6 legs, sorted by raceNumber (the server sorts them). */
   raceLegs: RaceLeg[];
+  /** All Up only, e.g. "3x7". */
+  formula?: AllUpFormula;
+}
+
+/** One All Up leg as settled (SPEC §5–6). */
+export interface AllUpLegOutcome {
+  raceNumber: number;
+  pool: AllUpPool;
+  /** n_i: this leg's combinations as placed. */
+  combos: number;
+  /** combinations that won in this leg. */
+  winningCombos: number;
+  /** combinations refunded (scratched / void race) and carried forward ×1. */
+  refundedCombos: number;
+  /** W_i: the leg's total per-$10 dividend over its winning combinations (0 on a miss). */
+  dividend: number;
+  /** F_i = W_i / 10 + refundedCombos: the leg's return per $1 on each of its combinations. */
+  factor: number;
+  /** the pool's dividend(s) for this race, e.g. "$45.5" or "$31.5 / $28 / $40.5", or "VOID". */
+  dividendText: string;
+  /** void = the race was void/abandoned (whole leg refunded); refund = scratchings left no live combination. */
+  status: "won" | "lost" | "refund" | "void" | "hold";
+}
+export interface AllUpBreakdown {
+  formula: AllUpFormula;
+  /** $ per line the result is computed at (All Up results are NOT scaled by the client). */
+  unit: number;
+  /** total lines (= combos). */
+  lines: number;
+  legs: AllUpLegOutcome[];
+  /** lines with a return that are not fully refunded (at least one winning leg, the rest won or refunded). */
+  linesWon: number;
+  /** lines whose every leg was refunded. */
+  linesRefunded: number;
+  /** total return before splitting off the refund, rounded (practice: nearest $0.50; LIVE: floor). null on hold. */
+  gross: number | null;
+  /** money returned from fully refunded lines (= linesRefunded × unit). */
+  refund: number;
+  status: "won" | "lost" | "void" | "hold";
 }
 
 /** Finish order + cover status for one leg race, shown whether the bet hit or missed. */
@@ -163,7 +217,13 @@ export type SettleDetail =
   | { code: "missNoPair"; top3: number[] }
   | { code: "hitPairs"; pairs: number }
   | { code: "missRace"; race: number }
-  | { code: "hitLegs"; legs: { race: number; bankers: number[] }[]; deadHeat: number };
+  | { code: "hitLegs"; legs: { race: number; bankers: number[] }[]; deadHeat: number }
+  | { code: "allUpHit"; formula: string; linesWon: number; lines: number }
+  /** first leg (race order) with no winning combination. */
+  | { code: "allUpMiss"; formula: string; race: number }
+  | { code: "allUpVoid" }
+  /** a leg needs an operator / a dividend that isn't stored (dead heat, missing dividend, runner of unknown fate). */
+  | { code: "allUpHold"; formula: string; races: number[] };
 
 export interface SettleResult {
   hit: boolean;
@@ -187,6 +247,9 @@ export interface SettleResult {
   poolDividend: number | null;
   /** display string of the pool dividend, e.g. "$1,653" or "$45.5 / $33.5 / $18.5". */
   poolDividendText: string;
+  /** All Up only: per-leg breakdown. For All Up, combos = lines, cost = lines × unit, payout = return − refund
+   *  (net = payout + allUp.refund − cost), all already at allUp.unit. */
+  allUp?: AllUpBreakdown;
 }
 
 // ---- API DTOs ----
@@ -214,6 +277,8 @@ export interface SettleRequest {
   date: string;
   venue: Venue;
   selection: BetSelection;
+  /** All Up only: $ per line (integer ≥ 10, default 10). The ticket total is rounded at this unit. */
+  unit?: number;
 }
 
 /** A persisted, already-settled bet. */
@@ -239,6 +304,30 @@ export interface HistoryEntry {
   status?: LiveBetStatus;
   /** LIVE only: credits returned for scratchings / void races. */
   refund?: number;
+  /** All Up only: per-leg breakdown for My bets / History (DESIGN-SPEC §6.2). Missing on old rows: hide the expander. */
+  allUp?: HistoryAllUp;
+}
+
+/** All Up summary kept with a History row (practice: from SettleResult.allUp at save time; LIVE: from the server). */
+export interface HistoryAllUp {
+  formula: AllUpFormula;
+  lines: number;
+  /** null while a LIVE bet is pending. */
+  linesWon: number | null;
+  refund: number;
+  legs: {
+    raceNumber: number;
+    pool: AllUpPool;
+    /** e.g. "腳 2,8" or "膽 1  腳 4,9" (without the race / pool prefix). */
+    picks: string;
+    /** first 4 home, e.g. "5-2-8-1"; null before the race is resulted (or void). */
+    result: string | null;
+    dividendText: string | null;
+    factor: number | null;
+    status: "won" | "lost" | "refund" | "void" | "hold" | "toRun";
+    /** combinations refunded by scratchings and carried forward ×1 (not set for a void race). */
+    carried?: number;
+  }[];
 }
 
 // ---- Credits / LIVE (docs/credits/PRD.md §6) ----
@@ -355,7 +444,14 @@ export type ApiErrorCode =
   | "unsupported_media_type"
   | "bad_request"
   | "not_found"
-  | "server_error";
+  | "server_error"
+  /** All Up: a TRI leg in a bet with more than 3 legs. */
+  | "all_up_too_many_legs"
+  /** All Up: missing / unknown formula, or one that doesn't match the leg count. */
+  | "all_up_bad_formula"
+  /** All Up: two legs on the same race. */
+  | "all_up_duplicate_race"
+  | "invalid_selection";
 
 export interface ApiErrorBody {
   error: { code: ApiErrorCode | string; field?: string; /** field-specific code for validation_error, e.g. "invalid_email" */ detail?: string; retryAfter?: number; attemptsLeft?: number };

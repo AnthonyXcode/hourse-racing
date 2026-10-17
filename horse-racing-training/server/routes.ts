@@ -1,6 +1,8 @@
 import { Router } from "express";
 import { getManifest, readCard, readResults } from "./dataIndex";
-import { settleAgainstResults } from "./settleCore";
+import { settleAgainstResults, settleAllUp } from "./settleCore";
+import { validateAllUpSelection } from "../shared/validation";
+import { MIN_LIVE_UNIT } from "../shared/credits/rules";
 import { appCredits } from "./credits/instance";
 import { hkDay, nowMs } from "./clock";
 import { analyzeCard, runAnalyzer } from "./analyzer";
@@ -134,6 +136,7 @@ api.get("/result/:date/:venue/:rn", (req, res) => {
 api.post("/settle", (req, res) => {
   const { date, venue, selection } = req.body as SettleRequest;
   if (!date || !venue || !selection) return res.status(400).json({ error: "missing fields" });
+  if (selection.type === "allUp") return settleAllUpPractice(req.body as SettleRequest, res);
 
   const results = readResults(date, venue);
   if (!results) return res.status(404).json({ error: "no results for this meeting yet" });
@@ -142,6 +145,31 @@ api.post("/settle", (req, res) => {
   if (!out) return res.status(400).json({ error: "no result for selected race" });
   res.json(out);
 });
+
+/**
+ * Practice All Up (docs/all-up/SPEC.md §6, §8): validated (400 { error: code, code }), settled at the request's
+ * unit with the ticket total rounded to $0.50, so the client must NOT scale this result. Withdrawn runners in the
+ * stored results are carried forward; dead heats use HKJC's official dividends when recorded, else payout null.
+ */
+function settleAllUpPractice({ date, venue, selection, unit = 10 }: SettleRequest, res: import("express").Response) {
+  const bad = (code: string) => res.status(400).json({ error: code, code });
+  const v = validateAllUpSelection(selection);
+  if (!v.ok) return bad(v.code);
+  if (typeof unit !== "number" || !Number.isInteger(unit) || unit < MIN_LIVE_UNIT) return bad("unit_too_small");
+  const results = readResults(date, venue);
+  if (!results) return res.status(404).json({ error: "no results for this meeting yet" });
+  const races = v.value.raceLegs.map((l) => l.raceNumber);
+  let official: Map<number, { pool: string; comb: string; div: number }[]> | undefined;
+  try {
+    const repo = momentum().repo;
+    official = new Map(races.map((n) => [n, repo.dividends(raceKey(date, venue, n)).map((d) => ({ pool: d.pool, comb: d.win_comb, div: d.dividend }))]));
+  } catch {
+    official = undefined; // no momentum DB: dead heats just come back with payout null
+  }
+  const out = settleAllUp(v.value, results, { unit, mode: "practice", official });
+  if (out.kind === "noResult") return res.status(400).json({ error: "no result for selected race" });
+  res.json(out.result satisfies SettleResult);
+}
 
 // ---- Market momentum (live pre-race odds, SQLite-backed) ----
 

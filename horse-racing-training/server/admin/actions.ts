@@ -171,19 +171,21 @@ export function actions(ctx: ActionCtx) {
     },
 
     /** Resolve a held LIVE bet (settle / void / dividend). Failed attempts are audited too. */
-    resolveBet(p: { betId: string; action: unknown; dividend?: unknown; reason: string; idemKey?: string | null }): ActionResult<{ status: string; payout: number; refund: number }> {
+    resolveBet(p: { betId: string; action: unknown; dividend?: unknown; /** All Up: { [race]: per $10 } or "4:38,6:210" */ legDividends?: unknown; reason: string; idemKey?: string | null }): ActionResult<{ status: string; payout: number; refund: number }> {
       const rr = checkReason(p.reason);
       if (!rr.ok) return badReason;
       const reason = rr.reason;
       const a = base("bet_resolve", "bet", p.betId, reason, p.idemKey);
-      const args = { action: p.action, dividend: p.dividend };
+      const args = { action: p.action, dividend: p.dividend, ...(p.legDividends !== undefined ? { legDividends: p.legDividends } : {}) };
       if (p.action !== "settle" && p.action !== "void" && p.action !== "dividend") return refuse(a, args, 400, "invalid_filter", { field: "action" });
       const dividend = p.action === "dividend" ? Number(p.dividend) : undefined;
-      if (p.action === "dividend" && !(typeof p.dividend === "number" && Number.isFinite(dividend) && dividend! >= 0)) return refuse(a, args, 400, "invalid_amount");
+      const legDividends = p.legDividends === undefined ? undefined : parseLegDividends(p.legDividends);
+      if (legDividends === null) return refuse(a, args, 400, "invalid_amount", { field: "legDividends" });
+      if (p.action === "dividend" && !legDividends && !(typeof p.dividend === "number" && Number.isFinite(dividend) && dividend! >= 0)) return refuse(a, args, 400, "invalid_amount");
       let result: ReturnType<Credits["settle"]["resolve"]> | null = null;
       let auditId = 0;
       db.transaction(() => {
-        result = credits.settle.resolve(p.betId, { void: p.action === "void", dividend, settle: p.action === "settle" }, actor.operator);
+        result = credits.settle.resolve(p.betId, { void: p.action === "void", dividend: Number.isFinite(dividend) ? dividend : undefined, settle: p.action === "settle", legDividends }, actor.operator);
         if (result.ok) auditId = writeAudit(db, { ...a, args, after: { status: result.status, payout: result.payout, refund: result.refund } });
       }).immediate();
       const r = result as unknown as ReturnType<Credits["settle"]["resolve"]>;
@@ -237,3 +239,20 @@ export type Actions = ReturnType<typeof actions>;
 /** "owner:5678" / "admin:1234": the panel's operator name (only last-4 digits, never a phone). */
 export const panelOperator = (u: UserRow, role: Role) => `${role}:${last4(u.phone_e164)}`;
 export { compactToIso };
+
+/**
+ * All Up per-leg operator dividends: { "4": 38, "6": 210 } or "4:38,6:210" (race → return per $10 for that leg's
+ * winning combinations) → Map, or null when malformed.
+ */
+export function parseLegDividends(v: unknown): Map<number, number> | null {
+  const pairs: [unknown, unknown][] =
+    typeof v === "string" ? v.split(",").map((p) => p.split(":").map((x) => x.trim()) as [string, string]) : v && typeof v === "object" ? Object.entries(v) : [];
+  const out = new Map<number, number>();
+  for (const [race, div] of pairs) {
+    const r = Number(race);
+    const d = typeof div === "string" && div !== "" ? Number(div) : div;
+    if (!Number.isInteger(r) || r < 1 || r > 99 || typeof d !== "number" || !Number.isFinite(d) || d < 0) return null;
+    out.set(r, d);
+  }
+  return out.size ? out : null;
+}

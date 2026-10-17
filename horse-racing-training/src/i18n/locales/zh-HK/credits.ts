@@ -38,7 +38,7 @@ export const credits: Shape<typeof En> = {
     credits: "積分",
   },
   stake: {
-    minUnit: "每注最少 10 積分。",
+    minUnit: "每注金額須為整數，最少 10 積分。",
     balance: "結餘 {{bal}} → 投注後 {{after}}",
     short: "積分不足，未能加入此注。",
   },
@@ -67,6 +67,10 @@ export const credits: Shape<typeof En> = {
     line: "每注 {{unit}} 積分 × {{combos}}",
     closedTag: "已截止",
   },
+  allUp: {
+    slipLine: "{{unit}} 積分 × {{lines}}注",
+    equation: "{{lines}}注 × {{unit}} 積分 = {{total}} 積分",
+  },
   err: {
     raceClosed: "第{{n}}場已於 {{time}} 截止投注，未有扣除積分。",
     raceNotOpen: "第{{n}}場暫不接受即場投注，未有扣除積分。",
@@ -79,6 +83,9 @@ export const credits: Shape<typeof En> = {
     invalidSelection: "投注單內有投注已失效，請檢查。",
     notDesignated: "孖T／三T 即場投注只限該賽事日的指定場次。",
     stakeTooLarge: "單一投注不可超過 50,000 積分。",
+    allUpTooManyLegs: "包含單T的過關最多 3 關。",
+    allUpBadFormula: "過關組合與關數不符。",
+    allUpDuplicateRace: "過關每關必須是不同場次。",
     tooMany: "即場投注單最多 20 注。",
     flagged: "此帳戶暫停購買積分及即場投注，請聯絡我們。",
     stripeUnconfigured: "暫未能購買積分，請稍後再試。",

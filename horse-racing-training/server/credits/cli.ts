@@ -4,7 +4,8 @@
 //   npm run credits -- show --phone "9123 4567" | --user <id>
 //   npm run credits:adjust -- --phone 91234567 --amount 500 --reason "goodwill top-up" --operator anthony --yes
 //   npm run credits -- pending [--held]
-//   npm run credits -- resolve-bet <betId> (--settle | --void | --dividend <per $10>) --reason … --operator … --yes
+//   npm run credits -- resolve-bet <betId> (--settle | --void | --dividend <per $10> | --leg <race>:<per $10>[,…]) --reason … --operator … --yes
+//     (--leg is for All Up: per-leg returns per $10 for the held legs, e.g. --leg 4:38,6:210)
 //   npm run credits -- void-race <YYYY-MM-DD> <ST|HV> <raceNo> --reason … --operator … --yes
 //   npm run credits -- void-meeting <YYYY-MM-DD> <ST|HV> --reason … --operator … --yes
 //   npm run credits -- flag | unflag --user <id> --reason … --operator … --yes
@@ -19,7 +20,7 @@ import { members } from "../members/service";
 import { normalizeHkMobile } from "../../shared/validation";
 import { appCredits } from "./instance";
 import { adminConfig, appActions } from "../admin/instance";
-import { REASON_MAX, REASON_MIN, checkReason } from "../admin/actions";
+import { REASON_MAX, REASON_MIN, checkReason, parseLegDividends } from "../admin/actions";
 import { reconcile } from "./reconcile";
 import { getManifest } from "../dataIndex";
 
@@ -132,8 +133,10 @@ export async function runCli(argv: string[], out: Out = console.log): Promise<nu
       if (!needWrite()) return 1;
       const dividend = a.opt.dividend !== undefined ? Number(a.opt.dividend) : undefined;
       if (dividend !== undefined && !(dividend >= 0)) return out("--dividend must be a number ≥ 0 (HK$ per $10 for the bet's winning combinations)"), 1;
-      const action = a.opt.void === true ? "void" : dividend !== undefined ? "dividend" : "settle";
-      const r = act().resolveBet({ betId: id, action, dividend, reason: reason() }); // failures are audited too
+      const legs = typeof a.opt.leg === "string" ? a.opt.leg : undefined;
+      if (a.opt.leg !== undefined && (!legs || !parseLegDividends(legs))) return out("--leg must be <race>:<per $10>[,<race>:<per $10>…], e.g. --leg 4:38,6:210"), 1;
+      const action = a.opt.void === true ? "void" : dividend !== undefined || legs ? "dividend" : "settle";
+      const r = act().resolveBet({ betId: id, action, dividend, legDividends: legs, reason: reason() }); // failures are audited too
       out(r.ok ? `${r.status}: payout ${r.payout}, refund ${r.refund} (audit #${r.auditId})` : `refused: ${failMsg(r)} (audit #${r.auditId})`);
       return r.ok ? 0 : 1;
     }

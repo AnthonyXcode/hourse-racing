@@ -1,5 +1,9 @@
 // Membership validation shared by the server (authoritative) and the client (instant feedback).
 // Rules: docs/membership/PRD.md §4, limits from docs/membership/DESIGN-SPEC.md §3.
+// Also: All Up bet selections (docs/all-up/SPEC.md §8), at the end of this file.
+import type { AllUpPool, BetSelection, RaceLeg } from "./types";
+import { allUpLegCombos } from "./betEngine/index";
+import { ALL_UP_FORMULAS, ALL_UP_MAX_LEGS, ALL_UP_MIN_LEGS, ALL_UP_TRIO_MAX_LEGS, isAllUpFormula, isAllUpPool } from "./betEngine/allUp";
 
 /** Display-name length in Unicode code points (one CJK character or emoji = 1). */
 export const NAME_MAX = 20;
@@ -142,4 +146,44 @@ export function validateProfilePatch(
     patch[field] = r.value;
   }
   return { ok: true, patch };
+}
+
+// ---- All Up (過關) selections (docs/all-up/SPEC.md §8, V1–V4) ----
+
+export type AllUpErrorCode = "invalid_selection" | "all_up_too_many_legs" | "all_up_bad_formula" | "all_up_duplicate_race";
+
+/** Most bankers per leg pool (V4): none for WIN/PLA, 1 for QIN/QPL, 2 for TRI. */
+const ALL_UP_MAX_BANKERS: Record<AllUpPool, number> = { win: 0, place: 0, quinella: 1, qpl: 1, trio: 2 };
+
+const horseIds = (a: unknown): a is number[] =>
+  Array.isArray(a) && a.length <= 30 && a.every((n) => Number.isInteger(n) && n > 0 && n < 100) && new Set(a).size === a.length;
+
+/**
+ * Validate an All Up selection's shape (V1–V4). Returns a clean copy with legs sorted by race number (unknown
+ * keys dropped), or the first error. Horses on the card / race status are the server's job (V6).
+ * Checks run in this order: shape and leg count → each leg → TRI leg cap → formula.
+ */
+export function validateAllUpSelection(x: unknown): { ok: true; value: BetSelection } | { ok: false; code: AllUpErrorCode } {
+  const bad = (code: AllUpErrorCode) => ({ ok: false as const, code });
+  if (!x || typeof x !== "object") return bad("invalid_selection");
+  const s = x as { type?: unknown; raceLegs?: unknown; formula?: unknown };
+  if (s.type !== "allUp" || !Array.isArray(s.raceLegs)) return bad("invalid_selection");
+  if (s.raceLegs.length < ALL_UP_MIN_LEGS || s.raceLegs.length > ALL_UP_MAX_LEGS) return bad("invalid_selection");
+  const legs: RaceLeg[] = [];
+  for (const l of s.raceLegs as unknown[]) {
+    const leg = (l && typeof l === "object" ? l : {}) as { raceNumber?: unknown; bankers?: unknown; legs?: unknown; pool?: unknown };
+    if (!Number.isInteger(leg.raceNumber) || (leg.raceNumber as number) < 1 || (leg.raceNumber as number) > 99) return bad("invalid_selection");
+    if (!isAllUpPool(leg.pool)) return bad("invalid_selection");
+    const bankers = leg.bankers === undefined ? [] : leg.bankers;
+    if (!horseIds(bankers) || !horseIds(leg.legs)) return bad("invalid_selection");
+    if (bankers.length > ALL_UP_MAX_BANKERS[leg.pool] || bankers.some((b) => (leg.legs as number[]).includes(b))) return bad("invalid_selection");
+    const clean: RaceLeg = { raceNumber: leg.raceNumber as number, pool: leg.pool, bankers: [...bankers], legs: [...(leg.legs as number[])] };
+    if (allUpLegCombos(clean) < 1) return bad("invalid_selection");
+    legs.push(clean);
+  }
+  if (new Set(legs.map((l) => l.raceNumber)).size !== legs.length) return bad("all_up_duplicate_race");
+  if (legs.some((l) => l.pool === "trio") && legs.length > ALL_UP_TRIO_MAX_LEGS) return bad("all_up_too_many_legs");
+  if (!isAllUpFormula(s.formula) || ALL_UP_FORMULAS[s.formula].legs !== legs.length) return bad("all_up_bad_formula");
+  legs.sort((a, b) => a.raceNumber - b.raceNumber);
+  return { ok: true, value: { type: "allUp", formula: s.formula, raceLegs: legs } };
 }
