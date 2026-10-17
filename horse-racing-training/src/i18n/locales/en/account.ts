@@ -1,6 +1,6 @@
 // Membership: login, account page, guest prompts (docs/membership/DESIGN-SPEC.md §6).
 export const account = {
-  login: "Log in",
+  login: "Login/Register",
   menu: {
     admin: "Admin panel",
     open: "Account menu, {{name}}",
@@ -144,7 +144,7 @@ export const account = {
     bannerCta: "Log in and save",
     historyTitle: "Log in to see your bet history",
     historyBody: "Members' practice bets are saved automatically, so you can track profit and hit rate any time.",
-    historyCta: "Log in",
+    historyCta: "Login/Register",
     noAccount: "No account? Sign up with just your mobile number — no password needed.",
     accountTitle: "Log in to manage your account",
   },

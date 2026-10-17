@@ -2,7 +2,7 @@ import type { Shape } from "../../shape";
 import type { account as En } from "../en/account";
 
 export const account: Shape<typeof En> = {
-  login: "登入",
+  login: "登入／登記",
   menu: {
     admin: "管理後台",
     open: "帳戶選單：{{name}}",
@@ -146,7 +146,7 @@ export const account: Shape<typeof En> = {
     bannerCta: "登入並儲存",
     historyTitle: "登入以查看你的投注紀錄",
     historyBody: "會員的每注模擬投注都會自動儲存，隨時翻查盈虧及命中率。",
-    historyCta: "登入",
+    historyCta: "登入／登記",
     noAccount: "未有帳戶？用手機號碼即可登記，毋須密碼。",
     accountTitle: "登入以管理你的帳戶",
   },
