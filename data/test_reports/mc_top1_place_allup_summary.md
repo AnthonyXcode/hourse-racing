@@ -60,6 +60,7 @@
 | **43** | **7 Oct** | **HV** | **Turf** | **Good to Firm** | **9** | **33.0%** | **66.0%** | **4/9** | **44.4%** | **❌❌✅✅❌❌✅❌✅** | **2 (R3-R4)** |
 | **44** | **11 Oct** | **ST** | **Mixed (AWT+Turf)** | **Good** | **11** | **35.5%** | **68.5%** | **3/11** | **27.3%** | **❌❌❌✅❌✅❌❌✅❌❌** | **1** |
 | **45** | **14 Oct** | **HV** | **Turf** | **Good** | **9** | **33.9%** | **66.6%** | **3/9** | **33.3%** | **❌✅✅❌❌❌✅❌❌** | **2 (R2-R3)** |
+| **46** | **19 Oct** | **ST** | **Turf** | **Good / G-F** | **11** | **38.4%** | **72.4%** | **5/11** | **45.5%** | **❌❌✅❌✅✅✅❌❌✅❌** | **3 (R5-R7)** |
 
 \*Meeting 8 **R1** (6 runners): MC #1 **#6** ran **3rd** but HKJC Place pool pays **two** places only → **$0** dividend; counts as **❌** for streaks and all-ups (same dividend logic as other meetings).
 
@@ -1993,3 +1994,27 @@ MC–market split, three meetings combined: **MC #1 at market rank 1–2 placed 
 **Placed:** 3/9 (33.3%) | **Pattern:** ❌✅✅❌❌❌✅❌❌ | **Max streak:** 2 (R2-R3)
 
 **Trio card note (R1–R9):** **LOSS, the third blank card of the season (all three at HV).** Strategy A (as bet) **0/9, $1,120 staked (net of the $90 R5 refund), $0 returned, −$1,120, ROI −100%**. Canonical MC top-6 B: **0/9, $830 net, −$830, −100%**. B won by $290 on stake only. B-trio (as bet): **3/9 (R2 $66, R3 $206, R7 $322), $1,110, −$516, −46.5%**. Its Win-odds < 10 rule caught the market-backed MC near-zeros that filled A's and B's Pattern B gaps (R2 #8, R3 #10, R7 #12). **MC #1 placed 3/9**; mean MC Place% 66.6% vs actual 33.3%. MC #1 ≥ 35% placed 2/4; < 30% placed 0/4 (two-card 0/8). MC #1 at SP rank 1–2 placed 2/6 (nine-meeting combined 31/53); rank 3+ placed 1/3 (combined 10/36). In R5 and R6 every placer was in A's pool and the banker missed (Pattern A, $1,528). MC #2 placed 2/8 (R5 MC #2 scratched). Near-zero blind spot: MC Win% < 4% at SP ≤ 6 placed 3/4 (R3 #10, R4 #12, R9 #6 ✅; R6 #9 ❌); at SP ≤ 8, 6/7; < 3% definition 1/1, season 14/20. MC-opposed market top-3 horses placed 7/7. SCMP `+excuses` at pre-race ≤ 8 placed 6/10; `+trial` at ≤ 10 2/7; negative flags 2/12 (both `-notRO`). 'Undervalued > 100%' calls 0/3. Dominant races: A 0/5, −$760; Competitive 0/4, −$360.
+
+---
+
+## Meeting 46: Sha Tin | 19 Oct 2026 (11 races)
+
+**MC #1** = raw MC Win% from trio_strategy_20261019_ST_R*.md (10,000 iterations, form=all). **Retrospective blind run:** the reports were generated on 20-Oct, blind to results, with **final-SP odds** and **no SCMP data**, because the scheduled run was missed. MC #1 selection does not depend on odds or SCMP, so this table is unaffected. **Results** from data/historical/results_20261019_ST.json (already scraped; Trio values parse in full; Win/Quinella comma-thousands truncation in R1–R3 noted, not edited). Place $ = HKJC place dividend per $10. Going: **Turf Good** (R1–R8) / **Good to Firm** (R9–R11). No scratchings.
+
+| Race | Class | Dist (m) | MC #1 | MC Win% | MC Place% | Placed? | Place $ (if placed) |
+|------|-------|----------|-------|---------|-----------|---------|---------------------|
+| R1 | Class 5 | 1800 | #2 GOLDEN FORTUNE | 34.8% | 70.5% | ❌ (7th) | — |
+| R2 | Class 4 | 1400 | #10 INVICTUS | 43.6% | 76.0% | ❌ (6th) | — |
+| R3 | Class 4 | 1800 | #2 VICTOR SUPREME | 43.4% | 78.4% | ✅ 2nd | 16 |
+| R4 | Class 4 | 1400 | #7 NOT USUAL DOUBLE | 49.2% | 80.3% | ❌ (5th) | — |
+| R5 | Class 4 | 1200 | #12 CIRRUS SPEED | 31.6% | 63.6% | ✅ 3rd | 12.5 |
+| R6 | Class 4 | 1000 | #10 SUNNY Q | 37.8% | 78.0% | ✅ 3rd | 18.5 |
+| R7 | Class 4 | 1200 | #4 ACE EAGLE | 36.8% | 70.6% | ✅ 1st | 12.5 |
+| R8 | Group 2 | 1600 | #10 SKY JEWELLERY | 22.4% | 53.3% | ❌ (4th) | — |
+| R9 | Class 3 | 1200 | #10 HAPPY SHOOTER | 29.6% | 65.3% | ❌ (5th) | — |
+| R10 | Class 3 | 1600 | #1 PACKING FIGHTER | 59.0% | 89.4% | ✅ 1st | 12 |
+| R11 | Class 3 | 1400 | #6 AEROINVINCIBLE | 34.7% | 71.5% | ❌ (4th) | — |
+
+**Placed:** 5/11 (45.5%) | **Pattern:** ❌❌✅❌✅✅✅❌❌✅❌ | **Max streak:** 3 (R5-R7)
+
+**Trio card note (R1–R11):** **LOSS, the second blank card in a row and the first at Sha Tin.** Strategy A (as bet, retrospective) **0/11, $880 staked, $0 returned, −$880, ROI −100%**. Canonical MC top-6 B: **0/11, $1,100, −$1,100, −100%**. A won by $220 on stake only (Mode A 5-horse pools and an R6 雙膽拖). B-trio (as bet): **2/11 (R5 $207, R6 $857), $1,090, −$26, −2.4%**, using SP-based Win-odds < 10 candidates (R5 #8 5.2, R6 #5 9.4, #12 9.5). **MC #1 placed 5/11**; mean MC Place% 72.4% vs actual 45.5%. MC #1 ≥ 35% placed 4/6; < 30% placed 0/2 (three-card 0/10). MC #1 at SP rank 1–2 placed 5/7 (ten-meeting combined 36/60); rank 3+ placed 0/4 (combined 10/40). In R8 and R9 every placer was in A's pool and the banker missed (Pattern A, $818). MC #2 placed 5/11. Pool gaps were mostly outsiders: 13 gap horses at MC ≤ 3.0%, 8 of them 20/1+ (R3 winner #13 at 102; R1–R3 Trios $5,611 / $15,215 / $3,767). Near-zero blind spot: MC Win% < 4% at SP ≤ 6 placed 1/3, at SP < 10 4/12; < 3% definition 1/2, season 15/22. MC-opposed market top-3 horses placed 2/12 (14-Oct 7/7). SCMP flags: n/a. 'Undervalued > 200%' calls 0/9 (season 2/28). Dominant races: A 0/6, −$330; Competitive 0/5, −$550.
