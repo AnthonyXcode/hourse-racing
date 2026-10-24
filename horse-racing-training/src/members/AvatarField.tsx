@@ -1,20 +1,25 @@
 // Avatar picker shared by the welcome step and the account page: 72px circle, Change/Upload button,
-// optional Remove. The pick is only staged here (local preview); the caller uploads it on Save / Done.
-import { useEffect, useId, useMemo } from "react";
+// optional Remove. A picked photo opens the crop step (AvatarCropper); the cropped square is only staged here
+// (local preview) and the caller uploads it on Save / Done.
+import { useEffect, useId, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { AVATAR_MAX_BYTES } from "../../shared/validation";
 import { btn, cx } from "../kit";
 import { Avatar, fieldErr, textBtn } from "./ui";
+import { AvatarCropper } from "./AvatarCropper";
 
 /** A newly picked file, a removal, or nothing staged. */
 export type StagedAvatar = { file: File } | "remove" | null;
 
 const TYPES = ["image/jpeg", "image/png", "image/webp"];
 
-/** Client-side check before upload (the server checks magic bytes again). */
+/** A picked photo can be bigger than the upload limit: only the cropped square (a few hundred KB) is uploaded. */
+const PICK_MAX_BYTES = 4 * AVATAR_MAX_BYTES;
+
+/** Client-side check before cropping (the server checks magic bytes and size again on the cropped upload). */
 export function avatarProblem(file: File): "avatarType" | "avatarTooLarge" | null {
   if (!TYPES.includes(file.type)) return "avatarType";
-  if (file.size > AVATAR_MAX_BYTES) return "avatarTooLarge";
+  if (file.size > PICK_MAX_BYTES) return "avatarTooLarge";
   return null;
 }
 
@@ -42,6 +47,8 @@ export function AvatarField({
   const preview = useMemo(() => (staged && staged !== "remove" ? URL.createObjectURL(staged.file) : null), [staged]);
   useEffect(() => () => void (preview && URL.revokeObjectURL(preview)), [preview]);
   const shown = staged === "remove" ? null : (preview ?? currentUrl);
+  /** The photo just picked, waiting in the crop step. */
+  const [picked, setPicked] = useState<File | null>(null);
 
   return (
     <div>
@@ -65,7 +72,7 @@ export function AvatarField({
                   const p = avatarProblem(f);
                   if (p) return onError(t(`err.${p}`));
                   onError("");
-                  onStage({ file: f });
+                  setPicked(f);
                 }}
               />
             </label>
@@ -84,6 +91,16 @@ export function AvatarField({
         <p id={`${inputId}-err`} className={fieldErr} role="alert">
           {error}
         </p>
+      )}
+      {picked && (
+        <AvatarCropper
+          file={picked}
+          onCancel={() => setPicked(null)}
+          onDone={(cropped) => {
+            setPicked(null);
+            onStage({ file: cropped });
+          }}
+        />
       )}
     </div>
   );
