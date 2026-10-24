@@ -8,7 +8,7 @@ import { api } from "./api";
 import { BET_TYPES, allUpLegCombos, betLabel, countCombos } from "../shared/betEngine/index";
 import type { AllUpFormula, AllUpPool, MeetingRef, RaceCard, BetTypeId, BetSelection, HistoryEntry, RaceStatus } from "../shared/types";
 import { allUpHistory, picksText } from "../shared/credits/format";
-import { addLeg, bankerMaxFor, buildAllUpSelection, defaultFormula, firstEmptyLeg, formulaOptions, legCounts, maxLegsFor, switchPool, type AllUpDraftLeg } from "./allUp/model";
+import { addLeg, bankerMaxFor, buildAllUpSelection, defaultFormula, formulaOptions, legCounts, maxLegsFor, switchPool, toRaceLeg, type AllUpDraftLeg } from "./allUp/model";
 import { AllUpLegList } from "./allUp/AllUpLegList";
 import { AllUpPoolPicker } from "./allUp/AllUpPoolPicker";
 import { AllUpFormulaPicker } from "./allUp/AllUpFormulaPicker";
@@ -489,25 +489,31 @@ function AppBody() {
   // ---- All Up builder ----
   const auEdit = auLegs.find((l) => l.raceNumber === editRace);
   const auIndex = auEdit ? auLegs.indexOf(auEdit) + 1 : 0;
-  const auMax = maxLegsFor(auLegs);
-  // A new leg count resets the formula to Nx1 (announced when one was already chosen).
+  /** The legs with at least one horse ticked: only these count toward the All Up (a race only being viewed doesn't). */
+  const auFilled = useMemo(() => auLegs.filter((l) => picks[l.raceNumber]?.bankers.length || picks[l.raceNumber]?.legs.length), [auLegs, picks]);
+  const auMax = maxLegsFor(auFilled);
+  /** Counted legs other than the one being edited (the TRI cap: TRI only while the others are under 3). */
+  const auOthers = auFilled.filter((l) => l.raceNumber !== editRace).length;
+  // A new count of filled legs resets the formula to Nx1 (announced when one was already chosen).
   const auCount = useRef(0);
   useEffect(() => {
-    if (auCount.current === auLegs.length) return;
+    if (auCount.current === auFilled.length) return;
     const had = auCount.current >= 2;
-    auCount.current = auLegs.length;
-    const f = defaultFormula(auLegs.length);
+    auCount.current = auFilled.length;
+    const f = defaultFormula(auFilled.length);
     setAuFormula(f);
-    if (f && had) setAuAnnounce(t("bet:allUp.formulaReset", { f, n: auLegs.length }));
-  }, [auLegs.length]); // eslint-disable-line react-hooks/exhaustive-deps
-  /** Race chip: add the race as a leg (in the pool of the leg being edited, else WIN) or edit it if it's one already. */
+    if (f && had) setAuAnnounce(t("bet:allUp.formulaReset", { f, n: auFilled.length }));
+  }, [auFilled.length]); // eslint-disable-line react-hooks/exhaustive-deps
+  /**
+   * Race chip: view the race (in the pool of the leg being edited, else WIN), or edit it if it's a leg already.
+   * A viewed race only counts once a horse is ticked, so empty legs are dropped first and never block the cap.
+   */
   function auChip(rn: number) {
+    if (auLegs.some((l) => l.raceNumber === rn)) return setEditRace(rn);
+    const next = addLeg(auFilled, rn, (auEdit ?? auLegs[auLegs.length - 1])?.pool);
+    if (next === auFilled) return;
     setEditRace(rn);
-    if (auLegs.some((l) => l.raceNumber === rn)) return;
-    const next = addLeg(auLegs, rn, (auEdit ?? auLegs[auLegs.length - 1])?.pool);
-    if (next === auLegs) return;
     setAuLegs(next);
-    setAuAnnounce(t("bet:allUp.announceAdd", { n: rn, leg: next.findIndex((l) => l.raceNumber === rn) + 1 }));
   }
   /** Leg list ✕: focus moves to the next leg, else the previous one, else the first race chip. */
   function auRemove(rn: number) {
@@ -530,7 +536,7 @@ function AppBody() {
     if (moved.length && bankerMaxFor(p) > 0) setAuAnnounce(t("bet:allUp.bankerMoved", { h: moved.join(", ") }));
     setPicks((prev) => ({ ...prev, [auEdit.raceNumber]: { ...cur, ...ticks } }));
   }
-  /** Leaving a leg with no horse ticked drops it from the All Up. */
+  /** Leaving a viewed race with no horse ticked drops it (it was never counted, so nothing to announce). */
   const auLeft = useRef(editRace);
   useEffect(() => {
     const left = auLeft.current;
@@ -539,7 +545,6 @@ function AppBody() {
     const p = picks[left];
     if (p?.bankers.length || p?.legs.length) return;
     setAuLegs((legs) => legs.filter((l) => l.raceNumber !== left));
-    setAuAnnounce(t("bet:allUp.announceRemove", { n: left }));
   }, [editRace]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const bankerEnabled = isAllUp ? !!auEdit && bankerMaxFor(auEdit.pool) > 0 : pool !== "wp" && BET_TYPES[betType].banker;
@@ -571,7 +576,7 @@ function AppBody() {
   // Engine counts combos from legs excluding bankers, so keep them disjoint; pools without
   // bankers fold any banker ticks back into legs.
   const selections = useMemo<BetSelection[]>(() => {
-    if (isAllUp) return [buildAllUpSelection(auLegs, (rn) => picks[rn], auFormula)];
+    if (isAllUp) return [buildAllUpSelection(auFilled, (rn) => picks[rn], auFormula)];
     if (pool === "wp") {
       const p = picks[activeRace] ?? emptyPicks();
       return (["win", "place"] as const)
@@ -583,15 +588,14 @@ function AppBody() {
       return bankerEnabled ? { raceNumber: rn, bankers: p.bankers, legs: p.legs } : { raceNumber: rn, bankers: [], legs: [...p.bankers, ...p.legs] };
     });
     return [{ type: betType, raceLegs }];
-  }, [pool, legRaces, picks, betType, bankerEnabled, activeRace, isAllUp, auLegs, auFormula]);
+  }, [pool, legRaces, picks, betType, bankerEnabled, activeRace, isAllUp, auFilled, auFormula]);
 
   const combos = selections.reduce((s, sel) => s + countCombos(sel), 0);
   // Practice meeting: as before (needs results). Live meeting: every leg race open → LIVE; else view-only.
-  const legStatuses = (pool === "wp" ? [activeRace] : legRaces).map(raceStatusOf);
+  const legStatuses = (pool === "wp" ? [activeRace] : isAllUp ? auFilled.map((l) => l.raceNumber) : legRaces).map(raceStatusOf);
   const betMode: "practice" | "live" | "view" = !liveMeeting ? "practice" : (legStatuses.length || isAllUp) && legStatuses.every((s) => s === "open") && credits.liveBetting ? "live" : "view";
   const auSel = isAllUp ? selections[0]! : null;
-  const auEmpty = auSel && auLegs.length >= 2 ? firstEmptyLeg(auSel) : null;
-  const auClosed = isAllUp && liveMeeting ? legRaces.find((rn) => raceStatusOf(rn) !== "open") : undefined;
+  const auClosed = isAllUp && liveMeeting ? auFilled.map((l) => l.raceNumber).find((rn) => raceStatusOf(rn) !== "open") : undefined;
   const canAdd = betMode === "practice" ? (meeting?.hasResults ?? false) : betMode === "live";
   const viewStatus = legStatuses.find((s) => s !== "open") ?? (credits.liveBetting ? "open" : "unavailable");
   const slipMode: "practice" | "live" | null = slip.length ? (slip[0]!.mode ?? "practice") : null;
@@ -1133,7 +1137,7 @@ function AppBody() {
                   {isAllUp && (
                     <div className={cx(panel, "mt-3")}>
                       <div id="au-cap" className="mb-2 text-[13px] text-ink">
-                        {t("bet:allUp.pickRaces", { picked: auLegs.length, max: auMax })}
+                        {t("bet:allUp.pickRaces", { picked: auFilled.length, max: auMax })}
                       </div>
                       <div className="flex flex-wrap gap-2">
                         {meeting.races.map((rn, i) => {
@@ -1141,7 +1145,7 @@ function AppBody() {
                           const isLeg = legAt >= 0;
                           const st = liveMeeting ? raceStatusOf(rn) : null;
                           const locked = !!st && st !== "open";
-                          const full = auLegs.length >= auMax;
+                          const full = auFilled.length >= auMax;
                           return (
                             <span key={rn} className="relative flex-none">
                               <button
@@ -1167,15 +1171,15 @@ function AppBody() {
                           );
                         })}
                       </div>
-                      {auLegs.length >= auMax && (
+                      {auFilled.length >= auMax && (
                         <p id="au-cap-note" className="mt-2 text-[13px] text-ink-muted">
                           {auMax < 6 ? t("bet:allUp.trioCap") : t("bet:allUp.maxLegs")}
                         </p>
                       )}
                       <div className="mt-3 border-t border-edge pt-1">
                         <AllUpLegList
-                          legs={auLegs.map((l) => {
-                            const leg = auSel!.raceLegs.find((x) => x.raceNumber === l.raceNumber)!;
+                          legs={auFilled.map((l) => {
+                            const leg = toRaceLeg(l, picks[l.raceNumber]);
                             const n = allUpLegCombos(leg);
                             return { raceNumber: l.raceNumber, pool: l.pool, picks: !leg.bankers.length && !leg.legs.length ? "" : l.pool === "win" || l.pool === "place" ? leg.legs.join(",") : legLabel(leg), combos: n, closed: liveMeeting && raceStatusOf(l.raceNumber) !== "open" };
                           })}
@@ -1195,11 +1199,11 @@ function AppBody() {
                       <AllUpPoolPicker
                         value={auEdit.pool}
                         onChange={auPool}
-                        trioDisabled={auLegs.length > 3}
+                        trioDisabled={auOthers >= 3}
                         label={t("bet:allUp.legPool", { race: auEdit.raceNumber, n: auIndex })}
                         reasonId="au-trio-reason"
                       />
-                      {auLegs.length > 3 && (
+                      {auOthers >= 3 && (
                         <p id="au-trio-reason" className="mt-2 text-[12px] text-ink-muted">
                           {t("bet:allUp.trioCapPool")}
                         </p>
@@ -1247,7 +1251,7 @@ function AppBody() {
                     before={
                       isAllUp ? (
                         <AllUpFormulaPicker
-                          legs={auLegs.length}
+                          legs={auFilled.length}
                           options={auSel ? formulaOptions(legCounts(auSel)) : []}
                           value={auFormula}
                           onChange={setAuFormula}
@@ -1256,7 +1260,6 @@ function AppBody() {
                         />
                       ) : undefined
                     }
-                    note={auEmpty != null ? t("bet:allUp.errLegEmpty", { n: auEmpty }) : null}
                     combos={combos}
                     unit={unit}
                     onUnit={setUnit}
