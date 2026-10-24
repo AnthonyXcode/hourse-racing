@@ -154,7 +154,6 @@ function ModelSection({ onNavigate }: { onNavigate: (v: Nav) => void }) {
                 sub={t("model.fiveStarSub", {
                   hits: fmt.num(data.fiveStarPlaceHits ?? 0),
                   races: fmt.num(data.fiveStarRaces ?? 0),
-                  roi: data.fiveStarRoi == null ? "–" : signed(data.fiveStarRoi),
                 })}
                 more={details("win-place")}
                 corner={<AlertsBell />}

@@ -15,7 +15,7 @@ export const home: Shape<typeof En> = {
     winLabel: "首3選獨贏命中率",
     placeLabel: "首3選位置命中率",
     fiveStarLabel: "5星 · 首選位置命中率",
-    fiveStarSub: "{{races}} 場中 {{hits}} 場 · 回報率 {{roi}}",
+    fiveStarSub: "{{races}} 場中 {{hits}} 場",
     top3Sub: "{{races}} 場中 {{hits}} 場",
     trioLabel: "單T命中率",
     trioName: "1號膽拖2至{{last}}號",

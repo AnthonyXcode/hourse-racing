@@ -13,7 +13,7 @@ export const home = {
     winLabel: "Top-3-pick win rate",
     placeLabel: "Top-3-pick place rate",
     fiveStarLabel: "5 stars · Top pick place rate",
-    fiveStarSub: "{{hits}} of {{races}} races · ROI {{roi}}",
+    fiveStarSub: "{{hits}} of {{races}} races",
     top3Sub: "{{hits}} of {{races}} races",
     trioLabel: "Trio hit rate",
     trioName: "Banker #1 + 2–{{last}}",
