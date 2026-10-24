@@ -452,7 +452,7 @@ export function defaultPillar(slot: Slot, date: string): Pillar {
 
 const FOCUS: Record<Slot, string[]> = {
   daily: ["pillar (by weekday)", "recap: lastWeek / lastMeeting.tally", "board: bots / leaderboard", "learn: explainer", "feature: nextMeeting", "modelRecord"],
-  "pre-meeting": ["meeting.fiveStarRaces", "meeting.races[].picks", "modelRecord (3-month hit rate)", "explainer"],
+  "pre-meeting": ["meeting.fiveStarRaces", "meeting.races[].picks", "modelRecord (3-month hit rate)", "explainer", "leaderboard.last30 (star-users board, held for review)"],
   "mid-meeting": ["meeting.tally", "meeting.highlights (hits AND misses)", "nextUp races' picks"],
   "late-meeting": ["explainer tied to today", "meeting.tally", "nextUp races' picks (remaining card)"],
   "post-meeting": ["meeting.tally", "meeting.highlights: best (topPickWon/trioHit) and worst (allMissed) races", "modelRecord", "leaderboard.lastDay", "nextMeeting"],
@@ -562,7 +562,8 @@ export async function gather(opts: { slot: Slot; date?: string; base?: string; n
     const next = days.filter((m) => m.date > compact(date)).sort((a, b) => a.date.localeCompare(b.date))[0];
     ctx.nextMeeting = next ? { date: dashed(next.date), venue: next.venue, venueZh: venueZh(next.venue), venueEn: venueEn(next.venue), raceCount: next.races.length } : null;
   }
-  if (slot === "daily" || slot === "post-meeting") {
+  // pre-meeting: past 30-day board only (PLAN P4 Ex 4); today's bets stay behind --include-live.
+  if (slot === "daily" || slot === "pre-meeting" || slot === "post-meeting") {
     const lb = await api.get<LeaderboardResponse>("/api/leaderboard");
     if (lb)
       ctx.leaderboard = {

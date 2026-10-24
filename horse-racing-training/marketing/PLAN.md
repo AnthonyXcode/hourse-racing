@@ -174,6 +174,16 @@ Frame this as skill and comparison in credits, which have **no cash value**. Nev
 > 排名以積分計，積分冇現金價值。
 > {DISCLAIMER_SHORT}
 
+> **Ex 4 (Threads / FB / TG, race-day pre-meeting): star users' record.** Past 30 days only, never today's bets
+> (that is LIVE ticket content, §6.7 #4, and a "follow this member" tip, §6.2). Always held for owner review.
+> 開跑前，睇吓近30日排行榜頭3名（{from} 起，最少 {minBets} 注）：
+> 🥇 {name_1}{（機械人）if bot}｜{bets_1} 注｜命中率 {hit_1}
+> 🥈 {name_2}｜{bets_2} 注｜命中率 {hit_2}
+> 🥉 {name_3}｜{bets_3} 注｜命中率 {hit_3}
+> (Members appear only if they opted in to the board; bots fill the rest, labelled 機械人.)
+> 排名以積分計，積分冇現金價值。今日你會唔會挑戰佢哋？用過往賽事免費練習 👉 {link}
+> {DISCLAIMER_SHORT}
+
 ### P5. 產品功能 Product features (free features only)
 Promote practice mode, the model page, the per-meeting record, sharing tickets and the bet builder. Do **not** promote LIVE, credits, the 1,000-credit welcome bonus or the pricing page until legal sign-off.
 

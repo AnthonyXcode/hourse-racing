@@ -8,7 +8,7 @@ description: Draft and publish one Post Time 開跑前 social-media slot (Facebo
 Turns one posting slot into one post per channel: gather site data → draw the image → write the drafts →
 guard-check → publish through `marketing/scripts/publish.ts` (dry run unless the owner set `MARKETING_LIVE=1`).
 
-**Working directory:** `/Users/anthonycyy/Documents/HR-project/hourse-racing/horse-racing-training`.
+**Working directory:** `/Users/anthonycyy/Documents(Local)/hourse-racing/horse-racing-training`.
 Always `cd` there first. All paths below are relative to it.
 
 **Read before drafting** (they are the source of truth; this skill only sequences them):
@@ -90,6 +90,15 @@ data. Files:
 Instagram on race days: feed post at `pre-meeting` and `post-meeting` only (skip `mid`/`late`; Stories are
 posted by hand). A Happy Valley `post-meeting` after 23:00: skip Instagram (PLAN moves it to next morning,
 which has no automated slot yet).
+
+**Star-users board (`pre-meeting` only, PLAN §3 P4 Ex 4).** If `leaderboard.last30.rows` has ≥ 3 rows, also
+draft the board post for Threads, Facebook and Telegram into `marketing/queue/<date>/pre-board/review/<channel>.md`
+(copy `Q/context.json` to `marketing/queue/<date>/pre-board/context.json`). Never into `Q` itself: it's a new
+format, so it always waits for the owner, and a separate slot keeps it from colliding with the picks post. Rules:
+quote only `last30` rows (`nameZh`, `bets`, `hitRate`, with `from` and `minBets`); a row with `nameZh: null` →
+write 已公開會員; bots are 機械人; never `staked`/`returned`/`net`, never HK$, never today's bets; always
+「排名以積分計，積分冇現金價值」. Fewer than 3 rows → skip it. The owner approves by moving a file up to
+`pre-board/` and running `npx tsx marketing/scripts/publish.ts --queue marketing/queue/<date>/pre-board`.
 
 Content that is free-written rather than template-filled (community prompts P6, a new format, anything
 you're unsure about) goes to `Q/review/<channel>.md` instead — `publish.ts --queue` only reads the top level

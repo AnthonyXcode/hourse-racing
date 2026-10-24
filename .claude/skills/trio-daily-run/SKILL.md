@@ -8,7 +8,7 @@ description: Morning race-day check for HKJC. If today is a Sha Tin / Happy Vall
 Runs unattended (scheduled 08:07 HKT daily). Decides whether today is a HKJC race day and,
 if so, produces one Trio suggestion report per race.
 
-**Project root**: `/Users/anthonycyy/Documents/HR-project/hourse-racing`
+**Project root**: `/Users/anthonycyy/Documents(Local)/hourse-racing`
 Always `cd` there first — the scheduled session does not start in the project.
 
 Skills live in `.claude/skills/`, shared with Cursor via symlink — `skills/` and
@@ -58,7 +58,7 @@ Run before spawning any agents, so the per-race agents share one cache and do no
 hammer HKJC in parallel.
 
 ```bash
-cd /Users/anthonycyy/Documents/HR-project/hourse-racing
+cd "/Users/anthonycyy/Documents(Local)/hourse-racing"
 PLAYWRIGHT_BROWSERS_PATH=0 npx tsx tools/sync-historical.ts
 PLAYWRIGHT_BROWSERS_PATH=0 npx tsx tools/fetch-odds.ts --date=YYYY-MM-DD --venue=<ST|HV> --json --save
 ```
@@ -78,7 +78,7 @@ before starting the next — HKJC rate-limits, and each agent runs a 10,000-iter
 
 Each agent gets this self-contained prompt (substitute `<DATE>`, `<VENUE>`, `<VENUE_NAME>`, `<N>`):
 
-> Work in `/Users/anthonycyy/Documents/HR-project/hourse-racing`.
+> Work in `/Users/anthonycyy/Documents(Local)/hourse-racing`.
 >
 > Read `skills/trio-strategy/SKILL.md` in full and follow its 5-step pipeline for
 > **race <N> only** of the `<DATE>` `<VENUE_NAME>` meeting.
