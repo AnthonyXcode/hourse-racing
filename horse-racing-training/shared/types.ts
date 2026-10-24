@@ -537,6 +537,34 @@ export interface HomeMeetings {
   placeHits: number;
 }
 
+/** A ticket on the Home carousel: a member's pending LIVE bet on a race not yet run, or a strategy bot's bet. */
+export interface HomeTicket {
+  /** Short reference for the ticket's header bar. */
+  ref: string;
+  /** Member's public id, or `bot-<alias>` ("" for a hidden member). */
+  publicId: string;
+  /** Member display name ("" for a bot or a hidden member). */
+  displayName: string;
+  /** A member who doesn't show on the leaderboard: the bet is shown, the name and id are never sent. */
+  hidden?: boolean;
+  avatarUrl: string | null;
+  /** Bot alias (bots only). */
+  bot?: string;
+  /** YYYY-MM-DD */
+  date: string;
+  venue: Venue;
+  betType: BetTypeId;
+  races: number[];
+  /** picksText of the selection ("R8 膽 3  腳 5,7"). */
+  picks: string;
+  stake: number;
+  /** First leg's post time (ISO), when known. */
+  postTime: string | null;
+}
+export interface HomeTickets {
+  tickets: HomeTicket[];
+}
+
 /** Member profile period. */
 export type LeaderboardRange = "30d" | "all";
 export interface LeaderboardStats {

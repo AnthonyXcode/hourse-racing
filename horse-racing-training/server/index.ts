@@ -130,7 +130,18 @@ app.use("/api/admin", admin);
       meetings: (from, to) => meetingsFor(runAnalyzer, from, to),
       minBets: loadMinBets(), minBetsDay: loadMinBetsDay(), today,
       lastRaceDay: async () => (await summary.get()).days[0] ?? null,
-      bots: bots.stats, botRaces: bots.races, runners: cardRunners }));
+      bots: bots.stats, botRaces: bots.races, runners: cardRunners,
+      // Races still open on meetings from today on (post-time order is set by the carousel).
+      openRaces: () =>
+        getManifest()
+          .filter((m) => m.date >= today().replaceAll("-", ""))
+          .flatMap((m) =>
+            (appCredits().statusFor(m.date, m.venue, m.races).raceInfo ?? [])
+              .filter((r) => r.status === "open" && r.postTime)
+              .map((r) => ({ date: `${m.date.slice(0, 4)}-${m.date.slice(4, 6)}-${m.date.slice(6, 8)}`, venue: m.venue, raceNo: r.raceNumber, postTime: r.postTime! }))
+          ),
+      preRace: (r) => analyzeCard(r.date.replaceAll("-", ""), r.venue, r.raceNo),
+      now: nowMs }));
 }
 app.use("/api", membersRouter(memberDeps));
 app.use("/api", creditsRouter(credits, memberDeps));

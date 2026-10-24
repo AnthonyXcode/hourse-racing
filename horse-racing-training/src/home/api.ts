@@ -1,5 +1,5 @@
 // Home page API (public, no auth).
-import type { BotProfile, BotRange, HomeMeetings, HomeRecordDay, HomeSummary, LeaderboardProfile, LeaderboardRange, LeaderboardResponse } from "../../shared/types";
+import type { BotProfile, BotRange, HomeMeetings, HomeRecordDay, HomeSummary, HomeTickets, LeaderboardProfile, LeaderboardRange, LeaderboardResponse } from "../../shared/types";
 
 export class HomeApiError extends Error {
   constructor(
@@ -29,6 +29,7 @@ export const homeApi = {
   summary: (signal?: AbortSignal) => get<HomeSummary>("/api/home/summary", signal),
   records: (date: string, signal?: AbortSignal) => get<HomeRecordDay>(`/api/home/records?date=${date}`, signal),
   meetings: (from: string, to: string, signal?: AbortSignal) => get<HomeMeetings>(`/api/home/meetings?from=${from}&to=${to}`, signal),
+  tickets: (signal?: AbortSignal) => get<HomeTickets>("/api/home/tickets", signal),
   leaderboard: (signal?: AbortSignal) => get<LeaderboardResponse>("/api/leaderboard", signal),
   bot: (alias: string, range: BotRange, date: string | undefined, signal?: AbortSignal) =>
     get<BotProfile & { range: BotRange }>(`/api/leaderboard/bot-${encodeURIComponent(alias)}?range=${range}${range === "day" && date ? `&date=${date}` : ""}`, signal),

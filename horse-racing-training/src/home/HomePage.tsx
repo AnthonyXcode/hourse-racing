@@ -1,5 +1,5 @@
 // Home (first tab, the landing view): a compact hero with the one gold CTA, then three sections —
-// the model's last-3-months hit rate, the opt-in member leaderboard and what the site is for.
+// the model's last-3-months hit rate, upcoming bet tickets, the opt-in member leaderboard and what the site is for.
 // Summary and leaderboard load in parallel; both are small JSON responses.
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
@@ -19,6 +19,7 @@ import { AlertsBell } from "./AlertsBell";
 import { motion } from "motion/react";
 import { createPortal } from "react-dom";
 import { MeetingsDialog } from "./MeetingsDialog";
+import { TicketCarousel } from "./TicketCarousel";
 import { CountUp, Reveal, rise, slideIn, stagger, useSkipEntrance } from "./motion";
 
 /** Open a member profile or a bot page (bots carry the board's window). */
@@ -59,6 +60,9 @@ export function HomePage({ onNavigate, onUpcoming, onOpenProfile }: { onNavigate
       </motion.section>
       <Reveal delay={0.1}>
         <ModelSection onNavigate={onNavigate} />
+      </Reveal>
+      <Reveal>
+        <TicketCarousel onOpenProfile={onOpenProfile} />
       </Reveal>
       <Reveal>
         <Leaderboard onNavigate={onNavigate} onOpenProfile={onOpenProfile} />

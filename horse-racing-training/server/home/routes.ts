@@ -1,11 +1,12 @@
 // Public Home endpoints: model summary + member leaderboard. No auth, no contact data.
 import { Router } from "express";
 import type { MembersDB } from "../members/db";
-import type { HomeMeetings, HomeRecordDay, HomeSummary, LeaderboardResponse } from "../../shared/types";
+import type { HomeMeetings, HomeRecordDay, HomeSummary, HomeTickets, LeaderboardResponse } from "../../shared/types";
 import { MEETINGS_MAX_DAYS } from "./records";
 import { LEADERBOARD_DAYS, lastRacingDay, leaderboard, memberProfile, parseRange } from "./leaderboard";
 import { botKeyOf, botProfile, fillWithBots, type BotStats, type Runners } from "./bots";
-import type { AnalyzerRace } from "../../shared/analyzer/model";
+import type { AnalyzerRace, PreRaceAnalysis } from "../../shared/analyzer/model";
+import { TICKETS_SIZE, botTickets, memberTickets, type OpenRace } from "./tickets";
 
 export interface HomeDeps {
   db: MembersDB;
@@ -28,6 +29,12 @@ export interface HomeDeps {
   botRaces?: (from: string, to: string) => Promise<AnalyzerRace[]>;
   /** Saved racecard runners (names + codes) for a race. */
   runners?: Runners;
+  /** Races still open for betting, for the bots' tickets on the carousel. */
+  openRaces?: () => OpenRace[];
+  /** Pre-race analysis of one open race (analyzeCard). */
+  preRace?: (r: OpenRace) => Promise<PreRaceAnalysis | null>;
+  /** Epoch ms of "now". */
+  now?: () => number;
 }
 
 /** YYYY-MM-DD → YYYYMMDD minus `days`. */
@@ -81,6 +88,19 @@ export function homeRouter(d: HomeDeps) {
     } catch (e) {
       console.error("[home] meetings failed:", e);
       res.status(503).json({ error: { code: "meetings_unavailable" } });
+    }
+  });
+
+  r.get("/home/tickets", async (_req, res) => {
+    try {
+      const members = memberTickets(d.db, (d.now ?? Date.now)(), d.today().replaceAll("-", ""));
+      const bots = d.openRaces && d.preRace ? await botTickets(d.openRaces(), d.preRace, TICKETS_SIZE - members.length) : [];
+      const body: HomeTickets = { tickets: [...members, ...bots] };
+      res.set("Cache-Control", "public, max-age=60");
+      res.json(body);
+    } catch (e) {
+      console.error("[home] tickets failed:", e);
+      res.status(503).json({ error: { code: "tickets_unavailable" } });
     }
   });
 
