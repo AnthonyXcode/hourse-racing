@@ -500,11 +500,11 @@ function AppBody() {
     setAuFormula(f);
     if (f && had) setAuAnnounce(t("bet:allUp.formulaReset", { f, n: auLegs.length }));
   }, [auLegs.length]); // eslint-disable-line react-hooks/exhaustive-deps
-  /** Race chip: add the race as a leg (WIN) or edit it if it's one already. */
+  /** Race chip: add the race as a leg (in the pool of the leg being edited, else WIN) or edit it if it's one already. */
   function auChip(rn: number) {
     setEditRace(rn);
     if (auLegs.some((l) => l.raceNumber === rn)) return;
-    const next = addLeg(auLegs, rn);
+    const next = addLeg(auLegs, rn, (auEdit ?? auLegs[auLegs.length - 1])?.pool);
     if (next === auLegs) return;
     setAuLegs(next);
     setAuAnnounce(t("bet:allUp.announceAdd", { n: rn, leg: next.findIndex((l) => l.raceNumber === rn) + 1 }));

@@ -13,12 +13,20 @@ describe("All Up builder model", () => {
     let legs: AllUpDraftLeg[] = [];
     for (const rn of [5, 3, 5]) legs = addLeg(legs, rn);
     expect(legs).toEqual([{ raceNumber: 3, pool: "win" }, { raceNumber: 5, pool: "win" }]);
-    legs = [1, 2, 4, 6, 7].reduce(addLeg, legs);
+    legs = [1, 2, 4, 6, 7].reduce((l, rn) => addLeg(l, rn), legs);
     expect(legs.map((l) => l.raceNumber)).toEqual([1, 2, 3, 4, 5, 6]);
     expect(maxLegsFor(legs)).toBe(6);
     const tri: AllUpDraftLeg[] = [{ raceNumber: 1, pool: "trio" }, { raceNumber: 2, pool: "win" }, { raceNumber: 3, pool: "win" }];
     expect(maxLegsFor(tri)).toBe(3);
     expect(addLeg(tri, 4)).toBe(tri);
+  });
+
+  it("adds a leg in a given pool; TRI falls back to WIN past 3 legs", () => {
+    const two: AllUpDraftLeg[] = [{ raceNumber: 1, pool: "quinella" }, { raceNumber: 2, pool: "quinella" }];
+    expect(addLeg(two, 3, "quinella")[2]).toEqual({ raceNumber: 3, pool: "quinella" });
+    expect(addLeg(two, 3, "trio")[2]).toEqual({ raceNumber: 3, pool: "trio" });
+    const three = addLeg(two, 3, "place");
+    expect(addLeg(three, 4, "trio")[3]).toEqual({ raceNumber: 4, pool: "win" });
   });
 
   it("defaults to Nx1", () => {

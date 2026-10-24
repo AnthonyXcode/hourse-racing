@@ -24,10 +24,14 @@ export const maxLegsFor = (legs: AllUpDraftLeg[]) => (legs.some((l) => l.pool ==
 /** `Nx1` for N legs (the default formula), or null under 2 legs. */
 export const defaultFormula = (n: number): AllUpFormula | null => (n >= 2 && n <= ALL_UP_MAX_LEGS ? (`${n}x1` as AllUpFormula) : null);
 
-/** Add a race as a WIN leg (kept sorted by race: the first race to run is leg 1). No-op if present or full. */
-export function addLeg(legs: AllUpDraftLeg[], raceNumber: number): AllUpDraftLeg[] {
+/**
+ * Add a race as a leg in `pool` (WIN by default; TRI falls back to WIN once a 4th leg would break the TRI cap),
+ * kept sorted by race: the first race to run is leg 1. No-op if present or full.
+ */
+export function addLeg(legs: AllUpDraftLeg[], raceNumber: number, pool: AllUpPool = "win"): AllUpDraftLeg[] {
   if (legs.some((l) => l.raceNumber === raceNumber) || legs.length >= maxLegsFor(legs)) return legs;
-  return [...legs, { raceNumber, pool: "win" as const }].sort((a, b) => a.raceNumber - b.raceNumber);
+  const p = pool === "trio" && legs.length >= ALL_UP_TRIO_MAX_LEGS ? "win" : pool;
+  return [...legs, { raceNumber, pool: p }].sort((a, b) => a.raceNumber - b.raceNumber);
 }
 
 /** A draft leg + its race's ticks → the RaceLeg sent to the server (WIN/PLA fold bankers into selections). */
