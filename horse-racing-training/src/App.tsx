@@ -530,6 +530,17 @@ function AppBody() {
     if (moved.length && bankerMaxFor(p) > 0) setAuAnnounce(t("bet:allUp.bankerMoved", { h: moved.join(", ") }));
     setPicks((prev) => ({ ...prev, [auEdit.raceNumber]: { ...cur, ...ticks } }));
   }
+  /** Leaving a leg with no horse ticked drops it from the All Up. */
+  const auLeft = useRef(editRace);
+  useEffect(() => {
+    const left = auLeft.current;
+    auLeft.current = editRace;
+    if (!isAllUp || left === editRace || !auLegs.some((l) => l.raceNumber === left)) return;
+    const p = picks[left];
+    if (p?.bankers.length || p?.legs.length) return;
+    setAuLegs((legs) => legs.filter((l) => l.raceNumber !== left));
+    setAuAnnounce(t("bet:allUp.announceRemove", { n: left }));
+  }, [editRace]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const bankerEnabled = isAllUp ? !!auEdit && bankerMaxFor(auEdit.pool) > 0 : pool !== "wp" && BET_TYPES[betType].banker;
   const bankerMax = isAllUp ? (auEdit ? bankerMaxFor(auEdit.pool) : 0) : BET_TYPES[betType].depth - 1;
