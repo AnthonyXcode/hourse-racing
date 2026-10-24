@@ -45,6 +45,17 @@ export function TicketCarousel({ onOpenProfile }: { onOpenProfile: OpenProfile }
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, plugins);
   const [selected, setSelected] = useState(0);
   const [snaps, setSnaps] = useState<number[]>([]);
+  // Countdown bar: refills on each Autoplay timer (key bump) and shrinks to empty; hidden while the timer is stopped (hover, focus, paused).
+  const [timer, setTimer] = useState({ key: 0, running: false });
+  useEffect(() => {
+    if (!emblaApi) return;
+    const set = () => setTimer((s) => ({ key: s.key + 1, running: true }));
+    const stop = () => setTimer((s) => ({ ...s, running: false }));
+    emblaApi.on("autoplay:timerset", set).on("autoplay:timerstopped", stop);
+    return () => {
+      emblaApi.off("autoplay:timerset", set).off("autoplay:timerstopped", stop);
+    };
+  }, [emblaApi]);
 
   // ---- Scale tween (Embla predefined example) ----
   const tweenFactor = useRef(0);
@@ -144,7 +155,12 @@ export function TicketCarousel({ onOpenProfile }: { onOpenProfile: OpenProfile }
           </div>
         )}
       </div>
-      <div className={cx(sectionBody, "pt-3 pb-2")}>
+      <div className={cx(sectionBody, "relative pt-3 pb-2")}>
+        {playing && snaps.length > 1 && (
+          <div className="absolute inset-x-0 top-0 h-1 overflow-hidden bg-sky-100" aria-hidden="true">
+            {timer.running && <div key={timer.key} className="h-full origin-left bg-gold" style={{ animation: `slide-timer ${AUTO_MS}ms linear forwards` }} />}
+          </div>
+        )}
         {err ? (
           <p className={cx(errorBox, "mx-[13px]")} role="alert">
             {t("tickets.error")}

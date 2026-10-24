@@ -117,6 +117,13 @@ select {
   }
 }
 
+/* Home ticket carousel: time left until the next slide, shrinking to empty (TicketCarousel, duration = AUTO_MS). */
+@keyframes slide-timer {
+  to {
+    transform: scaleX(0);
+  }
+}
+
 /* Credits chip value cross-fade (motion-safe:animate-[fade-in_150ms_ease-out]). */
 @keyframes fade-in {
   from {
