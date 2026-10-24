@@ -3,8 +3,8 @@
 # Each wrapper writes its own log to horse-racing-training/marketing/logs/cron/, so cron output is discarded.
 
 # Non-race days: one post per channel at 20:30 (race days are skipped by the wrapper).
-30 20 * * * /bin/bash /Users/anthonycyy/Documents/HR-project/hourse-racing/horse-racing-training/marketing/cron/marketing-daily.sh >/dev/null 2>&1
+30 20 * * * /bin/bash "/Users/anthonycyy/Documents(Local)/hourse-racing/horse-racing-training/marketing/cron/marketing-daily.sh" >/dev/null 2>&1
 # Race days: every 5 min from 10:00 to 00:55; posts only when a PLAN.md §5.2 slot is due (pre/mid/late/post-meeting).
-*/5 0,10-23 * * * /bin/bash /Users/anthonycyy/Documents/HR-project/hourse-racing/horse-racing-training/marketing/cron/marketing-raceday.sh >/dev/null 2>&1
+*/5 0,10-23 * * * /bin/bash "/Users/anthonycyy/Documents(Local)/hourse-racing/horse-racing-training/marketing/cron/marketing-raceday.sh" >/dev/null 2>&1
 # Mondays 04:15: refresh the Threads token (60-day expiry) and health-check all four channels.
-15 4 * * 1 /bin/bash /Users/anthonycyy/Documents/HR-project/hourse-racing/horse-racing-training/marketing/cron/marketing-tokens.sh >/dev/null 2>&1
+15 4 * * 1 /bin/bash "/Users/anthonycyy/Documents(Local)/hourse-racing/horse-racing-training/marketing/cron/marketing-tokens.sh" >/dev/null 2>&1

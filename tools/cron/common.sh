@@ -1,6 +1,6 @@
 # Shared setup for the cron wrappers (cron starts with an almost empty environment).
 set -u
-ROOT="/Users/anthonycyy/Documents/HR-project/hourse-racing"
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 export PATH="/Users/anthonycyy/.local/bin:/Users/anthonycyy/.nvm/versions/node/v22.22.3/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin"
 export TZ="Asia/Hong_Kong"
 export HOME="/Users/anthonycyy"
