@@ -1,0 +1,21 @@
+# PLAN.md §6.7 "never post" list as regexes (case-insensitive, unicode). publish.ts rejects any draft that matches.
+# The required disclaimers (§6.6) must NOT match: they say 非投注建議 / 不保證 / credits have no cash value,
+# so 保證 and credit words are matched only in their promotional forms. Test a change with:
+#   npx tsx marketing/scripts/publish.ts --channel threads --text-file <draft> --slot 2026-01-01/test --dry-run
+# 1. certain / guaranteed wins
+必中|穩中|包中|穩膽|穩賺|零風險|(?<!不)保證(?!日後)
+\bsure[- ]win|\bguaranteed\b|risk[- ]free|\block of the day\b
+# 2. profit / income / money language
+賺錢|發達|回本|翻身|月入|收入|make money|\bprofit\b|HK\$
+# 3. calls to bet real money, operators, odds comparison
+去落注|跟住買|即刻買|快啲買|落重注|bet now|place your bet|hkjc\.com|bet\.hkjc|賠率比較|odds comparison
+# 4. LIVE betting, buying credits, pricing, bonus (until legal sign-off, PLAN §6.4)
+即場投注|LIVE\s*(bet|投注)|買積分|購買積分|增值|充值|迎新積分|welcome bonus|buy credits|\bpricing\b|收費|stripe|/credits|tab=credits|tab=pricing
+# 5. HKJC marks / implied endorsement
+官方|認可|合作夥伴|\bofficial\b|\bpartner(ed|ship)?\b|endorsed
+# 9. chasing losses / urgency
+追返|追數|最後機會|走寶|last chance|don't miss out
+# 11. integrity insinuation
+內幕|貓膩|造馬|打茄|inside info|race[- ]fixing
+# 12. debt / borrowing
+借錢|借貸|貸款|信用卡|卡數|borrow to bet|\bloan\b
